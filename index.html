@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>BEO Staff Dashboard — Westin Austin at The Domain</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
@@ -50,7 +51,7 @@
   .summary-close:hover{color:var(--text);}
   .event-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;transition:border-color 0.2s;}
   .event-card:hover{border-color:var(--border2);}
-  .event-header{display:grid;grid-template-columns:3px 1fr auto auto;align-items:center;cursor:pointer;padding:14px 18px;user-select:none;gap:0;}
+  .event-header{display:grid;grid-template-columns:3px 1fr minmax(160px,auto) 24px;align-items:start;cursor:pointer;padding:14px 18px;user-select:none;gap:0;}
   .event-accent{width:3px;border-radius:2px;margin-right:20px;align-self:stretch;min-height:20px;}
   .event-main{display:flex;flex-direction:column;gap:5px;}
   .event-group{font-weight:600;font-size:14px;color:var(--text);}
@@ -59,7 +60,7 @@
   .mgr-chip{display:inline-flex;align-items:center;background:rgba(139,108,247,0.08);border:1px solid rgba(139,108,247,0.2);border-radius:20px;padding:2px 10px;font-size:11px;color:var(--purple);}.ic-chip{display:inline-flex;align-items:center;background:rgba(62,207,178,0.06);border:1px solid rgba(62,207,178,0.2);border-radius:20px;padding:2px 10px;font-size:11px;color:#6ee4c8;}
   .note-chip{display:inline-flex;align-items:center;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);border-radius:20px;padding:2px 10px;font-size:11px;color:var(--gold);}
   .event-post{font-size:11px;color:var(--text3);letter-spacing:0.5px;}
-  .event-meta{display:flex;flex-direction:column;align-items:flex-end;gap:5px;margin-right:16px;text-align:right;}
+  .event-meta{display:flex;flex-direction:column;align-items:flex-end;gap:5px;margin-right:16px;text-align:right;min-width:160px;}
   .event-time{font-family:'DM Mono',monospace;font-size:12px;color:var(--teal);}
   .room-badge{display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:5px;padding:2px 10px;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--gold);letter-spacing:0.5px;white-space:nowrap;}
   .event-gtd{font-size:11px;color:var(--text2);}
@@ -112,7 +113,72 @@
   .c-meeting{background:var(--teal);}.c-dinner{background:var(--gold);}.c-reception{background:var(--purple);}
   .c-setup{background:var(--text3);}.c-breakfast{background:#e08050;}.c-general{background:#5090e0;}
   .c-lunch{background:#60c060;}.c-dance{background:var(--gold);}.c-special{background:var(--red);}
-  @media(max-width:768px){.content{padding:16px;}.stats-bar{grid-template-columns:1fr 1fr;}.header{padding:14px 16px;}.tab-bar{padding:0 16px;}}
+  @media(max-width:768px){
+  .content{padding:12px;}
+  .stats-bar{grid-template-columns:1fr 1fr;}
+  .header{padding:12px 16px;}
+  .tab-bar{padding:0 12px;}
+  .header-title{font-size:20px;}
+  .header-sub{font-size:10px;}
+  .event-header{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    padding:14px 16px;
+    gap:0;
+    position:relative;
+  }
+  .event-accent{
+    position:absolute;
+    left:0;top:0;bottom:0;
+    width:3px;
+    margin-right:0;
+    border-radius:0;
+    min-height:unset;
+  }
+  .event-main{
+    padding-left:14px;
+    flex:1;
+    padding-right:32px;
+  }
+  .event-group{
+    font-size:15px;
+    line-height:1.3;
+    white-space:normal;
+    word-break:break-word;
+  }
+  .event-contact-line{
+    margin-top:8px;
+    gap:6px;
+  }
+  .contact-chip{font-size:12px;padding:3px 10px 3px 8px;}
+  .mgr-chip{font-size:11px;padding:3px 10px;}
+  .ic-chip{font-size:11px;padding:3px 10px;}
+  .event-meta{
+    flex-direction:row;
+    align-items:center;
+    justify-content:flex-start;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-right:0;
+    margin-top:10px;
+    padding-left:14px;
+    text-align:left;
+  }
+  .event-time{font-size:12px;}
+  .room-badge{font-size:11px;padding:3px 10px;white-space:normal;word-break:break-word;max-width:100%;}
+  .event-gtd{font-size:11px;}
+  .chevron{
+    position:absolute;
+    top:14px;right:14px;
+    flex-shrink:0;
+  }
+  .day-header{flex-wrap:wrap;gap:8px;}
+  .summary-btn{font-size:9px;padding:3px 10px;}
+  .stats-bar .stat-value{font-size:24px;}
+  .filter-bar{gap:6px;}
+  .filter-btn{font-size:10px;padding:3px 10px;}
+}
 </style>
 </head>
 <body>
@@ -141,7 +207,6 @@
     <div class="stat-card"><div class="stat-label">Largest Event</div><div class="stat-value">150</div><div class="stat-sub">Arthur Murray / St. Dominic Prom</div></div>
     <div class="stat-card"><div class="stat-label">Dietary Flags</div><div class="stat-value">6</div><div class="stat-sub">Events with restrictions</div></div>
   </div>
-
 
   <div style="margin-bottom:20px;">
     <button onclick="document.getElementById('colorkey').style.display=document.getElementById('colorkey').style.display==='none'?'flex':'none';this.querySelector('span').textContent=document.getElementById('colorkey').style.display==='none'?'+':'−';" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;width:100%;">
@@ -902,208 +967,210 @@
 
   <div style="display:flex;flex-direction:column;gap:14px;">
 
-    <!-- APR 14 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
-        <div>
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">TUESDAY</span>
-          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 14</span>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$19,670</div>
-          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
-        </div>
-      </div>
-      <div style="padding:12px 18px;">
-        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
-          <span style="color:var(--text2);">Checkmarx — 24 pax &times; Early Riser + BBQ Lunch + Breaks</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,088</span>
-          <span style="color:var(--text2);">Marriott International — 12 pax Bev Pkg + Conf Dining + $700 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$1,324</span>
-          <span style="color:var(--text2);">Love American Homes — 10&times; Box Lunch + 2&times; $1,000 Room Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,590</span>
-          <span style="color:var(--text2);">HP Inc. / TMN Events — 70 pax Dinner Buffet + Hors D&apos;Oeuvres + Hosted Bar</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$10,668</span>
-        </div>
-      </div>
+```
+<!-- APR 14 -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+    <div>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">TUESDAY</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 14</span>
     </div>
+    <div style="text-align:right;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$19,670</div>
+      <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+    </div>
+  </div>
+  <div style="padding:12px 18px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+      <span style="color:var(--text2);">Checkmarx — 24 pax &times; Early Riser + BBQ Lunch + Breaks</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,088</span>
+      <span style="color:var(--text2);">Marriott International — 12 pax Bev Pkg + Conf Dining + $700 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$1,324</span>
+      <span style="color:var(--text2);">Love American Homes — 10&times; Box Lunch + 2&times; $1,000 Room Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,590</span>
+      <span style="color:var(--text2);">HP Inc. / TMN Events — 70 pax Dinner Buffet + Hors D&apos;Oeuvres + Hosted Bar</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$10,668</span>
+    </div>
+  </div>
+</div>
 
-    <!-- APR 15 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
-        <div>
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">WEDNESDAY</span>
-          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 15</span>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$10,130</div>
-          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
-        </div>
-      </div>
-      <div style="padding:12px 18px;">
-        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
-          <span style="color:var(--text2);">MTM — Room Rental + Beverage Consumption</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$1,000</span>
-          <span style="color:var(--text2);">Summit Electric — 7 pax Conf Dining + $750 Rental (F&amp;B Min $250)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$904</span>
-          <span style="color:var(--text2);">Checkmarx Day 2 — 24 pax Early Riser + Spa Day Lunch + Breaks + $300 Breakout Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,388</span>
-          <span style="color:var(--text2);">Prosperity Life — 30 pax Spa Day Lunch + Cookies + $800 Rental (10% off)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,838</span>
-        </div>
-      </div>
+<!-- APR 15 -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+    <div>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">WEDNESDAY</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 15</span>
     </div>
+    <div style="text-align:right;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$10,130</div>
+      <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+    </div>
+  </div>
+  <div style="padding:12px 18px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+      <span style="color:var(--text2);">MTM — Room Rental + Beverage Consumption</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$1,000</span>
+      <span style="color:var(--text2);">Summit Electric — 7 pax Conf Dining + $750 Rental (F&amp;B Min $250)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$904</span>
+      <span style="color:var(--text2);">Checkmarx Day 2 — 24 pax Early Riser + Spa Day Lunch + Breaks + $300 Breakout Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,388</span>
+      <span style="color:var(--text2);">Prosperity Life — 30 pax Spa Day Lunch + Cookies + $800 Rental (10% off)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,838</span>
+    </div>
+  </div>
+</div>
 
-    <!-- APR 16 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
-        <div>
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">THURSDAY</span>
-          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 16</span>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$10,117</div>
-          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
-        </div>
-      </div>
-      <div style="padding:12px 18px;">
-        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
-          <span style="color:var(--text2);">Prosperity Life Day 2 — 30 pax Continental Breakfast + Tejas Lunch + $800 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$3,797</span>
-          <span style="color:var(--text2);">bex+Co / Frandevco — 10 pax Conf Dining + (2) Coffee Gallons + $500 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$933</span>
-          <span style="color:var(--text2);">Summit Electric Day 2 — 7 pax Bev Consumption + $250 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$299</span>
-          <span style="color:var(--text2);">Checkmarx Day 3 — 24 pax Early Riser + Tejas Lunch + Breaks</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,088</span>
-        </div>
-      </div>
+<!-- APR 16 -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+    <div>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">THURSDAY</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 16</span>
     </div>
+    <div style="text-align:right;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$10,117</div>
+      <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+    </div>
+  </div>
+  <div style="padding:12px 18px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+      <span style="color:var(--text2);">Prosperity Life Day 2 — 30 pax Continental Breakfast + Tejas Lunch + $800 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$3,797</span>
+      <span style="color:var(--text2);">bex+Co / Frandevco — 10 pax Conf Dining + (2) Coffee Gallons + $500 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$933</span>
+      <span style="color:var(--text2);">Summit Electric Day 2 — 7 pax Bev Consumption + $250 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$299</span>
+      <span style="color:var(--text2);">Checkmarx Day 3 — 24 pax Early Riser + Tejas Lunch + Breaks</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,088</span>
+    </div>
+  </div>
+</div>
 
-    <!-- APR 17 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
-        <div>
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">FRIDAY</span>
-          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 17</span>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$500</div>
-          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
-        </div>
-      </div>
-      <div style="padding:12px 18px;">
-        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
-          <span style="color:var(--text2);">LJA Engineering — $500 Room Rental (F&amp;B details pending)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$500</span>
-          <span style="color:var(--text2);">Arthur Murray Setup — No F&amp;B</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$0</span>
-        </div>
-      </div>
+<!-- APR 17 -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+    <div>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">FRIDAY</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 17</span>
     </div>
+    <div style="text-align:right;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$500</div>
+      <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+    </div>
+  </div>
+  <div style="padding:12px 18px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+      <span style="color:var(--text2);">LJA Engineering — $500 Room Rental (F&amp;B details pending)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$500</span>
+      <span style="color:var(--text2);">Arthur Murray Setup — No F&amp;B</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$0</span>
+    </div>
+  </div>
+</div>
 
-    <!-- APR 18 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
-        <div>
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">SATURDAY</span>
-          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 18</span>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$24,225</div>
-          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
-        </div>
-      </div>
-      <div style="padding:12px 18px;">
-        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
-          <span style="color:var(--text2);">Arthur Murray — Continental Breakfast (80) + Gourmet Deli Lunch (120) + Plated Dinner (120) + Cash Bar est. + $2,500 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$21,425</span>
-          <span style="color:var(--text2);">Rockford IceHogs — 40 pax Custom Team Lunch + $200 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,800</span>
-        </div>
-      </div>
+<!-- APR 18 -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+    <div>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">SATURDAY</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 18</span>
     </div>
+    <div style="text-align:right;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$24,225</div>
+      <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+    </div>
+  </div>
+  <div style="padding:12px 18px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+      <span style="color:var(--text2);">Arthur Murray — Continental Breakfast (80) + Gourmet Deli Lunch (120) + Plated Dinner (120) + Cash Bar est. + $2,500 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$21,425</span>
+      <span style="color:var(--text2);">Rockford IceHogs — 40 pax Custom Team Lunch + $200 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,800</span>
+    </div>
+  </div>
+</div>
 
-    <!-- APR 19 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
-        <div>
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">SUNDAY</span>
-          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 19</span>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$2,980</div>
-          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
-        </div>
-      </div>
-      <div style="padding:12px 18px;">
-        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
-          <span style="color:var(--text2);">NCM Associates Reception — 35 pax Hors D&apos;Oeuvres (4 pieces) + Hosted Bar est. (2 drinks avg) + Bartender</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,980</span>
-        </div>
-      </div>
+<!-- APR 19 -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+    <div>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">SUNDAY</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 19</span>
     </div>
+    <div style="text-align:right;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$2,980</div>
+      <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+    </div>
+  </div>
+  <div style="padding:12px 18px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+      <span style="color:var(--text2);">NCM Associates Reception — 35 pax Hors D&apos;Oeuvres (4 pieces) + Hosted Bar est. (2 drinks avg) + Bartender</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,980</span>
+    </div>
+  </div>
+</div>
 
-    <!-- APR 20 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
-        <div>
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">MONDAY</span>
-          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 20</span>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$5,056</div>
-          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
-        </div>
-      </div>
-      <div style="padding:12px 18px;">
-        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
-          <span style="color:var(--text2);">ProSource Room Setup — No F&amp;B</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$0</span>
-          <span style="color:var(--text2);">NCM Day 1 — 32 pax Early Riser + Tejas Lunch + AM/PM Breaks</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,056</span>
-        </div>
-      </div>
+<!-- APR 20 -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+    <div>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">MONDAY</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 20</span>
     </div>
+    <div style="text-align:right;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$5,056</div>
+      <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+    </div>
+  </div>
+  <div style="padding:12px 18px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+      <span style="color:var(--text2);">ProSource Room Setup — No F&amp;B</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$0</span>
+      <span style="color:var(--text2);">NCM Day 1 — 32 pax Early Riser + Tejas Lunch + AM/PM Breaks</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,056</span>
+    </div>
+  </div>
+</div>
 
-    <!-- APR 21-23 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
-        <div>
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">TUE &ndash; THU</span>
-          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 21&ndash;23</span>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$27,729</div>
-          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
-        </div>
-      </div>
-      <div style="padding:12px 18px;">
-        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
-          <span style="color:var(--text2);">ProSource Tue — 28 pax Texas Sunrise + Austin BBQ + All-Day Bev + Specialty Syrups + Revitalize Break + PM Break</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,771</span>
-          <span style="color:var(--text2);">ProSource Wed — 28 pax Texas Sunrise + Tejas Mexicano + All-Day Bev + Empower Break</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,544</span>
-          <span style="color:var(--text2);">ProSource Thu — 8 pax Texas Sunrise + All-Day Bev (half day) — surcharge applies</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$850</span>
-          <span style="color:var(--text2);">NCM Day 2 — 32 pax Early Riser + Kolaches + AM Break (Cinnamon Buns, Parfaits, Cookies)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,220</span>
-          <span style="color:var(--text2);">TX Municipal League Thu — 40 pax Gourmet Deli Lunch + 65 pax Reception Bar + 65 pax BBQ Dinner + 2 Breakout Rooms</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$13,345</span>
-        </div>
-      </div>
+<!-- APR 21-23 -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+    <div>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">TUE &ndash; THU</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 21&ndash;23</span>
     </div>
+    <div style="text-align:right;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$27,729</div>
+      <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+    </div>
+  </div>
+  <div style="padding:12px 18px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+      <span style="color:var(--text2);">ProSource Tue — 28 pax Texas Sunrise + Austin BBQ + All-Day Bev + Specialty Syrups + Revitalize Break + PM Break</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,771</span>
+      <span style="color:var(--text2);">ProSource Wed — 28 pax Texas Sunrise + Tejas Mexicano + All-Day Bev + Empower Break</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,544</span>
+      <span style="color:var(--text2);">ProSource Thu — 8 pax Texas Sunrise + All-Day Bev (half day) — surcharge applies</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$850</span>
+      <span style="color:var(--text2);">NCM Day 2 — 32 pax Early Riser + Kolaches + AM Break (Cinnamon Buns, Parfaits, Cookies)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,220</span>
+      <span style="color:var(--text2);">TX Municipal League Thu — 40 pax Gourmet Deli Lunch + 65 pax Reception Bar + 65 pax BBQ Dinner + 2 Breakout Rooms</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$13,345</span>
+    </div>
+  </div>
+</div>
 
-    <!-- APR 24-26 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
-        <div>
-          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">FRI &ndash; SUN</span>
-          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 24&ndash;26</span>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$16,296</div>
-          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
-        </div>
-      </div>
-      <div style="padding:12px 18px;">
-        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
-          <span style="color:var(--text2);">TX Municipal League Final — 40 pax Early Riser + Coffee Break</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,880</span>
-          <span style="color:var(--text2);">TSPP Fri — 20 pax Continuous Break (Coffee + Iced Tea + Pepsi)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$1,265</span>
-          <span style="color:var(--text2);">TSPP Sat/Sun — Room rental only (no F&amp;B listed)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$0</span>
-          <span style="color:var(--text2);">St. Dominic Savio Prom — 150 pax Custom Snack Station + Pepsi + Cookies + Linen (F&amp;B Min $6,000)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$6,201</span>
-          <span style="color:var(--text2);">Delta Electronics — Gen Session $2,200 Rental + 5 Breakout Rooms $750–800 each (F&amp;B pending)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,950</span>
-        </div>
-      </div>
+<!-- APR 24-26 -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+    <div>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">FRI &ndash; SUN</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 24&ndash;26</span>
     </div>
+    <div style="text-align:right;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$16,296</div>
+      <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+    </div>
+  </div>
+  <div style="padding:12px 18px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+      <span style="color:var(--text2);">TX Municipal League Final — 40 pax Early Riser + Coffee Break</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,880</span>
+      <span style="color:var(--text2);">TSPP Fri — 20 pax Continuous Break (Coffee + Iced Tea + Pepsi)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$1,265</span>
+      <span style="color:var(--text2);">TSPP Sat/Sun — Room rental only (no F&amp;B listed)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$0</span>
+      <span style="color:var(--text2);">St. Dominic Savio Prom — 150 pax Custom Snack Station + Pepsi + Cookies + Linen (F&amp;B Min $6,000)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$6,201</span>
+      <span style="color:var(--text2);">Delta Electronics — Gen Session $2,200 Rental + 5 Breakout Rooms $750–800 each (F&amp;B pending)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,950</span>
+    </div>
+  </div>
+</div>
 
-    <!-- Grand Total -->
-    <div style="background:var(--surface2);border:1px solid var(--gold-dim);border-radius:10px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;">
-      <div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--text3);">PACKET TOTAL (BASE)</div>
-        <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:2px;">Add 26% service charge + 8.25% state tax for billed total</div>
-      </div>
-      <div style="text-align:right;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold);line-height:1;">$116,704</div>
-        <div style="font-size:11px;color:var(--text3);margin-top:2px;">&#8773; <span style="color:var(--teal);">$160,176</span> billed to client</div>
-      </div>
-    </div>
+<!-- Grand Total -->
+<div style="background:var(--surface2);border:1px solid var(--gold-dim);border-radius:10px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;">
+  <div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--text3);">PACKET TOTAL (BASE)</div>
+    <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:2px;">Add 26% service charge + 8.25% state tax for billed total</div>
+  </div>
+  <div style="text-align:right;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold);line-height:1;">$116,704</div>
+    <div style="font-size:11px;color:var(--text3);margin-top:2px;">&#8773; <span style="color:var(--teal);">$160,176</span> billed to client</div>
+  </div>
+</div>
+```
 
   </div>
 </div>
