@@ -51,12 +51,12 @@
   .event-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden;transition:border-color 0.2s;}
   .event-card:hover{border-color:var(--border2);}
   .event-header{display:grid;grid-template-columns:3px 1fr auto auto;align-items:center;cursor:pointer;padding:14px 18px;user-select:none;gap:0;}
-  .event-accent{width:3px;border-radius:2px;margin-right:14px;align-self:stretch;min-height:20px;}
+  .event-accent{width:3px;border-radius:2px;margin-right:20px;align-self:stretch;min-height:20px;}
   .event-main{display:flex;flex-direction:column;gap:5px;}
   .event-group{font-weight:600;font-size:14px;color:var(--text);}
   .event-contact-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .contact-chip{display:inline-flex;align-items:center;gap:5px;background:rgba(62,207,178,0.08);border:1px solid rgba(62,207,178,0.25);border-radius:20px;padding:2px 10px 2px 8px;font-size:12px;font-weight:600;color:var(--teal);}
-  .mgr-chip{display:inline-flex;align-items:center;background:rgba(139,108,247,0.08);border:1px solid rgba(139,108,247,0.2);border-radius:20px;padding:2px 10px;font-size:11px;color:var(--purple);}
+  .mgr-chip{display:inline-flex;align-items:center;background:rgba(139,108,247,0.08);border:1px solid rgba(139,108,247,0.2);border-radius:20px;padding:2px 10px;font-size:11px;color:var(--purple);}.ic-chip{display:inline-flex;align-items:center;background:rgba(62,207,178,0.06);border:1px solid rgba(62,207,178,0.2);border-radius:20px;padding:2px 10px;font-size:11px;color:#6ee4c8;}
   .note-chip{display:inline-flex;align-items:center;background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.2);border-radius:20px;padding:2px 10px;font-size:11px;color:var(--gold);}
   .event-post{font-size:11px;color:var(--text3);letter-spacing:0.5px;}
   .event-meta{display:flex;flex-direction:column;align-items:flex-end;gap:5px;margin-right:16px;text-align:right;}
@@ -122,13 +122,14 @@
     <div class="header-title">BEO STAFF DASHBOARD</div>
     <div class="header-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; April 14 &ndash; April 29, 2026</div>
   </div>
-  <div class="header-right">
+  <div class="header-right" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
     <span class="staff-badge">Staff View</span>
+    <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:1px;">PRINTED: APR 13, 2026</span>
   </div>
 </div>
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('events',event)">All Events</button>
-  <button class="tab-btn" onclick="switchTab('dietary',event)">&#9888; Dietary Flags</button>
+  <button class="tab-btn" onclick="switchTab('revenue',event)">&#36; Est. Revenue</button>
   <button class="tab-btn" onclick="switchTab('menu',event)">Catering Menu</button>
 </div>
 <div class="content">
@@ -137,10 +138,25 @@
   <div class="stats-bar">
     <div class="stat-card"><div class="stat-label">Active Days</div><div class="stat-value">16</div><div class="stat-sub">Apr 14 &ndash; Apr 29</div></div>
     <div class="stat-card"><div class="stat-label">Groups</div><div class="stat-value">18</div><div class="stat-sub">Organizations</div></div>
-    <div class="stat-card"><div class="stat-label">Largest Event</div><div class="stat-value">270</div><div class="stat-sub">TBNA Awards Dinner</div></div>
+    <div class="stat-card"><div class="stat-label">Largest Event</div><div class="stat-value">150</div><div class="stat-sub">Arthur Murray / St. Dominic Prom</div></div>
     <div class="stat-card"><div class="stat-label">Dietary Flags</div><div class="stat-value">6</div><div class="stat-sub">Events with restrictions</div></div>
   </div>
 
+
+  <div style="margin-bottom:20px;">
+    <button onclick="document.getElementById('colorkey').style.display=document.getElementById('colorkey').style.display==='none'?'flex':'none';this.querySelector('span').textContent=document.getElementById('colorkey').style.display==='none'?'+':'−';" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;width:100%;">
+      <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-family:'DM Mono',monospace;flex:1;text-align:left;">Accent Color Key</span>
+      <span style="color:var(--text3);font-size:16px;line-height:1;font-weight:300;">+</span>
+    </button>
+    <div id="colorkey" style="display:none;gap:16px;flex-wrap:wrap;align-items:center;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;">
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);"><span style="width:10px;height:10px;border-radius:50%;background:var(--teal);display:inline-block;"></span>Meeting / Session</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);"><span style="width:10px;height:10px;border-radius:50%;background:var(--gold);display:inline-block;"></span>Dinner / Banquet</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);"><span style="width:10px;height:10px;border-radius:50%;background:var(--purple);display:inline-block;"></span>Reception / Bar</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);"><span style="width:10px;height:10px;border-radius:50%;background:#60c060;display:inline-block;"></span>Lunch / Team Meal</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);"><span style="width:10px;height:10px;border-radius:50%;background:#5090e0;display:inline-block;"></span>General Session / Conference</span>
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);"><span style="width:10px;height:10px;border-radius:50%;background:var(--text3);display:inline-block;"></span>Setup Only</span>
+    </div>
+  </div>
   <div class="filter-bar">
     <span class="filter-label">Filter:</span>
     <button class="filter-btn active" onclick="filterEvents('all',this)">All</button>
@@ -160,15 +176,17 @@
   <div id="sum14" class="summary-popup">
     <button class="summary-close" onclick="toggleSummary('sum14',event)">&#10005;</button>
     <div class="summary-popup-title">TUESDAY APR 14 &mdash; At a Glance</div>
-    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">Checkmarx · Marriott International · Love American Homes · TMN Events / HP Inc.</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfast · All-Day Bev · AM Break · Lunch (3x) · PM Break · Dinner Buffet · Hosted Bar</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Verbena A · Camellia A · Plumeria · Bonnell · Barton · Corinne Patio · PDR Foyer</div></div><div class="summary-row"><div class="summary-key">Late Night</div><div class="summary-val">Love American Homes (Plumeria) until 10 PM · HP Dinner (Bonnell) until 9 PM</div></div><div class="summary-row"><div class="summary-key">⚠ Dietary</div><div class="summary-val">HP Dinner — John: Dairy Free · Teaierra: Pescatarian · Lindsey &amp; Eraj: Vegetarian</div></div>
+    <div class="summary-row"><div class="summary-key">Day Span</div><div class="summary-val" style="color:var(--teal);font-family:'DM Mono',monospace;">7:30 AM &ndash; 10:00 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Est. Revenue</div><div class="summary-val"><span style="color:var(--teal);font-family:'DM Mono',monospace;font-weight:600;">$19,670</span> <span style="color:var(--text3);font-size:11px;">base &nbsp;/&nbsp; ~$27,000 billed</span></div></div>
+    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">Checkmarx · Marriott International · Love American Homes · TMN Events / HP Inc.</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfast · All-Day Bev · AM Break · Lunch (3x) · PM Break · Dinner Buffet · Hosted Bar</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Verbena A · Camellia A · Plumeria · Bonnell · Barton · Corinne Patio · PDR Foyer</div></div><div class="summary-row"><div class="summary-key">Late Night</div><div class="summary-val">Love American Homes (Plumeria) until 10 PM · HP Dinner (Bonnell) until 9 PM</div></div>
   </div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb">
     <div class="event-header">
       <div class="event-accent c-meeting"></div>
       <div class="event-main">
-        <div class="event-group">Checkmarx Meeting <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 755639</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Cynthia</span><span class="mgr-chip">IC: Tomer</span><span class="mgr-chip">MGR: D. Ortega / J. Garcia</span></div>
+        <div class="event-group">Checkmarx Meeting <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 1 of 3</span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Cynthia</span><span class="ic-chip">IC: Tomer</span><span class="mgr-chip">MGR: D. Ortega / J. Garcia</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">8:30 AM – 5:00 PM</div>
@@ -178,21 +196,22 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf755')">Breakfast (7:30AM)</button><button class="section-tab" onclick="switchSection(this,'bev755')">All-Day Bev</button><button class="section-tab" onclick="switchSection(this,'ambrk755')">AM Break (10AM)</button><button class="section-tab" onclick="switchSection(this,'lun755')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'pmbrk755')">PM Break (3PM)</button><button class="section-tab" onclick="switchSection(this,'set755')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf755')">Breakfast (7:30AM)</button><button class="section-tab" onclick="switchSection(this,'bev755')">All-Day Bev</button><button class="section-tab" onclick="switchSection(this,'ambrk755')">AM Break (10AM)</button><button class="section-tab" onclick="switchSection(this,'lun755')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'pmbrk755')">PM Break (3PM)</button><button class="section-tab" onclick="switchSection(this,'set755')">Setup</button><button class="section-tab" onclick="switchSection(this,'det0')">Details</button></div>
 <div id="bkf755" class="section-panel active"><div class="menu-category">All Day Meeting Package — Early Riser Breakfast · $136.80/pp</div><div class="menu-item"><span class="menu-item-name">Orange, Cranberry &amp; Apple Juices</span></div><div class="menu-item"><span class="menu-item-name">Fresh Cut Melons &amp; Berries</span></div><div class="menu-item"><span class="menu-item-name">Assorted Healthy Start Cereals w/ Whole, 2%, Skim Milk</span></div><div class="menu-item"><span class="menu-item-name">House Baked Pastries · Individual Chobani Fruit Yogurts</span></div><div class="menu-item"><span class="menu-item-name">Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage</span></div><div class="menu-item"><span class="menu-item-name">Rosemary Seasoned Gold Breakfast Potatoes</span></div><div class="menu-item"><span class="menu-item-name">Little City Regular &amp; Decaf Coffee, Assortment of Tazo Teas</span></div></div>
 <div id="bev755" class="section-panel"><div class="menu-category">All Day Beverages</div><div class="menu-item"><span class="menu-item-name">Little City Regular Coffee (gallon)</span><span class="menu-item-price">$135/gal</span></div><div class="menu-item"><span class="menu-item-name">Little City Decaf Coffee (gallon)</span><span class="menu-item-price">$135/gal</span></div><div class="menu-item"><span class="menu-item-name">Hot Water &amp; Tazo Teas (gallon)</span><span class="menu-item-price">$105/gal</span></div><div class="menu-item"><span class="menu-item-name">2% Milk | Cream | Soy Milk | Honey | Lemon</span></div><div class="menu-item"><span class="menu-item-name">Assorted Pepsi Products — Charge on Consumption</span><span class="menu-item-price">$7 each</span></div><div class="menu-item"><span class="menu-item-name">Bottled Water — Charge on Consumption</span><span class="menu-item-price">$7 each</span></div></div>
 <div id="ambrk755" class="section-panel"><div class="menu-category">(24) Morning Break</div><div class="menu-item"><span class="menu-item-name">Assorted Whole Fruit</span></div><div class="menu-item"><span class="menu-item-name">Mix of Assorted Granola &amp; Protein Bars</span></div></div>
 <div id="lun755" class="section-panel"><div class="menu-category">Austin BBQ — Tuesday Working Lunch Buffet</div><div class="menu-item"><span class="menu-item-name">Chopped Iceberg &amp; Romaine, Cheddar, Grilled Corn, Baby Heirloom Tomatoes, Red Onion, Jalapeño Ranch</span></div><div class="menu-item"><span class="menu-item-name">Hill Country German Potato Salad — Grainy Mustard, Bacon, Parsley</span></div><div class="menu-item"><span class="menu-item-name">Kale &amp; Broccoli Slaw — Sundried Cranberries, Toasted Almond, Celery Vinaigrette</span></div><div class="menu-item"><span class="menu-item-name">Gochujang BBQ Glazed Chicken Thighs — Sesame &amp; Green Onions</span></div><div class="menu-item"><span class="menu-item-name">Sliced Pickles, Hawaiian Rolls</span></div><div class="menu-item"><span class="menu-item-name">Salt &amp; Pepper Rubbed 12-Hour Smoked Brisket</span></div><div class="menu-item"><span class="menu-item-name">Ranch Style Baked Beans · Creamy Green Chili Mac 'n' Cheese · Warm Sweet Cornbread</span></div><div class="menu-item"><span class="menu-item-name">Golden Delicious Apple Skillet Crisp, Caramel Sauce</span></div><div class="menu-item"><span class="menu-item-name">Iced Tea, Little City Coffee, Tazo Herbal Teas</span></div></div>
 <div id="pmbrk755" class="section-panel"><div class="menu-category">(24) Afternoon Break</div><div class="menu-item"><span class="menu-item-name">Roasted Garlic Hummus w/ Individual Pita Chips</span></div><div class="menu-item"><span class="menu-item-name">Assorted Chips &amp; Snacks</span></div></div>
 <div id="set755" class="section-panel"><div class="setup-info">U-Shape for 24 · Pads, Pens, Water in back of room · (4) Chairs by wall</div><div class="info-box">All Drinks &amp; Breaks inside meeting room. Breakfast &amp; Lunch Buffet set outside.</div></div>
-</div></div>
+
+<div id="det0" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 755639</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb">
     <div class="event-header">
       <div class="event-accent c-meeting"></div>
       <div class="event-main">
-        <div class="event-group">Marriott International Digital Ops <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 777117</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Hermione</span><span class="mgr-chip">MGR: L. Barrera</span><span class="note-chip">Room Rental: $700</span></div>
+        <div class="event-group">Marriott International Digital Ops <span style="color:var(--text3);font-weight:400;font-size:12px;"></span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Hermione</span><span class="mgr-chip">MGR: L. Barrera</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">9:00 AM – 5:00 PM</div>
@@ -202,18 +221,19 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bev777')">Beverages (9AM–1PM)</button><button class="section-tab" onclick="switchSection(this,'lun777')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'set777')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bev777')">Beverages (9AM–1PM)</button><button class="section-tab" onclick="switchSection(this,'lun777')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'set777')">Setup</button><button class="section-tab" onclick="switchSection(this,'det1')">Details</button></div>
 <div id="bev777" class="section-panel active"><div class="menu-category">Half Day Beverage Service (up to 4 hrs) · $30/pp</div><div class="menu-item"><span class="menu-item-name">Little City Regular &amp; Decaf Coffee, Tazo Teas, Assorted Pepsi Products, Bottled Water</span></div></div>
 <div id="lun777" class="section-panel"><div class="menu-category">Conference Dining Lunch — À La Carte</div><div class="menu-item"><span class="menu-item-name">Classic Caesar <span class="dietary-tag dietary-vg">VG</span></span><span class="menu-item-price">$19</span></div><div class="menu-item"><span class="menu-item-name">&nbsp; + Add Grilled Chicken / Salmon / Steak</span><span class="menu-item-price">+$7 / $12 / $13</span></div><div class="menu-item"><span class="menu-item-name">Corinne Cobb <span class="dietary-tag dietary-gf">GF</span></span><span class="menu-item-price">$22</span></div><div class="menu-item"><span class="menu-item-name">Wagyu Cheeseburger</span><span class="menu-item-price">$25</span></div><div class="menu-item"><span class="menu-item-name">&nbsp; + Add Bacon / Egg / Avocado</span><span class="menu-item-price">$3 / $2 / $3</span></div><div class="menu-item"><span class="menu-item-name">Toasted Grilled Cheese <span class="dietary-tag dietary-vg">VG</span></span><span class="menu-item-price">$22</span></div><div class="menu-item"><span class="menu-item-name">Grilled Chicken Club</span><span class="menu-item-price">$22</span></div></div>
 <div id="set777" class="section-panel"><div class="setup-info">U-Shape · 2 seats per table · Comp Water Station in Room</div><div class="info-box">F&amp;B Minimum: $500 (excl. taxes &amp; gratuity)</div></div>
-</div></div>
+
+<div id="det1" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 777117 · Room Rental: $700 · F&amp;B Min: $500</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb late">
     <div class="event-header">
       <div class="event-accent c-meeting"></div>
       <div class="event-main">
-        <div class="event-group">Realtor Group — Real Estate Investor Meeting <span style="color:var(--text3);font-weight:400;font-size:12px;">· Love American Homes · EO# 425736</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Brittney</span><span class="mgr-chip">IC: Thomas</span><span class="mgr-chip">MGR: L. Barrera</span></div>
+        <div class="event-group">Realtor Group — Real Estate Investor Meeting <span style="color:var(--text3);font-weight:400;font-size:12px;">· Love American Homes </span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Brittney</span><span class="ic-chip">IC: Thomas</span><span class="mgr-chip">MGR: L. Barrera</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">11:00 AM – 10:00 PM</div>
@@ -223,17 +243,18 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'lun425')">Box Lunch (1PM)</button><button class="section-tab" onclick="switchSection(this,'set425')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'lun425')">Box Lunch (1PM)</button><button class="section-tab" onclick="switchSection(this,'set425')">Setup</button><button class="section-tab" onclick="switchSection(this,'det2')">Details</button></div>
 <div id="lun425" class="section-panel active"><div class="menu-category">(10) Roasted Turkey Sandwich Take Away · $59/pp</div><div class="menu-item"><span class="menu-item-name">Sliced Turkey, Tomato, Onion, Cheddar, Iceberg Lettuce on Whole Grain Wheat</span></div><div class="menu-item"><span class="menu-item-name">Includes: Potato Salad, Apple, Chips, Chocolate Chip Cookie, Assorted Pepsi Products</span></div><div class="info-box">📦 Boxed lunches placed in back of room by 1PM. Notify contact before placing.</div></div>
 <div id="set425" class="section-panel"><div class="setup-info">Theatre (11AM) · Registration outside room<br>3 hightops in room · Podium · Water Station · 3 high tops outside · 3 easels<br>Evening (6PM): Theatre — Add chairs for 2nd meeting<br>AV: WiFi through Markeys (both sessions)<br>Room Rental: $1,000 per session</div><div class="alert-box">⚑ Evening meeting runs until 10:00 PM</div></div>
-</div></div>
+
+<div id="det2" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 425736 · Room Rental: $1,000 per session</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb late large">
     <div class="event-header">
       <div class="event-accent c-dinner"></div>
       <div class="event-main">
-        <div class="event-group">HP Inc. Private Dinner <span style="color:var(--text3);font-weight:400;font-size:12px;">· TMN Events · EO# 582946</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Ben</span><span class="mgr-chip">MGR: D. Ortega</span><span class="note-chip">10% F&amp;B Discount per contract</span></div>
+        <div class="event-group">HP Inc. Private Dinner <span style="color:var(--text3);font-weight:400;font-size:12px;">· TMN Events </span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Ben</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">6:00 PM – 9:00 PM</div>
@@ -243,7 +264,7 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'hors582')">Hors D'Oeuvres</button><button class="section-tab" onclick="switchSection(this,'buf582')">Dinner Buffet</button><button class="section-tab" onclick="switchSection(this,'bar582')">Bar</button><button class="section-tab" onclick="switchSection(this,'diet582')">⚠ Dietary</button><button class="section-tab" onclick="switchSection(this,'set582')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'hors582')">Hors D'Oeuvres</button><button class="section-tab" onclick="switchSection(this,'buf582')">Dinner Buffet</button><button class="section-tab" onclick="switchSection(this,'bar582')">Bar</button><button class="section-tab" onclick="switchSection(this,'diet582')">⚠ Dietary</button><button class="section-tab" onclick="switchSection(this,'set582')">Setup</button><button class="section-tab" onclick="switchSection(this,'det3')">Details</button></div>
 <div id="hors582" class="section-panel active"><div class="menu-category">DISPLAYED HORS D'OEUVRES</div><div class="menu-item"><span class="menu-item-name">(70) Southwestern Chorizo Springroll w/ Avocado Crema</span><span class="menu-item-price">$9/piece</span></div><div class="menu-item"><span class="menu-item-name">(70) Antipasta Skewer — Marinated Artichoke, Roasted Tomato, Mozzarella, Kalamata Olive</span><span class="menu-item-price">$9/piece</span></div></div>
 <div id="buf582" class="section-panel"><div class="menu-category">Taste of the Southwest Dinner Table · $86.40/pp · Based on 90 min service</div><div class="menu-item"><span class="menu-item-name">Chicken Tortilla Soup — Crispy Tortilla Strips, Lime Wedges, Pepper Jack Cheese</span></div><div class="menu-item"><span class="menu-item-name">Lime Kissed Tortilla Chips — House Made Guacamole, Salsa Roja</span></div><div class="menu-item"><span class="menu-item-name">Michelada Shrimp Cocktail — Tomato, Lime, Cerveza Tacate, Cilantro, Hot Sauce</span></div><div class="menu-item"><span class="menu-item-name">Romaine, Grilled Corn, Diced Tomato, Roasted Piñons, Chipotle Ranch</span></div><div class="menu-item"><span class="menu-item-name">Jicama &amp; Black Bean Slaw — Garlic Tahini Dressing</span></div><div class="menu-item"><span class="menu-item-name">Grilled Chicken Thighs w/ Tomatillo Mole Verde</span></div><div class="menu-item"><span class="menu-item-name">Churrasco Steak w/ Chimichurri Sauce</span></div><div class="menu-item"><span class="menu-item-name">Smoked Bacon &amp; Cheddar Grits · Borracho Beans</span></div><div class="menu-item"><span class="menu-item-name">Cinnamon Dusted Coconut Tembleque · Caramel Cheesecake Bites</span></div><div class="menu-item"><span class="menu-item-name">(2) Southwestern Tofu Plate <span class="dietary-tag dietary-vg">VG</span></span></div><div class="menu-item"><span class="menu-item-name">Ice Water, Little City Coffee, Tazo Herbal Teas · Iced Tea on request</span></div></div>
 <div id="bar582" class="section-panel"><div class="menu-category">HOSTED FAVORITE BRANDS BAR — On Consumption</div><div class="menu-item"><span class="menu-item-name">Jack Daniel's, Dewar's, Tito's, Tanqueray, Canadian Club, Jose Cuervo Gold, Bacardi Superior</span><span class="menu-item-price">$13</span></div><div class="menu-item"><span class="menu-item-name">Vista Point Chardonnay / Cabernet</span><span class="menu-item-price">$13/glass</span></div><div class="menu-item"><span class="menu-item-name">Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock, Austin Eastciders</span><span class="menu-item-price">$10</span></div><div class="menu-item"><span class="menu-item-name">Budweiser, Bud Light, Miller Light, Lonestar</span><span class="menu-item-price">$9</span></div><div class="menu-item"><span class="menu-item-name">Assorted Pepsi Products</span><span class="menu-item-price">$6.30</span></div></div>
@@ -262,15 +283,18 @@
   <div id="sum15" class="summary-popup">
     <button class="summary-close" onclick="toggleSummary('sum15',event)">&#10005;</button>
     <div class="summary-popup-title">WEDNESDAY APR 15 &mdash; At a Glance</div>
-    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">MTM · Summit Electric · Checkmarx Day 2 · Prosperity Life</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfast (1) · All-Day Bev (2) · AM Break (1) · Lunches (4) · PM Break (1)</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Camellia · Bluebell · Verbena A &amp; B · Plumeria</div></div><div class="summary-row"><div class="summary-key">⚠ Dietary</div><div class="summary-val">Prosperity Life — Nut allergies, GF, (1) Pescatarian</div></div>
+    <div class="summary-row"><div class="summary-key">Day Span</div><div class="summary-val" style="color:var(--teal);font-family:'DM Mono',monospace;">7:30 AM &ndash; 4:00 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Est. Revenue</div><div class="summary-val"><span style="color:var(--teal);font-family:'DM Mono',monospace;font-weight:600;">$10,130</span> <span style="color:var(--text3);font-size:11px;">base &nbsp;/&nbsp; ~$13,900 billed</span></div></div>
+    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">MTM · Summit Electric · Checkmarx Day 2 · Prosperity Life</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfast (1) · All-Day Bev (2) · AM Break (1) · Lunches (4) · PM Break (1)</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Camellia · Bluebell · Verbena A &amp; B · Plumeria
+<div id="det3" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 582946 · 10% F&amp;B Discount per contract</div></div></div></div>
   </div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb large">
     <div class="event-header">
       <div class="event-accent c-general"></div>
       <div class="event-main">
-        <div class="event-group">MTM Meeting Space <span style="color:var(--text3);font-weight:400;font-size:12px;">· Medical Transportation Management · EO# 351543</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Rebecca</span><span class="mgr-chip">MGR: D. Ortega</span><span class="note-chip">Room Rental: $1,000</span></div>
+        <div class="event-group">MTM Meeting Space <span style="color:var(--text3);font-weight:400;font-size:12px;">· Medical Transportation Management </span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Rebecca</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">8:00 AM – 6:00 PM</div>
@@ -280,17 +304,18 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bev351')">Continuous Beverages</button><button class="section-tab" onclick="switchSection(this,'set351')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bev351')">Continuous Beverages</button><button class="section-tab" onclick="switchSection(this,'set351')">Setup</button><button class="section-tab" onclick="switchSection(this,'det4')">Details</button></div>
 <div id="bev351" class="section-panel active"><div class="menu-category">Continuous Break — Beverages All Day</div><div class="menu-item"><span class="menu-item-name">Little City Regular Coffee — On Consumption</span><span class="menu-item-price">$135/gal</span></div><div class="menu-item"><span class="menu-item-name">Bottled Water — Charge on Consumption</span><span class="menu-item-price">$7 each</span></div></div>
 <div id="set351" class="section-panel"><div class="setup-info">Room Setup: Schoolroom · POST AS: MTM Meeting Space</div></div>
-</div></div>
+
+<div id="det4" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 351543 · Room Rental: $1,000</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb">
     <div class="event-header">
       <div class="event-accent c-meeting"></div>
       <div class="event-main">
-        <div class="event-group">Summit Electric Supply — Quarterly Leadership <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 454678</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Annie</span><span class="mgr-chip">IC: Sheila</span><span class="mgr-chip">MGR: L. Barrera</span><span class="note-chip">Rental: $750</span></div>
+        <div class="event-group">Summit Electric Supply — Quarterly Leadership <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 1 of 2</span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Annie</span><span class="ic-chip">IC: Sheila</span><span class="mgr-chip">MGR: L. Barrera</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">8:00 AM – 5:00 PM</div>
@@ -300,17 +325,18 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'lun454')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'set454')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'lun454')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'set454')">Setup</button><button class="section-tab" onclick="switchSection(this,'det5')">Details</button></div>
 <div id="lun454" class="section-panel active"><div class="menu-category">Conference Dining Lunch — À La Carte</div><div class="menu-item"><span class="menu-item-name">Classic Caesar <span class="dietary-tag dietary-vg">VG</span></span><span class="menu-item-price">$19</span></div><div class="menu-item"><span class="menu-item-name">Corinne Cobb <span class="dietary-tag dietary-gf">GF</span></span><span class="menu-item-price">$22</span></div><div class="menu-item"><span class="menu-item-name">Wagyu Cheeseburger</span><span class="menu-item-price">$25</span></div><div class="menu-item"><span class="menu-item-name">Toasted Grilled Cheese <span class="dietary-tag dietary-vg">VG</span></span><span class="menu-item-price">$22</span></div><div class="menu-item"><span class="menu-item-name">Grilled Chicken Club</span><span class="menu-item-price">$22</span></div><div class="menu-item"><span class="menu-item-name">Assorted Pepsi Products · Bottled Water</span><span class="menu-item-price">$7</span></div></div>
 <div id="set454" class="section-panel"><div class="setup-info">Conference · AV: TV through Markeys · F&amp;B Min: $250</div></div>
-</div></div>
+
+<div id="det5" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 454678 · Room Rental: $750 · F&amp;B Min: $250</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb">
     <div class="event-header">
       <div class="event-accent c-meeting"></div>
       <div class="event-main">
-        <div class="event-group">Checkmarx Meeting — Day 2 <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 755760 + 352112</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Cynthia</span><span class="mgr-chip">IC: Tomer</span><span class="mgr-chip">MGR: D. Ortega / J. Garcia</span></div>
+        <div class="event-group">Checkmarx Meeting — Day 2 <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 2 of 3</span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Cynthia</span><span class="ic-chip">IC: Tomer</span><span class="mgr-chip">MGR: D. Ortega / J. Garcia</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">8:30 AM – 5:00 PM</div>
@@ -320,19 +346,20 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf7557')">Breakfast (7:30AM)</button><button class="section-tab" onclick="switchSection(this,'lun7557')">Lunch — Spa Day</button><button class="section-tab" onclick="switchSection(this,'brk7557')">Breaks</button><button class="section-tab" onclick="switchSection(this,'set7557')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf7557')">Breakfast (7:30AM)</button><button class="section-tab" onclick="switchSection(this,'lun7557')">Lunch — Spa Day</button><button class="section-tab" onclick="switchSection(this,'brk7557')">Breaks</button><button class="section-tab" onclick="switchSection(this,'set7557')">Setup</button><button class="section-tab" onclick="switchSection(this,'det6')">Details</button></div>
 <div id="bkf7557" class="section-panel active"><div class="menu-category">Early Riser Breakfast · $136.80/pp — Same menu as Day 1</div><div class="menu-item"><span class="menu-item-name">Full breakfast buffet: eggs, bacon, sausage, potatoes, pastries, fruit, yogurt, cereals</span></div></div>
 <div id="lun7557" class="section-panel"><div class="menu-category">Hill Country Spa Day — Wednesday Working Lunch Buffet</div><div class="menu-item"><span class="menu-item-name">Arugula, Frisee, Radicchio — Blackberries, Strawberries, Candied Pecans, Vanilla Honey Vinaigrette</span></div><div class="menu-item"><span class="menu-item-name">Spinach &amp; Watercress — Beets, Goat Cheese, Toasted Walnuts, Champagne Vinaigrette</span></div><div class="menu-item"><span class="menu-item-name">Herb Seared Petite Chicken Breast — Fresh Tomato Caper Relish</span></div><div class="menu-item"><span class="menu-item-name">Roasted Salmon — Lemon, Garlic, Rosemary</span></div><div class="menu-item"><span class="menu-item-name">Roasted Asparagus — EVOO, Crushed Red Pepper</span></div><div class="menu-item"><span class="menu-item-name">Pan Roasted Sweet Potato Hash — Swiss Chard, Queso Fresco</span></div><div class="menu-item"><span class="menu-item-name">Assorted French Macarons · Chocolate Mousse Shots</span></div><div class="menu-item"><span class="menu-item-name">Iced Tea, Little City Coffee, Tazo Herbal Teas</span></div></div>
 <div id="brk7557" class="section-panel"><div class="menu-category">AM Break (10:00AM)</div><div class="menu-item"><span class="menu-item-name">Assorted Whole Fruit · Mix of Granola &amp; Protein Bars</span></div><div class="menu-category">PM Break (3:00PM)</div><div class="menu-item"><span class="menu-item-name">Roasted Garlic Hummus w/ Individual Pita Chips · Assorted Chips &amp; Snacks</span></div></div>
 <div id="set7557" class="section-panel"><div class="setup-info">Verbena A: Existing Set · Verbena B: Conference 2 per 6 — Pads, Pens, Water in back</div><div class="info-box">All Drinks &amp; Breaks inside meeting room. Breakfast &amp; Lunch set outside.</div></div>
-</div></div>
+
+<div id="det6" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 755760 / 352112 · Verbena B Rental: $300</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb">
     <div class="event-header">
       <div class="event-accent c-meeting"></div>
       <div class="event-main">
-        <div class="event-group">Prosperity Life Meeting <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 690093</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Vanessa</span><span class="mgr-chip">MGR: L. Barrera / J. Garcia</span><span class="note-chip">10% Off F&amp;B · Rental: $800</span></div>
+        <div class="event-group">Prosperity Life Meeting <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 1 of 2</span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Vanessa</span><span class="mgr-chip">MGR: L. Barrera / J. Garcia</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">12:00 PM – 4:00 PM</div>
@@ -342,7 +369,7 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'lun690')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'diet690')">⚠ Dietary</button><button class="section-tab" onclick="switchSection(this,'set690')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'lun690')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'diet690')">⚠ Dietary</button><button class="section-tab" onclick="switchSection(this,'set690')">Setup</button><button class="section-tab" onclick="switchSection(this,'det7')">Details</button></div>
 <div id="lun690" class="section-panel active"><div class="menu-category">Hill Country Spa Day — Wednesday Working Lunch · $61.20/pp</div><div class="menu-item"><span class="menu-item-name">Same Spa Day menu as Checkmarx (Salmon, Chicken, Asparagus, Sweet Potato, Macarons, Mousse Shots)</span></div><div class="menu-item"><span class="menu-item-name">(3) Dozen Assorted Cookies</span><span class="menu-item-price">$67.50/doz</span></div></div>
 <div id="diet690" class="section-panel"><div class="alert-box">⚠ Few guests have nut allergies, gluten free, (1) pescatarian — no separate plate needed</div></div>
 <div id="set690" class="section-panel"><div class="setup-info">Crescent Rounds · 5 rounds of 6 · AV: WiFi, Screen &amp; Projector, Owl through Markeys</div></div>
@@ -359,15 +386,18 @@
   <div id="sum16" class="summary-popup">
     <button class="summary-close" onclick="toggleSummary('sum16',event)">&#10005;</button>
     <div class="summary-popup-title">THURSDAY APR 16 &mdash; At a Glance</div>
-    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">Prosperity Life Day 2 · bex+Co / Frandevco · Summit Electric Day 2 · Checkmarx Day 3</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfasts (2) · Beverages (2) · AM Break (1) · Lunches (3) · PM Break (1)</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Plumeria · Camellia A · Bluebell · Verbena A</div></div><div class="summary-row"><div class="summary-key">⚠ Dietary</div><div class="summary-val">Prosperity Life — Nut allergies, GF, (1) Pescatarian · Separate plate for pescatarian</div></div>
+    <div class="summary-row"><div class="summary-key">Day Span</div><div class="summary-val" style="color:var(--teal);font-family:'DM Mono',monospace;">7:30 AM &ndash; 3:30 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Est. Revenue</div><div class="summary-val"><span style="color:var(--teal);font-family:'DM Mono',monospace;font-weight:600;">$10,117</span> <span style="color:var(--text3);font-size:11px;">base &nbsp;/&nbsp; ~$13,900 billed</span></div></div>
+    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">Prosperity Life Day 2 · bex+Co / Frandevco · Summit Electric Day 2 · Checkmarx Day 3</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfasts (2) · Beverages (2) · AM Break (1) · Lunches (3) · PM Break (1)</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Plumeria · Camellia A · Bluebell · Verbena A
+<div id="det7" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 690093 · 10% Off F&amp;B · Room Rental: $800</div></div></div></div>
   </div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb">
     <div class="event-header">
       <div class="event-accent c-meeting"></div>
       <div class="event-main">
-        <div class="event-group">Prosperity Life Meeting — Day 2 <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 690241</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Vanessa</span><span class="mgr-chip">MGR: L. Barrera / J. Garcia</span><span class="note-chip">10% Off F&amp;B · Rental: $800</span></div>
+        <div class="event-group">Prosperity Life Meeting — Day 2 <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 2 of 2</span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Vanessa</span><span class="mgr-chip">MGR: L. Barrera / J. Garcia</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">7:30 AM – 1:00 PM</div>
@@ -377,18 +407,19 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf6902')">Breakfast (7:30AM)</button><button class="section-tab" onclick="switchSection(this,'lun6902')">Lunch (11AM)</button><button class="section-tab" onclick="switchSection(this,'diet6902')">⚠ Dietary</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf6902')">Breakfast (7:30AM)</button><button class="section-tab" onclick="switchSection(this,'lun6902')">Lunch (11AM)</button><button class="section-tab" onclick="switchSection(this,'diet6902')">⚠ Dietary</button><button class="section-tab" onclick="switchSection(this,'det8')">Details</button></div>
 <div id="bkf6902" class="section-panel active"><div class="menu-category">Executive Continental Breakfast · $38.70/pp</div><div class="menu-item"><span class="menu-item-name">OJ, Cranberry &amp; Apple Juice · Fresh Cut Melons &amp; Berries · Assorted Cereals w/ Milks</span></div><div class="menu-item"><span class="menu-item-name">Hard Boiled Eggs · House Baked Pastries · Chobani Yogurts</span></div><div class="menu-item"><span class="menu-item-name">Hot Gristmill Steel Cut Oatmeal — Brown Sugar, Dried Fruits &amp; Almonds</span></div><div class="menu-item"><span class="menu-item-name">Little City Regular &amp; Decaf Coffee, Tazo Teas</span></div></div>
 <div id="lun6902" class="section-panel"><div class="menu-category">Tejas Mexicano — Thursday Working Lunch · $61.20/pp</div><div class="menu-item"><span class="menu-item-name">Mixed Baby Lettuces — Grilled Corn, Black Beans, Grilled Onions &amp; Peppers, Chili Lime Dressing</span></div><div class="menu-item"><span class="menu-item-name">Seasonal Fruit &amp; Arugula Salad — Cucumber, Pepitas, Tajin, Grilled Jalapeño, Balsamic Vinaigrette</span></div><div class="menu-item"><span class="menu-item-name">Warm Queso, Green Chilies, Crispy Corn Tortilla Chips</span></div><div class="menu-item"><span class="menu-item-name">Chicken Fajitas — Sautéed Peppers &amp; Onions, Sour Cream, Cheddar, House Salsa, Guacamole, Warm Flour Tortillas</span></div><div class="menu-item"><span class="menu-item-name">Shredded Beef Barbacoa — Pickled Onion, Cilantro, Lime Wedges, Warm Flour Tortillas</span></div><div class="menu-item"><span class="menu-item-name">Green Chile Rice — Roasted Poblano &amp; Anaheim Chili, Vegetable Broth, Cilantro</span></div><div class="menu-item"><span class="menu-item-name">Vegetarian Refried Beans — Onions, Chili Powder, Cumin <span class="dietary-tag dietary-vg">VG</span></span></div><div class="menu-item"><span class="menu-item-name">Cinnamon Sugar Cream Filled Churros · Tres Leches Cake w/ Tequila Strawberries</span></div><div class="menu-item"><span class="menu-item-name">Iced Tea, Little City Coffee, Tazo Herbal Teas</span></div></div>
 <div id="diet6902" class="section-panel"><div class="alert-box">⚠ Nut allergies, GF, (1) Pescatarian<br>REQUEST: Please prepare 1 separate plate for pescatarian</div></div>
-</div></div>
+
+<div id="det8" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 690241 · 10% Off F&amp;B · Room Rental: $800</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb">
     <div class="event-header">
       <div class="event-accent c-meeting"></div>
       <div class="event-main">
-        <div class="event-group">bex+Co Confirmation Day <span style="color:var(--text3);font-weight:400;font-size:12px;">· Frandevco · EO# 221336</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Lauren</span><span class="mgr-chip">MGR: L. Barrera / J. Garcia</span><span class="note-chip">Rental: $500</span></div>
+        <div class="event-group">bex+Co Confirmation Day <span style="color:var(--text3);font-weight:400;font-size:12px;">· Frandevco </span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Lauren</span><span class="mgr-chip">MGR: L. Barrera / J. Garcia</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">8:00 AM – 5:00 PM</div>
@@ -398,17 +429,18 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bev2213')">Morning Beverages</button><button class="section-tab" onclick="switchSection(this,'lun2213')">Lunch (12PM)</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bev2213')">Morning Beverages</button><button class="section-tab" onclick="switchSection(this,'lun2213')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'det9')">Details</button></div>
 <div id="bev2213" class="section-panel active"><div class="menu-category">8:00 AM — Opening Beverages</div><div class="menu-item"><span class="menu-item-name">(2) Gallons Little City Regular Coffee</span><span class="menu-item-price">$121.50/gal</span></div><div class="menu-item"><span class="menu-item-name">Bottled Water — Charge on Consumption</span><span class="menu-item-price">$6.30</span></div></div>
 <div id="lun2213" class="section-panel"><div class="menu-category">Conference Dining Lunch — À La Carte (discounted pricing)</div><div class="menu-item"><span class="menu-item-name">Classic Caesar <span class="dietary-tag dietary-vg">VG</span></span><span class="menu-item-price">$17.10</span></div><div class="menu-item"><span class="menu-item-name">Corinne Cobb <span class="dietary-tag dietary-gf">GF</span></span><span class="menu-item-price">$19.80</span></div><div class="menu-item"><span class="menu-item-name">Wagyu Cheeseburger</span><span class="menu-item-price">$22.50</span></div><div class="menu-item"><span class="menu-item-name">Toasted Grilled Cheese <span class="dietary-tag dietary-vg">VG</span></span><span class="menu-item-price">$19.80</span></div><div class="menu-item"><span class="menu-item-name">Grilled Chicken Club</span><span class="menu-item-price">$19.80</span></div></div>
-</div></div>
+
+<div id="det9" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 221336 · Room Rental: $500</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="">
     <div class="event-header">
       <div class="event-accent c-meeting"></div>
       <div class="event-main">
-        <div class="event-group">Summit Electric Supply — Day 2 <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 454833</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Annie</span><span class="mgr-chip">IC: Sheila</span><span class="mgr-chip">MGR: L. Barrera</span><span class="note-chip">Rental: $250</span></div>
+        <div class="event-group">Summit Electric Supply — Day 2 <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 2 of 2</span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Annie</span><span class="ic-chip">IC: Sheila</span><span class="mgr-chip">MGR: L. Barrera</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">8:00 AM – 1:00 PM</div>
@@ -418,16 +450,17 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bev4548')">Beverages</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bev4548')">Beverages</button><button class="section-tab" onclick="switchSection(this,'det10')">Details</button></div>
 <div id="bev4548" class="section-panel active"><div class="menu-item"><span class="menu-item-name">Bottled Water — Charge on Consumption</span><span class="menu-item-price">$7</span></div><div class="menu-item"><span class="menu-item-name">Assorted Pepsi Products — w/ Ice</span><span class="menu-item-price">$7</span></div><div class="info-box">Room Setup: Conference REFRESH</div></div>
-</div></div>
+
+<div id="det10" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 454833 · Room Rental: $250</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb">
     <div class="event-header">
       <div class="event-accent c-meeting"></div>
       <div class="event-main">
-        <div class="event-group">Checkmarx Meeting — Day 3 <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 755804</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Cynthia</span><span class="mgr-chip">IC: Tomer</span><span class="mgr-chip">MGR: D. Ortega / J. Garcia</span></div>
+        <div class="event-group">Checkmarx Meeting — Day 3 <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 3 of 3</span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Cynthia</span><span class="ic-chip">IC: Tomer</span><span class="mgr-chip">MGR: D. Ortega / J. Garcia</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">8:30 AM – 3:30 PM</div>
@@ -437,7 +470,7 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf7558')">Breakfast</button><button class="section-tab" onclick="switchSection(this,'lun7558')">Lunch — Tejas</button><button class="section-tab" onclick="switchSection(this,'brk7558')">Breaks</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf7558')">Breakfast</button><button class="section-tab" onclick="switchSection(this,'lun7558')">Lunch — Tejas</button><button class="section-tab" onclick="switchSection(this,'brk7558')">Breaks</button><button class="section-tab" onclick="switchSection(this,'det11')">Details</button></div>
 <div id="bkf7558" class="section-panel active"><div class="menu-category">Early Riser Breakfast · $136.80/pp</div><div class="menu-item"><span class="menu-item-name">Full hot breakfast buffet: eggs, bacon, sausage, potatoes, pastries, fruit, yogurt, cereals</span></div></div>
 <div id="lun7558" class="section-panel"><div class="menu-category">Tejas Mexicano — Thursday Working Lunch</div><div class="menu-item"><span class="menu-item-name">Chicken Fajitas · Shredded Beef Barbacoa · Warm Queso w/ Chips</span></div><div class="menu-item"><span class="menu-item-name">Green Chile Rice · Vegetarian Refried Beans</span></div><div class="menu-item"><span class="menu-item-name">Churros · Tres Leches Cake w/ Tequila Strawberries</span></div></div>
 <div id="brk7558" class="section-panel"><div class="menu-category">AM Break (10:00AM)</div><div class="menu-item"><span class="menu-item-name">Assorted Whole Fruit · Granola &amp; Protein Bars</span></div><div class="menu-category">PM Break (2:15PM)</div><div class="menu-item"><span class="menu-item-name">Roasted Garlic Hummus w/ Pita Chips · Assorted Chips &amp; Snacks</span></div></div>
@@ -454,15 +487,18 @@
   <div id="sum17" class="summary-popup">
     <button class="summary-close" onclick="toggleSummary('sum17',event)">&#10005;</button>
     <div class="summary-popup-title">FRIDAY APR 17 &mdash; At a Glance</div>
-    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">LJA Engineering · Arthur Murray (setup only)</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfast + Lunch TBD (LJA) · No F&amp;B — Arthur Murray</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Camellia A · Primrose Ballroom (setup 5PM–10PM)</div></div><div class="summary-row"><div class="summary-key">Late Night</div><div class="summary-val">Arthur Murray client setup in Primrose until 10:00 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Day Span</div><div class="summary-val" style="color:var(--teal);font-family:'DM Mono',monospace;">7:00 AM &ndash; 10:00 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Est. Revenue</div><div class="summary-val"><span style="color:var(--teal);font-family:'DM Mono',monospace;font-weight:600;">$500</span> <span style="color:var(--text3);font-size:11px;">base &nbsp;/&nbsp; ~$690 billed</span></div></div>
+    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">LJA Engineering · Arthur Murray (setup only)</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfast + Lunch TBD (LJA) · No F&amp;B — Arthur Murray</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Camellia A · Primrose Ballroom (setup 5PM–10PM)</div></div><div class="summary-row"><div class="summary-key">Late Night</div><div class="summary-val">Arthur Murray client setup in Primrose until 10:00 PM
+<div id="det11" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 755804</div></div></div></div>
   </div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="">
     <div class="event-header">
       <div class="event-accent c-general"></div>
       <div class="event-main">
-        <div class="event-group">LJA Engineering Conference <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 893204</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Dustin</span><span class="mgr-chip">MGR: D. Ortega</span><span class="note-chip">Rental: $500</span></div>
+        <div class="event-group">LJA Engineering Conference <span style="color:var(--text3);font-weight:400;font-size:12px;"></span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Dustin</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">7:00 AM – 2:00 PM</div>
@@ -472,15 +508,16 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'set8932')">Notes</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'set8932')">Notes</button><button class="section-tab" onclick="switchSection(this,'det12')">Details</button></div>
 <div id="set8932" class="section-panel active"><div class="info-box">Breakfast &amp; Lunch Buffet listed (17 pax) — F&amp;B details to be confirmed</div><div class="setup-info">Room Setup: U-Shape</div></div>
-</div></div>
+
+<div id="det12" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 893204 · Room Rental: $500</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="setup late">
     <div class="event-header">
       <div class="event-accent c-setup"></div>
       <div class="event-main">
-        <div class="event-group">Arthur Murray Dance Competition — Client Setup <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 302303</span></div>
+        <div class="event-group">Arthur Murray Dance Competition — Client Setup <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 1 of 2</span></div>
         <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Dominic</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
@@ -491,7 +528,7 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'set3023')">Room Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'set3023')">Room Setup</button><button class="section-tab" onclick="switchSection(this,'det13')">Details</button><button class="section-tab" onclick="switchSection(this,'det14')">Details</button></div>
 <div id="set3023" class="section-panel active"><div class="setup-info">Group provides dance floor · Hotel: 8x36 Stage w/ steps both sides<br>(11) 6x30 tables — black linen · (5) Highboys in Foyer<br>(1) 6x30 w/ (1) chair in Foyer for Registration<br>Hotel: Table stanchions &amp; numbers · (2) 6ft rope &amp; stanchion<br>Podium on stage · (3) Highboys inside ballroom<br>(13) Round tables of 10 — set AFTER dance floor · $20 Linen</div></div>
 </div></div>
 </div>
@@ -506,14 +543,18 @@
   <div id="sum18" class="summary-popup">
     <button class="summary-close" onclick="toggleSummary('sum18',event)">&#10005;</button>
     <div class="summary-popup-title">SATURDAY APR 18 &mdash; At a Glance</div>
-    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">Arthur Murray Dance Competition · Rockford IceHogs</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Continental Breakfast · Lunch Buffet (2x) · Plated Dinner · Cash Bar</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Primrose Ballroom · Pre-Function (meals) · Lantana A (Women's) · Lantana B (Men's) · Verbena</div></div><div class="summary-row"><div class="summary-key">Late Night</div><div class="summary-val">Arthur Murray Plated Dinner + Cash Bar in Primrose until 9:30 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Day Span</div><div class="summary-val" style="color:var(--teal);font-family:'DM Mono',monospace;">7:30 AM &ndash; 9:30 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Est. Revenue</div><div class="summary-val"><span style="color:var(--teal);font-family:'DM Mono',monospace;font-weight:600;">$24,225</span> <span style="color:var(--text3);font-size:11px;">base &nbsp;/&nbsp; ~$33,270 billed</span></div></div>
+    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">Arthur Murray Dance Competition · Rockford IceHogs</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Continental Breakfast · Lunch Buffet (2x) · Plated Dinner · Cash Bar</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Primrose Ballroom · Pre-Function (meals) · Lantana A (Women's) · Lantana B (Men's) · Verbena</div></div><div class="summary-row"><div class="summary-key">Late Night</div><div class="summary-val">Arthur Murray Plated Dinner + Cash Bar in Primrose until 9:30 PM
+<div id="det13" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 302303</div></div>
+<div id="det14" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 302323 / 302356 / 302404 / 302391 / 302646</div></div></div></div>
   </div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb large">
     <div class="event-header">
       <div class="event-accent c-dance"></div>
       <div class="event-main">
-        <div class="event-group">Arthur Murray Dance Competition <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 302323 / 302356 / 302404 / 302391 / 302646</span></div>
+        <div class="event-group">Arthur Murray Dance Competition <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 2 of 2</span></div>
         <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Dominic</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
@@ -536,8 +577,8 @@
     <div class="event-header">
       <div class="event-accent c-lunch"></div>
       <div class="event-main">
-        <div class="event-group">Rockford IceHogs Team Lunch <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 852633</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Nick</span><span class="mgr-chip">MGR: D. Ortega</span><span class="note-chip">Rental: $200</span></div>
+        <div class="event-group">Rockford IceHogs Team Lunch <span style="color:var(--text3);font-weight:400;font-size:12px;"></span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Nick</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">11:30 AM – 1:30 PM</div>
@@ -547,7 +588,7 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'lun8526')">Team Lunch</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'lun8526')">Team Lunch</button><button class="section-tab" onclick="switchSection(this,'det15')">Details</button></div>
 <div id="lun8526" class="section-panel active"><div class="menu-category">(40) CUSTOM TEAM LUNCH · $65/pp · Set waters on table</div><div class="menu-item"><span class="menu-item-name">Grilled Chicken + Salmon · Regular &amp; GF Pasta w/ Assorted Sauces</span></div><div class="menu-item"><span class="menu-item-name">White Rice · Mixed Veggies · Mixed Greens w/ Assorted Toppings</span></div><div class="menu-item"><span class="menu-item-name">Chef's Choice Soup · Vanilla Ice Cream</span></div><div class="setup-info">Room Setup: Rounds of 8</div></div>
 </div></div>
 </div>
@@ -562,14 +603,17 @@
   <div id="sum19" class="summary-popup">
     <button class="summary-close" onclick="toggleSummary('sum19',event)">&#10005;</button>
     <div class="summary-popup-title">SUNDAY APR 19 &mdash; At a Glance</div>
-    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">NCM Associates</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Hors d'Oeuvres (1) · Hosted Bar (1)</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Barton</div></div><div class="summary-row"><div class="summary-key">Late Night</div><div class="summary-val">Reception runs until 9:00 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Day Span</div><div class="summary-val" style="color:var(--teal);font-family:'DM Mono',monospace;">6:00 PM &ndash; 9:00 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Est. Revenue</div><div class="summary-val"><span style="color:var(--teal);font-family:'DM Mono',monospace;font-weight:600;">$2,980</span> <span style="color:var(--text3);font-size:11px;">base &nbsp;/&nbsp; ~$4,090 billed</span></div></div>
+    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">NCM Associates</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Hors d'Oeuvres (1) · Hosted Bar (1)</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Barton</div></div><div class="summary-row"><div class="summary-key">Late Night</div><div class="summary-val">Reception runs until 9:00 PM
+<div id="det15" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 852633 · Room Rental: $200</div></div></div></div>
   </div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb late">
     <div class="event-header">
       <div class="event-accent c-reception"></div>
       <div class="event-main">
-        <div class="event-group">NCM Associates Reception <span style="color:var(--text3);font-weight:400;font-size:12px;">· NCM04139 TA06 · EO# 891769</span></div>
+        <div class="event-group">NCM Associates Reception <span style="color:var(--text3);font-weight:400;font-size:12px;">· NCM04139 TA06 </span></div>
         <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Leah</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
@@ -580,7 +624,7 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'hors8917')">Hors D'Oeuvres</button><button class="section-tab" onclick="switchSection(this,'bar8917')">Hosted Bar</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'hors8917')">Hors D'Oeuvres</button><button class="section-tab" onclick="switchSection(this,'bar8917')">Hosted Bar</button><button class="section-tab" onclick="switchSection(this,'det16')">Details</button></div>
 <div id="hors8917" class="section-panel active"><div class="menu-category">DISPLAYED HORS D'OEUVRES</div><div class="menu-item"><span class="menu-item-name">(35) Shrimp Cocktail Shooters</span><span class="menu-item-price">$10/piece</span></div><div class="menu-item"><span class="menu-item-name">(35) BBQ Pork Wonton w/ Sriracha Aioli</span><span class="menu-item-price">$10/piece</span></div><div class="menu-item"><span class="menu-item-name">(35) Mini Beef Tenderloin en Croute — Caramelized Onion Dip</span><span class="menu-item-price">$10/piece</span></div><div class="menu-item"><span class="menu-item-name">(35) Antipasta Skewer — Artichoke, Roasted Tomato, Mozzarella, Kalamata Olive</span><span class="menu-item-price">$10/piece</span></div></div>
 <div id="bar8917" class="section-panel"><div class="menu-category">HOSTED APPRECIATED BRANDS BAR — On Consumption</div><div class="menu-item"><span class="menu-item-name">Bulleit Bourbon, Glenmorangie 10, Belvedere Vodka, Bombay Sapphire Gin, Crown Royal, 1800 Reposado, Straight Silver Rum</span><span class="menu-item-price">$14/glass</span></div><div class="menu-item"><span class="menu-item-name">Vista Point Chardonnay / Cabernet</span><span class="menu-item-price">$13/glass</span></div><div class="menu-item"><span class="menu-item-name">Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock, Austin Eastciders</span><span class="menu-item-price">$10</span></div><div class="menu-item"><span class="menu-item-name">Budweiser, Bud Light, Miller Light, Lonestar</span><span class="menu-item-price">$9</span></div><div class="menu-item"><span class="menu-item-name">Bartender (1 per 100 guests, up to 4 hrs)</span><span class="menu-item-price">$250</span></div><div class="setup-info">Room Setup: Lounge</div></div>
 </div></div>
@@ -596,15 +640,18 @@
   <div id="sum20" class="summary-popup">
     <button class="summary-close" onclick="toggleSummary('sum20',event)">&#10005;</button>
     <div class="summary-popup-title">MONDAY APR 20 &mdash; At a Glance</div>
-    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">ProSource (room setup) · NCM Associates Day 1</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfast (1) · All-Day Bev (1) · AM Break (1) · Lunch (1) · PM Break (1)</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Verbena (ProSource setup) · Plumeria (NCM)</div></div><div class="summary-row"><div class="summary-key">⚠ Dietary</div><div class="summary-val">🚨 NCM — Michele: Peanut &amp; Soy Allergy · Check with Steve before refreshing coffee</div></div>
+    <div class="summary-row"><div class="summary-key">Day Span</div><div class="summary-val" style="color:var(--teal);font-family:'DM Mono',monospace;">7:00 AM &ndash; 5:00 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Est. Revenue</div><div class="summary-val"><span style="color:var(--teal);font-family:'DM Mono',monospace;font-weight:600;">$5,056</span> <span style="color:var(--text3);font-size:11px;">base &nbsp;/&nbsp; ~$6,940 billed</span></div></div>
+    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">ProSource (room setup) · NCM Associates Day 1</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfast (1) · All-Day Bev (1) · AM Break (1) · Lunch (1) · PM Break (1)</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Verbena (ProSource setup) · Plumeria (NCM)
+<div id="det16" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 891769</div></div></div></div>
   </div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="setup large">
     <div class="event-header">
       <div class="event-accent c-setup"></div>
       <div class="event-main">
-        <div class="event-group">ProSource Advisory Council — Room Setup <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 476863</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Susan</span><span class="mgr-chip">MGR: L. Barrera / J. Garcia</span><span class="note-chip">F&amp;B Min: $13,000</span></div>
+        <div class="event-group">ProSource Advisory Council — Room Setup <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 1 of 4</span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Susan</span><span class="mgr-chip">MGR: L. Barrera / J. Garcia</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">All Day Setup</div>
@@ -614,16 +661,17 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'set4768')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'set4768')">Setup</button><button class="section-tab" onclick="switchSection(this,'det17')">Details</button></div>
 <div id="set4768" class="section-panel active"><div class="setup-info">U-Shape mixed with classroom — see diagram · POST AS: Meeting Room (Set-Up)</div></div>
-</div></div>
+
+<div id="det17" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 476863 · F&amp;B Min: $13,000</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb large">
     <div class="event-header">
       <div class="event-accent c-general"></div>
       <div class="event-main">
-        <div class="event-group">NCM Associates — Meeting Day 1 <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 891794</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Leah</span><span class="mgr-chip">IC: Steve</span><span class="mgr-chip">MGR: D. Ortega</span></div>
+        <div class="event-group">NCM Associates — Meeting Day 1 <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 1 of 2</span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Leah</span><span class="ic-chip">IC: Steve</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">7:00 AM – 5:00 PM</div>
@@ -633,7 +681,7 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf8917')">Breakfast (7AM)</button><button class="section-tab" onclick="switchSection(this,'ambrk8917')">AM Break (10:30)</button><button class="section-tab" onclick="switchSection(this,'lun8917')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'pmbrk8917')">PM Break (3PM)</button><button class="section-tab" onclick="switchSection(this,'diet8917')">⚠ Dietary</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf8917')">Breakfast (7AM)</button><button class="section-tab" onclick="switchSection(this,'ambrk8917')">AM Break (10:30)</button><button class="section-tab" onclick="switchSection(this,'lun8917')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'pmbrk8917')">PM Break (3PM)</button><button class="section-tab" onclick="switchSection(this,'diet8917')">⚠ Dietary</button><button class="section-tab" onclick="switchSection(this,'det18')">Details</button></div>
 <div id="bkf8917" class="section-panel active"><div class="menu-category">Early Riser Breakfast · $51.00/pp</div><div class="menu-item"><span class="menu-item-name">OJ, Cranberry &amp; Apple Juice · Fresh Cut Melons &amp; Berries · Cereals w/ Milks</span></div><div class="menu-item"><span class="menu-item-name">House Baked Pastries · Chobani Yogurts · Scrambled Eggs · Applewood Bacon · Sausage · Rosemary Potatoes</span></div><div class="menu-item"><span class="menu-item-name">Little City Regular &amp; Decaf Coffee, Tazo Teas</span></div></div>
 <div id="ambrk8917" class="section-panel"><div class="menu-category">10:30 AM Break</div><div class="menu-item"><span class="menu-item-name">Assorted Candy Bars — on consumption</span><span class="menu-item-price">$7</span></div><div class="menu-item"><span class="menu-item-name">Assorted Chips — on consumption</span><span class="menu-item-price">$7</span></div><div class="menu-item"><span class="menu-item-name">(32) Fresh Cut Melons &amp; Berries</span><span class="menu-item-price">$9/pp</span></div><div class="menu-item"><span class="menu-item-name">Assorted Granola Bars — on consumption</span><span class="menu-item-price">$6</span></div></div>
 <div id="lun8917" class="section-panel"><div class="menu-category">Tejas Mexicano — Thursday Working Lunch · $78.00/pp</div><div class="menu-item"><span class="menu-item-name">Chicken Fajitas · Shredded Beef Barbacoa · Warm Queso w/ Chips</span></div><div class="menu-item"><span class="menu-item-name">Mixed Baby Lettuces · Seasonal Fruit &amp; Arugula Salad</span></div><div class="menu-item"><span class="menu-item-name">Green Chile Rice · Vegetarian Refried Beans</span></div><div class="menu-item"><span class="menu-item-name">Churros · Tres Leches Cake w/ Tequila Strawberries</span></div></div>
@@ -652,15 +700,18 @@
   <div id="sum2123" class="summary-popup">
     <button class="summary-close" onclick="toggleSummary('sum2123',event)">&#10005;</button>
     <div class="summary-popup-title">TUE – THU APR 21–23 &mdash; At a Glance</div>
-    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">ProSource Wholesale (Tue–Thu) · NCM Associates Day 2 (Tue) · TX Municipal League (Thu)</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfasts daily · All-Day Bev daily · Lunches (Tue+Wed) · PM Breaks daily · Reception + BBQ Dinner Thu</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Verbena (ProSource) · Camellia B (ProSource meals) · Plumeria (NCM + TX Municipal) · Lantana (Thu dinner) · Pre-Function B (Thu reception) · Lantana A &amp; B (Thu breakouts)</div></div><div class="summary-row"><div class="summary-key">⚠ Dietary</div><div class="summary-val">TX Municipal League Thu dinner — (1) Vegetarian plate required</div></div>
+    <div class="summary-row"><div class="summary-key">Day Span</div><div class="summary-val" style="color:var(--teal);font-family:'DM Mono',monospace;">7:00 AM &ndash; 10:00 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Est. Revenue</div><div class="summary-val"><span style="color:var(--teal);font-family:'DM Mono',monospace;font-weight:600;">$27,729</span> <span style="color:var(--text3);font-size:11px;">base &nbsp;/&nbsp; ~$38,060 billed</span></div></div>
+    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">ProSource Wholesale (Tue–Thu) · NCM Associates Day 2 (Tue) · TX Municipal League (Thu)</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Breakfasts daily · All-Day Bev daily · Lunches (Tue+Wed) · PM Breaks daily · Reception + BBQ Dinner Thu</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Verbena (ProSource) · Camellia B (ProSource meals) · Plumeria (NCM + TX Municipal) · Lantana (Thu dinner) · Pre-Function B (Thu reception) · Lantana A &amp; B (Thu breakouts)
+<div id="det18" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 891794</div></div></div></div>
   </div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb large">
     <div class="event-header">
       <div class="event-accent c-general"></div>
       <div class="event-main">
-        <div class="event-group">ProSource Advisory Council — Tue–Thu <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 477065 / 699610 / 699784 / 699711 / 700155</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Susan</span><span class="mgr-chip">IC: Steve (from ProSource)</span><span class="mgr-chip">MGR: L. Barrera / J. Garcia</span><span class="note-chip">F&amp;B Min: $13,000</span></div>
+        <div class="event-group">ProSource Advisory Council — Tue–Thu <span style="color:var(--text3);font-weight:400;font-size:12px;"></span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 2–4 of 4</span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Susan</span><span class="ic-chip">IC: Steve (from ProSource)</span><span class="mgr-chip">MGR: L. Barrera / J. Garcia</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">7AM – 12PM (Thu end)</div>
@@ -670,19 +721,20 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf_ps')">Breakfast (all days)</button><button class="section-tab" onclick="switchSection(this,'lun_ps')">Lunches by Day</button><button class="section-tab" onclick="switchSection(this,'brk_ps')">Breaks</button><button class="section-tab" onclick="switchSection(this,'set_ps')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf_ps')">Breakfast (all days)</button><button class="section-tab" onclick="switchSection(this,'lun_ps')">Lunches by Day</button><button class="section-tab" onclick="switchSection(this,'brk_ps')">Breaks</button><button class="section-tab" onclick="switchSection(this,'set_ps')">Setup</button><button class="section-tab" onclick="switchSection(this,'det19')">Details</button></div>
 <div id="bkf_ps" class="section-panel active"><div class="menu-category">Texas Sunrise Breakfast Table · $51.30/pp — all days, Camellia B</div><div class="menu-item"><span class="menu-item-name">OJ, Cranberry &amp; Apple Juice · Fresh Cut Melons &amp; Berries · Cereals · Freshly Baked Kolaches</span></div><div class="menu-item"><span class="menu-item-name">Chobani Yogurts · Gristmill Steel Cut Oatmeal · Migas Rancheros</span></div><div class="menu-item"><span class="menu-item-name">Jalapeño Cured Bacon · Texas Hashbrown Casserole</span></div><div class="menu-item"><span class="menu-item-name">Warm Biscuits &amp; Country Sausage Gravy · Little City Coffee &amp; Tazo Teas</span></div></div>
 <div id="lun_ps" class="section-panel"><div class="menu-category">TUESDAY — Austin BBQ · $61.20/pp</div><div class="menu-item"><span class="menu-item-name">Brisket · Gochujang Chicken Thighs · Ranch Beans · Green Chili Mac 'n' Cheese · Cornbread · Apple Skillet Crisp</span></div><div class="menu-category">WEDNESDAY — Tejas Mexicano · $70.20/pp</div><div class="menu-item"><span class="menu-item-name">Fajitas · Barbacoa · Queso · Green Chile Rice · Refried Beans · Churros · Tres Leches</span></div><div class="menu-category">THURSDAY — No Lunch (meeting ends 12PM)</div></div>
 <div id="brk_ps" class="section-panel"><div class="menu-category">All-Day Beverage Service · $46.80/pp + Specialty Syrups $8.10/pp</div><div class="menu-item"><span class="menu-item-name">Little City Coffee &amp; Decaf, Tazo Teas, Pepsi Products + Diet Mtn Dew, Bottled Water</span></div><div class="menu-item"><span class="menu-item-name">(2) Gallons Freshly Brewed Iced Tea w/ Lemon</span><span class="menu-item-price">$85.50/gal</span></div><div class="menu-item"><span class="menu-item-name">(24) Celsius Energy Drinks — leave remainder for next days</span><span class="menu-item-price">$9</span></div><div class="menu-item"><span class="menu-item-name">Specialty Syrups: Whipped Cream, Flavored Syrups, Chocolate Shavings, Cinnamon Sticks, Lemon &amp; Orange Twist</span></div><div class="menu-category">Tue AM Break — Revitalize · $21.60/pp</div><div class="menu-item"><span class="menu-item-name">Berry Blast Smoothie Shots · Mini Yogurt Parfait · Avocado Deviled Eggs w/ Turkey Bacon Chips · Mini Blueberry Muffins</span></div><div class="menu-item"><span class="menu-item-name">(29) Roasted Skin-on Almonds w/ Rosemary &amp; Himalayan Pink Salt</span><span class="menu-item-price">$7.20/pp</span></div><div class="menu-category">Tue PM Break — Powerful Afternoon · $17.10/pp</div><div class="menu-item"><span class="menu-item-name">Mixed Dried Fruits &amp; Nuts · Seasonal Fruit Display · Roasted Garlic Hummus w/ Pita Chips</span></div><div class="menu-category">Wed AM Break — Empower · $21.60/pp</div><div class="menu-item"><span class="menu-item-name">Juice of the Day · Individual Diced Fruit Salad · Build-Your-Own Trail Mix</span></div><div class="menu-item"><span class="menu-item-name">(29) White Cheddar Dusted Popcorn</span><span class="menu-item-price">$7.20/pp</span></div></div>
 <div id="set_ps" class="section-panel"><div class="setup-info">Verbena: U-Shape mixed w/ classroom (see diagram) · SET 29<br>Camellia B (Meals): Rounds of 8 — Tue: 4 rounds (3 of 7, 1 of 8)<br>Thu: Verbena — REFRESH U-Shape for 29</div><div class="alert-box">Thu AM: Additional surcharge for groups ≤20 — $250 flat fee applies to breakfast</div></div>
-</div></div>
+
+<div id="det19" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 477065 / 699610 / 699784 / 699711 / 700155 · F&amp;B Min: $13,000</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb large">
     <div class="event-header">
       <div class="event-accent c-general"></div>
       <div class="event-main">
-        <div class="event-group">NCM Associates — Meeting Day 2 <span style="color:var(--text3);font-weight:400;font-size:12px;">· EO# 891853 · Tue Apr 21</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Leah</span><span class="mgr-chip">IC: Steve</span><span class="mgr-chip">MGR: D. Ortega</span></div>
+        <div class="event-group">NCM Associates — Meeting Day 2 <span style="color:var(--text3);font-weight:400;font-size:12px;">· Tue Apr 21</span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 2 of 2</span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Leah</span><span class="ic-chip">IC: Steve</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">7:30 AM – 5:00 PM</div>
@@ -692,15 +744,16 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf8918')">Breakfast + AM Break</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf8918')">Breakfast + AM Break</button><button class="section-tab" onclick="switchSection(this,'det20')">Details</button></div>
 <div id="bkf8918" class="section-panel active"><div class="menu-category">Breakfast · $51.00/pp + (32) Freshly Baked Kolaches</div><div class="menu-item"><span class="menu-item-name">Same Early Riser menu as Day 1</span></div><div class="menu-category">10:30 AM Break</div><div class="menu-item"><span class="menu-item-name">(2) Cream Cheese Glazed Cinnamon Buns</span><span class="menu-item-price">$75/doz</span></div><div class="menu-item"><span class="menu-item-name">(32) Vanilla Yogurt Parfait w/ Fresh Berries &amp; Granola</span><span class="menu-item-price">$9/pp</span></div><div class="menu-item"><span class="menu-item-name">(2) Dozen Assorted Cookies</span><span class="menu-item-price">$75/doz</span></div><div class="info-box">Check with Steve before refreshing coffee</div></div>
-</div></div>
+
+<div id="det20" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 891853</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb late large">
     <div class="event-header">
       <div class="event-accent c-dinner"></div>
       <div class="event-main">
-        <div class="event-group">TX Municipal League Risk Pool Board Meeting <span style="color:var(--text3);font-weight:400;font-size:12px;">· Thu Apr 23 · EO# 966452 / 330818 / 330835 / 330852</span></div>
+        <div class="event-group">TX Municipal League Risk Pool Board Meeting <span style="color:var(--text3);font-weight:400;font-size:12px;">· Thu Apr 23 </span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 1 of 2</span></div>
         <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Debbie</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
@@ -711,7 +764,7 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'lun9664')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'rec3308')">Reception (6PM)</button><button class="section-tab" onclick="switchSection(this,'din3308')">BBQ Dinner (6:30PM)</button><button class="section-tab" onclick="switchSection(this,'set9664')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'lun9664')">Lunch (12PM)</button><button class="section-tab" onclick="switchSection(this,'rec3308')">Reception (6PM)</button><button class="section-tab" onclick="switchSection(this,'din3308')">BBQ Dinner (6:30PM)</button><button class="section-tab" onclick="switchSection(this,'set9664')">Setup</button><button class="section-tab" onclick="switchSection(this,'det21')">Details</button></div>
 <div id="lun9664" class="section-panel active"><div class="menu-category">Gourmet Deli — Lunch Buffet · $68.00/pp (40 pax)</div><div class="menu-item"><span class="menu-item-name">Tomato Basil Cream Soup · Quinoa &amp; Arugula Salad · Baby Spinach Salad w/ Field Berries &amp; Goat Cheese</span></div><div class="menu-item"><span class="menu-item-name">Zabar's Egg Salad · Hardwood Smoked Turkey Breast · Shaved Roast Beef</span></div><div class="menu-item"><span class="menu-item-name">Artisan Breads · Cheddar, Swiss &amp; Pepperjack · Individual Chips · Assorted Cookies &amp; Brownies</span></div><div class="menu-item"><span class="menu-item-name">Iced Tea, Little City Coffee, Tazo Teas</span></div></div>
 <div id="rec3308" class="section-panel"><div class="menu-category">6:00 PM HOSTED APPRECIATED BRANDS BAR — Pre-Function B (65 pax)</div><div class="menu-item"><span class="menu-item-name">Bulleit Bourbon, Glenmorangie 10, Belvedere Vodka, Bombay Sapphire Gin, Crown Royal, 1800 Reposado, Straight Silver Rum</span><span class="menu-item-price">$14/glass</span></div><div class="menu-item"><span class="menu-item-name">Vista Point Chardonnay / Cabernet</span><span class="menu-item-price">$13/glass</span></div><div class="menu-item"><span class="menu-item-name">Imported &amp; Craft Beer</span><span class="menu-item-price">$10</span></div><div class="menu-item"><span class="menu-item-name">Domestic Beer</span><span class="menu-item-price">$9</span></div><div class="setup-info">Room Setup: (4) Highboys w/ votive candles</div></div>
 <div id="din3308" class="section-panel"><div class="menu-category">6:30 PM Texas BBQ Dinner Table — Lantana (65 pax) · $97.00/pp · Based on 90 min service</div><div class="menu-item"><span class="menu-item-name">Texas Red Chili Station — Beef Chili, Sour Cream, Green Onion, Cheddar, Corn Bread</span></div><div class="menu-item"><span class="menu-item-name">Tossed Market Salad · Hill Country German Potato Salad · Classic Creamy Cole Slaw</span></div><div class="menu-item"><span class="menu-item-name">Country Style Creamed Corn · Roasted Marble Potatoes · Ranch Style Baked Beans w/ Slab Bacon</span></div><div class="menu-item"><span class="menu-item-name">Beef Brisket — Texas Style BBQ Sauce, Texas Toast, Pickles</span></div><div class="menu-item"><span class="menu-item-name">Honey Fried Chicken · Country Style Smoked Rope Sausage</span></div><div class="menu-item"><span class="menu-item-name">Vanilla Wafer Banana Pudding · Peach Cobbler</span></div><div class="menu-item"><span class="menu-item-name">Ice Water, Little City Coffee, Tazo Herbal Teas · Iced Tea on request</span></div><div class="alert-box">⚠ (1) Vegetarian plate required</div><div class="setup-info">Room Setup: Rounds of 10 · Black table linen, round mirror &amp; votive candles</div></div>
@@ -729,14 +782,17 @@
   <div id="sum2426" class="summary-popup">
     <button class="summary-close" onclick="toggleSummary('sum2426',event)">&#10005;</button>
     <div class="summary-popup-title">FRI – SUN APR 24–26 &mdash; At a Glance</div>
-    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">TX Municipal League (Fri final) · TSPP Spring Conference (Fri–Sun) · St. Dominic Savio Prom (Sat) · Delta Electronics (Sun)</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Fri: Breakfast + Coffee Bev (TX Municipal) · Continuous Bev (TSPP) · Sat: Custom Snack Station + Pepsi (Prom) · Sun: Breakfast + Lunch TBD (Delta)</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Fri: Plumeria · Pre-Function A · Buttercup · Plumeria A/B · Sat: Primrose ABC · Primrose D · Camellia A/B · Verbena A/B · Sun: Primrose AB · Pre-Function · Various breakouts</div></div><div class="summary-row"><div class="summary-key">Late Night</div><div class="summary-val">St. Dominic Prom (Primrose ABC) until 11:00 PM Sat</div></div>
+    <div class="summary-row"><div class="summary-key">Day Span</div><div class="summary-val" style="color:var(--teal);font-family:'DM Mono',monospace;">6:00 AM &ndash; 11:00 PM</div></div>
+    <div class="summary-row"><div class="summary-key">Est. Revenue</div><div class="summary-val"><span style="color:var(--teal);font-family:'DM Mono',monospace;font-weight:600;">$16,296</span> <span style="color:var(--text3);font-size:11px;">base &nbsp;/&nbsp; ~$22,370 billed</span></div></div>
+    <div class="summary-row"><div class="summary-key">Groups</div><div class="summary-val">TX Municipal League (Fri final) · TSPP Spring Conference (Fri–Sun) · St. Dominic Savio Prom (Sat) · Delta Electronics (Sun)</div></div><div class="summary-row"><div class="summary-key">F&amp;B</div><div class="summary-val">Fri: Breakfast + Coffee Bev (TX Municipal) · Continuous Bev (TSPP) · Sat: Custom Snack Station + Pepsi (Prom) · Sun: Breakfast + Lunch TBD (Delta)</div></div><div class="summary-row"><div class="summary-key">Rooms in Use</div><div class="summary-val summary-rooms">Fri: Plumeria · Pre-Function A · Buttercup · Plumeria A/B · Sat: Primrose ABC · Primrose D · Camellia A/B · Verbena A/B · Sun: Primrose AB · Pre-Function · Various breakouts</div></div><div class="summary-row"><div class="summary-key">Late Night</div><div class="summary-val">St. Dominic Prom (Primrose ABC) until 11:00 PM Sat
+<div id="det21" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 966452 / 330818 / 330835 / 330852</div></div></div></div>
   </div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb">
     <div class="event-header">
       <div class="event-accent c-general"></div>
       <div class="event-main">
-        <div class="event-group">TX Municipal League — Final Day <span style="color:var(--text3);font-weight:400;font-size:12px;">· Fri Apr 24 · EO# 330876</span></div>
+        <div class="event-group">TX Municipal League — Final Day <span style="color:var(--text3);font-weight:400;font-size:12px;">· Fri Apr 24 </span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 2 of 2</span></div>
         <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Debbie</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
@@ -747,15 +803,16 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf3308')">Breakfast + Coffee Break</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bkf3308')">Breakfast + Coffee Break</button><button class="section-tab" onclick="switchSection(this,'det22')">Details</button></div>
 <div id="bkf3308" class="section-panel active"><div class="menu-category">Early Riser Breakfast · $51.00/pp</div><div class="menu-item"><span class="menu-item-name">Full Early Riser Breakfast buffet + Freshly Brewed Iced Tea</span></div><div class="menu-category">8:30 AM Coffee Break</div><div class="menu-item"><span class="menu-item-name">Little City Regular &amp; Decaf Coffee · Tazo Teas · Pepsi Products · Bottled Water · Iced Tea</span></div><div class="setup-info">Room Setup: Existing Set (General Session 8:30AM–12PM)</div></div>
-</div></div>
+
+<div id="det22" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 330876</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb large">
     <div class="event-header">
       <div class="event-accent c-general"></div>
       <div class="event-main">
-        <div class="event-group">TSPP Spring Conference <span style="color:var(--text3);font-weight:400;font-size:12px;">· TX Society of Psychiatric Physicians · Apr 24–26</span></div>
+        <div class="event-group">TSPP Spring Conference <span style="color:var(--text3);font-weight:400;font-size:12px;">· TX Society of Psychiatric Physicians · Apr 24–26</span><span style="display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold-dim);border-radius:4px;padding:1px 7px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.5px;margin-left:8px;vertical-align:middle;">Day 1–3 of 3</span></div>
         <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Annette</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
@@ -766,17 +823,18 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bev_tspp')">Beverages (Fri)</button><button class="section-tab" onclick="switchSection(this,'set_tspp')">Room Schedule</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'bev_tspp')">Beverages (Fri)</button><button class="section-tab" onclick="switchSection(this,'set_tspp')">Room Schedule</button><button class="section-tab" onclick="switchSection(this,'det23')">Details</button></div>
 <div id="bev_tspp" class="section-panel active"><div class="menu-category">Fri 5:00 PM–9:30 PM Continuous Break — Pre-Function A (20 pax)</div><div class="menu-item"><span class="menu-item-name">(3) Gallons Little City Regular Coffee</span><span class="menu-item-price">$135/gal</span></div><div class="menu-item"><span class="menu-item-name">Assorted Pepsi Products — On Consumption</span><span class="menu-item-price">$7</span></div><div class="menu-item"><span class="menu-item-name">(3) Gallons Freshly Brewed Iced Tea</span><span class="menu-item-price">$90/gal</span></div><div class="info-box">No F&amp;B listed for Saturday or Sunday sessions — room rental + setup only for most functions</div></div>
 <div id="set_tspp" class="section-panel"><div class="setup-info"><strong>Friday Apr 24:</strong> Buttercup (Office) · Pre-Function (Registration 4–10PM) · Pre-Function A (Continuous Break 5–9:30PM) · Plumeria B (Board Mtg 5–6PM, conf 12) · Plumeria A (Chapter Leadership Forum 6–7:30PM + Federation Delegate Assembly 7:31–9PM)<br><br><strong>Saturday Apr 25:</strong> Buttercup (Office) · Pre-Function (Registration 7AM–10PM) · Camellia A (3 sessions 7AM–11:50AM) · Verbena A &amp; B (concurrent sessions 8:30–10AM) · Plumeria A &amp; B (4 sessions 8:30AM–11:50AM) · Camellia B (2 sessions 8:30AM–11:50AM) · Primrose D (GENERAL SESSION 1:10–7:10PM — Schoolroom 120, 8x12 Stage, Podium)<br><br><strong>Sunday Apr 26:</strong> Pre-Function (Registration 7–11:30AM) · Buttercup (Office 7AM–1PM) · Primrose C (Executive Council Meeting 9–11AM, 40 SET, Hollow Square)</div></div>
-</div></div>
+
+<div id="det23" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 892580 (+ multiple sub-orders)</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb late large">
     <div class="event-header">
       <div class="event-accent c-dance"></div>
       <div class="event-main">
-        <div class="event-group">St. Dominic Savio Prom <span style="color:var(--text3);font-weight:400;font-size:12px;">· Sat Apr 25 · EO# 909828</span></div>
-        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Stephanie</span><span class="mgr-chip">MGR: L. Barrera</span><span class="note-chip">F&amp;B Min: $6,000</span></div>
+        <div class="event-group">St. Dominic Savio Prom <span style="color:var(--text3);font-weight:400;font-size:12px;">· Sat Apr 25 </span></div>
+        <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Stephanie</span><span class="mgr-chip">MGR: L. Barrera</span></div>
       </div>
       <div class="event-meta">
         <div class="event-time">5:00 PM – 11:00 PM</div>
@@ -786,16 +844,17 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'fb9098')">Food &amp; Beverages</button><button class="section-tab" onclick="switchSection(this,'set9098')">Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'fb9098')">Food &amp; Beverages</button><button class="section-tab" onclick="switchSection(this,'set9098')">Setup</button><button class="section-tab" onclick="switchSection(this,'det24')">Details</button></div>
 <div id="fb9098" class="section-panel active"><div class="menu-category">(150) Custom Snack Stations · $30/pp · 8:00 PM</div><div class="menu-item"><span class="menu-item-name">Warm Pretzels w/ Queso &amp; Dijon Mustard · Snack Mix · Butter Popcorn</span></div><div class="menu-item"><span class="menu-item-name">Assorted Desserts — Lemon Bars, Blondies &amp; Brownies</span></div><div class="menu-item"><span class="menu-item-name">Lemonade &amp; Fruit Punch (included)</span></div><div class="menu-item"><span class="menu-item-name">(118) Assorted Pepsi Products</span><span class="menu-item-price">$7</span></div><div class="menu-item"><span class="menu-item-name">(9) Dozen Assorted Cookies</span><span class="menu-item-price">$75/doz</span></div><div class="menu-item"><span class="menu-item-name">(10) Linen Fee — 8 black for rounds, 2 for registration tables</span><span class="menu-item-price">$20 each</span></div></div>
 <div id="set9098" class="section-panel"><div class="setup-info">8x18 Stage w/ stairs · (1) 6ft table on stage for DJ · (1) Podium on stage<br>(8) Cocktail tables on either side of dance floor<br>(8) Rounds of 8 — black linen<br>(2) Snack stations + (2) Beverage stations inside<br>(2) 6ft Registration tables w/ 2 chairs — between Prim BC doors</div><div class="alert-box">⚑ Keep Primrose B doors CLOSED. All attendees enter through Primrose C after checking in at registration table.</div><div class="info-box">(8) Easels lining foyer — movie posters / paparazzi entrance · AV: Internet through Markey's · Outside DJ on site</div></div>
-</div></div>
+
+<div id="det24" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 909828 · F&amp;B Min: $6,000</div></div></div></div>
 
   <div class="event-card" onclick="toggleCard(this)" data-tags="fb large">
     <div class="event-header">
       <div class="event-accent c-general"></div>
       <div class="event-main">
-        <div class="event-group">Delta Electronics Recruiting Event <span style="color:var(--text3);font-weight:400;font-size:12px;">· Sun Apr 26 · EO# 892860</span></div>
+        <div class="event-group">Delta Electronics Recruiting Event <span style="color:var(--text3);font-weight:400;font-size:12px;">· Sun Apr 26 </span></div>
         <div class="event-contact-line"><span class="contact-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Veronica</span><span class="mgr-chip">MGR: D. Ortega</span></div>
       </div>
       <div class="event-meta">
@@ -806,78 +865,248 @@
       <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
     <div class="event-body">
-<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'set8928')">Schedule + Setup</button></div>
+<div class="section-tabs"><button class="section-tab active" onclick="switchSection(this,'set8928')">Schedule + Setup</button><button class="section-tab" onclick="switchSection(this,'det25')">Details</button></div>
 <div id="set8928" class="section-panel active"><div class="info-box">Breakfast (7AM, 30 pax) &amp; Lunch (12PM, 30 pax, rounds of 10) — menus to be confirmed</div><div class="setup-info">Client Setup 6–8AM: 8x24 Stage w/ steps both sides · (6) Highboys w/ linen · (6) 6x30 tables back of room, black linen · Comp linen per contract<br>General Session 8AM–6PM: Schoolroom · Room Rental: $2,200<br>Breakouts 1–5 (1PM–6PM): Plumeria B · Camellia A · Camellia B · Verbena A · Verbena B — all Conference setup, 6 SET · $750–$800 each</div></div>
-</div></div>
+
+<div id="det25" class="section-panel"><div class="menu-category">Order &amp; Contract Details</div><div style="color:var(--text2);font-size:13px;line-height:2;">EO# 892860 · General Session Rental: $2,200 · Breakouts: $750–$800 each · Comp linen per contract</div></div></div></div>
 </div>
 
 </div><!-- /tab-events -->
 
-<div id="tab-dietary" class="tab-content">
-  <h2 style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:var(--dietary);margin-bottom:20px;">&#9888; DIETARY RESTRICTION TRACKER</h2>
-  <div class="dietary-summary">
-    <div class="dietary-summary-title">ALL DIETARY FLAGS — April 14–26, 2026</div>
-    <div class="dietary-list">
-      <div class="dietary-entry">
-        <div class="dietary-date">APR 14 Tue</div>
-        <div class="dietary-group">HP Inc. Private Dinner (Bonnell)</div>
-        <div class="dietary-items">Dairy Free (1) · Pescatarian (1) · Vegetarian (2)</div>
-      </div>
-      <div class="dietary-entry">
-        <div class="dietary-date">APR 15 Wed</div>
-        <div class="dietary-group">Prosperity Life Meeting (Plumeria)</div>
-        <div class="dietary-items">Nut allergies · Gluten Free · (1) Pescatarian — no separate plate needed</div>
-      </div>
-      <div class="dietary-entry">
-        <div class="dietary-date">APR 16 Thu</div>
-        <div class="dietary-group">Prosperity Life Meeting Day 2 (Plumeria)</div>
-        <div class="dietary-items">Nut allergies · Gluten Free · (1) Pescatarian — prepare separate plate</div>
-      </div>
-      <div class="dietary-entry">
-        <div class="dietary-date">APR 20 Mon</div>
-        <div class="dietary-group">NCM Associates (Plumeria)</div>
-        <div class="dietary-items">&#128680; Peanut + Soy Allergy — Alert Kitchen</div>
-      </div>
-      <div class="dietary-entry">
-        <div class="dietary-date">APR 23 Thu</div>
-        <div class="dietary-group">TX Municipal League BBQ Dinner (Lantana)</div>
-        <div class="dietary-items">(1) Vegetarian plate required</div>
-      </div>
+<div id="tab-revenue" class="tab-content">
+  <h2 style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:var(--gold);margin-bottom:6px;">&#36; ESTIMATED REVENUE</h2>
+  <p style="font-size:11px;color:var(--text3);margin-bottom:24px;font-family:'DM Mono',monospace;letter-spacing:1px;">BASED ON GTD COUNTS &times; MENU PRICING + ROOM RENTALS &mdash; EXCL. 26% SVC CHARGE &amp; TAXES</p>
+
+  <div class="stats-bar" style="margin-bottom:24px;">
+    <div class="stat-card">
+      <div class="stat-label">Total Est. F&amp;B + Rental</div>
+      <div class="stat-value" style="font-size:26px;">$116K</div>
+      <div class="stat-sub">Apr 14 &ndash; Apr 29 (base)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">w/ Svc Charge + Tax</div>
+      <div class="stat-value" style="font-size:26px;">$160K</div>
+      <div class="stat-sub">Approx. billed to client</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Highest Day</div>
+      <div class="stat-value" style="font-size:26px;">$28K</div>
+      <div class="stat-sub">Apr 21&ndash;23 combined</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active Revenue Days</div>
+      <div class="stat-value" style="font-size:26px;">8</div>
+      <div class="stat-sub">Days with F&amp;B spend</div>
     </div>
   </div>
 
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--text3);margin-bottom:12px;">NAMED GUESTS WITH RESTRICTIONS</div>
-    <div class="dietary-list">
-      <div class="dietary-entry">
-        <div class="dietary-date">Apr 14 · HP</div>
-        <div class="dietary-group"><strong>John</strong></div>
-        <div class="dietary-items">Dairy Free</div>
+  <div style="display:flex;flex-direction:column;gap:14px;">
+
+    <!-- APR 14 -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+        <div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">TUESDAY</span>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 14</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$19,670</div>
+          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+        </div>
       </div>
-      <div class="dietary-entry">
-        <div class="dietary-date">Apr 14 · HP</div>
-        <div class="dietary-group"><strong>Teaierra</strong></div>
-        <div class="dietary-items">Pescatarian</div>
-      </div>
-      <div class="dietary-entry">
-        <div class="dietary-date">Apr 14 · HP</div>
-        <div class="dietary-group"><strong>Lindsey</strong></div>
-        <div class="dietary-items">Vegetarian</div>
-      </div>
-      <div class="dietary-entry">
-        <div class="dietary-date">Apr 14 · HP</div>
-        <div class="dietary-group"><strong>Eraj</strong></div>
-        <div class="dietary-items">Vegetarian</div>
-      </div>
-      <div class="dietary-entry" style="background:rgba(224,82,82,0.06);padding:6px 8px;border-radius:4px;">
-        <div class="dietary-date">Apr 20 · NCM</div>
-        <div class="dietary-group" style="color:var(--red);font-weight:600;">&#128680; Michele</div>
-        <div class="dietary-items" style="color:var(--red);">PEANUT + SOY ALLERGY — Alert Kitchen</div>
+      <div style="padding:12px 18px;">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+          <span style="color:var(--text2);">Checkmarx — 24 pax &times; Early Riser + BBQ Lunch + Breaks</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,088</span>
+          <span style="color:var(--text2);">Marriott International — 12 pax Bev Pkg + Conf Dining + $700 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$1,324</span>
+          <span style="color:var(--text2);">Love American Homes — 10&times; Box Lunch + 2&times; $1,000 Room Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,590</span>
+          <span style="color:var(--text2);">HP Inc. / TMN Events — 70 pax Dinner Buffet + Hors D&apos;Oeuvres + Hosted Bar</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$10,668</span>
+        </div>
       </div>
     </div>
+
+    <!-- APR 15 -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+        <div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">WEDNESDAY</span>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 15</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$10,130</div>
+          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+        </div>
+      </div>
+      <div style="padding:12px 18px;">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+          <span style="color:var(--text2);">MTM — Room Rental + Beverage Consumption</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$1,000</span>
+          <span style="color:var(--text2);">Summit Electric — 7 pax Conf Dining + $750 Rental (F&amp;B Min $250)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$904</span>
+          <span style="color:var(--text2);">Checkmarx Day 2 — 24 pax Early Riser + Spa Day Lunch + Breaks + $300 Breakout Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,388</span>
+          <span style="color:var(--text2);">Prosperity Life — 30 pax Spa Day Lunch + Cookies + $800 Rental (10% off)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,838</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- APR 16 -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+        <div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">THURSDAY</span>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 16</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$10,117</div>
+          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+        </div>
+      </div>
+      <div style="padding:12px 18px;">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+          <span style="color:var(--text2);">Prosperity Life Day 2 — 30 pax Continental Breakfast + Tejas Lunch + $800 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$3,797</span>
+          <span style="color:var(--text2);">bex+Co / Frandevco — 10 pax Conf Dining + (2) Coffee Gallons + $500 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$933</span>
+          <span style="color:var(--text2);">Summit Electric Day 2 — 7 pax Bev Consumption + $250 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$299</span>
+          <span style="color:var(--text2);">Checkmarx Day 3 — 24 pax Early Riser + Tejas Lunch + Breaks</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,088</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- APR 17 -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+        <div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">FRIDAY</span>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 17</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$500</div>
+          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+        </div>
+      </div>
+      <div style="padding:12px 18px;">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+          <span style="color:var(--text2);">LJA Engineering — $500 Room Rental (F&amp;B details pending)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$500</span>
+          <span style="color:var(--text2);">Arthur Murray Setup — No F&amp;B</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- APR 18 -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+        <div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">SATURDAY</span>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 18</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$24,225</div>
+          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+        </div>
+      </div>
+      <div style="padding:12px 18px;">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+          <span style="color:var(--text2);">Arthur Murray — Continental Breakfast (80) + Gourmet Deli Lunch (120) + Plated Dinner (120) + Cash Bar est. + $2,500 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$21,425</span>
+          <span style="color:var(--text2);">Rockford IceHogs — 40 pax Custom Team Lunch + $200 Rental</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,800</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- APR 19 -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+        <div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">SUNDAY</span>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 19</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$2,980</div>
+          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+        </div>
+      </div>
+      <div style="padding:12px 18px;">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+          <span style="color:var(--text2);">NCM Associates Reception — 35 pax Hors D&apos;Oeuvres (4 pieces) + Hosted Bar est. (2 drinks avg) + Bartender</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,980</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- APR 20 -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+        <div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">MONDAY</span>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 20</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$5,056</div>
+          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+        </div>
+      </div>
+      <div style="padding:12px 18px;">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+          <span style="color:var(--text2);">ProSource Room Setup — No F&amp;B</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$0</span>
+          <span style="color:var(--text2);">NCM Day 1 — 32 pax Early Riser + Tejas Lunch + AM/PM Breaks</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,056</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- APR 21-23 -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+        <div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">TUE &ndash; THU</span>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 21&ndash;23</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$27,729</div>
+          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+        </div>
+      </div>
+      <div style="padding:12px 18px;">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+          <span style="color:var(--text2);">ProSource Tue — 28 pax Texas Sunrise + Austin BBQ + All-Day Bev + Specialty Syrups + Revitalize Break + PM Break</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,771</span>
+          <span style="color:var(--text2);">ProSource Wed — 28 pax Texas Sunrise + Tejas Mexicano + All-Day Bev + Empower Break</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,544</span>
+          <span style="color:var(--text2);">ProSource Thu — 8 pax Texas Sunrise + All-Day Bev (half day) — surcharge applies</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$850</span>
+          <span style="color:var(--text2);">NCM Day 2 — 32 pax Early Riser + Kolaches + AM Break (Cinnamon Buns, Parfaits, Cookies)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,220</span>
+          <span style="color:var(--text2);">TX Municipal League Thu — 40 pax Gourmet Deli Lunch + 65 pax Reception Bar + 65 pax BBQ Dinner + 2 Breakout Rooms</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$13,345</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- APR 24-26 -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border);">
+        <div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);">FRI &ndash; SUN</span>
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:2px 8px;margin-left:10px;">APR 24&ndash;26</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--teal);line-height:1;">$16,296</div>
+          <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;">EST. BASE REVENUE</div>
+        </div>
+      </div>
+      <div style="padding:12px 18px;">
+        <div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;font-size:12px;">
+          <span style="color:var(--text2);">TX Municipal League Final — 40 pax Early Riser + Coffee Break</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$2,880</span>
+          <span style="color:var(--text2);">TSPP Fri — 20 pax Continuous Break (Coffee + Iced Tea + Pepsi)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$1,265</span>
+          <span style="color:var(--text2);">TSPP Sat/Sun — Room rental only (no F&amp;B listed)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$0</span>
+          <span style="color:var(--text2);">St. Dominic Savio Prom — 150 pax Custom Snack Station + Pepsi + Cookies + Linen (F&amp;B Min $6,000)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$6,201</span>
+          <span style="color:var(--text2);">Delta Electronics — Gen Session $2,200 Rental + 5 Breakout Rooms $750–800 each (F&amp;B pending)</span><span style="color:var(--gold);font-family:'DM Mono',monospace;text-align:right;">$5,950</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grand Total -->
+    <div style="background:var(--surface2);border:1px solid var(--gold-dim);border-radius:10px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--text3);">PACKET TOTAL (BASE)</div>
+        <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-top:2px;">Add 26% service charge + 8.25% state tax for billed total</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold);line-height:1;">$116,704</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;">&#8773; <span style="color:var(--teal);">$160,176</span> billed to client</div>
+      </div>
+    </div>
+
   </div>
 </div>
-
 <div id="tab-menu" class="tab-content">
 <div class="menu-full">
   <h2 style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:4px;color:var(--gold);margin-bottom:4px;">WESTIN AUSTIN AT THE DOMAIN</h2>
