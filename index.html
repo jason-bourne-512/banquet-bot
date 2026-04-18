@@ -1,64 +1,243 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <title>BEO Daily Rundowns — Apr 16–May 5, 2026</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  /* ── THEME VARIABLES ── */
+  :root {
+    --bg: #ffffff;
+    --text: #111111;
+    --text-sub: #555555;
+    --text-muted: #666666;
+    --border-strong: #111111;
+    --border-mid: #bbbbbb;
+    --border-light: #dddddd;
+    --strip-bg: #f2f2f2;
+    --strip-border: #dddddd;
+    --event-head-bg: #f5f5f5;
+    --room-bg: #111111;
+    --room-text: #ffffff;
+    --gtd-bg: #e8f4fd;
+    --gtd-text: #1a5276;
+    --gtd-border: #5dade2;
+    --dietary-bg: #fff8ec;
+    --dietary-border: #e0a030;
+    --dietary-text: #7d4e00;
+    --note-bg: #f0f8ff;
+    --note-border: #90bfe0;
+    --note-text: #1a4f72;
+    --toggle-bg: #111111;
+    --toggle-text: #ffffff;
+    --toggle-border: #111111;
+    --toggle-icon-a: "☀️";
+    --toggle-icon-b: "🌙";
+  }
+
+  [data-theme="dark"] {
+    --bg: #0f0f0f;
+    --text: #e8e0cc;
+    --text-sub: #999999;
+    --text-muted: #777777;
+    --border-strong: #c9a84c;
+    --border-mid: #333333;
+    --border-light: #2a2a2a;
+    --strip-bg: #1a1a1a;
+    --strip-border: #2e2e2e;
+    --event-head-bg: #1c1c1c;
+    --room-bg: #c9a84c;
+    --room-text: #0f0f0f;
+    --gtd-bg: #0d1f2d;
+    --gtd-text: #5dade2;
+    --gtd-border: #1a4f72;
+    --dietary-bg: #1f1500;
+    --dietary-border: #a07020;
+    --dietary-text: #f0c060;
+    --note-bg: #0a1520;
+    --note-border: #1a3f5a;
+    --note-text: #7ab8d8;
+    --toggle-bg: #c9a84c;
+    --toggle-text: #0f0f0f;
+    --toggle-border: #c9a84c;
+  }
+
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:#fff;color:#111;font-family:'DM Sans',sans-serif;font-size:11.5px;padding:18px 24px;max-width:860px;margin:0 auto;}
-  .doc-header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2.5px solid #111;padding-bottom:6px;margin-bottom:18px;}
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family:'DM Sans',sans-serif;
+    font-size:11.5px;
+    padding:18px 24px;
+    max-width:860px;
+    margin:0 auto;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  /* ── TOGGLE BUTTON ── */
+  #theme-toggle {
+    position: fixed;
+    top: 14px;
+    right: 18px;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 13px 6px 10px;
+    background: var(--toggle-bg);
+    color: var(--toggle-text);
+    border: 1.5px solid var(--toggle-border);
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.1s;
+    user-select: none;
+  }
+  #theme-toggle:hover { opacity: 0.85; }
+  #theme-toggle:active { transform: scale(0.96); }
+
+  .toggle-track {
+    width: 28px;
+    height: 15px;
+    border-radius: 8px;
+    background: var(--toggle-text);
+    opacity: 0.25;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--toggle-bg);
+    opacity: 1;
+    transition: left 0.2s;
+  }
+  [data-theme="dark"] .toggle-thumb { left: 15px; }
+
+  /* ── HEADER ── */
+  .doc-header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2.5px solid var(--border-strong);padding-bottom:6px;margin-bottom:18px;transition:border-color 0.25s;}
   .doc-title{font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
-  .doc-sub{font-size:10px;color:#555;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
-  .doc-date{font-family:'DM Mono',monospace;font-size:10px;color:#666;text-align:right;}
-  .day-header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #111;padding-bottom:5px;margin-bottom:8px;margin-top:26px;}
+  .doc-sub{font-size:10px;color:var(--text-sub);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+  .doc-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);text-align:right;}
+
+  /* ── DAY HEADER ── */
+  .day-header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--border-strong);padding-bottom:5px;margin-bottom:8px;margin-top:26px;transition:border-color 0.25s;}
   .day-title{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
-  .day-sub{font-size:10px;color:#555;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
-  .day-right{font-family:'DM Mono',monospace;font-size:10px;color:#666;text-align:right;}
-  .summary-strip{display:flex;gap:16px;flex-wrap:wrap;background:#f2f2f2;border:1px solid #ddd;border-radius:4px;padding:5px 12px;margin-bottom:9px;}
-  .si{font-family:'DM Mono',monospace;font-size:10px;color:#444;}
-  .si span{font-weight:600;color:#111;}
-  .event{border:1px solid #bbb;border-radius:4px;margin-bottom:6px;overflow:hidden;page-break-inside:avoid;}
-  .event-head{display:flex;align-items:stretch;background:#f5f5f5;border-bottom:1px solid #ddd;}
+  .day-sub{font-size:10px;color:var(--text-sub);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+  .day-right{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);text-align:right;}
+
+  /* ── SUMMARY STRIP ── */
+  .summary-strip{display:flex;gap:16px;flex-wrap:wrap;background:var(--strip-bg);border:1px solid var(--strip-border);border-radius:4px;padding:5px 12px;margin-bottom:9px;transition:background 0.25s,border-color 0.25s;}
+  .si{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);}
+  .si span{font-weight:600;color:var(--text);}
+
+  /* ── EVENT CARD ── */
+  .event{border:1px solid var(--border-mid);border-radius:4px;margin-bottom:6px;overflow:hidden;page-break-inside:avoid;transition:border-color 0.25s;}
+  .event-head{display:flex;align-items:stretch;background:var(--event-head-bg);border-bottom:1px solid var(--border-light);transition:background 0.25s,border-color 0.25s;}
   .accent{width:5px;flex-shrink:0;}
   .head-inner{flex:1;padding:5px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
   .name{font-size:12.5px;font-weight:700;}
+
+  /* ── BADGES ── */
   .badge{font-family:'DM Mono',monospace;font-size:9px;padding:1px 5px;border-radius:3px;border:1px solid;margin-left:6px;vertical-align:middle;}
-  .b-day{border-color:#aaa;color:#666;background:#fff;}
+  .b-day{border-color:#aaa;color:var(--text-muted);background:var(--bg);}
   .b-rev{border-color:#c0392b;color:#c0392b;background:#fff5f5;}
   .b-pop{border-color:#7d3c98;color:#7d3c98;background:#f9f0ff;}
   .b-late{border-color:#c0392b;color:#c0392b;background:#fff5f5;}
-  .b-setup{border-color:#aaa;color:#888;background:#f8f8f8;}
+  .b-setup{border-color:#aaa;color:#888;background:var(--strip-bg);}
+
+  [data-theme="dark"] .b-day{background:#1a1a1a;}
+  [data-theme="dark"] .b-rev{background:#2a0808;}
+  [data-theme="dark"] .b-pop{background:#1a0a25;}
+  [data-theme="dark"] .b-late{background:#2a0808;}
+  [data-theme="dark"] .b-setup{background:#1a1a1a;}
+
+  /* ── META ── */
   .meta{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-  .time{font-family:'DM Mono',monospace;font-size:11px;font-weight:600;white-space:nowrap;}
-  .room{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:700;background:#111;color:#fff;padding:2px 9px;border-radius:3px;white-space:nowrap;}
-  .gtd{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:700;background:#e8f4fd;color:#1a5276;border:1.5px solid #5dade2;padding:2px 9px;border-radius:3px;white-space:nowrap;}
+  .time{font-family:'DM Mono',monospace;font-size:11px;font-weight:600;white-space:nowrap;color:var(--text);}
+  .room{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:700;background:var(--room-bg);color:var(--room-text);padding:2px 9px;border-radius:3px;white-space:nowrap;transition:background 0.25s,color 0.25s;}
+  .gtd{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:700;background:var(--gtd-bg);color:var(--gtd-text);border:1.5px solid var(--gtd-border);padding:2px 9px;border-radius:3px;white-space:nowrap;transition:background 0.25s,color 0.25s,border-color 0.25s;}
+
+  /* ── BODY ── */
   .body{padding:5px 10px 6px 14px;display:flex;flex-direction:column;gap:4px;}
   .info-row{display:flex;gap:18px;flex-wrap:wrap;}
   .f{display:flex;gap:4px;align-items:baseline;}
-  .fl{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:#999;white-space:nowrap;}
-  .fv{font-size:11.5px;color:#111;}
+  .fl{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);white-space:nowrap;}
+  .fv{font-size:11.5px;color:var(--text);}
+
+  /* ── SERVICE TAGS ── */
   .service-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
-  .stag{font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;}
+  .stag{font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;transition:background 0.25s,color 0.25s,border-color 0.25s;}
   .stag-br{color:#0e6655;border-color:#76c7b0;background:#e8f8f5;}
   .stag-l{color:#196f3d;border-color:#7dcea0;background:#eafaf0;}
   .stag-bk{color:#7d6608;border-color:#c9a84c;background:#fef9e7;}
   .stag-d{color:#922b21;border-color:#e08080;background:#fdf2f2;}
   .stag-r{color:#512e5f;border-color:#b39ddb;background:#f5f0ff;}
+
+  [data-theme="dark"] .stag-br{color:#76c7b0;border-color:#0e6655;background:#061a16;}
+  [data-theme="dark"] .stag-l{color:#7dcea0;border-color:#196f3d;background:#071a0f;}
+  [data-theme="dark"] .stag-bk{color:#c9a84c;border-color:#7d6608;background:#1a1400;}
+  [data-theme="dark"] .stag-d{color:#e08080;border-color:#922b21;background:#1a0707;}
+  [data-theme="dark"] .stag-r{color:#b39ddb;border-color:#512e5f;background:#110a1a;}
+
   .mn{font-weight:600;}
-  .dietary{font-size:10.5px;background:#fff8ec;border:1px solid #e0a030;border-radius:3px;padding:3px 8px;color:#7d4e00;}
-  .note{font-size:10.5px;background:#f0f8ff;border:1px solid #90bfe0;border-radius:3px;padding:3px 8px;color:#1a4f72;}
-  @media print{body{padding:12px 16px;}.event{page-break-inside:avoid;}}
+
+  /* ── DIETARY & NOTE ── */
+  .dietary{font-size:10.5px;background:var(--dietary-bg);border:1px solid var(--dietary-border);border-radius:3px;padding:3px 8px;color:var(--dietary-text);transition:background 0.25s,border-color 0.25s,color 0.25s;}
+  .note{font-size:10.5px;background:var(--note-bg);border:1px solid var(--note-border);border-radius:3px;padding:3px 8px;color:var(--note-text);transition:background 0.25s,border-color 0.25s,color 0.25s;}
+
+  @media print{
+    body{padding:12px 16px;}
+    .event{page-break-inside:avoid;}
+    #theme-toggle{display:none;}
+  }
 </style>
 </head>
 <body>
+
+<!-- TOGGLE BUTTON -->
+<button id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+  <span id="toggle-icon">🌙</span>
+  <span id="toggle-label">DARK</span>
+  <div class="toggle-track"><div class="toggle-thumb"></div></div>
+</button>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('toggle-icon').textContent = isDark ? '🌙' : '☀️';
+    document.getElementById('toggle-label').textContent = isDark ? 'DARK' : 'LIGHT';
+    localStorage.setItem('beo-theme', isDark ? 'light' : 'dark');
+  }
+  // Restore saved preference
+  (function() {
+    const saved = localStorage.getItem('beo-theme');
+    if (saved) {
+      document.documentElement.setAttribute('data-theme', saved);
+      const isDark = saved === 'dark';
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('toggle-icon').textContent = isDark ? '☀️' : '🌙';
+        document.getElementById('toggle-label').textContent = isDark ? 'LIGHT' : 'DARK';
+      });
+    }
+  })();
+</script>
 
 <div class="doc-header">
   <div><div class="doc-title">BEO Daily Rundowns — April 16 – May 5, 2026</div><div class="doc-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div>
   <div class="doc-date">Printed: Apr 15, 2026<br>Staff Reference</div>
 </div>
-
-
 
 <!-- THU APR 16 -->
 <div class="day-header"><div><div class="day-title">Thursday &middot; April 16</div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div><div class="day-right">4 groups</div></div>
