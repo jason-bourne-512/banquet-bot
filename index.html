@@ -2,164 +2,100 @@
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
-<title>BEO Daily Rundowns — Apr 21–May 5, 2026</title>
+<title>BEO Daily Rundowns — Apr 30–May 20, 2026</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
-
-  :root {
-    --bg: #ffffff;
-    --text: #111111;
-    --text-sub: #555555;
-    --text-muted: #666666;
-    --border-strong: #111111;
-    --border-mid: #bbbbbb;
-    --border-light: #dddddd;
-    --strip-bg: #f2f2f2;
-    --strip-border: #dddddd;
-    --event-head-bg: #f5f5f5;
-    --room-bg: #111111;
-    --room-text: #ffffff;
-    --gtd-bg: #e8f4fd;
-    --gtd-text: #1a5276;
-    --gtd-border: #5dade2;
-    --dietary-bg: #fff8ec;
-    --dietary-border: #e0a030;
-    --dietary-text: #7d4e00;
-    --note-bg: #f0f8ff;
-    --note-border: #90bfe0;
-    --note-text: #1a4f72;
-    --toggle-bg: #111111;
-    --toggle-text: #ffffff;
-    --toggle-border: #111111;
-  }
-
-  [data-theme="dark"] {
-    --bg: #0f0f0f;
-    --text: #e8e0cc;
-    --text-sub: #999999;
-    --text-muted: #777777;
-    --border-strong: #c9a84c;
-    --border-mid: #333333;
-    --border-light: #2a2a2a;
-    --strip-bg: #1a1a1a;
-    --strip-border: #2e2e2e;
-    --event-head-bg: #1c1c1c;
-    --room-bg: #c9a84c;
-    --room-text: #0f0f0f;
-    --gtd-bg: #0d1f2d;
-    --gtd-text: #5dade2;
-    --gtd-border: #1a4f72;
-    --dietary-bg: #1f1500;
-    --dietary-border: #a07020;
-    --dietary-text: #f0c060;
-    --note-bg: #0a1520;
-    --note-border: #1a3f5a;
-    --note-text: #7ab8d8;
-    --toggle-bg: #c9a84c;
-    --toggle-text: #0f0f0f;
-    --toggle-border: #c9a84c;
-  }
-
+  :root{--bg:#ffffff;--text:#111111;--text-sub:#555555;--text-muted:#666666;--border-strong:#111111;--border-mid:#bbbbbb;--border-light:#dddddd;--strip-bg:#f2f2f2;--strip-border:#dddddd;--event-head-bg:#f5f5f5;--room-bg:#111111;--room-text:#ffffff;--gtd-bg:#e8f4fd;--gtd-text:#1a5276;--gtd-border:#5dade2;--dietary-bg:#fff8ec;--dietary-border:#e0a030;--dietary-text:#7d4e00;--note-bg:#f0f8ff;--note-border:#90bfe0;--note-text:#1a4f72;--toggle-bg:#111111;--toggle-text:#ffffff;--toggle-border:#111111;}
+  [data-theme="dark"]{--bg:#0f0f0f;--text:#e8e0cc;--text-sub:#999999;--text-muted:#777777;--border-strong:#c9a84c;--border-mid:#333333;--border-light:#2a2a2a;--strip-bg:#1a1a1a;--strip-border:#2e2e2e;--event-head-bg:#1c1c1c;--room-bg:#c9a84c;--room-text:#0f0f0f;--gtd-bg:#0d1f2d;--gtd-text:#5dade2;--gtd-border:#1a4f72;--dietary-bg:#1f1500;--dietary-border:#a07020;--dietary-text:#f0c060;--note-bg:#0a1520;--note-border:#1a3f5a;--note-text:#7ab8d8;--toggle-bg:#c9a84c;--toggle-text:#0f0f0f;--toggle-border:#c9a84c;}
   *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:11.5px;padding:18px 24px;max-width:900px;margin:0 auto;transition:background .25s,color .25s;}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family:'DM Sans',sans-serif;
-    font-size:11.5px;
-    padding:18px 24px;
-    max-width:860px;
-    margin:0 auto;
-    transition: background 0.25s ease, color 0.25s ease;
-  }
+  /* theme toggle */
+  #theme-toggle{position:fixed;top:14px;right:18px;z-index:999;display:flex;align-items:center;gap:7px;padding:6px 13px 6px 10px;background:var(--toggle-bg);color:var(--toggle-text);border:1.5px solid var(--toggle-border);border-radius:20px;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.8px;cursor:pointer;transition:background .2s,color .2s,border-color .2s,transform .1s;user-select:none;}
+  #theme-toggle:hover{opacity:.85;}#theme-toggle:active{transform:scale(.96);}
+  .toggle-track{width:28px;height:15px;border-radius:8px;background:var(--toggle-text);opacity:.25;position:relative;flex-shrink:0;}
+  .toggle-thumb{position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:var(--toggle-bg);transition:left .2s;}
+  [data-theme="dark"] .toggle-thumb{left:15px;}
 
-  #theme-toggle {
-    position: fixed;
-    top: 14px;
-    right: 18px;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 6px 13px 6px 10px;
-    background: var(--toggle-bg);
-    color: var(--toggle-text);
-    border: 1.5px solid var(--toggle-border);
-    border-radius: 20px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.8px;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.1s;
-    user-select: none;
-  }
-  #theme-toggle:hover { opacity: 0.85; }
-  #theme-toggle:active { transform: scale(0.96); }
-
-  .toggle-track {
-    width: 28px;
-    height: 15px;
-    border-radius: 8px;
-    background: var(--toggle-text);
-    opacity: 0.25;
-    position: relative;
-    flex-shrink: 0;
-  }
-  .toggle-thumb {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: var(--toggle-bg);
-    opacity: 1;
-    transition: left 0.2s;
-  }
-  [data-theme="dark"] .toggle-thumb { left: 15px; }
-
-  .doc-header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2.5px solid var(--border-strong);padding-bottom:6px;margin-bottom:18px;transition:border-color 0.25s;}
+  /* doc header */
+  .doc-header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2.5px solid var(--border-strong);padding-bottom:6px;margin-bottom:18px;}
   .doc-title{font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
   .doc-sub{font-size:10px;color:var(--text-sub);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
   .doc-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);text-align:right;}
 
-  .day-header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--border-strong);padding-bottom:5px;margin-bottom:8px;margin-top:26px;transition:border-color 0.25s;}
+  /* day header */
+  .day-header{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--border-strong);padding-bottom:5px;margin-bottom:8px;margin-top:26px;}
   .day-title{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
   .day-sub{font-size:10px;color:var(--text-sub);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
   .day-right{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);text-align:right;}
 
-  .summary-strip{display:flex;gap:16px;flex-wrap:wrap;background:var(--strip-bg);border:1px solid var(--strip-border);border-radius:4px;padding:5px 12px;margin-bottom:9px;transition:background 0.25s,border-color 0.25s;}
+  /* summary strip */
+  .summary-strip{display:flex;gap:16px;flex-wrap:wrap;background:var(--strip-bg);border:1px solid var(--strip-border);border-radius:4px;padding:5px 12px;margin-bottom:9px;}
   .si{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);}
   .si span{font-weight:600;color:var(--text);}
 
-  .event{border:1px solid var(--border-mid);border-radius:4px;margin-bottom:6px;overflow:hidden;page-break-inside:avoid;transition:border-color 0.25s;}
-  .event-head{display:flex;align-items:stretch;background:var(--event-head-bg);border-bottom:1px solid var(--border-light);transition:background 0.25s,border-color 0.25s;}
-  .accent{width:5px;flex-shrink:0;}
-  .head-inner{flex:1;padding:5px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .name{font-size:12.5px;font-weight:700;}
+  /* event card */
+  .event{border:1px solid var(--border-mid);border-radius:4px;margin-bottom:5px;overflow:hidden;}
+  .event.open{border-color:var(--border-strong);}
 
-  .badge{font-family:'DM Mono',monospace;font-size:9px;padding:1px 5px;border-radius:3px;border:1px solid;margin-left:6px;vertical-align:middle;}
+  /* condensed row — clickable */
+  .event-head{display:flex;align-items:stretch;background:var(--event-head-bg);cursor:pointer;user-select:none;transition:background .12s;}
+  .event-head:hover{filter:brightness(.97);}
+  [data-theme="dark"] .event-head:hover{filter:brightness(1.08);}
+  .accent{width:5px;flex-shrink:0;}
+
+  /* condensed inner grid */
+  .head-inner{flex:1;padding:5px 8px 5px 10px;display:grid;grid-template-columns: 1fr auto;align-items:center;gap:6px;}
+  .head-left{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .name-sub{font-size:10px;color:var(--text-sub);font-family:'DM Mono',monospace;letter-spacing:.3px;}
+  .head-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+
+  /* badges */
+  .badge{font-family:'DM Mono',monospace;font-size:9px;padding:1px 5px;border-radius:3px;border:1px solid;margin-left:4px;vertical-align:middle;white-space:nowrap;}
   .b-day{border-color:#aaa;color:var(--text-muted);background:var(--bg);}
   .b-late{border-color:#c0392b;color:#c0392b;background:#fff5f5;}
-  .b-setup{border-color:#aaa;color:#888;background:var(--strip-bg);}
+  .b-revised{border-color:#e67e22;color:#e67e22;background:#fff8f0;}
   [data-theme="dark"] .b-day{background:#1a1a1a;}
   [data-theme="dark"] .b-late{background:#2a0808;}
-  [data-theme="dark"] .b-setup{background:#1a1a1a;}
+  [data-theme="dark"] .b-revised{background:#2a1500;color:#e67e22;}
 
-  .meta{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-  .time{font-family:'DM Mono',monospace;font-size:11px;font-weight:600;white-space:nowrap;color:var(--text);}
-  .room{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:700;background:var(--room-bg);color:var(--room-text);padding:2px 9px;border-radius:3px;white-space:nowrap;transition:background 0.25s,color 0.25s;}
-  .gtd{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:700;background:var(--gtd-bg);color:var(--gtd-text);border:1.5px solid var(--gtd-border);padding:2px 9px;border-radius:3px;white-space:nowrap;transition:background 0.25s,color 0.25s,border-color 0.25s;}
+  /* pill abbreviations in condensed row */
+  .svc-pills{display:flex;gap:3px;flex-wrap:wrap;}
+  .sp{font-family:'DM Mono',monospace;font-size:9px;padding:1px 6px;border-radius:3px;border:1px solid;white-space:nowrap;font-weight:500;}
+  .sp-br{color:#0e6655;border-color:#76c7b0;background:#e8f8f5;}
+  .sp-l{color:#196f3d;border-color:#7dcea0;background:#eafaf0;}
+  .sp-bk{color:#7d6608;border-color:#c9a84c;background:#fef9e7;}
+  .sp-d{color:#922b21;border-color:#e08080;background:#fdf2f2;}
+  .sp-r{color:#512e5f;border-color:#b39ddb;background:#f5f0ff;}
+  [data-theme="dark"] .sp-br{color:#76c7b0;border-color:#0e6655;background:#061a16;}
+  [data-theme="dark"] .sp-l{color:#7dcea0;border-color:#196f3d;background:#071a0f;}
+  [data-theme="dark"] .sp-bk{color:#c9a84c;border-color:#7d6608;background:#1a1400;}
+  [data-theme="dark"] .sp-d{color:#e08080;border-color:#922b21;background:#1a0707;}
+  [data-theme="dark"] .sp-r{color:#b39ddb;border-color:#512e5f;background:#110a1a;}
 
-  .body{padding:5px 10px 6px 14px;display:flex;flex-direction:column;gap:4px;}
+  /* room + gtd in condensed row */
+  .room{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;background:var(--room-bg);color:var(--room-text);padding:2px 8px;border-radius:3px;white-space:nowrap;}
+  .gtd{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;background:var(--gtd-bg);color:var(--gtd-text);border:1.5px solid var(--gtd-border);padding:2px 8px;border-radius:3px;white-space:nowrap;}
+  .time{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:600;color:var(--text-sub);white-space:nowrap;}
+
+  /* chevron */
+  .chev{font-size:10px;color:var(--text-muted);transition:transform .2s;margin-left:2px;flex-shrink:0;}
+  .event.open .chev{transform:rotate(90deg);}
+
+  /* expanded detail body */
+  .event-body{display:none;border-top:1px solid var(--border-light);padding:6px 12px 8px 14px;display:flex;flex-direction:column;gap:4px;}
+  .event:not(.open) .event-body{display:none;}
+  .event.open .event-body{display:flex;}
+
   .info-row{display:flex;gap:18px;flex-wrap:wrap;}
   .f{display:flex;gap:4px;align-items:baseline;}
   .fl{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);white-space:nowrap;}
-  .fv{font-size:11.5px;color:var(--text);}
+  .fv{font-size:11.5px;}
 
+  /* service tags in detail */
   .service-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
-  .stag{font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;transition:background 0.25s,color 0.25s,border-color 0.25s;}
+  .stag{font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid;white-space:nowrap;display:inline-flex;align-items:center;gap:5px;}
   .stag-br{color:#0e6655;border-color:#76c7b0;background:#e8f8f5;}
   .stag-l{color:#196f3d;border-color:#7dcea0;background:#eafaf0;}
   .stag-bk{color:#7d6608;border-color:#c9a84c;background:#fef9e7;}
@@ -172,254 +108,916 @@
   [data-theme="dark"] .stag-r{color:#b39ddb;border-color:#512e5f;background:#110a1a;}
   .mn{font-weight:600;}
 
-  .dietary{font-size:10.5px;background:var(--dietary-bg);border:1px solid var(--dietary-border);border-radius:3px;padding:3px 8px;color:var(--dietary-text);transition:background 0.25s,border-color 0.25s,color 0.25s;}
-  .note{font-size:10.5px;background:var(--note-bg);border:1px solid var(--note-border);border-radius:3px;padding:3px 8px;color:var(--note-text);transition:background 0.25s,border-color 0.25s,color 0.25s;}
-
-  /* Timeline sub-list inside note */
+  /* alerts */
+  .dietary{font-size:10.5px;background:var(--dietary-bg);border:1px solid var(--dietary-border);border-radius:3px;padding:3px 8px;color:var(--dietary-text);}
+  .note{font-size:10.5px;background:var(--note-bg);border:1px solid var(--note-border);border-radius:3px;padding:3px 8px;color:var(--note-text);}
   .tl{margin-top:3px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:2px;}
   .tl li{font-family:'DM Mono',monospace;font-size:9.5px;color:var(--note-text);}
   .tl li strong{color:var(--text);font-weight:600;}
 
-  @media print{
-    body{padding:12px 16px;}
-    .event{page-break-inside:avoid;}
-    #theme-toggle{display:none;}
-  }
+  @media print{body{padding:12px 16px;}.event-body{display:flex!important;}.chev{display:none;}#theme-toggle{display:none;}}
 </style>
 </head>
 <body>
-
-<button id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
-  <span id="toggle-icon">🌙</span>
-  <span id="toggle-label">DARK</span>
+<button id="theme-toggle" onclick="toggleTheme()">
+  <span id="toggle-icon">🌙</span><span id="toggle-label">DARK</span>
   <div class="toggle-track"><div class="toggle-thumb"></div></div>
 </button>
-
 <script>
-  function toggleTheme() {
-    const html = document.documentElement;
-    const isDark = html.getAttribute('data-theme') === 'dark';
-    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    document.getElementById('toggle-icon').textContent = isDark ? '🌙' : '☀️';
-    document.getElementById('toggle-label').textContent = isDark ? 'DARK' : 'LIGHT';
-    localStorage.setItem('beo-theme', isDark ? 'light' : 'dark');
-  }
-  (function() {
-    const saved = localStorage.getItem('beo-theme');
-    if (saved) {
-      document.documentElement.setAttribute('data-theme', saved);
-      const isDark = saved === 'dark';
-      document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('toggle-icon').textContent = isDark ? '☀️' : '🌙';
-        document.getElementById('toggle-label').textContent = isDark ? 'LIGHT' : 'DARK';
-      });
-    }
-  })();
+function toggleTheme(){const h=document.documentElement,d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');document.getElementById('toggle-icon').textContent=d?'🌙':'☀️';document.getElementById('toggle-label').textContent=d?'DARK':'LIGHT';localStorage.setItem('beo-theme',d?'light':'dark');}
+(function(){const s=localStorage.getItem('beo-theme');if(s){document.documentElement.setAttribute('data-theme',s);const d=s==='dark';document.addEventListener('DOMContentLoaded',function(){document.getElementById('toggle-icon').textContent=d?'☀️':'🌙';document.getElementById('toggle-label').textContent=d?'LIGHT':'DARK';})}})();
+function tog(el){el.closest('.event').classList.toggle('open');}
 </script>
 
 <div class="doc-header">
-  <div><div class="doc-title">BEO Daily Rundowns — April 21 – May 5, 2026</div><div class="doc-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div>
-  <div class="doc-date">Printed: Apr 21, 2026<br>Staff Reference</div>
+  <div><div class="doc-title">BEO Daily Rundowns — April 30 – May 20, 2026</div><div class="doc-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div>
+  <div class="doc-date">Printed: Apr 28, 2026<br>Staff Reference</div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     TUE APR 21  (TODAY)
-══════════════════════════════════════════════════ -->
-<div class="day-header">
-  <div><div class="day-title">Tuesday &middot; April 21 &nbsp;<span style="font-size:11px;font-weight:400;color:#c0392b;">— TODAY</span></div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div>
-  <div class="day-right">6 groups</div>
+<!-- ═══════════════════════════════ THU APR 30 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Thursday &middot; April 30</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">3 groups</div></div>
+<div class="summary-strip"><div class="si">Span: <span>8:00 AM &ndash; 4:00 PM</span></div><div class="si">Rooms: <span>Verbena B &middot; Bluebell &middot; Plumeria B</span></div></div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#27ae60;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">Upbound Meeting <span class="badge b-revised">REVISED</span></div>
+        <div class="name-sub">Sarah &nbsp;&middot;&nbsp; D. Ortega / Mishall &nbsp;&middot;&nbsp; E:15 G:12</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span><span class="sp sp-bk">brk</span></div>
+        <div class="room">Verbena B</div>
+        <div class="time">8:00a&ndash;4:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Sarah</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega / Mishall</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Conference</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 8:30&ndash;9:30 <span class="mn">Grab &amp; Go — yogurt, overnight oats, muffins, bacon taco &middot; $33pp</span></span>
+      <span class="stag stag-bk">bev 9&ndash;5 <span class="mn">All Day Beverage (included in pkg)</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Conf Dining — Caesar VG $19 &middot; Chicken Club $19.80 &middot; Grilled Cheese VG $19.80 &middot; Corinne Cobb GF $19.80 &middot; Waygu Burger $22.50</span></span>
+      <span class="stag stag-bk">brk 2&ndash;2:30 <span class="mn">PM Break — Focus &amp; Concentrate: Matcha Panna Cotta, Avocado &amp; Salmon Crostini, Pomegranate Smoothie &middot; Coffee &amp; Teas &middot; $26pp + Indulge Candies + Starbucks Frappuccinos</span></span>
+    </div>
+    <div class="note">Small group surcharge applies on lunch</div>
+  </div>
 </div>
-<div class="summary-strip">
-  <div class="si">Span: <span>7:00 AM &ndash; 9:00 PM</span></div>
-  <div class="si">Groups: <span>6</span></div>
-  <div class="si">Rooms: <span>Plumeria &middot; Verbena &middot; Camellia B &middot; Bluebell &middot; Lantana A &middot; Primrose B&amp;C &middot; Barton</span></div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#7f8c8d;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">IMEG Consultation Corp.</div>
+        <div class="name-sub">Christy &nbsp;&middot;&nbsp; D. Ortega &nbsp;&middot;&nbsp; E:8 G:6</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-bk">bev</span></div>
+        <div class="room">Bluebell</div>
+        <div class="time">8:00a&ndash;1:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Christy</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Conference &middot; Rental $300</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-bk">bev 11&ndash;12:30 <span class="mn">Teas $105/gal &middot; Little City Regular $135/gal &middot; Bottled Water &amp; Assorted Pepsi on consumption @ $7ea</span></span>
+    </div>
+  </div>
 </div>
 
-<div class="event"><div class="event-head"><div class="accent" style="background:#5090e0;"></div><div class="head-inner"><div class="name">NCM Associates <span class="badge b-day">Day 2 of 2</span></div><div class="meta"><div class="time">7:30 AM &ndash; 5:00 PM</div><div class="room">Plumeria</div><div class="gtd">GTD 20</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Leah</div></div><div class="f"><div class="fl">IC</div><div class="fv">Steve Hollosi</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div><div class="service-row"><span class="stag stag-br">br 7:30&ndash;8:30 <span class="mn">Early Riser + Kolaches</span></span><span class="stag stag-bk">bk 10:30&ndash;10:45 <span class="mn">Cinnamon Buns &middot; Parfaits &middot; Cookies</span></span></div><div class="note">Check with Steve before refreshing coffee &middot; Existing set</div></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#c9a84c;"></div><div class="head-inner"><div class="name">ProSource Wholesale <span class="badge b-day">Day 2 of 4</span></div><div class="meta"><div class="time">7:00 AM &ndash; 11:45 PM</div><div class="room">Verbena + Camellia B</div><div class="gtd">GTD 28</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Susan</div></div><div class="f"><div class="fl">IC</div><div class="fv">Steve Sweeney</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div></div><div class="service-row"><span class="stag stag-br">br 7&ndash;9 <span class="mn">Texas Sunrise (Camellia B)</span></span><span class="stag stag-bk">bk 9&ndash;10 <span class="mn">Revitalize</span></span><span class="stag stag-l">l 12&ndash;1 <span class="mn">Austin BBQ (Camellia B)</span></span><span class="stag stag-bk">bk 2&ndash;2:30 <span class="mn">Powerful Afternoon</span></span></div><div class="note">All Day Bev w/ Specialty Syrups &middot; 24 Celsius — leave leftovers for next 2 days &middot; F&amp;B Min $13,000</div></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#3498db;"></div><div class="head-inner"><div class="name">Hitachi Energy <span class="badge b-day">Day 1 of 2</span></div><div class="meta"><div class="time">7:00 AM &ndash; 6:00 PM</div><div class="room">Bluebell</div><div class="gtd">GTD 9</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Miguel</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div></div><div class="service-row"><span class="stag stag-br">br 7&ndash;8 <span class="mn">Grab &amp; Go</span></span><span class="stag stag-bk">bk 10&ndash;10:15 <span class="mn">Almonds + Mini Croissants</span></span><span class="stag stag-l">l 12&ndash;1 <span class="mn">Conf Dining</span></span><span class="stag stag-bk">bk 3&ndash;3:15 <span class="mn">Inspire &amp; Activate</span></span></div><div class="note">Conference &middot; TV through Markeys &middot; 10% off F&amp;B &middot; F&amp;B Min $2,000 &middot; Rental $300</div></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#e67e22;"></div><div class="head-inner"><div class="name">Oasis Face Bar Annual Conference <span class="badge b-day">Day 1 of 2</span></div><div class="meta"><div class="time">8:00 AM &ndash; 5:00 PM</div><div class="room">Lantana A</div><div class="gtd">GTD 30</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Molly</div></div><div class="f"><div class="fl">IC</div><div class="fv">Jen Conz</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div></div><div class="service-row"><span class="stag stag-br">br 8&ndash;9 <span class="mn">Grab &amp; Go + Tacos + English Muffin Sandwiches</span></span><span class="stag stag-l">l 12:30&ndash;1:30 <span class="mn">Plated (Caesar &middot; 3 entrée choices &middot; Apple Tart)</span></span></div><div class="note">Schoolroom &middot; Entrée cards $2 ea &times; 30 &middot; AV through Markeys &middot; Rental $300</div></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#c0392b;"></div><div class="head-inner"><div class="name">Simon Property Group Regional Conference</div><div class="meta"><div class="time">11:00 AM &ndash; 5:15 PM</div><div class="room">Primrose B &middot; C &middot; A</div><div class="gtd">GTD 80 lunch &middot; 75 session</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Una</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div><div class="service-row"><span class="stag stag-l">l 11&ndash;12:30 <span class="mn">Austin BBQ (Primrose B)</span></span><span class="stag stag-bk">bk 2:30&ndash;2:45 <span class="mn">Chips &amp; Granola Bars (Primrose C)</span></span></div><div class="note">Prim C General Session 12:30&ndash;5:15 PM &middot; Breakouts 3:30&ndash;4:30 PM (Prim A "Jenny" $1,500 &middot; Prim B "Tommy" $500)</div></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#8b6cf7;"></div><div class="head-inner"><div class="name">Oasis Face Bar &mdash; Awards Dinner</div><div class="meta"><div class="time">7:00 PM &ndash; 9:00 PM</div><div class="room">Barton</div><div class="gtd">GTD 31</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Molly</div></div><div class="f"><div class="fl">IC</div><div class="fv">Jen Conz</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div></div><div class="service-row"><span class="stag stag-d">d 7&ndash;9 <span class="mn">3-Course Plated (Roasted Pear Salad &middot; Filet / Chicken / Salmon &middot; Carrot Cake)</span></span></div><div class="note">Rounds of 8 &middot; 20&times; Filet $95 &middot; 3&times; Chicken $79 &middot; 8&times; Salmon $79 &middot; Entrée cards &times;31 &middot; 1 white + 1 red per table &middot; 6&rsquo; awards table front &middot; Rental $300</div></div></div>
-
-<!-- ═══════════════════════════════════════════════
-     WED APR 22
-══════════════════════════════════════════════════ -->
-<div class="day-header"><div><div class="day-title">Wednesday &middot; April 22</div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div><div class="day-right">5 groups</div></div>
-<div class="summary-strip"><div class="si">Span: <span>7:00 AM &ndash; 10:00 PM</span></div><div class="si">Groups: <span>5</span></div><div class="si">Rooms: <span>Verbena &middot; Camellia B &middot; Primrose A&amp;B &middot; Bluebell &middot; Lantana A &middot; Barton</span></div><div class="si">Late: <span>Oracle dinner until 10 PM</span></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#c9a84c;"></div><div class="head-inner"><div class="name">ProSource Wholesale <span class="badge b-day">Day 3 of 4</span></div><div class="meta"><div class="time">7:00 AM &ndash; 11:45 PM</div><div class="room">Verbena + Camellia B</div><div class="gtd">GTD 28</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Susan</div></div><div class="f"><div class="fl">IC</div><div class="fv">Steve Sweeney</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div></div><div class="service-row"><span class="stag stag-br">br 7&ndash;9 <span class="mn">Texas Sunrise (Camellia B)</span></span><span class="stag stag-bk">bk 9&ndash;9:30 <span class="mn">Empower</span></span><span class="stag stag-l">l 12&ndash;1 <span class="mn">Tejas Mexicano (Camellia B)</span></span></div><div class="note">Group heads to airport ~1:30 PM &middot; Meeting ends ~1 PM &middot; F&amp;B Min $13,000</div></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#c0392b;"></div><div class="head-inner"><div class="name">Simon Property Group Regional Conference</div><div class="meta"><div class="time">7:00 AM &ndash; 4:00 PM</div><div class="room">Primrose B + A</div><div class="gtd">GTD 80</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Una</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div><div class="service-row"><span class="stag stag-br">br 8&ndash;9 <span class="mn">Early Riser (Primrose B)</span></span><span class="stag stag-bk">bk 2&ndash;4 <span class="mn">Coffee &amp; Bev</span></span></div><div class="note">Group out on tour 9:30 AM &ndash; 2 PM &middot; SME Breakout Prim A 8:30&ndash;9:30 AM ($500) &middot; Prim B rounds of 10</div></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#3498db;"></div><div class="head-inner"><div class="name">Hitachi Energy <span class="badge b-day">Day 2 of 2</span></div><div class="meta"><div class="time">7:00 AM &ndash; 6:00 PM</div><div class="room">Bluebell</div><div class="gtd">GTD 8</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Miguel</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div></div><div class="service-row"><span class="stag stag-br">br 7&ndash;8 <span class="mn">Grab &amp; Go + Rise &amp; Shine Croissants</span></span><span class="stag stag-bk">bk 10&ndash;10:15 <span class="mn">Parfait + Almonds + Cinnamon Buns</span></span><span class="stag stag-l">l 12&ndash;1 <span class="mn">Conf Dining (+ Avocado Hummus)</span></span><span class="stag stag-bk">bk 3&ndash;3:15 <span class="mn">Rest &amp; Recuperate</span></span></div><div class="note">Conference &middot; TV through Markeys &middot; Rental $300</div></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#e67e22;"></div><div class="head-inner"><div class="name">Oasis Face Bar Annual Conference <span class="badge b-day">Day 2 of 2</span></div><div class="meta"><div class="time">8:00 AM &ndash; 5:00 PM</div><div class="room">Lantana A</div><div class="gtd">GTD 28</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Molly</div></div><div class="f"><div class="fl">IC</div><div class="fv">Jen Conz</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div></div><div class="service-row"><span class="stag stag-br">br 8&ndash;9 <span class="mn">Grab &amp; Go + Rise &amp; Shine Croissants + English Muffin</span></span><span class="stag stag-l">l 12:15&ndash;1 <span class="mn">Plated (Domain Fiesta Salad &middot; 4 entrée choices &middot; Choc GF Cake)</span></span></div><div class="note">Schoolroom refresh &middot; Entrée cards &times;28 &middot; 6&rsquo; table front of room &middot; Rental $300</div></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#2c3e50;"></div><div class="head-inner"><div class="name">Oracle &mdash; Global Physical Security Dinner <span class="badge b-late">LATE 10PM</span></div><div class="meta"><div class="time">7:00 PM &ndash; 10:00 PM</div><div class="room">Barton</div><div class="gtd">GTD 31</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Kristen</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div><div class="service-row"><span class="stag stag-d">d 7&ndash;10 <span class="mn">3-Course Plated (Caesar &middot; Filet / Chicken / Veg Lasagna &middot; Choc Decadence)</span></span></div><div class="note">Rounds of 8 &middot; Black linen &amp; votives &middot; 17&times; Filet $85.50 &middot; 11&times; Chicken $71.10 &middot; 3&times; Veg Lasagna $58.50 (1 no sauce) &middot; Bartender $250</div></div></div>
-
-<!-- ═══════════════════════════════════════════════
-     THU APR 23
-══════════════════════════════════════════════════ -->
-<div class="day-header"><div><div class="day-title">Thursday &middot; April 23</div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div><div class="day-right">4 groups</div></div>
-<div class="summary-strip"><div class="si">Span: <span>7:00 AM &ndash; 10:00 PM</span></div><div class="si">Groups: <span>4</span></div><div class="si">Rooms: <span>Primrose C&amp;D &middot; Verbena &middot; Plumeria &middot; Lantana A&amp;B &middot; Foyer B</span></div><div class="si">Late: <span>TX Municipal BBQ Dinner until 10 PM</span></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#1abc9c;"></div><div class="head-inner"><div class="name">UT Austin &mdash; CII Nuclear Power Forum</div><div class="meta"><div class="time">7:00 AM &ndash; 6:30 PM</div><div class="room">Primrose C + D</div><div class="gtd">GTD 90</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Kelly Lenig</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div><div class="service-row"><span class="stag stag-br">br 7&ndash;8 <span class="mn">Early Riser</span></span><span class="stag stag-bk">bk 10&ndash;10:30 <span class="mn">Revitalize</span></span><span class="stag stag-l">l 12:15&ndash;1:10 <span class="mn">Tejas Mexicano</span></span><span class="stag stag-bk">bk 2:30&ndash;3 <span class="mn">Powerful Afternoon</span></span><span class="stag stag-r">r 4:45&ndash;6:30 <span class="mn">Breads &amp; Spreads + Beer &amp; Wine + Turkey Carving</span></span></div><div class="note">&#9873; Do NOT replenish coffee without contact approval &middot; Prim C: crescent rounds (15&times;7), 12&times;24 stage — no F&amp;B &middot; Carving station attendant $250 &middot; Bartender $250</div></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#c9a84c;"></div><div class="head-inner"><div class="name">ProSource Wholesale <span class="badge b-day">Day 4 of 4</span></div><div class="meta"><div class="time">8:00 AM &ndash; 12:00 PM</div><div class="room">Verbena</div><div class="gtd">GTD 8</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Susan</div></div><div class="f"><div class="fl">IC</div><div class="fv">Steve Sweeney</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div></div><div class="service-row"><span class="stag stag-br">br 8&ndash;9 <span class="mn">Texas Sunrise</span></span><span class="stag stag-bk">bk 8&ndash;12 <span class="mn">All Day Bev</span></span></div><div class="note">Small group surcharge $250 &middot; U-Shape refresh &middot; F&amp;B Min $13,000</div></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#e74c3c;"></div><div class="head-inner"><div class="name">TX Municipal League Risk Pool &mdash; Board Meeting <span class="badge b-day">Day 1 of 2</span></div><div class="meta"><div class="time">12:00 PM &ndash; 10:00 PM</div><div class="room">Plumeria &middot; Lantana A&amp;B &middot; Foyer B</div><div class="gtd">GTD 46&ndash;65</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Debbie</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div><div class="service-row"><span class="stag stag-l">l 12&ndash;1 <span class="mn">Gourmet Deli (Plumeria)</span></span><span class="stag stag-bk">bk 12:30&ndash;5 <span class="mn">Bev (set in Foyer)</span></span><span class="stag stag-r">r 6&ndash;6:30 <span class="mn">Appreciated Brands Bar (Foyer B)</span></span><span class="stag stag-d">d 6:30&ndash;10 <span class="mn">Texas BBQ Dinner (Lantana)</span></span></div><div class="dietary">&#9888; (1) Vegetarian plate — Texas BBQ Dinner</div><div class="note">Plumeria: U-Shape 22 + Classroom 24 &middot; Lantana A &amp; B: breakouts 2&ndash;5 PM ($1,250/ea) &middot; BBQ Dinner $97/pp &middot; Rounds of 10 &middot; Black linen &amp; votives</div></div></div>
-
-<!-- ═══════════════════════════════════════════════
-     FRI APR 24
-══════════════════════════════════════════════════ -->
-<div class="day-header"><div><div class="day-title">Friday &middot; April 24</div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div><div class="day-right">2 groups</div></div>
-<div class="summary-strip"><div class="si">Span: <span>7:30 AM &ndash; 9:30 PM</span></div><div class="si">Groups: <span>2</span></div><div class="si">Rooms: <span>Plumeria &middot; Lantana B &middot; Primrose C &middot; Foyer &middot; Plumeria A&amp;B &middot; Lantana A &middot; Primrose D</span></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#e74c3c;"></div><div class="head-inner"><div class="name">TX Municipal League Risk Pool &mdash; Final Day <span class="badge b-day">Day 2 of 2</span></div><div class="meta"><div class="time">7:30 AM &ndash; 12:00 PM</div><div class="room">Plumeria</div><div class="gtd">GTD 46</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Debbie</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div><div class="service-row"><span class="stag stag-br">br 7:30&ndash;8:30 <span class="mn">Early Riser</span></span><span class="stag stag-bk">bk 8:30&ndash;12</span></div><div class="note">Existing set &middot; General Session 8:30 AM &ndash; 12 PM</div></div></div>
-
-<!-- TSPP — ARRIVAL DAY (fully detailed from BEO) -->
-<div class="event"><div class="event-head"><div class="accent" style="background:#6c3483;"></div><div class="head-inner"><div class="name">TSPP Spring Conference &mdash; Arrival Day <span class="badge b-day">Day 1 of 3</span></div><div class="meta"><div class="time">12:00 PM &ndash; 9:30 PM</div><div class="room">Multiple Rooms</div><div class="gtd">GTD ~30 bev</div></div></div></div>
-<div class="body">
-  <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Annette Mitrosz &nbsp;&middot;&nbsp; (512) 222-6865</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div>
-  <div class="service-row">
-    <span class="stag stag-bk">bk 4:30&ndash;7:30 <span class="mn">Coffee + Iced Tea + Pepsi (Foyer)</span></span>
-    <span class="stag stag-bk">bk 5&ndash;9:30 <span class="mn">Continuous Bev (coffee &middot; Pepsi &middot; iced tea)</span></span>
-    <span class="stag stag-bk">bk 5:30&ndash;7:30 <span class="mn">Hors D'Oeuvres: Fig &amp; Goat Cheese Flatbread &middot; BBQ Pork Wonton</span></span>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#1a5276;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">McLane &mdash; DCNF Summit</div>
+        <div class="name-sub">Mark &nbsp;&middot;&nbsp; D. Ortega / J. Garcia &nbsp;&middot;&nbsp; E:30 G:30</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span></div>
+        <div class="room">Plumeria B</div>
+        <div class="time">8:00a&ndash;12:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
   </div>
-  <div class="note">
-    <strong>Room Timeline:</strong>
-    <ul class="tl">
-      <li><strong>12 PM&ndash;11:59 PM</strong> &mdash; Lantana B: Office (no F&amp;B) · Conference set 6</li>
-      <li><strong>2:00&ndash;7:00 PM</strong> &mdash; Primrose C: Exhibit Setup (12× 6x30 tables · 6 rounds of 10 · podium at entrance)</li>
-      <li><strong>2:00&ndash;10:00 PM</strong> &mdash; Foyer: Registration (2× 6x30 tables + 2 chairs outside Primrose BC) · 10 easels</li>
-      <li><strong>4:30&ndash;7:30 PM</strong> &mdash; Foyer: Coffee Break (2 gal regular · iced tea · Pepsi on consumption · 30× Finger Sandwiches — Turkey Avocado + Cucumber Cream Cheese)</li>
-      <li><strong>5:00&ndash;9:30 PM</strong> &mdash; Continuous Bev (2 gal regular · 20× Pepsi · 1 gal iced tea)</li>
-      <li><strong>5:00&ndash;6:00 PM</strong> &mdash; Plumeria B: Board Meeting · Conference set 12 · no F&amp;B</li>
-      <li><strong>5:30&ndash;7:30 PM</strong> &mdash; Hors D'Oeuvres: 25× Fig &amp; Goat Cheese Flatbread · 25× BBQ Pork Wonton w/ Sriracha Aioli</li>
-      <li><strong>6:00&ndash;7:30 PM</strong> &mdash; Plumeria A: Chapter Leadership Forum · Conference · pads, pens &amp; water back of room · set 24</li>
-      <li><strong>6:00&ndash;7:30 PM</strong> &mdash; Lantana A: TSCAP Executive Committee Meeting · Conference · pads, pens &amp; water · set 24</li>
-      <li><strong>7:00&ndash;9:30 PM</strong> &mdash; Primrose D: Sponsored Member Mixer · Classroom 40 · 8x12 stage · Scattered Highboys · Hosted Favorite Brands Bar (on consumption) · Custom Slider Station (BBQ Pulled Pork · Slider Burgers · French Fries) · 40× Mac &amp; Cheese Bites · Provide drink tickets to client</li>
-      <li><strong>7:31&ndash;9:00 PM</strong> &mdash; Plumeria A: Federation Delegate Assembly · Conference</li>
-    </ul>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Mark</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega / J. Garcia</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Schoolroom (SET 36) &middot; Rental $300</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 9&ndash;10 <span class="mn">Executive Continental — OJ/Cranberry/Apple Juices &middot; Fresh Melons &amp; Berries &middot; Assorted Cereals (Whole/2%/Skim) &middot; Hard Boiled Eggs &middot; House Baked Pastries &middot; Chobani Yogurts &middot; Gristmill Steel Cut Oatmeal &middot; Little City Coffee &amp; Tazo Teas &middot; $38.70pp</span></span>
+    </div>
+    <div class="note">10% F&amp;B discount per contract</div>
   </div>
-</div></div>
+</div>
 
-<!-- ═══════════════════════════════════════════════
-     SAT APR 25
-══════════════════════════════════════════════════ -->
-<div class="day-header"><div><div class="day-title">Saturday &middot; April 25</div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div><div class="day-right">2 groups</div></div>
-<div class="summary-strip"><div class="si">Span: <span>7:00 AM &ndash; 11:00 PM</span></div><div class="si">Groups: <span>2</span></div><div class="si">Rooms: <span>Camellia A&amp;B &middot; Verbena A&amp;B &middot; Plumeria A&amp;B &middot; Primrose C&amp;D &middot; Primrose ABC &middot; Buttercup &middot; Barton &middot; Foyer</span></div><div class="si">Late: <span>St. Dominic Prom until 11 PM</span></div></div>
+<!-- ═══════════════════════════════ SUN MAY 3 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Sunday &middot; May 3</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">1 group (arrival)</div></div>
+<div class="summary-strip"><div class="si">Span: <span>2:00 PM &ndash; 11:00 PM</span></div><div class="si">Rooms: <span>Camellia A &middot; Foyer &middot; Primrose C &middot; Primrose D</span></div><div class="si">Late: <span>Cash Bar until 11 PM</span></div></div>
 
-<!-- TSPP — CONFERENCE DAY (fully detailed from BEO) -->
-<div class="event"><div class="event-head"><div class="accent" style="background:#6c3483;"></div><div class="head-inner"><div class="name">TSPP Spring Conference &mdash; Conference Day <span class="badge b-day">Day 2 of 3</span></div><div class="meta"><div class="time">7:00 AM &ndash; 9:00 PM</div><div class="room">Multiple Rooms</div><div class="gtd">Up to 140</div></div></div></div>
-<div class="body">
-  <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Annette Mitrosz &nbsp;&middot;&nbsp; (512) 222-6865</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div>
-  <div class="service-row">
-    <span class="stag stag-br">br 7:30&ndash;9:30 <span class="mn">Breakfast Buffet · Primrose C (40 pax)</span></span>
-    <span class="stag stag-br">br 7:00 <span class="mn">Continental · Camellia A (12 pax)</span></span>
-    <span class="stag stag-bk">bk 8:30 <span class="mn">Coffee refresh (Primrose C)</span></span>
-    <span class="stag stag-bk">bk 9:45&ndash;10:45 <span class="mn">Parfaits · Croissants · Cinnamon Buns · Fruit</span></span>
-    <span class="stag stag-l">l 12:10&ndash;1:10 <span class="mn">Plated Lunch · Primrose C (GTD 50)</span></span>
-    <span class="stag stag-bk">bk 1:10&ndash;3:30 <span class="mn">Coffee &amp; Tea</span></span>
-    <span class="stag stag-bk">bk 2:30&ndash;3:30 <span class="mn">Deluxe Nacho Bar (PM Break)</span></span>
-    <span class="stag stag-r">r 7:00&ndash;9:00 <span class="mn">Hosted Bar · Barton</span></span>
-    <span class="stag stag-d">d 7:10&ndash;8:45 <span class="mn">Dinner Buffet · Barton (GTD 37)</span></span>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#16a085;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">AUCD &mdash; National Leadership Innovation Summit &mdash; Arrival</div>
+        <div class="name-sub">Susan &nbsp;&middot;&nbsp; D. Ortega &nbsp;&middot;&nbsp; E:150 G:150</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-r">rec</span><span class="sp sp-r">bar</span></div>
+        <div class="room">Prim C&amp;D &middot; Foyer</div>
+        <div class="time">2:00p&ndash;11:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
   </div>
-  <div class="note">
-    <strong>Breakfast Buffet (Primrose C · 7:30 AM)</strong> — 24× Sausage Tacos · 24× Bacon Tacos · 12× Meatless Tacos · 24× English Muffin Sandwiches · Modified Domain Continental (juices, melons, overnight oats, hard boiled eggs, yogurt, coffee cakes, coffee &amp; tea) · $40/pp<br><br>
-    <strong>Camellia A Breakfast (7:00 AM)</strong> — 6× Sausage · 6× Bacon · 6× Meatless Tacos + 1 gal coffee + pastries · Foundation Board of Directors Mtg 7&ndash;8:15 AM · Distinguished Fellowship 8:30&ndash;10 AM · Academic Psychiatry 10:20&ndash;11:50 AM<br><br>
-    <strong>Concurrent Breakout Sessions (8:30&ndash;11:50 AM)</strong> — No F&amp;B in session rooms · pads, pens, water back of room:<br>
-    <ul class="tl">
-      <li><strong>Verbena A</strong> — Continuing Medical Education · 18 SET</li>
-      <li><strong>Verbena B</strong> — Resident/Fellow Training Section · 18 SET</li>
-      <li><strong>Plumeria A</strong> — Finance 8:30&ndash;10 AM · Forensic Psychiatry 10:20&ndash;11:50 AM · 24 SET</li>
-      <li><strong>Plumeria B</strong> — Prof Practice Management 8:30&ndash;10 AM · Public Mental Health 10:20&ndash;11:50 AM · 18 SET</li>
-      <li><strong>Camellia B</strong> — Ethics 8:30&ndash;10 AM · Children &amp; Adolescent Psych 10:20&ndash;11:50 AM · 12 SET</li>
-    </ul>
-    <strong>Plated Lunch (Primrose C · 12:10 PM · GTD 50)</strong> — Steakhouse Salad (Bibb, Blue Cheese, Bacon, Tomato, Ranch) · 51× Roasted Chicken $59/pp (Whipped Potatoes, Haricot Verts, Demi-Glace) · Pre-Set Dessert: Chocolate Decadence (GF) · Artisan Rolls + Iced Tea<br><br>
-    <strong>PM Break (2:30 PM · GTD 60)</strong> — Deluxe Nacho Bar: Ancho Chicken, Barbacoa Beef, Spicy Queso, Salsas, Guac, Sour Cream, Jalapenos, Tortilla Chips · $33/pp<br><br>
-    <strong>General Session — Primrose D (1:10&ndash;7:10 PM)</strong> — 8x12 stage + soft chair · Podium on stage · Classroom 120 · Pads, pens, water back of room · No F&amp;B<br><br>
-    <strong>Foyer: Registration</strong> 7 AM&ndash;10 PM (existing set) · Move table to Camellia A at 7 PM; bring out again Sunday morning<br>
-    <strong>Buttercup: Office</strong> 7 AM&ndash;11:59 PM (no F&amp;B)<br><br>
-    <strong>Evening — Barton (7:00&ndash;9:00 PM · GTD 37)</strong><br>
-    Bar: Hosted Favorite Brands on consumption · spirits, wine, craft &amp; domestic beer, Pepsi · Provide drink tickets to client<br>
-    Dinner Buffet: Steakhouse Chopping Block — Spinach Salad + Steakhouse Salad · Scalloped Potatoes · Truffled Cream Corn · Grilled Asparagus · Roasted Chicken (Mushroom Madeira) · Seared Branzino (Tomato Olive Broth) · Slow Roasted Strip Loin (Red Wine Reduction) · Hawaiian Rolls · Carrot Cake · Apple Crisp · $99/pp · Coffee &amp; Teas on tables
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Susan</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-r">rec 5:30&ndash;7 <span class="mn">Welcome Reception &mdash; Primrose D &middot; Antipasto Station $33pp &middot; Artisan Cheese Station $30pp &middot; Veggie Crudité $25 &middot; Deluxe Nacho Bar $33 &middot; (1) Bartender $250</span></span>
+      <span class="stag stag-r">bar 6&ndash;11 <span class="mn">CASH Bar &mdash; Primrose D (Familiar Brands) &middot; Familiar Brands $13 &middot; Craft Beer $11 &middot; Imported $11 &middot; Domestic $10 &middot; Wine $14 &middot; Pepsi $8</span></span>
+    </div>
+    <div class="note">Camellia A: Staff Office 2–11:45 PM (rounds of 10) · Foyer: Registration 2–6 PM (1× 6x30 table + 2 chairs) · Primrose C: General Session 3:30–4:30 PM (classroom 160, 8×18 stage, podium, AV table) + Opening Leadership Innovation Session 4:30–5:30 PM · Primrose D Reception: 3 rounds of 8 + 8 highboys, votive candles</div>
   </div>
-</div></div>
+</div>
 
-<div class="event"><div class="event-head"><div class="accent" style="background:#e91e8c;"></div><div class="head-inner"><div class="name">St. Dominic Savio &mdash; PROM <span class="badge b-late">LATE 11PM</span></div><div class="meta"><div class="time">5:00 PM &ndash; 11:00 PM</div><div class="room">Primrose ABC</div><div class="gtd">GTD 150</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Stephanie</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div></div><div class="service-row"><span class="stag stag-d">d 8&ndash;11 <span class="mn">Custom Snack Stations + Pepsi + Cookies</span></span></div><div class="note">&#9873; Keep Primrose B doors CLOSED — all guests enter through Primrose C &middot; 8&times;18 stage, DJ table, podium, 8 cocktail tables, rounds of 8 (black linen) &middot; 8 movie poster easels in Foyer &middot; Internet through Markeys &middot; Outside DJ — COI + VCC still needed &middot; F&amp;B Min $6,000</div></div></div>
+<!-- ═══════════════════════════════ MON MAY 4 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Monday &middot; May 4</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">2 groups</div></div>
+<div class="summary-strip"><div class="si">Span: <span>7:00 AM &ndash; 6:00 PM</span></div><div class="si">Rooms: <span>Camellia A &middot; Foyer &middot; Primrose A&amp;B&amp;C &middot; Lantana</span></div></div>
 
-<!-- ═══════════════════════════════════════════════
-     SUN APR 26
-══════════════════════════════════════════════════ -->
-<div class="day-header"><div><div class="day-title">Sunday &middot; April 26</div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div><div class="day-right">2 groups</div></div>
-<div class="summary-strip"><div class="si">Span: <span>6:00 AM &ndash; 6:00 PM</span></div><div class="si">Groups: <span>2</span></div><div class="si">Rooms: <span>Primrose AB &middot; Plumeria B &middot; Camellia A&amp;B &middot; Verbena A&amp;B &middot; Primrose C&amp;D &middot; Buttercup &middot; Foyer</span></div></div>
-
-<div class="event"><div class="event-head"><div class="accent" style="background:#1a5276;"></div><div class="head-inner"><div class="name">Delta Electronics &mdash; Recruiting Event</div><div class="meta"><div class="time">6:00 AM &ndash; 6:00 PM</div><div class="room">Primrose AB + 5 Breakouts</div><div class="gtd">GTD 30 meals</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Veronica</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div><div class="service-row"><span class="stag stag-br">br 7&ndash;8 <span class="mn">TBD (Primrose AB · 30 pax)</span></span><span class="stag stag-l">l 12&ndash;1 <span class="mn">TBD (rounds of 10 · 30 pax)</span></span></div><div class="note">Client setup 6&ndash;8 AM (8&times;24 stage, highboys, 6&times;30 tables) &middot; General Session 8 AM&ndash;6 PM schoolroom &middot; 5 breakouts 1&ndash;6 PM ($750&ndash;$800 ea): Plumeria B &middot; Camellia A&amp;B &middot; Verbena A&amp;B &middot; Gen Session Rental $2,200</div></div></div>
-
-<!-- TSPP — FINAL DAY (detailed from BEO) -->
-<div class="event"><div class="event-head"><div class="accent" style="background:#6c3483;"></div><div class="head-inner"><div class="name">TSPP Spring Conference &mdash; Final Day <span class="badge b-day">Day 3 of 3</span></div><div class="meta"><div class="time">7:00 AM &ndash; 11:30 AM</div><div class="room">Primrose C&amp;D &middot; Buttercup &middot; Foyer</div><div class="gtd">GTD 25 breakfast</div></div></div></div>
-<div class="body">
-  <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Annette Mitrosz &nbsp;&middot;&nbsp; (512) 222-6865</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div>
-  <div class="service-row">
-    <span class="stag stag-br">br 7:30&ndash;9:30 <span class="mn">Early Riser · Primrose D (GTD 25)</span></span>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#16a085;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">AUCD &mdash; National Leadership Innovation Summit <span class="badge b-day">Day 2</span></div>
+        <div class="name-sub">Susan &nbsp;&middot;&nbsp; D. Ortega &nbsp;&middot;&nbsp; E:150 G:150</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-bk">brk</span></div>
+        <div class="room">Prim A&amp;B&amp;C &middot; Foyer</div>
+        <div class="time">7:00a&ndash;5:30p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
   </div>
-  <div class="note">
-    <strong>Breakfast (Primrose D · 7:30 AM · GTD 25)</strong> — Early Riser Breakfast Table: Juices, Melons &amp; Berries, Cereals, Pastries, Yogurt, Scrambled Eggs, Bacon, Sausage, Breakfast Potatoes, Coffee &amp; Tea · $51/pp<br><br>
-    <strong>Executive Council Meeting (Primrose D · 8:30&ndash;10:00 AM)</strong> — Hollow Square · 25 SET · Pads, pens, water back of room · $1,000 rental<br>
-    <strong>Buttercup: Office</strong> 7 AM&ndash;1 PM (no F&amp;B)<br>
-    <strong>Foyer: Registration</strong> 7&ndash;11:30 AM (existing set)<br>
-    <strong>Camellia A: Office</strong> 7 AM&ndash;1 PM (existing set · no F&amp;B)
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Susan</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 7:30&ndash;8:30 <span class="mn">Executive Continental &mdash; Foyer (GTD 150) &middot; Juices, Melons, Cereals, Eggs, Pastries, Yogurt, Oatmeal &middot; Coffee &amp; Teas + Non-Dairy Milk &middot; $43pp</span></span>
+      <span class="stag stag-bk">bev 8:30&ndash;12:30 <span class="mn">Half Day Bev &mdash; Foyer &middot; Coffee, Teas, Pepsi, Water + Non-Dairy Milk &middot; $30pp</span></span>
+      <span class="stag stag-bk">brk 2:30&ndash;3 <span class="mn">Powerful Afternoon Break &mdash; Dried Fruits &amp; Nuts, Seasonal Fruit, Hummus &amp; Pita &middot; Coffee &amp; Teas &middot; $19pp + (8) doz Cookies &amp; Brownies @ $75/doz + (150) Veggie Crudité Shooters @ $7pp</span></span>
+    </div>
+    <div class="dietary">&#9888; Breakfast dietary: (1) Milk Allergy &middot; (1) Peanut Allergy &middot; (1) Vegan &middot; (1) Vegetarian &middot; (2) Gluten Free &mdash; Non-Dairy Milk required at all bev stations</div>
+    <div class="note">Foyer: Registration 7 AM–11:45 PM (existing set) · Camellia A: Staff Office 7 AM–11:45 PM · Primrose C: Leadership Sessions — 8:30–9:30 AM / 1–2:30 PM / 3–4:30 PM / 4:30–5:30 PM (existing set) · Primrose A: Breakout Session 1 — 9:45–11:45 AM + 3–4:30 PM (5 rounds of 10 + podium, 50 SET) · Primrose B: Breakout Session 2 — 9:45–11:45 AM + 3–4:30 PM (5 rounds of 10 + podium, 50 SET) · No F&amp;B in session rooms</div>
   </div>
-</div></div>
+</div>
 
-<!-- ═══════════════════════════════════════════════
-     TUE APR 28
-══════════════════════════════════════════════════ -->
-<div class="day-header"><div><div class="day-title">Tuesday &middot; April 28</div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div><div class="day-right">1 group</div></div>
-<div class="summary-strip"><div class="si">Span: <span>8:00 AM &ndash; 5:00 PM</span></div><div class="si">Groups: <span>1</span></div><div class="si">Rooms: <span>Lantana A</span></div></div>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#8e44ad;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">E3 Entegral Solutions &mdash; EOS Meeting <span class="badge b-day">Day 1 of 3</span></div>
+        <div class="name-sub">Luisa / IC: Mandah &nbsp;&middot;&nbsp; L. Barrera / J. Garcia &nbsp;&middot;&nbsp; E:10 G:10</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span><span class="sp sp-bk">brk</span></div>
+        <div class="room">Lantana</div>
+        <div class="time">7:30a&ndash;6:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Luisa</div></div><div class="f"><div class="fl">IC</div><div class="fv">Mandah</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 7:30&ndash;9 <span class="mn">Texas Sunrise — Juices, Melons, Cereals, Kolaches, Yogurt, Oatmeal, Migas Rancheros, Jalapeño Bacon, TX Hashbrown Casserole, Warm Biscuits &amp; Country Sausage Gravy, Coffee &amp; Teas</span></span>
+      <span class="stag stag-bk">bev 9&ndash;11 <span class="mn">AM Break (whole fruit, granola &amp; protein bars)</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Southern Comforts — Honey Fried Chicken &middot; Cracked Pepper Pork Loin &middot; SW Cobb Salad &middot; Kale &amp; Sweet Potato Salad &middot; Roasted Garlic Mashed Potatoes &middot; Braised Greens &middot; Peach Cobbler &amp; Pecan Pie &middot; Iced Tea &amp; Coffee</span></span>
+      <span class="stag stag-bk">brk 2:30&ndash;4 <span class="mn">PM Break (hummus &amp; pita chips, chips &amp; snacks)</span></span>
+    </div>
+    <div class="note">All Day Meeting Package $142.20/pp · U-Shape w/ water station · F&amp;B served inside room — group works through meals (per contract) · Small group surcharge $250×2 (breakfast + lunch) · Rental $700</div>
+  </div>
+</div>
 
-<div class="event"><div class="event-head"><div class="accent" style="background:#2c3e50;"></div><div class="head-inner"><div class="name">McLane &mdash; DCNF Summit <span class="badge b-day">Day 1 of 3</span></div><div class="meta"><div class="time">8:00 AM &ndash; 5:00 PM</div><div class="room">Lantana A</div><div class="gtd">GTD 25</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Mark</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega / J. Garcia</div></div></div><div class="service-row"><span class="stag stag-br">br 9&ndash;10 <span class="mn">Executive Continental</span></span><span class="stag stag-bk">bk 11&ndash;3 <span class="mn">Half Day Bev</span></span><span class="stag stag-l">l 12&ndash;1 <span class="mn">Austin BBQ</span></span><span class="stag stag-bk">bk 2:30&ndash;3:30 <span class="mn">Powerful Afternoon</span></span></div><div class="note">Schoolroom &middot; Rental $500</div></div></div>
+<!-- ═══════════════════════════════ TUE MAY 5 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Tuesday &middot; May 5</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">4 groups</div></div>
+<div class="summary-strip"><div class="si">Span: <span>7:00 AM &ndash; 6:00 PM</span></div><div class="si">Rooms: <span>Primrose A&amp;B&amp;C &middot; Foyer &middot; Camellia A &middot; Verbena &middot; Plumeria &middot; Lantana</span></div></div>
 
-<!-- ═══════════════════════════════════════════════
-     WED APR 29
-══════════════════════════════════════════════════ -->
-<div class="day-header"><div><div class="day-title">Wednesday &middot; April 29</div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div><div class="day-right">1 group</div></div>
-<div class="summary-strip"><div class="si">Span: <span>8:00 AM &ndash; 5:00 PM</span></div><div class="si">Groups: <span>1</span></div><div class="si">Rooms: <span>Lantana A</span></div></div>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#16a085;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">AUCD &mdash; National Leadership Innovation Summit <span class="badge b-day">Day 3 (final)</span></div>
+        <div class="name-sub">Susan &nbsp;&middot;&nbsp; D. Ortega &nbsp;&middot;&nbsp; E:150 G:150</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span></div>
+        <div class="room">Prim A&amp;B&amp;C &middot; Foyer</div>
+        <div class="time">7:00a&ndash;3:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Susan</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 7:30&ndash;8:30 <span class="mn">Executive Continental &mdash; Foyer &middot; Coffee &amp; Teas + Non-Dairy Milk &middot; $43pp</span></span>
+      <span class="stag stag-bk">bev 8:30&ndash;12:30 <span class="mn">Half Day Bev &mdash; Foyer &middot; Coffee, Teas, Pepsi, Water + Non-Dairy Milk &middot; $30pp</span></span>
+    </div>
+    <div class="dietary">&#9888; Breakfast dietary: (1) Milk Allergy &middot; (1) Peanut Allergy &middot; (1) Vegan &middot; (1) Vegetarian &middot; (1) Gluten Free &mdash; Non-Dairy Milk required</div>
+    <div class="note">Foyer: Registration 7 AM–5 PM (existing set) · Camellia A: Staff Office 7 AM–4 PM · Primrose C: General Session 8:30–9:30 AM + multiple breakouts through 3 PM (existing set) · Primrose A: Breakout 9:30 AM–3 PM (rounds of 10, 50 SET) · Primrose B: Breakout 9:30 AM–3 PM (rounds of 10, 50 SET) · No F&amp;B in session rooms</div>
+  </div>
+</div>
 
-<div class="event"><div class="event-head"><div class="accent" style="background:#2c3e50;"></div><div class="head-inner"><div class="name">McLane &mdash; DCNF Summit <span class="badge b-day">Day 2 of 3</span></div><div class="meta"><div class="time">8:00 AM &ndash; 5:00 PM</div><div class="room">Lantana A</div><div class="gtd">GTD 30</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Mark</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega / J. Garcia</div></div></div><div class="service-row"><span class="stag stag-br">br 9&ndash;10 <span class="mn">Executive Continental</span></span><span class="stag stag-bk">bk 11&ndash;3 <span class="mn">Half Day Bev</span></span><span class="stag stag-l">l 12&ndash;1 <span class="mn">Spa Day</span></span><span class="stag stag-bk">bk 3&ndash;4 <span class="mn">Powerful Afternoon</span></span></div><div class="note">Schoolroom &middot; Rental $500</div></div></div>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#2980b9;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">Kyocera Conference <span class="badge b-day">Day 1 of 2</span></div>
+        <div class="name-sub">Taylor &nbsp;&middot;&nbsp; D. Ortega &nbsp;&middot;&nbsp; E:32 G:29</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-bk">bev</span><span class="sp sp-bk">brk</span><span class="sp sp-l">lch</span></div>
+        <div class="room">Verbena</div>
+        <div class="time">7:30a&ndash;5:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Taylor</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Classroom 34 &middot; Pads/Pens/Water back of room &middot; Podium &middot; Markeys AV &middot; Rental $500</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-bk">brk 7:30 <span class="mn">AM Break — (2) doz Mini Assorted Croissants @ $67.50/doz &middot; (29) Vanilla Yogurt Parfait w/ Berries &amp; Granola @ $8.10pp</span></span>
+      <span class="stag stag-bk">bev 7:30&ndash;5 <span class="mn">All Day Bev on consumption — Reg Coffee $121.50/gal &middot; Decaf $121.50/gal &middot; Teas $94.50/gal &middot; Pepsi $6.30ea</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Hill Country Spa Day — Arugula Frisee &amp; Spinach Watercress Salads &middot; Herb Seared Petite Chicken &middot; Roasted Salmon (Lemon/Garlic/Rosemary) &middot; Roasted Asparagus &middot; Sweet Potato Hash &middot; French Macarons &middot; Chocolate Mousse Shots &middot; Iced Tea &amp; Coffee &middot; $61.20pp</span></span>
+    </div>
+    <div class="note">10% F&amp;B discount per contract</div>
+  </div>
+</div>
 
-<!-- ═══════════════════════════════════════════════
-     THU APR 30
-══════════════════════════════════════════════════ -->
-<div class="day-header"><div><div class="day-title">Thursday &middot; April 30</div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div><div class="day-right">1 group</div></div>
-<div class="summary-strip"><div class="si">Span: <span>8:00 AM &ndash; 12:00 PM</span></div><div class="si">Groups: <span>1</span></div><div class="si">Rooms: <span>Lantana A</span></div></div>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#5090e0;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">MTM &mdash; May Meeting <span class="badge b-day">Day 1 of 3</span></div>
+        <div class="name-sub">Rebecca &nbsp;&middot;&nbsp; L. Barrera / J. Garcia &nbsp;&middot;&nbsp; E:25 G:26</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span><span class="sp sp-bk">brk</span></div>
+        <div class="room">Plumeria</div>
+        <div class="time">8:00a&ndash;6:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Rebecca</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div><div class="f"><div class="fl">Setup</div><div class="fv">5 Crescent Rounds of 5 &middot; 6&prime; table front &middot; Markeys AV &middot; Rental $600</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 8&ndash;9 <span class="mn">Early Riser — Juices, Melons, Cereals, Pastries, Yogurt, Scrambled Eggs, Applewood Bacon, Country Sausage, Rosemary Potatoes, Coffee &amp; Teas &middot; $45.90pp</span></span>
+      <span class="stag stag-bk">bev 9&ndash;5 <span class="mn">All Day Bev (coffee, teas, Pepsi, water) &middot; $46.80pp</span></span>
+      <span class="stag stag-bk">brk 10&ndash;11 <span class="mn">Granola Bars on consumption @ $5.40ea</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Austin BBQ — Chopped Salad (Jalapeno Ranch) &middot; German Potato Salad &middot; Kale Broccoli Slaw &middot; Gochujang BBQ Chicken &middot; 12-Hr Smoked Brisket &middot; Ranch Baked Beans &middot; Green Chili Mac 'n' Cheese &middot; Sweet Cornbread &middot; Apple Skillet Crisp &middot; Iced Tea &amp; Coffee &middot; $61.20pp</span></span>
+      <span class="stag stag-bk">brk 2:30&ndash;3 <span class="mn">(1) doz Assorted Cookies @ $67.50 &middot; (1) doz Brownies @ $54.90</span></span>
+    </div>
+    <div class="note">F&amp;B Min $5,000</div>
+  </div>
+</div>
 
-<div class="event"><div class="event-head"><div class="accent" style="background:#2c3e50;"></div><div class="head-inner"><div class="name">McLane &mdash; DCNF Summit <span class="badge b-day">Day 3 of 3</span></div><div class="meta"><div class="time">8:00 AM &ndash; 12:00 PM</div><div class="room">Lantana A</div><div class="gtd">GTD 30</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Mark</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega / J. Garcia</div></div></div><div class="service-row"><span class="stag stag-br">br 9&ndash;10 <span class="mn">Executive Continental</span></span></div><div class="note">Schoolroom &middot; Rental $300 &middot; Half day</div></div></div>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#8e44ad;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">E3 Entegral Solutions &mdash; Annual Sales Meeting <span class="badge b-day">Day 2 of 3</span></div>
+        <div class="name-sub">Luisa &nbsp;&middot;&nbsp; L. Barrera / J. Garcia &nbsp;&middot;&nbsp; E:19 G:20</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-l">lch</span><span class="sp sp-bk">bev</span><span class="sp sp-bk">brk</span></div>
+        <div class="room">Lantana</div>
+        <div class="time">9:30a&ndash;6:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Luisa</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Austin BBQ (same as MTM above)</span></span>
+      <span class="stag stag-bk">bev 1&ndash;5 <span class="mn">Half Day Bev PM (coffee, teas, Pepsi, water)</span></span>
+      <span class="stag stag-bk">brk 2:30&ndash;4 <span class="mn">PM Break (hummus &amp; pita chips, chips &amp; snacks)</span></span>
+    </div>
+    <div class="note">Half Day Meeting Package PM $79.20/pp · U-Shape w/ water station · F&amp;B inside room (per contract) · Rental $700</div>
+  </div>
+</div>
 
-<!-- ═══════════════════════════════════════════════
-     MON MAY 4
-══════════════════════════════════════════════════ -->
-<div class="day-header"><div><div class="day-title">Monday &middot; May 4</div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div><div class="day-right">1 group</div></div>
-<div class="summary-strip"><div class="si">Span: <span>7:30 AM &ndash; 6:00 PM</span></div><div class="si">Groups: <span>1</span></div><div class="si">Rooms: <span>Lantana</span></div></div>
+<!-- ═══════════════════════════════ WED MAY 6 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Wednesday &middot; May 6</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">5 groups</div></div>
+<div class="summary-strip"><div class="si">Span: <span>7:30 AM &ndash; 9:30 PM</span></div><div class="si">Rooms: <span>Primrose B&amp;CD &middot; Verbena &middot; Plumeria &middot; Camellia &middot; Lantana &middot; Foyer CD</span></div><div class="si">Late: <span>Summit Electric Awards Dinner until 9:30 PM</span></div></div>
 
-<div class="event"><div class="event-head"><div class="accent" style="background:#8e44ad;"></div><div class="head-inner"><div class="name">E3 Entegral Solutions &mdash; EOS Meeting <span class="badge b-day">Day 1 of 2</span></div><div class="meta"><div class="time">7:30 AM &ndash; 6:00 PM</div><div class="room">Lantana</div><div class="gtd">GTD 10</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Luisa</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div></div><div class="service-row"><span class="stag stag-br">br 7:30&ndash;9 <span class="mn">Texas Sunrise</span></span><span class="stag stag-bk">bk 9&ndash;11</span><span class="stag stag-l">l 12&ndash;1 <span class="mn">Southern Comforts</span></span><span class="stag stag-bk">bk 2:30&ndash;4</span></div><div class="note">All Day Meeting Package &middot; F&amp;B served inside room (group works through meals) &middot; U-Shape w/ water station &middot; Small group surcharge &times;2 ($250 each) &middot; Rental $700</div></div></div>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#2980b9;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">Kyocera Conference <span class="badge b-day">Day 2 of 2</span></div>
+        <div class="name-sub">Taylor &nbsp;&middot;&nbsp; D. Ortega &nbsp;&middot;&nbsp; E:32 G:29</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-bk">bev</span><span class="sp sp-bk">brk</span><span class="sp sp-l">lch</span></div>
+        <div class="room">Primrose B</div>
+        <div class="time">7:30a&ndash;5:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Taylor</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Classroom 34 &middot; Existing AV setup</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-bk">brk 7:30 <span class="mn">(2) doz Mini Croissants @ $67.50/doz &middot; (29) Vanilla Yogurt Parfait @ $8.10pp &middot; All Day Bev on consumption (reg/decaf/teas/Pepsi)</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Tejas Mexicano — Mixed Lettuces/Corn/Bean Salad &middot; Seasonal Fruit Arugula Salad &middot; Warm Queso &amp; Chips &middot; Chicken Fajitas &middot; Beef Barbacoa &middot; Green Chile Rice &middot; Vegetarian Refried Beans &middot; Churros &middot; Tres Leches Cake &middot; Iced Tea &amp; Coffee &middot; $61.20pp</span></span>
+    </div>
+    <div class="note">10% F&amp;B discount per contract</div>
+  </div>
+</div>
 
-<!-- ═══════════════════════════════════════════════
-     TUE MAY 5
-══════════════════════════════════════════════════ -->
-<div class="day-header"><div><div class="day-title">Tuesday &middot; May 5</div><div class="day-sub">Westin Austin at The Domain &nbsp;&middot;&nbsp; Banquet Operations</div></div><div class="day-right">2 groups</div></div>
-<div class="summary-strip"><div class="si">Span: <span>8:00 AM &ndash; 6:00 PM</span></div><div class="si">Groups: <span>2</span></div><div class="si">Rooms: <span>Plumeria &middot; Lantana</span></div></div>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#e74c3c;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">US Oncology &mdash; Texas Oncology Meeting <span class="badge b-day">Day 1 of 2</span></div>
+        <div class="name-sub">Amy / IC: Amy &nbsp;&middot;&nbsp; L. Barrera &nbsp;&middot;&nbsp; E:25 G:25</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span></div>
+        <div class="room">Camellia</div>
+        <div class="time">8:00a&ndash;5:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Amy</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div><div class="f"><div class="fl">Setup</div><div class="fv">U-Shape (2-to-a-table) &middot; SET 26 &middot; Rental $500</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 8&ndash;9 <span class="mn">Early Riser — Juices, Melons, Cereals, Pastries, Yogurt, Scrambled Eggs, Applewood Bacon, Country Sausage, Rosemary Potatoes, Coffee &amp; Teas &middot; $51pp</span></span>
+      <span class="stag stag-bk">bev 8&ndash;5 <span class="mn">All Day Bev (coffee, teas, Pepsi, water) &middot; $53pp</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Gourmet Deli — Tomato Basil Cream Soup &middot; Quinoa Arugula Salad &middot; Baby Spinach Salad &middot; Zabar's Egg Salad &middot; Smoked Peppered Turkey &middot; Shaved Roast Beef &middot; Artisan Breads &amp; Tortillas &middot; Cheddar/Swiss/Pepperjack &middot; Pickles/Mayo/Mustard &middot; Individual Chips &middot; Cookies &amp; Brownies &middot; Iced Tea &amp; Coffee &middot; $68pp</span></span>
+    </div>
+    <div class="note">F&amp;B Min $5,000</div>
+  </div>
+</div>
 
-<div class="event"><div class="event-head"><div class="accent" style="background:#5090e0;"></div><div class="head-inner"><div class="name">MTM &mdash; May Meeting</div><div class="meta"><div class="time">8:00 AM &ndash; 6:00 PM</div><div class="room">Plumeria</div><div class="gtd">GTD 26</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Rebecca</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div></div><div class="service-row"><span class="stag stag-br">br 8&ndash;9 <span class="mn">Early Riser</span></span><span class="stag stag-bk">bk 9&ndash;5 <span class="mn">All Day Bev</span></span><span class="stag stag-bk">bk 10&ndash;11 <span class="mn">Granola Bars</span></span><span class="stag stag-l">l 12&ndash;1 <span class="mn">Austin BBQ</span></span><span class="stag stag-bk">bk 2:30&ndash;3 <span class="mn">Cookies + Brownies</span></span></div><div class="note">Crescent rounds 5&times;5 &middot; AV through Markeys &middot; F&amp;B Min $5,000 &middot; Rental $600</div></div></div>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#5090e0;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">MTM &mdash; May Meeting <span class="badge b-day">Day 2 of 3</span></div>
+        <div class="name-sub">Rebecca &nbsp;&middot;&nbsp; L. Barrera / J. Garcia &nbsp;&middot;&nbsp; E:25 G:26</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span></div>
+        <div class="room">Plumeria</div>
+        <div class="time">8:00a&ndash;6:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Rebecca</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Crescent Rounds &middot; Rental $600</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 8&ndash;9 <span class="mn">Early Riser &middot; $45.90pp</span></span>
+      <span class="stag stag-bk">bev 9&ndash;5 <span class="mn">All Day Bev &middot; $10pp</span></span>
+      <span class="stag stag-bk">brk 10&ndash;11 <span class="mn">Granola Bars on consumption @ $5.40ea</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Take-Away Box Lunch — (13) Roast Beef (Balsamic Grilled Onion, Arugula, Goat Cheese on Sourdough) &middot; (13) Chicken Wrap (Mixed Greens, Black Beans, Corn, Peppers, Chipotle on Flour Tortilla) &middot; Each includes: Fruit Salad, Apple, Chips, Chocolate Chip Cookie, Pepsi &middot; $53.10pp</span></span>
+    </div>
+    <div class="note">F&amp;B Min $5,000</div>
+  </div>
+</div>
 
-<div class="event"><div class="event-head"><div class="accent" style="background:#8e44ad;"></div><div class="head-inner"><div class="name">E3 Entegral Solutions &mdash; Annual Sales Meeting <span class="badge b-day">Day 2 of 2</span></div><div class="meta"><div class="time">9:30 AM &ndash; 6:00 PM</div><div class="room">Lantana</div><div class="gtd">GTD 20</div></div></div></div><div class="body"><div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Luisa</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div></div><div class="service-row"><span class="stag stag-l">l 12&ndash;1 <span class="mn">Austin BBQ</span></span><span class="stag stag-bk">bk 1&ndash;5 <span class="mn">Half Day Bev</span></span><span class="stag stag-bk">bk 2:30&ndash;4</span></div><div class="note">Half Day Meeting Package (afternoon) &middot; F&amp;B inside room &middot; U-Shape w/ water station &middot; Rental $700</div></div></div>
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#8e44ad;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">E3 Entegral Solutions &mdash; Annual Sales Meeting <span class="badge b-day">Day 3 of 3</span></div>
+        <div class="name-sub">Luisa &nbsp;&middot;&nbsp; L. Barrera / J. Garcia &nbsp;&middot;&nbsp; E:22 G:22</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span><span class="sp sp-bk">brk</span></div>
+        <div class="room">Lantana</div>
+        <div class="time">8:00a&ndash;5:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Luisa</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 8&ndash;9 <span class="mn">Texas Sunrise (same as Mon)</span></span>
+      <span class="stag stag-bk">bev 9:30&ndash;11 <span class="mn">AM Break (whole fruit, granola &amp; protein bars)</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Hill Country Spa Day — Arugula &amp; Spinach Watercress Salads &middot; Herb Chicken &middot; Roasted Salmon &middot; Asparagus &middot; Sweet Potato Hash &middot; French Macarons &middot; Chocolate Mousse Shots &middot; Iced Tea &amp; Coffee</span></span>
+      <span class="stag stag-bk">brk 2:30&ndash;4 <span class="mn">PM Break (hummus &amp; pita, chips &amp; snacks) &mdash; GTD 12</span></span>
+    </div>
+    <div class="note">All Day Meeting Package $142.20/pp · U-Shape w/ water station · F&amp;B inside room (per contract) · Rental $700</div>
+  </div>
+</div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#1abc9c;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">TWARMF &mdash; Board &amp; Planning Meeting <span class="badge b-day">Day 1 of 2</span></div>
+        <div class="name-sub">Jacey &nbsp;&middot;&nbsp; L. Barrera &nbsp;&middot;&nbsp; E:30 G:30</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-l">lch</span><span class="sp sp-bk">bev</span><span class="sp sp-bk">brk</span></div>
+        <div class="room">Verbena</div>
+        <div class="time">11:30a&ndash;5:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Jacey</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Rounds of 10</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-l">lch 11:30&ndash;1 <span class="mn">Tejas Mexicano + (3) doz Assorted Cookies @ $75/doz &middot; $68pp</span></span>
+      <span class="stag stag-bk">bev after lunch <span class="mn">Coffee reg &amp; decaf $135/gal (add after lunch) &middot; diet Coke (1 doz+) &amp; Dr Pepper @ $8 &middot; Pepsi $7ea</span></span>
+      <span class="stag stag-bk">brk 2:30&ndash;3 <span class="mn">Indulge Afternoon Break — M&amp;Ms, Reese's, Choc Pretzels, Gummi Bears, Choc Almonds, Jelly Beans, Yogurt Pretzels &middot; Starbucks Frappuccinos &middot; Coffee &amp; Teas &middot; $27pp + (30) Soft Pretzel Rods w/ Creole Mustard &amp; Queso @ $10pp + (30) Kettle Chips w/ Caramelized Onion Dip @ $12pp</span></span>
+    </div>
+    <div class="note">F&amp;B Min $8,400</div>
+  </div>
+</div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#e67e22;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">Summit Electric Supply &mdash; Awards Dinner <span class="badge b-late">LATE 9:30PM</span></div>
+        <div class="name-sub">Sheila &nbsp;&middot;&nbsp; D. Ortega &nbsp;&middot;&nbsp; E:100 G:104</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-r">rec</span><span class="sp sp-r">bar</span><span class="sp sp-d">din</span></div>
+        <div class="room">Primrose CD &middot; Foyer CD</div>
+        <div class="time">5:30p&ndash;9:30p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Sheila</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div><div class="f"><div class="fl">Setup</div><div class="fv">14 Crescent Rounds of 8 &middot; Black linen, round mirrors, votives, stanchions &amp; table numbers &middot; 8×24 stage + 2×6x30 + podium</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-r">rec 5:30&ndash;6:30 <span class="mn">Foyer CD — Breads &amp; Spreads (Warm Brie, Pesto Ricotta, Spinach Artichoke &amp; Bacon Dip, TX Chevré w/ Honey &amp; Pecans, Breads, Chips &amp; Crackers) $25.20pp &middot; Hosted Beer &amp; Wine on consumption 5:30–9:30 PM &middot; Wine $13 &middot; Craft/Imported Beer $10 &middot; Domestic $9 &middot; Pepsi $7 &middot; (2) Bartenders @ $250ea</span></span>
+      <span class="stag stag-d">din 6:30&ndash;9:30 <span class="mn">Plated Dinner — Garden Salad w/ Ranch &middot; (73) Grilled Center Cut Filet @ $85.50 (St. Andre Potato, Mushroom &amp; Cipollini Ragout) &middot; (16) Herb Seared Statler Chicken @ $71.10 (Sundried Tomato &amp; Fontina Smashed Potato) &middot; (14) Brown Sugar Ginger Bronzed Salmon @ $71.10 (Fingerling Hash, Spicy Tequila Glaze) &middot; Dessert: Chocolate Decadence GF &middot; Artisan Rolls &amp; Butter &middot; Coffee/Hot Tea</span></span>
+    </div>
+    <div class="dietary">&#9888; Dietary: Shellfish &middot; Coconut/Nut &middot; Peanut/Hazelnut &middot; Grapefruit &middot; Gluten Free &mdash; ALL allergy guests ordered BEEF &mdash; Group provides Entree Cards</div>
+    <div class="note">Setup 12–2 PM · Move bars inside Primrose CD after reception · Last call once dessert is served</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ THU MAY 7 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Thursday &middot; May 7</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">2 groups</div></div>
+<div class="summary-strip"><div class="si">Span: <span>7:30 AM &ndash; 1:00 PM</span></div><div class="si">Rooms: <span>Verbena &middot; Camellia</span></div></div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#1abc9c;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">TWARMF &mdash; Board &amp; Planning Meeting <span class="badge b-day">Day 2 of 2</span> <span class="badge b-revised">REVISED</span></div>
+        <div class="name-sub">Jacey &nbsp;&middot;&nbsp; L. Barrera &nbsp;&middot;&nbsp; E:30 G:30</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span></div>
+        <div class="room">Verbena</div>
+        <div class="time">7:30a&ndash;1:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Jacey</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div><div class="f"><div class="fl">Setup</div><div class="fv">U-Shape</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 7:30&ndash;8:30 <span class="mn">Texas Sunrise + (3) doz Hot Buttered Biscuits w/ Savory Fig Jam @ $69/doz &middot; $57pp</span></span>
+      <span class="stag stag-bk">bev after lunch <span class="mn">Coffee reg &amp; decaf $135/gal &middot; Diet Coke (1 doz+) &amp; Dr Pepper @ $8 &middot; Pepsi $7ea</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Box Lunch — (15) Roasted Turkey Sandwich (Tomato, Onion, Cheddar, Iceberg on Whole Grain) @ $59pp &middot; (15) Ham Sandwich (Fresh Mozzarella, Tomato, Spinach, Pesto Aioli on Sourdough) @ $59pp &middot; Both include: Fruit Salad, Apple, Chips, Rice Krispies Treat, Pepsi &middot; (30) Candy Bars @ $7ea &middot; (30) Granola Bars @ $6ea</span></span>
+    </div>
+    <div class="note">F&amp;B Min $8,400 (shared)</div>
+  </div>
+</div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#e74c3c;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">US Oncology &mdash; Texas Oncology Meeting <span class="badge b-day">Day 2 of 2 (half day)</span></div>
+        <div class="name-sub">Amy &nbsp;&middot;&nbsp; L. Barrera &nbsp;&middot;&nbsp; E:25 G:25</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span></div>
+        <div class="room">Camellia</div>
+        <div class="time">8:00a&ndash;12:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Amy</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div><div class="f"><div class="fl">Setup</div><div class="fv">U-Shape (2-to-a-table) &middot; SET 26 &middot; Rental $500</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 8&ndash;9 <span class="mn">Early Riser &middot; $51pp</span></span>
+      <span class="stag stag-bk">bev 8&ndash;12 <span class="mn">Half Day Bev (coffee, teas, Pepsi, water) &middot; $31pp</span></span>
+    </div>
+    <div class="note">F&amp;B Min $5,000 (shared)</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ FRI MAY 8 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Friday &middot; May 8</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">1 group</div></div>
+<div class="summary-strip"><div class="si">Span: <span>9:00 PM &ndash; 12:00 AM</span></div><div class="si">Rooms: <span>Barton &middot; Corinne Patio</span></div><div class="si">Late: <span>Graduation Party midnight close</span></div></div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#c0392b;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">AUSDW Social &mdash; Granizo Graduation Party <span class="badge b-late">LATE 12AM</span></div>
+        <div class="name-sub">Fernando &nbsp;&middot;&nbsp; L. Barrera &nbsp;&middot;&nbsp; E:50 G:50</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-r">bar</span><span class="sp sp-d">din</span></div>
+        <div class="room">Barton + Corinne Patio</div>
+        <div class="time">9:00p&ndash;12:00a</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Fernando</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div><div class="f"><div class="fl">Setup</div><div class="fv">6 rounds of 8/9 &middot; Complimentary black linen (refer to diagram) &middot; Corinne Patio: scattered highboys in PDR foyer &amp; patio</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-r">bar 9PM&ndash;11PM <span class="mn">Corinne Classic Hosted Bar $40pp (2 hrs) — Old Fashioned &middot; Signature Margarita &middot; Hahn Chardonnay &middot; Franciscan Cab &middot; Michelob Ultra &middot; Modelo &middot; Heineken 0.0 &middot; Brush Creek Bourbon/Gin/Vodka &middot; Lunazul Blanco &middot; Bacardi &middot; Bartender $250</span></span>
+      <span class="stag stag-d">din 9&ndash;12 <span class="mn">3-Course Dinner $80pp — First (family): Handmade Burrata Cheese (blistered tomato, chipotle, pesto) + Classic Caesar &middot; Entrées: (32) Filet Mignon (pommes puree, chimichurri) &middot; (11) Verlasso Salmon (sweet onion puree, charred broccolini, black lentils) &middot; (4) Chile Glazed Chicken &middot; (3) Cauliflower Steak &middot; Sweet Endings (family): Chocolate Bread Pudding (brioche, salted caramel, à la mode) + Tres Leches Cake</span></span>
+    </div>
+    <div class="dietary">&#9888; 3 MINORS — ID all guests before serving, do NOT charge bar package to minors &middot; Group arriving from UT Graduation ~9 PM &middot; First course rolls at 9:30 PM</div>
+    <div class="note">Setup 10 AM–3 PM · F&amp;B Min $3,200 (excl. tax &amp; gratuity)</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ SAT MAY 9 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Saturday &middot; May 9</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">1 group</div></div>
+<div class="summary-strip"><div class="si">Span: <span>9:00 AM &ndash; 6:00 PM</span></div><div class="si">Rooms: <span>Lantana</span></div></div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#555;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">ATX Fashion Week &mdash; Back of House</div>
+        <div class="name-sub">Matt / IC: Claire &nbsp;&middot;&nbsp; D. Ortega &nbsp;&middot;&nbsp; E:70</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-bk">no f&amp;b</span></div>
+        <div class="room">Lantana</div>
+        <div class="time">9:00a&ndash;6:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Matt</div></div><div class="f"><div class="fl">IC</div><div class="fv">Claire</div></div><div class="f"><div class="fl">MGR</div><div class="fv">D. Ortega</div></div></div>
+    <div class="note">No F&amp;B Required · Model dressing / hair &amp; make-up room for Austin Fashion Week · Setup: 6x30 tables + 4 chairs each · (18) chairs back of room · (1) 6ft table outside room · Rental $500</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ MON MAY 11 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Monday &middot; May 11</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">1 group (arrival)</div></div>
+<div class="summary-strip"><div class="si">Span: <span>9:30 AM &ndash; 11:45 PM</span></div><div class="si">Rooms: <span>Buttercup</span></div></div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#2c3e50;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">Main Street America &mdash; Insurance Agency Meetings <span class="badge b-day">Arrival</span></div>
+        <div class="name-sub">Julie Ann &nbsp;&middot;&nbsp; L. Barrera / S. Macari &nbsp;&middot;&nbsp; E:5 G:5</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-l">lch</span></div>
+        <div class="room">Buttercup</div>
+        <div class="time">9:30a&ndash;11:45p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Julie Ann</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / S. Macari</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Conference &middot; Please put packages in room</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-l">lch 1:30&ndash;2:30 <span class="mn">Conf Dining individual orders — Avocado Hummus $17 &middot; Caesar VG $19 &middot; Corinne Cobb GF $22 &middot; Waygu Burger $25 &middot; Grilled Cheese VG $22 &middot; Chicken Club $22</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ TUE MAY 12 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Tuesday &middot; May 12</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">2 groups</div></div>
+<div class="summary-strip"><div class="si">Span: <span>7:00 AM &ndash; 5:00 PM</span></div><div class="si">Rooms: <span>Primrose A&amp;B &middot; Camellia A&amp;B &middot; Lantana B &middot; Buttercup &middot; Plumeria</span></div></div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#2c3e50;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">Main Street America &mdash; Insurance Agency Meetings <span class="badge b-day">Day 1 of 3</span></div>
+        <div class="name-sub">Julie Ann &nbsp;&middot;&nbsp; L. Barrera / S. Macari &nbsp;&middot;&nbsp; E:48 G:48</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span><span class="sp sp-bk">brk</span></div>
+        <div class="room">Prim A&amp;B &middot; Cam A&amp;B &middot; Buttercup</div>
+        <div class="time">7:00a&ndash;8:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Julie Ann</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / S. Macari</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 7:30&ndash;8:30 <span class="mn">Early Riser &mdash; Primrose B &middot; Juices, Melons, Cereals, Pastries, Yogurt, Scrambled Eggs, Applewood Bacon, Country Sausage, Rosemary Potatoes</span></span>
+      <span class="stag stag-bk">bev All Day <span class="mn">All Day Bev Pkg &mdash; Primrose B (Coffee, Hot Teas, Pepsi $7ea)</span></span>
+      <span class="stag stag-bk">brk 10:30&ndash;11 <span class="mn">(3) doz Mini Croissants @ $75/doz + Morning Break (whole fruit, granola &amp; protein bars)</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Austin BBQ &mdash; Primrose B</span></span>
+      <span class="stag stag-bk">brk 3&ndash;3:30 <span class="mn">(3) doz Assorted Cookies @ $75/doz + Afternoon Break (hummus &amp; pita chips, chips &amp; snacks)</span></span>
+      <span class="stag stag-bk">bev 8 PM <span class="mn">Continuous Bev starts &mdash; Primrose A (Coffee, Teas, Pepsi, Water) &middot; $52pp</span></span>
+    </div>
+    <div class="note">All Day Meeting Package $152/pp · Primrose A: General Session crescent rounds (9 high chairs, panel in AM) · Primrose B: Meal Room rounds of 10 · Camellia A: Breakout conference 15 SET · Camellia B: Breakout conference 15 SET · Buttercup: Office conference 5 SET</div>
+  </div>
+</div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#c0392b;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">HORIBA Sales Meeting <span class="badge b-day">Day 1 of 2</span></div>
+        <div class="name-sub">Rosana &nbsp;&middot;&nbsp; L. Barrera / J. Garcia &nbsp;&middot;&nbsp; E:45 G:56</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-bk">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span><span class="sp sp-bk">brk</span></div>
+        <div class="room">Plumeria + Lantana B</div>
+        <div class="time">8:00a&ndash;5:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Rosana</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Plumeria: Schoolroom SET 56 + podium &middot; Markeys AV (screen, projector) &middot; Lantana B: 5 rounds of 9 (meal room)</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-bk">brk 8&ndash;10 <span class="mn">AM Break — (2) doz Mini Croissants @ $67.50 &middot; (12) Vanilla Yogurt Parfait @ $8.10pp &middot; (1) doz Cinnamon Buns @ $67.50 &middot; Roasted Almonds @ $7.20pp &middot; (12) Whole Fruit @ $5.40ea</span></span>
+      <span class="stag stag-bk">bev 8&ndash;5 <span class="mn">All Day Bev (coffee, teas, Pepsi, water) &middot; $46.80pp</span></span>
+      <span class="stag stag-bk">brk 10:15 <span class="mn">(56) Assorted Granola Bars @ $5.40ea</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Austin BBQ &mdash; Lantana B (GTD 45) &middot; $61.20pp</span></span>
+      <span class="stag stag-bk">brk 2:20&ndash;3 <span class="mn">PM Break — (28) Veggie Crudité Shooters @ $6.30pp &middot; (28) Kettle Chips &amp; Onion Dip @ $10.80pp &middot; (28) Candy Bars on consumption @ $7ea</span></span>
+    </div>
+    <div class="note">F&amp;B Min $14,000 &middot; 10% off F&amp;B</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ WED MAY 13 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Wednesday &middot; May 13</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">5 groups</div></div>
+<div class="summary-strip"><div class="si">Span: <span>7:00 AM &ndash; 9:00 PM</span></div><div class="si">Rooms: <span>Primrose A&amp;B&amp;D &middot; Camellia A&amp;B &middot; Bluebell &middot; Verbena A&amp;B &middot; Lantana B &middot; Buttercup &middot; Barton &middot; Foyer</span></div><div class="si">Late: <span>Charles Schwab Dinner hard stop 8 PM</span></div></div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#2c3e50;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">Main Street America &mdash; Insurance Agency Meetings <span class="badge b-day">Day 2 of 3</span></div>
+        <div class="name-sub">Julie Ann &nbsp;&middot;&nbsp; L. Barrera / S. Macari &nbsp;&middot;&nbsp; E:62 G:62 AM / 29 PM</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span><span class="sp sp-bk">bev</span><span class="sp sp-d">din</span></div>
+        <div class="room">Multiple</div>
+        <div class="time">7:00a&ndash;8:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Julie Ann</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / S. Macari</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 8&ndash;9 <span class="mn">Texas Sunrise &mdash; Primrose B (GTD 62) &middot; $57pp</span></span>
+      <span class="stag stag-bk">bev 8&ndash;12 <span class="mn">Half Day Bev AM &mdash; Primrose B &middot; $30pp</span></span>
+      <span class="stag stag-bk">brk 10&ndash;10:30 <span class="mn">Empower AM Break (juice, seasonal fruit salad, build-your-own trail mix, coffee &amp; teas) $24pp + (3) doz Mini Croissants @ $75 + (2) doz Cream Cheese Cinnamon Buns @ $75</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Hill Country Spa Day &mdash; Primrose B (GTD 29) &middot; $68pp</span></span>
+      <span class="stag stag-bk">bev 1&ndash;5 <span class="mn">Half Day Bev PM &mdash; Primrose B (29 pax) &middot; $30pp</span></span>
+      <span class="stag stag-bk">brk 3&ndash;3:30 <span class="mn">Rest &amp; Recuperate Break (flax seed &amp; nut granola bites, turkey &amp; avocado finger sandwiches, strawberry mint agua fresca, coffee &amp; teas) $27pp + (2) doz Assorted Cookies @ $75</span></span>
+      <span class="stag stag-d">din 5&ndash;7 <span class="mn">Reception/Dinner &mdash; Barton (GTD 29) — Hosted Favorite Brands Bar on consumption &middot; Passed: Antipasto Skewers, Shrimp Shooters, Fig &amp; Goat Cheese Flatbread @ $10/piece &middot; Bartender $250 &middot; Steakhouse Chopping Block $99pp (Spinach &amp; Steakhouse Salads, Roasted Chicken, Branzino, Strip Loin, Scalloped Potatoes, Truffled Corn, Asparagus, Carrot Cake &amp; Apple Crisp)</span></span>
+    </div>
+    <div class="note">Prim A: General Session crescent rounds 64 SET (10 AM reset: remove 4 rounds to sit 32, leave high chairs on side) · Prim B: Meal Room rounds of 10 · Camellia A: Breakout conference 15 SET · Camellia B: Breakout conference 15 SET · Verbena A: Breakout conference 15 SET · Buttercup: Office · Half group departing to airport today · Barton: Lounge setup</div>
+  </div>
+</div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#c0392b;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">HORIBA Sales Meeting <span class="badge b-day">Day 2 of 2</span></div>
+        <div class="name-sub">Rosana &nbsp;&middot;&nbsp; L. Barrera / J. Garcia &nbsp;&middot;&nbsp; E:45 G:48</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-bk">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span><span class="sp sp-bk">brk</span></div>
+        <div class="room">Plumeria + Lantana B</div>
+        <div class="time">8:00a&ndash;5:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Rosana</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Plumeria: Schoolroom REFRESH &middot; Lantana B: Rounds of 8 REFRESH</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-bk">brk 8&ndash;10 <span class="mn">AM Break — (12) Vanilla Yogurt Parfait @ $8.10pp &middot; Roasted Almonds @ $7.20pp &middot; (12) Whole Fruit @ $5.40ea &middot; (2) doz Mini Croissants @ $67.50 &middot; (1) doz Cinnamon Buns @ $67.50</span></span>
+      <span class="stag stag-bk">bev 8&ndash;5 <span class="mn">All Day Bev &middot; $46.80pp</span></span>
+      <span class="stag stag-bk">brk 10:10 <span class="mn">(56) Assorted Granola Bars @ $5.40ea</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Hill Country Spa Day &mdash; Lantana B (GTD 48) &middot; $61.20pp</span></span>
+      <span class="stag stag-bk">brk 2:15&ndash;3 <span class="mn">PM Break — (26) Soft Pretzel Rods w/ Creole Mustard &amp; Queso @ $9pp &middot; (29) Assorted Candy Bars @ $6.30ea &middot; (3) doz Assorted Cookies @ $67.50/doz</span></span>
+    </div>
+    <div class="note">F&amp;B Min $14,000 &middot; 10% off F&amp;B</div>
+  </div>
+</div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#7f8c8d;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">Sephora &mdash; Central Region Meeting <span class="badge b-day">Day 1 of 2</span></div>
+        <div class="name-sub">Shara &nbsp;&middot;&nbsp; L. Barrera / J. Garcia &nbsp;&middot;&nbsp; G:8 + G:12</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span></div>
+        <div class="room">Bluebell + Verbena B</div>
+        <div class="time">8:00a&ndash;5:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Shara</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Bluebell: U-Shape GTD 8 &middot; Rental $400 &middot; Verbena B: U-Shape GTD 12 &middot; Rental $400</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 8&ndash;9 <span class="mn">Grab &amp; Go — Chobani Yogurts, Overnight Oats, Individually Packaged Muffins, Breakfast Taco (Bacon: Scrambled Eggs, Black Beans, Potato, Pepper Jack in Warm Tortilla) &middot; $29.70pp (both rooms)</span></span>
+      <span class="stag stag-bk">bev 8&ndash;5 <span class="mn">All Day Bev &middot; $52pp (Bluebell 8 AM &middot; Verbena B 9 AM)</span></span>
+      <span class="stag stag-l">lch 11&ndash;12 (Bluebell) &amp; 12&ndash;1 (Verbena B) <span class="mn">Conf Dining individual orders — Caesar VG $17.10 &middot; Corinne Cobb GF $19.80 &middot; Waygu Burger $22.50 &middot; Grilled Cheese VG $19.80 &middot; Chicken Club $19.80</span></span>
+    </div>
+  </div>
+</div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#f39c12;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">Charles Schwab &mdash; Liz Ann Sonders Plated Dinner</div>
+        <div class="name-sub">Bradley &nbsp;&middot;&nbsp; L. Barrera &nbsp;&middot;&nbsp; E:83 G:81</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-r">rec</span><span class="sp sp-r">bar</span><span class="sp sp-d">din</span></div>
+        <div class="room">Primrose D + Foyer</div>
+        <div class="time">4:30p&ndash;~8:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Bradley</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Rounds of 10 &middot; White linen + floating candles &middot; 8×24 stage + 2 lounge chairs + lowtop for speakers &middot; 2 registration tables &middot; AV: mics through AV</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-r">rec 5&ndash;6 <span class="mn">Cocktail Reception &mdash; Foyer &middot; Beer &amp; Wine Pkg $45pp (3 hrs): Vista Point Chardonnay &amp; Cab Sauv &middot; Dos Equis/Stella/Fireman's 4/Shiner &middot; Budweiser/Bud Light/Miller Light/Lonestar &middot; Bottled Water &middot; Pepsi &middot; (1) Bartender $250</span></span>
+      <span class="stag stag-r">bar 5&ndash;8 <span class="mn">Passed Hors D'Oeuvres — (55ea) Deviled Eggs &middot; Antipasto Skewers &middot; Chicken Potsticker &middot; Mini Beef Tenderloin en Croute &middot; Gulf Coast Crab Cake &middot; Shrimp Cocktail Shooters &middot; @ $10/piece</span></span>
+      <span class="stag stag-d">din 6&ndash;8 <span class="mn">Plated Dinner &mdash; Primrose D &middot; First Course: Traditional Caesar Salad (salads preset by 6 PM) &middot; (34) Garlic Rubbed Salmon w/ Sweet Onion Cream &amp; Roasted Sweet Potatoes @ $79pp &middot; (34) Herb Seared Statler Chicken (Sundried Tomato &amp; Fontina Smashed Potato, Demi-Glace) @ $79pp &middot; (15) Seared Cauliflower Steak @ $65pp &middot; Dessert: Chocolate Decadence GF</span></span>
+    </div>
+    <div class="dietary">&#9888; Entrees roll 6:15 PM &middot; HARD STOP 8:00 PM &middot; Group brings entree cards &middot; Salads preset by 6 PM — do NOT preset desserts</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ THU MAY 14 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Thursday &middot; May 14</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">2 groups</div></div>
+<div class="summary-strip"><div class="si">Span: <span>7:00 AM &ndash; 5:00 PM</span></div><div class="si">Rooms: <span>Primrose A &middot; Verbena B</span></div></div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#2c3e50;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">Main Street America &mdash; Insurance Agency Meetings <span class="badge b-day">Day 3 of 3 (half day)</span></div>
+        <div class="name-sub">Julie Ann &nbsp;&middot;&nbsp; L. Barrera / S. Macari &nbsp;&middot;&nbsp; E:29 G:29</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-bk">no f&amp;b</span></div>
+        <div class="room">Primrose A</div>
+        <div class="time">7:00a&ndash;1:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Julie Ann</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / S. Macari</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Crescent Rounds &middot; SET 32 &middot; General Session 7 AM&ndash;1 PM &middot; No F&amp;B Required</div></div></div>
+  </div>
+</div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#7f8c8d;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">Sephora &mdash; Central Region Meeting <span class="badge b-day">Day 2 of 2</span></div>
+        <div class="name-sub">Shara &nbsp;&middot;&nbsp; L. Barrera / J. Garcia &nbsp;&middot;&nbsp; E:22 G:22</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span></div>
+        <div class="room">Verbena B</div>
+        <div class="time">8:00a&ndash;5:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Shara</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera / J. Garcia</div></div><div class="f"><div class="fl">Setup</div><div class="fv">U-Shape &middot; Rental $400</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 8&ndash;9 <span class="mn">Grab &amp; Go + English Muffin Sandwiches (Farm Fresh Eggs, Spicy Chorizo, Jalapeño Jack on Croissant) &middot; $29.70pp (GTD 20)</span></span>
+      <span class="stag stag-bk">bev 8&ndash;5 <span class="mn">All Day Bev &middot; $52pp</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Tejas Mexicano — Mixed Lettuces Salad &middot; Seasonal Fruit Arugula Salad &middot; Warm Queso &amp; Chips &middot; Chicken Fajitas &middot; Beef Barbacoa &middot; Green Chile Rice &middot; Vegetarian Refried Beans &middot; Churros &middot; Tres Leches Cake &middot; Iced Tea &amp; Coffee &middot; $61.20pp (GTD 20)</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ FRI MAY 15 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Friday &middot; May 15</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">1 group</div></div>
+<div class="summary-strip"><div class="si">Span: <span>12:00 PM &ndash; 6:00 PM</span></div><div class="si">Rooms: <span>Plumeria A &amp; B</span></div></div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#6c3483;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">TMF Health Quality Institute &mdash; Board of Directors <span class="badge b-day">Day 1 of 2</span></div>
+        <div class="name-sub">Erineka &nbsp;&middot;&nbsp; L. Barrera &nbsp;&middot;&nbsp; E:16</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-bk">bev</span></div>
+        <div class="room">Plumeria A &amp; B</div>
+        <div class="time">12:00p&ndash;6:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Erineka</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Both rooms: Hollow Square &middot; Rental $500ea</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-bk">No F&amp;B &mdash; Plumeria A</span>
+      <span class="stag stag-bk">brk 2:15&ndash;6 <span class="mn">Plumeria B — Powerful Afternoon Break (Dried Fruits &amp; Nuts, Seasonal Fruit, Roasted Garlic Hummus &amp; Pita, Coffee &amp; Teas) $19pp + (18) Soft Pretzel Rods w/ Creole Mustard &amp; Queso @ $10pp + (7) White Cheddar Dusted Popcorn @ $8pp + Teas $105/gal &middot; Little City Coffee $135/gal &middot; Pepsi $7ea &middot; Bottled Water on consumption $7</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ SAT MAY 16 ═══════════════════════════════ -->
+<div class="day-header"><div><div class="day-title">Saturday &middot; May 16</div><div class="day-sub">Westin Austin at The Domain &middot; Banquet Operations</div></div><div class="day-right">1 group</div></div>
+<div class="summary-strip"><div class="si">Span: <span>7:00 AM &ndash; 2:00 PM</span></div><div class="si">Rooms: <span>Plumeria</span></div></div>
+
+<div class="event">
+  <div class="event-head" onclick="tog(this)">
+    <div class="accent" style="background:#6c3483;"></div>
+    <div class="head-inner">
+      <div class="head-left">
+        <div class="name">TMF Health Quality Institute &mdash; Board of Directors <span class="badge b-day">Day 2 of 2</span></div>
+        <div class="name-sub">Erineka &nbsp;&middot;&nbsp; L. Barrera &nbsp;&middot;&nbsp; E:25</div>
+      </div>
+      <div class="head-right">
+        <div class="svc-pills"><span class="sp sp-br">brk</span><span class="sp sp-bk">bev</span><span class="sp sp-l">lch</span></div>
+        <div class="room">Plumeria</div>
+        <div class="time">7:00a&ndash;2:00p</div>
+        <div class="chev">&#9654;</div>
+      </div>
+    </div>
+  </div>
+  <div class="event-body">
+    <div class="info-row"><div class="f"><div class="fl">Contact</div><div class="fv">Erineka</div></div><div class="f"><div class="fl">MGR</div><div class="fv">L. Barrera</div></div><div class="f"><div class="fl">Setup</div><div class="fv">Hollow Square &middot; Rental $1,000</div></div></div>
+    <div class="service-row">
+      <span class="stag stag-br">brk 7:15&ndash;8:15 <span class="mn">Texas Sunrise — Juices, Melons, Cereals, Kolaches, Yogurt, Gristmill Oatmeal, Migas Rancheros, Jalapeño Bacon, TX Hashbrown Casserole, Warm Biscuits &amp; Country Sausage Gravy, Coffee &amp; Teas &middot; $57pp (GTD 25)</span></span>
+      <span class="stag stag-bk">bev misc <span class="mn">Little City Coffee $135/gal &middot; Pepsi $7ea &middot; Bottled Water on consumption $7ea</span></span>
+      <span class="stag stag-bk">brk 10:30&ndash;11 <span class="mn">(1) doz Mini Croissants @ $75 + (1) doz Cream Cheese Glazed Cinnamon Buns @ $75 &middot; GTD 23</span></span>
+      <span class="stag stag-l">lch 12&ndash;1 <span class="mn">Lunch Buffet &middot; GTD 23</span></span>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
