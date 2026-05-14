@@ -2,1254 +2,1553 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Banquet Bot — BEO Daily Rundown</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" id="themeColor" content="#0c0a08">
+<title>BEO · Westin Domain</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #ffffff;
-    --surface: #f8f7f4;
-    --border: #e2ddd6;
-    --text: #1a1714;
-    --text-muted: #6b6560;
-    --accent-gold: #c9a84c;
-    --accent-gold-light: #f5edd8;
-    --header-bg: #1a1714;
-    --header-text: #f5edd8;
 
-    --bkf: #0e7c61;
-    --bkf-bg: #e6f4f0;
-    --lnch: #2563ab;
-    --lnch-bg: #e8f0fb;
-    --brk: #b07c10;
-    --brk-bg: #fdf3dc;
-    --din: #b52a2a;
-    --din-bg: #fceaea;
-    --rec: #6b3fa0;
-    --rec-bg: #f3ecfc;
+/* ═══════════════════════════════════════
+   CSS TOKENS — DARK (default)
+═══════════════════════════════════════ */
+:root {
+  --bg:          #0c0a08;
+  --bg2:         #111009;
+  --surface:     #181410;
+  --surface2:    #201c17;
+  --surface3:    #28231d;
+  --border:      #2c2820;
+  --border2:     #3a342c;
 
-    --pill-room: #1a1714;
-    --pill-gtd: #2563ab;
-    --pill-gtd-text: #fff;
-  }
+  --text:        #f2ede6;
+  --text2:       #a8a098;
+  --text3:       #645e56;
 
-  [data-theme="dark"] {
-    --bg: #141210;
-    --surface: #1f1c18;
-    --border: #2e2a24;
-    --text: #f0ebe3;
-    --text-muted: #8a8078;
-    --accent-gold: #c9a84c;
-    --accent-gold-light: #2a2212;
-    --header-bg: #0d0b09;
-    --header-text: #f5edd8;
+  --gold:        #d4a84b;
+  --gold2:       #8a6420;
+  --gold-bg:     #1c1506;
+  --gold-glow:   rgba(212,168,75,0.15);
 
-    --bkf: #2dba90;
-    --bkf-bg: #0d2e24;
-    --lnch: #5b9bff;
-    --lnch-bg: #0d1e38;
-    --brk: #d4a030;
-    --brk-bg: #2a1e06;
-    --din: #e05555;
-    --din-bg: #2e0d0d;
-    --rec: #a97de0;
-    --rec-bg: #1e0d38;
+  /* service type colors */
+  --c-bkf:       #34d399;   /* teal-green  */
+  --c-bkf-bg:    #081f14;
+  --c-lnch:      #60a5fa;   /* sky blue    */
+  --c-lnch-bg:   #071628;
+  --c-brk:       #fbbf24;   /* amber       */
+  --c-brk-bg:    #1c1200;
+  --c-din:       #f87171;   /* coral red   */
+  --c-din-bg:    #200808;
+  --c-rec:       #c084fc;   /* violet      */
+  --c-rec-bg:    #150824;
+  --c-bar:       #fb923c;   /* orange      */
+  --c-bar-bg:    #1c0800;
 
-    --pill-room: #f0ebe3;
-    --pill-gtd: #3a7fff;
-    --pill-gtd-text: #fff;
-  }
+  --note-bg:     #0e1a2e;
+  --note-border: #1e3a6e;
+  --note-text:   #7eb3ff;
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  --alert-bg:    #1c1000;
+  --alert-border:#7a5500;
+  --alert-text:  #f0a800;
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    font-size: 13px;
-    line-height: 1.5;
-    transition: background 0.2s, color 0.2s;
-  }
+  --r:           14px;
+  --r-sm:        9px;
+  --safe-t:      env(safe-area-inset-top, 0px);
+  --safe-b:      env(safe-area-inset-bottom, 0px);
+  --safe-l:      env(safe-area-inset-left, 0px);
+  --safe-r:      env(safe-area-inset-right, 0px);
+}
 
-  /* ── HEADER ── */
-  .page-header {
-    background: var(--header-bg);
-    color: var(--header-text);
-    padding: 18px 24px 14px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    border-bottom: 2px solid var(--accent-gold);
-  }
-  .header-left { display: flex; flex-direction: column; gap: 2px; }
-  .header-brand {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    color: var(--accent-gold);
-    text-transform: uppercase;
-  }
-  .header-title {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--header-text);
-    letter-spacing: -0.01em;
-  }
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-shrink: 0;
-  }
-  .print-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: #888;
-    letter-spacing: 0.05em;
-  }
-  .toggle-btn {
-    background: #2a2520;
-    border: 1px solid #3a3530;
-    color: var(--header-text);
-    border-radius: 6px;
-    padding: 5px 10px;
-    font-size: 11px;
-    cursor: pointer;
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.05em;
-    transition: background 0.15s;
-  }
-  .toggle-btn:hover { background: #3a3028; }
+/* ═══════════════════════════════════════
+   LIGHT MODE
+═══════════════════════════════════════ */
+[data-theme="light"] {
+  --bg:          #f2ede6;
+  --bg2:         #ede8e0;
+  --surface:     #ffffff;
+  --surface2:    #f7f4ef;
+  --surface3:    #ede8e0;
+  --border:      #ddd8ce;
+  --border2:     #ccc5b8;
 
-  /* ── EXPAND ALL ── */
-  .expand-bar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 8px 24px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  .expand-bar button {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    padding: 4px 10px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .expand-bar button:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
-  .expand-bar .label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 0.08em;
-    margin-left: auto;
-  }
+  --text:        #18140f;
+  --text2:       #5a5248;
+  --text3:       #9a9088;
 
-  /* ── DAY SECTION ── */
-  .day-section { border-bottom: 2px solid var(--border); }
+  --gold:        #a06a10;
+  --gold2:       #c9a84c;
+  --gold-bg:     #fdf5e0;
+  --gold-glow:   rgba(160,106,16,0.08);
 
-  .day-toggle {
-    width: 100%;
-    text-align: left;
-    border: none;
-    background: var(--surface);
-    cursor: pointer;
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    transition: background 0.12s;
-  }
-  .day-toggle:hover { background: var(--accent-gold-light); }
+  --c-bkf:       #059669;
+  --c-bkf-bg:    #ecfdf5;
+  --c-lnch:      #2563eb;
+  --c-lnch-bg:   #eff6ff;
+  --c-brk:       #d97706;
+  --c-brk-bg:    #fffbeb;
+  --c-din:       #dc2626;
+  --c-din-bg:    #fef2f2;
+  --c-rec:       #7c3aed;
+  --c-rec-bg:    #f5f3ff;
+  --c-bar:       #ea580c;
+  --c-bar-bg:    #fff7ed;
 
-  .day-toggle .chevron {
-    font-size: 10px;
-    color: var(--accent-gold);
-    font-family: 'DM Mono', monospace;
-    width: 14px;
-    text-align: center;
-    transition: transform 0.2s;
-    display: inline-block;
-  }
-  .day-toggle.open .chevron { transform: rotate(90deg); }
+  --note-bg:     #eff6ff;
+  --note-border: #bfdbfe;
+  --note-text:   #1d4ed8;
 
-  .day-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    color: var(--accent-gold);
-    text-transform: uppercase;
-    min-width: 26px;
-  }
-  .day-date {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: -0.01em;
-  }
-  .day-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-left: auto;
-    letter-spacing: 0.04em;
-  }
-  .day-today .day-date { color: var(--accent-gold); }
-  .today-badge {
-    background: var(--accent-gold);
-    color: #1a1714;
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    font-weight: 500;
-    padding: 2px 7px;
-    border-radius: 3px;
-    text-transform: uppercase;
-  }
+  --alert-bg:    #fffbeb;
+  --alert-border:#fcd34d;
+  --alert-text:  #92400e;
+}
 
-  /* ── DAY BODY ── */
-  .day-body { display: none; padding: 0 24px 20px; }
-  .day-body.open { display: block; }
+/* ═══════════════════════════════════════
+   RESET
+═══════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:'Geist',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100dvh;
+  overscroll-behavior-y:none;
+  -webkit-font-smoothing:antialiased;
+  padding-left:var(--safe-l);
+  padding-right:var(--safe-r);
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;-webkit-appearance:none}
 
-  /* ── EVENT CARD ── */
-  .event-card {
-    border-left: 3px solid var(--border);
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--border);
-    border-radius: 0 6px 6px 0;
-    margin-top: 12px;
-    overflow: hidden;
-  }
+/* ═══════════════════════════════════════
+   STICKY HEADER
+═══════════════════════════════════════ */
+.app-bar{
+  position:sticky;
+  top:0;
+  z-index:300;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  padding:calc(var(--safe-t) + 10px) 16px 10px;
+}
+.app-bar-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.app-bar-left{}
+.brand{
+  font-family:'Geist Mono',monospace;
+  font-size:9px;
+  letter-spacing:0.2em;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:2px;
+  display:block;
+}
+.page-title{
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:-0.03em;
+  color:var(--text);
+  line-height:1;
+}
+.app-bar-right{display:flex;gap:7px;align-items:center}
 
-  .event-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 14px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
-  .event-group {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 12px;
-    color: var(--text);
-    flex: 1;
-    min-width: 0;
-  }
-  .badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    padding: 2px 6px;
-    border-radius: 3px;
-    text-transform: uppercase;
-    font-weight: 500;
-    border: 1px solid currentColor;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .badge-mgr { color: var(--text-muted); border-color: var(--border); }
-  .badge-ic { color: var(--accent-gold); border-color: var(--accent-gold); }
+.hdr-btn{
+  height:36px;
+  min-width:36px;
+  border-radius:10px;
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  color:var(--text2);
+  font-family:'Geist Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.05em;
+  display:flex;align-items:center;justify-content:center;
+  gap:5px;
+  padding:0 10px;
+  transition:background .12s,border-color .12s,color .12s;
+}
+.hdr-btn:active{background:var(--surface3);border-color:var(--gold);color:var(--gold)}
 
-  /* ── SERVICE ROWS ── */
-  .service-row {
-    display: grid;
-    grid-template-columns: 90px 1fr auto;
-    align-items: start;
-    gap: 10px;
-    padding: 8px 14px;
-    border-bottom: 1px solid var(--border);
-  }
-  .service-row:last-child { border-bottom: none; }
+.sub-bar{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:7px 16px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.sub-bar::-webkit-scrollbar{display:none}
+.sub-btn{
+  font-family:'Geist Mono',monospace;
+  font-size:10px;
+  letter-spacing:0.08em;
+  color:var(--text3);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  padding:5px 13px;
+  white-space:nowrap;
+  background:var(--surface2);
+  flex-shrink:0;
+  transition:all .12s;
+}
+.sub-btn:active{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
+.sub-label{
+  font-family:'Geist Mono',monospace;
+  font-size:9px;
+  letter-spacing:0.1em;
+  color:var(--text3);
+  white-space:nowrap;
+  margin-left:auto;
+  flex-shrink:0;
+  text-transform:uppercase;
+}
 
-  .svc-time {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text);
-    white-space: nowrap;
-    padding-top: 1px;
-  }
+/* printed date */
+.sub-date{
+  font-family:'Geist Mono',monospace;
+  font-size:9px;
+  color:var(--text3);
+  letter-spacing:0.07em;
+  padding:5px 16px;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+}
 
-  .svc-body { min-width: 0; }
-  .svc-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin-bottom: 3px;
-  }
+/* ═══════════════════════════════════════
+   DAYS LIST
+═══════════════════════════════════════ */
+.days{padding-bottom:calc(var(--safe-b) + 60px)}
 
-  .tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.07em;
-    padding: 2px 7px;
-    border-radius: 3px;
-    text-transform: uppercase;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-  .tag-bkf  { background: var(--bkf-bg);  color: var(--bkf); }
-  .tag-lnch { background: var(--lnch-bg); color: var(--lnch); }
-  .tag-brk  { background: var(--brk-bg);  color: var(--brk); }
-  .tag-din  { background: var(--din-bg);  color: var(--din); }
-  .tag-rec  { background: var(--rec-bg);  color: var(--rec); }
-  .tag-bar  { background: var(--rec-bg);  color: var(--rec); }
+/* ── Day section ── */
+.day{border-bottom:1px solid var(--border)}
 
-  .pill-room {
-    display: inline-block;
-    background: var(--pill-room);
-    color: var(--bg);
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.07em;
-    padding: 2px 7px;
-    border-radius: 3px;
-    text-transform: uppercase;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-  [data-theme="dark"] .pill-room { color: var(--bg); }
+.day-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  padding:0 16px;
+  min-height:64px;
+  background:var(--surface);
+  text-align:left;
+  gap:13px;
+  border-left:4px solid transparent;
+  transition:background .1s, border-color .1s;
+  position:relative;
+}
+.day-btn:active{background:var(--surface2)}
 
-  .pill-gtd {
-    display: inline-block;
-    background: var(--pill-gtd);
-    color: var(--pill-gtd-text);
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.07em;
-    padding: 2px 7px;
-    border-radius: 3px;
-    font-weight: 500;
-    white-space: nowrap;
-  }
+/* TODAY styling */
+.day-btn.today{
+  background:var(--gold-bg);
+  border-left-color:var(--gold);
+}
+.day-btn.today:active{background:var(--gold-bg)}
 
-  .svc-menu {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 4px;
-    line-height: 1.6;
-  }
-  .svc-menu ul { padding-left: 14px; }
-  .svc-menu li { margin-bottom: 1px; }
+/* open state indicator dot */
+.day-indicator{
+  width:7px;height:7px;
+  border-radius:50%;
+  background:var(--border2);
+  flex-shrink:0;
+  transition:background .2s, box-shadow .2s;
+}
+.day-btn.today .day-indicator{
+  background:var(--gold);
+  box-shadow:0 0 8px var(--gold);
+}
+.day-btn.open .day-indicator{background:var(--gold2)}
 
-  .note-box {
-    margin-top: 5px;
-    background: #e8f0fb;
-    border-left: 2px solid var(--lnch);
-    padding: 5px 9px;
-    border-radius: 0 4px 4px 0;
-    font-size: 11px;
-    color: var(--lnch);
-    font-family: 'DM Mono', monospace;
-  }
-  [data-theme="dark"] .note-box { background: #0d1e38; }
+.day-info{flex:1;min-width:0;padding:14px 0}
+.day-weekday{
+  font-family:'Geist Mono',monospace;
+  font-size:9px;
+  letter-spacing:0.18em;
+  color:var(--text3);
+  text-transform:uppercase;
+  line-height:1;
+  margin-bottom:4px;
+}
+.day-btn.today .day-weekday{color:var(--gold)}
+.day-date-text{
+  font-size:17px;
+  font-weight:700;
+  letter-spacing:-0.02em;
+  color:var(--text);
+  line-height:1.1;
+}
+.day-btn.today .day-date-text{color:var(--gold)}
+.day-sub{
+  font-family:'Geist Mono',monospace;
+  font-size:10px;
+  color:var(--text3);
+  margin-top:3px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:calc(100vw - 120px);
+}
 
-  .dietary-flag {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: #fff8e6;
-    border: 1px solid #c9a84c;
-    color: #7a5c10;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 3px;
-    margin-top: 4px;
-  }
-  [data-theme="dark"] .dietary-flag { background: #2a1e06; color: #c9a84c; }
+.today-badge{
+  flex-shrink:0;
+  background:var(--gold);
+  color:#0c0a08;
+  font-family:'Geist Mono',monospace;
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:0.15em;
+  padding:4px 8px;
+  border-radius:5px;
+  text-transform:uppercase;
+  line-height:1;
+}
+[data-theme="light"] .today-badge{background:var(--gold);color:#fff}
 
-  /* ── CONTACT ROW ── */
-  .contact-row {
-    padding: 6px 14px;
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    border-top: 1px solid var(--border);
-    background: var(--surface);
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 0.04em;
-  }
-  .contact-row span { white-space: nowrap; }
-  .contact-row .key { color: var(--text-muted); }
-  .contact-row .val { color: var(--text); }
+.chevron{
+  font-size:12px;
+  color:var(--text3);
+  flex-shrink:0;
+  transition:transform .22s cubic-bezier(.4,0,.2,1);
+  width:18px;
+  text-align:center;
+}
+.day-btn.open .chevron{transform:rotate(90deg)}
 
-  /* ── DAY SUMMARY ── */
-  .day-summary {
-    margin-top: 14px;
-    padding: 9px 14px;
-    background: var(--accent-gold-light);
-    border: 1px solid #d4b86a;
-    border-radius: 5px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 0.04em;
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  .day-summary .ds-item strong { color: var(--text); }
+/* Day body */
+.day-body{
+  display:none;
+  padding:8px 12px 14px;
+  background:var(--bg);
+}
+.day-body.open{display:block}
 
-  /* ── PRINT ── */
-  @media print {
-    .toggle-btn, .expand-bar, .day-toggle .chevron { display: none !important; }
-    .day-toggle { pointer-events: none; }
-    .day-body { display: block !important; }
-    .page-header { position: static; }
-    .day-section { page-break-inside: avoid; }
-  }
+/* ═══════════════════════════════════════
+   EVENT CARD
+═══════════════════════════════════════ */
+.card{
+  background:var(--surface);
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  margin-top:10px;
+  overflow:hidden;
+  /* color accent on left edge — set inline per card */
+  border-left-width:4px;
+  border-left-style:solid;
+  /* animate in */
+  animation:slideUp .18s ease both;
+}
+.card:nth-child(2){animation-delay:.05s}
+.card:nth-child(3){animation-delay:.09s}
+.card:nth-child(4){animation-delay:.13s}
+
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
+
+/* Card header */
+.card-hd{
+  padding:11px 14px 10px;
+  border-bottom:1px solid var(--border);
+}
+.card-group{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text);
+  letter-spacing:-0.01em;
+  line-height:1.25;
+  margin-bottom:7px;
+}
+.card-badges{display:flex;flex-wrap:wrap;gap:5px}
+
+.bdg{
+  font-family:'Geist Mono',monospace;
+  font-size:9px;
+  letter-spacing:0.06em;
+  padding:3px 8px;
+  border-radius:5px;
+  border:1px solid;
+  white-space:nowrap;
+  line-height:1.4;
+}
+.bdg-mgr{color:var(--text3);border-color:var(--border2);background:var(--surface2)}
+.bdg-ic{color:var(--gold2);border-color:var(--gold2);background:var(--gold-bg)}
+[data-theme="light"] .bdg-ic{color:var(--gold);border-color:var(--gold2)}
+
+/* ── Service row ── */
+.svc{
+  padding:12px 14px;
+  border-bottom:1px solid var(--border);
+  display:grid;
+  grid-template-columns:58px 1fr;
+  gap:12px;
+  align-items:start;
+}
+.svc:last-of-type{border-bottom:none}
+
+/* Time — bigger, bolder, single line abbreviated */
+.svc-t{
+  font-family:'Geist Mono',monospace;
+  font-size:12px;
+  font-weight:600;
+  color:var(--text);
+  line-height:1.35;
+  padding-top:2px;
+  letter-spacing:-0.01em;
+}
+.svc-t span{
+  display:block;
+  font-size:10px;
+  font-weight:400;
+  color:var(--text3);
+  margin-top:1px;
+}
+
+.svc-body{min-width:0}
+
+/* chips row */
+.chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-bottom:8px;
+  align-items:center;
+}
+
+/* service type tag */
+.tag{
+  font-family:'Geist Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.08em;
+  padding:4px 9px;
+  border-radius:6px;
+  text-transform:uppercase;
+  white-space:nowrap;
+  line-height:1;
+}
+.tag-bkf {background:var(--c-bkf-bg); color:var(--c-bkf)}
+.tag-lnch{background:var(--c-lnch-bg);color:var(--c-lnch)}
+.tag-brk {background:var(--c-brk-bg); color:var(--c-brk)}
+.tag-din {background:var(--c-din-bg); color:var(--c-din)}
+.tag-rec {background:var(--c-rec-bg); color:var(--c-rec)}
+.tag-bar {background:var(--c-bar-bg); color:var(--c-bar)}
+
+/* room pill — solid dark */
+.room{
+  font-family:'Geist Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.07em;
+  padding:4px 9px;
+  border-radius:6px;
+  text-transform:uppercase;
+  white-space:nowrap;
+  line-height:1;
+  background:var(--text);
+  color:var(--bg);
+}
+[data-theme="light"] .room{background:#18140f;color:#fff}
+
+/* GTD pill */
+.gtd{
+  font-family:'Geist Mono',monospace;
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:0.05em;
+  padding:4px 9px;
+  border-radius:6px;
+  white-space:nowrap;
+  line-height:1;
+  background:var(--c-lnch-bg);
+  color:var(--c-lnch);
+}
+
+/* menu text */
+.menu{
+  font-size:12.5px;
+  color:var(--text2);
+  line-height:1.6;
+}
+.menu strong{color:var(--text);font-weight:600}
+
+/* NOTE box — distinct teal-on-dark */
+.note{
+  margin-top:8px;
+  background:var(--note-bg);
+  border:1px solid var(--note-border);
+  border-radius:var(--r-sm);
+  padding:7px 11px;
+  font-family:'Geist Mono',monospace;
+  font-size:10px;
+  color:var(--note-text);
+  line-height:1.55;
+}
+.note::before{content:"↳ ";opacity:.6}
+
+/* ALERT box — amber warning */
+.alert{
+  margin-top:8px;
+  background:var(--alert-bg);
+  border:1px solid var(--alert-border);
+  border-radius:var(--r-sm);
+  padding:7px 11px;
+  font-family:'Geist Mono',monospace;
+  font-size:10px;
+  color:var(--alert-text);
+  line-height:1.55;
+  display:flex;
+  gap:6px;
+  align-items:flex-start;
+}
+.alert::before{content:"⚠";flex-shrink:0}
+
+/* Card footer — contact info with tap-to-call */
+.card-ft{
+  padding:10px 14px;
+  background:var(--surface2);
+  border-top:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+.ft-row{
+  display:flex;
+  gap:8px;
+  align-items:baseline;
+  flex-wrap:wrap;
+}
+.ft-k{
+  font-family:'Geist Mono',monospace;
+  font-size:9px;
+  letter-spacing:0.1em;
+  color:var(--text3);
+  text-transform:uppercase;
+  flex-shrink:0;
+  line-height:1.5;
+}
+.ft-v{
+  font-size:12px;
+  color:var(--text2);
+  line-height:1.5;
+}
+/* tap-to-call link */
+a.tel{
+  font-family:'Geist Mono',monospace;
+  font-size:12px;
+  color:var(--gold);
+  font-weight:500;
+  text-decoration:none;
+  padding:1px 0;
+  border-bottom:1px solid var(--gold2);
+}
+a.tel:active{opacity:.7}
+
+/* ═══════════════════════════════════════
+   DAY SUMMARY STRIP
+═══════════════════════════════════════ */
+.strip{
+  margin-top:10px;
+  background:var(--gold-bg);
+  border:1px solid var(--gold2);
+  border-radius:var(--r-sm);
+  padding:9px 14px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 18px;
+}
+.strip-i{
+  font-family:'Geist Mono',monospace;
+  font-size:10px;
+  color:var(--text3);
+  line-height:1.4;
+}
+.strip-i strong{color:var(--gold);font-weight:600}
+[data-theme="light"] .strip-i strong{color:var(--gold)}
+
+/* empty day */
+.empty{
+  padding:20px 14px;
+  font-family:'Geist Mono',monospace;
+  font-size:11px;
+  color:var(--text3);
+  text-align:center;
+  letter-spacing:0.06em;
+}
+
+/* ═══════════════════════════════════════
+   PRINT
+═══════════════════════════════════════ */
+@media print{
+  .app-bar,.sub-bar,.sub-date{position:static}
+  .day-btn{pointer-events:none}
+  .day-body{display:block!important}
+  .chevron,.hdr-btn,.sub-btn{display:none!important}
+  .day{page-break-inside:avoid}
+}
 </style>
 </head>
 <body>
 
-<div class="page-header">
-  <div class="header-left">
-    <span class="header-brand">⬡ Banquet Bot · Westin Austin at The Domain</span>
-    <span class="header-title">BEO Daily Rundown — May 13 – June 3, 2026</span>
+<!-- ═══════ HEADER ═══════ -->
+<header class="app-bar">
+  <div class="app-bar-inner">
+    <div class="app-bar-left">
+      <span class="brand">⬡ Banquet Bot · Westin Domain</span>
+      <span class="page-title">BEO Rundown</span>
+    </div>
+    <div class="app-bar-right">
+      <button class="hdr-btn" onclick="toggleTheme()" id="themeBtn">◑</button>
+    </div>
   </div>
-  <div class="header-right">
-    <span class="print-date">Printed: Wed May 13, 2026</span>
-    <button class="toggle-btn" onclick="toggleTheme()" id="themeBtn">☾ Dark</button>
+</header>
+
+<div class="sub-bar">
+  <button class="sub-btn" onclick="expandAll()">▼ All</button>
+  <button class="sub-btn" onclick="collapseAll()">▲ Collapse</button>
+  <span class="sub-label">F&amp;B only · May 13 – Jun 3</span>
+</div>
+<div class="sub-date">Printed: Thu May 14, 2026 &nbsp;·&nbsp; Packet dates: May 13 – June 3</div>
+
+
+<!-- ═══════════════════════════════════════
+     DAYS
+═══════════════════════════════════════ -->
+<div class="days" id="daysList">
+
+<!-- ────────────────────────────────────
+     WED MAY 13
+──────────────────────────────────────── -->
+<div class="day" id="day-0513">
+<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
+  <span class="day-indicator"></span>
+  <div class="day-info">
+    <div class="day-weekday">Wednesday</div>
+    <div class="day-date-text">May 13</div>
+    <div class="day-sub">Main Street America · 2 F&amp;B touches</div>
   </div>
-</div>
-
-<div class="expand-bar">
-  <button onclick="expandAll()">▼ Expand All</button>
-  <button onclick="collapseAll()">▲ Collapse All</button>
-  <span class="label">F&B EVENTS ONLY · HOUSEMAN SETUP NOT SHOWN</span>
-</div>
-
-
-<!-- ═══════════════════════════════════════════════
-     WED MAY 13 — TODAY
-═══════════════════════════════════════════════ -->
-<div class="day-section">
-<button class="day-toggle day-today open" onclick="toggleDay(this)">
   <span class="chevron">▶</span>
-  <span class="day-label">WED</span>
-  <span class="day-date">Wednesday, May 13</span>
+</button>
+<div class="day-body">
+
+  <div class="card" style="border-left-color:var(--gold)">
+    <div class="card-hd">
+      <div class="card-group">Agency Council &amp; Experience Council — Main Street America</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa / Samantha</span>
+        <span class="bdg bdg-ic">IC: Juie Ann</span>
+      </div>
+    </div>
+
+    <div class="svc">
+      <div class="svc-t">7:30a<span>–9:00a</span></div>
+      <div class="svc-body">
+        <div class="chips">
+          <span class="tag tag-bkf">Breakfast</span>
+          <span class="room">Primrose B</span>
+          <span class="gtd">GTD 29</span>
+        </div>
+        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Scrambled Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
+      </div>
+    </div>
+
+    <div class="svc">
+      <div class="svc-t">10:00a<span>–10:30a</span></div>
+      <div class="svc-body">
+        <div class="chips">
+          <span class="tag tag-brk">Break</span>
+          <span class="room">Primrose B</span>
+          <span class="gtd">GTD 29</span>
+        </div>
+        <div class="menu">Morning Break — Whole Fruit, Granola &amp; Protein Bars</div>
+      </div>
+    </div>
+
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Julie Ann Rivera</span>
+      </div>
+      <div class="ft-row">
+        <span class="ft-k">Room</span>
+        <span class="ft-v">Primrose B · Rounds of 10 (3×10) · Session ends 1:00 PM</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="strip-i"><strong>1</strong> group</div>
+    <div class="strip-i"><strong>29</strong> GTD covers</div>
+    <div class="strip-i">Room: <strong>Primrose B</strong></div>
+  </div>
+
+</div><!-- /day-body -->
+</div><!-- /day -->
+
+
+<!-- ────────────────────────────────────
+     THU MAY 14 — TODAY
+──────────────────────────────────────── -->
+<div class="day" id="day-0514">
+<button class="day-btn today open" onclick="toggleDay(this)" aria-expanded="true">
+  <span class="day-indicator"></span>
+  <div class="day-info">
+    <div class="day-weekday">Thursday</div>
+    <div class="day-date-text">May 14</div>
+    <div class="day-sub">UW Softball · Sephora · Eckard Dinner</div>
+  </div>
   <span class="today-badge">TODAY</span>
-  <span class="day-meta">1 group · 2 F&amp;B touches</span>
+  <span class="chevron">▶</span>
 </button>
 <div class="day-body open">
 
-  <!-- Main Street America -->
-  <div class="event-card" style="border-left-color: #c9a84c;">
-    <div class="event-header">
-      <span class="event-group">Agency Council &amp; Experience Council — Main Street America</span>
-      <span class="badge badge-mgr">MGR: Lisa / Samantha</span>
-      <span class="badge badge-ic">IC: Juie Ann · 787-366-7466</span>
+  <!-- UW Softball -->
+  <div class="card" style="border-left-color:var(--c-bkf)">
+    <div class="card-hd">
+      <div class="card-group">University of Wisconsin Softball</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa / Malaika</span>
+        <span class="bdg bdg-ic">IC: Ryan Gilles</span>
+      </div>
     </div>
-
-    <div class="service-row">
-      <span class="svc-time">07:30–09:00</span>
+    <div class="svc">
+      <div class="svc-t">8:15a<span>–10:00a</span></div>
       <div class="svc-body">
-        <div class="svc-label">
+        <div class="chips">
           <span class="tag tag-bkf">Breakfast</span>
-          <span class="pill-room">Primrose B</span>
-          <span class="pill-gtd">GTD 29</span>
+          <span class="room">Camellia A</span>
+          <span class="gtd">GTD 34</span>
         </div>
-        <div class="svc-menu">Early Riser Breakfast Table — Juices, Fruit, Cereal, Pastries, Yogurt, Scrambled Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
+        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
+        <div class="note">Food set outside · Rounds of 9 to seat 36</div>
       </div>
     </div>
-
-    <div class="service-row">
-      <span class="svc-time">10:00–10:30</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-brk">Coffee Break</span>
-          <span class="pill-room">Primrose B</span>
-          <span class="pill-gtd">GTD 29</span>
-        </div>
-        <div class="svc-menu">Morning Break — Assorted Whole Fruit, Mix of Assorted Granola &amp; Protein Bars</div>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Kimberly De Souza</span>
       </div>
-    </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Julie Ann Rivera · (608) 621-6213</span></span>
-      <span><span class="key">ROOM </span><span class="val">Primrose B · Rounds of 10 (3×10)</span></span>
-      <span><span class="key">SESSION </span><span class="val">7:30 AM – 1:00 PM</span></span>
+      <div class="ft-row">
+        <span class="ft-k">IC</span>
+        <span class="ft-v">Ryan Gilles</span>
+      </div>
+      <div class="ft-row">
+        <span class="ft-k">Room</span>
+        <span class="ft-v">Camellia A · Rounds of 10</span>
+      </div>
     </div>
   </div>
 
-  <div class="day-summary">
-    <div class="ds-item"><strong>1</strong> group on property</div>
-    <div class="ds-item"><strong>29</strong> GTD covers</div>
-    <div class="ds-item">Rooms: <strong>Primrose B</strong></div>
-  </div>
-
-</div>
-</div>
-
-
-<!-- ═══════════════════════════════════════════════
-     THU MAY 14
-═══════════════════════════════════════════════ -->
-<div class="day-section">
-<button class="day-toggle" onclick="toggleDay(this)">
-  <span class="chevron">▶</span>
-  <span class="day-label">THU</span>
-  <span class="day-date">Thursday, May 14</span>
-  <span class="day-meta">4 groups · multiple F&amp;B touches</span>
-</button>
-<div class="day-body">
-
-  <!-- UW Softball — Camellia A breakfast -->
-  <div class="event-card" style="border-left-color: #0e7c61;">
-    <div class="event-header">
-      <span class="event-group">University of Wisconsin Softball</span>
-      <span class="badge badge-mgr">MGR: Lisa / Malaika</span>
-      <span class="badge badge-ic">IC: Ryan · 608-572-1977</span>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">08:15–10:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-bkf">Breakfast</span>
-          <span class="pill-room">Camellia A</span>
-          <span class="pill-gtd">GTD 34</span>
-        </div>
-        <div class="svc-menu">Early Riser Breakfast Table — Juices, Fruit, Cereal, Pastries, Yogurt, Scrambled Eggs, Bacon, Sausage, Potatoes, Coffee/Tea
-          <div class="note-box">⚑ Food set outside · Rounds of 9 to seat 36</div>
-        </div>
+  <!-- Sephora -->
+  <div class="card" style="border-left-color:var(--c-rec)">
+    <div class="card-hd">
+      <div class="card-group">Sephora Central Region Meeting</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa / Jessica</span>
+        <span class="bdg bdg-ic">IC: Shara Christiansen</span>
       </div>
     </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Kimberly De Souza · (512) 658-7163</span></span>
-      <span><span class="key">ROOM </span><span class="val">Camellia A · Rounds of 10</span></span>
-    </div>
-  </div>
-
-  <!-- Sephora — Verbena B -->
-  <div class="event-card" style="border-left-color: #6b3fa0;">
-    <div class="event-header">
-      <span class="event-group">Sephora Central Region Meeting</span>
-      <span class="badge badge-mgr">MGR: Lisa / Jessica</span>
-      <span class="badge badge-ic">IC: Shara · 415-271-6151</span>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">08:00–09:00</span>
+    <div class="svc">
+      <div class="svc-t">8:00a<span>–9:00a</span></div>
       <div class="svc-body">
-        <div class="svc-label">
+        <div class="chips">
           <span class="tag tag-bkf">Breakfast</span>
-          <span class="pill-room">Verbena B</span>
-          <span class="pill-gtd">GTD 22</span>
+          <span class="room">Verbena B</span>
+          <span class="gtd">GTD 22</span>
         </div>
-        <div class="svc-menu">Grab &amp; Go Breakfast — Yogurt, Overnight Oats, Packaged Muffins, English Muffin Sandwiches (Farm Egg, Chorizo, Jalapeño Jack)</div>
+        <div class="menu">Grab &amp; Go — Yogurt, Overnight Oats, Muffins, English Muffin Sandwich (Egg / Chorizo / Jalapeño Jack on Croissant)</div>
       </div>
     </div>
-
-    <div class="service-row">
-      <span class="svc-time">12:00–13:00</span>
+    <div class="svc">
+      <div class="svc-t">12:00p<span>–1:00p</span></div>
       <div class="svc-body">
-        <div class="svc-label">
+        <div class="chips">
           <span class="tag tag-lnch">Lunch</span>
-          <span class="pill-room">Verbena B</span>
-          <span class="pill-gtd">GTD 22</span>
+          <span class="room">Verbena B</span>
+          <span class="gtd">GTD 22</span>
         </div>
-        <div class="svc-menu">Tejas Mexicano Buffet — Baby Lettuce &amp; Fruit Salads, Queso &amp; Chips, Chicken Fajitas, Beef Barbacoa, Green Chile Rice, Refried Beans, Churros, Tres Leches</div>
+        <div class="menu">Tejas Mexicano Buffet — Salads, Queso &amp; Chips, Chicken Fajitas, Beef Barbacoa, Green Chile Rice, Refried Beans, Churros, Tres Leches</div>
       </div>
     </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Shara Christiansen · (415) 271-6151</span></span>
-      <span><span class="key">ROOM </span><span class="val">Verbena B · U-Shape · All Day Beverages</span></span>
-      <span><span class="key">SESSION </span><span class="val">8:00 AM – 5:00 PM</span></span>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Shara Christiansen</span>
+      </div>
+      <div class="ft-row">
+        <span class="ft-k">Room</span>
+        <span class="ft-v">Verbena B · U-Shape · All Day Beverages · 8a–5p</span>
+      </div>
     </div>
   </div>
 
-  <!-- Eckard Enterprises — Plumeria (DINNER) -->
-  <div class="event-card" style="border-left-color: #b52a2a;">
-    <div class="event-header">
-      <span class="event-group">Eckard Enterprises Partner Meeting</span>
-      <span class="badge badge-mgr">MGR: Diana</span>
-      <span class="badge badge-ic">IC: Michelle (same) · (972) 884-5920</span>
+  <!-- Eckard Dinner -->
+  <div class="card" style="border-left-color:var(--c-din)">
+    <div class="card-hd">
+      <div class="card-group">Eckard Enterprises Partner Meeting</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Diana</span>
+        <span class="bdg bdg-ic">IC: Michelle Corcoran</span>
+      </div>
     </div>
-
-    <div class="service-row">
-      <span class="svc-time">19:00–21:00</span>
+    <div class="svc">
+      <div class="svc-t">7:00p<span>–9:00p</span></div>
       <div class="svc-body">
-        <div class="svc-label">
+        <div class="chips">
           <span class="tag tag-din">Dinner Buffet</span>
-          <span class="pill-room">Plumeria</span>
-          <span class="pill-gtd">GTD 50</span>
+          <span class="room">Plumeria</span>
+          <span class="gtd">GTD 50</span>
         </div>
-        <div class="svc-menu">
-          Steakhouse Chopping Block — Baby Spinach &amp; Steakhouse Salads · Scalloped Potatoes, Truffled Cream Corn, Grilled Asparagus · Chicken Breast (Mushroom Madeira), Seared Branzino (Tomato Olive), Slow Roasted Strip Loin (Red Wine) · Carrot Cake, Apple Crisp · Coffee/Tea
-          <div class="note-box">⚑ 90 min service · (5) Rounds of 10 with votive candles &amp; round mirrors</div>
-        </div>
+        <div class="menu">Steakhouse Chopping Block — Spinach &amp; Steakhouse Salads · Scalloped Potatoes, Truffled Corn, Asparagus · Chicken (Mushroom Madeira), Branzino (Tomato Olive), Strip Loin (Red Wine Reduction) · Carrot Cake, Apple Crisp · Coffee/Tea</div>
+        <div class="note">90 min service · 5 Rounds of 10 · Votive candles &amp; round mirrors · Meeting starts 6p</div>
       </div>
     </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Michelle Corcoran · (972) 884-5920</span></span>
-      <span><span class="key">ROOM </span><span class="val">Plumeria · 5 Rounds of 10</span></span>
-      <span><span class="key">SESSION </span><span class="val">6:00 – 9:00 PM</span></span>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Michelle Corcoran</span>
+      </div>
+      <div class="ft-row">
+        <span class="ft-k">Room</span>
+        <span class="ft-v">Plumeria · Meeting 6p, Dinner 7p</span>
+      </div>
     </div>
   </div>
 
-  <div class="day-summary">
-    <div class="ds-item"><strong>3</strong> groups with F&amp;B</div>
-    <div class="ds-item">Rooms: <strong>Camellia A · Verbena B · Plumeria</strong></div>
-    <div class="ds-item">Note: <strong>Camellia B</strong> — UW Video Room, no F&amp;B · <strong>Primrose A</strong> — Main St America session, no F&amp;B</div>
+  <div class="strip">
+    <div class="strip-i"><strong>3</strong> groups w/ F&amp;B</div>
+    <div class="strip-i">Rooms: <strong>Camellia A · Verbena B · Plumeria</strong></div>
+    <div class="strip-i">Note: Camellia B &amp; Primrose A = no F&amp;B</div>
   </div>
 
 </div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════
+<!-- ────────────────────────────────────
      FRI MAY 15
-═══════════════════════════════════════════════ -->
-<div class="day-section">
-<button class="day-toggle" onclick="toggleDay(this)">
+──────────────────────────────────────── -->
+<div class="day" id="day-0515">
+<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
+  <span class="day-indicator"></span>
+  <div class="day-info">
+    <div class="day-weekday">Friday</div>
+    <div class="day-date-text">May 15</div>
+    <div class="day-sub">UW Softball · TMF Breaks (2 rooms) · Abbott Dinner</div>
+  </div>
   <span class="chevron">▶</span>
-  <span class="day-label">FRI</span>
-  <span class="day-date">Friday, May 15</span>
-  <span class="day-meta">3 groups · F&amp;B all day + evening dinner</span>
-</button>
-<div class="day-body">
-
-  <!-- UW Softball breakfast -->
-  <div class="event-card" style="border-left-color: #0e7c61;">
-    <div class="event-header">
-      <span class="event-group">University of Wisconsin Softball</span>
-      <span class="badge badge-mgr">MGR: Lisa / Malaika</span>
-      <span class="badge badge-ic">IC: Ryan (same)</span>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">09:15–11:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-bkf">Breakfast Buffet</span>
-          <span class="pill-room">Camellia A</span>
-          <span class="pill-gtd">GTD 34</span>
-        </div>
-        <div class="svc-menu">Early Riser Breakfast Table — Juices, Fruit, Cereal, Pastries, Yogurt, Scrambled Eggs, Bacon, Sausage, Potatoes, Coffee/Tea
-          <div class="note-box">⚑ Game Day — Game at 12pm</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Kimberly De Souza · (512) 658-7163</span></span>
-      <span><span class="key">ROOM </span><span class="val">Camellia A · Rounds of 10</span></span>
-    </div>
-  </div>
-
-  <!-- TMF Health — Plumeria A (continuous break only) -->
-  <div class="event-card" style="border-left-color: #b07c10;">
-    <div class="event-header">
-      <span class="event-group">TMF Board of Directors Meeting May 2026</span>
-      <span class="badge badge-mgr">MGR: Lisa</span>
-      <span class="badge badge-ic">IC: Erineka (same) · (225) 916-3055</span>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">14:45–18:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-brk">Continuous Break</span>
-          <span class="pill-room">Plumeria A</span>
-          <span class="pill-gtd">GTD 16</span>
-        </div>
-        <div class="svc-menu">Gallons — Little City Coffee ($135/gal), Tazo Teas ($105/gal) · Bottled Water on consumption · Assorted Pepsi Products</div>
-      </div>
-    </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Erineka Duncan · (225) 916-3055</span></span>
-      <span><span class="key">ROOM </span><span class="val">Plumeria A · Hollow Square · Session 2:00–6:00 PM</span></span>
-    </div>
-  </div>
-
-  <!-- TMF Health — Plumeria B (two break waves) -->
-  <div class="event-card" style="border-left-color: #b07c10;">
-    <div class="event-header">
-      <span class="event-group">TMF Board of Directors Meeting May 2026 — Room B</span>
-      <span class="badge badge-mgr">MGR: Lisa</span>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">14:45–18:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-brk">Break Wave 1</span>
-          <span class="pill-room">Plumeria B</span>
-          <span class="pill-gtd">GTD 16</span>
-        </div>
-        <div class="svc-menu">
-          Warm Soft Pretzel Rods w/ Creole Mustard &amp; Queso · Powerful Afternoon Break (Dried Fruit &amp; Nuts, Seasonal Fruit, Hummus &amp; Pita) · White Cheddar Popcorn · Coffee, Tea, Pepsi, Water
-          <div class="note-box">⚑ First meeting starts 3:30pm. Have wave 1 out at 2:45pm, wave 2 out at 3:30pm. Set snacks OUTSIDE in middle of both conference rooms. Beverages INSIDE rooms.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">15:30–18:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-brk">Break Wave 2</span>
-          <span class="pill-room">Plumeria B</span>
-        </div>
-        <div class="svc-menu">Powerful Afternoon Break (repeat) · Pretzel Rods · White Cheddar Popcorn</div>
-      </div>
-    </div>
-
-    <div class="contact-row">
-      <span><span class="key">ROOM </span><span class="val">Plumeria B · Hollow Square · Extra agenda table outside both rooms</span></span>
-    </div>
-  </div>
-
-  <!-- Abbott Faculty Dinner — Zilker -->
-  <div class="event-card" style="border-left-color: #b52a2a;">
-    <div class="event-header">
-      <span class="event-group">Abbott Faculty Dinner</span>
-      <span class="badge badge-mgr">MGR: Diana</span>
-      <span class="badge badge-ic">IC: Kelly (same) · (216) 288-7672</span>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">19:00–21:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-din">Dinner</span>
-          <span class="pill-room">Zilker</span>
-          <span class="pill-gtd">EXP 10</span>
-        </div>
-        <div class="svc-menu">
-          Order off regular menu · F&amp;B min $1,000
-          <div class="note-box">⚑ Group Code: AB6639 · Conference setup · No rental charge</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Kelly Shields · (216) 288-7672</span></span>
-      <span><span class="key">ROOM </span><span class="val">Zilker · Conference</span></span>
-    </div>
-  </div>
-
-  <div class="day-summary">
-    <div class="ds-item"><strong>3</strong> groups with F&amp;B</div>
-    <div class="ds-item">Rooms: <strong>Camellia A · Plumeria A/B · Zilker</strong></div>
-    <div class="ds-item">Note: <strong>Camellia B</strong> — Video Room, no F&amp;B</div>
-  </div>
-
-</div>
-</div>
-
-
-<!-- ═══════════════════════════════════════════════
-     SAT MAY 16
-═══════════════════════════════════════════════ -->
-<div class="day-section">
-<button class="day-toggle" onclick="toggleDay(this)">
-  <span class="chevron">▶</span>
-  <span class="day-label">SAT</span>
-  <span class="day-date">Saturday, May 16</span>
-  <span class="day-meta">3 groups · breakfast + plated lunch + reception/lunch</span>
 </button>
 <div class="day-body">
 
   <!-- UW Softball -->
-  <div class="event-card" style="border-left-color: #0e7c61;">
-    <div class="event-header">
-      <span class="event-group">University of Wisconsin Softball</span>
-      <span class="badge badge-mgr">MGR: Lisa / Malaika</span>
-      <span class="badge badge-ic">IC: Kimberly (same)</span>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">08:00–11:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-bkf">Breakfast Buffet</span>
-          <span class="pill-room">Camellia A</span>
-          <span class="pill-gtd">GTD 34</span>
-        </div>
-        <div class="svc-menu">Early Riser Breakfast Table — Juices, Fruit, Cereal, Pastries, Yogurt, Scrambled Eggs, Bacon, Sausage, Potatoes, Coffee/Tea
-          <div class="note-box">⚑ BEO note: Breakfast time still TBD — confirm with Ryan</div>
-        </div>
+  <div class="card" style="border-left-color:var(--c-bkf)">
+    <div class="card-hd">
+      <div class="card-group">University of Wisconsin Softball</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa / Malaika</span>
+        <span class="bdg bdg-ic">IC: Kimberly (same)</span>
       </div>
     </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Kimberly De Souza · (512) 658-7163</span></span>
-      <span><span class="key">ROOM </span><span class="val">Camellia A · Rounds of 10</span></span>
+    <div class="svc">
+      <div class="svc-t">9:15a<span>–11:00a</span></div>
+      <div class="svc-body">
+        <div class="chips">
+          <span class="tag tag-bkf">Breakfast</span>
+          <span class="room">Camellia A</span>
+          <span class="gtd">GTD 34</span>
+        </div>
+        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
+        <div class="note">GAME DAY — Game at 12:00 PM</div>
+      </div>
+    </div>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Kimberly De Souza</span>
+      </div>
     </div>
   </div>
 
-  <!-- TMF — Plumeria full day -->
-  <div class="event-card" style="border-left-color: #b07c10;">
-    <div class="event-header">
-      <span class="event-group">TMF Board of Directors Meeting May 2026</span>
-      <span class="badge badge-mgr">MGR: Lisa</span>
-      <span class="badge badge-ic">IC: Erineka (same) · (225) 916-3055</span>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">07:30–09:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-bkf">Breakfast Buffet</span>
-          <span class="pill-room">Plumeria</span>
-          <span class="pill-gtd">GTD 23</span>
-        </div>
-        <div class="svc-menu">Texas Sunrise Breakfast Table — Juices, Fruit, Cereal, Kolaches, Yogurt, Steel Cut Oatmeal, Migas Rancheros, Jalapeño Bacon, Texas Hashbrown Casserole, Biscuits &amp; Gravy · Coffee gallons, Pepsi, Bottled Water</div>
+  <!-- TMF Plumeria A -->
+  <div class="card" style="border-left-color:var(--c-brk)">
+    <div class="card-hd">
+      <div class="card-group">TMF Board of Directors — Plumeria A</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa</span>
+        <span class="bdg bdg-ic">IC: Erineka (same)</span>
       </div>
     </div>
-
-    <div class="service-row">
-      <span class="svc-time">10:40–11:10</span>
+    <div class="svc">
+      <div class="svc-t">2:45p<span>–6:00p</span></div>
       <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-brk">Coffee Break</span>
-          <span class="pill-room">Plumeria</span>
-          <span class="pill-gtd">GTD 23</span>
+        <div class="chips">
+          <span class="tag tag-brk">Cont. Break</span>
+          <span class="room">Plumeria A</span>
+          <span class="gtd">GTD 16</span>
         </div>
-        <div class="svc-menu">Mini Assorted Croissants (1 doz) · Cream Cheese Cinnamon Buns (1 doz)</div>
+        <div class="menu">Coffee gallon ($135) · Tea gallon ($105) · Bottled Water on consumption · Assorted Pepsi</div>
       </div>
     </div>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Erineka Duncan</span>
+      </div>
+      <div class="ft-row">
+        <span class="ft-k">Room</span>
+        <span class="ft-v">Plumeria A · Hollow Square · Session 2:00–6:00p</span>
+      </div>
+    </div>
+  </div>
 
-    <div class="service-row">
-      <span class="svc-time">12:30–13:20</span>
+  <!-- TMF Plumeria B — 2 waves -->
+  <div class="card" style="border-left-color:var(--c-brk)">
+    <div class="card-hd">
+      <div class="card-group">TMF Board of Directors — Plumeria B</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-t">2:45p<span>Wave 1</span></div>
       <div class="svc-body">
-        <div class="svc-label">
+        <div class="chips">
+          <span class="tag tag-brk">Break</span>
+          <span class="room">Plumeria B</span>
+          <span class="gtd">GTD 16</span>
+        </div>
+        <div class="menu">Warm Pretzel Rods w/ Creole Mustard &amp; Queso · Powerful Afternoon Break (Dried Fruit &amp; Nuts, Seasonal Fruit, Hummus &amp; Pita) · White Cheddar Popcorn · Coffee, Tea, Pepsi, Water</div>
+        <div class="note">Meeting starts 3:30p. Wave 1 out at 2:45p, Wave 2 out at 3:30p. Snacks set OUTSIDE between both rooms. Beverages INSIDE rooms. Extra agenda table outside.</div>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-t">3:30p<span>Wave 2</span></div>
+      <div class="svc-body">
+        <div class="chips">
+          <span class="tag tag-brk">Break</span>
+          <span class="room">Plumeria B</span>
+        </div>
+        <div class="menu">Powerful Afternoon Break (repeat) · Pretzel Rods · White Cheddar Popcorn</div>
+      </div>
+    </div>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Room</span>
+        <span class="ft-v">Plumeria B · Hollow Square 16 · Session 2:00–6:00p</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Abbott Dinner -->
+  <div class="card" style="border-left-color:var(--c-din)">
+    <div class="card-hd">
+      <div class="card-group">Abbott Faculty Dinner</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Diana</span>
+        <span class="bdg bdg-ic">IC: Kelly Shields</span>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-t">7:00p<span>–9:00p</span></div>
+      <div class="svc-body">
+        <div class="chips">
+          <span class="tag tag-din">Dinner</span>
+          <span class="room">Zilker</span>
+          <span class="gtd">EXP 10</span>
+        </div>
+        <div class="menu">Order off regular menu · F&amp;B minimum $1,000</div>
+        <div class="note">Group Code: AB6639 · Conference setup · No room rental charge</div>
+      </div>
+    </div>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Kelly Shields</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="strip-i"><strong>3</strong> groups w/ F&amp;B</div>
+    <div class="strip-i">Rooms: <strong>Camellia A · Plumeria A/B · Zilker</strong></div>
+    <div class="strip-i">Camellia B = Video Room only</div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ────────────────────────────────────
+     SAT MAY 16
+──────────────────────────────────────── -->
+<div class="day" id="day-0516">
+<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
+  <span class="day-indicator"></span>
+  <div class="day-info">
+    <div class="day-weekday">Saturday</div>
+    <div class="day-date-text">May 16</div>
+    <div class="day-sub">UW Softball · TMF Full Day · Graduation Lunch ⚠</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+
+  <!-- UW Softball -->
+  <div class="card" style="border-left-color:var(--c-bkf)">
+    <div class="card-hd">
+      <div class="card-group">University of Wisconsin Softball</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa / Malaika</span>
+        <span class="bdg bdg-ic">IC: Kimberly (same)</span>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-t">8:00a<span>–11:00a</span></div>
+      <div class="svc-body">
+        <div class="chips">
+          <span class="tag tag-bkf">Breakfast</span>
+          <span class="room">Camellia A</span>
+          <span class="gtd">GTD 34</span>
+        </div>
+        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
+        <div class="note">Breakfast time TBD — confirm with Kimberly before service</div>
+      </div>
+    </div>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Kimberly De Souza</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TMF Full Day -->
+  <div class="card" style="border-left-color:var(--c-brk)">
+    <div class="card-hd">
+      <div class="card-group">TMF Board of Directors — Full Day</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa</span>
+        <span class="bdg bdg-ic">IC: Erineka (same)</span>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-t">7:30a<span>–9:00a</span></div>
+      <div class="svc-body">
+        <div class="chips">
+          <span class="tag tag-bkf">Breakfast</span>
+          <span class="room">Plumeria</span>
+          <span class="gtd">GTD 23</span>
+        </div>
+        <div class="menu">Texas Sunrise Table — Juices, Fruit, Cereal, Kolaches, Yogurt, Steel Cut Oatmeal, Migas Rancheros, Jalapeño Bacon, Texas Hashbrown Casserole, Biscuits &amp; Gravy · Coffee gallons, Pepsi, Water</div>
+        <div class="note">Hollow Square setup for breakfast. Tent cards provided by hotel.</div>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-t">10:40a<span>–11:10a</span></div>
+      <div class="svc-body">
+        <div class="chips">
+          <span class="tag tag-brk">Break</span>
+          <span class="room">Plumeria</span>
+          <span class="gtd">GTD 23</span>
+        </div>
+        <div class="menu">Mini Assorted Croissants (1 doz) · Cream Cheese Cinnamon Buns (1 doz)</div>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-t">12:30p<span>–1:20p</span></div>
+      <div class="svc-body">
+        <div class="chips">
           <span class="tag tag-lnch">Plated Lunch</span>
-          <span class="pill-room">Plumeria</span>
-          <span class="pill-gtd">GTD 17</span>
+          <span class="room">Plumeria</span>
+          <span class="gtd">GTD 17</span>
         </div>
-        <div class="svc-menu">
+        <div class="menu">
           <strong>Course 1:</strong> Traditional Caesar Salad<br>
-          <strong>Course 2 (pre-orders):</strong> (4) Blackened BBQ Salmon — Poblano Polenta, Baby Spinach, Charred Corn; (9) Roasted Chicken — Pink Salt Whipped Potatoes, Haricot Vert, Oyster Mushroom Demi; (4) BBQ Braised Short Ribs — Whipped Sweet Potato, Sautéed Greens<br>
-          <strong>Dessert:</strong> Apple Tart · Artisan rolls, iced tea included
-          <div class="note-box">⚑ U-Shape setup for 28. Hollow square for breakfast &amp; lunch. Provide tent cards. Small agenda table inside room.</div>
+          <strong>Entrées:</strong> (4) Blackened BBQ Salmon — Poblano Polenta; (9) Roasted Chicken — Pink Salt Potatoes, Haricot Vert; (4) Braised Short Ribs — Whipped Sweet Potato<br>
+          <strong>Dessert:</strong> Apple Tart · Artisan rolls &amp; iced tea
         </div>
+        <div class="note">Hollow Square for lunch. Small agenda table inside room. U-Shape for 28 overall session.</div>
       </div>
     </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Erineka Duncan · (225) 916-3055</span></span>
-      <span><span class="key">ROOM </span><span class="val">Plumeria · Session 7:00 AM – 2:00 PM</span></span>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Erineka Duncan</span>
+      </div>
+      <div class="ft-row">
+        <span class="ft-k">Session</span>
+        <span class="ft-v">Plumeria · 7:00a – 2:00p</span>
+      </div>
     </div>
   </div>
 
-  <!-- Tiffany Isaac Smith Graduation -->
-  <div class="event-card" style="border-left-color: #6b3fa0;">
-    <div class="event-header">
-      <span class="event-group">Tiffany Issacs Smith's Graduation Lunch</span>
-      <span class="badge badge-mgr">MGR: Diana</span>
-      <span class="badge badge-ic">IC: Rachel (same) · (361) 235-9324</span>
+  <!-- Graduation Lunch -->
+  <div class="card" style="border-left-color:var(--c-rec)">
+    <div class="card-hd">
+      <div class="card-group">Tiffany Issacs Smith — Graduation Lunch</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Diana</span>
+        <span class="bdg bdg-ic">IC: Rachel Klasel</span>
+      </div>
     </div>
-
-    <div class="service-row">
-      <span class="svc-time">13:30–14:30</span>
+    <div class="svc">
+      <div class="svc-t">1:30p<span>–2:30p</span></div>
       <div class="svc-body">
-        <div class="svc-label">
+        <div class="chips">
           <span class="tag tag-rec">Reception</span>
-          <span class="pill-room">Barton</span>
-          <span class="pill-gtd">GTD 66</span>
+          <span class="room">Barton</span>
+          <span class="gtd">GTD 66</span>
         </div>
-        <div class="svc-menu">
-          Hors d'Oeuvres — (46) Deviled Eggs <strong>NO BACON</strong>, (42) Shrimp Cocktail Shooters, (42) Gulf Coast Crab Cakes w/ Tequila Remoulade
-          <div class="note-box">⚑ Bar &amp; food set in Bonnell · (7) Highboys scattered · (4) Highboys on Corinne Patio · Black linen</div>
-          <div class="dietary-flag">⚠ NUT ALLERGY — please remove all nuts</div>
-        </div>
+        <div class="menu">(46) Deviled Eggs <strong>NO BACON</strong>, Chive, Paprika · (42) Shrimp Cocktail Shooters · (42) Gulf Coast Crab Cakes w/ Tequila Remoulade</div>
+        <div class="note">Bar + food in Bonnell · 7 Highboys scattered · 4 Highboys on Corinne Patio · Black linen · Round mirrors &amp; votives</div>
+        <div class="alert">NUT ALLERGY — remove all nuts from entire event</div>
       </div>
     </div>
-
-    <div class="service-row">
-      <span class="svc-time">14:30–16:00</span>
+    <div class="svc">
+      <div class="svc-t">2:30p<span>–4:00p</span></div>
       <div class="svc-body">
-        <div class="svc-label">
+        <div class="chips">
           <span class="tag tag-lnch">Plated Lunch</span>
-          <span class="pill-room">Barton</span>
-          <span class="pill-gtd">GTD 66</span>
+          <span class="room">Barton</span>
+          <span class="gtd">GTD 66</span>
         </div>
-        <div class="svc-menu">
-          Baby Spinach Salad (Fennel, Orange, Cranberries, Spiced Cashews, Fig Balsamic) · (66) Roasted Natural Chicken — Pink Salt Whipped Potatoes, Hericot Verts, Mushroom Demi · Apple Tart · Artisan rolls, iced tea
-          <div class="note-box">⚑ Hosted Appreciated Brands Bar on consumption · (1) Bartender @ $250 · 2 drink tickets per person</div>
-          <div class="dietary-flag">⚠ (1) Nut Allergy — remove all nuts from service</div>
-        </div>
+        <div class="menu">Baby Spinach Salad (Fennel, Orange, Cranberries, Spiced Cashews, Fig Balsamic) · (66) Roasted Chicken — Pink Salt Potatoes, Hericot Verts, Mushroom Demi · Apple Tart · Artisan rolls &amp; iced tea</div>
+        <div class="note">Hosted Appreciated Brands Bar on consumption · 1 Bartender @ $250 · 2 drink tickets per person</div>
+        <div class="alert">1 Nut Allergy — remove ALL nuts from service</div>
       </div>
     </div>
-
-    <div class="service-row">
-      <span class="svc-time">13:30–16:00</span>
+    <div class="svc">
+      <div class="svc-t">1:30p<span>–4:00p</span></div>
       <div class="svc-body">
-        <div class="svc-label">
+        <div class="chips">
           <span class="tag tag-bar">Cash Bar</span>
-          <span class="pill-room">PDR Foyer</span>
+          <span class="room">PDR Foyer</span>
         </div>
-        <div class="svc-menu">Appreciated Brands $14 · Craft Beer $11 · Imported Beer $11 · Domestic Beer $10 · Wine $14 · Pepsi $8</div>
+        <div class="menu">Appreciated Brands $14 · Craft Beer $11 · Import $11 · Domestic $10 · Wine $14 · Pepsi $8</div>
       </div>
     </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Rachel Klasel · (361) 235-9324</span></span>
-      <span><span class="key">ROOMS </span><span class="val">Barton (reception + lunch) · Bonnell (bar/food) · Corinne Patio (highboys)</span></span>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Rachel Klasel</span>
+      </div>
+      <div class="ft-row">
+        <span class="ft-k">Rooms</span>
+        <span class="ft-v">Barton · Bonnell · Corinne Patio · PDR Foyer</span>
+      </div>
     </div>
   </div>
 
-  <div class="day-summary">
-    <div class="ds-item"><strong>3</strong> groups with F&amp;B</div>
-    <div class="ds-item">Rooms: <strong>Camellia A · Plumeria · Barton/Bonnell/Corinne Patio · PDR Foyer</strong></div>
-    <div class="ds-item">⚠ NUT ALLERGY in Barton graduation event</div>
+  <div class="strip">
+    <div class="strip-i"><strong>3</strong> groups</div>
+    <div class="strip-i">Rooms: <strong>Camellia A · Plumeria · Barton/Bonnell</strong></div>
+    <div class="strip-i">⚠ <strong>NUT ALLERGY</strong> in Barton event</div>
   </div>
 
 </div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════
+<!-- ────────────────────────────────────
      SUN MAY 17
-═══════════════════════════════════════════════ -->
-<div class="day-section">
-<button class="day-toggle" onclick="toggleDay(this)">
+──────────────────────────────────────── -->
+<div class="day" id="day-0517">
+<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
+  <span class="day-indicator"></span>
+  <div class="day-info">
+    <div class="day-weekday">Sunday</div>
+    <div class="day-date-text">May 17</div>
+    <div class="day-sub">UW Softball · breakfast only (TBD time)</div>
+  </div>
   <span class="chevron">▶</span>
-  <span class="day-label">SUN</span>
-  <span class="day-date">Sunday, May 17</span>
-  <span class="day-meta">1 group · breakfast only</span>
 </button>
 <div class="day-body">
 
-  <div class="event-card" style="border-left-color: #0e7c61;">
-    <div class="event-header">
-      <span class="event-group">University of Wisconsin Softball</span>
-      <span class="badge badge-mgr">MGR: Lisa / Malaika</span>
-      <span class="badge badge-ic">IC: Kimberly (same)</span>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">08:00–11:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-bkf">Breakfast Buffet</span>
-          <span class="pill-room">Camellia A</span>
-          <span class="pill-gtd">GTD 34</span>
-        </div>
-        <div class="svc-menu">Early Riser Breakfast Table — Juices, Fruit, Cereal, Pastries, Yogurt, Scrambled Eggs, Bacon, Sausage, Potatoes, Coffee/Tea
-          <div class="note-box">⚑ Breakfast time TBD — confirm with Kimberly before service</div>
-        </div>
+  <div class="card" style="border-left-color:var(--c-bkf)">
+    <div class="card-hd">
+      <div class="card-group">University of Wisconsin Softball</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa / Malaika</span>
+        <span class="bdg bdg-ic">IC: Kimberly (same)</span>
       </div>
     </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Kimberly De Souza · (512) 658-7163</span></span>
-      <span><span class="key">ROOM </span><span class="val">Camellia A · Rounds of 10 · Camellia B = Video Room only</span></span>
+    <div class="svc">
+      <div class="svc-t">8:00a<span>–11:00a</span></div>
+      <div class="svc-body">
+        <div class="chips">
+          <span class="tag tag-bkf">Breakfast</span>
+          <span class="room">Camellia A</span>
+          <span class="gtd">GTD 34</span>
+        </div>
+        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
+        <div class="note">Breakfast time TBD — confirm with Kimberly before service</div>
+      </div>
+    </div>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Kimberly De Souza</span>
+      </div>
+      <div class="ft-row">
+        <span class="ft-k">Room</span>
+        <span class="ft-v">Camellia A · Rounds of 10 · Camellia B = Video Room only</span>
+      </div>
     </div>
   </div>
 
-  <div class="day-summary">
-    <div class="ds-item"><strong>1</strong> group on property</div>
-    <div class="ds-item"><strong>34</strong> GTD covers</div>
-    <div class="ds-item">Rooms: <strong>Camellia A</strong></div>
+  <div class="strip">
+    <div class="strip-i"><strong>1</strong> group · <strong>34</strong> GTD</div>
+    <div class="strip-i">Room: <strong>Camellia A</strong></div>
   </div>
 
 </div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════
-     MON–WED MAY 18–20  (no events in packet)
-═══════════════════════════════════════════════ -->
-<div class="day-section">
-<button class="day-toggle" onclick="toggleDay(this)">
+<!-- ────────────────────────────────────
+     MAY 18–20 (no events)
+──────────────────────────────────────── -->
+<div class="day" id="day-0518">
+<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
+  <span class="day-indicator"></span>
+  <div class="day-info">
+    <div class="day-weekday">Mon – Wed</div>
+    <div class="day-date-text">May 18–20</div>
+    <div class="day-sub">No events on file</div>
+  </div>
   <span class="chevron">▶</span>
-  <span class="day-label">MON–WED</span>
-  <span class="day-date">May 18–20</span>
-  <span class="day-meta">No events in packet</span>
 </button>
 <div class="day-body">
-  <div style="padding: 16px; color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 11px;">No BEO events on file for these dates.</div>
+  <div class="empty">No BEO events on file for these dates.</div>
 </div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════
+<!-- ────────────────────────────────────
      THU MAY 21
-═══════════════════════════════════════════════ -->
-<div class="day-section">
-<button class="day-toggle" onclick="toggleDay(this)">
+──────────────────────────────────────── -->
+<div class="day" id="day-0521">
+<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
+  <span class="day-indicator"></span>
+  <div class="day-info">
+    <div class="day-weekday">Thursday</div>
+    <div class="day-date-text">May 21</div>
+    <div class="day-sub">bex+Co Confirmation Day · Camellia A lunch</div>
+  </div>
   <span class="chevron">▶</span>
-  <span class="day-label">THU</span>
-  <span class="day-date">Thursday, May 21</span>
-  <span class="day-meta">1 group · lunch</span>
 </button>
 <div class="day-body">
 
-  <div class="event-card" style="border-left-color: #2563ab;">
-    <div class="event-header">
-      <span class="event-group">bex+Co Confirmation Day — Frandevco</span>
-      <span class="badge badge-mgr">MGR: Lisa / Jessica</span>
-      <span class="badge badge-ic">IC: Lauren (same) · (303) 921-1155</span>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">12:00–13:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-lnch">Lunch</span>
-          <span class="pill-room">Camellia A</span>
-          <span class="pill-gtd">GTD 12</span>
-        </div>
-        <div class="svc-menu">
-          Conference Dining — individual orders: Classic Caesar VG ($19), Corinne Cobb GF ($22), Wagyu Cheeseburger ($25), Toasted Grilled Cheese VG ($22), Grilled Chicken Club ($22)
-        </div>
+  <div class="card" style="border-left-color:var(--c-lnch)">
+    <div class="card-hd">
+      <div class="card-group">bex+Co Confirmation Day — Frandevco</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa / Jessica</span>
+        <span class="bdg bdg-ic">IC: Lauren Wanamaker</span>
       </div>
     </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Lauren Wanamaker · (303) 921-1155</span></span>
-      <span><span class="key">ROOM </span><span class="val">Camellia A · Conference · Session 8:00 AM – 5:00 PM · AV: Markeys</span></span>
+    <div class="svc">
+      <div class="svc-t">12:00p<span>–1:00p</span></div>
+      <div class="svc-body">
+        <div class="chips">
+          <span class="tag tag-lnch">Lunch</span>
+          <span class="room">Camellia A</span>
+          <span class="gtd">GTD 12</span>
+        </div>
+        <div class="menu">Conference Dining — individual orders: Classic Caesar VG ($19) · Corinne Cobb GF ($22) · Wagyu Cheeseburger ($25) · Toasted Grilled Cheese VG ($22) · Grilled Chicken Club ($22)</div>
+      </div>
+    </div>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Lauren Wanamaker</span>
+      </div>
+      <div class="ft-row">
+        <span class="ft-k">Room</span>
+        <span class="ft-v">Camellia A · Conference · 8a–5p · AV: Markeys</span>
+      </div>
     </div>
   </div>
 
-  <div class="day-summary">
-    <div class="ds-item"><strong>1</strong> group on property</div>
-    <div class="ds-item"><strong>12</strong> GTD covers</div>
-    <div class="ds-item">Rooms: <strong>Camellia A</strong></div>
+  <div class="strip">
+    <div class="strip-i"><strong>1</strong> group · <strong>12</strong> GTD</div>
+    <div class="strip-i">Room: <strong>Camellia A</strong></div>
   </div>
 
 </div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════
+<!-- ────────────────────────────────────
      FRI MAY 22
-═══════════════════════════════════════════════ -->
-<div class="day-section">
-<button class="day-toggle" onclick="toggleDay(this)">
+──────────────────────────────────────── -->
+<div class="day" id="day-0522">
+<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
+  <span class="day-indicator"></span>
+  <div class="day-info">
+    <div class="day-weekday">Friday</div>
+    <div class="day-date-text">May 22</div>
+    <div class="day-sub">In-house SwS · Zilker lunch</div>
+  </div>
   <span class="chevron">▶</span>
-  <span class="day-label">FRI</span>
-  <span class="day-date">Friday, May 22</span>
-  <span class="day-meta">1 event · in-house staff lunch</span>
 </button>
 <div class="day-body">
 
-  <div class="event-card" style="border-left-color: #888;">
-    <div class="event-header">
-      <span class="event-group">AUSDW In-House — SwS</span>
-      <span class="badge badge-ic">IC: Mike · (512) 687-6638</span>
+  <div class="card" style="border-left-color:var(--border2)">
+    <div class="card-hd">
+      <div class="card-group">AUSDW In-House — SwS</div>
+      <div class="card-badges">
+        <span class="bdg bdg-ic">IC: Mike Brewster</span>
+      </div>
     </div>
-
-    <div class="service-row">
-      <span class="svc-time">12:00–13:00</span>
+    <div class="svc">
+      <div class="svc-t">12:00p<span>–1:00p</span></div>
       <div class="svc-body">
-        <div class="svc-label">
+        <div class="chips">
           <span class="tag tag-lnch">Lunch</span>
-          <span class="pill-room">Zilker</span>
-          <span class="pill-gtd">12 covers</span>
+          <span class="room">Zilker</span>
+          <span class="gtd">12 covers</span>
         </div>
-        <div class="svc-menu">(12) Turkey, Bacon, Avocado Club Sandwich w/ chips · (12) Assorted Pepsi · (12) Bottled Water · Conference setup</div>
+        <div class="menu">(12) Turkey, Bacon, Avocado Club w/ chips · (12) Assorted Pepsi · (12) Bottled Water</div>
       </div>
     </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Mike Brewster · (512) 687-6638</span></span>
-      <span><span class="key">ROOM </span><span class="val">Zilker · Conference</span></span>
-    </div>
-  </div>
-
-  <div class="day-summary">
-    <div class="ds-item"><strong>1</strong> in-house event</div>
-    <div class="ds-item">Rooms: <strong>Zilker</strong></div>
-  </div>
-
-</div>
-</div>
-
-
-<!-- ═══════════════════════════════════════════════
-     SAT MAY 23 – MON JUNE 1  (no events in packet)
-═══════════════════════════════════════════════ -->
-<div class="day-section">
-<button class="day-toggle" onclick="toggleDay(this)">
-  <span class="chevron">▶</span>
-  <span class="day-label">MAY 23–JUN 1</span>
-  <span class="day-date">May 23 – June 1</span>
-  <span class="day-meta">No events in packet</span>
-</button>
-<div class="day-body">
-  <div style="padding: 16px; color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 11px;">No BEO events on file for these dates.</div>
-</div>
-</div>
-
-
-<!-- ═══════════════════════════════════════════════
-     TUE JUNE 2
-═══════════════════════════════════════════════ -->
-<div class="day-section">
-<button class="day-toggle" onclick="toggleDay(this)">
-  <span class="chevron">▶</span>
-  <span class="day-label">TUE</span>
-  <span class="day-date">Tuesday, June 2</span>
-  <span class="day-meta">240 Tutoring setup — no F&amp;B</span>
-</button>
-<div class="day-body">
-
-  <div class="event-card" style="border-left-color: #888;">
-    <div class="event-header">
-      <span class="event-group">240 Tutoring Conference — Setup Day</span>
-      <span class="badge badge-mgr">MGR: Lisa / Jessica</span>
-      <span class="badge badge-ic">IC: Eloisa (same) · (214) 462-2181</span>
-    </div>
-    <div class="service-row">
-      <span class="svc-time">18:00–21:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="pill-room">Primrose AB</span>
-        </div>
-        <div class="svc-menu">Client setup only — no F&amp;B. Crescent Rounds setup.</div>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Mike Brewster</span>
+      </div>
+      <div class="ft-row">
+        <span class="ft-k">Room</span>
+        <span class="ft-v">Zilker · Conference setup</span>
       </div>
     </div>
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Eloisa Fuentes · (214) 462-2181</span></span>
-    </div>
   </div>
 
-  <div class="day-summary">
-    <div class="ds-item">Setup only — no banquet F&amp;B</div>
+  <div class="strip">
+    <div class="strip-i">In-house event · Room: <strong>Zilker</strong></div>
   </div>
 
 </div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════════
-     WED JUNE 3
-═══════════════════════════════════════════════ -->
-<div class="day-section">
-<button class="day-toggle" onclick="toggleDay(this)">
+<!-- ────────────────────────────────────
+     MAY 23 – JUN 1 (no events)
+──────────────────────────────────────── -->
+<div class="day" id="day-0523">
+<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
+  <span class="day-indicator"></span>
+  <div class="day-info">
+    <div class="day-weekday">Sat May 23 – Mon Jun 1</div>
+    <div class="day-date-text">May 23 – Jun 1</div>
+    <div class="day-sub">No events on file</div>
+  </div>
   <span class="chevron">▶</span>
-  <span class="day-label">WED</span>
-  <span class="day-date">Wednesday, June 3</span>
-  <span class="day-meta">240 Tutoring full day · breakfast + break + lunch</span>
+</button>
+<div class="day-body">
+  <div class="empty">No BEO events on file for these dates.</div>
+</div>
+</div>
+
+
+<!-- ────────────────────────────────────
+     TUE JUN 2
+──────────────────────────────────────── -->
+<div class="day" id="day-0602">
+<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
+  <span class="day-indicator"></span>
+  <div class="day-info">
+    <div class="day-weekday">Tuesday</div>
+    <div class="day-date-text">June 2</div>
+    <div class="day-sub">240 Tutoring setup — no F&amp;B</div>
+  </div>
+  <span class="chevron">▶</span>
 </button>
 <div class="day-body">
 
-  <div class="event-card" style="border-left-color: #2563ab;">
-    <div class="event-header">
-      <span class="event-group">240 Tutoring Conference Jun 2026</span>
-      <span class="badge badge-mgr">MGR: Lisa / Jessica</span>
-      <span class="badge badge-ic">IC: Eloisa (same) · (214) 462-2181</span>
-    </div>
-
-    <div class="service-row">
-      <span class="svc-time">08:00–09:00</span>
-      <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-bkf">Breakfast Buffet</span>
-          <span class="pill-room">Primrose AB</span>
-          <span class="pill-gtd">EXP 50</span>
-        </div>
-        <div class="svc-menu">Early Riser Breakfast Table — Juices, Fruit, Cereal, Pastries, Yogurt, Scrambled Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
+  <div class="card" style="border-left-color:var(--border2)">
+    <div class="card-hd">
+      <div class="card-group">240 Tutoring Conference — Setup Day</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa / Jessica</span>
+        <span class="bdg bdg-ic">IC: Eloisa Fuentes</span>
       </div>
     </div>
-
-    <div class="service-row">
-      <span class="svc-time">09:00–12:00</span>
+    <div class="svc">
+      <div class="svc-t">6:00p<span>–9:00p</span></div>
       <div class="svc-body">
-        <div class="svc-label">
-          <span class="tag tag-brk">Continuous Break</span>
-          <span class="pill-room">Primrose AB</span>
-          <span class="pill-gtd">EXP 50</span>
+        <div class="chips">
+          <span class="room">Primrose AB</span>
         </div>
-        <div class="svc-menu">All Day Beverage Service — Coffee, Tea, Pepsi, Bottled Water
-          <div class="note-box">⚑ Add Diet Coke per client request</div>
-        </div>
+        <div class="menu">Client setup only — no F&amp;B. Crescent Rounds.</div>
       </div>
     </div>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Eloisa Fuentes</span>
+      </div>
+    </div>
+  </div>
 
-    <div class="service-row">
-      <span class="svc-time">12:00–13:00</span>
+</div>
+</div>
+
+
+<!-- ────────────────────────────────────
+     WED JUN 3
+──────────────────────────────────────── -->
+<div class="day" id="day-0603">
+<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
+  <span class="day-indicator"></span>
+  <div class="day-info">
+    <div class="day-weekday">Wednesday</div>
+    <div class="day-date-text">June 3</div>
+    <div class="day-sub">240 Tutoring · breakfast + break + Tejas lunch</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+
+  <div class="card" style="border-left-color:var(--c-lnch)">
+    <div class="card-hd">
+      <div class="card-group">240 Tutoring Conference Jun 2026</div>
+      <div class="card-badges">
+        <span class="bdg bdg-mgr">MGR: Lisa / Jessica</span>
+        <span class="bdg bdg-ic">IC: Eloisa Fuentes</span>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-t">8:00a<span>–9:00a</span></div>
       <div class="svc-body">
-        <div class="svc-label">
+        <div class="chips">
+          <span class="tag tag-bkf">Breakfast</span>
+          <span class="room">Primrose AB</span>
+          <span class="gtd">EXP 50</span>
+        </div>
+        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-t">9:00a<span>–12:00p</span></div>
+      <div class="svc-body">
+        <div class="chips">
+          <span class="tag tag-brk">All Day Bev</span>
+          <span class="room">Primrose AB</span>
+          <span class="gtd">EXP 50</span>
+        </div>
+        <div class="menu">Coffee, Tea, Assorted Pepsi, Bottled Water</div>
+        <div class="note">Add Diet Coke per client request</div>
+      </div>
+    </div>
+    <div class="svc">
+      <div class="svc-t">12:00p<span>–1:00p</span></div>
+      <div class="svc-body">
+        <div class="chips">
           <span class="tag tag-lnch">Lunch Buffet</span>
-          <span class="pill-room">Primrose AB</span>
-          <span class="pill-gtd">EXP 50</span>
+          <span class="room">Primrose AB</span>
+          <span class="gtd">EXP 50</span>
         </div>
-        <div class="svc-menu">Tejas Mexicano Buffet — Baby Lettuce &amp; Fruit Salads, Queso &amp; Chips, Chicken Fajitas, Beef Barbacoa, Green Chile Rice, Refried Beans, Churros, Tres Leches
-          <div class="note-box">⚑ Crescent Rounds · Podium in room · 10% F&amp;B discount applies</div>
-        </div>
+        <div class="menu">Tejas Mexicano Buffet — Salads, Queso &amp; Chips, Chicken Fajitas, Beef Barbacoa, Green Chile Rice, Refried Beans, Churros, Tres Leches</div>
+        <div class="note">Crescent Rounds · Podium in room · 10% F&amp;B discount applies · Buttercup = private use, do not enter</div>
       </div>
     </div>
-
-    <div class="contact-row">
-      <span><span class="key">CONTACT </span><span class="val">Eloisa Fuentes · (214) 462-2181</span></span>
-      <span><span class="key">ROOM </span><span class="val">Primrose AB · Crescent Rounds · Session 8:00 AM – 5:00 PM</span></span>
-      <span><span class="key">NOTE </span><span class="val">Buttercup reserved for private use (breastfeeding) — do not enter</span></span>
+    <div class="card-ft">
+      <div class="ft-row">
+        <span class="ft-k">Contact</span>
+        <span class="ft-v">Eloisa Fuentes</span>
+      </div>
+      <div class="ft-row">
+        <span class="ft-k">Room</span>
+        <span class="ft-v">Primrose AB · 8a–5p · Buttercup = private</span>
+      </div>
     </div>
   </div>
 
-  <div class="day-summary">
-    <div class="ds-item"><strong>1</strong> group on property</div>
-    <div class="ds-item"><strong>~50</strong> expected covers</div>
-    <div class="ds-item">Rooms: <strong>Primrose AB · Buttercup (private)</strong></div>
+  <div class="strip">
+    <div class="strip-i"><strong>1</strong> group · <strong>~50</strong> EXP</div>
+    <div class="strip-i">Rooms: <strong>Primrose AB</strong></div>
   </div>
 
 </div>
 </div>
+
+</div><!-- /days -->
 
 
 <script>
-  // ── Theme ──
-  const saved = localStorage.getItem('beo-theme') || 'light';
-  if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.getElementById('themeBtn').textContent = '☀ Light'; }
-
-  function toggleTheme() {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    document.getElementById('themeBtn').textContent = isDark ? '☾ Dark' : '☀ Light';
-    localStorage.setItem('beo-theme', isDark ? 'light' : 'dark');
+/* ─── Theme ─────────────────────────── */
+(function(){
+  const saved = localStorage.getItem('beo-theme-v2');
+  if(saved==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeColor').setAttribute('content','#f2ede6');
+    document.getElementById('themeBtn').textContent='◐';
   }
+})();
 
-  // ── Day toggles ──
-  function toggleDay(btn) {
-    const body = btn.nextElementSibling;
-    const isOpen = body.classList.contains('open');
-    body.classList.toggle('open', !isOpen);
-    btn.classList.toggle('open', !isOpen);
+function toggleTheme(){
+  const isLight = document.documentElement.getAttribute('data-theme')==='light';
+  if(isLight){
+    document.documentElement.removeAttribute('data-theme');
+    document.getElementById('themeColor').setAttribute('content','#0c0a08');
+    document.getElementById('themeBtn').textContent='◑';
+    localStorage.setItem('beo-theme-v2','dark');
+  } else {
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeColor').setAttribute('content','#f2ede6');
+    document.getElementById('themeBtn').textContent='◐';
+    localStorage.setItem('beo-theme-v2','light');
   }
+}
 
-  function expandAll() {
-    document.querySelectorAll('.day-body').forEach(b => b.classList.add('open'));
-    document.querySelectorAll('.day-toggle').forEach(b => b.classList.add('open'));
-  }
+/* ─── Accordion ─────────────────────── */
+function toggleDay(btn){
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  btn.classList.toggle('open',!isOpen);
+  btn.setAttribute('aria-expanded', String(!isOpen));
+}
 
-  function collapseAll() {
-    document.querySelectorAll('.day-body').forEach(b => b.classList.remove('open'));
-    document.querySelectorAll('.day-toggle').forEach(b => b.classList.remove('open'));
-  }
+function expandAll(){
+  document.querySelectorAll('.day-body').forEach(b=>b.classList.add('open'));
+  document.querySelectorAll('.day-btn').forEach(b=>{
+    b.classList.add('open');
+    b.setAttribute('aria-expanded','true');
+  });
+}
+function collapseAll(){
+  document.querySelectorAll('.day-body').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('.day-btn').forEach(b=>{
+    b.classList.remove('open');
+    b.setAttribute('aria-expanded','false');
+  });
+}
+
+/* ─── Auto-scroll to TODAY on load ──── */
+window.addEventListener('load', function(){
+  const today = document.querySelector('.day-btn.today');
+  if(!today) return;
+  // small delay to let layout settle
+  setTimeout(function(){
+    const el = today.closest('.day');
+    if(!el) return;
+    // offset by header height so it's not hidden under sticky bar
+    const headerH = document.querySelector('.app-bar').offsetHeight
+                  + (document.querySelector('.sub-bar').offsetHeight || 0)
+                  + (document.querySelector('.sub-date').offsetHeight || 0);
+    const y = el.getBoundingClientRect().top + window.scrollY - headerH - 8;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  }, 120);
+});
 </script>
-
 </body>
 </html>
