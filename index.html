@@ -5,1550 +5,2449 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" id="themeColor" content="#0c0a08">
-<title>BEO · Westin Domain</title>
-<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0f0d0b">
+<title>BEO Rundown — Westin Domain</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-
-/* ═══════════════════════════════════════
-   CSS TOKENS — DARK (default)
-═══════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
 :root {
-  --bg:          #0c0a08;
-  --bg2:         #111009;
-  --surface:     #181410;
-  --surface2:    #201c17;
-  --surface3:    #28231d;
-  --border:      #2c2820;
-  --border2:     #3a342c;
+  --bg:         #0f0d0b;
+  --surface:    #1a1714;
+  --surface2:   #231f1b;
+  --border:     #2e2925;
+  --border2:    #3d3830;
+  --text:       #f0ebe3;
+  --text2:      #a89f94;
+  --text3:      #6b6259;
+  --gold:       #c9a84c;
+  --gold-dim:   #7a6228;
+  --gold-bg:    #1e1808;
 
-  --text:        #f2ede6;
-  --text2:       #a8a098;
-  --text3:       #645e56;
+  --bkf:        #3dcca0;
+  --bkf-bg:     #0a2318;
+  --lnch:       #5b9bff;
+  --lnch-bg:    #0a1a30;
+  --brk:        #f0b429;
+  --brk-bg:     #221800;
+  --din:        #ff6b6b;
+  --din-bg:     #280a0a;
+  --rec:        #c084fc;
+  --rec-bg:     #1a0a28;
+  --bar:        #fb923c;
+  --bar-bg:     #200e00;
 
-  --gold:        #d4a84b;
-  --gold2:       #8a6420;
-  --gold-bg:     #1c1506;
-  --gold-glow:   rgba(212,168,75,0.15);
-
-  /* service type colors */
-  --c-bkf:       #34d399;   /* teal-green  */
-  --c-bkf-bg:    #081f14;
-  --c-lnch:      #60a5fa;   /* sky blue    */
-  --c-lnch-bg:   #071628;
-  --c-brk:       #fbbf24;   /* amber       */
-  --c-brk-bg:    #1c1200;
-  --c-din:       #f87171;   /* coral red   */
-  --c-din-bg:    #200808;
-  --c-rec:       #c084fc;   /* violet      */
-  --c-rec-bg:    #150824;
-  --c-bar:       #fb923c;   /* orange      */
-  --c-bar-bg:    #1c0800;
-
-  --note-bg:     #0e1a2e;
-  --note-border: #1e3a6e;
-  --note-text:   #7eb3ff;
-
-  --alert-bg:    #1c1000;
-  --alert-border:#7a5500;
-  --alert-text:  #f0a800;
-
-  --r:           14px;
-  --r-sm:        9px;
-  --safe-t:      env(safe-area-inset-top, 0px);
-  --safe-b:      env(safe-area-inset-bottom, 0px);
-  --safe-l:      env(safe-area-inset-left, 0px);
-  --safe-r:      env(safe-area-inset-right, 0px);
+  --today-ring: #c9a84c;
+  --radius:     12px;
+  --radius-sm:  8px;
+  --safe-top:   env(safe-area-inset-top, 0px);
+  --safe-bot:   env(safe-area-inset-bottom, 0px);
 }
 
-/* ═══════════════════════════════════════
-   LIGHT MODE
-═══════════════════════════════════════ */
 [data-theme="light"] {
-  --bg:          #f2ede6;
-  --bg2:         #ede8e0;
-  --surface:     #ffffff;
-  --surface2:    #f7f4ef;
-  --surface3:    #ede8e0;
-  --border:      #ddd8ce;
-  --border2:     #ccc5b8;
-
-  --text:        #18140f;
-  --text2:       #5a5248;
-  --text3:       #9a9088;
-
-  --gold:        #a06a10;
-  --gold2:       #c9a84c;
-  --gold-bg:     #fdf5e0;
-  --gold-glow:   rgba(160,106,16,0.08);
-
-  --c-bkf:       #059669;
-  --c-bkf-bg:    #ecfdf5;
-  --c-lnch:      #2563eb;
-  --c-lnch-bg:   #eff6ff;
-  --c-brk:       #d97706;
-  --c-brk-bg:    #fffbeb;
-  --c-din:       #dc2626;
-  --c-din-bg:    #fef2f2;
-  --c-rec:       #7c3aed;
-  --c-rec-bg:    #f5f3ff;
-  --c-bar:       #ea580c;
-  --c-bar-bg:    #fff7ed;
-
-  --note-bg:     #eff6ff;
-  --note-border: #bfdbfe;
-  --note-text:   #1d4ed8;
-
-  --alert-bg:    #fffbeb;
-  --alert-border:#fcd34d;
-  --alert-text:  #92400e;
+  --bg:         #f4f1ec;
+  --surface:    #ffffff;
+  --surface2:   #f0ece5;
+  --border:     #ddd8cf;
+  --border2:    #ccc5b9;
+  --text:       #1a1714;
+  --text2:      #5a5248;
+  --text3:      #9a928a;
+  --gold:       #9b6f1a;
+  --gold-dim:   #c9a84c;
+  --gold-bg:    #fdf5e0;
+  --bkf:        #0a7a55;
+  --bkf-bg:     #e0f5ed;
+  --lnch:       #1a5fd4;
+  --lnch-bg:    #e5effe;
+  --brk:        #9c6800;
+  --brk-bg:     #fff3d0;
+  --din:        #c0312a;
+  --din-bg:     #fde8e8;
+  --rec:        #7c3aed;
+  --rec-bg:     #f0e8fd;
+  --bar:        #c05a10;
+  --bar-bg:     #fff0e6;
 }
 
-/* ═══════════════════════════════════════
-   RESET
-═══════════════════════════════════════ */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{font-size:16px;-webkit-text-size-adjust:100%}
-body{
-  font-family:'Geist',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100dvh;
-  overscroll-behavior-y:none;
-  -webkit-font-smoothing:antialiased;
-  padding-left:var(--safe-l);
-  padding-right:var(--safe-r);
+/* ══════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { font-size: 15px; }
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
 }
-a{color:inherit;text-decoration:none}
-button{font-family:inherit;cursor:pointer;border:none;background:none;-webkit-appearance:none}
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════════════════
    STICKY HEADER
-═══════════════════════════════════════ */
-.app-bar{
-  position:sticky;
-  top:0;
-  z-index:300;
-  background:var(--bg);
-  border-bottom:1px solid var(--border);
-  padding:calc(var(--safe-t) + 10px) 16px 10px;
+══════════════════════════════════════════ */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: calc(var(--safe-top) + 12px) 16px 12px;
 }
-.app-bar-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
-.app-bar-left{}
-.brand{
-  font-family:'Geist Mono',monospace;
-  font-size:9px;
-  letter-spacing:0.2em;
-  color:var(--gold);
-  text-transform:uppercase;
-  margin-bottom:2px;
-  display:block;
+.header-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 3px;
 }
-.page-title{
-  font-size:18px;
-  font-weight:700;
-  letter-spacing:-0.03em;
-  color:var(--text);
-  line-height:1;
+.header-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.1;
 }
-.app-bar-right{display:flex;gap:7px;align-items:center}
+.header-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.header-printed-top {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  text-align: right;
+  line-height: 1.3;
+}
+.header-printed-top strong { color: var(--gold); font-weight: 500; }
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+  -webkit-user-select: none;
+}
+.icon-btn:active { background: var(--surface2); }
 
-.hdr-btn{
-  height:36px;
-  min-width:36px;
-  border-radius:10px;
-  background:var(--surface2);
-  border:1px solid var(--border2);
-  color:var(--text2);
-  font-family:'Geist Mono',monospace;
-  font-size:11px;
-  letter-spacing:0.05em;
-  display:flex;align-items:center;justify-content:center;
-  gap:5px;
-  padding:0 10px;
-  transition:background .12s,border-color .12s,color .12s;
+/* ══════════════════════════════════════════
+   EXPAND BAR
+══════════════════════════════════════════ */
+.expand-bar {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
 }
-.hdr-btn:active{background:var(--surface3);border-color:var(--gold);color:var(--gold)}
-
-.sub-bar{
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  padding:7px 16px;
-  display:flex;
-  align-items:center;
-  gap:7px;
-  overflow-x:auto;
-  scrollbar-width:none;
+.expand-bar::-webkit-scrollbar { display: none; }
+.pill-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px;
+  white-space: nowrap;
+  background: var(--surface2);
+  transition: all 0.15s;
 }
-.sub-bar::-webkit-scrollbar{display:none}
-.sub-btn{
-  font-family:'Geist Mono',monospace;
-  font-size:10px;
-  letter-spacing:0.08em;
-  color:var(--text3);
-  border:1px solid var(--border2);
-  border-radius:20px;
-  padding:5px 13px;
-  white-space:nowrap;
-  background:var(--surface2);
-  flex-shrink:0;
-  transition:all .12s;
-}
-.sub-btn:active{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
-.sub-label{
-  font-family:'Geist Mono',monospace;
-  font-size:9px;
-  letter-spacing:0.1em;
-  color:var(--text3);
-  white-space:nowrap;
-  margin-left:auto;
-  flex-shrink:0;
-  text-transform:uppercase;
-}
-
-/* printed date */
-.sub-date{
-  font-family:'Geist Mono',monospace;
-  font-size:9px;
-  color:var(--text3);
-  letter-spacing:0.07em;
-  padding:5px 16px;
-  background:var(--bg2);
-  border-bottom:1px solid var(--border);
-}
-
-/* ═══════════════════════════════════════
-   DAYS LIST
-═══════════════════════════════════════ */
-.days{padding-bottom:calc(var(--safe-b) + 60px)}
-
-/* ── Day section ── */
-.day{border-bottom:1px solid var(--border)}
-
-.day-btn{
-  width:100%;
-  display:flex;
-  align-items:center;
-  padding:0 16px;
-  min-height:64px;
-  background:var(--surface);
-  text-align:left;
-  gap:13px;
-  border-left:4px solid transparent;
-  transition:background .1s, border-color .1s;
-  position:relative;
-}
-.day-btn:active{background:var(--surface2)}
-
-/* TODAY styling */
-.day-btn.today{
-  background:var(--gold-bg);
-  border-left-color:var(--gold);
-}
-.day-btn.today:active{background:var(--gold-bg)}
-
-/* open state indicator dot */
-.day-indicator{
-  width:7px;height:7px;
-  border-radius:50%;
-  background:var(--border2);
-  flex-shrink:0;
-  transition:background .2s, box-shadow .2s;
-}
-.day-btn.today .day-indicator{
-  background:var(--gold);
-  box-shadow:0 0 8px var(--gold);
-}
-.day-btn.open .day-indicator{background:var(--gold2)}
-
-.day-info{flex:1;min-width:0;padding:14px 0}
-.day-weekday{
-  font-family:'Geist Mono',monospace;
-  font-size:9px;
-  letter-spacing:0.18em;
-  color:var(--text3);
-  text-transform:uppercase;
-  line-height:1;
-  margin-bottom:4px;
-}
-.day-btn.today .day-weekday{color:var(--gold)}
-.day-date-text{
-  font-size:17px;
-  font-weight:700;
-  letter-spacing:-0.02em;
-  color:var(--text);
-  line-height:1.1;
-}
-.day-btn.today .day-date-text{color:var(--gold)}
-.day-sub{
-  font-family:'Geist Mono',monospace;
-  font-size:10px;
-  color:var(--text3);
-  margin-top:3px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  max-width:calc(100vw - 120px);
+.pill-btn:active { border-color: var(--gold); color: var(--gold); }
+.print-note {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  align-self: center;
+  margin-left: auto;
+  padding-left: 8px;
 }
 
-.today-badge{
-  flex-shrink:0;
-  background:var(--gold);
-  color:#0c0a08;
-  font-family:'Geist Mono',monospace;
-  font-size:8px;
-  font-weight:700;
-  letter-spacing:0.15em;
-  padding:4px 8px;
-  border-radius:5px;
-  text-transform:uppercase;
-  line-height:1;
-}
-[data-theme="light"] .today-badge{background:var(--gold);color:#fff}
+/* ══════════════════════════════════════════
+   DAY SECTION
+══════════════════════════════════════════ */
+.days-list { padding: 0 0 calc(var(--safe-bot) + 80px); }
 
-.chevron{
-  font-size:12px;
-  color:var(--text3);
-  flex-shrink:0;
-  transition:transform .22s cubic-bezier(.4,0,.2,1);
-  width:18px;
-  text-align:center;
+.day-section {
+  border-bottom: 1px solid var(--border);
 }
-.day-btn.open .chevron{transform:rotate(90deg)}
+
+.day-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--surface);
+  text-align: left;
+  transition: background 0.12s;
+  min-height: 58px;
+  position: relative;
+}
+.day-btn:active { background: var(--surface2); }
+
+.day-btn.is-today {
+  background: var(--gold-bg);
+  border-left: 3px solid var(--gold);
+  padding-left: 13px;
+}
+
+.day-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border2);
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.day-btn.is-today .day-dot { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+.day-btn.is-open .day-dot { background: var(--gold-dim); }
+
+.day-text { flex: 1; min-width: 0; }
+.day-dow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--text3);
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.day-btn.is-today .day-dow { color: var(--gold); }
+.day-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.day-btn.is-today .day-name { color: var(--gold); }
+.day-summary-line {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.today-chip {
+  background: var(--gold);
+  color: #0f0d0b;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  padding: 3px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+[data-theme="light"] .today-chip { color: #fff; background: #9b6f1a; }
+
+.chevron-icon {
+  font-size: 11px;
+  color: var(--text3);
+  flex-shrink: 0;
+  transition: transform 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+.day-btn.is-open .chevron-icon { transform: rotate(90deg); }
 
 /* Day body */
-.day-body{
-  display:none;
-  padding:8px 12px 14px;
-  background:var(--bg);
+.day-body {
+  display: none;
+  padding: 0 12px 12px;
+  background: var(--bg);
 }
-.day-body.open{display:block}
+.day-body.is-open { display: block; }
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════════════════
    EVENT CARD
-═══════════════════════════════════════ */
-.card{
-  background:var(--surface);
-  border-radius:var(--r);
-  border:1px solid var(--border);
-  margin-top:10px;
-  overflow:hidden;
-  /* color accent on left edge — set inline per card */
-  border-left-width:4px;
-  border-left-style:solid;
-  /* animate in */
-  animation:slideUp .18s ease both;
-}
-.card:nth-child(2){animation-delay:.05s}
-.card:nth-child(3){animation-delay:.09s}
-.card:nth-child(4){animation-delay:.13s}
-
-@keyframes slideUp{
-  from{opacity:0;transform:translateY(8px)}
-  to{opacity:1;transform:none}
+══════════════════════════════════════════ */
+.event-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin-top: 10px;
+  overflow: hidden;
 }
 
-/* Card header */
-.card-hd{
-  padding:11px 14px 10px;
-  border-bottom:1px solid var(--border);
+.card-head {
+  padding: 11px 14px 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
-.card-group{
-  font-size:13px;
-  font-weight:600;
-  color:var(--text);
-  letter-spacing:-0.01em;
-  line-height:1.25;
-  margin-bottom:7px;
+.card-group {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
-.card-badges{display:flex;flex-wrap:wrap;gap:5px}
+.card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  padding: 3px 7px;
+  border-radius: 5px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.badge-mgr { color: var(--text3); border-color: var(--border2); background: var(--surface2); }
+.badge-ic  { color: var(--gold-dim); border-color: var(--gold-dim); background: var(--gold-bg); }
+.badge-flag { color: var(--din); border-color: var(--din); background: var(--din-bg); }
+[data-theme="light"] .badge-ic { color: var(--gold); border-color: var(--gold-dim); }
 
-.bdg{
-  font-family:'Geist Mono',monospace;
-  font-size:9px;
-  letter-spacing:0.06em;
-  padding:3px 8px;
-  border-radius:5px;
-  border:1px solid;
-  white-space:nowrap;
-  line-height:1.4;
+.svc-row {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 10px;
+  align-items: start;
 }
-.bdg-mgr{color:var(--text3);border-color:var(--border2);background:var(--surface2)}
-.bdg-ic{color:var(--gold2);border-color:var(--gold2);background:var(--gold-bg)}
-[data-theme="light"] .bdg-ic{color:var(--gold);border-color:var(--gold2)}
+.svc-row:last-of-type { border-bottom: none; }
 
-/* ── Service row ── */
-.svc{
-  padding:12px 14px;
-  border-bottom:1px solid var(--border);
-  display:grid;
-  grid-template-columns:58px 1fr;
-  gap:12px;
-  align-items:start;
-}
-.svc:last-of-type{border-bottom:none}
-
-/* Time — bigger, bolder, single line abbreviated */
-.svc-t{
-  font-family:'Geist Mono',monospace;
-  font-size:12px;
-  font-weight:600;
-  color:var(--text);
-  line-height:1.35;
-  padding-top:2px;
-  letter-spacing:-0.01em;
-}
-.svc-t span{
-  display:block;
-  font-size:10px;
-  font-weight:400;
-  color:var(--text3);
-  margin-top:1px;
+.svc-time {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.3;
+  padding-top: 2px;
 }
 
-.svc-body{min-width:0}
-
-/* chips row */
-.chips{
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px;
-  margin-bottom:8px;
-  align-items:center;
+.svc-content { min-width: 0; }
+.svc-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 6px;
 }
 
-/* service type tag */
-.tag{
-  font-family:'Geist Mono',monospace;
-  font-size:9px;
-  font-weight:600;
-  letter-spacing:0.08em;
-  padding:4px 9px;
-  border-radius:6px;
-  text-transform:uppercase;
-  white-space:nowrap;
-  line-height:1;
+.tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.07em;
+  padding: 3px 8px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: 500;
+  white-space: nowrap;
 }
-.tag-bkf {background:var(--c-bkf-bg); color:var(--c-bkf)}
-.tag-lnch{background:var(--c-lnch-bg);color:var(--c-lnch)}
-.tag-brk {background:var(--c-brk-bg); color:var(--c-brk)}
-.tag-din {background:var(--c-din-bg); color:var(--c-din)}
-.tag-rec {background:var(--c-rec-bg); color:var(--c-rec)}
-.tag-bar {background:var(--c-bar-bg); color:var(--c-bar)}
+.tag-bkf  { background: var(--bkf-bg);  color: var(--bkf); }
+.tag-lnch { background: var(--lnch-bg); color: var(--lnch); }
+.tag-brk  { background: var(--brk-bg);  color: var(--brk); }
+.tag-din  { background: var(--din-bg);  color: var(--din); }
+.tag-rec  { background: var(--rec-bg);  color: var(--rec); }
+.tag-bar  { background: var(--bar-bg);  color: var(--bar); }
 
-/* room pill — solid dark */
-.room{
-  font-family:'Geist Mono',monospace;
-  font-size:9px;
-  font-weight:600;
-  letter-spacing:0.07em;
-  padding:4px 9px;
-  border-radius:6px;
-  text-transform:uppercase;
-  white-space:nowrap;
-  line-height:1;
-  background:var(--text);
-  color:var(--bg);
+.room-pill {
+  background: var(--text);
+  color: var(--bg);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.07em;
+  padding: 3px 8px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: 500;
+  white-space: nowrap;
 }
-[data-theme="light"] .room{background:#18140f;color:#fff}
+[data-theme="light"] .room-pill { background: #1a1714; color: #fff; }
 
-/* GTD pill */
-.gtd{
-  font-family:'Geist Mono',monospace;
-  font-size:9px;
-  font-weight:600;
-  letter-spacing:0.05em;
-  padding:4px 9px;
-  border-radius:6px;
-  white-space:nowrap;
-  line-height:1;
-  background:var(--c-lnch-bg);
-  color:var(--c-lnch);
+.gtd-pill {
+  background: var(--lnch-bg);
+  color: var(--lnch);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.07em;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
-/* menu text */
-.menu{
-  font-size:12.5px;
-  color:var(--text2);
-  line-height:1.6;
+.svc-menu {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.55;
 }
-.menu strong{color:var(--text);font-weight:600}
 
-/* NOTE box — distinct teal-on-dark */
-.note{
-  margin-top:8px;
-  background:var(--note-bg);
-  border:1px solid var(--note-border);
-  border-radius:var(--r-sm);
-  padding:7px 11px;
-  font-family:'Geist Mono',monospace;
-  font-size:10px;
-  color:var(--note-text);
-  line-height:1.55;
+.note {
+  margin-top: 7px;
+  background: var(--lnch-bg);
+  border-left: 2px solid var(--lnch);
+  border-radius: 0 6px 6px 0;
+  padding: 6px 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--lnch);
+  line-height: 1.5;
 }
-.note::before{content:"↳ ";opacity:.6}
+[data-theme="light"] .note { background: #e5effe; }
 
-/* ALERT box — amber warning */
-.alert{
-  margin-top:8px;
-  background:var(--alert-bg);
-  border:1px solid var(--alert-border);
-  border-radius:var(--r-sm);
-  padding:7px 11px;
-  font-family:'Geist Mono',monospace;
-  font-size:10px;
-  color:var(--alert-text);
-  line-height:1.55;
-  display:flex;
-  gap:6px;
-  align-items:flex-start;
+.allergy {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 7px;
+  background: var(--brk-bg);
+  border: 1px solid var(--brk);
+  color: var(--brk);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  line-height: 1.3;
 }
-.alert::before{content:"⚠";flex-shrink:0}
 
-/* Card footer — contact info with tap-to-call */
-.card-ft{
-  padding:10px 14px;
-  background:var(--surface2);
-  border-top:1px solid var(--border);
-  display:flex;
-  flex-direction:column;
-  gap:5px;
+.card-foot {
+  padding: 9px 14px;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
-.ft-row{
-  display:flex;
-  gap:8px;
-  align-items:baseline;
-  flex-wrap:wrap;
+.foot-row {
+  display: flex;
+  gap: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  line-height: 1.4;
 }
-.ft-k{
-  font-family:'Geist Mono',monospace;
-  font-size:9px;
-  letter-spacing:0.1em;
-  color:var(--text3);
-  text-transform:uppercase;
-  flex-shrink:0;
-  line-height:1.5;
-}
-.ft-v{
-  font-size:12px;
-  color:var(--text2);
-  line-height:1.5;
-}
-/* tap-to-call link */
-a.tel{
-  font-family:'Geist Mono',monospace;
-  font-size:12px;
-  color:var(--gold);
-  font-weight:500;
-  text-decoration:none;
-  padding:1px 0;
-  border-bottom:1px solid var(--gold2);
-}
-a.tel:active{opacity:.7}
+.foot-key { color: var(--text3); flex-shrink: 0; }
+.foot-val { color: var(--text2); min-width: 0; }
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════════════════
    DAY SUMMARY STRIP
-═══════════════════════════════════════ */
-.strip{
-  margin-top:10px;
-  background:var(--gold-bg);
-  border:1px solid var(--gold2);
-  border-radius:var(--r-sm);
-  padding:9px 14px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px 18px;
+══════════════════════════════════════════ */
+.day-strip {
+  margin-top: 10px;
+  background: var(--gold-bg);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius-sm);
+  padding: 9px 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
 }
-.strip-i{
-  font-family:'Geist Mono',monospace;
-  font-size:10px;
-  color:var(--text3);
-  line-height:1.4;
+.strip-item {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  line-height: 1.4;
 }
-.strip-i strong{color:var(--gold);font-weight:600}
-[data-theme="light"] .strip-i strong{color:var(--gold)}
+.strip-item strong { color: var(--gold); font-weight: 600; }
+[data-theme="light"] .strip-item strong { color: var(--gold); }
 
-/* empty day */
-.empty{
-  padding:20px 14px;
-  font-family:'Geist Mono',monospace;
-  font-size:11px;
-  color:var(--text3);
-  text-align:center;
-  letter-spacing:0.06em;
+.empty-day {
+  padding: 16px 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  text-align: center;
+  letter-spacing: 0.05em;
 }
 
-/* ═══════════════════════════════════════
+/* ══════════════════════════════════════════
+   ANIMATIONS
+══════════════════════════════════════════ */
+.event-card {
+  animation: cardIn 0.18s ease both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+.day-body.is-open .event-card:nth-child(1) { animation-delay: 0.02s; }
+.day-body.is-open .event-card:nth-child(2) { animation-delay: 0.06s; }
+.day-body.is-open .event-card:nth-child(3) { animation-delay: 0.10s; }
+.day-body.is-open .event-card:nth-child(4) { animation-delay: 0.14s; }
+
+/* ══════════════════════════════════════════
+   TAB SWITCHER
+══════════════════════════════════════════ */
+.tab-bar {
+  display: flex;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 150;
+}
+.tab-btn {
+  flex: 1;
+  padding: 12px 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  text-transform: uppercase;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+}
+.tab-btn.is-active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+  background: var(--gold-bg);
+}
+.tab-btn:active { background: var(--surface2); }
+.tab-panel { display: none; }
+.tab-panel.is-active { display: block; }
+
+/* ══════════════════════════════════════════
+   MENU TAB
+══════════════════════════════════════════ */
+.menu-search-bar {
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 45px;
+  z-index: 140;
+}
+.menu-search-input {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 9px 14px 9px 36px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b6259' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>");
+  background-repeat: no-repeat;
+  background-position: 12px center;
+}
+.menu-search-input:focus { border-color: var(--gold); }
+.menu-search-input::placeholder { color: var(--text3); }
+
+.menu-search-status {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 14px;
+  display: none;
+}
+.menu-search-status.is-active { display: block; }
+
+.menu-list { padding: 0 0 calc(var(--safe-bot) + 80px); }
+
+.menu-cat {
+  border-bottom: 1px solid var(--border);
+}
+.menu-cat-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--surface);
+  text-align: left;
+  min-height: 58px;
+}
+.menu-cat-btn:active { background: var(--surface2); }
+.menu-cat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  flex-shrink: 0;
+}
+.menu-cat-text { flex: 1; min-width: 0; }
+.menu-cat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--text3);
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.menu-cat-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.menu-cat-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 2px;
+}
+.menu-cat-btn .chevron-icon {
+  font-size: 11px;
+  color: var(--text3);
+  transition: transform 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+.menu-cat-btn.is-open .chevron-icon { transform: rotate(90deg); }
+.menu-cat-body {
+  display: none;
+  padding: 0 12px 12px;
+  background: var(--bg);
+}
+.menu-cat-body.is-open { display: block; }
+
+.menu-sub {
+  margin-top: 10px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.menu-sub-head {
+  padding: 10px 14px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.menu-sub-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.menu-sub-meta {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  letter-spacing: 0.05em;
+}
+.menu-sub-meta strong { color: var(--gold); font-weight: 500; }
+
+.menu-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 12px;
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-item-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+}
+.menu-item-desc {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+.menu-item-price {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gold);
+  white-space: nowrap;
+  text-align: right;
+  align-self: start;
+}
+.menu-item-tags {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 2px;
+}
+.menu-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.menu-tag-v   { background: var(--bkf-bg);  color: var(--bkf); }
+.menu-tag-gf  { background: var(--lnch-bg); color: var(--lnch); }
+.menu-tag-day { background: var(--brk-bg);  color: var(--brk); }
+
+.menu-note {
+  padding: 10px 14px;
+  background: var(--surface2);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  line-height: 1.5;
+  border-top: 1px solid var(--border);
+}
+
+.menu-item.is-hidden, .menu-sub.is-hidden, .menu-cat.is-hidden { display: none; }
+
+/* ══════════════════════════════════════════
    PRINT
-═══════════════════════════════════════ */
-@media print{
-  .app-bar,.sub-bar,.sub-date{position:static}
-  .day-btn{pointer-events:none}
-  .day-body{display:block!important}
-  .chevron,.hdr-btn,.sub-btn{display:none!important}
-  .day{page-break-inside:avoid}
+══════════════════════════════════════════ */
+@media print {
+  .app-header, .expand-bar, .tab-bar, .menu-search-bar { position: static; }
+  .day-btn, .menu-cat-btn { pointer-events: none; }
+  .day-body, .menu-cat-body { display: block !important; }
+  .chevron-icon, .icon-btn { display: none !important; }
+  .day-section, .menu-cat { page-break-inside: avoid; }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════ HEADER ═══════ -->
-<header class="app-bar">
-  <div class="app-bar-inner">
-    <div class="app-bar-left">
-      <span class="brand">⬡ Banquet Bot · Westin Domain</span>
-      <span class="page-title">BEO Rundown</span>
+<!-- ══ HEADER ══ -->
+<header class="app-header">
+  <div class="header-inner">
+    <div>
+      <div class="header-brand">⬡ Banquet Bot · Westin Austin Domain</div>
+      <div class="header-title" id="headerTitle">BEO Rundown</div>
     </div>
-    <div class="app-bar-right">
-      <button class="hdr-btn" onclick="toggleTheme()" id="themeBtn">◑</button>
+    <div class="header-actions">
+      <div class="header-printed-top" id="headerPrinted">
+        Printed <strong>Tue May 19, 2026</strong><br>
+        Packet: May 21 – Jun 4
+      </div>
+      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">◑</button>
     </div>
   </div>
 </header>
 
-<div class="sub-bar">
-  <button class="sub-btn" onclick="expandAll()">▼ All</button>
-  <button class="sub-btn" onclick="collapseAll()">▲ Collapse</button>
-  <span class="sub-label">F&amp;B only · May 13 – Jun 3</span>
+<!-- ══ TAB BAR ══ -->
+<div class="tab-bar">
+  <button class="tab-btn is-active" data-tab="beo" onclick="switchTab('beo')">⬡ BEO Rundown</button>
+  <button class="tab-btn" data-tab="menu" onclick="switchTab('menu')">☷ Menu 2024</button>
 </div>
-<div class="sub-date">Printed: Thu May 14, 2026 &nbsp;·&nbsp; Packet dates: May 13 – June 3</div>
 
+<!-- ════════════════════════════════════════
+     TAB: BEO RUNDOWN
+════════════════════════════════════════ -->
+<div class="tab-panel is-active" id="tab-beo">
 
-<!-- ═══════════════════════════════════════
+<!-- ══ EXPAND BAR ══ -->
+<div class="expand-bar">
+  <button class="pill-btn" onclick="expandAll()">▼ Expand All</button>
+  <button class="pill-btn" onclick="collapseAll()">▲ Collapse All</button>
+  <span class="print-note">F&amp;B ONLY · NO HOUSEMAN</span>
+</div>
+
+<!-- ══════════════════════════════════
      DAYS
-═══════════════════════════════════════ -->
-<div class="days" id="daysList">
+══════════════════════════════════ -->
+<div class="days-list">
 
-<!-- ────────────────────────────────────
-     WED MAY 13
-──────────────────────────────────────── -->
-<div class="day" id="day-0513">
-<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
-  <span class="day-indicator"></span>
-  <div class="day-info">
-    <div class="day-weekday">Wednesday</div>
-    <div class="day-date-text">May 13</div>
-    <div class="day-sub">Main Street America · 2 F&amp;B touches</div>
+<!-- ── WED MAY 20 ── -->
+<div class="day-section" data-date="2026-05-20">
+<button class="day-btn" onclick="toggleDay(this)">
+  <span class="day-dot"></span>
+  <div class="day-text">
+    <div class="day-dow">Wednesday</div>
+    <div class="day-name">May 20</div>
+    <div class="day-summary-line">No events on file</div>
   </div>
-  <span class="chevron">▶</span>
+  <span class="chevron-icon">▶</span>
 </button>
 <div class="day-body">
-
-  <div class="card" style="border-left-color:var(--gold)">
-    <div class="card-hd">
-      <div class="card-group">Agency Council &amp; Experience Council — Main Street America</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa / Samantha</span>
-        <span class="bdg bdg-ic">IC: Juie Ann</span>
-      </div>
-    </div>
-
-    <div class="svc">
-      <div class="svc-t">7:30a<span>–9:00a</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-bkf">Breakfast</span>
-          <span class="room">Primrose B</span>
-          <span class="gtd">GTD 29</span>
-        </div>
-        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Scrambled Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
-      </div>
-    </div>
-
-    <div class="svc">
-      <div class="svc-t">10:00a<span>–10:30a</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-brk">Break</span>
-          <span class="room">Primrose B</span>
-          <span class="gtd">GTD 29</span>
-        </div>
-        <div class="menu">Morning Break — Whole Fruit, Granola &amp; Protein Bars</div>
-      </div>
-    </div>
-
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Julie Ann Rivera</span>
-      </div>
-      <div class="ft-row">
-        <span class="ft-k">Room</span>
-        <span class="ft-v">Primrose B · Rounds of 10 (3×10) · Session ends 1:00 PM</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="strip">
-    <div class="strip-i"><strong>1</strong> group</div>
-    <div class="strip-i"><strong>29</strong> GTD covers</div>
-    <div class="strip-i">Room: <strong>Primrose B</strong></div>
-  </div>
-
-</div><!-- /day-body -->
-</div><!-- /day -->
-
-
-<!-- ────────────────────────────────────
-     THU MAY 14 — TODAY
-──────────────────────────────────────── -->
-<div class="day" id="day-0514">
-<button class="day-btn today open" onclick="toggleDay(this)" aria-expanded="true">
-  <span class="day-indicator"></span>
-  <div class="day-info">
-    <div class="day-weekday">Thursday</div>
-    <div class="day-date-text">May 14</div>
-    <div class="day-sub">UW Softball · Sephora · Eckard Dinner</div>
-  </div>
-  <span class="today-badge">TODAY</span>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body open">
-
-  <!-- UW Softball -->
-  <div class="card" style="border-left-color:var(--c-bkf)">
-    <div class="card-hd">
-      <div class="card-group">University of Wisconsin Softball</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa / Malaika</span>
-        <span class="bdg bdg-ic">IC: Ryan Gilles</span>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">8:15a<span>–10:00a</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-bkf">Breakfast</span>
-          <span class="room">Camellia A</span>
-          <span class="gtd">GTD 34</span>
-        </div>
-        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
-        <div class="note">Food set outside · Rounds of 9 to seat 36</div>
-      </div>
-    </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Kimberly De Souza</span>
-      </div>
-      <div class="ft-row">
-        <span class="ft-k">IC</span>
-        <span class="ft-v">Ryan Gilles</span>
-      </div>
-      <div class="ft-row">
-        <span class="ft-k">Room</span>
-        <span class="ft-v">Camellia A · Rounds of 10</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Sephora -->
-  <div class="card" style="border-left-color:var(--c-rec)">
-    <div class="card-hd">
-      <div class="card-group">Sephora Central Region Meeting</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa / Jessica</span>
-        <span class="bdg bdg-ic">IC: Shara Christiansen</span>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">8:00a<span>–9:00a</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-bkf">Breakfast</span>
-          <span class="room">Verbena B</span>
-          <span class="gtd">GTD 22</span>
-        </div>
-        <div class="menu">Grab &amp; Go — Yogurt, Overnight Oats, Muffins, English Muffin Sandwich (Egg / Chorizo / Jalapeño Jack on Croissant)</div>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">12:00p<span>–1:00p</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-lnch">Lunch</span>
-          <span class="room">Verbena B</span>
-          <span class="gtd">GTD 22</span>
-        </div>
-        <div class="menu">Tejas Mexicano Buffet — Salads, Queso &amp; Chips, Chicken Fajitas, Beef Barbacoa, Green Chile Rice, Refried Beans, Churros, Tres Leches</div>
-      </div>
-    </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Shara Christiansen</span>
-      </div>
-      <div class="ft-row">
-        <span class="ft-k">Room</span>
-        <span class="ft-v">Verbena B · U-Shape · All Day Beverages · 8a–5p</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Eckard Dinner -->
-  <div class="card" style="border-left-color:var(--c-din)">
-    <div class="card-hd">
-      <div class="card-group">Eckard Enterprises Partner Meeting</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Diana</span>
-        <span class="bdg bdg-ic">IC: Michelle Corcoran</span>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">7:00p<span>–9:00p</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-din">Dinner Buffet</span>
-          <span class="room">Plumeria</span>
-          <span class="gtd">GTD 50</span>
-        </div>
-        <div class="menu">Steakhouse Chopping Block — Spinach &amp; Steakhouse Salads · Scalloped Potatoes, Truffled Corn, Asparagus · Chicken (Mushroom Madeira), Branzino (Tomato Olive), Strip Loin (Red Wine Reduction) · Carrot Cake, Apple Crisp · Coffee/Tea</div>
-        <div class="note">90 min service · 5 Rounds of 10 · Votive candles &amp; round mirrors · Meeting starts 6p</div>
-      </div>
-    </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Michelle Corcoran</span>
-      </div>
-      <div class="ft-row">
-        <span class="ft-k">Room</span>
-        <span class="ft-v">Plumeria · Meeting 6p, Dinner 7p</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="strip">
-    <div class="strip-i"><strong>3</strong> groups w/ F&amp;B</div>
-    <div class="strip-i">Rooms: <strong>Camellia A · Verbena B · Plumeria</strong></div>
-    <div class="strip-i">Note: Camellia B &amp; Primrose A = no F&amp;B</div>
-  </div>
-
+  <div class="empty-day">No BEO events on file for this date.</div>
 </div>
 </div>
 
 
-<!-- ────────────────────────────────────
-     FRI MAY 15
-──────────────────────────────────────── -->
-<div class="day" id="day-0515">
-<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
-  <span class="day-indicator"></span>
-  <div class="day-info">
-    <div class="day-weekday">Friday</div>
-    <div class="day-date-text">May 15</div>
-    <div class="day-sub">UW Softball · TMF Breaks (2 rooms) · Abbott Dinner</div>
+<!-- ── THU MAY 21 ── -->
+<div class="day-section" data-date="2026-05-21">
+<button class="day-btn" onclick="toggleDay(this)">
+  <span class="day-dot"></span>
+  <div class="day-text">
+    <div class="day-dow">Thursday</div>
+    <div class="day-name">May 21</div>
+    <div class="day-summary-line">bex+Co · lunch in Camellia A</div>
   </div>
-  <span class="chevron">▶</span>
+  <span class="chevron-icon">▶</span>
 </button>
 <div class="day-body">
-
-  <!-- UW Softball -->
-  <div class="card" style="border-left-color:var(--c-bkf)">
-    <div class="card-hd">
-      <div class="card-group">University of Wisconsin Softball</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa / Malaika</span>
-        <span class="bdg bdg-ic">IC: Kimberly (same)</span>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">9:15a<span>–11:00a</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-bkf">Breakfast</span>
-          <span class="room">Camellia A</span>
-          <span class="gtd">GTD 34</span>
-        </div>
-        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
-        <div class="note">GAME DAY — Game at 12:00 PM</div>
-      </div>
-    </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Kimberly De Souza</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- TMF Plumeria A -->
-  <div class="card" style="border-left-color:var(--c-brk)">
-    <div class="card-hd">
-      <div class="card-group">TMF Board of Directors — Plumeria A</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa</span>
-        <span class="bdg bdg-ic">IC: Erineka (same)</span>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">2:45p<span>–6:00p</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-brk">Cont. Break</span>
-          <span class="room">Plumeria A</span>
-          <span class="gtd">GTD 16</span>
-        </div>
-        <div class="menu">Coffee gallon ($135) · Tea gallon ($105) · Bottled Water on consumption · Assorted Pepsi</div>
-      </div>
-    </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Erineka Duncan</span>
-      </div>
-      <div class="ft-row">
-        <span class="ft-k">Room</span>
-        <span class="ft-v">Plumeria A · Hollow Square · Session 2:00–6:00p</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- TMF Plumeria B — 2 waves -->
-  <div class="card" style="border-left-color:var(--c-brk)">
-    <div class="card-hd">
-      <div class="card-group">TMF Board of Directors — Plumeria B</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa</span>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">2:45p<span>Wave 1</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-brk">Break</span>
-          <span class="room">Plumeria B</span>
-          <span class="gtd">GTD 16</span>
-        </div>
-        <div class="menu">Warm Pretzel Rods w/ Creole Mustard &amp; Queso · Powerful Afternoon Break (Dried Fruit &amp; Nuts, Seasonal Fruit, Hummus &amp; Pita) · White Cheddar Popcorn · Coffee, Tea, Pepsi, Water</div>
-        <div class="note">Meeting starts 3:30p. Wave 1 out at 2:45p, Wave 2 out at 3:30p. Snacks set OUTSIDE between both rooms. Beverages INSIDE rooms. Extra agenda table outside.</div>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">3:30p<span>Wave 2</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-brk">Break</span>
-          <span class="room">Plumeria B</span>
-        </div>
-        <div class="menu">Powerful Afternoon Break (repeat) · Pretzel Rods · White Cheddar Popcorn</div>
-      </div>
-    </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Room</span>
-        <span class="ft-v">Plumeria B · Hollow Square 16 · Session 2:00–6:00p</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Abbott Dinner -->
-  <div class="card" style="border-left-color:var(--c-din)">
-    <div class="card-hd">
-      <div class="card-group">Abbott Faculty Dinner</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Diana</span>
-        <span class="bdg bdg-ic">IC: Kelly Shields</span>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">7:00p<span>–9:00p</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-din">Dinner</span>
-          <span class="room">Zilker</span>
-          <span class="gtd">EXP 10</span>
-        </div>
-        <div class="menu">Order off regular menu · F&amp;B minimum $1,000</div>
-        <div class="note">Group Code: AB6639 · Conference setup · No room rental charge</div>
-      </div>
-    </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Kelly Shields</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="strip">
-    <div class="strip-i"><strong>3</strong> groups w/ F&amp;B</div>
-    <div class="strip-i">Rooms: <strong>Camellia A · Plumeria A/B · Zilker</strong></div>
-    <div class="strip-i">Camellia B = Video Room only</div>
-  </div>
-
-</div>
-</div>
-
-
-<!-- ────────────────────────────────────
-     SAT MAY 16
-──────────────────────────────────────── -->
-<div class="day" id="day-0516">
-<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
-  <span class="day-indicator"></span>
-  <div class="day-info">
-    <div class="day-weekday">Saturday</div>
-    <div class="day-date-text">May 16</div>
-    <div class="day-sub">UW Softball · TMF Full Day · Graduation Lunch ⚠</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-
-  <!-- UW Softball -->
-  <div class="card" style="border-left-color:var(--c-bkf)">
-    <div class="card-hd">
-      <div class="card-group">University of Wisconsin Softball</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa / Malaika</span>
-        <span class="bdg bdg-ic">IC: Kimberly (same)</span>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">8:00a<span>–11:00a</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-bkf">Breakfast</span>
-          <span class="room">Camellia A</span>
-          <span class="gtd">GTD 34</span>
-        </div>
-        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
-        <div class="note">Breakfast time TBD — confirm with Kimberly before service</div>
-      </div>
-    </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Kimberly De Souza</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- TMF Full Day -->
-  <div class="card" style="border-left-color:var(--c-brk)">
-    <div class="card-hd">
-      <div class="card-group">TMF Board of Directors — Full Day</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa</span>
-        <span class="bdg bdg-ic">IC: Erineka (same)</span>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">7:30a<span>–9:00a</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-bkf">Breakfast</span>
-          <span class="room">Plumeria</span>
-          <span class="gtd">GTD 23</span>
-        </div>
-        <div class="menu">Texas Sunrise Table — Juices, Fruit, Cereal, Kolaches, Yogurt, Steel Cut Oatmeal, Migas Rancheros, Jalapeño Bacon, Texas Hashbrown Casserole, Biscuits &amp; Gravy · Coffee gallons, Pepsi, Water</div>
-        <div class="note">Hollow Square setup for breakfast. Tent cards provided by hotel.</div>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">10:40a<span>–11:10a</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-brk">Break</span>
-          <span class="room">Plumeria</span>
-          <span class="gtd">GTD 23</span>
-        </div>
-        <div class="menu">Mini Assorted Croissants (1 doz) · Cream Cheese Cinnamon Buns (1 doz)</div>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">12:30p<span>–1:20p</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-lnch">Plated Lunch</span>
-          <span class="room">Plumeria</span>
-          <span class="gtd">GTD 17</span>
-        </div>
-        <div class="menu">
-          <strong>Course 1:</strong> Traditional Caesar Salad<br>
-          <strong>Entrées:</strong> (4) Blackened BBQ Salmon — Poblano Polenta; (9) Roasted Chicken — Pink Salt Potatoes, Haricot Vert; (4) Braised Short Ribs — Whipped Sweet Potato<br>
-          <strong>Dessert:</strong> Apple Tart · Artisan rolls &amp; iced tea
-        </div>
-        <div class="note">Hollow Square for lunch. Small agenda table inside room. U-Shape for 28 overall session.</div>
-      </div>
-    </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Erineka Duncan</span>
-      </div>
-      <div class="ft-row">
-        <span class="ft-k">Session</span>
-        <span class="ft-v">Plumeria · 7:00a – 2:00p</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Graduation Lunch -->
-  <div class="card" style="border-left-color:var(--c-rec)">
-    <div class="card-hd">
-      <div class="card-group">Tiffany Issacs Smith — Graduation Lunch</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Diana</span>
-        <span class="bdg bdg-ic">IC: Rachel Klasel</span>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">1:30p<span>–2:30p</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-rec">Reception</span>
-          <span class="room">Barton</span>
-          <span class="gtd">GTD 66</span>
-        </div>
-        <div class="menu">(46) Deviled Eggs <strong>NO BACON</strong>, Chive, Paprika · (42) Shrimp Cocktail Shooters · (42) Gulf Coast Crab Cakes w/ Tequila Remoulade</div>
-        <div class="note">Bar + food in Bonnell · 7 Highboys scattered · 4 Highboys on Corinne Patio · Black linen · Round mirrors &amp; votives</div>
-        <div class="alert">NUT ALLERGY — remove all nuts from entire event</div>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">2:30p<span>–4:00p</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-lnch">Plated Lunch</span>
-          <span class="room">Barton</span>
-          <span class="gtd">GTD 66</span>
-        </div>
-        <div class="menu">Baby Spinach Salad (Fennel, Orange, Cranberries, Spiced Cashews, Fig Balsamic) · (66) Roasted Chicken — Pink Salt Potatoes, Hericot Verts, Mushroom Demi · Apple Tart · Artisan rolls &amp; iced tea</div>
-        <div class="note">Hosted Appreciated Brands Bar on consumption · 1 Bartender @ $250 · 2 drink tickets per person</div>
-        <div class="alert">1 Nut Allergy — remove ALL nuts from service</div>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">1:30p<span>–4:00p</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-bar">Cash Bar</span>
-          <span class="room">PDR Foyer</span>
-        </div>
-        <div class="menu">Appreciated Brands $14 · Craft Beer $11 · Import $11 · Domestic $10 · Wine $14 · Pepsi $8</div>
-      </div>
-    </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Rachel Klasel</span>
-      </div>
-      <div class="ft-row">
-        <span class="ft-k">Rooms</span>
-        <span class="ft-v">Barton · Bonnell · Corinne Patio · PDR Foyer</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="strip">
-    <div class="strip-i"><strong>3</strong> groups</div>
-    <div class="strip-i">Rooms: <strong>Camellia A · Plumeria · Barton/Bonnell</strong></div>
-    <div class="strip-i">⚠ <strong>NUT ALLERGY</strong> in Barton event</div>
-  </div>
-
-</div>
-</div>
-
-
-<!-- ────────────────────────────────────
-     SUN MAY 17
-──────────────────────────────────────── -->
-<div class="day" id="day-0517">
-<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
-  <span class="day-indicator"></span>
-  <div class="day-info">
-    <div class="day-weekday">Sunday</div>
-    <div class="day-date-text">May 17</div>
-    <div class="day-sub">UW Softball · breakfast only (TBD time)</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-
-  <div class="card" style="border-left-color:var(--c-bkf)">
-    <div class="card-hd">
-      <div class="card-group">University of Wisconsin Softball</div>
-      <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa / Malaika</span>
-        <span class="bdg bdg-ic">IC: Kimberly (same)</span>
-      </div>
-    </div>
-    <div class="svc">
-      <div class="svc-t">8:00a<span>–11:00a</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-bkf">Breakfast</span>
-          <span class="room">Camellia A</span>
-          <span class="gtd">GTD 34</span>
-        </div>
-        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
-        <div class="note">Breakfast time TBD — confirm with Kimberly before service</div>
-      </div>
-    </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Kimberly De Souza</span>
-      </div>
-      <div class="ft-row">
-        <span class="ft-k">Room</span>
-        <span class="ft-v">Camellia A · Rounds of 10 · Camellia B = Video Room only</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="strip">
-    <div class="strip-i"><strong>1</strong> group · <strong>34</strong> GTD</div>
-    <div class="strip-i">Room: <strong>Camellia A</strong></div>
-  </div>
-
-</div>
-</div>
-
-
-<!-- ────────────────────────────────────
-     MAY 18–20 (no events)
-──────────────────────────────────────── -->
-<div class="day" id="day-0518">
-<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
-  <span class="day-indicator"></span>
-  <div class="day-info">
-    <div class="day-weekday">Mon – Wed</div>
-    <div class="day-date-text">May 18–20</div>
-    <div class="day-sub">No events on file</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="empty">No BEO events on file for these dates.</div>
-</div>
-</div>
-
-
-<!-- ────────────────────────────────────
-     THU MAY 21
-──────────────────────────────────────── -->
-<div class="day" id="day-0521">
-<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
-  <span class="day-indicator"></span>
-  <div class="day-info">
-    <div class="day-weekday">Thursday</div>
-    <div class="day-date-text">May 21</div>
-    <div class="day-sub">bex+Co Confirmation Day · Camellia A lunch</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-
-  <div class="card" style="border-left-color:var(--c-lnch)">
-    <div class="card-hd">
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--lnch);">
       <div class="card-group">bex+Co Confirmation Day — Frandevco</div>
       <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa / Jessica</span>
-        <span class="bdg bdg-ic">IC: Lauren Wanamaker</span>
+        <span class="badge badge-mgr">MGR: Lisa / Jessica</span>
+        <span class="badge badge-ic">IC: Lauren (same)</span>
       </div>
     </div>
-    <div class="svc">
-      <div class="svc-t">12:00p<span>–1:00p</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-lnch">Lunch</span>
-          <span class="room">Camellia A</span>
-          <span class="gtd">GTD 12</span>
+    <div class="svc-row">
+      <div class="svc-time">8:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-brk">AM Bev</span>
+          <span class="room-pill">Camellia A</span>
+          <span class="gtd-pill">GTD 12</span>
         </div>
-        <div class="menu">Conference Dining — individual orders: Classic Caesar VG ($19) · Corinne Cobb GF ($22) · Wagyu Cheeseburger ($25) · Toasted Grilled Cheese VG ($22) · Grilled Chicken Club ($22)</div>
+        <div class="svc-menu">(2) Gallons Little City Regular Coffee · Bottled Water on consumption</div>
       </div>
     </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Lauren Wanamaker</span>
-      </div>
-      <div class="ft-row">
-        <span class="ft-k">Room</span>
-        <span class="ft-v">Camellia A · Conference · 8a–5p · AV: Markeys</span>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-lnch">Lunch</span>
+          <span class="room-pill">Camellia A</span>
+          <span class="gtd-pill">GTD 12</span>
+        </div>
+        <div class="svc-menu">Conference Dining — individual orders: Classic Caesar VG ($17), Corinne Cobb GF ($20), Wagyu Cheeseburger ($23), Toasted Grilled Cheese VG ($20), Grilled Chicken Club ($20)</div>
       </div>
     </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Lauren Wanamaker · (303) 921-1155</span></div>
+      <div class="foot-row"><span class="foot-key">ROOM</span><span class="foot-val">Camellia A · Conference · 8 AM–5 PM · AV: Markeys</span></div>
+    </div>
   </div>
-
-  <div class="strip">
-    <div class="strip-i"><strong>1</strong> group · <strong>12</strong> GTD</div>
-    <div class="strip-i">Room: <strong>Camellia A</strong></div>
+  <div class="day-strip">
+    <div class="strip-item"><strong>1</strong> group · <strong>12</strong> GTD</div>
+    <div class="strip-item">Room: <strong>Camellia A</strong></div>
   </div>
-
 </div>
 </div>
 
 
-<!-- ────────────────────────────────────
-     FRI MAY 22
-──────────────────────────────────────── -->
-<div class="day" id="day-0522">
-<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
-  <span class="day-indicator"></span>
-  <div class="day-info">
-    <div class="day-weekday">Friday</div>
-    <div class="day-date-text">May 22</div>
-    <div class="day-sub">In-house SwS · Zilker lunch</div>
+<!-- ── FRI MAY 22 ── -->
+<div class="day-section" data-date="2026-05-22">
+<button class="day-btn" onclick="toggleDay(this)">
+  <span class="day-dot"></span>
+  <div class="day-text">
+    <div class="day-dow">Friday</div>
+    <div class="day-name">May 22</div>
+    <div class="day-summary-line">In-house SwS lunch · Azazie setup</div>
   </div>
-  <span class="chevron">▶</span>
+  <span class="chevron-icon">▶</span>
 </button>
 <div class="day-body">
 
-  <div class="card" style="border-left-color:var(--border2)">
-    <div class="card-hd">
+  <!-- In-House SwS -->
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--lnch);">
       <div class="card-group">AUSDW In-House — SwS</div>
       <div class="card-badges">
-        <span class="bdg bdg-ic">IC: Mike Brewster</span>
+        <span class="badge badge-mgr">MGR: —</span>
+        <span class="badge badge-ic">IC: Mike</span>
       </div>
     </div>
-    <div class="svc">
-      <div class="svc-t">12:00p<span>–1:00p</span></div>
-      <div class="svc-body">
-        <div class="chips">
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
           <span class="tag tag-lnch">Lunch</span>
-          <span class="room">Zilker</span>
-          <span class="gtd">12 covers</span>
+          <span class="room-pill">Zilker</span>
+          <span class="gtd-pill">12 covers</span>
         </div>
-        <div class="menu">(12) Turkey, Bacon, Avocado Club w/ chips · (12) Assorted Pepsi · (12) Bottled Water</div>
+        <div class="svc-menu">(12) Turkey, Bacon, Avocado Club Sandwich w/ chips · (12) Assorted Pepsi · (12) Bottled Water</div>
       </div>
     </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Mike Brewster</span>
-      </div>
-      <div class="ft-row">
-        <span class="ft-k">Room</span>
-        <span class="ft-v">Zilker · Conference setup</span>
-      </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Mike Brewster · (512) 687-6638</span></div>
+      <div class="foot-row"><span class="foot-key">ROOM</span><span class="foot-val">Zilker · Conference setup</span></div>
     </div>
   </div>
 
-  <div class="strip">
-    <div class="strip-i">In-house event · Room: <strong>Zilker</strong></div>
+  <!-- Azazie Setup -->
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--border2);">
+      <div class="card-group">Azazie Pop-Up — Client Setup Day</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr">MGR: Diana</span>
+        <span class="badge badge-ic">IC: Lin (same)</span>
+        <span class="badge badge-flag">POP-UP</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">5:00–<br>10:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="room-pill">Primrose C</span>
+        </div>
+        <div class="svc-menu">No F&amp;B required. Clean &amp; clear room · (2) 6×30 tables set in foyer.</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Lin Wang · (408) 797-6622</span></div>
+      <div class="foot-row"><span class="foot-key">NOTE</span><span class="foot-val">Day 1 of 2 — main event Saturday (300 pax dress fitting)</span></div>
+    </div>
   </div>
 
+  <div class="day-strip">
+    <div class="strip-item"><strong>1</strong> F&amp;B touch · <strong>1</strong> setup</div>
+    <div class="strip-item">Rooms: <strong>Zilker · Primrose C</strong></div>
+  </div>
 </div>
 </div>
 
 
-<!-- ────────────────────────────────────
-     MAY 23 – JUN 1 (no events)
-──────────────────────────────────────── -->
-<div class="day" id="day-0523">
-<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
-  <span class="day-indicator"></span>
-  <div class="day-info">
-    <div class="day-weekday">Sat May 23 – Mon Jun 1</div>
-    <div class="day-date-text">May 23 – Jun 1</div>
-    <div class="day-sub">No events on file</div>
+<!-- ── SAT MAY 23 ── -->
+<div class="day-section" data-date="2026-05-23">
+<button class="day-btn" onclick="toggleDay(this)">
+  <span class="day-dot"></span>
+  <div class="day-text">
+    <div class="day-dow">Saturday</div>
+    <div class="day-name">May 23</div>
+    <div class="day-summary-line">Azazie Wedding Dress Fitting · 300 pax · no F&B</div>
   </div>
-  <span class="chevron">▶</span>
+  <span class="chevron-icon">▶</span>
 </button>
 <div class="day-body">
-  <div class="empty">No BEO events on file for these dates.</div>
-</div>
-</div>
-
-
-<!-- ────────────────────────────────────
-     TUE JUN 2
-──────────────────────────────────────── -->
-<div class="day" id="day-0602">
-<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
-  <span class="day-indicator"></span>
-  <div class="day-info">
-    <div class="day-weekday">Tuesday</div>
-    <div class="day-date-text">June 2</div>
-    <div class="day-sub">240 Tutoring setup — no F&amp;B</div>
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--rec);">
+      <div class="card-group">Azazie — Wedding Dress Fitting</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr">MGR: Diana</span>
+        <span class="badge badge-ic">IC: Lin (same)</span>
+        <span class="badge badge-flag">POP-UP · 300 PAX</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:00–<br>8:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="room-pill">Primrose C</span>
+        </div>
+        <div class="svc-menu">Continued setup / staff arrival · No F&amp;B</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="room-pill">Primrose C</span>
+          <span class="gtd-pill">EXP 300</span>
+        </div>
+        <div class="svc-menu">Wedding Dress Fitting event · No F&amp;B</div>
+        <div class="note">⚑ Large foyer footprint expected · keep adjacent spaces clear</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">5:00–<br>10:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="room-pill">Primrose C</span>
+        </div>
+        <div class="svc-menu">Teardown · No F&amp;B</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Lin Wang · (408) 797-6622</span></div>
+      <div class="foot-row"><span class="foot-key">RENTAL</span><span class="foot-val">$2,500 · Special setup</span></div>
+    </div>
   </div>
-  <span class="chevron">▶</span>
+  <div class="day-strip">
+    <div class="strip-item">No F&amp;B touches today</div>
+    <div class="strip-item">Room: <strong>Primrose C</strong></div>
+  </div>
+</div>
+</div>
+
+
+<!-- ── MAY 24–26 ── -->
+<div class="day-section" data-date-start="2026-05-24" data-date-end="2026-05-26">
+<button class="day-btn" onclick="toggleDay(this)">
+  <span class="day-dot"></span>
+  <div class="day-text">
+    <div class="day-dow">Sun – Tue</div>
+    <div class="day-name">May 24–26</div>
+    <div class="day-summary-line">No events on file</div>
+  </div>
+  <span class="chevron-icon">▶</span>
+</button>
+<div class="day-body">
+  <div class="empty-day">No BEO events on file for these dates.</div>
+</div>
+</div>
+
+
+<!-- ── WED MAY 27 — HEAVY DAY ── -->
+<div class="day-section" data-date="2026-05-27">
+<button class="day-btn" onclick="toggleDay(this)">
+  <span class="day-dot"></span>
+  <div class="day-text">
+    <div class="day-dow">Wednesday</div>
+    <div class="day-name">May 27</div>
+    <div class="day-summary-line">McGraw Hill · Fidelity (WAS) Break + Reception ⚑</div>
+  </div>
+  <span class="chevron-icon">▶</span>
 </button>
 <div class="day-body">
 
-  <div class="card" style="border-left-color:var(--border2)">
-    <div class="card-hd">
+  <!-- McGraw Hill Day 1 -->
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--lnch);">
+      <div class="card-group">McGraw Hill Higher Ed — Lamb Austin Meeting</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr">MGR: Diana / Jessica</span>
+        <span class="badge badge-ic">IC: Amanda (same)</span>
+        <span class="badge badge-flag">DAY 1 of 2</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-brk">All Day Bev</span>
+          <span class="room-pill">Camellia A</span>
+          <span class="gtd-pill">GTD 15</span>
+        </div>
+        <div class="svc-menu">Coffee, Tea, Pepsi, Bottled Water · ($46.80/pp)</div>
+        <div class="note">⚑ Client setup 8–10 AM · meeting starts 10 AM in Camellia A</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">1:00–<br>2:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-lnch">Lunch Buffet</span>
+          <span class="room-pill">Camellia B</span>
+          <span class="gtd-pill">GTD 15</span>
+        </div>
+        <div class="svc-menu">Gourmet Deli — Tomato Basil Cream Soup · Quinoa &amp; Arugula Salad · Baby Spinach Salad · Egg Salad · Smoked Turkey · Roast Beef · Artisan Breads &amp; Tortillas · Cheeses · Lettuce/Tomato/Onion · Chips · Cookies &amp; Brownies · Iced Tea, Coffee, Tea</div>
+        <div class="note">⚑ Buffet surcharge: under 20 guests ($250) · Meal Room = Camellia B (Rounds of 8)</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Amanda Garcia · (810) 441-0341</span></div>
+      <div class="foot-row"><span class="foot-key">ROOMS</span><span class="foot-val">Camellia A (meeting) · Camellia B (meal room, 8 AM–2 PM)</span></div>
+    </div>
+  </div>
+
+  <!-- Fidelity WAS Symposium - Break -->
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--brk);">
+      <div class="card-group">WAS Symposium — Fidelity Investments</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr">MGR: Lisa</span>
+        <span class="badge badge-ic">IC: Morgan · 336-749-6751</span>
+        <span class="badge badge-flag">⚠ DO NOT POST FIDELITY</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">2:00–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-brk">Continuous Break</span>
+          <span class="room-pill">Primrose AB</span>
+          <span class="gtd-pill">GTD 50</span>
+        </div>
+        <div class="svc-menu">Empower Break — Juice of the Day (out 2:15–2:45 only) · Individual Diced Fruit Salad · Build-Your-Own Trail Mix (Granola, Nuts, Raisins, Dried Fruit, Chocolate Crisps) · Coffee/Decaf/Tea gallons · Pepsi · Bottled &amp; Sparkling Water</div>
+        <div class="note">⚑ Setup 1–2 PM · 11× 6ft tables around perimeter w/ 6 chairs each · F&amp;B in middle per diagram · 2 water stations in middle · Reg table 6ft + 2 chairs OUTSIDE meeting room · Mic + sound system for announcements</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Morgan Carter · (336) 444-6078 office · (336) 749-6751 cell</span></div>
+      <div class="foot-row"><span class="foot-key">BILLING</span><span class="foot-val">F&amp;B minimum $6,000 · Post as "WAS Symposium"</span></div>
+    </div>
+  </div>
+
+  <!-- Fidelity Reception in Plumeria -->
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--rec);">
+      <div class="card-group">WAS Symposium — Reception</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr">MGR: Lisa</span>
+        <span class="badge badge-ic">IC: Morgan · 336-749-6751</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">5:00–<br>6:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-rec">Reception</span>
+          <span class="room-pill">Plumeria</span>
+          <span class="gtd-pill">GTD 50</span>
+        </div>
+        <div class="svc-menu">
+          <strong>Passed Hors d'Oeuvres (50 ea):</strong> Deviled Eggs (Bacon, Chive, Paprika) · Shrimp Cocktail Shooters · Gulf Coast Crab Cakes w/ Tequila Remoulade · Potato &amp; Veg Samosa w/ Cilantro Chutney · SW Chorizo Spring Roll w/ Avocado Crema<br><br>
+          <strong>Carving Station (x2):</strong> House Smoked BBQ Beef Brisket — Lager BBQ Sauce, Pickles, Onions, Jalapeños, Pit Beans, Sweet Corn Bread, Wild Rice Pilaf<br><br>
+          <strong>Mac &amp; Cheese Display:</strong> Three Cheese · Chicken w/ Green Chile, Mushroom &amp; Oaxaca · Lobster, English Pea, Pecorino, Romano &amp; Roasted Tomato
+        </div>
+        <div class="note">⚑ 2 Butler Passers ($75/hr ea) · 1 Carving Attendant ($250) · 1 Bartender ($250)</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">5:00–<br>6:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-bar">Hosted Bar</span>
+          <span class="room-pill">Plumeria</span>
+        </div>
+        <div class="svc-menu">
+          Domestic Beer $9 · Imported/Craft Beer $10 (Dos XX, Stella, Fireman's 4, Shiner, Eastciders)<br>
+          Echo Bay Sauv Blanc $13/glass · Duckhorn Decoy Cab (on consumption) · Beringer Merlot $54/btl · Josh Cellars Chard $70/btl
+        </div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">SETUP</span><span class="foot-val">Cocktail Rounds · (6) high tops scattered · (4) low cocktail tables w/ chairs</span></div>
+    </div>
+  </div>
+
+  <div class="day-strip">
+    <div class="strip-item"><strong>2</strong> groups · <strong>3</strong> rooms active</div>
+    <div class="strip-item">Rooms: <strong>Camellia A/B · Primrose AB · Plumeria</strong></div>
+    <div class="strip-item">⚠ <strong>Don't post Fidelity</strong> — use WAS Symposium</div>
+  </div>
+</div>
+</div>
+
+
+<!-- ── THU MAY 28 ── -->
+<div class="day-section" data-date="2026-05-28">
+<button class="day-btn" onclick="toggleDay(this)">
+  <span class="day-dot"></span>
+  <div class="day-text">
+    <div class="day-dow">Thursday</div>
+    <div class="day-name">May 28</div>
+    <div class="day-summary-line">McGraw Hill Day 2 · breakfast + Tejas lunch</div>
+  </div>
+  <span class="chevron-icon">▶</span>
+</button>
+<div class="day-body">
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--bkf);">
+      <div class="card-group">McGraw Hill Higher Ed — Lamb Austin Meeting</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr">MGR: Diana / Jessica</span>
+        <span class="badge badge-ic">IC: Amanda (same)</span>
+        <span class="badge badge-flag">DAY 2 of 2</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-bkf">Breakfast</span>
+          <span class="room-pill">Camellia B</span>
+          <span class="gtd-pill">GTD 15</span>
+        </div>
+        <div class="svc-menu">Early Riser — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea ($45.90/pp)</div>
+        <div class="note">⚑ Buffet surcharge: under 20 guests ($225)</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-brk">All Day Bev</span>
+          <span class="room-pill">Camellia A</span>
+          <span class="gtd-pill">GTD 15</span>
+        </div>
+        <div class="svc-menu">Coffee, Tea, Pepsi, Bottled Water ($46.80/pp)</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-lnch">Lunch Buffet</span>
+          <span class="room-pill">Camellia B</span>
+          <span class="gtd-pill">GTD 15</span>
+        </div>
+        <div class="svc-menu">Tejas Mexicano — Mixed Lettuces w/ Grilled Corn, Black Beans, Chili Lime · Fruit &amp; Arugula Salad · Queso &amp; Chips · Chicken Fajitas · Beef Barbacoa · Green Chile Rice · Refried Beans · Churros · Tres Leches</div>
+        <div class="note">⚑ Buffet surcharge: under 20 guests ($225)</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Amanda Garcia · (810) 441-0341</span></div>
+      <div class="foot-row"><span class="foot-key">ROOMS</span><span class="foot-val">Camellia A (meeting 9 AM–5 PM) · Camellia B (meal room, Rounds of 8)</span></div>
+    </div>
+  </div>
+  <div class="day-strip">
+    <div class="strip-item"><strong>1</strong> group · <strong>15</strong> GTD</div>
+    <div class="strip-item">Rooms: <strong>Camellia A &amp; B</strong></div>
+  </div>
+</div>
+</div>
+
+
+<!-- ── MAY 29 – JUN 1 ── -->
+<div class="day-section" data-date-start="2026-05-29" data-date-end="2026-06-01">
+<button class="day-btn" onclick="toggleDay(this)">
+  <span class="day-dot"></span>
+  <div class="day-text">
+    <div class="day-dow">Fri – Mon</div>
+    <div class="day-name">May 29 – June 1</div>
+    <div class="day-summary-line">No events on file</div>
+  </div>
+  <span class="chevron-icon">▶</span>
+</button>
+<div class="day-body">
+  <div class="empty-day">No BEO events on file for these dates.</div>
+</div>
+</div>
+
+
+<!-- ── TUE JUN 2 ── -->
+<div class="day-section" data-date="2026-06-02">
+<button class="day-btn" onclick="toggleDay(this)">
+  <span class="day-dot"></span>
+  <div class="day-text">
+    <div class="day-dow">Tuesday</div>
+    <div class="day-name">June 2</div>
+    <div class="day-summary-line">240 Tutoring setup only — no F&B</div>
+  </div>
+  <span class="chevron-icon">▶</span>
+</button>
+<div class="day-body">
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--border2);">
       <div class="card-group">240 Tutoring Conference — Setup Day</div>
       <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa / Jessica</span>
-        <span class="bdg bdg-ic">IC: Eloisa Fuentes</span>
+        <span class="badge badge-mgr">MGR: Lisa / Jessica</span>
+        <span class="badge badge-ic">IC: Eloisa (same)</span>
       </div>
     </div>
-    <div class="svc">
-      <div class="svc-t">6:00p<span>–9:00p</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="room">Primrose AB</span>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>9:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="room-pill">Primrose AB</span>
         </div>
-        <div class="menu">Client setup only — no F&amp;B. Crescent Rounds.</div>
+        <div class="svc-menu">Client setup only — no F&amp;B · Crescent Rounds</div>
       </div>
     </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Eloisa Fuentes</span>
-      </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Eloisa Fuentes · (214) 462-2181</span></div>
     </div>
   </div>
-
 </div>
 </div>
 
 
-<!-- ────────────────────────────────────
-     WED JUN 3
-──────────────────────────────────────── -->
-<div class="day" id="day-0603">
-<button class="day-btn" onclick="toggleDay(this)" aria-expanded="false">
-  <span class="day-indicator"></span>
-  <div class="day-info">
-    <div class="day-weekday">Wednesday</div>
-    <div class="day-date-text">June 3</div>
-    <div class="day-sub">240 Tutoring · breakfast + break + Tejas lunch</div>
+<!-- ── WED JUN 3 ── -->
+<div class="day-section" data-date="2026-06-03">
+<button class="day-btn" onclick="toggleDay(this)">
+  <span class="day-dot"></span>
+  <div class="day-text">
+    <div class="day-dow">Wednesday</div>
+    <div class="day-name">June 3</div>
+    <div class="day-summary-line">240 Tutoring Day 1 · breakfast + break + Tejas lunch</div>
   </div>
-  <span class="chevron">▶</span>
+  <span class="chevron-icon">▶</span>
+</button>
+<div class="day-body">
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--bkf);">
+      <div class="card-group">240 Tutoring Conference Jun 2026</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr">MGR: Lisa / Jessica</span>
+        <span class="badge badge-ic">IC: Eloisa (same)</span>
+        <span class="badge badge-flag">DAY 1 of 2</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-bkf">Breakfast Buffet</span>
+          <span class="room-pill">Primrose AB</span>
+          <span class="gtd-pill">EXP 60</span>
+        </div>
+        <div class="svc-menu">Early Riser — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>12:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-brk">Continuous Break</span>
+          <span class="room-pill">Primrose AB</span>
+          <span class="gtd-pill">EXP 60</span>
+        </div>
+        <div class="svc-menu">All Day Bev — Coffee, Tea, Pepsi, Bottled Water</div>
+        <div class="note">⚑ Add Diet Coke per client request</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-lnch">Lunch Buffet</span>
+          <span class="room-pill">Primrose AB</span>
+          <span class="gtd-pill">EXP 60</span>
+        </div>
+        <div class="svc-menu">Tejas Mexicano — Mixed Lettuces (Grilled Corn, Black Beans, Chili Lime) · Fruit &amp; Arugula Salad · Queso &amp; Chips · Chicken Fajitas · Beef Barbacoa · Green Chile Rice · Refried Beans · Churros · Tres Leches</div>
+        <div class="note">⚑ Crescent Rounds · Podium in room · 10% F&amp;B discount applies</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Eloisa Fuentes · (214) 462-2181</span></div>
+      <div class="foot-row"><span class="foot-key">ROOM</span><span class="foot-val">Primrose AB · 8 AM–5 PM</span></div>
+    </div>
+  </div>
+
+  <!-- Buttercup Private Use -->
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--border2);">
+      <div class="card-group">240 Tutoring — Private Breakout (Buttercup)</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr">MGR: Lisa / Jessica</span>
+        <span class="badge badge-flag">PRIVATE</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="room-pill">Buttercup</span>
+        </div>
+        <div class="svc-menu">Guest privacy room — used for breastfeeding · No F&amp;B</div>
+        <div class="note">⚑ Buttercup is privately occupied — do not enter, do not stage anything inside</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-strip">
+    <div class="strip-item"><strong>1</strong> group · <strong>~60</strong> EXP</div>
+    <div class="strip-item">Rooms: <strong>Primrose AB · Buttercup (private)</strong></div>
+  </div>
+</div>
+</div>
+
+
+<!-- ── THU JUN 4 ── -->
+<div class="day-section" data-date="2026-06-04">
+<button class="day-btn" onclick="toggleDay(this)">
+  <span class="day-dot"></span>
+  <div class="day-text">
+    <div class="day-dow">Thursday</div>
+    <div class="day-name">June 4</div>
+    <div class="day-summary-line">240 Tutoring Day 2 · Career Strategies suite drop</div>
+  </div>
+  <span class="chevron-icon">▶</span>
 </button>
 <div class="day-body">
 
-  <div class="card" style="border-left-color:var(--c-lnch)">
-    <div class="card-hd">
+  <!-- 240 Tutoring Day 2 -->
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--bkf);">
       <div class="card-group">240 Tutoring Conference Jun 2026</div>
       <div class="card-badges">
-        <span class="bdg bdg-mgr">MGR: Lisa / Jessica</span>
-        <span class="bdg bdg-ic">IC: Eloisa Fuentes</span>
+        <span class="badge badge-mgr">MGR: Lisa / Jessica</span>
+        <span class="badge badge-ic">IC: Eloisa (same)</span>
+        <span class="badge badge-flag">DAY 2 of 2</span>
       </div>
     </div>
-    <div class="svc">
-      <div class="svc-t">8:00a<span>–9:00a</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-bkf">Breakfast</span>
-          <span class="room">Primrose AB</span>
-          <span class="gtd">EXP 50</span>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-bkf">Breakfast Buffet</span>
+          <span class="room-pill">Primrose AB</span>
+          <span class="gtd-pill">EXP 60</span>
         </div>
-        <div class="menu">Early Riser Buffet — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
+        <div class="svc-menu">Early Riser — Juices, Fruit, Cereal, Pastries, Yogurt, Eggs, Bacon, Sausage, Potatoes, Coffee/Tea</div>
       </div>
     </div>
-    <div class="svc">
-      <div class="svc-t">9:00a<span>–12:00p</span></div>
-      <div class="svc-body">
-        <div class="chips">
-          <span class="tag tag-brk">All Day Bev</span>
-          <span class="room">Primrose AB</span>
-          <span class="gtd">EXP 50</span>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-brk">Continuous Break</span>
+          <span class="room-pill">Primrose AB</span>
+          <span class="gtd-pill">EXP 60</span>
         </div>
-        <div class="menu">Coffee, Tea, Assorted Pepsi, Bottled Water</div>
-        <div class="note">Add Diet Coke per client request</div>
+        <div class="svc-menu">All Day Bev — Coffee, Tea, Pepsi, Bottled Water + Diet Coke</div>
       </div>
     </div>
-    <div class="svc">
-      <div class="svc-t">12:00p<span>–1:00p</span></div>
-      <div class="svc-body">
-        <div class="chips">
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
           <span class="tag tag-lnch">Lunch Buffet</span>
-          <span class="room">Primrose AB</span>
-          <span class="gtd">EXP 50</span>
+          <span class="room-pill">Primrose AB</span>
+          <span class="gtd-pill">EXP 60</span>
         </div>
-        <div class="menu">Tejas Mexicano Buffet — Salads, Queso &amp; Chips, Chicken Fajitas, Beef Barbacoa, Green Chile Rice, Refried Beans, Churros, Tres Leches</div>
-        <div class="note">Crescent Rounds · Podium in room · 10% F&amp;B discount applies · Buttercup = private use, do not enter</div>
+        <div class="svc-menu">Modern Italian — Turkey Sausage Kale &amp; Rice Soup · Wild Arugula Caesar · Tomato &amp; Burrata Caprese · GF Chicken Piccata · Whole Salmon Fillet Baked in Foil w/ Pesto · Roasted Zucchini &amp; Tomato · Cannoli &amp; Tiramisu Bites</div>
+        <div class="note">⚑ Crescent Rounds · 10% F&amp;B discount applies</div>
       </div>
     </div>
-    <div class="card-ft">
-      <div class="ft-row">
-        <span class="ft-k">Contact</span>
-        <span class="ft-v">Eloisa Fuentes</span>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Eloisa Fuentes · (214) 462-2181</span></div>
+      <div class="foot-row"><span class="foot-key">ROOM</span><span class="foot-val">Primrose AB · 8 AM–5 PM</span></div>
+    </div>
+  </div>
+
+  <!-- Buttercup Private -->
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--border2);">
+      <div class="card-group">240 Tutoring — Private Breakout (Buttercup)</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr">MGR: Lisa / Jessica</span>
+        <span class="badge badge-flag">PRIVATE</span>
       </div>
-      <div class="ft-row">
-        <span class="ft-k">Room</span>
-        <span class="ft-v">Primrose AB · 8a–5p · Buttercup = private</span>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="room-pill">Buttercup</span>
+        </div>
+        <div class="svc-menu">Guest privacy room · No F&amp;B · Do not enter</div>
       </div>
     </div>
   </div>
 
-  <div class="strip">
-    <div class="strip-i"><strong>1</strong> group · <strong>~50</strong> EXP</div>
-    <div class="strip-i">Rooms: <strong>Primrose AB</strong></div>
+  <!-- Career Strategies — Presidential Suite drop -->
+  <div class="event-card">
+    <div class="card-head" style="border-left: 3px solid var(--brk);">
+      <div class="card-group">Career Strategies — Board Room Block</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr">MGR: Malaika</span>
+        <span class="badge badge-ic">IC: Laura (same)</span>
+        <span class="badge badge-flag">SUITE DROP</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:45 AM–<br>12:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top">
+          <span class="tag tag-brk">Continuous Break</span>
+          <span class="room-pill">Presidential Suite</span>
+          <span class="gtd-pill">EXP ~10</span>
+        </div>
+        <div class="svc-menu">(14) Bottled Water · (10) Assorted Pepsi (6 diet / 4 regular) · (1) Dozen Assorted Cookies · (7) White Cheddar Popcorn</div>
+        <div class="note">⚑ Banquets contracted to serve F&amp;B to Presidential Suite · Have snacks &amp; bev IN ROOM by 9:45 AM (group out at breakfast just before)</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Laura Mercado · (818) 558-6692</span></div>
+    </div>
+  </div>
+
+  <div class="day-strip">
+    <div class="strip-item"><strong>2</strong> F&amp;B touches · <strong>3</strong> rooms</div>
+    <div class="strip-item">Rooms: <strong>Primrose AB · Buttercup · Presidential Suite</strong></div>
+  </div>
+</div>
+</div>
+
+</div><!-- /days-list -->
+</div><!-- /tab-beo -->
+
+<!-- ════════════════════════════════════════
+     TAB: MENU 2024
+════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-menu">
+
+<div class="menu-search-bar">
+  <input type="text" class="menu-search-input" id="menuSearch" placeholder="Search menu items, ingredients…" oninput="filterMenu(this.value)">
+</div>
+<div class="menu-search-status" id="searchStatus"></div>
+
+<div class="menu-list">
+
+<!-- ── BREAKFAST ── -->
+<div class="menu-cat" data-cat="breakfast">
+<button class="menu-cat-btn" onclick="toggleCat(this)">
+  <span class="menu-cat-dot"></span>
+  <div class="menu-cat-text">
+    <div class="menu-cat-label">Morning</div>
+    <div class="menu-cat-name">Breakfast</div>
+    <div class="menu-cat-sub">Buffets · Plated · Grab & Go · Enhancements</div>
+  </div>
+  <span class="chevron-icon">▶</span>
+</button>
+<div class="menu-cat-body">
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Grab & Go Buffet</div>
+      <div class="menu-sub-meta"><strong>$33/pp</strong> · Yogurts, Overnight Oats, Breakfast Taco, Muffins</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Individual Chobani Fruit Yogurts</div></div>
+    <div class="menu-item"><div class="menu-item-name">Overnight Oats with Dried Fruits</div></div>
+    <div class="menu-item"><div class="menu-item-name">Choice of One Breakfast Taco</div></div>
+    <div class="menu-item"><div class="menu-item-name">Individually Packaged Muffins</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Domain Continental Buffet</div>
+      <div class="menu-sub-meta"><strong>$40/pp</strong></div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Orange, Cranberry, Apple Juices</div></div>
+    <div class="menu-item"><div class="menu-item-name">Fresh Cut Melons & Berries</div></div>
+    <div class="menu-item"><div class="menu-item-name">Assorted Healthy Start Cereals</div><div class="menu-item-desc">Whole, 2%, & Skim Milks</div></div>
+    <div class="menu-item"><div class="menu-item-name">Hard Boiled Eggs</div></div>
+    <div class="menu-item"><div class="menu-item-name">Chobani Fruit Yogurts</div></div>
+    <div class="menu-item"><div class="menu-item-name">Sliced Coffee Cakes</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Executive Continental Buffet</div>
+      <div class="menu-sub-meta"><strong>$43/pp</strong></div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Juices, Fruit, Cereal, Pastries, Yogurts</div></div>
+    <div class="menu-item"><div class="menu-item-name">Hard Boiled Eggs</div></div>
+    <div class="menu-item"><div class="menu-item-name">Steel Cut Oatmeal</div><div class="menu-item-desc">Brown Sugar, Dried Fruits & Almonds</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Early Riser Breakfast Buffet</div>
+      <div class="menu-sub-meta"><strong>$51/pp</strong> · Most commonly ordered</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Juices, Fruit, Cereal, Pastries, Yogurts</div></div>
+    <div class="menu-item"><div class="menu-item-name">Fluffy Scrambled Eggs</div><div class="menu-item-desc">Cheddar Cheese, Salsa Roja, Ketchup, Hot Sauce</div></div>
+    <div class="menu-item"><div class="menu-item-name">Applewood Smoked Bacon</div></div>
+    <div class="menu-item"><div class="menu-item-name">Country Style Pork Sausage</div></div>
+    <div class="menu-item"><div class="menu-item-name">Rosemary Seasoned Gold Breakfast Potatoes</div></div>
+    <div class="menu-item"><div class="menu-item-name">Egg Enhancements</div><div class="menu-item-desc">+$2 ea: Diced Ham, Sautéed Mushroom, Spinach, Pepper</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Texas Sunrise Buffet</div>
+      <div class="menu-sub-meta"><strong>$57/pp</strong> · Tex-Mex breakfast</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Juices, Fruit, Cereal, Yogurts, Oatmeal</div></div>
+    <div class="menu-item"><div class="menu-item-name">Freshly Baked Kolaches</div></div>
+    <div class="menu-item"><div class="menu-item-name">Migas Rancheros</div><div class="menu-item-desc">Scrambled Egg, Salsa Roja, Corn Tortillas, Queso Fresco, Cilantro</div></div>
+    <div class="menu-item"><div class="menu-item-name">Jalapeno Cured Bacon</div></div>
+    <div class="menu-item"><div class="menu-item-name">Texas Hashbrown Casserole</div></div>
+    <div class="menu-item"><div class="menu-item-name">Warm Biscuits & Country Sausage Gravy</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Chef Attended Omelet Station</div>
+      <div class="menu-sub-meta"><strong>+$18/pp</strong> · Enhancement · $250 attendant per 50 ppl · 90 min</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Made to Order Omelets</div><div class="menu-item-desc">Whole Eggs & Egg Whites, full topping bar</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Plated Breakfast</div>
+      <div class="menu-sub-meta">First course + Entrée · 30 pax min</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Farm Fresh Scrambled Eggs</div>
+      <div class="menu-item-price">$43/pp</div>
+      <div class="menu-item-desc">Minced Chive, Roasted Tomatoes, Crisp Bacon, Rosemary Golden Potatoes</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Bacon & Cheddar Frittata</div>
+      <div class="menu-item-price">$44/pp</div>
+      <div class="menu-item-desc">Open Faced Omelet w/ Grilled Onion, Bacon, Cheddar, Peppers · Fingerling Potato & Sausage Hash</div>
+    </div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Buffet Enhancements & A La Carte</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Egg Beaters / Egg Whites</div><div class="menu-item-price">$9/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Jalapeno Cured Bacon</div><div class="menu-item-price">$11/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Hot Buttered Biscuits</div><div class="menu-item-price">$69/doz</div><div class="menu-item-desc">with Savory Fig Jam</div></div>
+    <div class="menu-item"><div class="menu-item-name">Steel Cut Oatmeal</div><div class="menu-item-price">$10/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Berry & Greek Yogurt Parfait</div><div class="menu-item-price">$9 ea</div></div>
+    <div class="menu-item"><div class="menu-item-name">Norwegian Smoked Salmon Display</div><div class="menu-item-price">$17/pp</div><div class="menu-item-desc">Tomato, Onions, Capers, Whipped Cream Cheese, Bagels</div></div>
+    <div class="menu-item"><div class="menu-item-name">Rise & Shine Croissant</div><div class="menu-item-price">$8 ea</div><div class="menu-item-desc">Egg, Chorizo, Jalapeno Jack on Croissant · 1 doz min</div></div>
+    <div class="menu-item"><div class="menu-item-name">English Muffin Sandwich</div><div class="menu-item-price">$8 ea</div><div class="menu-item-desc">Egg, Smoked Ham, Cheddar · 1 doz min</div></div>
+    <div class="menu-item"><div class="menu-item-name">Breakfast Tacos</div><div class="menu-item-price">$8 ea</div><div class="menu-item-desc">Eggs, Meat, Black Beans, Potato, Pepper Jack · Chorizo/Sausage/Bacon · 1 doz min</div></div>
+  </div>
+
+  <div class="menu-note">Buffet min 20 ppl · under 20 = +$250 surcharge · 1 hr duration · +$9/pp per additional 30 min · Coffee + Tazo tea included</div>
+</div>
+</div>
+
+<!-- ── BREAKS ── -->
+<div class="menu-cat" data-cat="breaks">
+<button class="menu-cat-btn" onclick="toggleCat(this)">
+  <span class="menu-cat-dot"></span>
+  <div class="menu-cat-text">
+    <div class="menu-cat-label">Refresh</div>
+    <div class="menu-cat-name">Breaks & Beverages</div>
+    <div class="menu-cat-sub">Morning · Afternoon · All-Day Bev · A La Carte</div>
+  </div>
+  <span class="chevron-icon">▶</span>
+</button>
+<div class="menu-cat-body">
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Morning Break Packages</div>
+      <div class="menu-sub-meta">30 min service · Coffee + Tazo tea included</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Energize & Motivate</div>
+      <div class="menu-item-price">$24/pp</div>
+      <div class="menu-item-desc">Vanilla Almond Overnight Oats · Deviled Eggs w/ Chives · Watermelon Cucumber Lime Agua Fresca</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Revitalize</div>
+      <div class="menu-item-price">$24/pp</div>
+      <div class="menu-item-desc">Berry Smoothie Shots · Mini Yogurt Parfait w/ Granola · Avocado Deviled Eggs w/ Turkey Bacon · Mini Blueberry Muffins</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Empower</div>
+      <div class="menu-item-price">$24/pp</div>
+      <div class="menu-item-desc">Juice of the Day · Diced Fruit Salad · Build-Your-Own Trail Mix (Granola, Nuts, Raisins, Dried Fruit, Chocolate Crisps)</div>
+    </div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Afternoon Break Packages</div>
+      <div class="menu-sub-meta">30 min service · Coffee + Tazo tea included</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Inspire & Activate</div>
+      <div class="menu-item-price">$25/pp</div>
+      <div class="menu-item-desc">Avocado Hummus w/ Pita Chips · Coconut Chia Pudding · Coconut Water Horchata</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Rest & Recouperate</div>
+      <div class="menu-item-price">$27/pp</div>
+      <div class="menu-item-desc">Flax Seed & Nut Granola Bites · Smoked Turkey & Avocado Finger Sandwiches · Strawberry Mint Agua Fresca</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Focus & Concentrate</div>
+      <div class="menu-item-price">$26/pp</div>
+      <div class="menu-item-desc">Matcha Panna Cotta · Smashed Avocado & Smoked Salmon Crostini · Pomegranate Smoothie</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Powerful</div>
+      <div class="menu-item-price">$19/pp</div>
+      <div class="menu-item-desc">Mixed Dried Fruits & Nuts · Seasonal Fruit Display · Roasted Garlic Hummus w/ Pita Chips</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Indulge</div>
+      <div class="menu-item-price">$27/pp</div>
+      <div class="menu-item-desc">5 Candies (M&M's, Reese's, Choc Pretzels, Gummi Bears, Choc Almonds, Jelly Beans, Yogurt Pretzels) · Starbucks Frappuccinos</div>
+    </div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Beverage Service</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Half Day Beverage Service (4 hr)</div>
+      <div class="menu-item-price">$24/pp</div>
+      <div class="menu-item-desc">Starbucks regular & decaf, Tazo teas, Pepsi products, bottled water</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">All Day Beverage Service (8 hr)</div>
+      <div class="menu-item-price">$45/pp</div>
+      <div class="menu-item-desc">Starbucks regular & decaf, Tazo teas, Pepsi products, bottled water</div>
+    </div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">A La Carte Beverages</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Starbucks Regular Coffee</div><div class="menu-item-price">$105/gal</div></div>
+    <div class="menu-item"><div class="menu-item-name">Starbucks Decaffeinated Coffee</div><div class="menu-item-price">$105/gal</div></div>
+    <div class="menu-item"><div class="menu-item-name">Assortment of Tazo Teas</div><div class="menu-item-price">$95/gal</div></div>
+    <div class="menu-item"><div class="menu-item-name">Freshly Brewed Iced Tea</div><div class="menu-item-price">$95/gal</div></div>
+    <div class="menu-item"><div class="menu-item-name">Starbucks Specialty Syrups Bar</div><div class="menu-item-price">$9/pp</div><div class="menu-item-desc">Whipped Cream, Flavored Syrups, Chocolate Shavings, Cinnamon, Citrus Twists</div></div>
+    <div class="menu-item"><div class="menu-item-name">Starbucks Frappuccino</div><div class="menu-item-price">$9 ea</div></div>
+    <div class="menu-item"><div class="menu-item-name">San Pellegrino</div><div class="menu-item-price">$8 ea</div></div>
+    <div class="menu-item"><div class="menu-item-name">Red Bull (Regular or Sugar-Free)</div><div class="menu-item-price">$8 ea</div></div>
+    <div class="menu-item"><div class="menu-item-name">Assorted Pepsi Products</div><div class="menu-item-price">$7 ea</div></div>
+    <div class="menu-item"><div class="menu-item-name">Bottled Water</div><div class="menu-item-price">$6 ea</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">A La Carte Snacks & Sweets</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Roasted Skin On Almonds</div><div class="menu-item-price">$8/pp</div><div class="menu-item-desc">Rosemary & Himalayan Pink Salt</div></div>
+    <div class="menu-item"><div class="menu-item-name">Brain Boost</div><div class="menu-item-price">$11/pp</div><div class="menu-item-desc">Blueberries, Grapes, Raspberries, Walnuts</div></div>
+    <div class="menu-item"><div class="menu-item-name">Vanilla Yogurt Parfait</div><div class="menu-item-price">$9/pp</div><div class="menu-item-desc">Fresh Berries & House Granola</div></div>
+    <div class="menu-item"><div class="menu-item-name">Mini Assorted Croissants</div><div class="menu-item-price">$63/doz</div></div>
+    <div class="menu-item"><div class="menu-item-name">Cream Cheese Glazed Cinnamon Buns</div><div class="menu-item-price">$67/doz</div></div>
+    <div class="menu-item"><div class="menu-item-name">Assorted Breakfast Breads / Danishes</div><div class="menu-item-price">$63/doz</div></div>
+    <div class="menu-item"><div class="menu-item-name">Assorted Whole Fruit</div><div class="menu-item-price">$6/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Fresh Cut Melons & Berries</div><div class="menu-item-price">$9/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Assorted Granola Bars</div><div class="menu-item-price">$6/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Kettle Chips w/ Caramelized Onion Dip</div><div class="menu-item-price">$12/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Mini Whole Grain Chicken Corn Dogs</div><div class="menu-item-price">$10/pp</div><div class="menu-item-desc">Mustard & Ketchup</div></div>
+    <div class="menu-item"><div class="menu-item-name">Warm Soft Pretzel Rods</div><div class="menu-item-price">$10/pp</div><div class="menu-item-desc">Creole Mustard & Queso</div></div>
+    <div class="menu-item"><div class="menu-item-name">White Cheddar Dusted Popcorn</div><div class="menu-item-price">$8/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Garden Vegetable Crudités Shooters</div><div class="menu-item-price">$7/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Assorted Cookies</div><div class="menu-item-price">$61/doz</div></div>
+    <div class="menu-item"><div class="menu-item-name">Blondies or Brownies</div><div class="menu-item-price">$61/doz</div></div>
+    <div class="menu-item"><div class="menu-item-name">Assorted Candy Bars</div><div class="menu-item-price">$7 ea</div></div>
+    <div class="menu-item"><div class="menu-item-name">Assorted Chips</div><div class="menu-item-price">$7 ea</div></div>
   </div>
 
 </div>
 </div>
 
-</div><!-- /days -->
+<!-- ── LUNCH ── -->
+<div class="menu-cat" data-cat="lunch">
+<button class="menu-cat-btn" onclick="toggleCat(this)">
+  <span class="menu-cat-dot"></span>
+  <div class="menu-cat-text">
+    <div class="menu-cat-label">Midday</div>
+    <div class="menu-cat-name">Lunch</div>
+    <div class="menu-cat-sub">Daily Buffets · Plated · Cold · Take Away</div>
+  </div>
+  <span class="chevron-icon">▶</span>
+</button>
+<div class="menu-cat-body">
 
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Daily Working Lunch Buffets</div>
+      <div class="menu-sub-meta"><strong>$68/pp</strong> day of week · <strong>$78/pp</strong> any other day · 90 min · Iced tea, coffee, Tazo</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">MON · Gourmet Deli</div>
+      <div class="menu-item-tags"><span class="menu-tag menu-tag-day">Monday</span></div>
+      <div class="menu-item-desc">Tomato Basil Soup · Quinoa Arugula Salad · Spinach Salad · Egg Salad · Smoked Turkey · Roast Beef · Breads, Cheeses, Toppings · Chips · Cookies & Brownies</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">TUE · Austin BBQ</div>
+      <div class="menu-item-tags"><span class="menu-tag menu-tag-day">Tuesday</span></div>
+      <div class="menu-item-desc">Iceberg & Romaine Salad · German Potato Salad · Kale Broccoli Slaw · Gochujang BBQ Chicken Thighs · 12hr Smoked Brisket · Hawaiian Rolls · Baked Beans · Green Chili Mac · Cornbread · Apple Skillet Crisp</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">WED · Hill Country Spa Day</div>
+      <div class="menu-item-tags"><span class="menu-tag menu-tag-day">Wednesday</span></div>
+      <div class="menu-item-desc">Arugula Berry Salad · Spinach Watercress Beet Salad · Herb Petite Chicken w/ Tomato Caper · Roasted Salmon w/ Lemon Garlic Rosemary · Roasted Asparagus · Sweet Potato Hash · Macarons · Chocolate Mousse Shots</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">THU · Tejas Mexicano</div>
+      <div class="menu-item-tags"><span class="menu-tag menu-tag-day">Thursday</span></div>
+      <div class="menu-item-desc">Mixed Lettuce w/ Corn & Black Beans · Fruit Arugula Salad · Queso & Chips · Chicken Fajitas · Beef Barbacoa · Green Chile Rice · Refried Beans · Churros · Tres Leches</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">FRI · Modern Italian</div>
+      <div class="menu-item-tags"><span class="menu-tag menu-tag-day">Friday</span></div>
+      <div class="menu-item-desc">Turkey Sausage Kale Soup · Arugula Caesar · Burrata Caprese · GF Chicken Piccata · Whole Salmon Pesto · Roasted Zucchini & Tomato · Cannoli · Tiramisu Bites</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">SAT · Game Day Tailgate</div>
+      <div class="menu-item-tags"><span class="menu-tag menu-tag-day">Saturday</span></div>
+      <div class="menu-item-desc">Quinoa Veg Chili · Iceberg Salad · Coleslaw · Potato Salad · Nashville Chicken Thigh · Sirloin Burgers (Impossible +$5) · BBQ Chips · Caramel Fudge Brownie · Lemon Bars</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">SUN · Southern Comforts</div>
+      <div class="menu-item-tags"><span class="menu-tag menu-tag-day">Sunday</span></div>
+      <div class="menu-item-desc">Southwestern Cobb · Kale Sweet Potato Salad · Honey Fried Chicken · Roasted Pork Loin · Garlic Mashed · Braised Greens · Peach Cobbler · Pecan Pie</div>
+    </div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Plated Hot Entrées</div>
+      <div class="menu-sub-meta">3 courses · Soup or salad + entrée + dessert · 30 pax min</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Blackened BBQ Salmon</div>
+      <div class="menu-item-price">$60/pp</div>
+      <div class="menu-item-desc">Poblano Polenta, Baby Spinach, Charred Corn & Black Bean Salsa</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Char Broiled Mahi Mahi</div>
+      <div class="menu-item-price">$61/pp</div>
+      <div class="menu-item-desc">Braised Green Lentils, Cauliflower Puree, Wilted Chard, Preserved Lemon Chermoula</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Roasted Natural Chicken</div>
+      <div class="menu-item-price">$59/pp</div>
+      <div class="menu-item-desc">Pink Salt Whipped Potatoes, Haricot Vert, Oyster Mushroom Chicken Demi</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Cilantro Lime Chicken</div>
+      <div class="menu-item-price">$57/pp</div>
+      <div class="menu-item-desc">Chipotle Cheddar Grits, Charred Corn Pico, Queso Fresco</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Porcini Dusted Top Sirloin</div>
+      <div class="menu-item-price">$68/pp</div>
+      <div class="menu-item-desc">Boursin Whipped Potato, Baby Vegetables, Caramelized Onion Jus</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">BBQ Braised Short Rib</div>
+      <div class="menu-item-price">$68/pp</div>
+      <div class="menu-item-desc">Whipped Sweet Potato, Sautéed Greens, Natural Braising Jus</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Roasted Spaghetti Squash</div>
+      <div class="menu-item-price">$53/pp</div>
+      <div class="menu-item-tags"><span class="menu-tag menu-tag-v">Vegan</span></div>
+      <div class="menu-item-desc">Sautéed Kale, Black Garlic, Roasted Tomato, Vegan Ricotta</div>
+    </div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Plated Cold Entrées</div>
+      <div class="menu-sub-meta">2 courses · Entrée + dessert</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Garden Green Salad w/ Grilled Chicken</div>
+      <div class="menu-item-price">$50/pp</div>
+      <div class="menu-item-desc">Baby Lettuces, Carrots, Radish, Citrus Dijon Vinaigrette</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Garden Green Salad w/ Flank Steak</div>
+      <div class="menu-item-price">$52/pp</div>
+      <div class="menu-item-desc">Chili Rubbed Flank Steak over baby lettuces</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Asian Chicken Salad</div>
+      <div class="menu-item-price">$51/pp</div>
+      <div class="menu-item-desc">Grilled Chicken, Napa Cabbage, Wonton, Sesame Ginger</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Chopped Wedge Salad w/ Chicken</div>
+      <div class="menu-item-price">$51/pp</div>
+      <div class="menu-item-desc">Heirloom Tomatoes, Bacon, Egg, Blue Cheese, Avocado Ranch</div>
+    </div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Plated Lunch Soups & Salads (Select One)</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Soup · Tomato Basil Cream</div></div>
+    <div class="menu-item"><div class="menu-item-name">Soup · Turkey Sausage, Kale & Rice</div></div>
+    <div class="menu-item"><div class="menu-item-name">Soup · Vegetarian Black Bean Chili</div></div>
+    <div class="menu-item"><div class="menu-item-name">Salad · Traditional Caesar</div></div>
+    <div class="menu-item"><div class="menu-item-name">Salad · Kale & Quinoa</div><div class="menu-item-desc">Cranberries, Almonds, Chevre, Red Wine Vinaigrette</div></div>
+    <div class="menu-item"><div class="menu-item-name">Salad · Steakhouse</div><div class="menu-item-desc">Bibb, Blue Cheese, Bacon, Ranch</div></div>
+    <div class="menu-item"><div class="menu-item-name">Salad · Wild Arugula & Berries</div></div>
+    <div class="menu-item"><div class="menu-item-name">Salad · Domain Fiesta</div><div class="menu-item-desc">Iceberg, Romaine, Cheddar, Corn, Black Beans, Jalapeno Ranch</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Plated Lunch Dessert (Select One)</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Chai Cheesecake</div></div>
+    <div class="menu-item"><div class="menu-item-name">Chocolate Decadence Cake</div><div class="menu-item-tags"><span class="menu-tag menu-tag-gf">GF</span></div></div>
+    <div class="menu-item"><div class="menu-item-name">German Chocolate Cake</div></div>
+    <div class="menu-item"><div class="menu-item-name">Apple Tart</div></div>
+    <div class="menu-item"><div class="menu-item-name">Red Velvet</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Take Away Lunch</div>
+      <div class="menu-sub-meta"><strong>$51/pp</strong> · For guests leaving property · +$11/box on-site</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Vegan Mediterranean Wrap</div><div class="menu-item-tags"><span class="menu-tag menu-tag-v">Vegan</span></div><div class="menu-item-desc">Falafel, Tzatziki, Kalamata Olive, Tomato, Greens</div></div>
+    <div class="menu-item"><div class="menu-item-name">Chicken Wrap</div><div class="menu-item-desc">Grilled Chicken, Black Beans, Roasted Corn, Peppers, Chipotle in Flour Tortilla</div></div>
+    <div class="menu-item"><div class="menu-item-name">Roast Beef Sandwich</div><div class="menu-item-desc">Roast Beef, Balsamic Onion, Arugula, Goat Cheese on Sourdough</div></div>
+    <div class="menu-item"><div class="menu-item-name">Roasted Turkey Sandwich</div><div class="menu-item-desc">Turkey, Tomato, Onion, Cheddar, Iceberg on Whole Grain</div></div>
+    <div class="menu-item"><div class="menu-item-name">Ham Sandwich</div><div class="menu-item-desc">Ham, Fresh Mozzarella, Tomato, Spinach, Pesto Aioli on Sourdough</div></div>
+    <div class="menu-item"><div class="menu-item-name">Salads</div><div class="menu-item-desc">Choose one: Orzo Pasta · Southwest Slaw · Quinoa · Potato · Fruit</div></div>
+    <div class="menu-item"><div class="menu-item-name">Desserts</div><div class="menu-item-desc">Choose one: Chocolate Chip Cookie · Rice Krispy Treat · Brownie</div></div>
+  </div>
+
+  <div class="menu-note">Buffet min 20 ppl · under 20 = +$250 · 2-3 sandwich choices per group size · Salad & dessert must be same for all take away</div>
+</div>
+</div>
+
+<!-- ── DINNER ── -->
+<div class="menu-cat" data-cat="dinner">
+<button class="menu-cat-btn" onclick="toggleCat(this)">
+  <span class="menu-cat-dot"></span>
+  <div class="menu-cat-text">
+    <div class="menu-cat-label">Evening</div>
+    <div class="menu-cat-name">Dinner & Reception</div>
+    <div class="menu-cat-sub">Buffets · Plated · Hors d'Oeuvres · Stations · Carving</div>
+  </div>
+  <span class="chevron-icon">▶</span>
+</button>
+<div class="menu-cat-body">
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Dinner Buffets</div>
+      <div class="menu-sub-meta">90 min · 30 pax min · Iced water, coffee, Tazo</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Steakhouse Chopping Block</div>
+      <div class="menu-item-price">$99/pp</div>
+      <div class="menu-item-desc">Steakhouse + Spinach Salads · Scalloped Potatoes · Truffled Cream Corn · Asparagus · Roasted Chicken (Mushroom Madeira) · Strip Loin (Red Wine) · European Bass (Tomato Olive) · Chocolate Mousse · Carrot Cake · Apple Crisp</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Texas BBQ</div>
+      <div class="menu-item-price">$97/pp</div>
+      <div class="menu-item-desc">Texas Red Chili Station · Market Salad · German Potato Salad · Coleslaw · Cream Corn · Marble Potatoes · Ranch Beans · Out-of-Smoker Brisket · Honey Fried Chicken · Smoked Rope Sausage · Banana Pudding · Peach Cobbler</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Mediterranean</div>
+      <div class="menu-item-price">$98/pp</div>
+      <div class="menu-item-desc">Greek + Panzanella + Couscous Salads · Moroccan Salmon · Double Garlic Chicken · Greek Flank Steak w/ Tzatziki · Paella Rice · Roasted Vegetables · Polenta Cake · Crema Catalana</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Taste of the Southwest</div>
+      <div class="menu-item-price">$96/pp</div>
+      <div class="menu-item-desc">Tortilla Soup Station · Michelada Shrimp Cocktail · Romaine Corn Salad · Jicama Black Bean Slaw · Chicken Thighs w/ Mole Verde · Churrasco Steak w/ Chimichurri · Bacon Cheddar Grits · Borracho Beans · Coconut Tembleque · Caramel Cheesecake Bites</div>
+    </div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Plated Dinner Entrées</div>
+      <div class="menu-sub-meta">3 courses · Salad + entrée + dessert · 30 pax min · Up to 3 entrée choices</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Filet & Lobster Tail</div>
+      <div class="menu-item-price">$150/pp</div>
+      <div class="menu-item-desc">Black Angus Filet, Garlic Butter Roasted Lobster, Truffled Polenta, Cabernet Demi</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Herb Seared Statler Chicken</div>
+      <div class="menu-item-price">$77/pp</div>
+      <div class="menu-item-desc">Sundried Tomato Fontina Potato, Chicken Demi</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Brown Sugar Ginger Salmon</div>
+      <div class="menu-item-price">$79/pp</div>
+      <div class="menu-item-desc">Fingerling Hash, Spicy Tequila Glaze</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Grilled Center Cut Filet</div>
+      <div class="menu-item-price">$95/pp</div>
+      <div class="menu-item-desc">St. Andre Potato, Mushroom & Cipollini Ragout</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Black Pepper Lemon Chicken & Prosciutto Shrimp</div>
+      <div class="menu-item-price">$90/pp</div>
+      <div class="menu-item-desc">Surf & turf w/ Boursin Whipped Potatoes</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Roasted Garlic Rubbed Salmon</div>
+      <div class="menu-item-price">$79/pp</div>
+      <div class="menu-item-desc">Sweet Onion Cream, Roasted Sweet Potatoes</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Baked Cod</div>
+      <div class="menu-item-price">$77/pp</div>
+      <div class="menu-item-desc">Arugula Pesto, Crispy Herb Polenta</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Seared Cauliflower Steak</div>
+      <div class="menu-item-price">$55/pp</div>
+      <div class="menu-item-tags"><span class="menu-tag menu-tag-v">Vegetarian</span></div>
+      <div class="menu-item-desc">Tomato Olive Relish</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Vegetable Lasagna</div>
+      <div class="menu-item-price">$55/pp</div>
+      <div class="menu-item-tags"><span class="menu-tag menu-tag-v">Vegetarian</span></div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Ratatouille Stuffed Eggplant</div>
+      <div class="menu-item-price">$55/pp</div>
+      <div class="menu-item-tags"><span class="menu-tag menu-tag-v">Vegetarian</span></div>
+    </div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Enhancement Starters (4th course)</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Jumbo Shrimp Cocktail</div><div class="menu-item-price">$19/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Burrata Cheese</div><div class="menu-item-price">$19/pp</div><div class="menu-item-desc">Heirloom Tomatoes, Arugula, Pesto, Aged Balsamic</div></div>
+    <div class="menu-item"><div class="menu-item-name">Seared Ahi Tuna Poke</div><div class="menu-item-price">$19/pp</div><div class="menu-item-desc">Pineapple Pico, Yuzu, Sesame, Wonton</div></div>
+    <div class="menu-item"><div class="menu-item-name">Truffled Butternut Squash Bisque en Croute</div><div class="menu-item-price">$18/pp</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Hors d'Oeuvres</div>
+      <div class="menu-sub-meta"><strong>$10/pc</strong> · 25 piece min · Butler passing $75/hr (1 per 25 guests)</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Traditional Deviled Egg</div><div class="menu-item-desc">Bacon, Chive, Paprika · CHILLED</div></div>
+    <div class="menu-item"><div class="menu-item-name">Antipasta Skewer</div><div class="menu-item-desc">Artichoke, Tomato, Mozzarella, Olive · CHILLED</div></div>
+    <div class="menu-item"><div class="menu-item-name">Fig & Goat Cheese Flatbread</div><div class="menu-item-desc">Balsamic Glaze · CHILLED</div></div>
+    <div class="menu-item"><div class="menu-item-name">Ahi Tuna Poke on Wontons</div><div class="menu-item-desc">CHILLED</div></div>
+    <div class="menu-item"><div class="menu-item-name">Shrimp Cocktail Shooters</div><div class="menu-item-desc">CHILLED</div></div>
+    <div class="menu-item"><div class="menu-item-name">Crispy Chicken Potsticker</div><div class="menu-item-desc">Ginger Soy · HOT</div></div>
+    <div class="menu-item"><div class="menu-item-name">Potato & Vegetable Samosa</div><div class="menu-item-desc">Cilantro Chutney · HOT</div></div>
+    <div class="menu-item"><div class="menu-item-name">Gulf Coast Crab Cake</div><div class="menu-item-desc">Tequila Remoulade · HOT</div></div>
+    <div class="menu-item"><div class="menu-item-name">BBQ Pork Wontons</div><div class="menu-item-desc">Sriracha Aioli · HOT</div></div>
+    <div class="menu-item"><div class="menu-item-name">Southwestern Chicken Springroll</div><div class="menu-item-desc">Avocado Crema · HOT</div></div>
+    <div class="menu-item"><div class="menu-item-name">Mini Beef Tenderloin en Croute</div><div class="menu-item-desc">Caramelized Onion Dip · HOT</div></div>
+    <div class="menu-item"><div class="menu-item-name">Mac & Cheese Bites</div><div class="menu-item-desc">HOT</div></div>
+    <div class="menu-item"><div class="menu-item-name">Jackfruit Cake</div><div class="menu-item-tags"><span class="menu-tag menu-tag-v">Vegan</span><span class="menu-tag menu-tag-gf">GF</span></div><div class="menu-item-desc">HOT</div></div>
+    <div class="menu-item"><div class="menu-item-name">Coconut Tempura Shrimp</div><div class="menu-item-desc">Sweet Chili · HOT</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Display Stations</div>
+      <div class="menu-sub-meta">30 pax min · 90 min · 3 stations recommended for full meal</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Antipasto Display</div>
+      <div class="menu-item-price">$33/pp</div>
+      <div class="menu-item-desc">4 Charcuterie Meats, Olives, Artichokes, Peppadews, Grilled Veg, Focaccia, Lavosh</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Breads & Spreads</div>
+      <div class="menu-item-price">$28/pp</div>
+      <div class="menu-item-desc">Warm Brie, Pesto Ricotta, Spinach Artichoke Bacon Dip, Texas Chevre w/ Honey & Pecans</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Artisan Cheese Sampling</div>
+      <div class="menu-item-price">$30/pp</div>
+      <div class="menu-item-desc">4 Artisan Cheeses, Wildflower Honey, Preserves, Breads, Crackers</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Deluxe Nacho Bar</div>
+      <div class="menu-item-price">$27/pp</div>
+      <div class="menu-item-desc">Chips, Salsas, Guacamole, Queso, Ancho Chicken, Pulled Barbacoa</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Market Style Vegetable Crudité</div>
+      <div class="menu-item-price">$22/pp</div>
+      <div class="menu-item-desc">Raw Veg, Ranch Dip, Kale Artichoke Yogurt Dip, Hatch Green Chile Hummus</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Chips & Dips</div>
+      <div class="menu-item-price">$25/pp</div>
+      <div class="menu-item-desc">Tortilla & Kettle Chips · Lone Star Beer Cheese · Onion Dip · Salsa · Guacamole</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Macaroni & Cheese Trio</div>
+      <div class="menu-item-price">$35/pp</div>
+      <div class="menu-item-desc">Three Cheese · Chicken Green Chile Oaxaca · Lobster English Pea Pecorino Tomato</div>
+    </div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Carving Stations</div>
+      <div class="menu-sub-meta">90 min · $250 chef attendant per 75 ppl · Enhancement, not standalone meal</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Herb Roasted Turkey Breast</div>
+      <div class="menu-item-price">$398 (serves 20)</div>
+      <div class="menu-item-desc">Cranberry Compote, Wild Rice Pilaf, Rolls</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Bacon Wrapped Pork Loin</div>
+      <div class="menu-item-price">$508 (serves 25)</div>
+      <div class="menu-item-desc">Caramelized Onion Jus, Cream Corn, Sweet Rolls</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Chili Rubbed Scottish Salmon</div>
+      <div class="menu-item-price">$480 (serves 20)</div>
+      <div class="menu-item-desc">Meyer Lemon Butter, Asparagus Risotto</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Whiskey Glazed Ham</div>
+      <div class="menu-item-price">$595 (serves 30)</div>
+      <div class="menu-item-desc">Roasted Root Veg, Whole Grain Mustard, Rolls</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Grilled Beef Tenderloin</div>
+      <div class="menu-item-price">$698 (serves 20)</div>
+      <div class="menu-item-desc">Horseradish Whipped Potato, Cabernet Demi, Rolls</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">House Smoked BBQ Brisket</div>
+      <div class="menu-item-price">$595 (serves 25)</div>
+      <div class="menu-item-desc">Lager BBQ Sauce, Pickles, Onions, Jalapeños, Pit Beans, Cornbread</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Slow Roasted Prime Rib</div>
+      <div class="menu-item-price">$798 (serves 30)</div>
+      <div class="menu-item-desc">Au Jus, Horseradish, Garlic Whipped Potatoes, Rolls</div>
+    </div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Plated Dinner Sides</div>
+      <div class="menu-sub-meta">Salads (select one) · Desserts (select one)</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Salad · Arugula Chop</div><div class="menu-item-desc">Cucumber, Tomato, Pepitas, White Balsamic</div></div>
+    <div class="menu-item"><div class="menu-item-name">Salad · Classic BLT Wedge</div></div>
+    <div class="menu-item"><div class="menu-item-name">Salad · Roasted Pear & Pecan</div><div class="menu-item-desc">Frisee, Radicchio, Whipped Chevre, Texas Pecans</div></div>
+    <div class="menu-item"><div class="menu-item-name">Salad · Watercress</div><div class="menu-item-desc">Tomato, Radish, Fennel, Golden Raisins, Champagne</div></div>
+    <div class="menu-item"><div class="menu-item-name">Salad · Traditional Caesar</div></div>
+    <div class="menu-item"><div class="menu-item-name">Salad · Baby Spinach</div><div class="menu-item-desc">Fennel, Dried Apples, Cranberries, Cashews, Fig Balsamic</div></div>
+    <div class="menu-item"><div class="menu-item-name">Dessert · Caramel Pecan Brownie</div></div>
+    <div class="menu-item"><div class="menu-item-name">Dessert · Chocolate Decadence</div><div class="menu-item-tags"><span class="menu-tag menu-tag-gf">GF</span></div></div>
+    <div class="menu-item"><div class="menu-item-name">Dessert · Classic Carrot Cake</div></div>
+    <div class="menu-item"><div class="menu-item-name">Dessert · Red Velvet</div></div>
+    <div class="menu-item"><div class="menu-item-name">Dessert · Matcha Strawberry Cake</div><div class="menu-item-tags"><span class="menu-tag menu-tag-v">Vegan</span></div></div>
+    <div class="menu-item"><div class="menu-item-name">Dessert · Strawberry Basil</div><div class="menu-item-desc">Vanilla Whipped Ganache, Madeleine Biscuit</div></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ── BAR ── -->
+<div class="menu-cat" data-cat="bar">
+<button class="menu-cat-btn" onclick="toggleCat(this)">
+  <span class="menu-cat-dot"></span>
+  <div class="menu-cat-text">
+    <div class="menu-cat-label">Liquor</div>
+    <div class="menu-cat-name">Bar & Wine</div>
+    <div class="menu-cat-sub">Host · Cash · Packages · Wine List</div>
+  </div>
+  <span class="chevron-icon">▶</span>
+</button>
+<div class="menu-cat-body">
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Host Bar (charged per drink)</div>
+      <div class="menu-sub-meta">$250 bartender per bar (4hr) · 1 per 100 guests · +$75/hr</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Favorite Brands</div>
+      <div class="menu-item-price">$11/drink</div>
+      <div class="menu-item-desc">Jack Daniel's, Dewars, Tito's, Tanqueray, Canadian Club, Jose Cuervo Gold, Bacardi</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Appreciated Brands</div>
+      <div class="menu-item-price">$12/drink</div>
+      <div class="menu-item-desc">Bulleit, Glenmorangie 10, Belvedere, Bombay Sapphire, Crown Royal, 1800 Reposado, Straight Silver</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">All About Texas Bar</div>
+      <div class="menu-item-price">$11/drink</div>
+      <div class="menu-item-desc">Tito's, Seersucker Gin, Z Tequila, Rebecca Creek, Straight Silver · Becker wines $12 · Texas beers $9</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">House Wine</div><div class="menu-item-price">$10/glass</div><div class="menu-item-desc">Vista Point Chard, Cab, Sauv Blanc, Pinot Noir</div></div>
+    <div class="menu-item"><div class="menu-item-name">Craft Beer</div><div class="menu-item-price">$9</div><div class="menu-item-desc">Shiner Bock, Fireman's #4, Austin Eastciders</div></div>
+    <div class="menu-item"><div class="menu-item-name">Imported Beer</div><div class="menu-item-price">$9</div><div class="menu-item-desc">Dos Equis XX, Stella Artois</div></div>
+    <div class="menu-item"><div class="menu-item-name">Domestic Beer</div><div class="menu-item-price">$8</div><div class="menu-item-desc">Budweiser, Bud Light, Miller Light, Lonestar</div></div>
+    <div class="menu-item"><div class="menu-item-name">Sangria</div><div class="menu-item-price">$108/gal</div><div class="menu-item-desc">Tropical White or Spiced Red</div></div>
+    <div class="menu-item"><div class="menu-item-name">Mojito Bar</div><div class="menu-item-price">$10</div><div class="menu-item-desc">Lime, Mint, Grapefruit, Mango</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Cash Bar (guest pays)</div>
+      <div class="menu-sub-meta">$250 cashier per bar (4hr) · +$75/hr</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Familiar Brands</div><div class="menu-item-price">$11/drink</div><div class="menu-item-desc">Jim Beam, J&B, Monopolowa, Beefeater, Seagram's 7, Agavales Gold, Castillo</div></div>
+    <div class="menu-item"><div class="menu-item-name">Favorite Brands</div><div class="menu-item-price">$12/drink</div></div>
+    <div class="menu-item"><div class="menu-item-name">Appreciated Brands</div><div class="menu-item-price">$13/drink</div></div>
+    <div class="menu-item"><div class="menu-item-name">Craft Beer</div><div class="menu-item-price">$10</div></div>
+    <div class="menu-item"><div class="menu-item-name">Imported Beer</div><div class="menu-item-price">$10</div></div>
+    <div class="menu-item"><div class="menu-item-name">Domestic Beer</div><div class="menu-item-price">$9</div></div>
+    <div class="menu-item"><div class="menu-item-name">House Wine</div><div class="menu-item-price">$11/glass</div></div>
+    <div class="menu-item"><div class="menu-item-name">Mojito Bar</div><div class="menu-item-price">$12</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Bar Packages (flat per person)</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-name">Favorites Bar Package</div>
+      <div class="menu-item-desc">Tito's, Dewars, Tanqueray, Canadian Club, Jack Daniel's, Bacardi, Cuervo Gold, house wine, beers, sodas, water</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">↳ 1 hour</div><div class="menu-item-price">$27/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">↳ 2 hour</div><div class="menu-item-price">$38/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">↳ 3 hour</div><div class="menu-item-price">$49/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">↳ 4 hour</div><div class="menu-item-price">$59/pp</div></div>
+    <div class="menu-item">
+      <div class="menu-item-name">Appreciated Bar Package</div>
+      <div class="menu-item-desc">Belvedere, Glenmorangie 10, Bombay Sapphire, Bulleit, Crown Royal, Treaty Oak Rum, 1800 Reposado, house wine, beers, sodas, water</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">↳ 1 hour</div><div class="menu-item-price">$31/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">↳ 2 hour</div><div class="menu-item-price">$42/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">↳ 3 hour</div><div class="menu-item-price">$53/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">↳ 4 hour</div><div class="menu-item-price">$64/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Beer & Wine Bar · 1 hour</div><div class="menu-item-price">$18/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Beer & Wine Bar · 2 hour</div><div class="menu-item-price">$27/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Beer & Wine Bar · 3 hour</div><div class="menu-item-price">$35/pp</div></div>
+    <div class="menu-item"><div class="menu-item-name">Beer & Wine Bar · 4 hour</div><div class="menu-item-price">$41/pp</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Wine List (by the bottle)</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Sparkling · Wyclif Brut, California</div><div class="menu-item-price">$58</div></div>
+    <div class="menu-item"><div class="menu-item-name">Sparkling · Riondo Sparkling Rosé, Italy</div><div class="menu-item-price">$65</div></div>
+    <div class="menu-item"><div class="menu-item-name">Sparkling · Chandon Brut Classic, California</div><div class="menu-item-price">$76</div></div>
+    <div class="menu-item"><div class="menu-item-name">White · Echo Bay Sauvignon Blanc, NZ</div><div class="menu-item-price">$54</div></div>
+    <div class="menu-item"><div class="menu-item-name">White · Bollini Pinot Grigio, Italy</div><div class="menu-item-price">$60</div></div>
+    <div class="menu-item"><div class="menu-item-name">White · Pine Ridge Chenin Blanc, California</div><div class="menu-item-price">$68</div></div>
+    <div class="menu-item"><div class="menu-item-name">White · Josh Cellars Chardonnay, California</div><div class="menu-item-price">$70</div></div>
+    <div class="menu-item"><div class="menu-item-name">Rosé · Banfi Centine, Toscana</div><div class="menu-item-price">$58</div></div>
+    <div class="menu-item"><div class="menu-item-name">Rosé · Wyclif Brut Rosé, California</div><div class="menu-item-price">$58</div></div>
+    <div class="menu-item"><div class="menu-item-name">Rosé · Minuty M, Provence France</div><div class="menu-item-price">$69</div></div>
+    <div class="menu-item"><div class="menu-item-name">Red · Beringer Founders Estate Merlot</div><div class="menu-item-price">$54</div></div>
+    <div class="menu-item"><div class="menu-item-name">Red · Unshackled Pinot Noir, California</div><div class="menu-item-price">$65</div></div>
+    <div class="menu-item"><div class="menu-item-name">Red · Duckhorn Decoy Cabernet, California</div><div class="menu-item-price">$69</div></div>
+    <div class="menu-item"><div class="menu-item-name">Red · The Federalist Red Blend, Texas</div><div class="menu-item-price">$69</div></div>
+    <div class="menu-item"><div class="menu-item-name">Red · The Prisoner Red Blend, California</div><div class="menu-item-price">$98</div></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ── MEETING PACKAGES ── -->
+<div class="menu-cat" data-cat="packages">
+<button class="menu-cat-btn" onclick="toggleCat(this)">
+  <span class="menu-cat-dot"></span>
+  <div class="menu-cat-text">
+    <div class="menu-cat-label">Bundles</div>
+    <div class="menu-cat-name">Complete Meeting Packages</div>
+    <div class="menu-cat-sub">Half Day · All Day · Wi-Fi included</div>
+  </div>
+  <span class="chevron-icon">▶</span>
+</button>
+<div class="menu-cat-body">
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Half Day Package · Morning</div>
+      <div class="menu-sub-meta"><strong>$69/pp</strong> · Includes Wi-Fi, coffee, tea</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Early Riser Breakfast</div><div class="menu-item-desc">OJ, fruit, yogurts, scrambled eggs, bacon, potatoes</div></div>
+    <div class="menu-item"><div class="menu-item-name">Morning Break</div><div class="menu-item-desc">Whole Fruit, Granola & Protein Bars</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">Half Day Package · Afternoon</div>
+      <div class="menu-sub-meta"><strong>$88/pp</strong></div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Day of Week Lunch Menu</div></div>
+    <div class="menu-item"><div class="menu-item-name">Afternoon Break</div><div class="menu-item-desc">Roasted Garlic Hummus w/ Pita · Chips & Snacks</div></div>
+  </div>
+
+  <div class="menu-sub">
+    <div class="menu-sub-head">
+      <div class="menu-sub-title">All Day Package</div>
+      <div class="menu-sub-meta"><strong>$152/pp</strong> · Most common conference package</div>
+    </div>
+    <div class="menu-item"><div class="menu-item-name">Early Riser Breakfast</div></div>
+    <div class="menu-item"><div class="menu-item-name">Morning Break</div><div class="menu-item-desc">Whole Fruit + Granola & Protein Bars</div></div>
+    <div class="menu-item"><div class="menu-item-name">Day of Week Lunch Menu</div></div>
+    <div class="menu-item"><div class="menu-item-name">Afternoon Break</div><div class="menu-item-desc">Hummus & Pita · Chips & Snacks</div></div>
+  </div>
+
+  <div class="menu-note">Bottled Water & Pepsi soft drinks available, charged on consumption · All packages include Basic Wi-Fi · 25% service charge + 8.25% tax</div>
+</div>
+</div>
+
+</div><!-- /menu-list -->
+</div><!-- /tab-menu -->
 
 <script>
-/* ─── Theme ─────────────────────────── */
+// ── Theme ──────────────────────────────
 (function(){
-  const saved = localStorage.getItem('beo-theme-v2');
-  if(saved==='light'){
+  const saved = localStorage.getItem('beo-theme');
+  if (saved === 'light') {
     document.documentElement.setAttribute('data-theme','light');
-    document.getElementById('themeColor').setAttribute('content','#f2ede6');
-    document.getElementById('themeBtn').textContent='◐';
+    document.getElementById('themeBtn').textContent = '◐';
   }
 })();
 
 function toggleTheme(){
-  const isLight = document.documentElement.getAttribute('data-theme')==='light';
-  if(isLight){
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  if (isLight) {
     document.documentElement.removeAttribute('data-theme');
-    document.getElementById('themeColor').setAttribute('content','#0c0a08');
-    document.getElementById('themeBtn').textContent='◑';
-    localStorage.setItem('beo-theme-v2','dark');
+    document.getElementById('themeBtn').textContent = '◑';
+    localStorage.setItem('beo-theme','dark');
   } else {
     document.documentElement.setAttribute('data-theme','light');
-    document.getElementById('themeColor').setAttribute('content','#f2ede6');
-    document.getElementById('themeBtn').textContent='◐';
-    localStorage.setItem('beo-theme-v2','light');
+    document.getElementById('themeBtn').textContent = '◐';
+    localStorage.setItem('beo-theme','light');
   }
 }
 
-/* ─── Accordion ─────────────────────── */
-function toggleDay(btn){
+// ── Day accordion ──────────────────────
+function toggleDay(btn) {
   const body = btn.nextElementSibling;
-  const isOpen = body.classList.contains('open');
-  body.classList.toggle('open',!isOpen);
-  btn.classList.toggle('open',!isOpen);
-  btn.setAttribute('aria-expanded', String(!isOpen));
+  const open = body.classList.contains('is-open');
+  body.classList.toggle('is-open', !open);
+  btn.classList.toggle('is-open', !open);
 }
 
-function expandAll(){
-  document.querySelectorAll('.day-body').forEach(b=>b.classList.add('open'));
-  document.querySelectorAll('.day-btn').forEach(b=>{
-    b.classList.add('open');
-    b.setAttribute('aria-expanded','true');
-  });
+function expandAll() {
+  document.querySelectorAll('.day-body').forEach(b => b.classList.add('is-open'));
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.add('is-open'));
 }
-function collapseAll(){
-  document.querySelectorAll('.day-body').forEach(b=>b.classList.remove('open'));
-  document.querySelectorAll('.day-btn').forEach(b=>{
-    b.classList.remove('open');
-    b.setAttribute('aria-expanded','false');
-  });
+function collapseAll() {
+  document.querySelectorAll('.day-body').forEach(b => b.classList.remove('is-open'));
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('is-open'));
 }
 
-/* ─── Auto-scroll to TODAY on load ──── */
-window.addEventListener('load', function(){
-  const today = document.querySelector('.day-btn.today');
-  if(!today) return;
-  // small delay to let layout settle
-  setTimeout(function(){
-    const el = today.closest('.day');
-    if(!el) return;
-    // offset by header height so it's not hidden under sticky bar
-    const headerH = document.querySelector('.app-bar').offsetHeight
-                  + (document.querySelector('.sub-bar').offsetHeight || 0)
-                  + (document.querySelector('.sub-date').offsetHeight || 0);
-    const y = el.getBoundingClientRect().top + window.scrollY - headerH - 8;
-    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-  }, 120);
-});
+// ── Auto-highlight TODAY ───────────────
+function applyToday() {
+  // Use local date (not UTC) — format as YYYY-MM-DD
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const today = `${yyyy}-${mm}-${dd}`;
+
+  let matched = null;
+
+  document.querySelectorAll('.day-section').forEach(section => {
+    const single = section.dataset.date;
+    const start  = section.dataset.dateStart;
+    const end    = section.dataset.dateEnd;
+
+    let isToday = false;
+    if (single && single === today) isToday = true;
+    else if (start && end && today >= start && today <= end) isToday = true;
+
+    if (isToday) {
+      const btn  = section.querySelector('.day-btn');
+      const body = section.querySelector('.day-body');
+      btn.classList.add('is-today', 'is-open');
+      body.classList.add('is-open');
+
+      // Inject TODAY chip if not present
+      if (!btn.querySelector('.today-chip')) {
+        const chip = document.createElement('span');
+        chip.className = 'today-chip';
+        chip.textContent = 'TODAY';
+        // Insert before the chevron
+        const chevron = btn.querySelector('.chevron-icon');
+        btn.insertBefore(chip, chevron);
+      }
+      matched = section;
+    }
+  });
+
+  // If today falls within the packet range, scroll to it
+  if (matched) {
+    // Small delay so layout settles before scroll
+    setTimeout(() => {
+      matched.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+}
+
+applyToday();
+
+// ── Tab switching ─────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('is-active', b.dataset.tab === tab);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('is-active', p.id === 'tab-' + tab);
+  });
+  // Update header title
+  const title = document.getElementById('headerTitle');
+  const printed = document.getElementById('headerPrinted');
+  if (tab === 'menu') {
+    title.textContent = 'Menu 2024';
+    printed.innerHTML = 'Banquet Menu<br><strong>2024 Edition</strong>';
+  } else {
+    title.textContent = 'BEO Rundown';
+    printed.innerHTML = 'Printed <strong>Tue May 19, 2026</strong><br>Packet: May 21 – Jun 4';
+  }
+  // Scroll to top of tab
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+// ── Menu category accordion ───────────
+function toggleCat(btn) {
+  const body = btn.nextElementSibling;
+  const open = body.classList.contains('is-open');
+  body.classList.toggle('is-open', !open);
+  btn.classList.toggle('is-open', !open);
+}
+
+// ── Menu search/filter ────────────────
+function filterMenu(query) {
+  const q = query.trim().toLowerCase();
+  const status = document.getElementById('searchStatus');
+  const cats = document.querySelectorAll('.menu-cat');
+  let totalMatches = 0;
+
+  if (!q) {
+    // Reset everything
+    document.querySelectorAll('.menu-item, .menu-sub, .menu-cat').forEach(el => el.classList.remove('is-hidden'));
+    document.querySelectorAll('.menu-cat-btn, .menu-cat-body').forEach(el => el.classList.remove('is-open'));
+    status.classList.remove('is-active');
+    return;
+  }
+
+  cats.forEach(cat => {
+    const subs = cat.querySelectorAll('.menu-sub');
+    let catMatches = 0;
+    subs.forEach(sub => {
+      const items = sub.querySelectorAll('.menu-item');
+      let subMatches = 0;
+      // Also check sub title text
+      const subTitle = sub.querySelector('.menu-sub-title')?.textContent.toLowerCase() || '';
+      const titleMatches = subTitle.includes(q);
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const match = text.includes(q) || titleMatches;
+        item.classList.toggle('is-hidden', !match);
+        if (match) subMatches++;
+      });
+      sub.classList.toggle('is-hidden', subMatches === 0);
+      catMatches += subMatches;
+    });
+    cat.classList.toggle('is-hidden', catMatches === 0);
+    // Auto-expand matching categories
+    if (catMatches > 0) {
+      cat.querySelector('.menu-cat-btn').classList.add('is-open');
+      cat.querySelector('.menu-cat-body').classList.add('is-open');
+    }
+    totalMatches += catMatches;
+  });
+
+  status.textContent = totalMatches === 0
+    ? `NO RESULTS FOR "${query.toUpperCase()}"`
+    : `${totalMatches} ITEM${totalMatches === 1 ? '' : 'S'} MATCH "${query.toUpperCase()}"`;
+  status.classList.add('is-active');
+}
 </script>
 </body>
 </html>
