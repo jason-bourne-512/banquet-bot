@@ -258,6 +258,11 @@ body {
 .beo-lbl  { font-family: 'DM Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-3); min-width: 48px; padding-top: 1px; flex-shrink: 0; }
 .beo-val  { color: var(--text-2); }
 .beo-val strong { color: var(--text-1); font-weight: 500; }
+.beo-empty { background:var(--bg-card); border:1px dashed var(--border-h); border-radius:12px; padding:36px 20px; text-align:center; }
+.beo-empty-icon { font-size:28px; margin-bottom:10px; opacity:0.4; }
+.beo-empty-title { font-family:'DM Mono',monospace; font-size:11px; color:var(--text-2); letter-spacing:0.5px; margin-bottom:6px; }
+.beo-empty-sub { font-size:11px; color:var(--text-3); line-height:1.6; }
+
 .flag { display: inline-flex; align-items: center; font-family: 'DM Mono', monospace; font-size: 8px; padding: 2px 5px; border-radius: 4px; background: var(--red-dim); color: var(--red); border: 1px solid rgba(220,80,80,0.18); margin-right: 3px; }
 </style>
 </head>
@@ -300,7 +305,7 @@ body {
 <div class="sec" data-en="Quick Access" data-es="Acceso Rápido">Quick Access</div>
 <div class="nav-list">
 
-  <a class="nav-tile t1" href="https://jason-bourne-512.github.io/banquet-bot/index.html" target="_blank">
+  <a class="nav-tile t1" href="https://jason-bourne-512.github.io/banquet-bot/rundown.html" target="_blank">
     <div class="tile-icon">📋</div>
     <div class="tile-text">
       <div class="tile-name" data-en="BEO Rundown" data-es="Resumen BEO">BEO Rundown</div>
@@ -346,29 +351,10 @@ body {
   <div class="beo-live" data-en="Live · updated from BEO packet" data-es="En vivo · del paquete BEO">Live · updated from BEO packet</div>
 
   <!-- ═══ SWAP ZONE START ═══ -->
-  <div class="beo-card din">
-    <div class="beo-head">
-      <div><div class="beo-org">Sample Group</div><div class="beo-name" data-en="Plated Dinner" data-es="Cena Servida">Plated Dinner</div></div>
-      <div class="beo-rt"><div class="beo-room">Primrose</div><div class="beo-time">6:30–9:00 PM</div></div>
-    </div>
-    <div class="beo-body">
-      <div class="beo-row"><span class="beo-lbl" data-en="Covers" data-es="Cubiertos">Covers</span><span class="beo-val"><strong>120</strong> <span data-en="plated" data-es="servido">plated</span></span></div>
-      <div class="beo-row"><span class="beo-lbl" data-en="Menu" data-es="Menú">Menu</span><span class="beo-val">Arugula salad · Chicken / Salmon / Veg · Dessert pre-set</span></div>
-      <div class="beo-row"><span class="beo-lbl" data-en="Setup" data-es="Montaje">Setup</span><span class="beo-val" data-en="Rounds of 10 · stage · podium" data-es="Mesas de 10 · escenario · podio">Rounds of 10 · stage · podium</span></div>
-      <div class="beo-row"><span class="beo-lbl" data-en="Dietary" data-es="Dietas">Dietary</span><span class="beo-val"><span class="flag">⚠ GF ×2</span><span class="flag">⚠ Vegan ×2</span></span></div>
-    </div>
-  </div>
-
-  <div class="beo-card brk">
-    <div class="beo-head">
-      <div><div class="beo-org">Sample Group</div><div class="beo-name" data-en="AM Coffee Break" data-es="Descanso AM">AM Coffee Break</div></div>
-      <div class="beo-rt"><div class="beo-room">Verbena A</div><div class="beo-time">10:00–10:15 AM</div></div>
-    </div>
-    <div class="beo-body">
-      <div class="beo-row"><span class="beo-lbl" data-en="Covers" data-es="Cubiertos">Covers</span><span class="beo-val"><strong>24</strong></span></div>
-      <div class="beo-row"><span class="beo-lbl" data-en="Items" data-es="Artículos">Items</span><span class="beo-val" data-en="Fruit · granola bars · protein bars" data-es="Fruta · barras granola · proteína">Fruit · granola bars · protein bars</span></div>
-      <div class="beo-row"><span class="beo-lbl" data-en="Note" data-es="Nota">Note</span><span class="beo-val" data-en="Inside meeting room" data-es="Dentro de la sala">Inside meeting room</span></div>
-    </div>
+  <div class="beo-empty">
+    <div class="beo-empty-icon">📋</div>
+    <div class="beo-empty-title" data-en="No events loaded" data-es="Sin eventos cargados">No events loaded</div>
+    <div class="beo-empty-sub" data-en="BEO cards will appear here once today's packet is uploaded." data-es="Las tarjetas BEO aparecerán aquí cuando se cargue el paquete del día.">BEO cards will appear here once today's packet is uploaded.</div>
   </div>
   <!-- ═══ SWAP ZONE END ═══ -->
 
