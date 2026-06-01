@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Banquet Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+/* ── DARK ── */
+:root {
+  --bg:          #09090c;
+  --bg-card:     #0f1117;
+  --bg-active:   #181c26;
+  --border:      rgba(255,255,255,0.06);
+  --text-1:      #edeae2;
+  --text-2:      #7e7b74;
+  --text-3:      #44423f;
+  --accent:      #c9a84c;
+  --accent-dim:  rgba(201,168,76,0.10);
+  --green:       #2dbd80;
+  --green-dim:   rgba(45,189,128,0.12);
+  --blue:        #4f8ef0;
+  --red:         #e05555;
+  --red-dim:     rgba(220,80,80,0.10);
+  --header-bg:   rgba(9,9,12,0.94);
+  --tog-bg:      #16181e;
+  --tog-border:  rgba(255,255,255,0.08);
+  --tog-act:     rgba(255,255,255,0.07);
+  --divider:     rgba(255,255,255,0.04);
+  --stripe:      rgba(255,255,255,0.014);
+
+  /* tile gradient bases — dark */
+  --t1-bg: linear-gradient(135deg,#221a06 0%,#15100a 55%,#0c0905 100%);
+  --t1-border: rgba(201,168,76,0.30);
+  --t1-glow: rgba(201,168,76,0.10);
+  --t1-name: #f0cc70;
+  --t1-desc: rgba(201,168,76,0.55);
+  --t1-top: rgba(201,168,76,0.50);
+
+  --t2-bg: linear-gradient(135deg,#071a11 0%,#041410 55%,#020b08 100%);
+  --t2-border: rgba(45,189,128,0.28);
+  --t2-glow: rgba(45,189,128,0.09);
+  --t2-name: #5de8b0;
+  --t2-desc: rgba(45,189,128,0.55);
+  --t2-top: rgba(45,189,128,0.50);
+
+  --t3-bg: linear-gradient(135deg,#071225 0%,#050e1c 55%,#030810 100%);
+  --t3-border: rgba(79,142,240,0.28);
+  --t3-glow: rgba(79,142,240,0.09);
+  --t3-name: #8ab8ff;
+  --t3-desc: rgba(79,142,240,0.55);
+  --t3-top: rgba(79,142,240,0.50);
+
+  --t4-bg: linear-gradient(135deg,#130d22 0%,#0d0918 55%,#07050f 100%);
+  --t4-border: rgba(140,100,220,0.28);
+  --t4-glow: rgba(140,100,220,0.09);
+  --t4-name: #c4a0ff;
+  --t4-desc: rgba(140,100,220,0.55);
+  --t4-top: rgba(140,100,220,0.50);
+
+  --t5-bg: linear-gradient(135deg,#1a0a0a 0%,#120808 55%,#090404 100%);
+  --t5-border: rgba(220,80,80,0.28);
+  --t5-glow: rgba(220,80,80,0.09);
+  --t5-name: #ff9090;
+  --t5-desc: rgba(220,80,80,0.55);
+  --t5-top: rgba(220,80,80,0.50);
+}
+
+/* ── LIGHT ── */
+[data-theme="light"] {
+  --bg:          #f0ece3;
+  --bg-card:     #faf7f2;
+  --bg-active:   #e8e2d6;
+  --border:      rgba(0,0,0,0.07);
+  --text-1:      #18160f;
+  --text-2:      #6b6760;
+  --text-3:      #a09c94;
+  --accent:      #9a7422;
+  --accent-dim:  rgba(154,116,34,0.09);
+  --green:       #1a8f5e;
+  --green-dim:   rgba(26,143,94,0.09);
+  --blue:        #2558c4;
+  --red:         #c03030;
+  --red-dim:     rgba(180,50,50,0.08);
+  --header-bg:   rgba(240,236,227,0.94);
+  --tog-bg:      #e4dfd4;
+  --tog-border:  rgba(0,0,0,0.08);
+  --tog-act:     rgba(0,0,0,0.05);
+  --divider:     rgba(0,0,0,0.05);
+  --stripe:      rgba(0,0,0,0.010);
+
+  /* tile gradient bases — light: warm tinted whites */
+  --t1-bg: linear-gradient(135deg,#fdf5e0 0%,#faf0d0 55%,#f5e8b8 100%);
+  --t1-border: rgba(160,116,30,0.30);
+  --t1-glow: rgba(160,116,30,0.08);
+  --t1-name: #7a5810;
+  --t1-desc: rgba(120,88,16,0.55);
+  --t1-top: rgba(160,116,30,0.40);
+
+  --t2-bg: linear-gradient(135deg,#e8faf2 0%,#d8f5e8 55%,#c4eeda 100%);
+  --t2-border: rgba(20,130,80,0.28);
+  --t2-glow: rgba(20,130,80,0.07);
+  --t2-name: #0f6840;
+  --t2-desc: rgba(15,100,60,0.55);
+  --t2-top: rgba(20,130,80,0.38);
+
+  --t3-bg: linear-gradient(135deg,#e8f0fc 0%,#d8e8fa 55%,#c4d8f8 100%);
+  --t3-border: rgba(30,80,190,0.28);
+  --t3-glow: rgba(30,80,190,0.07);
+  --t3-name: #1840a0;
+  --t3-desc: rgba(24,64,160,0.55);
+  --t3-top: rgba(30,80,190,0.38);
+
+  --t4-bg: linear-gradient(135deg,#f0e8fc 0%,#e8d8fa 55%,#dcc8f6 100%);
+  --t4-border: rgba(100,60,190,0.28);
+  --t4-glow: rgba(100,60,190,0.07);
+  --t4-name: #5828b0;
+  --t4-desc: rgba(80,40,170,0.55);
+  --t4-top: rgba(100,60,190,0.38);
+
+  --t5-bg: linear-gradient(135deg,#fce8e8 0%,#fad4d4 55%,#f6c0c0 100%);
+  --t5-border: rgba(180,40,40,0.28);
+  --t5-glow: rgba(180,40,40,0.07);
+  --t5-name: #901818;
+  --t5-desc: rgba(140,24,24,0.55);
+  --t5-top: rgba(180,40,40,0.38);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* ── HEADER ── */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+  background: var(--header-bg);
+  backdrop-filter: blur(14px);
+  z-index: 20; gap: 8px;
+}
+.brand { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.brand-icon {
+  width: 32px; height: 32px;
+  background: var(--accent-dim); border: 1px solid var(--accent);
+  border-radius: 7px; display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; color: var(--accent);
+}
+.brand-name { font-family: 'Bebas Neue', sans-serif; font-size: 19px; letter-spacing: 1.5px; color: var(--text-1); line-height: 1; }
+.brand-sub  { font-family: 'DM Mono', monospace; font-size: 8px; color: var(--text-3); letter-spacing: 0.3px; margin-top: 1px; }
+.controls { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+.toggle-group { display: flex; background: var(--tog-bg); border: 1px solid var(--tog-border); border-radius: 7px; overflow: hidden; }
+.tgl { padding: 5px 8px; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; color: var(--text-3); background: none; border: none; cursor: pointer; transition: background 0.12s, color 0.12s; line-height: 1; }
+.tgl.active { background: var(--tog-act); color: var(--text-1); }
+.tgl + .tgl { border-left: 1px solid var(--tog-border); }
+.live-pip { display: flex; align-items: center; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pip 2s infinite; }
+@keyframes pip { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+/* ── HERO ── */
+.hero {
+  padding: 22px 16px 18px;
+  border-bottom: 1px solid var(--divider);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(-55deg, var(--stripe) 0px, var(--stripe) 1px, transparent 1px, transparent 18px);
+}
+.hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+.hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 1px; color: var(--text-1); line-height: 0.95; margin-bottom: 10px; }
+.hero-title span { color: var(--accent); }
+.hero-meta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.chip { display: inline-flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 9px; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-2); }
+.chip-green { background: var(--green-dim); color: var(--green); border-color: rgba(45,189,128,0.2); }
+.chip-gold  { background: var(--accent-dim); color: var(--accent); border-color: rgba(201,168,76,0.2); }
+
+/* ── SECTION LABEL ── */
+.sec { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-3); padding: 16px 16px 9px; display: flex; align-items: center; gap: 10px; }
+.sec::after { content: ''; flex: 1; height: 1px; background: var(--divider); }
+
+/* ── NAV TILES ── */
+.nav-list { padding: 0 16px; display: flex; flex-direction: column; gap: 7px; }
+
+.nav-tile {
+  display: flex; align-items: center; gap: 13px;
+  padding: 13px 14px;
+  border-radius: 13px;
+  text-decoration: none; cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: transform 0.12s, box-shadow 0.12s;
+  border: 1px solid var(--t-border);
+  background: var(--t-bg);
+  box-shadow: 0 3px 18px var(--t-glow), inset 0 1px 0 var(--t-top);
+}
+.nav-tile:active { transform: scale(0.975); }
+
+/* subtle top shimmer line */
+.nav-tile::after {
+  content: ''; position: absolute;
+  top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--t-top), transparent);
+  pointer-events: none;
+}
+
+/* each tile's color scheme via CSS vars */
+.t1 { --t-bg:var(--t1-bg); --t-border:var(--t1-border); --t-glow:var(--t1-glow); --t-name:var(--t1-name); --t-desc:var(--t1-desc); --t-top:var(--t1-top); }
+.t2 { --t-bg:var(--t2-bg); --t-border:var(--t2-border); --t-glow:var(--t2-glow); --t-name:var(--t2-name); --t-desc:var(--t2-desc); --t-top:var(--t2-top); }
+.t3 { --t-bg:var(--t3-bg); --t-border:var(--t3-border); --t-glow:var(--t3-glow); --t-name:var(--t3-name); --t-desc:var(--t3-desc); --t-top:var(--t3-top); }
+.t4 { --t-bg:var(--t4-bg); --t-border:var(--t4-border); --t-glow:var(--t4-glow); --t-name:var(--t4-name); --t-desc:var(--t4-desc); --t-top:var(--t4-top); }
+.t5 { --t-bg:var(--t5-bg); --t-border:var(--t5-border); --t-glow:var(--t5-glow); --t-name:var(--t5-name); --t-desc:var(--t5-desc); --t-top:var(--t5-top); }
+
+.tile-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+  background: rgba(0,0,0,0.18);
+  border: 1px solid var(--t-border);
+}
+[data-theme="light"] .tile-icon { background: rgba(255,255,255,0.45); }
+
+.tile-text { flex: 1; min-width: 0; }
+.tile-name { font-size: 14px; font-weight: 600; color: var(--t-name); line-height: 1.2; margin-bottom: 2px; }
+.tile-desc { font-size: 10.5px; color: var(--t-desc); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile-arr  { font-size: 18px; color: var(--t-desc); flex-shrink: 0; }
+
+/* ── BEO CARDS ── */
+.beo-wrap { padding: 0 16px 48px; display: flex; flex-direction: column; gap: 8px; }
+.beo-live { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--green); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
+.beo-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+.beo-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  border-left: 3px solid var(--card-accent, var(--accent));
+}
+.beo-card.din  { --card-accent:#8c64dc; }
+.beo-card.brk  { --card-accent:var(--green); }
+.beo-card.lnch { --card-accent:var(--blue); }
+
+.beo-head { padding: 10px 13px 9px; border-bottom: 1px solid var(--divider); display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.beo-org  { font-family: 'DM Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-3); margin-bottom: 2px; }
+.beo-name { font-size: 13px; font-weight: 600; color: var(--text-1); line-height: 1.25; }
+.beo-rt   { text-align: right; flex-shrink: 0; }
+.beo-room { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--blue); margin-bottom: 1px; font-weight: 500; }
+.beo-time { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-2); }
+.beo-body { padding: 8px 13px; display: flex; flex-direction: column; gap: 5px; }
+.beo-row  { display: flex; gap: 8px; font-size: 11px; line-height: 1.45; }
+.beo-lbl  { font-family: 'DM Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-3); min-width: 48px; padding-top: 1px; flex-shrink: 0; }
+.beo-val  { color: var(--text-2); }
+.beo-val strong { color: var(--text-1); font-weight: 500; }
+.flag { display: inline-flex; align-items: center; font-family: 'DM Mono', monospace; font-size: 8px; padding: 2px 5px; border-radius: 4px; background: var(--red-dim); color: var(--red); border: 1px solid rgba(220,80,80,0.18); margin-right: 3px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="brand">
+    <div class="brand-icon">BB</div>
+    <div>
+      <div class="brand-name">Banquet Bot</div>
+      <div class="brand-sub">Westin Austin · The Domain</div>
+    </div>
+  </div>
+  <div class="controls">
+    <div class="toggle-group">
+      <button class="tgl active" id="len" onclick="setLang('en')">EN</button>
+      <button class="tgl"        id="les" onclick="setLang('es')">ES</button>
+    </div>
+    <div class="toggle-group">
+      <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
+      <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
+    </div>
+    <div class="live-pip"><div class="dot"></div></div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow" data-en="F&amp;B Operations · AUSDW" data-es="Operaciones F&amp;B · AUSDW">F&amp;B Operations · AUSDW</div>
+  <div class="hero-title"><span id="g-line">Good morning,</span><br><span data-en="team." data-es="equipo.">team.</span></div>
+  <div class="hero-meta">
+    <span class="chip chip-green"><span class="dot" style="width:5px;height:5px;animation:pip 2s infinite;background:var(--green)"></span>&nbsp;<span data-en="Live" data-es="En vivo">Live</span></span>
+    <span class="chip chip-gold" id="date-chip">—</span>
+    <span class="chip" data-en="Shift reference" data-es="Ref. turno">Shift reference</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="sec" data-en="Quick Access" data-es="Acceso Rápido">Quick Access</div>
+<div class="nav-list">
+
+  <a class="nav-tile t1" href="https://jason-bourne-512.github.io/banquet-bot/index.html" target="_blank">
+    <div class="tile-icon">📋</div>
+    <div class="tile-text">
+      <div class="tile-name" data-en="BEO Rundown" data-es="Resumen BEO">BEO Rundown</div>
+      <div class="tile-desc" data-en="Full week · all groups · timelines" data-es="Semana completa · todos los grupos">Full week · all groups · timelines</div>
+    </div>
+    <div class="tile-arr">›</div>
+  </a>
+
+  <a class="nav-tile t2" href="menu.html">
+    <div class="tile-icon">🍽</div>
+    <div class="tile-text">
+      <div class="tile-name" data-en="Menu Reference" data-es="Referencia de Menú">Menu Reference</div>
+      <div class="tile-desc" data-en="Searchable · allergens · prep notes" data-es="Buscable · alérgenos · notas">Searchable · allergens · prep notes</div>
+    </div>
+    <div class="tile-arr">›</div>
+  </a>
+
+  <a class="nav-tile t3" href="handbook.html">
+    <div class="tile-icon">📖</div>
+    <div class="tile-text">
+      <div class="tile-name" data-en="Employee Handbook" data-es="Manual del Empleado">Employee Handbook</div>
+      <div class="tile-desc" data-en="Policies · standards · procedures" data-es="Políticas · estándares · normas">Policies · standards · procedures</div>
+    </div>
+    <div class="tile-arr">›</div>
+  </a>
+
+  <a class="nav-tile t4" href="rooms.html">
+    <div class="tile-icon">🏛</div>
+    <div class="tile-text">
+      <div class="tile-name" data-en="Room Specs" data-es="Especificaciones de Salones">Room Specs</div>
+      <div class="tile-desc" data-en="Capacity · dimensions · A/V" data-es="Capacidad · dimensiones · A/V">Capacity · dimensions · A/V</div>
+    </div>
+    <div class="tile-arr">›</div>
+  </a>
+
+
+</div>
+
+<!-- BEO -->
+<div class="sec" data-en="Today's Events" data-es="Eventos de Hoy">Today's Events</div>
+<div class="beo-wrap">
+
+  <div class="beo-live" data-en="Live · updated from BEO packet" data-es="En vivo · del paquete BEO">Live · updated from BEO packet</div>
+
+  <!-- ═══ SWAP ZONE START ═══ -->
+  <div class="beo-card din">
+    <div class="beo-head">
+      <div><div class="beo-org">Sample Group</div><div class="beo-name" data-en="Plated Dinner" data-es="Cena Servida">Plated Dinner</div></div>
+      <div class="beo-rt"><div class="beo-room">Primrose</div><div class="beo-time">6:30–9:00 PM</div></div>
+    </div>
+    <div class="beo-body">
+      <div class="beo-row"><span class="beo-lbl" data-en="Covers" data-es="Cubiertos">Covers</span><span class="beo-val"><strong>120</strong> <span data-en="plated" data-es="servido">plated</span></span></div>
+      <div class="beo-row"><span class="beo-lbl" data-en="Menu" data-es="Menú">Menu</span><span class="beo-val">Arugula salad · Chicken / Salmon / Veg · Dessert pre-set</span></div>
+      <div class="beo-row"><span class="beo-lbl" data-en="Setup" data-es="Montaje">Setup</span><span class="beo-val" data-en="Rounds of 10 · stage · podium" data-es="Mesas de 10 · escenario · podio">Rounds of 10 · stage · podium</span></div>
+      <div class="beo-row"><span class="beo-lbl" data-en="Dietary" data-es="Dietas">Dietary</span><span class="beo-val"><span class="flag">⚠ GF ×2</span><span class="flag">⚠ Vegan ×2</span></span></div>
+    </div>
+  </div>
+
+  <div class="beo-card brk">
+    <div class="beo-head">
+      <div><div class="beo-org">Sample Group</div><div class="beo-name" data-en="AM Coffee Break" data-es="Descanso AM">AM Coffee Break</div></div>
+      <div class="beo-rt"><div class="beo-room">Verbena A</div><div class="beo-time">10:00–10:15 AM</div></div>
+    </div>
+    <div class="beo-body">
+      <div class="beo-row"><span class="beo-lbl" data-en="Covers" data-es="Cubiertos">Covers</span><span class="beo-val"><strong>24</strong></span></div>
+      <div class="beo-row"><span class="beo-lbl" data-en="Items" data-es="Artículos">Items</span><span class="beo-val" data-en="Fruit · granola bars · protein bars" data-es="Fruta · barras granola · proteína">Fruit · granola bars · protein bars</span></div>
+      <div class="beo-row"><span class="beo-lbl" data-en="Note" data-es="Nota">Note</span><span class="beo-val" data-en="Inside meeting room" data-es="Dentro de la sala">Inside meeting room</span></div>
+    </div>
+  </div>
+  <!-- ═══ SWAP ZONE END ═══ -->
+
+</div>
+
+<script>
+  const mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const d=new Date(),h=d.getHours();
+  document.getElementById('date-chip').textContent=
+    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]+' '+mo[d.getMonth()]+' '+d.getDate();
+  const gr={en:h<12?'Good morning,':h<17?'Good afternoon,':'Good evening,',es:h<12?'Buenos días,':h<17?'Buenas tardes,':'Buenas noches,'};
+  function setTheme(t){
+    document.documentElement.setAttribute('data-theme',t);
+    document.getElementById('tdk').classList.toggle('active',t==='dark');
+    document.getElementById('tlt').classList.toggle('active',t==='light');
+    localStorage.setItem('bb-theme',t);
+  }
+  function setLang(l){
+    document.documentElement.setAttribute('data-lang',l);
+    document.getElementById('len').classList.toggle('active',l==='en');
+    document.getElementById('les').classList.toggle('active',l==='es');
+    document.getElementById('g-line').textContent=gr[l];
+    document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
+    localStorage.setItem('bb-lang',l);
+  }
+  setTheme(localStorage.getItem('bb-theme')||'dark');
+  setLang(localStorage.getItem('bb-lang')||'en');
+</script>
+</body>
+</html>

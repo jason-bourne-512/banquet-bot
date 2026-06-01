@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Associate Handbook — Banquet Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+:root {
+  --bg:#09090c; --bg-card:#111316; --bg-active:#181c26;
+  --border:rgba(255,255,255,0.06); --border-h:rgba(255,255,255,0.13);
+  --text-1:#edeae2; --text-2:#7e7b74; --text-3:#44423f; --text-4:#2e2c2a;
+  --accent:#c9a84c; --accent-dim:rgba(201,168,76,0.10);
+  --green:#2dbd80; --green-dim:rgba(45,189,128,0.10);
+  --blue:#4f8ef0; --blue-dim:rgba(79,142,240,0.10);
+  --red:#e05555; --red-dim:rgba(220,80,80,0.10);
+  --header-bg:rgba(9,9,12,0.94);
+  --tog-bg:#16181e; --tog-border:rgba(255,255,255,0.08); --tog-act:rgba(255,255,255,0.07);
+  --divider:rgba(255,255,255,0.04); --stripe:rgba(255,255,255,0.014);
+}
+[data-theme="light"] {
+  --bg:#f0ece3; --bg-card:#faf7f2; --bg-active:#e8e2d6;
+  --border:rgba(0,0,0,0.07); --border-h:rgba(0,0,0,0.15);
+  --text-1:#18160f; --text-2:#6b6760; --text-3:#9e9a92; --text-4:#c0bbb2;
+  --accent:#9a7422; --accent-dim:rgba(154,116,34,0.09);
+  --green:#1a8f5e; --green-dim:rgba(26,143,94,0.09);
+  --blue:#2558c4; --blue-dim:rgba(37,88,196,0.09);
+  --red:#c03030; --red-dim:rgba(180,50,50,0.08);
+  --header-bg:rgba(240,236,227,0.94);
+  --tog-bg:#e4dfd4; --tog-border:rgba(0,0,0,0.08); --tog-act:rgba(0,0,0,0.05);
+  --divider:rgba(0,0,0,0.05); --stripe:rgba(0,0,0,0.010);
+}
+body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif; min-height:100vh; max-width:480px; margin:0 auto; }
+
+/* HEADER */
+.header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--header-bg); backdrop-filter:blur(14px); z-index:20; gap:8px; }
+.brand { display:flex; align-items:center; gap:9px; flex-shrink:0; text-decoration:none; }
+.brand-icon { width:32px; height:32px; background:var(--accent-dim); border:1px solid var(--accent); border-radius:7px; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; color:var(--accent); }
+.brand-name { font-family:'Bebas Neue',sans-serif; font-size:19px; letter-spacing:1.5px; color:var(--text-1); line-height:1; }
+.brand-sub { font-family:'DM Mono',monospace; font-size:8px; color:var(--text-3); margin-top:1px; }
+.controls { display:flex; align-items:center; gap:5px; flex-shrink:0; }
+.toggle-group { display:flex; background:var(--tog-bg); border:1px solid var(--tog-border); border-radius:7px; overflow:hidden; }
+.tgl { padding:5px 8px; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; color:var(--text-3); background:none; border:none; cursor:pointer; transition:background .12s,color .12s; line-height:1; }
+.tgl.active { background:var(--tog-act); color:var(--text-1); }
+.tgl+.tgl { border-left:1px solid var(--tog-border); }
+
+/* HERO */
+.page-hero { padding:20px 16px 16px; border-bottom:1px solid var(--divider); position:relative; overflow:hidden; }
+.page-hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-55deg,var(--stripe) 0px,var(--stripe) 1px,transparent 1px,transparent 18px); pointer-events:none; }
+.page-eyebrow { font-family:'DM Mono',monospace; font-size:9px; color:var(--accent); letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+.page-title { font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:1px; color:var(--text-1); line-height:0.95; margin-bottom:6px; }
+.page-meta { font-family:'DM Mono',monospace; font-size:9px; color:var(--text-3); }
+
+/* SEARCH */
+.search-wrap { padding:12px 16px; background:var(--bg-card); border-bottom:1px solid var(--border); position:sticky; top:57px; z-index:15; }
+.search-input { width:100%; background:var(--bg); border:1px solid var(--border-h); border-radius:20px; padding:9px 14px 9px 36px; font-family:'Inter',sans-serif; font-size:13px; color:var(--text-1); outline:none; transition:border-color .15s; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b6259' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>"); background-repeat:no-repeat; background-position:12px center; }
+.search-input:focus { border-color:var(--accent); }
+.search-input::placeholder { color:var(--text-3); }
+.search-status { font-family:'DM Mono',monospace; font-size:9px; color:var(--text-3); text-align:center; padding:8px; display:none; }
+.search-status.show { display:block; }
+
+/* SECTION */
+.sec { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-4); padding:16px 16px 8px; display:flex; align-items:center; gap:10px; }
+.sec::after { content:''; flex:1; height:1px; background:var(--divider); }
+
+/* ACCORDION CARDS */
+.content-list { padding:0 16px 48px; display:flex; flex-direction:column; gap:8px; }
+
+.hb-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; overflow:hidden; border-left:3px solid var(--c-color,var(--accent)); }
+.hb-card.is-hidden { display:none; }
+
+.hb-head { padding:13px 14px 11px; display:flex; align-items:center; gap:10px; cursor:pointer; }
+.hb-icon { font-size:16px; flex-shrink:0; }
+.hb-title { font-size:13px; font-weight:600; color:var(--text-1); flex:1; line-height:1.3; }
+.hb-chevron { font-size:11px; color:var(--text-4); transition:transform .2s; flex-shrink:0; }
+.hb-card.open .hb-chevron { transform:rotate(90deg); }
+
+.hb-body { display:none; padding:0 14px 14px; }
+.hb-card.open .hb-body { display:block; }
+
+.hb-body p { font-size:12px; color:var(--text-2); line-height:1.65; margin-bottom:10px; }
+.hb-body p:last-child { margin-bottom:0; }
+.hb-body ul { padding-left:16px; margin-bottom:10px; }
+.hb-body li { font-size:12px; color:var(--text-2); line-height:1.65; margin-bottom:4px; }
+.hb-body strong { color:var(--text-1); font-weight:600; }
+
+.hb-sub { margin-bottom:10px; }
+.hb-sub-title { font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--accent); margin-bottom:6px; padding-bottom:5px; border-bottom:1px solid var(--divider); }
+
+.note-box { background:var(--blue-dim); border:1px solid rgba(79,142,240,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.note-box p { color:var(--blue); font-size:11px; margin-bottom:0; }
+
+.warn-box { background:var(--red-dim); border:1px solid rgba(220,80,80,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.warn-box p { color:var(--red); font-size:11px; margin-bottom:0; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="brand" href="splash.html">
+    <div class="brand-icon">BB</div>
+    <div>
+      <div class="brand-name">Banquet Bot</div>
+      <div class="brand-sub">Westin Austin · The Domain</div>
+    </div>
+  </a>
+  <div class="controls">
+    <div class="toggle-group">
+      <button class="tgl active" id="len" onclick="setLang('en')">EN</button>
+      <button class="tgl"        id="les" onclick="setLang('es')">ES</button>
+    </div>
+    <div class="toggle-group">
+      <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
+      <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="page-eyebrow">White Lodging · AUSDW</div>
+  <div class="page-title" data-en="Associate Handbook" data-es="Manual del Empleado">Associate Handbook</div>
+  <div class="page-meta">Revised October 2017 · White Lodging Service Corporation</div>
+</div>
+
+<div class="search-wrap">
+  <input class="search-input" type="text" id="hbSearch" placeholder="Search policies, benefits, rules…" oninput="filterHandbook(this.value)">
+  <div class="search-status" id="searchStatus"></div>
+</div>
+
+<!-- SECTION 1: Company -->
+<div class="sec" data-en="Company Overview" data-es="La Empresa">Company Overview</div>
+<div class="content-list">
+
+  <div class="hb-card" data-keywords="white lodging history vision mission values core" style="--c-color:var(--accent)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">🏨</span>
+      <div class="hb-title" data-en="About White Lodging" data-es="Sobre White Lodging">About White Lodging</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <p>White Lodging is one of the fastest-growing independent hotel ownership, development and management groups in the US — operating brands including Marriott, Hyatt, Hilton, IHG, Preferred, and Choice. Founded 1985 in Merrillville, Indiana. Now 165+ properties in 19 states.</p>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Vision</div>
+        <p>To become the most desired and highly valued developer, owner and operator of leading brand full and select service hotels.</p>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Core Values</div>
+        <ul><li><strong>G</strong>rowth</li><li><strong>A</strong>ccountable</li><li><strong>E</strong>thical</li><li><strong>I</strong>mpact</li><li><strong>L</strong>eadership Excellence</li><li><strong>G</strong>enuine Care</li></ul>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Property Mission</div>
+        <p>To be the <strong>Cleanest, Friendliest, and most well maintained.</strong></p>
+      </div>
+      <div class="note-box"><p>Questions or concerns: Call Associate Relations at <strong>(219) 472-2900</strong> or anonymous hotline <strong>(888) 307-2798</strong> · online: anonymous.alertline.com</p></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECTION 2: Your Rights & Policies -->
+<div class="sec" data-en="Your Rights &amp; Policies" data-es="Tus Derechos y Políticas">Your Rights &amp; Policies</div>
+<div class="content-list">
+
+  <div class="hb-card" data-keywords="eeo equal employment opportunity discrimination harassment retaliation" style="--c-color:var(--blue)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">⚖️</span>
+      <div class="hb-title" data-en="Equal Employment &amp; Anti-Harassment" data-es="Igualdad y Anti-Acoso">Equal Employment &amp; Anti-Harassment</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <p>White Lodging is an <strong>Equal Employment Opportunity</strong> employer. Discrimination or harassment based on race, color, religion, national origin, sex, age, disability, or any protected category is strictly prohibited.</p>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Zero Tolerance</div>
+        <p>Harassment includes offensive remarks, jokes, images, sexual advances, or physical conduct. <strong>Violation = immediate termination.</strong></p>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">How to Report</div>
+        <ul>
+          <li>Talk to your HR Department or General Manager</li>
+          <li>Contact Corporate Associate Relations: <strong>(219) 472-2900</strong></li>
+          <li>Anonymous: <strong>(888) 307-2798</strong> or anonymous.alertline.com</li>
+        </ul>
+      </div>
+      <p>No retaliation for reporting. You will not be penalized for making a good-faith complaint.</p>
+    </div>
+  </div>
+
+  <div class="hb-card" data-keywords="open door problem solving procedure complaint grievance" style="--c-color:var(--blue)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">🚪</span>
+      <div class="hb-title" data-en="Open Door Policy" data-es="Política de Puertas Abiertas">Open Door Policy</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <p>Any concern can be raised through the Problem-Solving Procedure:</p>
+      <ul>
+        <li><strong>Step 1:</strong> Discuss with your direct Manager</li>
+        <li><strong>Step 2:</strong> Escalate to your Department Leader</li>
+        <li><strong>Step 3:</strong> HR Department or General Manager</li>
+        <li><strong>Step 4:</strong> Corporate Associate Relations (219) 472-2900</li>
+      </ul>
+      <div class="note-box"><p>Anonymous option always available: <strong>(888) 307-2798</strong> · supports multiple languages</p></div>
+    </div>
+  </div>
+
+  <div class="hb-card" data-keywords="drug alcohol testing policy marijuana substance abuse" style="--c-color:var(--red)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">🚫</span>
+      <div class="hb-title" data-en="Drug &amp; Alcohol Policy" data-es="Política de Drogas y Alcohol">Drug &amp; Alcohol Policy</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <div class="warn-box"><p>Zero tolerance. Reporting to work under the influence or possessing illegal substances on property = <strong>immediate termination.</strong></p></div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Testing Occasions</div>
+        <ul>
+          <li>Pre-employment (all new hires)</li>
+          <li>Reasonable suspicion</li>
+          <li>Post-accident (where applicable)</li>
+          <li>Random (where permitted by law)</li>
+        </ul>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Substances Tested</div>
+        <p>Cocaine, PCP, Amphetamines, Opiates. Marijuana tested if driving company vehicle or reasonable suspicion exists.</p>
+      </div>
+      <p>Associates with substance abuse issues are encouraged to seek help <strong>before</strong> any misconduct occurs. Resources: National Drug Abuse Hotline <strong>(800) 662-HELP</strong>.</p>
+    </div>
+  </div>
+
+  <div class="hb-card" data-keywords="workplace security violence firearms weapons safety" style="--c-color:var(--red)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">🔒</span>
+      <div class="hb-title" data-en="Workplace Security" data-es="Seguridad en el Trabajo">Workplace Security</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <p>Violence or threats of violence on White Lodging premises = <strong>immediate termination.</strong></p>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Firearms</div>
+        <p>Prohibited on all White Lodging property except: licensed concealed carry in personal vehicle, kept out of sight in locked compartment. Law enforcement must notify GM in writing.</p>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Guest Privacy Rules</div>
+        <ul>
+          <li>Never give out guest names or room numbers</li>
+          <li>Never issue keys without proper ID</li>
+          <li>Never mention room numbers aloud</li>
+          <li>Robbery: surrender all money, call 911</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECTION 3: Pay & Benefits -->
+<div class="sec" data-en="Pay &amp; Benefits" data-es="Pago y Beneficios">Pay &amp; Benefits</div>
+<div class="content-list">
+
+  <div class="hb-card" data-keywords="payroll pay period overtime direct deposit payday" style="--c-color:var(--green)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">💵</span>
+      <div class="hb-title" data-en="Payroll &amp; Pay Periods" data-es="Nómina y Períodos de Pago">Payroll &amp; Pay Periods</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <ul>
+        <li>Paid <strong>bi-weekly</strong> — every other Friday</li>
+        <li>Workweek: <strong>Saturday–Friday</strong></li>
+        <li>Pay period closes 7 days before payday</li>
+        <li>Direct deposit to personal bank account or pay card</li>
+        <li><strong>No pay advances</strong> under any circumstances</li>
+      </ul>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Overtime</div>
+        <p>All hours over <strong>40/week</strong> are overtime. Must get manager approval before working overtime. Only actual hours worked count — not paid time off.</p>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Tip Reporting</div>
+        <p>Federal law requires reporting tips over <strong>$20/month</strong>. Failure to report may result in IRS penalties. Use Form 4070 to track daily tips.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hb-card" data-keywords="benefits health insurance medical dental vision 401k vacation pto eligibility" style="--c-color:var(--green)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">🏥</span>
+      <div class="hb-title" data-en="Benefits Overview" data-es="Resumen de Beneficios">Benefits Overview</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <div class="hb-sub">
+        <div class="hb-sub-title">Full-Time (130+ hrs/month)</div>
+        <ul>
+          <li>Medical, Dental, Vision: 1st of month after 60 days (non-mgmt) or after hire (mgmt)</li>
+          <li>Life Insurance: after 90 days</li>
+          <li>401(k): after 1 year + 1,000 hours worked</li>
+          <li>Vacation: after 1 year</li>
+          <li>PTO: 1st of month after 90 days</li>
+          <li>Room discounts: date of hire</li>
+          <li>Complimentary rooms: after 6 months</li>
+        </ul>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Part-Time</div>
+        <p>May qualify for full-time benefits by averaging 130 hrs/month in first 11 months OR working 3 consecutive months at 130+ hrs.</p>
+      </div>
+      <div class="note-box"><p>Benefits questions: Corporate Benefits Department <strong>(219) 472-2276</strong></p></div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Work-Life Balance Assistance</div>
+        <p>Free EAP for all full-time associates: <strong>(800) 854-1446</strong> (English) · <strong>(800) 317-7264</strong> (Spanish) · LifeBalance.net</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hb-card" data-keywords="fmla leave absence family medical military personal" style="--c-color:var(--green)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">🌿</span>
+      <div class="hb-title" data-en="Leaves of Absence" data-es="Permisos de Ausencia">Leaves of Absence</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <div class="hb-sub">
+        <div class="hb-sub-title">FMLA Eligibility</div>
+        <ul>
+          <li>12+ months with White Lodging</li>
+          <li>1,250+ hours in the past 12 months</li>
+          <li>Work location has 50+ associates within 75 miles</li>
+        </ul>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">FMLA Reasons</div>
+        <ul>
+          <li>Birth or adoption of a child (up to 12 weeks)</li>
+          <li>Serious health condition — yours or immediate family</li>
+          <li>Military caregiver leave (up to 26 weeks)</li>
+          <li>Qualifying military exigency</li>
+        </ul>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Personal Leave</div>
+        <p>Up to 30 days unpaid for full-time associates after 1 year. Must request 2 weeks in advance in writing. Cannot hold other employment while on leave.</p>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Military Leave</div>
+        <p>Unpaid time off to fulfill military duties. Provide orders as soon as possible.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECTION 4: Work Rules -->
+<div class="sec" data-en="Work Rules &amp; Conduct" data-es="Reglas y Conducta">Work Rules &amp; Conduct</div>
+<div class="content-list">
+
+  <div class="hb-card" data-keywords="attendance tardiness absenteeism call out schedule points" style="--c-color:var(--accent)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">⏰</span>
+      <div class="hb-title" data-en="Attendance &amp; Scheduling" data-es="Asistencia y Horarios">Attendance &amp; Scheduling</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <ul>
+        <li>Be in full uniform at your workstation at your <strong>scheduled start time</strong></li>
+        <li>Verify your schedule <strong>weekly</strong> — shifts can change based on business needs</li>
+        <li>Schedule changes require manager approval — no unauthorized shift swaps</li>
+        <li>Schedules posted no later than <strong>2 days</strong> before workweek starts</li>
+      </ul>
+      <div class="warn-box"><p>3 consecutive no-call/no-shows = <strong>immediate termination.</strong></p></div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Time Clock Rules</div>
+        <ul>
+          <li>Clock in no more than <strong>5 minutes before</strong> scheduled shift</li>
+          <li>Clock out no more than <strong>5 minutes after</strong> shift ends</li>
+          <li>Never clock in/out for another associate</li>
+          <li>Report punching errors to manager <strong>immediately</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="hb-card" data-keywords="discipline progressive verbal written warning suspension termination" style="--c-color:var(--accent)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">📋</span>
+      <div class="hb-title" data-en="Progressive Discipline" data-es="Disciplina Progresiva">Progressive Discipline</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <ul>
+        <li><strong>Verbal Warning</strong> — documented, placed in personnel file</li>
+        <li><strong>Written Warning</strong> — associate signs (signing confirms receipt, not agreement)</li>
+        <li><strong>Suspension or Termination</strong> — for serious violations or 3 written warnings in 12 months</li>
+      </ul>
+      <div class="warn-box"><p>Some violations result in <strong>immediate termination</strong> without prior warnings: theft, fraud, violence, harassment, drug/alcohol violations.</p></div>
+      <p>All warnings remain in personnel file for duration of employment.</p>
+    </div>
+  </div>
+
+  <div class="hb-card" data-keywords="basic work rules conduct theft fraud gambling insubordination" style="--c-color:var(--accent)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">📌</span>
+      <div class="hb-title" data-en="Basic Work Rules" data-es="Reglas Básicas de Trabajo">Basic Work Rules</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <p>Violations of any of these may result in discipline up to and including immediate termination:</p>
+      <ul>
+        <li><strong>Theft</strong> — any unauthorized removal of property</li>
+        <li><strong>Fraud / False statements</strong> — falsifying documents, timecards, or applications</li>
+        <li><strong>Insubordination</strong> — refusing reasonable manager directions</li>
+        <li><strong>Sleeping on the job</strong></li>
+        <li><strong>Gambling</strong> on property or company time</li>
+        <li><strong>Damage to property</strong> — deliberate or reckless</li>
+        <li><strong>Confidentiality breach</strong> — sharing guest, associate, or company information</li>
+        <li><strong>Leaving property without permission</strong> during work hours</li>
+        <li><strong>Unsafe work practices</strong> — horseplay, ignoring safety rules</li>
+        <li><strong>Unauthorized recording</strong> — photos, video, audio on property</li>
+      </ul>
+      <div class="note-box"><p>Lost &amp; Found: Turn in all found items to manager <strong>same day</strong>. Keeping guest items = termination.</p></div>
+    </div>
+  </div>
+
+  <div class="hb-card" data-keywords="promotion transfer internal job change request" style="--c-color:var(--accent)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">📈</span>
+      <div class="hb-title" data-en="Promotions &amp; Transfers" data-es="Promociones y Transferencias">Promotions &amp; Transfers</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <p>White Lodging strongly supports promotions from within. To request a job change:</p>
+      <ul>
+        <li>Must have been in current role for <strong>at least 6 months</strong></li>
+        <li>No written warnings in the last 6 months</li>
+        <li>Complete "Request for Promotion/Transfer" form signed by manager</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECTION 5: Dress & Appearance -->
+<div class="sec" data-en="Dress Code &amp; Appearance" data-es="Código de Vestimenta">Dress Code &amp; Appearance</div>
+<div class="content-list">
+
+  <div class="hb-card" data-keywords="uniform dress code grooming hair jewelry tattoo appearance" style="--c-color:#8c64dc">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">👔</span>
+      <div class="hb-title" data-en="Uniform &amp; Grooming Standards" data-es="Uniforme y Apariencia">Uniform &amp; Grooming Standards</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <div class="hb-sub">
+        <div class="hb-sub-title">Uniform</div>
+        <ul>
+          <li>Clean and in good repair at all times</li>
+          <li>Slip-resistant shoes, clean and polished</li>
+          <li>Nametag worn at all times during work</li>
+          <li>Undergarments worn and not visible</li>
+          <li>No jeans, shorts, tank tops, sandals unless job-specific</li>
+          <li>Visible tattoos must not be vulgar or offensive</li>
+        </ul>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Jewelry</div>
+        <ul>
+          <li>Max 2 rings per hand</li>
+          <li>No necklaces outside uniform</li>
+          <li>One watch per arm</li>
+          <li>Max 2 earrings per ear, no extreme styles</li>
+        </ul>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Hair</div>
+        <p>Clean and neatly maintained. Must not cover eyes. If long, pull back. Food handling positions may require hairnet. Males: mustaches and beards acceptable.</p>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Food Handling</div>
+        <p>No nail polish or artificial nails unless wearing intact gloves. Wash hands after restroom, eating, smoking, touching face/hair.</p>
+      </div>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Tobacco &amp; Smoking</div>
+        <p>Only in designated outdoor areas. Includes e-cigarettes and vaping.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECTION 6: Personal Devices & Privacy -->
+<div class="sec" data-en="Phones, Privacy &amp; Separation" data-es="Teléfonos, Privacidad y Salida">Phones, Privacy &amp; Separation</div>
+<div class="content-list">
+
+  <div class="hb-card" data-keywords="cell phone personal calls devices electronic tablet" style="--c-color:var(--blue)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">📱</span>
+      <div class="hb-title" data-en="Cell Phones &amp; Personal Calls" data-es="Teléfonos y Llamadas Personales">Cell Phones &amp; Personal Calls</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <ul>
+        <li>Personal calls: before/after shift or on break only</li>
+        <li>Non-White Lodging devices not permitted in areas where credit card or confidential information is stored/processed</li>
+        <li>While driving on White Lodging business: <strong>no talking or texting</strong> — comply with all local laws</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="hb-card" data-keywords="separation resignation quit termination exit interview final paycheck" style="--c-color:var(--blue)">
+    <div class="hb-head" onclick="toggleCard(this.parentElement)">
+      <span class="hb-icon">🚶</span>
+      <div class="hb-title" data-en="Separation of Employment" data-es="Separación del Empleo">Separation of Employment</div>
+      <span class="hb-chevron">▶</span>
+    </div>
+    <div class="hb-body">
+      <ul>
+        <li>Please give <strong>2 weeks written notice</strong> when resigning</li>
+        <li>Final paycheck issued on next regular payday after separation</li>
+        <li>Request any earned vacation/PTO before your last day</li>
+        <li>Return all White Lodging property on your last day</li>
+        <li>Rehire = start as a new associate</li>
+      </ul>
+      <div class="hb-sub">
+        <div class="hb-sub-title">Exit Survey</div>
+        <p>Hourly: <strong>tinyurl.com/whyareyouleaving</strong> · All feedback is confidential through third-party vendor.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleCard(card){ card.classList.toggle('open'); }
+
+  function filterHandbook(q){
+    const val = q.trim().toLowerCase();
+    const status = document.getElementById('searchStatus');
+    const cards = document.querySelectorAll('.hb-card');
+    let matches = 0;
+
+    if(!val){
+      cards.forEach(c=>{ c.classList.remove('is-hidden'); c.classList.remove('open'); });
+      status.classList.remove('show');
+      return;
+    }
+
+    cards.forEach(card=>{
+      const kw = (card.dataset.keywords||'').toLowerCase();
+      const txt = card.textContent.toLowerCase();
+      const hit = kw.includes(val) || txt.includes(val);
+      card.classList.toggle('is-hidden', !hit);
+      if(hit){ card.classList.add('open'); matches++; }
+    });
+
+    status.textContent = matches === 0
+      ? `No results for "${q}"`
+      : `${matches} section${matches===1?'':'s'} found`;
+    status.classList.add('show');
+  }
+
+  function setTheme(t){
+    document.documentElement.setAttribute('data-theme',t);
+    document.getElementById('tdk').classList.toggle('active',t==='dark');
+    document.getElementById('tlt').classList.toggle('active',t==='light');
+    localStorage.setItem('bb-theme',t);
+  }
+  function setLang(l){
+    document.documentElement.setAttribute('data-lang',l);
+    document.getElementById('len').classList.toggle('active',l==='en');
+    document.getElementById('les').classList.toggle('active',l==='es');
+    document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
+    localStorage.setItem('bb-lang',l);
+  }
+  setTheme(localStorage.getItem('bb-theme')||'dark');
+  setLang(localStorage.getItem('bb-lang')||'en');
+</script>
+</body>
+</html>
