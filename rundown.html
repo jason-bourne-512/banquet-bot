@@ -25,19 +25,11 @@
   --tog-bg:#16181e; --tog-border:rgba(255,255,255,0.08); --tog-act:rgba(255,255,255,0.07);
   --divider:rgba(255,255,255,0.04); --stripe:rgba(255,255,255,0.014);
 
-  /* day tab gradient glass — matching splash tiles */
-  --day-bg: linear-gradient(135deg,#071a11 0%,#041410 55%,#020b08 100%);
-  --day-border: rgba(45,189,128,0.28);
-  --day-glow: rgba(45,189,128,0.09);
-  --day-top: rgba(45,189,128,0.50);
-  --day-name-color: #5de8b0;
-  --day-dow-color: rgba(45,189,128,0.55);
-  --day-sum-color: rgba(45,189,128,0.40);
-
+  /* today tab gold */
   --today-bg: linear-gradient(135deg,#221a06 0%,#15100a 55%,#0c0905 100%);
-  --today-border: rgba(201,168,76,0.38);
-  --today-glow: rgba(201,168,76,0.14);
-  --today-top: rgba(201,168,76,0.55);
+  --today-border: rgba(201,168,76,0.45);
+  --today-glow: rgba(201,168,76,0.16);
+  --today-top: rgba(201,168,76,0.60);
   --today-name: #f0cc70;
   --today-dow: rgba(201,168,76,0.65);
   --today-sum: rgba(201,168,76,0.48);
@@ -56,14 +48,6 @@
   --header-bg:rgba(240,236,227,0.95);
   --tog-bg:#e4dfd4; --tog-border:rgba(0,0,0,0.08); --tog-act:rgba(0,0,0,0.05);
   --divider:rgba(0,0,0,0.05); --stripe:rgba(0,0,0,0.010);
-
-  --day-bg: linear-gradient(135deg,#e8faf2 0%,#d8f5e8 55%,#c4eeda 100%);
-  --day-border: rgba(20,130,80,0.28);
-  --day-glow: rgba(20,130,80,0.07);
-  --day-top: rgba(20,130,80,0.38);
-  --day-name-color: #0f6840;
-  --day-dow-color: rgba(15,104,64,0.60);
-  --day-sum-color: rgba(15,104,64,0.45);
 
   --today-bg: linear-gradient(135deg,#fdf5e0 0%,#faf0d0 55%,#f5e8b8 100%);
   --today-border: rgba(160,116,30,0.40);
@@ -110,55 +94,68 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 /* ── DAY SECTIONS ── */
 .days-list { padding:0 0 80px; }
-.day-section { padding:8px 0 0; }
-.day-section { border-bottom:none; }
+.day-section { padding:6px 0 0; border-bottom:none; }
 
 /* GRADIENT GLASS DAY BUTTONS — matching splash nav tiles */
+/* NEON OUTLINE DAY BUTTONS — Option B */
 .day-btn {
-  width:100%; display:flex; align-items:center; gap:13px;
+  width:calc(100% - 32px); display:flex; align-items:center; gap:13px;
   padding:13px 14px; text-align:left; border:none; cursor:pointer;
   min-height:62px; position:relative; overflow:hidden;
   transition:transform .12s, box-shadow .12s;
-  background: var(--day-bg);
-  border: 1px solid var(--day-border);
-  border-radius: 13px;
-  margin: 0 16px; width: calc(100% - 32px);
-  box-shadow: 0 3px 18px var(--day-glow), inset 0 1px 0 var(--day-top);
+  background: #05080e;
+  border: 1px solid var(--nb, rgba(45,189,128,0.35));
+  border-radius: 12px;
+  margin: 0 16px;
+  box-shadow: 0 0 10px var(--ng, rgba(45,189,128,0.08)), inset 0 0 16px var(--ngi, rgba(45,189,128,0.03));
 }
-/* shimmer line on top */
 .day-btn::after {
-  content:''; position:absolute; top:0; left:10%; right:10%; height:1px;
-  background: linear-gradient(90deg, transparent, var(--day-top), transparent);
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, var(--nt, rgba(45,189,128,0.55)), transparent);
   pointer-events:none;
 }
-.day-btn:active { transform:scale(0.975); box-shadow: 0 1px 8px var(--day-glow); }
+.day-btn:active { transform:scale(0.975); }
 
-/* TODAY override */
+/* color classes applied per day */
+.day-btn.nc-green { --nb:rgba(45,189,128,0.35); --ng:rgba(45,189,128,0.09); --ngi:rgba(45,189,128,0.03); --nt:rgba(45,189,128,0.55); --nic:rgba(45,189,128,0.10); --nib:rgba(45,189,128,0.28); --nd:rgba(45,189,128,0.50); --nn:#3de8a0; --ns:rgba(45,189,128,0.38); }
+.day-btn.nc-blue  { --nb:rgba(79,142,240,0.35);  --ng:rgba(79,142,240,0.09);  --ngi:rgba(79,142,240,0.03);  --nt:rgba(79,142,240,0.55);  --nic:rgba(79,142,240,0.10);  --nib:rgba(79,142,240,0.28);  --nd:rgba(79,142,240,0.50);  --nn:#8ab8ff; --ns:rgba(79,142,240,0.38); }
+.day-btn.nc-purple{ --nb:rgba(140,100,220,0.35); --ng:rgba(140,100,220,0.09); --ngi:rgba(140,100,220,0.03); --nt:rgba(140,100,220,0.55); --nic:rgba(140,100,220,0.10); --nib:rgba(140,100,220,0.28); --nd:rgba(140,100,220,0.50); --nn:#c4a0ff; --ns:rgba(140,100,220,0.38); }
+.day-btn.nc-amber { --nb:rgba(240,180,41,0.35);  --ng:rgba(240,180,41,0.09);  --ngi:rgba(240,180,41,0.03);  --nt:rgba(240,180,41,0.55);  --nic:rgba(240,180,41,0.10);  --nib:rgba(240,180,41,0.28);  --nd:rgba(240,180,41,0.50);  --nn:#f0cc60; --ns:rgba(240,180,41,0.38); }
+.day-btn.nc-dim   { --nb:rgba(80,80,80,0.22);    --ng:rgba(0,0,0,0.04);       --ngi:rgba(0,0,0,0.02);       --nt:rgba(80,80,80,0.20);    --nic:rgba(50,50,50,0.3);    --nib:rgba(80,80,80,0.18);   --nd:rgba(255,255,255,0.18); --nn:rgba(255,255,255,0.30); --ns:rgba(255,255,255,0.16); }
+
+/* light mode neon — tinted whites */
+[data-theme="light"] .day-btn { background:#faf7f2; }
+[data-theme="light"] .day-btn.nc-green { --nb:rgba(20,130,80,0.30); --ng:rgba(20,130,80,0.06); --nn:#0f6840; --nd:rgba(20,130,80,0.55); --ns:rgba(20,130,80,0.40); }
+[data-theme="light"] .day-btn.nc-blue  { --nb:rgba(37,88,196,0.30); --ng:rgba(37,88,196,0.06); --nn:#1840a0; --nd:rgba(37,88,196,0.55); --ns:rgba(37,88,196,0.40); }
+[data-theme="light"] .day-btn.nc-purple{ --nb:rgba(96,48,176,0.30); --ng:rgba(96,48,176,0.06); --nn:#5828b0; --nd:rgba(96,48,176,0.55); --ns:rgba(96,48,176,0.40); }
+[data-theme="light"] .day-btn.nc-amber { --nb:rgba(156,104,0,0.30); --ng:rgba(156,104,0,0.06); --nn:#7a5810; --nd:rgba(156,104,0,0.55); --ns:rgba(156,104,0,0.40); }
+[data-theme="light"] .day-btn.nc-dim   { --nb:rgba(0,0,0,0.10); --ng:rgba(0,0,0,0.02); --nn:rgba(0,0,0,0.35); --nd:rgba(0,0,0,0.22); --ns:rgba(0,0,0,0.20); }
+
+/* TODAY — gold override */
 .day-btn.is-today {
   background: var(--today-bg);
   border: 1px solid var(--today-border);
-  box-shadow: 0 4px 24px var(--today-glow), inset 0 1px 0 var(--today-top);
+  box-shadow: 0 4px 24px var(--today-glow), inset 0 0 16px rgba(201,168,76,0.04);
 }
 .day-btn.is-today::after {
   background: linear-gradient(90deg, transparent, var(--today-top), transparent);
 }
 
-.day-dot { width:36px; height:36px; border-radius:9px; flex-shrink:0; background:rgba(45,189,128,0.12); border:1px solid var(--day-border); display:flex; align-items:center; justify-content:center; font-size:16px; transition:all .2s; }
+.day-dot { width:36px; height:36px; border-radius:9px; flex-shrink:0; background:var(--nic,rgba(45,189,128,0.08)); border:1px solid var(--nib,rgba(45,189,128,0.25)); display:flex; align-items:center; justify-content:center; font-size:16px; transition:all .2s; }
 .day-dot::after { content:'📅'; }
-.day-btn.is-today .day-dot { background:rgba(201,168,76,0.12); border-color:var(--today-border); }
-.day-btn.is-open .day-dot { opacity:0.85; }
+.day-btn.is-today .day-dot { background:var(--accent-dim); border-color:rgba(201,168,76,0.35); }
 
 .day-text { flex:1; min-width:0; }
-.day-dow { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:2px; color:var(--day-dow-color); }
+.day-dow { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:2px; color:var(--nd,rgba(45,189,128,0.50)); }
 .day-btn.is-today .day-dow { color:var(--today-dow); }
-.day-name { font-size:15px; font-weight:600; letter-spacing:-.01em; line-height:1.1; color:var(--day-name-color); }
+.day-name { font-size:15px; font-weight:600; letter-spacing:-.01em; line-height:1.1; color:var(--nn,#3de8a0); }
 .day-btn.is-today .day-name { color:var(--today-name); }
-.day-summary { font-family:'DM Mono',monospace; font-size:9px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--day-sum-color); }
+.day-summary { font-family:'DM Mono',monospace; font-size:9px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--ns,rgba(45,189,128,0.38)); }
 .day-btn.is-today .day-summary { color:var(--today-sum); }
 
 .today-chip { background:var(--accent); color:#09090c; font-family:'DM Mono',monospace; font-size:8px; font-weight:600; letter-spacing:.12em; padding:3px 7px; border-radius:4px; text-transform:uppercase; flex-shrink:0; }
 [data-theme="light"] .today-chip { color:#fff; }
-.chevron { font-size:18px; color:var(--day-border); flex-shrink:0; transition:transform .22s cubic-bezier(.4,0,.2,1); }
+.chevron { font-size:16px; color:var(--nd,rgba(45,189,128,0.40)); flex-shrink:0; transition:transform .22s cubic-bezier(.4,0,.2,1); }
 .day-btn.is-today .chevron { color:var(--today-border); }
 .day-btn.is-open .chevron { transform:rotate(90deg); }
 
@@ -256,7 +253,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ THU MAY 28 ══ -->
 <div class="day-section" data-date="2026-05-28">
-<button class="day-btn" onclick="toggleDay(this)">
+<button class="day-btn nc-green" onclick="toggleDay(this)">
   <div class="day-dot"></div>
   <div class="day-text">
     <div class="day-dow" data-en="Thursday" data-es="Jueves">Thursday</div>
@@ -372,7 +369,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ FRI MAY 29 ══ -->
 <div class="day-section" data-date="2026-05-29">
-<button class="day-btn" onclick="toggleDay(this)">
+<button class="day-btn nc-blue" onclick="toggleDay(this)">
   <div class="day-dot"></div>
   <div class="day-text">
     <div class="day-dow" data-en="Friday" data-es="Viernes">Friday</div>
@@ -421,7 +418,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ MAY 30 – JUN 1 ══ -->
 <div class="day-section" data-date-start="2026-05-30" data-date-end="2026-06-01">
-<button class="day-btn" onclick="toggleDay(this)">
+<button class="day-btn nc-dim" onclick="toggleDay(this)">
   <div class="day-dot"></div>
   <div class="day-text">
     <div class="day-dow" data-en="Sat May 30 – Mon Jun 1" data-es="Sáb 30 May – Lun 1 Jun">Sat May 30 – Mon Jun 1</div>
@@ -435,7 +432,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ TUE JUN 2 ══ -->
 <div class="day-section" data-date="2026-06-02">
-<button class="day-btn" onclick="toggleDay(this)">
+<button class="day-btn nc-dim" onclick="toggleDay(this)">
   <div class="day-dot"></div>
   <div class="day-text">
     <div class="day-dow" data-en="Tuesday" data-es="Martes">Tuesday</div>
@@ -470,7 +467,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ WED JUN 3 ══ -->
 <div class="day-section" data-date="2026-06-03">
-<button class="day-btn" onclick="toggleDay(this)">
+<button class="day-btn nc-green" onclick="toggleDay(this)">
   <div class="day-dot"></div>
   <div class="day-text">
     <div class="day-dow" data-en="Wednesday" data-es="Miércoles">Wednesday</div>
@@ -544,7 +541,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ THU JUN 4 ══ -->
 <div class="day-section" data-date="2026-06-04">
-<button class="day-btn" onclick="toggleDay(this)">
+<button class="day-btn nc-blue" onclick="toggleDay(this)">
   <div class="day-dot"></div>
   <div class="day-text">
     <div class="day-dow" data-en="Thursday" data-es="Jueves">Thursday</div>
@@ -641,7 +638,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ JUN 5–12 ══ -->
 <div class="day-section" data-date-start="2026-06-05" data-date-end="2026-06-12">
-<button class="day-btn" onclick="toggleDay(this)">
+<button class="day-btn nc-dim" onclick="toggleDay(this)">
   <div class="day-dot"></div>
   <div class="day-text">
     <div class="day-dow" data-en="Fri Jun 5 – Fri Jun 12" data-es="Vie 5 Jun – Vie 12 Jun">Fri Jun 5 – Fri Jun 12</div>
@@ -655,7 +652,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ SAT JUN 13 ══ -->
 <div class="day-section" data-date="2026-06-13">
-<button class="day-btn" onclick="toggleDay(this)">
+<button class="day-btn nc-purple" onclick="toggleDay(this)">
   <div class="day-dot"></div>
   <div class="day-text">
     <div class="day-dow" data-en="Saturday" data-es="Sábado">Saturday</div>
@@ -695,7 +692,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ JUN 14 ══ -->
 <div class="day-section" data-date="2026-06-14">
-<button class="day-btn" onclick="toggleDay(this)">
+<button class="day-btn nc-dim" onclick="toggleDay(this)">
   <div class="day-dot"></div>
   <div class="day-text">
     <div class="day-dow" data-en="Sunday" data-es="Domingo">Sunday</div>
