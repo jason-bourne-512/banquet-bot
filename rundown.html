@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#09090c">
 <title>BEO Rundown — Westin Austin Domain</title>
-<style>html{background:#09090c}</style>
+<style>html,body{background:#09090c}</style>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
@@ -24,15 +24,10 @@
   --header-bg:rgba(9,9,12,0.95);
   --tog-bg:#16181e; --tog-border:rgba(255,255,255,0.08); --tog-act:rgba(255,255,255,0.07);
   --divider:rgba(255,255,255,0.04); --stripe:rgba(255,255,255,0.014);
-
-  /* today tab gold */
-  --today-bg: linear-gradient(135deg,#221a06 0%,#15100a 55%,#0c0905 100%);
-  --today-border: rgba(201,168,76,0.45);
-  --today-glow: rgba(201,168,76,0.16);
-  --today-top: rgba(201,168,76,0.60);
-  --today-name: #f0cc70;
-  --today-dow: rgba(201,168,76,0.65);
-  --today-sum: rgba(201,168,76,0.48);
+  --today-bg:linear-gradient(135deg,#221a06 0%,#15100a 55%,#0c0905 100%);
+  --today-border:rgba(201,168,76,0.45); --today-glow:rgba(201,168,76,0.16);
+  --today-top:rgba(201,168,76,0.60); --today-name:#f0cc70;
+  --today-dow:rgba(201,168,76,0.65); --today-sum:rgba(201,168,76,0.48);
 }
 [data-theme="light"] {
   --bg:#f0ece3; --bg-card:#faf7f2; --bg-active:#e8e2d6;
@@ -48,18 +43,13 @@
   --header-bg:rgba(240,236,227,0.95);
   --tog-bg:#e4dfd4; --tog-border:rgba(0,0,0,0.08); --tog-act:rgba(0,0,0,0.05);
   --divider:rgba(0,0,0,0.05); --stripe:rgba(0,0,0,0.010);
-
-  --today-bg: linear-gradient(135deg,#fdf5e0 0%,#faf0d0 55%,#f5e8b8 100%);
-  --today-border: rgba(160,116,30,0.40);
-  --today-glow: rgba(160,116,30,0.08);
-  --today-top: rgba(160,116,30,0.45);
-  --today-name: #7a5810;
-  --today-dow: rgba(120,88,16,0.65);
-  --today-sum: rgba(120,88,16,0.50);
+  --today-bg:linear-gradient(135deg,#fdf5e0 0%,#faf0d0 55%,#f5e8b8 100%);
+  --today-border:rgba(160,116,30,0.40); --today-glow:rgba(160,116,30,0.08);
+  --today-top:rgba(160,116,30,0.45); --today-name:#7a5810;
+  --today-dow:rgba(120,88,16,0.65); --today-sum:rgba(120,88,16,0.50);
 }
 body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif; min-height:100vh; max-width:480px; margin:0 auto; }
 
-/* ── HEADER ── */
 .header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--header-bg); backdrop-filter:blur(14px); z-index:20; gap:8px; }
 .brand { display:flex; align-items:center; gap:9px; text-decoration:none; flex-shrink:0; }
 .brand-icon { width:32px; height:32px; background:var(--accent-dim); border:1px solid var(--accent); border-radius:7px; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; color:var(--accent); }
@@ -70,10 +60,9 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .tgl { padding:5px 8px; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; color:var(--text-3); background:none; border:none; cursor:pointer; transition:background .12s,color .12s; line-height:1; }
 .tgl.active { background:var(--tog-act); color:var(--text-1); }
 .tgl+.tgl { border-left:1px solid var(--tog-border); }
-.dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pip 2s infinite; }
+.live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pip 2s infinite; }
 @keyframes pip { 0%,100%{opacity:1} 50%{opacity:0.25} }
 
-/* ── HERO ── */
 .page-hero { padding:18px 16px 14px; border-bottom:1px solid var(--divider); position:relative; overflow:hidden; }
 .page-hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-55deg,var(--stripe) 0px,var(--stripe) 1px,transparent 1px,transparent 18px); pointer-events:none; }
 .page-eyebrow { font-family:'DM Mono',monospace; font-size:9px; color:var(--accent); letter-spacing:2px; text-transform:uppercase; margin-bottom:5px; }
@@ -83,63 +72,42 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .chip-green { background:var(--green-dim); color:var(--green); border-color:rgba(45,189,128,0.2); }
 .chip-gold  { background:var(--accent-dim); color:var(--accent); border-color:rgba(201,168,76,0.2); }
 
-/* ── SECTION LABEL ── */
-.sec { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-4); padding:14px 16px 8px; display:flex; align-items:center; gap:10px; }
-.sec::after { content:''; flex:1; height:1px; background:var(--divider); }
-
-/* ── EXPAND BAR ── */
 .expand-bar { display:flex; gap:8px; padding:8px 16px; background:var(--bg-card); border-bottom:1px solid var(--border); }
 .pill-btn { font-family:'DM Mono',monospace; font-size:9.5px; letter-spacing:.06em; color:var(--text-2); border:1px solid var(--border); border-radius:20px; padding:5px 12px; white-space:nowrap; background:var(--bg-active); cursor:pointer; transition:all .15s; }
 .pill-btn:active { border-color:var(--accent); color:var(--accent); }
 
-/* ── DAY SECTIONS ── */
 .days-list { padding:0 0 80px; }
 .day-section { padding:6px 0 0; border-bottom:none; }
 
-/* GRADIENT GLASS DAY BUTTONS — matching splash nav tiles */
-/* NEON OUTLINE DAY BUTTONS — Option B */
+/* NEON OUTLINE DAY BUTTONS */
 .day-btn {
   width:calc(100% - 32px); display:flex; align-items:center; gap:13px;
   padding:13px 14px; text-align:left; border:none; cursor:pointer;
   min-height:62px; position:relative; overflow:hidden;
   transition:transform .12s, box-shadow .12s;
-  background: #05080e;
-  border: 1px solid var(--nb, rgba(45,189,128,0.35));
-  border-radius: 12px;
-  margin: 0 16px;
-  box-shadow: 0 0 10px var(--ng, rgba(45,189,128,0.08)), inset 0 0 16px var(--ngi, rgba(45,189,128,0.03));
+  background:#05080e;
+  border:1px solid var(--nb,rgba(45,189,128,0.35));
+  border-radius:12px; margin:0 16px;
+  box-shadow:0 0 10px var(--ng,rgba(45,189,128,0.08)),inset 0 0 16px var(--ngi,rgba(45,189,128,0.03));
 }
-.day-btn::after {
-  content:''; position:absolute; top:0; left:0; right:0; height:1px;
-  background: linear-gradient(90deg, transparent, var(--nt, rgba(45,189,128,0.55)), transparent);
-  pointer-events:none;
-}
+.day-btn::after { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--nt,rgba(45,189,128,0.55)),transparent); pointer-events:none; }
 .day-btn:active { transform:scale(0.975); }
 
-/* color classes applied per day */
 .day-btn.nc-green { --nb:rgba(45,189,128,0.35); --ng:rgba(45,189,128,0.09); --ngi:rgba(45,189,128,0.03); --nt:rgba(45,189,128,0.55); --nic:rgba(45,189,128,0.10); --nib:rgba(45,189,128,0.28); --nd:rgba(45,189,128,0.50); --nn:#3de8a0; --ns:rgba(45,189,128,0.38); }
-.day-btn.nc-blue  { --nb:rgba(79,142,240,0.35);  --ng:rgba(79,142,240,0.09);  --ngi:rgba(79,142,240,0.03);  --nt:rgba(79,142,240,0.55);  --nic:rgba(79,142,240,0.10);  --nib:rgba(79,142,240,0.28);  --nd:rgba(79,142,240,0.50);  --nn:#8ab8ff; --ns:rgba(79,142,240,0.38); }
-.day-btn.nc-purple{ --nb:rgba(140,100,220,0.35); --ng:rgba(140,100,220,0.09); --ngi:rgba(140,100,220,0.03); --nt:rgba(140,100,220,0.55); --nic:rgba(140,100,220,0.10); --nib:rgba(140,100,220,0.28); --nd:rgba(140,100,220,0.50); --nn:#c4a0ff; --ns:rgba(140,100,220,0.38); }
-.day-btn.nc-amber { --nb:rgba(240,180,41,0.35);  --ng:rgba(240,180,41,0.09);  --ngi:rgba(240,180,41,0.03);  --nt:rgba(240,180,41,0.55);  --nic:rgba(240,180,41,0.10);  --nib:rgba(240,180,41,0.28);  --nd:rgba(240,180,41,0.50);  --nn:#f0cc60; --ns:rgba(240,180,41,0.38); }
-.day-btn.nc-dim   { --nb:rgba(80,80,80,0.22);    --ng:rgba(0,0,0,0.04);       --ngi:rgba(0,0,0,0.02);       --nt:rgba(80,80,80,0.20);    --nic:rgba(50,50,50,0.3);    --nib:rgba(80,80,80,0.18);   --nd:rgba(255,255,255,0.18); --nn:rgba(255,255,255,0.30); --ns:rgba(255,255,255,0.16); }
+.day-btn.nc-blue  { --nb:rgba(79,142,240,0.35); --ng:rgba(79,142,240,0.09); --ngi:rgba(79,142,240,0.03); --nt:rgba(79,142,240,0.55); --nic:rgba(79,142,240,0.10); --nib:rgba(79,142,240,0.28); --nd:rgba(79,142,240,0.50); --nn:#8ab8ff; --ns:rgba(79,142,240,0.38); }
+.day-btn.nc-purple { --nb:rgba(140,100,220,0.35); --ng:rgba(140,100,220,0.09); --ngi:rgba(140,100,220,0.03); --nt:rgba(140,100,220,0.55); --nic:rgba(140,100,220,0.10); --nib:rgba(140,100,220,0.28); --nd:rgba(140,100,220,0.50); --nn:#c4a0ff; --ns:rgba(140,100,220,0.38); }
+.day-btn.nc-amber  { --nb:rgba(240,180,41,0.35); --ng:rgba(240,180,41,0.09); --ngi:rgba(240,180,41,0.03); --nt:rgba(240,180,41,0.55); --nic:rgba(240,180,41,0.10); --nib:rgba(240,180,41,0.28); --nd:rgba(240,180,41,0.50); --nn:#f0cc60; --ns:rgba(240,180,41,0.38); }
+.day-btn.nc-dim    { --nb:rgba(80,80,80,0.22); --ng:rgba(0,0,0,0.04); --ngi:rgba(0,0,0,0.02); --nt:rgba(80,80,80,0.20); --nic:rgba(50,50,50,0.3); --nib:rgba(80,80,80,0.18); --nd:rgba(255,255,255,0.18); --nn:rgba(255,255,255,0.30); --ns:rgba(255,255,255,0.16); }
 
-/* light mode neon — tinted whites */
 [data-theme="light"] .day-btn { background:#faf7f2; }
 [data-theme="light"] .day-btn.nc-green { --nb:rgba(20,130,80,0.30); --ng:rgba(20,130,80,0.06); --nn:#0f6840; --nd:rgba(20,130,80,0.55); --ns:rgba(20,130,80,0.40); }
 [data-theme="light"] .day-btn.nc-blue  { --nb:rgba(37,88,196,0.30); --ng:rgba(37,88,196,0.06); --nn:#1840a0; --nd:rgba(37,88,196,0.55); --ns:rgba(37,88,196,0.40); }
-[data-theme="light"] .day-btn.nc-purple{ --nb:rgba(96,48,176,0.30); --ng:rgba(96,48,176,0.06); --nn:#5828b0; --nd:rgba(96,48,176,0.55); --ns:rgba(96,48,176,0.40); }
-[data-theme="light"] .day-btn.nc-amber { --nb:rgba(156,104,0,0.30); --ng:rgba(156,104,0,0.06); --nn:#7a5810; --nd:rgba(156,104,0,0.55); --ns:rgba(156,104,0,0.40); }
-[data-theme="light"] .day-btn.nc-dim   { --nb:rgba(0,0,0,0.10); --ng:rgba(0,0,0,0.02); --nn:rgba(0,0,0,0.35); --nd:rgba(0,0,0,0.22); --ns:rgba(0,0,0,0.20); }
+[data-theme="light"] .day-btn.nc-purple { --nb:rgba(96,48,176,0.30); --ng:rgba(96,48,176,0.06); --nn:#5828b0; --nd:rgba(96,48,176,0.55); --ns:rgba(96,48,176,0.40); }
+[data-theme="light"] .day-btn.nc-amber  { --nb:rgba(156,104,0,0.30); --ng:rgba(156,104,0,0.06); --nn:#7a5810; --nd:rgba(156,104,0,0.55); --ns:rgba(156,104,0,0.40); }
+[data-theme="light"] .day-btn.nc-dim    { --nb:rgba(0,0,0,0.10); --ng:rgba(0,0,0,0.02); --nn:rgba(0,0,0,0.35); --nd:rgba(0,0,0,0.22); --ns:rgba(0,0,0,0.20); }
 
-/* TODAY — gold override */
-.day-btn.is-today {
-  background: var(--today-bg);
-  border: 1px solid var(--today-border);
-  box-shadow: 0 4px 24px var(--today-glow), inset 0 0 16px rgba(201,168,76,0.04);
-}
-.day-btn.is-today::after {
-  background: linear-gradient(90deg, transparent, var(--today-top), transparent);
-}
+.day-btn.is-today { background:var(--today-bg); border:1px solid var(--today-border); box-shadow:0 4px 24px var(--today-glow),inset 0 0 16px rgba(201,168,76,0.04); }
+.day-btn.is-today::after { background:linear-gradient(90deg,transparent,var(--today-top),transparent); }
 
 .day-dot { width:36px; height:36px; border-radius:9px; flex-shrink:0; background:var(--nic,rgba(45,189,128,0.08)); border:1px solid var(--nib,rgba(45,189,128,0.25)); display:flex; align-items:center; justify-content:center; font-size:16px; transition:all .2s; }
 .day-dot::after { content:'📅'; }
@@ -162,7 +130,6 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .day-body { display:none; padding:0 16px 16px; background:var(--bg); }
 .day-body.is-open { display:block; }
 
-/* ── EVENT CARDS ── */
 .event-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-top:10px; animation:cardIn .18s ease both; }
 @keyframes cardIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
 
@@ -195,7 +162,6 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 .svc-menu { font-size:11.5px; color:var(--text-2); line-height:1.55; }
 .svc-menu strong { color:var(--text-1); font-weight:500; }
-
 .note { margin-top:6px; background:var(--blue-dim); border-left:2px solid var(--blue); border-radius:0 6px 6px 0; padding:5px 9px; font-family:'DM Mono',monospace; font-size:9.5px; color:var(--blue); line-height:1.5; }
 [data-theme="light"] .note { background:#e5effe; }
 .allergy { display:flex; align-items:flex-start; gap:5px; margin-top:6px; background:var(--amber-dim); border:1px solid var(--amber); color:var(--amber); font-family:'DM Mono',monospace; font-size:9.5px; padding:6px 9px; border-radius:6px; line-height:1.4; }
@@ -230,7 +196,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
       <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
       <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
     </div>
-    <div class="dot"></div>
+    <div class="live-dot"></div>
   </div>
 </header>
 
@@ -239,8 +205,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   <div class="page-title" data-en="BEO Rundown" data-es="Resumen BEO">BEO Rundown</div>
   <div class="header-meta">
     <span class="chip chip-gold" id="printed-date">—</span>
-    <span class="chip" data-en="May 28 – Jun 14, 2026" data-es="28 May – 14 Jun, 2026">May 28 – Jun 14, 2026</span>
-    <span class="chip chip-green"><span class="dot" style="width:5px;height:5px;animation:pip 2s infinite;background:var(--green)"></span>&nbsp;<span data-en="Live" data-es="En vivo">Live</span></span>
+    <span class="chip" data-en="Jun 3 – Jun 24, 2026" data-es="3 Jun – 24 Jun, 2026">Jun 3 – Jun 24, 2026</span>
+    <span class="chip chip-green"><span class="live-dot" style="width:5px;height:5px;animation:pip 2s infinite;background:var(--green)"></span>&nbsp;<span data-en="Live" data-es="En vivo">Live</span></span>
   </div>
 </div>
 
@@ -251,220 +217,6 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <div class="days-list">
 
-<!-- ══ THU MAY 28 ══ -->
-<div class="day-section" data-date="2026-05-28">
-<button class="day-btn nc-green" onclick="toggleDay(this)">
-  <div class="day-dot"></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="Thursday" data-es="Jueves">Thursday</div>
-    <div class="day-name">May 28</div>
-    <div class="day-summary" data-en="Guardant Health · McGraw Hill · AUSDW Orientation" data-es="Guardant Health · McGraw Hill · Orientación AUSDW">Guardant Health · McGraw Hill · AUSDW Orientation</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group">Guardant — Shield South Central LT</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana Ortega" data-es="MGR: Diana Ortega">MGR: Diana Ortega</span>
-        <span class="badge badge-ic" data-en="IC: Jaime McElwrath" data-es="CI: Jaime McElwrath">IC: Jaime McElwrath</span>
-        <span class="badge badge-flag" data-en="DAY 1 of 2" data-es="DÍA 1 de 2">DAY 1 of 2</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:30–<br>8:30 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Bluebell</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="Early Riser Buffet — Juices · Fruit · Cereals · Pastries · Yogurt · Eggs · Bacon · Sausage · Potatoes · Coffee/Tea" data-es="Buffet Madrugador — Jugos · Fruta · Cereales · Pasteles · Yogurt · Huevos · Tocino · Salchicha · Papas · Café/Té">Early Riser Buffet — Juices · Fruit · Cereals · Pastries · Yogurt · Eggs · Bacon · Sausage · Potatoes · Coffee/Tea</div>
-        <div class="note" data-en="⚑ Buffet surcharge: fewer than 30 guests ($250)" data-es="⚑ Cargo por buffet: menos de 30 personas ($250)">⚑ Buffet surcharge: fewer than 30 guests ($250)</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">10:00–<br>11:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="AM Break" data-es="Descanso AM">AM Break</span><span class="room-pill">Bluebell</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="Roasted Rosemary &amp; Himalayan Salt Almonds · Fresh Seasonal Fruit &amp; Berries" data-es="Almendras con Romero y Sal del Himalaya · Frutas y Bayas de Temporada">Roasted Rosemary &amp; Himalayan Salt Almonds · Fresh Seasonal Fruit &amp; Berries</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:00–<br>1:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Almuerzo">Lunch</span><span class="room-pill">Bluebell</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="Tejas Mexicano Buffet — Salads · Queso &amp; Chips · Chicken Fajitas · Beef Barbacoa · Green Chile Rice · Refried Beans · Churros · Tres Leches" data-es="Buffet Tejas Mexicano — Ensaladas · Queso y Totopos · Fajitas de Pollo · Barbacoa · Arroz Verde · Frijoles Refritos · Churros · Tres Leches">Tejas Mexicano Buffet — Salads · Queso &amp; Chips · Chicken Fajitas · Beef Barbacoa · Green Chile Rice · Refried Beans · Churros · Tres Leches</div>
-        <div class="note" data-en="⚑ Buffet surcharge: fewer than 20 guests ($250)" data-es="⚑ Cargo por buffet: menos de 20 personas ($250)">⚑ Buffet surcharge: fewer than 20 guests ($250)</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">2:30–<br>3:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="PM Break" data-es="Descanso PM">PM Break</span><span class="room-pill">Bluebell</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="Indulge Break — M&amp;Ms · Reese's · Choc Pretzels · Gummi Bears · Yogurt Pretzels · Starbucks Frappuccinos · White Cheddar Popcorn · Coffee/Tea" data-es="Descanso Indulge — M&amp;Ms · Reese's · Pretzels de Chocolate · Gummi Bears · Frappuccinos · Palomitas de Queso · Café/Té">Indulge Break — M&amp;Ms · Reese's · Choc Pretzels · Gummi Bears · Yogurt Pretzels · Starbucks Frappuccinos · White Cheddar Popcorn · Coffee/Tea</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Jennifer Whitlock</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell · Conference · 8a–5p · All day beverages on consumption" data-es="Bluebell · Conferencia · 8a–5p · Bebidas todo el día al consumo">Bluebell · Conference · 8a–5p · All day beverages on consumption</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group">McGraw Hill Higher Ed — Lamb Austin Meeting</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana / Jessica" data-es="MGR: Diana / Jessica">MGR: Diana / Jessica</span>
-        <span class="badge badge-ic" data-en="IC: Amanda Garcia" data-es="CI: Amanda Garcia">IC: Amanda Garcia</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–<br>9:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Camellia B</span><span class="gtd-pill">GTD 15</span></div>
-        <div class="svc-menu" data-en="Early Riser Buffet — Juices · Fruit · Cereals · Pastries · Yogurt · Eggs · Bacon · Sausage · Potatoes · Coffee/Tea" data-es="Buffet Madrugador — Jugos · Fruta · Cereales · Pasteles · Yogurt · Huevos · Tocino · Salchicha · Papas · Café/Té">Early Riser Buffet — Juices · Fruit · Cereals · Pastries · Yogurt · Eggs · Bacon · Sausage · Potatoes · Coffee/Tea</div>
-        <div class="note" data-en="⚑ Buffet surcharge: fewer than 20 guests ($225) · Rounds of 8" data-es="⚑ Cargo por buffet: menos de 20 personas ($225) · Mesas redondas de 8">⚑ Buffet surcharge: fewer than 20 guests ($225) · Rounds of 8</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00a–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="All Day Bev" data-es="Bebidas Todo el Día">All Day Bev</span><span class="room-pill">Camellia A</span><span class="gtd-pill">EXP 15</span></div>
-        <div class="svc-menu" data-en="Coffee · Decaf · Tazo Teas · Pepsi Products · Bottled Water" data-es="Café · Descafeinado · Tés Tazo · Refrescos Pepsi · Agua Embotellada">Coffee · Decaf · Tazo Teas · Pepsi Products · Bottled Water</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:00–<br>1:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Almuerzo">Lunch</span><span class="room-pill">Camellia B</span><span class="gtd-pill">GTD 15</span></div>
-        <div class="svc-menu" data-en="Tejas Mexicano Buffet — Salads · Queso &amp; Chips · Chicken Fajitas · Beef Barbacoa · Green Chile Rice · Refried Beans · Churros · Tres Leches" data-es="Buffet Tejas Mexicano — Ensaladas · Queso y Totopos · Fajitas de Pollo · Barbacoa · Arroz Verde · Frijoles Refritos · Churros · Tres Leches">Tejas Mexicano Buffet — Salads · Queso &amp; Chips · Chicken Fajitas · Beef Barbacoa · Green Chile Rice · Refried Beans · Churros · Tres Leches</div>
-        <div class="note" data-en="⚑ Buffet surcharge: fewer than 20 guests ($225)" data-es="⚑ Cargo por buffet: menos de 20 personas ($225)">⚑ Buffet surcharge: fewer than 20 guests ($225)</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Amanda Garcia</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Camellia A (meeting/bev) · Camellia B (meal room)" data-es="Camellia A (reunión/bebidas) · Camellia B (sala de comidas)">Camellia A (meeting/bev) · Camellia B (meal room)</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--text-4)">
-      <div class="card-group" data-en="AUSDW In-House — Orientation" data-es="AUSDW En Casa — Orientación">AUSDW In-House — Orientation</div>
-      <div class="card-badges"><span class="badge badge-ic" data-en="IC: Mike Brewster" data-es="CI: Mike Brewster">IC: Mike Brewster</span></div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00a–<br>1:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Buttercup</span><span class="gtd-pill">4 <span data-en="guests" data-es="personas">guests</span></span></div>
-        <div class="svc-menu" data-en="(4) Bottled waters · Conference setup" data-es="(4) Aguas embotelladas · Montaje de conferencia">(4) Bottled waters · Conference setup</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>2</strong> <span data-en="external groups + in-house" data-es="grupos externos + en casa">external groups + in-house</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Bluebell · Camellia A/B · Buttercup</strong></div>
-    <div class="strip-item" data-en="Note: Lantana A = HSKP mtg, no F&amp;B" data-es="Nota: Lantana A = reunión HSKP, sin F&amp;B">Note: Lantana A = HSKP mtg, no F&amp;B</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ FRI MAY 29 ══ -->
-<div class="day-section" data-date="2026-05-29">
-<button class="day-btn nc-blue" onclick="toggleDay(this)">
-  <div class="day-dot"></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="Friday" data-es="Viernes">Friday</div>
-    <div class="day-name">May 29</div>
-    <div class="day-summary" data-en="Guardant Health Day 2 · half day · a la carte breakfast" data-es="Guardant Health Día 2 · medio día · desayuno a la carta">Guardant Health Day 2 · half day · a la carte breakfast</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group">Guardant — Shield South Central LT</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana Ortega" data-es="MGR: Diana Ortega">MGR: Diana Ortega</span>
-        <span class="badge badge-ic" data-en="IC: Jaime McElwrath" data-es="CI: Jaime McElwrath">IC: Jaime McElwrath</span>
-        <span class="badge badge-flag" data-en="DAY 2 of 2 · HALF DAY" data-es="DÍA 2 de 2 · MEDIO DÍA">DAY 2 of 2 · HALF DAY</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:30a–<br>12:00p</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Cont. Bev" data-es="Beb. Cont.">Cont. Bev</span><span class="room-pill">Bluebell</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="ON CONSUMPTION — Coffee/Decaf gallons · Teas · Sparkling Water · Pepsi products" data-es="AL CONSUMO — Galones café/descaf · Tés · Agua mineral · Pepsi">ON CONSUMPTION — Coffee/Decaf gallons · Teas · Sparkling Water · Pepsi products</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–<br>9:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="A La Carte Bkf" data-es="Desayuno A La Carta">A La Carte Bkf</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 10</span></div>
-        <div class="svc-menu" data-en="(5) Breakfast Tacos — Eggs, Sausage, Black Beans, Potato, Pepper Jack ($8 ea) · (5) English Muffin Sandwiches — Egg, Smoked Ham, Aged Cheddar ($8 ea) · (10) Berry &amp; Greek Yogurt Parfait w/ Granola ($9 ea) · (10) Assorted Sliced Fruit &amp; Berries ($9/pp)" data-es="(5) Tacos de Desayuno — Huevos, Salchicha, Frijoles, Papa, Pepper Jack ($8 c/u) · (5) Sándwich de Muffin Inglés — Huevo, Jamón Ahumado, Cheddar Añejo ($8 c/u) · (10) Parfait de Yogurt y Granola ($9 c/u) · (10) Fruta Variada ($9/pp)">(5) Breakfast Tacos — Eggs, Sausage, Black Beans, Potato, Pepper Jack ($8 ea) · (5) English Muffin Sandwiches — Egg, Smoked Ham, Aged Cheddar ($8 ea) · (10) Berry &amp; Greek Yogurt Parfait w/ Granola ($9 ea) · (10) Assorted Sliced Fruit &amp; Berries ($9/pp)</div>
-        <div class="note" data-en="⚑ A la carte — NOT a buffet · individual quantities pre-ordered · plate &amp; display" data-es="⚑ A la carta — NO es buffet · cantidades individuales pre-ordenadas">⚑ A la carte — NOT a buffet · individual quantities pre-ordered · plate &amp; display</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Jennifer Whitlock</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell · Conference · Session ends 12:00 PM" data-es="Bluebell · Conferencia · Sesión termina a las 12:00 PM">Bluebell · Conference · Session ends 12:00 PM</span></div>
-    </div>
-  </div>
-  <div class="day-strip">
-    <div class="strip-item"><strong>1</strong> <span data-en="group" data-es="grupo">group</span> · <strong>10</strong> GTD</div>
-    <div class="strip-item"><span data-en="Room:" data-es="Sala:">Room:</span> <strong>Bluebell</strong></div>
-    <div class="strip-item" data-en="⚑ Half day — out by noon" data-es="⚑ Medio día — salida al mediodía">⚑ Half day — out by noon</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ MAY 30 – JUN 1 ══ -->
-<div class="day-section" data-date-start="2026-05-30" data-date-end="2026-06-01">
-<button class="day-btn nc-dim" onclick="toggleDay(this)">
-  <div class="day-dot"></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="Sat May 30 – Mon Jun 1" data-es="Sáb 30 May – Lun 1 Jun">Sat May 30 – Mon Jun 1</div>
-    <div class="day-name" data-en="May 30 – Jun 1" data-es="30 May – 1 Jun">May 30 – Jun 1</div>
-    <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body"><div class="empty-day" data-en="No BEO events on file for these dates." data-es="Sin eventos BEO registrados para estas fechas.">No BEO events on file for these dates.</div></div>
-</div>
-
-<!-- ══ TUE JUN 2 ══ -->
-<div class="day-section" data-date="2026-06-02">
-<button class="day-btn nc-dim" onclick="toggleDay(this)">
-  <div class="day-dot"></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="Tuesday" data-es="Martes">Tuesday</div>
-    <div class="day-name">June 2</div>
-    <div class="day-summary" data-en="240 Tutoring setup — no F&amp;B" data-es="Montaje 240 Tutoring — sin F&amp;B">240 Tutoring setup — no F&amp;B</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--text-4)">
-      <div class="card-group" data-en="240 Tutoring Conference — Setup Day" data-es="240 Tutoring — Día de Montaje">240 Tutoring Conference — Setup Day</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa / Jessica" data-es="MGR: Lisa / Jessica">MGR: Lisa / Jessica</span>
-        <span class="badge badge-ic" data-en="IC: Eloisa Fuentes" data-es="CI: Eloisa Fuentes">IC: Eloisa Fuentes</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:00–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Primrose AB</span></div>
-        <div class="svc-menu" data-en="Client setup only — no F&amp;B · Crescent Rounds" data-es="Solo montaje del cliente — sin F&amp;B · Mesas creciente">Client setup only — no F&amp;B · Crescent Rounds</div>
-        <div class="note" data-en="⚑ Airwall: group wants walls up/down throughout — keep tables clear of airwall path" data-es="⚑ Muro de aire: el grupo quiere paredes arriba/abajo — mantener mesas fuera del camino">⚑ Airwall: group wants walls up/down throughout — keep tables clear of airwall path</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Eloisa Fuentes</span></div>
-    </div>
-  </div>
-</div>
-</div>
-
 <!-- ══ WED JUN 3 ══ -->
 <div class="day-section" data-date="2026-06-03">
 <button class="day-btn nc-green" onclick="toggleDay(this)">
@@ -472,7 +224,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   <div class="day-text">
     <div class="day-dow" data-en="Wednesday" data-es="Miércoles">Wednesday</div>
     <div class="day-name">June 3</div>
-    <div class="day-summary" data-en="240 Tutoring Day 1 · full day · ⚠ multiple dietary flags" data-es="240 Tutoring Día 1 · día completo · ⚠ restricciones dietéticas">240 Tutoring Day 1 · full day · ⚠ multiple dietary flags</div>
+    <div class="day-summary" data-en="240 Tutoring · full day · ⚠ dietary flags" data-es="240 Tutoring · día completo · ⚠ restricciones dietéticas">240 Tutoring · full day · ⚠ dietary flags</div>
   </div>
   <span class="chevron">▶</span>
 </button>
@@ -483,58 +235,42 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
       <div class="card-badges">
         <span class="badge badge-mgr" data-en="MGR: Lisa / Jessica" data-es="MGR: Lisa / Jessica">MGR: Lisa / Jessica</span>
         <span class="badge badge-ic" data-en="IC: Eloisa Fuentes" data-es="CI: Eloisa Fuentes">IC: Eloisa Fuentes</span>
-        <span class="badge badge-flag" data-en="DAY 1 of 2" data-es="DÍA 1 de 2">DAY 1 of 2</span>
+        <span class="badge badge-flag" data-en="REVISED" data-es="REVISADO">REVISED</span>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00–<br>9:00 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 63</span></div>
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Primrose D</span><span class="gtd-pill">GTD 64</span></div>
         <div class="svc-menu" data-en="Early Riser Buffet — Juices · Fruit · Cereals · Pastries · Yogurt · Eggs · Bacon · Sausage · Potatoes · Coffee/Tea" data-es="Buffet Madrugador — Jugos · Fruta · Cereales · Pasteles · Yogurt · Huevos · Tocino · Salchicha · Papas · Café/Té">Early Riser Buffet — Juices · Fruit · Cereals · Pastries · Yogurt · Eggs · Bacon · Sausage · Potatoes · Coffee/Tea</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">9:00a–<br>5:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="All Day Bev" data-es="Bebidas Todo el Día">All Day Bev</span><span class="room-pill">Primrose AB</span></div>
-        <div class="svc-menu" data-en="Coffee · Decaf · Tazo Teas · Pepsi Products · Bottled Water · Add Diet Coke" data-es="Café · Descafeinado · Tés Tazo · Refrescos Pepsi · Agua · Agregar Diet Coke">Coffee · Decaf · Tazo Teas · Pepsi Products · Bottled Water · <strong>Add Diet Coke</strong></div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">10:30–<br>11:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="AM Break" data-es="Descanso AM">AM Break</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 63</span></div>
-        <div class="svc-menu" data-en="Revitalize — Berry Blast Smoothie Shots · Mini Yogurt Parfait w/ Granola · Avocado Deviled Eggs w/ Turkey Bacon Chips · Mini Blueberry Muffins · Coffee/Tea" data-es="Revitalizar — Shots de Smoothie · Mini Parfait de Yogurt · Huevos con Aguacate y Tocino · Muffins de Arándano · Café/Té">Revitalize — Berry Blast Smoothie Shots · Mini Yogurt Parfait w/ Granola · Avocado Deviled Eggs w/ Turkey Bacon Chips · Mini Blueberry Muffins · Coffee/Tea</div>
-        <div class="note" data-en="⚑ Close airwalls at 10:30a" data-es="⚑ Cerrar muros de aire a las 10:30a">⚑ Close airwalls at 10:30a</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="All Day Bev" data-es="Bebidas Todo el Día">All Day Bev</span><span class="room-pill">Primrose D</span></div>
+        <div class="svc-menu" data-en="Coffee · Decaf · Tazo Teas · Pepsi Products · Bottled Water · Add Diet Coke" data-es="Café · Descafeinado · Tés Tazo · Pepsi · Agua · Agregar Diet Coke">Coffee · Decaf · Tazo Teas · Pepsi Products · Bottled Water · <strong>Add Diet Coke</strong></div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">12:00–<br>1:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Buffet Almuerzo">Lunch Buffet</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 63</span></div>
-        <div class="svc-menu" data-en="Tejas Mexicano — Salads · Queso &amp; Chips · Chicken Fajitas · Beef Barbacoa · Green Chile Rice · Refried Beans · Churros · Tres Leches" data-es="Tejas Mexicano — Ensaladas · Queso y Totopos · Fajitas de Pollo · Barbacoa · Arroz Verde · Frijoles Refritos · Churros · Tres Leches">Tejas Mexicano — Salads · Queso &amp; Chips · Chicken Fajitas · Beef Barbacoa · Green Chile Rice · Refried Beans · Churros · Tres Leches</div>
-        <div class="note" data-en="⚑ Open walls 12:00p · Close walls 1:00p · 10% F&amp;B discount applies" data-es="⚑ Abrir paredes 12:00p · Cerrar 1:00p · 10% descuento F&amp;B">⚑ Open walls 12:00p · Close walls 1:00p · 10% F&amp;B discount applies</div>
-        <div class="allergy" data-en="⚠ LABEL ALL ITEMS: GF · Vegetarian · Shellfish/Mango Allergy · Seafood Intolerance · Pork · Keto. Have 1 veg plate available." data-es="⚠ ETIQUETAR TODO: Sin Gluten · Vegetariano · Alergia Mariscos/Mango · Intolerancia Mariscos · Cerdo · Keto. Tener 1 plato vegetariano disponible.">⚠ LABEL ALL ITEMS: GF · Vegetarian · Shellfish/Mango Allergy · Seafood Intolerance · Pork · Keto. Have 1 veg plate available.</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">2:15–<br>2:45 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="PM Break" data-es="Descanso PM">PM Break</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 63</span></div>
-        <div class="svc-menu" data-en="Inspire &amp; Activate — Avocado Hummus w/ Pita Chips · Coconut Chia Pudding · Coconut Water Horchata · Coffee/Tea" data-es="Inspirar y Activar — Hummus de Aguacate con Pita · Pudín de Chia · Horchata de Agua de Coco · Café/Té">Inspire &amp; Activate — Avocado Hummus w/ Pita Chips · Coconut Chia Pudding · Coconut Water Horchata · Coffee/Tea</div>
-        <div class="note" data-en="⚑ Open airwalls at 2:15p · Group out by 4:00p" data-es="⚑ Abrir muros de aire a las 2:15p · Grupo sale a las 4:00p">⚑ Open airwalls at 2:15p · Group out by 4:00p</div>
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Buffet Almuerzo">Lunch Buffet</span><span class="room-pill">Primrose D</span><span class="gtd-pill">GTD 64</span></div>
+        <div class="svc-menu" data-en="Tejas Mexicano — Salads · Queso &amp; Chips · Chicken Fajitas · Beef Barbacoa · Green Chile Rice · Refried Beans · Churros · Tres Leches" data-es="Tejas Mexicano — Ensaladas · Queso y Totopos · Fajitas de Pollo · Barbacoa · Arroz Verde · Frijoles · Churros · Tres Leches">Tejas Mexicano — Salads · Queso &amp; Chips · Chicken Fajitas · Beef Barbacoa · Green Chile Rice · Refried Beans · Churros · Tres Leches</div>
+        <div class="note" data-en="⚑ 10% F&amp;B discount · Airwall: 10:30a breakout → 12:00p lunch → 1:00p breakout → 2:15p general session · Out by 4pm" data-es="⚑ 10% descuento · Muros: 10:30a rompe → 12:00p almuerzo → 1:00p rompe → 2:15p sesión general · Salida 4pm">⚑ 10% F&amp;B discount · Airwall: 10:30a breakout → 12:00p lunch → 1:00p breakout → 2:15p general session · Out by 4pm</div>
+        <div class="allergy" data-en="⚠ LABEL ALL: GF · Vegetarian · Shellfish/Mango Allergy · Seafood Intolerance · Pork · Keto · Have 1 veg plate available" data-es="⚠ ETIQUETAR TODO: Sin Gluten · Vegetariano · Alergia Mariscos/Mango · Cerdo · Keto · Tener 1 plato vegetariano">⚠ LABEL ALL: GF · Vegetarian · Shellfish/Mango Allergy · Seafood Intolerance · Pork · Keto · Have 1 veg plate available</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Eloisa Fuentes</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose AB · 2 Podiums · Crescent Rounds · 8a–5p (out by 4p)" data-es="Primrose AB · 2 Podios · Mesas Creciente · 8a–5p (sale a las 4p)">Primrose AB · 2 Podiums · Crescent Rounds · 8a–5p (out by 4p)</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Buttercup = private use — do not enter" data-es="Buttercup = uso privado — no entrar">Buttercup = private use — do not enter</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose D · 1 Podium · 9 Crescent Rounds of 7 · 8a–5p (out by 4p)" data-es="Primrose D · 1 Podio · 9 Mesas Creciente de 7 · 8a–5p (sale 4p)">Primrose D · 1 Podium · 9 Crescent Rounds of 7 · 8a–5p (out by 4p)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Verbena = 240 Tutoring breakout (no F&amp;B) · Buttercup = private (breastfeeding) — do not enter" data-es="Verbena = sala de descanso (sin F&amp;B) · Buttercup = privado — no entrar">Verbena = 240 Tutoring breakout (no F&amp;B) · Buttercup = private (breastfeeding) — do not enter</span></div>
     </div>
   </div>
   <div class="day-strip">
-    <div class="strip-item"><strong>1</strong> <span data-en="group · 63 GTD" data-es="grupo · 63 GTD">group · 63 GTD</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Primrose AB · Buttercup (private)</strong></div>
-    <div class="strip-item" data-en="⚠ Multiple dietary restrictions — label everything" data-es="⚠ Múltiples restricciones dietéticas — etiquetar todo">⚠ Multiple dietary restrictions — label everything</div>
+    <div class="strip-item"><strong>1</strong> <span data-en="group · 64 GTD" data-es="grupo · 64 GTD">group · 64 GTD</span></div>
+    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Primrose D · Verbena (breakout) · Buttercup (private)</strong></div>
+    <div class="strip-item" data-en="⚠ Multiple dietary restrictions — label everything" data-es="⚠ Múltiples restricciones — etiquetar todo">⚠ Multiple dietary restrictions — label everything</div>
   </div>
 </div>
 </div>
@@ -546,81 +282,65 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   <div class="day-text">
     <div class="day-dow" data-en="Thursday" data-es="Jueves">Thursday</div>
     <div class="day-name">June 4</div>
-    <div class="day-summary" data-en="240 Tutoring Day 2 · Modern Italian lunch · Career Strategies suite drop" data-es="240 Tutoring Día 2 · almuerzo Italiano · entrega de suite Career Strategies">240 Tutoring Day 2 · Modern Italian lunch · Career Strategies suite drop</div>
+    <div class="day-summary" data-en="240 Tutoring Day 2 · Modern Italian · Career Strategies suite drop" data-es="240 Tutoring Día 2 · Italiano Moderno · entrega suite Career Strategies">240 Tutoring Day 2 · Modern Italian · Career Strategies suite drop</div>
   </div>
   <span class="chevron">▶</span>
 </button>
 <div class="day-body">
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="240 Tutoring Conference — Day 2" data-es="Conferencia 240 Tutoring — Día 2">240 Tutoring Conference — Day 2</div>
+      <div class="card-group" data-en="240 Tutoring Conference — Day 2" data-es="240 Tutoring — Día 2">240 Tutoring Conference — Day 2</div>
       <div class="card-badges">
         <span class="badge badge-mgr" data-en="MGR: Lisa / Jessica" data-es="MGR: Lisa / Jessica">MGR: Lisa / Jessica</span>
         <span class="badge badge-ic" data-en="IC: Eloisa Fuentes" data-es="CI: Eloisa Fuentes">IC: Eloisa Fuentes</span>
-        <span class="badge badge-flag" data-en="DAY 2 of 2" data-es="DÍA 2 de 2">DAY 2 of 2</span>
+        <span class="badge badge-flag" data-en="REVISED" data-es="REVISADO">REVISED</span>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00–<br>9:00 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 58</span></div>
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Primrose D</span><span class="gtd-pill">GTD 62</span></div>
         <div class="svc-menu" data-en="Early Riser Buffet — Juices · Fruit · Cereals · Pastries · Yogurt · Eggs · Bacon · Sausage · Potatoes · Coffee/Tea" data-es="Buffet Madrugador — Jugos · Fruta · Cereales · Pasteles · Yogurt · Huevos · Tocino · Salchicha · Papas · Café/Té">Early Riser Buffet — Juices · Fruit · Cereals · Pastries · Yogurt · Eggs · Bacon · Sausage · Potatoes · Coffee/Tea</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">9:00a–<br>5:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="All Day Bev" data-es="Bebidas Todo el Día">All Day Bev</span><span class="room-pill">Primrose AB</span></div>
-        <div class="svc-menu" data-en="Coffee · Decaf · Tazo Teas · Pepsi Products · Bottled Water + Diet Coke" data-es="Café · Descafeinado · Tés Tazo · Refrescos Pepsi · Agua + Diet Coke">Coffee · Decaf · Tazo Teas · Pepsi Products · Bottled Water + Diet Coke</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">10:30–<br>11:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="AM Break" data-es="Descanso AM">AM Break</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 58</span></div>
-        <div class="svc-menu" data-en="Revitalize — Berry Blast Smoothie Shots · Mini Yogurt Parfait · Avocado Deviled Eggs w/ Turkey Bacon Chips · Mini Blueberry Muffins · Coffee/Tea" data-es="Revitalizar — Shots de Smoothie · Mini Parfait de Yogurt · Huevos con Aguacate y Tocino · Muffins de Arándano · Café/Té">Revitalize — Berry Blast Smoothie Shots · Mini Yogurt Parfait · Avocado Deviled Eggs w/ Turkey Bacon Chips · Mini Blueberry Muffins · Coffee/Tea</div>
-        <div class="note" data-en="⚑ Close airwalls at 10:30a" data-es="⚑ Cerrar muros de aire a las 10:30a">⚑ Close airwalls at 10:30a</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="All Day Bev" data-es="Bebidas Todo el Día">All Day Bev</span><span class="room-pill">Primrose D</span></div>
+        <div class="svc-menu" data-en="Coffee · Decaf · Tazo Teas · Pepsi Products · Bottled Water + Diet Coke" data-es="Café · Descafeinado · Tés Tazo · Pepsi · Agua + Diet Coke">Coffee · Decaf · Tazo Teas · Pepsi Products · Bottled Water + Diet Coke</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">12:00–<br>1:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Buffet Almuerzo">Lunch Buffet</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 58</span></div>
-        <div class="svc-menu" data-en="Modern Italian — Turkey Sausage Kale &amp; Rice Soup · Wild Arugula Caesar · Burrata Caprese · GF Chicken Piccata (Lemon, Capers) · Whole Pesto Salmon · Roasted Zucchini &amp; Tomato · Vanilla Cannoli &amp; Tiramisu Bites" data-es="Italiano Moderno — Sopa de Salchicha de Pavo con Kale · César de Arúgula · Caprese con Burrata · Pollo Piccata Sin Gluten · Salmón al Pesto · Calabacín y Tomate Rostizado · Cannoli y Tiramisu">Modern Italian — Turkey Sausage Kale &amp; Rice Soup · Wild Arugula Caesar · Burrata Caprese · GF Chicken Piccata (Lemon, Capers) · Whole Pesto Salmon · Roasted Zucchini &amp; Tomato · Vanilla Cannoli &amp; Tiramisu Bites</div>
-        <div class="note" data-en="⚑ Open walls 12:00p · Close walls 1:00p · 10% F&amp;B discount" data-es="⚑ Abrir paredes 12:00p · Cerrar 1:00p · 10% descuento F&amp;B">⚑ Open walls 12:00p · Close walls 1:00p · 10% F&amp;B discount</div>
-        <div class="allergy" data-en="⚠ LABEL ALL ITEMS: GF · Vegetarian · Shellfish/Mango Allergy · Seafood Intolerance · Pork · Keto" data-es="⚠ ETIQUETAR TODO: Sin Gluten · Vegetariano · Alergia Mariscos/Mango · Intolerancia Mariscos · Cerdo · Keto">⚠ LABEL ALL ITEMS: GF · Vegetarian · Shellfish/Mango Allergy · Seafood Intolerance · Pork · Keto</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">2:15–<br>2:45 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="PM Break" data-es="Descanso PM">PM Break</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 58</span></div>
-        <div class="svc-menu" data-en="Inspire &amp; Activate — Avocado Hummus w/ Pita Chips · Coconut Chia Pudding · Coconut Water Horchata · Coffee/Tea" data-es="Inspirar y Activar — Hummus de Aguacate · Pudín de Chia · Horchata · Café/Té">Inspire &amp; Activate — Avocado Hummus w/ Pita Chips · Coconut Chia Pudding · Coconut Water Horchata · Coffee/Tea</div>
-        <div class="note" data-en="⚑ Open airwalls at 2:15p · Group out by 4:00p" data-es="⚑ Abrir muros de aire a las 2:15p · Grupo sale a las 4:00p">⚑ Open airwalls at 2:15p · Group out by 4:00p</div>
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Buffet Almuerzo">Lunch Buffet</span><span class="room-pill">Primrose D</span><span class="gtd-pill">GTD 62</span></div>
+        <div class="svc-menu" data-en="Modern Italian — Turkey Sausage Kale &amp; Rice Soup · Wild Arugula Caesar · Burrata Caprese · GF Chicken Piccata · Whole Pesto Salmon · Roasted Zucchini &amp; Tomato · Vanilla Cannoli &amp; Tiramisu Bites" data-es="Italiano Moderno — Sopa de Salchicha de Pavo · César de Arúgula · Caprese con Burrata · Pollo Piccata GF · Salmón al Pesto · Calabacín Rostizado · Cannoli y Tiramisú">Modern Italian — Turkey Sausage Kale &amp; Rice Soup · Wild Arugula Caesar · Burrata Caprese · GF Chicken Piccata · Whole Pesto Salmon · Roasted Zucchini &amp; Tomato · Vanilla Cannoli &amp; Tiramisu Bites</div>
+        <div class="note" data-en="⚑ 10% F&amp;B discount · Airwall: 10:30a breakout → 12:00p lunch → 1:00p breakout → 2:15p general · Out by 4pm" data-es="⚑ 10% descuento · Muros: 10:30a → 12:00p almuerzo → 1:00p → 2:15p sesión · Salida 4pm">⚑ 10% F&amp;B discount · Airwall: 10:30a breakout → 12:00p lunch → 1:00p breakout → 2:15p general · Out by 4pm</div>
+        <div class="allergy" data-en="⚠ LABEL ALL: GF · Vegetarian · Shellfish/Mango Allergy · Seafood Intolerance · Pork · Keto" data-es="⚠ ETIQUETAR TODO: Sin Gluten · Vegetariano · Alergia Mariscos/Mango · Cerdo · Keto">⚠ LABEL ALL: GF · Vegetarian · Shellfish/Mango Allergy · Seafood Intolerance · Pork · Keto</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Eloisa Fuentes</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose AB · 2 Podiums · Crescent Rounds · 8a–5p (out by 4p)" data-es="Primrose AB · 2 Podios · Mesas Creciente · 8a–5p (sale a las 4p)">Primrose AB · 2 Podiums · Crescent Rounds · 8a–5p (out by 4p)</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Buttercup = private use — do not enter" data-es="Buttercup = uso privado — no entrar">Buttercup = private use — do not enter</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose D · 9 Crescent Rounds of 7 · 8a–5p (out by 4p)" data-es="Primrose D · 9 Mesas Creciente de 7 · 8a–5p (sale 4p)">Primrose D · 9 Crescent Rounds of 7 · 8a–5p (out by 4p)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Verbena = breakout (no F&amp;B) · Buttercup = private — do not enter" data-es="Verbena = sala de descanso (sin F&amp;B) · Buttercup = privado — no entrar">Verbena = breakout (no F&amp;B) · Buttercup = private — do not enter</span></div>
     </div>
   </div>
 
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--amber)">
-      <div class="card-group" data-en="Career Strategies — Presidential Suite Drop" data-es="Career Strategies — Entrega a Suite Presidencial">Career Strategies — Presidential Suite Drop</div>
+      <div class="card-group" data-en="Career Strategies — Presidential Suite Drop" data-es="Career Strategies — Entrega Suite Presidencial">Career Strategies — Presidential Suite Drop</div>
       <div class="card-badges">
         <span class="badge badge-mgr" data-en="MGR: Malaika Goldsmith" data-es="MGR: Malaika Goldsmith">MGR: Malaika Goldsmith</span>
         <span class="badge badge-ic" data-en="IC: Laura Mercado" data-es="CI: Laura Mercado">IC: Laura Mercado</span>
-        <span class="badge badge-flag" data-en="SUITE DROP" data-es="ENTREGA A SUITE">SUITE DROP</span>
+        <span class="badge badge-flag" data-en="SUITE DROP" data-es="ENTREGA SUITE">SUITE DROP</span>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time"><span data-en="By" data-es="Para las">By</span><br>9:45 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Break Drop" data-es="Entrega Descanso">Break Drop</span><span class="room-pill" data-en="Presidential Suite" data-es="Suite Presidencial">Presidential Suite</span></div>
-        <div class="svc-menu" data-en="(14) Bottled Waters · (10) Assorted Pepsi (6 diet / 4 regular) · (1 doz) Assorted Cookies · (7) White Cheddar Popcorn" data-es="(14) Aguas Embotelladas · (10) Pepsi Variados (6 diet / 4 regular) · (1 doc) Galletas Variadas · (7) Palomitas de Queso">(14) Bottled Waters · (10) Assorted Pepsi (6 diet / 4 regular) · (1 doz) Assorted Cookies · (7) White Cheddar Popcorn</div>
-        <div class="note" data-en="⚑ Must be in room BY 9:45a — group will be at breakfast just before" data-es="⚑ Debe estar en la habitación ANTES de las 9:45a — el grupo estará en desayuno justo antes">⚑ Must be in room BY 9:45a — group will be at breakfast just before</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Break Drop" data-es="Entrega Descanso">Break Drop</span><span class="room-pill" data-en="Presidential Suite" data-es="Suite Presidencial">Presidential Suite</span><span class="gtd-pill">7 guests</span></div>
+        <div class="svc-menu" data-en="(14) Bottled Waters · (10) Assorted Pepsi (6 diet/4 reg) · (1 doz) Assorted Cookies · (7) White Cheddar Popcorn" data-es="(14) Aguas · (10) Pepsi Variados (6 diet/4 reg) · (1 doc) Galletas Variadas · (7) Palomitas Queso">(14) Bottled Waters · (10) Assorted Pepsi (6 diet/4 reg) · (1 doz) Assorted Cookies · (7) White Cheddar Popcorn</div>
+        <div class="note" data-en="⚑ Must be in room BY 9:45a — group at breakfast just before" data-es="⚑ Debe estar en habitación ANTES de las 9:45a — grupo estará en desayuno">⚑ Must be in room BY 9:45a — group at breakfast just before</div>
       </div>
     </div>
     <div class="card-foot">
@@ -630,24 +350,190 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
   <div class="day-strip">
     <div class="strip-item"><strong>2</strong> <span data-en="F&amp;B touches" data-es="servicios F&amp;B">F&amp;B touches</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Primrose AB · Presidential Suite · Buttercup</strong></div>
-    <div class="strip-item" data-en="⚠ Label all dietary restrictions" data-es="⚠ Etiquetar todas las restricciones dietéticas">⚠ Label all dietary restrictions</div>
+    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Primrose D · Presidential Suite · Verbena/Buttercup (no F&amp;B)</strong></div>
+    <div class="strip-item" data-en="⚠ Label dietary restrictions" data-es="⚠ Etiquetar restricciones dietéticas">⚠ Label dietary restrictions</div>
   </div>
 </div>
 </div>
 
-<!-- ══ JUN 5–12 ══ -->
-<div class="day-section" data-date-start="2026-06-05" data-date-end="2026-06-12">
+<!-- ══ JUN 5–8 ══ -->
+<div class="day-section" data-date-start="2026-06-05" data-date-end="2026-06-08">
 <button class="day-btn nc-dim" onclick="toggleDay(this)">
   <div class="day-dot"></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Fri Jun 5 – Fri Jun 12" data-es="Vie 5 Jun – Vie 12 Jun">Fri Jun 5 – Fri Jun 12</div>
-    <div class="day-name" data-en="Jun 5–12" data-es="Jun 5–12">Jun 5–12</div>
+    <div class="day-dow" data-en="Fri Jun 5 – Mon Jun 8" data-es="Vie 5 Jun – Lun 8 Jun">Fri Jun 5 – Mon Jun 8</div>
+    <div class="day-name" data-en="Jun 5–8" data-es="Jun 5–8">Jun 5–8</div>
     <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
   </div>
   <span class="chevron">▶</span>
 </button>
-<div class="day-body"><div class="empty-day" data-en="No BEO events on file for these dates." data-es="Sin eventos BEO registrados para estas fechas.">No BEO events on file for these dates.</div></div>
+<div class="day-body"><div class="empty-day" data-en="No BEO events on file for these dates." data-es="Sin eventos BEO para estas fechas.">No BEO events on file for these dates.</div></div>
+</div>
+
+<!-- ══ TUE JUN 9 ══ -->
+<div class="day-section" data-date="2026-06-09">
+<button class="day-btn nc-green" onclick="toggleDay(this)">
+  <div class="day-dot"></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="Tuesday" data-es="Martes">Tuesday</div>
+    <div class="day-name">June 9</div>
+    <div class="day-summary" data-en="Longines Recruitment · VAST Data board mtg" data-es="Longines Reclutamiento · reunión VAST Data">Longines Recruitment · VAST Data board mtg</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group">Longines Recruitment Blitz — Swatch Group US</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa Barrera" data-es="MGR: Lisa Barrera">MGR: Lisa Barrera</span>
+        <span class="badge badge-ic" data-en="IC: Lonia Zylberman" data-es="CI: Lonia Zylberman">IC: Lonia Zylberman</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Almuerzo">Lunch</span><span class="room-pill">Bluebell</span><span class="gtd-pill">GTD 3</span></div>
+        <div class="svc-menu" data-en="Conference Dining — (1) Classic Caesar VG $19 · (1) Corinne Cobb GF $22 · (1) Wagyu Cheeseburger $25 · (1) Toasted Grilled Cheese VG $22 · (1) Grilled Chicken Club $22" data-es="Comida de Conferencia — (1) César Clásico VG $19 · (1) Corinne Cobb GF $22 · (1) Hamburguesa Wagyu $25 · (1) Grilled Cheese VG $22 · (1) Club de Pollo $22">Conference Dining — (1) Classic Caesar VG $19 · (1) Corinne Cobb GF $22 · (1) Wagyu Cheeseburger $25 · (1) Toasted Grilled Cheese VG $22 · (1) Grilled Chicken Club $22</div>
+        <div class="note" data-en="⚑ Beverages on consumption — Pepsi $7 · Water $7 · Sparkling $8 · F&amp;B min $200" data-es="⚑ Bebidas al consumo — Pepsi $7 · Agua $7 · Mineral $8 · Mínimo F&amp;B $200">⚑ Beverages on consumption — Pepsi $7 · Water $7 · Sparkling $8 · F&amp;B min $200</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Lonia Zylberman</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell · Conference · 8:30a–5:30p" data-es="Bluebell · Conferencia · 8:30a–5:30p">Bluebell · Conference · 8:30a–5:30p</span></div>
+    </div>
+  </div>
+
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--amber)">
+      <div class="card-group">VAST FSI — Board Meeting</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa Barrera" data-es="MGR: Lisa Barrera">MGR: Lisa Barrera</span>
+        <span class="badge badge-ic" data-en="IC: Jennifer Azzolina" data-es="CI: Jennifer Azzolina">IC: Jennifer Azzolina</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-brk" data-en="Cont. Bev" data-es="Beb. Cont.">Cont. Bev</span><span class="room-pill">Camellia A</span><span class="gtd-pill">GTD 18</span></div>
+        <div class="svc-menu" data-en="Coffee on consumption ($135/gal) · Plant-based milk alternatives · Pepsi products · Bottled water — on consumption" data-es="Café al consumo ($135/galón) · Leches de origen vegetal · Pepsi · Agua — al consumo">Coffee on consumption ($135/gal) · Plant-based milk alternatives · Pepsi products · Bottled water — on consumption</div>
+        <div class="note" data-en="⚑ F&amp;B min $1,250 · U-Shape 3 per table" data-es="⚑ Mínimo F&amp;B $1,250 · U-Shape 3 por mesa">⚑ F&amp;B min $1,250 · U-Shape 3 per table</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Jennifer Azzolina</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia A · U-Shape · 12:00–5:00p" data-es="Camellia A · U-Shape · 12:00–5:00p">Camellia A · U-Shape · 12:00–5:00p</span></div>
+    </div>
+  </div>
+
+  <div class="day-strip">
+    <div class="strip-item"><strong>2</strong> <span data-en="groups" data-es="grupos">groups</span></div>
+    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Bluebell · Camellia A</strong></div>
+    <div class="strip-item" data-en="Note: Intuitive dV5 exhibit in Verbena — no F&amp;B" data-es="Nota: Exhibición Intuitive en Verbena — sin F&amp;B">Note: Intuitive dV5 exhibit in Verbena — no F&amp;B</div>
+  </div>
+</div>
+</div>
+
+<!-- ══ WED JUN 10 ══ -->
+<div class="day-section" data-date="2026-06-10">
+<button class="day-btn nc-blue" onclick="toggleDay(this)">
+  <div class="day-dot"></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="Wednesday" data-es="Miércoles">Wednesday</div>
+    <div class="day-name">June 10</div>
+    <div class="day-summary" data-en="VAST Data Day 2 · breakfast tacos + conference lunch" data-es="VAST Data Día 2 · tacos de desayuno + almuerzo de conferencia">VAST Data Day 2 · breakfast tacos + conference lunch</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--amber)">
+      <div class="card-group">VAST FSI — Board Meeting Day 2</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa Barrera" data-es="MGR: Lisa Barrera">MGR: Lisa Barrera</span>
+        <span class="badge badge-ic" data-en="IC: Jennifer Azzolina" data-es="CI: Jennifer Azzolina">IC: Jennifer Azzolina</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>8:30 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Camellia A</span><span class="gtd-pill">GTD 18</span></div>
+        <div class="svc-menu" data-en="(18) Breakfast Tacos — Bacon, Eggs, Black Beans, Potato, Pepper Jack ($8 ea) · (1 doz) Mini Assorted Croissants ($75/doz)" data-es="(18) Tacos de Desayuno — Tocino, Huevos, Frijoles, Papa, Pepper Jack ($8 c/u) · (1 doc) Mini Croissants ($75/doc)">(18) Breakfast Tacos — Bacon, Eggs, Black Beans, Potato, Pepper Jack ($8 ea) · (1 doz) Mini Assorted Croissants ($75/doz)</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00a–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-brk" data-en="All Day Bev" data-es="Bebidas Todo el Día">All Day Bev</span><span class="room-pill">Camellia A</span></div>
+        <div class="svc-menu" data-en="Coffee on consumption · Plant-based milk · Pepsi products · Bottled Water — on consumption" data-es="Café al consumo · Leches vegetales · Pepsi · Agua — al consumo">Coffee on consumption · Plant-based milk · Pepsi products · Bottled Water — on consumption</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Almuerzo">Lunch</span><span class="room-pill">Camellia A</span><span class="gtd-pill">GTD 18</span></div>
+        <div class="svc-menu" data-en="Conference Dining — Classic Caesar VG $19 · Corinne Cobb GF $22 · Wagyu Cheeseburger $25 · Toasted Grilled Cheese VG $22 · Grilled Chicken Club $22" data-es="Comida de Conferencia — César Clásico VG $19 · Corinne Cobb GF $22 · Hamburguesa Wagyu $25 · Grilled Cheese VG $22 · Club de Pollo $22">Conference Dining — Classic Caesar VG $19 · Corinne Cobb GF $22 · Wagyu Cheeseburger $25 · Toasted Grilled Cheese VG $22 · Grilled Chicken Club $22</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Jennifer Azzolina</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia A · U-Shape · 8a–5p" data-es="Camellia A · U-Shape · 8a–5p">Camellia A · U-Shape · 8a–5p</span></div>
+    </div>
+  </div>
+  <div class="day-strip">
+    <div class="strip-item"><strong>1</strong> <span data-en="group · 18 GTD" data-es="grupo · 18 GTD">group · 18 GTD</span></div>
+    <div class="strip-item"><span data-en="Room:" data-es="Sala:">Room:</span> <strong>Camellia A</strong></div>
+    <div class="strip-item" data-en="Note: Intuitive Verbena load-out 8pm — no F&amp;B" data-es="Nota: Intuitive Verbena salida 8pm — sin F&amp;B">Note: Intuitive Verbena load-out 8pm — no F&amp;B</div>
+  </div>
+</div>
+</div>
+
+<!-- ══ JUN 11 ══ -->
+<div class="day-section" data-date="2026-06-11">
+<button class="day-btn nc-dim" onclick="toggleDay(this)">
+  <div class="day-dot"></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="Thursday" data-es="Jueves">Thursday</div>
+    <div class="day-name">June 11</div>
+    <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body"><div class="empty-day" data-en="No BEO events on file." data-es="Sin eventos BEO.">No BEO events on file.</div></div>
+</div>
+
+<!-- ══ FRI JUN 12 ══ -->
+<div class="day-section" data-date="2026-06-12">
+<button class="day-btn nc-dim" onclick="toggleDay(this)">
+  <div class="day-dot"></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="Friday" data-es="Viernes">Friday</div>
+    <div class="day-name">June 12</div>
+    <div class="day-summary" data-en="JJOA Beautillion Ball — rehearsal only, no F&amp;B" data-es="JJOA Beautillion Ball — solo ensayo, sin F&amp;B">JJOA Beautillion Ball — rehearsal only, no F&amp;B</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--text-4)">
+      <div class="card-group">JJOA — 28th Beautillion Ball — Client Rehearsal</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana Ortega" data-es="MGR: Diana Ortega">MGR: Diana Ortega</span>
+        <span class="badge badge-ic" data-en="IC: Angela Anderson" data-es="CI: Angela Anderson">IC: Angela Anderson</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>10:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="room-pill">Primrose Ballroom</span></div>
+        <div class="svc-menu" data-en="Rehearsal only — no F&amp;B · Stage setup: 12x32 stage in right corner · 21x24 dance floor · (37) Rounds of 10" data-es="Solo ensayo — sin F&amp;B · Escenario: 12x32 esquina derecha · Pista de baile 21x24 · (37) Mesas redondas de 10">Rehearsal only — no F&amp;B · Stage setup: 12x32 stage in right corner · 21x24 dance floor · (37) Rounds of 10</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Angela Anderson</span></div>
+    </div>
+  </div>
+</div>
 </div>
 
 <!-- ══ SAT JUN 13 ══ -->
@@ -657,7 +543,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   <div class="day-text">
     <div class="day-dow" data-en="Saturday" data-es="Sábado">Saturday</div>
     <div class="day-name">June 13</div>
-    <div class="day-summary" data-en="Young Rehearsal Dinner Brunch · Bonnell · Mimosa Bar" data-es="Brunch Ensayo Young · Bonnell · Bar de Mimosas">Young Rehearsal Dinner Brunch · Bonnell · Mimosa Bar</div>
+    <div class="day-summary" data-en="Young Rehearsal Brunch · JJOA Beautillion Ball (400 covers) · Cash Bar" data-es="Brunch Young · JJOA Beautillion Ball (400 cubiertos) · Bar en Efectivo">Young Rehearsal Brunch · JJOA Beautillion Ball (400 covers) · Cash Bar</div>
   </div>
   <span class="chevron">▶</span>
 </button>
@@ -674,34 +560,344 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
       <div class="svc-time">1:30–<br>3:30 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag tag-rec" data-en="Brunch" data-es="Brunch">Brunch</span><span class="room-pill">Bonnell</span><span class="gtd-pill">GTD 28</span></div>
-        <div class="svc-menu" data-en="Premium Brunch $65pp — Family Style: Scrambled Eggs · Bacon or Sausage · Wagyu Skillet · Crab Cake Benedict · Caesar Salad · Chicken Tinga Tacos · Tea, Water &amp; Coffee included. Mimosa Bar — $30/bottle · OJ &amp; Grapefruit · (3) bottles" data-es="Brunch Premium $65pp — Estilo Familiar: Huevos Revueltos · Tocino o Salchicha · Sartén Wagyu · Huevo Benedict con Cangrejo · Ensalada César · Tacos de Tinga · Té, Agua y Café incluidos. Bar de Mimosas — $30/botella · OJ y Toronja · (3) botellas">Premium Brunch $65pp — Family Style: Scrambled Eggs · Bacon or Sausage · Wagyu Skillet · Crab Cake Benedict · Caesar Salad · Chicken Tinga Tacos · Tea, Water &amp; Coffee included. <strong>Mimosa Bar</strong> — $30/bottle · OJ &amp; Grapefruit · (3) bottles</div>
-        <div class="note" data-en="⚑ Conference setup · F&amp;B minimum $1,700 · Room rental $200 · Code: YO6579" data-es="⚑ Montaje de conferencia · Mínimo F&amp;B $1,700 · Renta de sala $200 · Código: YO6579">⚑ Conference setup · F&amp;B minimum $1,700 · Room rental $200 · Code: YO6579</div>
+        <div class="svc-menu" data-en="Standard Brunch $55pp — Family Style: Scrambled Eggs · Bacon or Sausage · Tres Leches French Toast · Benedict (Bacon or Florentine) · Caesar Salad · Chicken Club on TX Toast · Tea, Water &amp; Coffee included · Mimosa Bar $30/bottle (3 bottles) — OJ &amp; Watermelon juice" data-es="Brunch Estándar $55pp — Estilo Familiar: Huevos Revueltos · Tocino o Salchicha · French Toast Tres Leches · Benedict · Ensalada César · Club de Pollo · Té y Café incluidos · Bar de Mimosas $30/botella (3 botellas)">Standard Brunch $55pp — Family Style: Scrambled Eggs · Bacon or Sausage · Tres Leches French Toast · Benedict (Bacon or Florentine) · Caesar Salad · Chicken Club on TX Toast · Tea, Water &amp; Coffee included · <strong>Mimosa Bar $30/bottle (3 bottles)</strong> — OJ &amp; Watermelon juice</div>
+        <div class="note" data-en="⚑ Conference setup · Comp linen black · F&amp;B min $1,700 · Room rental $200 · Code: YO6579 · Group may order additional drinks day-of" data-es="⚑ Montaje conferencia · Mantel negro · Mínimo F&amp;B $1,700 · Renta $200 · Código: YO6579">⚑ Conference setup · Comp linen black · F&amp;B min $1,700 · Room rental $200 · Code: YO6579 · Group may order additional drinks day-of</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Brianna Young</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bonnell · Conference setup" data-es="Bonnell · Montaje de conferencia">Bonnell · Conference setup</span></div>
     </div>
   </div>
+
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--red)">
+      <div class="card-group">JJOA — 28th Beautillion Ball &amp; Fundraiser</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana Ortega" data-es="MGR: Diana Ortega">MGR: Diana Ortega</span>
+        <span class="badge badge-ic" data-en="IC: Angela Anderson" data-es="CI: Angela Anderson">IC: Angela Anderson</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>11:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bar" data-en="Cash Bar" data-es="Bar Efectivo">Cash Bar</span><span class="room-pill">Foyer</span></div>
+        <div class="svc-menu" data-en="Favorite Brands $12 · Wine $14 · Craft Beer $11 · Imported $11 · Domestic $10 · Pepsi $7.20 · (3) Bartenders $250 ea" data-es="Marcas Favoritas $12 · Vino $14 · Cerveza Artesanal $11 · Importada $11 · Doméstica $10 · Pepsi $7.20 · (3) Bartenders $250 c/u">Favorite Brands $12 · Wine $14 · Craft Beer $11 · Imported $11 · Domestic $10 · Pepsi $7.20 · (3) Bartenders $250 ea</div>
+        <div class="note" data-en="⚑ Lantana = Girls Dressing Room (no F&amp;B) · Primrose Ballroom set up 2pm–6pm before event" data-es="⚑ Lantana = Cuarto de Vestuario (sin F&amp;B) · Primrose Ballroom montaje 2pm–6pm antes del evento">⚑ Lantana = Girls Dressing Room (no F&amp;B) · Primrose Ballroom set up 2pm–6pm before event</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:00–<br>11:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Plated Dinner" data-es="Cena Servida">Plated Dinner</span><span class="room-pill">Primrose Ballroom</span><span class="gtd-pill">GTD 400</span></div>
+        <div class="svc-menu" data-en="Dual Entrée $71.10/pp — Baby Spinach Salad (Fennel, Orange, Cranberries, Cashews, Fig Balsamic) · Herb Seared Statler Chicken Breast &amp; Roasted Garlic Rubbed Salmon · Sundried Tomato &amp; Fontina Smashed Potato · Seasonal Vegetable · VEG: Cauliflower Steak · DESSERT: Apple Tart · Artisan Rolls, Butter, Coffee/Tea" data-es="Doble Entrée $71.10/pp — Ensalada Espinaca Baby · Pollo Statler y Salmón al Ajo · Papas Trituradas · Vegetal de Temporada · VEG: Bistec de Coliflor · POSTRE: Tarta de Manzana · Roles Artesanales, Mantequilla, Café/Té">Dual Entrée $71.10/pp — Baby Spinach Salad (Fennel, Orange, Cranberries, Cashews, Fig Balsamic) · Herb Seared Statler Chicken Breast &amp; Roasted Garlic Rubbed Salmon · Sundried Tomato &amp; Fontina Smashed Potato · Seasonal Vegetable · <strong>VEG: Cauliflower Steak</strong> · DESSERT: Apple Tart</div>
+        <div class="note" data-en="⚑ 10% F&amp;B discount · Beautillion will eat on stage — set 6ft tables with silverware, glassware, napkins · Dietary restrictions TBD" data-es="⚑ 10% descuento · Beautillion comerá en escenario — montar mesas de 6ft con cubiertos, vasos, servilletas · Restricciones TBD">⚑ 10% F&amp;B discount · Beautillion will eat on stage — set 6ft tables with silverware, glassware, napkins · Dietary restrictions TBD</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Angela Anderson</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Primrose Ballroom · Foyer (bar) · Lantana (dressing room)" data-es="Primrose Ballroom · Foyer (bar) · Lantana (vestuario)">Primrose Ballroom · Foyer (bar) · Lantana (dressing room)</span></div>
+    </div>
+  </div>
+
   <div class="day-strip">
-    <div class="strip-item"><strong>1</strong> <span data-en="group · 28 GTD" data-es="grupo · 28 GTD">group · 28 GTD</span></div>
-    <div class="strip-item"><span data-en="Room:" data-es="Sala:">Room:</span> <strong>Bonnell</strong></div>
+    <div class="strip-item"><strong>2</strong> <span data-en="groups" data-es="grupos">groups</span></div>
+    <div class="strip-item"><span data-en="BIG DAY —" data-es="DÍA GRANDE —">BIG DAY —</span> <strong>400 covers + cash bar + brunch</strong></div>
   </div>
 </div>
 </div>
 
-<!-- ══ JUN 14 ══ -->
-<div class="day-section" data-date="2026-06-14">
+<!-- ══ JUN 14–15 ══ -->
+<div class="day-section" data-date-start="2026-06-14" data-date-end="2026-06-15">
 <button class="day-btn nc-dim" onclick="toggleDay(this)">
   <div class="day-dot"></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Sunday" data-es="Domingo">Sunday</div>
-    <div class="day-name">June 14</div>
+    <div class="day-dow" data-en="Sun Jun 14 – Mon Jun 15" data-es="Dom 14 Jun – Lun 15 Jun">Sun Jun 14 – Mon Jun 15</div>
+    <div class="day-name" data-en="Jun 14–15" data-es="Jun 14–15">Jun 14–15</div>
     <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
   </div>
   <span class="chevron">▶</span>
 </button>
-<div class="day-body"><div class="empty-day" data-en="No BEO events on file for this date." data-es="Sin eventos BEO registrados para esta fecha.">No BEO events on file for this date.</div></div>
+<div class="day-body"><div class="empty-day" data-en="No BEO events on file for these dates." data-es="Sin eventos BEO para estas fechas.">No BEO events on file for these dates.</div></div>
+</div>
+
+<!-- ══ TUE JUN 16 ══ -->
+<div class="day-section" data-date="2026-06-16">
+<button class="day-btn nc-amber" onclick="toggleDay(this)">
+  <div class="day-dot"></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="Tuesday" data-es="Martes">Tuesday</div>
+    <div class="day-name">June 16</div>
+    <div class="day-summary" data-en="Region 13 SGS Summit — breakfast, lunch, cocktail reception, hors d'oeuvres" data-es="Region 13 SGS Summit — desayuno, almuerzo, recepción de cócteles">Region 13 SGS Summit — breakfast, lunch, cocktail reception, hors d'oeuvres</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--amber)">
+      <div class="card-group">Region 13 Education Service Center — SGS Summit</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana / S. Macari" data-es="MGR: Diana / S. Macari">MGR: Diana / S. Macari</span>
+        <span class="badge badge-ic" data-en="IC: April Briscoe" data-es="CI: April Briscoe">IC: April Briscoe</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 50</span></div>
+        <div class="svc-menu" data-en="Early Riser Buffet + (150) Chef Attended Omelet Station $27/pp · Set in Primrose AB Foyer" data-es="Buffet Madrugador + (150) Estación de Omelets con Chef $27/pp · Montar en Foyer Primrose AB">Early Riser Buffet + (150) Chef Attended Omelet Station $27/pp · Set in Primrose AB Foyer</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00a–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-brk" data-en="All Day Bev" data-es="Bebidas Todo el Día">All Day Bev</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 50</span></div>
+        <div class="svc-menu" data-en="Coffee · Decaf · Hot Water &amp; Tazo Teas · 2% Milk · Cream · Soy Milk · Honey · Lemon · Pepsi products · Bottled Water on consumption" data-es="Café · Descafeinado · Agua Caliente &amp; Tés Tazo · Leche 2% · Crema · Leche de Soya · Miel · Pepsi · Agua al consumo">Coffee · Decaf · Hot Water &amp; Tazo Teas · 2% Milk · Cream · Soy Milk · Honey · Lemon · Pepsi products · Bottled Water on consumption</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Buffet Almuerzo">Lunch Buffet</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 175</span></div>
+        <div class="svc-menu" data-en="Hill Country Spa Day — Arugula Berry Salad · Spinach Watercress Beet Salad · Herb Petite Chicken w/ Tomato Caper · Roasted Salmon · Roasted Asparagus · Sweet Potato Hash · Macarons · Chocolate Mousse Shots" data-es="Hill Country Spa Day — Ensalada Arúgula y Berries · Ensalada Espinaca y Remolacha · Pollo con Alcaparra y Tomate · Salmón Rostizado · Espárragos · Hash de Camote · Macarons · Mousse de Chocolate">Hill Country Spa Day — Arugula Berry Salad · Spinach Watercress Beet Salad · Herb Petite Chicken w/ Tomato Caper · Roasted Salmon · Roasted Asparagus · Sweet Potato Hash · Macarons · Chocolate Mousse Shots</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">3:45–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Recepción">Reception</span><span class="tag tag-bar" data-en="Cash Bar" data-es="Bar Efectivo">Cash Bar</span><span class="room-pill">Foyer</span></div>
+        <div class="svc-menu" data-en="Appreciated Brands Bar $14 · Craft Beer $11 · Imported $11 · Domestic $10 · Wine $14 · (1) Bartender $250 · Hors d'Oeuvres: (50) Fig &amp; Goat Cheese Flatbread · (50) Crispy Chicken Potsticker · (50) Gulf Coast Crab Cake · (50) Mac &amp; Cheese Bites — all $9/pc" data-es="Bar Marcas Apreciadas $14 · Cerveza Artesanal $11 · Importada $11 · Doméstica $10 · Vino $14 · (1) Bartender $250 · Aperitivos: (50) Flatbread de Higo y Queso de Cabra · (50) Potsticker · (50) Pastel de Cangrejo · (50) Mac &amp; Cheese — todos $9/pieza">Appreciated Brands Bar $14 · Craft Beer $11 · Imported $11 · Domestic $10 · Wine $14 · (1) Bartender $250 · <strong>Hors d'Oeuvres:</strong> (50) Fig &amp; Goat Cheese Flatbread · (50) Crispy Chicken Potsticker · (50) Gulf Coast Crab Cake · (50) Mac &amp; Cheese Bites — all $9/pc</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">April Briscoe</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Primrose CD (general session) · Primrose AB (pre-summit) · Foyer (F&amp;B all day)" data-es="Primrose CD (sesión general) · Primrose AB (pre-summit) · Foyer (F&amp;B todo el día)">Primrose CD (general session) · Primrose AB (pre-summit) · Foyer (F&amp;B all day)</span></div>
+    </div>
+  </div>
+  <div class="day-strip">
+    <div class="strip-item"><strong>1</strong> <span data-en="group · 4 F&amp;B touches" data-es="grupo · 4 servicios F&amp;B">group · 4 F&amp;B touches</span></div>
+    <div class="strip-item"><span data-en="Full day event — bkf through reception" data-es="Evento día completo — desayuno a recepción">Full day event — bkf through reception</span></div>
+  </div>
+</div>
+</div>
+
+<!-- ══ WED JUN 17 ══ -->
+<div class="day-section" data-date="2026-06-17">
+<button class="day-btn nc-amber" onclick="toggleDay(this)">
+  <div class="day-dot"></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="Wednesday" data-es="Miércoles">Wednesday</div>
+    <div class="day-name">June 17</div>
+    <div class="day-summary" data-en="Region 13 Day 2 · breakfast + box lunch · AUSDW Quarter 2 Rally" data-es="Region 13 Día 2 · desayuno + almuerzo en caja · AUSDW Rally Q2">Region 13 Day 2 · breakfast + box lunch · AUSDW Quarter 2 Rally</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--amber)">
+      <div class="card-group">Region 13 SGS Summit — Day 2</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana / S. Macari" data-es="MGR: Diana / S. Macari">MGR: Diana / S. Macari</span>
+        <span class="badge badge-ic" data-en="IC: April Briscoe" data-es="CI: April Briscoe">IC: April Briscoe</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 150</span></div>
+        <div class="svc-menu" data-en="Early Riser Buffet + (150) Chef Attended Omelet Station $27/pp" data-es="Buffet Madrugador + (150) Estación de Omelets con Chef $27/pp">Early Riser Buffet + (150) Chef Attended Omelet Station $27/pp</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Box Lunch" data-es="Almuerzo en Caja">Box Lunch</span><span class="room-pill">Foyer</span><span class="gtd-pill">100 covers</span></div>
+        <div class="svc-menu" data-en="Take Away Lunch $53.10/pp — (45) Chicken Wrap · (45) Roast Beef Sandwich on Sourdough · (10) Vegan Mediterranean Wrap · All include: Quinoa Salad, Apple, Chips &amp; Pepsi" data-es="Almuerzo Para Llevar $53.10/pp — (45) Wrap de Pollo · (45) Sándwich de Roast Beef en Sourdough · (10) Wrap Mediterráneo Vegano · Todos incluyen: Ensalada Quinoa, Manzana, Papitas y Pepsi">Take Away Lunch $53.10/pp — (45) Chicken Wrap · (45) Roast Beef Sandwich on Sourdough · (10) Vegan Mediterranean Wrap · All include: Quinoa Salad, Apple, Chips &amp; Pepsi</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">April Briscoe</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose CD (general session) · Foyer (F&amp;B)" data-es="Primrose CD (sesión general) · Foyer (F&amp;B)">Primrose CD (general session) · Foyer (F&amp;B)</span></div>
+    </div>
+  </div>
+
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--text-4)">
+      <div class="card-group" data-en="AUSDW In-House — Quarter 2 Rally" data-es="AUSDW En Casa — Rally Trimestre 2">AUSDW In-House — Quarter 2 Rally</div>
+      <div class="card-badges"><span class="badge badge-ic" data-en="IC: Mike Brewster" data-es="CI: Mike Brewster">IC: Mike Brewster</span></div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">3:00–<br>4:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-brk" data-en="Snacks" data-es="Bocadillos">Snacks</span><span class="room-pill">Lantana</span><span class="gtd-pill">50 guests</span></div>
+        <div class="svc-menu" data-en="(50) Bottled Water · (50) Chicken Tenders, Wedged Fries, Nachos w/ Chicken Topping $6/pp · (50) Assorted Pepsi $0.50 ea · Rounds of 8" data-es="(50) Aguas · (50) Tenders de Pollo, Papas, Nachos con Pollo $6/pp · (50) Pepsi Variados $0.50 c/u · Mesas redondas de 8">(50) Bottled Water · (50) Chicken Tenders, Wedged Fries, Nachos w/ Chicken Topping $6/pp · (50) Assorted Pepsi $0.50 ea · Rounds of 8</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mike Brewster</span></div>
+    </div>
+  </div>
+
+  <div class="day-strip">
+    <div class="strip-item"><strong>2</strong> <span data-en="groups" data-es="grupos">groups</span></div>
+    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Primrose CD · Foyer · Lantana</strong></div>
+  </div>
+</div>
+</div>
+
+<!-- ══ JUN 18–21 ══ -->
+<div class="day-section" data-date-start="2026-06-18" data-date-end="2026-06-21">
+<button class="day-btn nc-dim" onclick="toggleDay(this)">
+  <div class="day-dot"></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="Thu Jun 18 – Sun Jun 21" data-es="Jue 18 Jun – Dom 21 Jun">Thu Jun 18 – Sun Jun 21</div>
+    <div class="day-name" data-en="Jun 18–21" data-es="Jun 18–21">Jun 18–21</div>
+    <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body"><div class="empty-day" data-en="No BEO events on file for these dates." data-es="Sin eventos BEO para estas fechas.">No BEO events on file for these dates.</div></div>
+</div>
+
+<!-- ══ MON JUN 22 ══ -->
+<div class="day-section" data-date="2026-06-22">
+<button class="day-btn nc-dim" onclick="toggleDay(this)">
+  <div class="day-dot"></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="Monday" data-es="Lunes">Monday</div>
+    <div class="day-name">June 22</div>
+    <div class="day-summary" data-en="Simon Property Group — setup day, water only" data-es="Simon Property Group — día de setup, solo agua">Simon Property Group — setup day, water only</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--text-4)">
+      <div class="card-group">Simon Property Group — New Employee Training Setup</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana Ortega" data-es="MGR: Diana Ortega">MGR: Diana Ortega</span>
+        <span class="badge badge-ic" data-en="IC: Melissa Palencia" data-es="CI: Melissa Palencia">IC: Melissa Palencia</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="room-pill">Camellia</span><span class="gtd-pill">10 guests</span></div>
+        <div class="svc-menu" data-en="Bottled Water on consumption · Schoolroom setup · Pads &amp; Pens in back of room" data-es="Agua Embotellada al consumo · Montaje de aula · Blocs y bolígrafos en la parte trasera">Bottled Water on consumption · Schoolroom setup · Pads &amp; Pens in back of room</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Melissa Palencia / Christine Walls</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══ TUE JUN 23 ══ -->
+<div class="day-section" data-date="2026-06-23">
+<button class="day-btn nc-green" onclick="toggleDay(this)">
+  <div class="day-dot"></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="Tuesday" data-es="Martes">Tuesday</div>
+    <div class="day-name">June 23</div>
+    <div class="day-summary" data-en="Simon Property Group — full day · Austin BBQ lunch · PM break" data-es="Simon Property Group — día completo · almuerzo Austin BBQ · descanso PM">Simon Property Group — full day · Austin BBQ lunch · PM break</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--green)">
+      <div class="card-group">Simon Property Group — New Employee Training Day 1</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana Ortega" data-es="MGR: Diana Ortega">MGR: Diana Ortega</span>
+        <span class="badge badge-ic" data-en="IC: Melissa Palencia" data-es="CI: Melissa Palencia">IC: Melissa Palencia</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:30–<br>9:30 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Continental Bkf" data-es="Desayuno Continental">Continental Bkf</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 31</span></div>
+        <div class="svc-menu" data-en="Domain Continental $40/pp — Juices, Fruit, Cereals, Hard Boiled Eggs, Yogurts, Coffee Cakes, Coffee/Tea · (31) English Muffin Sandwich $8 ea — Egg, Ham, Cheddar" data-es="Continental Domain $40/pp — Jugos, Fruta, Cereales, Huevos Duros, Yogurts, Pasteles de Café, Café/Té · (31) Sándwich de Muffin Inglés $8 c/u — Huevo, Jamón, Cheddar">Domain Continental $40/pp — Juices, Fruit, Cereals, Hard Boiled Eggs, Yogurts, Coffee Cakes, Coffee/Tea · (31) English Muffin Sandwich $8 ea — Egg, Ham, Cheddar</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Buffet Almuerzo">Lunch Buffet</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 31</span></div>
+        <div class="svc-menu" data-en="Austin BBQ $68/pp — Iceberg Salad · German Potato Salad · Kale Broccoli Slaw · Gochujang BBQ Chicken Thighs · 12hr Smoked Brisket · Hawaiian Rolls · Baked Beans · Green Chili Mac · Cornbread · Apple Skillet Crisp" data-es="Austin BBQ $68/pp — Ensalada Iceberg · Ensalada Papa Alemana · Col Rizada con Brócoli · Pollo BBQ Gochujang · Brisket Ahumado 12h · Rolls Hawaianos · Frijoles · Mac Chile Verde · Pan de Maíz · Crisp de Manzana">Austin BBQ $68/pp — Iceberg Salad · German Potato Salad · Kale Broccoli Slaw · Gochujang BBQ Chicken Thighs · 12hr Smoked Brisket · Hawaiian Rolls · Baked Beans · Green Chili Mac · Cornbread · Apple Skillet Crisp</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">2:00–<br>2:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-brk" data-en="PM Break" data-es="Descanso PM">PM Break</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 31</span></div>
+        <div class="svc-menu" data-en="(31) Warm Soft Pretzel Rods w/ Creole Mustard &amp; Queso $10/pp · (31) Fresh Garden Vegetable Crudités Shooters $7/pp · (2 doz) Assorted Cookies $75/doz · (1 doz) Brownies + (1 doz) Blondies $75/doz" data-es="(31) Pretzel Rods con Mostaza Criolla y Queso $10/pp · (31) Crudités de Vegetales $7/pp · (2 doc) Galletas $75/doc · (1 doc) Brownies + (1 doc) Blondies $75/doc">(31) Warm Soft Pretzel Rods w/ Creole Mustard &amp; Queso $10/pp · (31) Vegetable Crudités Shooters $7/pp · (2 doz) Assorted Cookies · (1 doz) Brownies + (1 doz) Blondies</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Melissa Palencia / Christine Walls</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia · Existing set · 8:30a–5:00p" data-es="Camellia · Montaje existente · 8:30a–5:00p">Camellia · Existing set · 8:30a–5:00p</span></div>
+    </div>
+  </div>
+  <div class="day-strip">
+    <div class="strip-item"><strong>1</strong> <span data-en="group · 31 GTD" data-es="grupo · 31 GTD">group · 31 GTD</span></div>
+    <div class="strip-item"><span data-en="Room:" data-es="Sala:">Room:</span> <strong>Camellia</strong></div>
+  </div>
+</div>
+</div>
+
+<!-- ══ WED JUN 24 ══ -->
+<div class="day-section" data-date="2026-06-24">
+<button class="day-btn nc-blue" onclick="toggleDay(this)">
+  <div class="day-dot"></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="Wednesday" data-es="Miércoles">Wednesday</div>
+    <div class="day-name">June 24</div>
+    <div class="day-summary" data-en="Simon Property Group Day 2 — half day · continental breakfast" data-es="Simon Property Group Día 2 — medio día · desayuno continental">Simon Property Group Day 2 — half day · continental breakfast</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group">Simon Property Group — New Employee Training Day 2</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana Ortega" data-es="MGR: Diana Ortega">MGR: Diana Ortega</span>
+        <span class="badge badge-ic" data-en="IC: Melissa Palencia" data-es="CI: Melissa Palencia">IC: Melissa Palencia</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:30–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Continental Bkf" data-es="Desayuno Continental">Continental Bkf</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 31</span></div>
+        <div class="svc-menu" data-en="Domain Continental $40/pp — Juices, Fruit, Cereals, Hard Boiled Eggs, Yogurts, Coffee Cakes, Coffee/Tea · (31) Breakfast Tacos — Choice of Chorizo, Sausage or Bacon $8 ea" data-es="Continental Domain $40/pp — Jugos, Fruta, Cereales, Huevos Duros, Yogurts, Café/Té · (31) Tacos de Desayuno — Chorizo, Salchicha o Tocino $8 c/u">Domain Continental $40/pp — Juices, Fruit, Cereals, Hard Boiled Eggs, Yogurts, Coffee Cakes, Coffee/Tea · (31) Breakfast Tacos — Choice of Chorizo, Sausage or Bacon $8 ea</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Melissa Palencia / Christine Walls</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia · Existing set · 8:30a–12:00p · Half day" data-es="Camellia · Montaje existente · 8:30a–12:00p · Medio día">Camellia · Existing set · 8:30a–12:00p · Half day</span></div>
+    </div>
+  </div>
+
+  <div class="event-card">
+    <div class="card-head" style="border-left:3px solid var(--text-4)">
+      <div class="card-group" data-en="AUSDW In-House — June Associate Engagement" data-es="AUSDW En Casa — Compromiso de Asociados Junio">AUSDW In-House — June Associate Engagement</div>
+      <div class="card-badges"><span class="badge badge-ic" data-en="IC: Mike Brewster" data-es="CI: Mike Brewster">IC: Mike Brewster</span></div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">3:00–<br>4:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="room-pill">Primrose C</span><span class="gtd-pill">50 guests</span></div>
+        <div class="svc-menu" data-en="No F&amp;B required · Rounds of 10" data-es="Sin F&amp;B · Mesas redondas de 10">No F&amp;B required · Rounds of 10</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-strip">
+    <div class="strip-item"><strong>2</strong> <span data-en="events" data-es="eventos">events</span></div>
+    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Camellia · Primrose C</strong></div>
+    <div class="strip-item" data-en="⚑ Simon half day — out by noon" data-es="⚑ Simon medio día — sale al mediodía">⚑ Simon half day — out by noon</div>
+  </div>
+</div>
 </div>
 
 </div><!-- /days-list -->
@@ -711,26 +907,21 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
     document.documentElement.setAttribute('data-lang',l);
     document.getElementById('len').classList.toggle('active',l==='en');
     document.getElementById('les').classList.toggle('active',l==='es');
-    document.querySelectorAll('[data-en]').forEach(el=>{
-      el.innerHTML = el.getAttribute('data-'+l);
-    });
+    document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
     localStorage.setItem('bb-lang',l);
   }
-
   function setTheme(t){
     document.documentElement.setAttribute('data-theme',t);
     document.getElementById('tdk').classList.toggle('active',t==='dark');
     document.getElementById('tlt').classList.toggle('active',t==='light');
     localStorage.setItem('bb-theme',t);
   }
-
   (function(){
     const n=new Date();
     const mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     document.getElementById('printed-date').textContent=
       ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][n.getDay()]+' '+mo[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
   })();
-
   function toggleDay(btn){
     const body=btn.nextElementSibling;
     const open=body.classList.contains('is-open');
@@ -745,7 +936,6 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
     document.querySelectorAll('.day-body').forEach(b=>b.classList.remove('is-open'));
     document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('is-open'));
   }
-
   (function(){
     const n=new Date();
     const pad=v=>String(v).padStart(2,'0');
@@ -776,7 +966,6 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
     });
     if(matched) setTimeout(()=>matched.scrollIntoView({behavior:'smooth',block:'start'}),150);
   })();
-
   setTheme(localStorage.getItem('bb-theme')||'dark');
   setLang(localStorage.getItem('bb-lang')||'en');
 </script>
