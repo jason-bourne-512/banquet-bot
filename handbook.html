@@ -34,8 +34,9 @@
   --tog-bg:#e4dfd4; --tog-border:rgba(0,0,0,0.08); --tog-act:rgba(0,0,0,0.05);
   --divider:rgba(0,0,0,0.05); --stripe:rgba(0,0,0,0.010);
 }
-body { background:var(--bg); ... min-height:100vh; width:100%; overscroll-behavior:none; }
+body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif; min-height:100vh; width:100%; overscroll-behavior:none; }
 .page-wrap { max-width:480px; margin:0 auto; }
+@media (orientation:landscape){ .page-wrap { max-width:100%; } }
 /* HEADER */
 .header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--header-bg); backdrop-filter:blur(14px); z-index:20; gap:8px; }
 .brand { display:flex; align-items:center; gap:9px; flex-shrink:0; text-decoration:none; }
@@ -102,7 +103,7 @@ body { background:var(--bg); ... min-height:100vh; width:100%; overscroll-behavi
 <div class="page-wrap">
 
 <header class="header">
-  <a class="brand" href="splash.html">
+  <a class="brand" href="index.html">
     <div class="brand-icon">BB</div>
     <div>
       <div class="brand-name">Banquet Bot</div>
