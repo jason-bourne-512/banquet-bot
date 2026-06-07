@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <title>Banquet Bot</title>
-<style>html{background:#09090c!important}body{background:#09090c}</style>
+<style>html,html::before{background:#09090c!important;margin:0}body{background:#09090c}html::before{content:"";position:fixed;inset:0;background:#09090c;z-index:-1}</style>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -413,8 +413,22 @@ body {
   setTheme(localStorage.getItem('bb-theme')||'dark');
   setLang(localStorage.getItem('bb-lang')||'en');
 
-  /* position after fonts load for accurate measurements */
-  if(document.fonts){document.fonts.ready.then(positionBox);}else{setTimeout(positionBox,300);}
+  /* position after fonts + layout settle */
+  function schedulePosition(){
+    if(document.fonts){
+      document.fonts.ready.then(function(){
+        requestAnimationFrame(function(){
+          positionBox();
+          setTimeout(positionBox,150);
+          setTimeout(positionBox,400);
+        });
+      });
+    } else {
+      setTimeout(positionBox,300);
+      setTimeout(positionBox,600);
+    }
+  }
+  schedulePosition();
   window.addEventListener('resize',positionBox);
   document.getElementById('tblOuter').addEventListener('scroll',positionBox);
 </script>
