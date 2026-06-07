@@ -96,21 +96,14 @@ body {
   color: var(--text-1);
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
-  max-width: 430px;
-  margin: 0 auto;
+  width: 100%;
   transition: background 0.2s, color 0.2s;
   overscroll-behavior: none;
-  /* ensure no white shows outside body on Safari back-swipe */
-  position: relative;
 }
-/* covers the full viewport background so Safari overscroll shows dark not white */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: var(--bg);
-  z-index: -1;
-  pointer-events: none;
+/* inner wrapper constrains content width */
+.page-wrap {
+  max-width: 430px;
+  margin: 0 auto;
 }
 
 /* ── HEADER ── */
@@ -261,6 +254,7 @@ body::before {
 <body>
 
 <!-- HEADER -->
+<div class="page-wrap">
 <header class="header">
   <div class="brand">
     <div class="brand-icon">BB</div>
@@ -384,6 +378,7 @@ body::before {
       </table>
     </div>
   </div>
+</div>
 </div>
 
 <script>
