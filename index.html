@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-lang="en">
+<html lang="en" data-theme="dark" data-lang="en" style="background:#09090c">
 <head>
 <meta charset="UTF-8">
-<script>(function(){var t=localStorage.getItem('bb-theme')||'dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.background=t==='dark'?'#09090c':'#f0ece3';})()</script>
+<script>(function(){var t=localStorage.getItem('bb-theme')||'dark';var bg=t==='dark'?'#09090c':'#f0ece3';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.background=bg;document.documentElement.style.setProperty('background-color',bg,'important');})()</script>
 <style>html,body{background:#09090c;overscroll-behavior:none}[data-theme="light"] html,[data-theme="light"] body{background:#f0ece3!important}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <meta name="theme-color" content="#09090c">
@@ -91,8 +91,12 @@
 }
 
 html {
-  background: var(--bg);
+  background: #09090c;
   overscroll-behavior: none;
+  min-height: 100vh;
+}
+[data-theme="light"] html {
+  background: #f0ece3;
 }
 body {
   background: var(--bg);
@@ -109,10 +113,11 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: var(--bg);
+  background: #09090c;
   z-index: -1;
   pointer-events: none;
 }
+[data-theme="light"] body::before { background: #f0ece3; }
 
 /* ── HEADER ── */
 .header {
