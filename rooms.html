@@ -1,635 +1,626 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Room Specs — Banquet Bot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>Room Specs · Banquet Bot</title>
+<style>html,body{background:#09090c}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-:root {
-  --bg:#09090c; --bg-card:#111316; --bg-active:#181c26;
-  --border:rgba(255,255,255,0.06); --border-h:rgba(255,255,255,0.13);
-  --text-1:#edeae2; --text-2:#7e7b74; --text-3:#44423f; --text-4:#2e2c2a;
-  --accent:#c9a84c; --accent-dim:rgba(201,168,76,0.10);
-  --green:#2dbd80; --green-dim:rgba(45,189,128,0.10);
-  --blue:#4f8ef0; --blue-dim:rgba(79,142,240,0.10);
-  --purple:#8c64dc; --purple-dim:rgba(140,100,220,0.10);
-  --header-bg:rgba(9,9,12,0.94);
-  --tog-bg:#16181e; --tog-border:rgba(255,255,255,0.08); --tog-act:rgba(255,255,255,0.07);
-  --divider:rgba(255,255,255,0.04); --stripe:rgba(255,255,255,0.014);
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#09090c;--surface:#111116;--surface2:#18181f;
+  --border:rgba(255,255,255,0.07);--text:#e8e8f0;--muted:#888899;--dim:#555566;
+  --neon-theater:#ff9f43;
+  --neon-schoolroom:#ffd32a;
+  --neon-banquet:#ff6b6b;
+  --neon-reception:#ff4da6;
+  --neon-conference:#a29bfe;
+  --neon-ushape:#74b9ff;
+  --ballroom:#C8963E;--primrose:#3A78B5;--camellia:#4A8A50;
+  --lantana:#B5783A;--plumeria:#7A5AB5;--verbena:#3A9A8A;
+  --barton:#A05040;--small:#606070;
 }
-[data-theme="light"] {
-  --bg:#f0ece3; --bg-card:#faf7f2; --bg-active:#e8e2d6;
-  --border:rgba(0,0,0,0.07); --border-h:rgba(0,0,0,0.15);
-  --text-1:#18160f; --text-2:#6b6760; --text-3:#9e9a92; --text-4:#c0bbb2;
-  --accent:#9a7422; --accent-dim:rgba(154,116,34,0.09);
-  --green:#1a8f5e; --green-dim:rgba(26,143,94,0.09);
-  --blue:#2558c4; --blue-dim:rgba(37,88,196,0.09);
-  --purple:#6030b0; --purple-dim:rgba(96,48,176,0.09);
-  --header-bg:rgba(240,236,227,0.94);
-  --tog-bg:#e4dfd4; --tog-border:rgba(0,0,0,0.08); --tog-act:rgba(0,0,0,0.05);
-  --divider:rgba(0,0,0,0.05); --stripe:rgba(0,0,0,0.010);
+[data-theme="light"]{
+  --bg:#f5f3ef;--surface:#ffffff;--surface2:#f0ede8;
+  --border:rgba(0,0,0,0.1);--text:#1a1a22;--muted:#666677;--dim:#aaaabc;
 }
-body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif; min-height:100vh; max-width:480px; margin:0 auto; }
+
+html{font-size:16px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
 
 /* HEADER */
-.header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--header-bg); backdrop-filter:blur(14px); z-index:20; gap:8px; }
-.brand { display:flex; align-items:center; gap:9px; flex-shrink:0; text-decoration:none; }
-.brand-icon { width:32px; height:32px; background:var(--accent-dim); border:1px solid var(--accent); border-radius:7px; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; color:var(--accent); }
-.brand-name { font-family:'Bebas Neue',sans-serif; font-size:19px; letter-spacing:1.5px; color:var(--text-1); line-height:1; }
-.brand-sub { font-family:'DM Mono',monospace; font-size:8px; color:var(--text-3); margin-top:1px; }
-.controls { display:flex; align-items:center; gap:5px; flex-shrink:0; }
-.toggle-group { display:flex; background:var(--tog-bg); border:1px solid var(--tog-border); border-radius:7px; overflow:hidden; }
-.tgl { padding:5px 8px; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; color:var(--text-3); background:none; border:none; cursor:pointer; transition:background .12s,color .12s; line-height:1; }
-.tgl.active { background:var(--tog-act); color:var(--text-1); }
-.tgl+.tgl { border-left:1px solid var(--tog-border); }
-.back-btn { display:flex; align-items:center; gap:5px; font-family:'DM Mono',monospace; font-size:10px; color:var(--text-3); background:var(--tog-bg); border:1px solid var(--tog-border); border-radius:7px; padding:5px 10px; text-decoration:none; cursor:pointer; }
-
-/* PAGE HEADER */
-.page-hero { padding:20px 16px 16px; border-bottom:1px solid var(--divider); position:relative; overflow:hidden; }
-.page-hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-55deg,var(--stripe) 0px,var(--stripe) 1px,transparent 1px,transparent 18px); pointer-events:none; }
-.page-eyebrow { font-family:'DM Mono',monospace; font-size:9px; color:var(--accent); letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
-.page-title { font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:1px; color:var(--text-1); line-height:0.95; margin-bottom:10px; }
+.header{position:sticky;top:0;z-index:100;background:rgba(9,9,12,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:0.75rem}
+[data-theme="light"] .header{background:rgba(245,243,239,0.92)}
+.header-left{display:flex;align-items:center;gap:0.75rem}
+.back-btn{display:flex;align-items:center;gap:0.35rem;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted);text-decoration:none;letter-spacing:0.05em;transition:color 0.2s;padding:0.3rem 0}
+.back-btn:hover{color:var(--text)}
+.header-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:var(--text);line-height:1}
+.header-controls{display:flex;align-items:center;gap:0.5rem}
+.ctrl-btn{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.06em;border:1px solid var(--border);border-radius:6px;padding:0.3rem 0.6rem;background:var(--surface2);color:var(--muted);cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.ctrl-btn:hover{color:var(--text);border-color:rgba(255,255,255,0.2)}
 
 /* SEARCH */
-.search-wrap { padding:12px 16px; background:var(--bg-card); border-bottom:1px solid var(--border); position:sticky; top:57px; z-index:15; }
-.search-input { width:100%; background:var(--bg); border:1px solid var(--border-h); border-radius:20px; padding:9px 14px 9px 36px; font-family:'Inter',sans-serif; font-size:13px; color:var(--text-1); outline:none; transition:border-color .15s; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b6259' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>"); background-repeat:no-repeat; background-position:12px center; }
-.search-input:focus { border-color:var(--accent); }
-.search-input::placeholder { color:var(--text-3); }
+.search-wrap{padding:0.75rem 1rem 0}
+.search-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.65rem 0.85rem;font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--text);outline:none;transition:border-color 0.2s}
+.search-input::placeholder{color:var(--dim)}
+.search-input:focus{border-color:rgba(255,159,67,0.4)}
+[data-theme="light"] .search-input{background:#fff}
 
-/* SEC LABEL */
-.sec { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-4); padding:16px 16px 8px; display:flex; align-items:center; gap:10px; }
-.sec::after { content:''; flex:1; height:1px; background:var(--divider); }
+/* STATS */
+.stats-bar{display:flex;gap:0.5rem;padding:0.75rem 1rem 0;overflow-x:auto;scrollbar-width:none}
+.stats-bar::-webkit-scrollbar{display:none}
+.stat-chip{flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.75rem;display:flex;flex-direction:column;align-items:center;gap:0.15rem}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;line-height:1;color:var(--neon-theater)}
+.stat-lbl{font-family:'DM Mono',monospace;font-size:0.58rem;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase}
 
-/* ROOM CARDS */
-.rooms-list { padding:0 16px 48px; display:flex; flex-direction:column; gap:8px; }
+/* SETUP TYPE COLOR KEY */
+.setup-legend{display:flex;flex-wrap:wrap;gap:0.4rem;padding:0.65rem 1rem 0}
+.setup-chip{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.05em;padding:0.22rem 0.6rem;border-radius:20px;border:1px solid;white-space:nowrap}
 
-.room-card { background:var(--bg-card); border:1px solid var(--border); border-radius:13px; overflow:hidden; border-left:3px solid var(--r-color,var(--accent)); transition:border-color .13s; }
-.room-card.is-hidden { display:none; }
+/* SECTION LABEL */
+.section-label{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.12em;color:var(--muted);padding:1.2rem 1rem 0.5rem;text-transform:uppercase}
 
-.room-head { padding:12px 14px 10px; border-bottom:1px solid var(--divider); display:flex; align-items:center; justify-content:space-between; gap:8px; cursor:pointer; }
-.room-name { font-size:15px; font-weight:600; color:var(--text-1); letter-spacing:-0.2px; }
-.room-sqft { font-family:'DM Mono',monospace; font-size:10px; color:var(--text-3); }
-.room-chevron { font-size:11px; color:var(--text-4); transition:transform .2s; }
-.room-card.open .room-chevron { transform:rotate(90deg); }
+/* ROOM GRID */
+.room-grid{display:grid;grid-template-columns:1fr;gap:0.6rem;padding:0 1rem}
 
-.room-body { display:none; padding:12px 14px; }
-.room-card.open .room-body { display:block; }
+/* ROOM CARD */
+.room-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;animation:fadeUp 0.4s ease both;transition:border-color 0.2s,box-shadow 0.2s}
+.room-card.open{border-color:rgba(255,255,255,0.15);box-shadow:0 4px 24px rgba(0,0,0,0.4)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-.room-dims { font-family:'DM Mono',monospace; font-size:10px; color:var(--accent); letter-spacing:0.5px; margin-bottom:10px; }
+.card-bar{height:3px;width:100%}
+.bar-ballroom{background:linear-gradient(90deg,var(--ballroom),transparent)}
+.bar-primrose{background:linear-gradient(90deg,var(--primrose),transparent)}
+.bar-camellia{background:linear-gradient(90deg,var(--camellia),transparent)}
+.bar-lantana{background:linear-gradient(90deg,var(--lantana),transparent)}
+.bar-plumeria{background:linear-gradient(90deg,var(--plumeria),transparent)}
+.bar-verbena{background:linear-gradient(90deg,var(--verbena),transparent)}
+.bar-barton{background:linear-gradient(90deg,var(--barton),transparent)}
+.bar-small{background:linear-gradient(90deg,var(--small),transparent)}
 
-.cap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-bottom:10px; }
-.cap-cell { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:8px 10px; }
-.cap-label { font-family:'DM Mono',monospace; font-size:8px; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-4); margin-bottom:3px; }
-.cap-val { font-size:14px; font-weight:600; color:var(--text-1); }
-.cap-val.na { color:var(--text-4); font-size:12px; }
+/* CARD HEADER */
+.card-header{padding:0.85rem 1rem 0.75rem;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;user-select:none;-webkit-user-select:none}
+.card-header-left{flex:1;min-width:0}
+.room-name{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:0.06em;color:var(--text);line-height:1;margin-bottom:0.25rem}
+.room-dims{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--muted);letter-spacing:0.03em}
+.room-dims span{color:var(--text);font-weight:500}
 
-.room-note { font-family:'DM Mono',monospace; font-size:9.5px; color:var(--text-3); line-height:1.5; margin-top:4px; }
+/* CHEVRON */
+.chevron{width:20px;height:20px;flex-shrink:0;margin-top:4px;color:var(--dim);transition:transform 0.25s ease,color 0.2s}
+.room-card.open .chevron{transform:rotate(180deg);color:var(--muted)}
 
-/* COMBINES TAG */
-.combines-row { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
-.comb-tag { font-family:'DM Mono',monospace; font-size:9px; padding:3px 8px; border-radius:5px; background:var(--purple-dim); color:var(--purple); border:1px solid rgba(140,100,220,0.2); }
+/* CARD BODY */
+.card-body{display:none;padding:0 1rem 0.85rem}
+.room-card.open .card-body{display:block}
+
+/* CAP GRID */
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.4rem;margin-bottom:0.5rem}
+.cap-item{background:var(--surface2);border-radius:8px;padding:0.45rem 0.5rem;display:flex;flex-direction:column;align-items:center;gap:0.2rem}
+.cap-label{font-family:'DM Mono',monospace;font-size:0.6rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap}
+
+
+
+
+
+
+.cap-value{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:1;color:var(--text)}
+.cap-value.big{font-size:1.8rem}
+.cap-value.none{font-size:1.2rem;color:var(--dim)}
+
+/* COMBINE TAG */
+.combine-tag{display:inline-flex;align-items:center;gap:0.3rem;font-family:'DM Mono',monospace;font-size:0.6rem;color:var(--muted);letter-spacing:0.04em;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:0.2rem 0.6rem;margin-top:0.25rem}
+.combine-tag::before{content:'⊕';color:var(--neon-theater)}
+
+/* HIDDEN */
+.room-card.hidden{display:none}
+.section-wrap.hidden{display:none}
+
+/* LANG */
+.lang-es [data-en]{display:none!important}
+.lang-es [data-es]{display:inline!important}
+[data-es]{display:none}
+
+/* FOOTER */
+.footer{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--dim);text-align:center;padding:2rem 1rem 2.5rem;letter-spacing:0.04em}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
 </style>
 </head>
 <body>
 
-<header class="header">
-  <a class="brand" href="splash.html">
-    <div class="brand-icon">BB</div>
-    <div>
-      <div class="brand-name">Banquet Bot</div>
-      <div class="brand-sub">Westin Austin · The Domain</div>
-    </div>
-  </a>
-  <div class="controls">
-    <div class="toggle-group">
-      <button class="tgl active" id="len" onclick="setLang('en')">EN</button>
-      <button class="tgl"        id="les" onclick="setLang('es')">ES</button>
-    </div>
-    <div class="toggle-group">
-      <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
-      <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
-    </div>
+<div class="header">
+  <div class="header-left">
+    <a class="back-btn" href="index.html">← <span data-en="HOME" data-es="INICIO">HOME</span></a>
+    <div class="header-title" data-en="ROOM SPECS" data-es="SALONES">ROOM SPECS</div>
   </div>
-</header>
-
-<div class="page-hero">
-  <div class="page-eyebrow" data-en="Westin Austin · AUSDW" data-es="Westin Austin · AUSDW">Westin Austin · AUSDW</div>
-  <div class="page-title" data-en="Room Specs" data-es="Salones">Room Specs</div>
+  <div class="header-controls">
+    <button class="ctrl-btn" id="langBtn" onclick="toggleLang()">ES</button>
+    <button class="ctrl-btn" id="themeBtn" onclick="toggleTheme()">☀︎</button>
+  </div>
 </div>
 
 <div class="search-wrap">
-  <input class="search-input" type="text" id="roomSearch" placeholder="Search rooms…" oninput="filterRooms(this.value)">
+  <input class="search-input" id="searchInput" type="text" placeholder="Search rooms…" oninput="filterRooms(this.value)">
 </div>
 
-<!-- BALLROOMS -->
-<div class="sec" data-en="Ballrooms" data-es="Salones de Baile">Ballrooms</div>
-<div class="rooms-list" id="rooms-ballroom">
-
-  <div class="room-card" data-name="primrose ballroom" style="--r-color:#c9a84c">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Primrose Ballroom</div><div class="room-sqft">7,938 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">126 × 63 × 18 ft</div>
-      <div class="combines-row"><span class="comb-tag">Primrose A + B + C + D</span></div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">710</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">507</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">272</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">700</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">650</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="primrose abc" style="--r-color:#c9a84c">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Primrose ABC</div><div class="room-sqft">5,607 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">63 × 89 × 18 ft</div>
-      <div class="combines-row"><span class="comb-tag">Primrose A + B + C</span></div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">540</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">357</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">500</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">400</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="primrose cd" style="--r-color:#c9a84c">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Primrose CD</div><div class="room-sqft">5,607 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">63 × 89 × 18 ft</div>
-      <div class="combines-row"><span class="comb-tag">Primrose C + D</span></div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">540</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">357</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">500</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">400</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="primrose c" style="--r-color:#c9a84c">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Primrose C</div><div class="room-sqft">3,276 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">63 × 52 × 18 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">350</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">207</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">300</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">260</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="primrose ab" style="--r-color:#c9a84c">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Primrose AB</div><div class="room-sqft">2,331 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">63 × 37 × 18 ft</div>
-      <div class="combines-row"><span class="comb-tag">Primrose A + B</span></div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">256</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">150</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">60</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">60</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">200</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">160</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="primrose d" style="--r-color:#c9a84c">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Primrose D</div><div class="room-sqft">2,331 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">63 × 37 × 18 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">256</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">150</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">60</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">60</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">200</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">160</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="primrose a" style="--r-color:#c9a84c">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Primrose A</div><div class="room-sqft">1,184 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">32 × 37 × 18 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">128</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">60</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">35</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">30</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">100</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">80</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="primrose b" style="--r-color:#c9a84c">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Primrose B</div><div class="room-sqft">1,184 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">32 × 37 × 18 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">128</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">60</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">35</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">30</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">100</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">80</div></div>
-      </div>
-    </div>
-  </div>
-
+<div class="stats-bar">
+  <div class="stat-chip"><div class="stat-num">26</div><div class="stat-lbl" data-en="Rooms" data-es="Salones">Rooms</div></div>
+  <div class="stat-chip"><div class="stat-num">710</div><div class="stat-lbl" data-en="Max Cap" data-es="Cap Máx">Max Cap</div></div>
+  <div class="stat-chip"><div class="stat-num">7,938</div><div class="stat-lbl" data-en="Ballroom sqft" data-es="Pie² Salón">Ballroom sqft</div></div>
+  <div class="stat-chip"><div class="stat-num">18ft</div><div class="stat-lbl" data-en="Max Ceiling" data-es="Techo Máx">Max Ceiling</div></div>
 </div>
 
-<!-- MEETING ROOMS -->
-<div class="sec" data-en="Meeting Rooms" data-es="Salas de Reuniones">Meeting Rooms</div>
-<div class="rooms-list" id="rooms-meeting">
-
-  <div class="room-card" data-name="lantana" style="--r-color:#2dbd80">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Lantana</div><div class="room-sqft">1,440 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">48 × 30 × 13 ft</div>
-      <div class="combines-row"><span class="comb-tag">Lantana A + B</span></div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">150</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">63</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">40</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">150</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">108</div></div>
+<!-- ── FLAGSHIP ── -->
+<div class="section-wrap">
+  <div class="section-label" data-en="Flagship Ballroom" data-es="Salón Principal">Flagship Ballroom</div>
+  <div class="room-grid">
+    <div class="room-card" data-name="primrose ballroom">
+      <div class="card-bar bar-ballroom"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left">
+          <div class="room-name">Primrose Ballroom</div>
+          <div class="room-dims">126 × 63 × 18 ft &nbsp;|&nbsp; <span>7,938 sq ft</span></div>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value big">710</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value big">507</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value big">650</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value big">700</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value big">272</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
+        <div class="combine-tag" data-en="Combines: A + B + C + D" data-es="Combina: A+B+C+D">Combines: A + B + C + D</div>
       </div>
     </div>
   </div>
-
-  <div class="room-card" data-name="lantana a" style="--r-color:#2dbd80">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Lantana A</div><div class="room-sqft">720 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">24 × 30 × 12.5 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">72</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">36</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">20</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">50</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">40</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="lantana b" style="--r-color:#2dbd80">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Lantana B</div><div class="room-sqft">720 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">24 × 30 × 12.5 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">72</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">36</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">20</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">50</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">40</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="plumeria" style="--r-color:#4f8ef0">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Plumeria</div><div class="room-sqft">1,440 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">48 × 30 × 13 ft</div>
-      <div class="combines-row"><span class="comb-tag">Plumeria A + B</span></div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">150</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">63</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">40</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">115</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">108</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="plumeria a" style="--r-color:#4f8ef0">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Plumeria A</div><div class="room-sqft">720 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">24 × 30 × 12.5 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">72</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">36</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">20</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">50</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">40</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="plumeria b" style="--r-color:#4f8ef0">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Plumeria B</div><div class="room-sqft">720 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">24 × 30 × 12.5 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">72</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">36</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">20</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">50</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">40</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="camellia" style="--r-color:#8c64dc">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Camellia</div><div class="room-sqft">1,170 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">45 × 26 × 12 ft</div>
-      <div class="combines-row"><span class="comb-tag">Camellia A + B</span></div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">108</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">63</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">40</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">121</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">108</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="camellia a" style="--r-color:#8c64dc">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Camellia A</div><div class="room-sqft">598 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">23 × 26 × 11.5 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">48</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">27</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">50</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">40</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="camellia b" style="--r-color:#8c64dc">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Camellia B</div><div class="room-sqft">598 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">23 × 26 × 11.5 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">48</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">27</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">50</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">40</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="verbena" style="--r-color:#2dbd80">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Verbena</div><div class="room-sqft">1,170 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">45 × 26 × 12 ft</div>
-      <div class="combines-row"><span class="comb-tag">Verbena A + B</span></div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">108</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">63</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">40</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">108</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="verbena a" style="--r-color:#2dbd80">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Verbena A</div><div class="room-sqft">598 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">23 × 26 × 11.5 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">48</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">27</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">50</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">40</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="verbena b" style="--r-color:#2dbd80">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Verbena B</div><div class="room-sqft">598 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">23 × 26 × 11.5 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">48</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">27</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">18</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">50</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">40</div></div>
-      </div>
-    </div>
-  </div>
-
 </div>
 
-<!-- PRIVATE DINING & SPECIALTY -->
-<div class="sec" data-en="Private Dining &amp; Specialty" data-es="Salones Privados">Private Dining &amp; Specialty</div>
-<div class="rooms-list" id="rooms-pdrs">
+<!-- ── PRIMROSE ── -->
+<div class="section-wrap">
+  <div class="section-label">Primrose</div>
+  <div class="room-grid">
 
-  <div class="room-card" data-name="barton" style="--r-color:#f0b020">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Barton</div><div class="room-sqft">825 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">25 × 33 × 12 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val">75</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val">45</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">22</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val">20</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val">75</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">50</div></div>
+    <div class="room-card" data-name="primrose ab primrose">
+      <div class="card-bar bar-primrose"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Primrose AB</div><div class="room-dims">63 × 37 × 18 ft &nbsp;|&nbsp; <span>2,331 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
-      <div class="room-note">Private dining room · often used with Bonnell/Corinne Patio for receptions</div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="bonnell" style="--r-color:#f0b020">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Bonnell</div><div class="room-sqft">494 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">26 × 19 × 12 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val">24</div></div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">252</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">168</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">200</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">250</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">90</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
+        <div class="combine-tag" data-en="Combines: A + B" data-es="Combina: A+B">Combines: A + B</div>
       </div>
-      <div class="room-note">Private dining · adjacent to Corinne Patio · used for dinner service &amp; receptions</div>
     </div>
-  </div>
 
-  <div class="room-card" data-name="zilker" style="--r-color:#f0b020">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Zilker</div><div class="room-sqft">336 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">14 × 24 × 12 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">16</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val na">—</div></div>
+    <div class="room-card" data-name="primrose a primrose">
+      <div class="card-bar bar-primrose"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Primrose A</div><div class="room-dims">63 × 18 × 18 ft &nbsp;|&nbsp; <span>1,134 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
-      <div class="room-note">Small conference / private dining · max 16 conference</div>
-    </div>
-  </div>
-
-  <div class="room-card" data-name="bluebell" style="--r-color:#4f8ef0">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Bluebell</div><div class="room-sqft">300 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">— × — × 12 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">8</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val na">—</div></div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">120</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">81</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">90</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">120</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">40</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
       </div>
-      <div class="room-note">Small boardroom · max 8 conference</div>
     </div>
-  </div>
 
-  <div class="room-card" data-name="buttercup" style="--r-color:#4f8ef0">
-    <div class="room-head" onclick="toggleRoom(this.parentElement)">
-      <div><div class="room-name">Buttercup</div><div class="room-sqft">242 sq ft</div></div>
-      <span class="room-chevron">▶</span>
-    </div>
-    <div class="room-body">
-      <div class="room-dims">— × — × 12 ft</div>
-      <div class="cap-grid">
-        <div class="cap-cell"><div class="cap-label">Theater</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Schoolroom</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Conference</div><div class="cap-val">6</div></div>
-        <div class="cap-cell"><div class="cap-label">U-Shape</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Reception</div><div class="cap-val na">—</div></div>
-        <div class="cap-cell"><div class="cap-label">Banquet</div><div class="cap-val na">—</div></div>
+    <div class="room-card" data-name="primrose b primrose">
+      <div class="card-bar bar-primrose"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Primrose B</div><div class="room-dims">63 × 19 × 18 ft &nbsp;|&nbsp; <span>1,197 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
-      <div class="room-note">Smallest room · office / private use · max 6</div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">132</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">87</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">110</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">130</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">50</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
+      </div>
     </div>
-  </div>
 
+    <div class="room-card" data-name="primrose cd primrose">
+      <div class="card-bar bar-primrose"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Primrose CD</div><div class="room-dims">63 × 37 × 18 ft &nbsp;|&nbsp; <span>2,331 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">252</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">168</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">200</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">250</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">90</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
+        <div class="combine-tag" data-en="Combines: C + D" data-es="Combina: C+D">Combines: C + D</div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="primrose c primrose">
+      <div class="card-bar bar-primrose"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Primrose C</div><div class="room-dims">63 × 18 × 18 ft &nbsp;|&nbsp; <span>1,134 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">120</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">81</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">90</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">120</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">40</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="primrose d primrose">
+      <div class="card-bar bar-primrose"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Primrose D</div><div class="room-dims">63 × 19 × 18 ft &nbsp;|&nbsp; <span>1,197 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">132</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">87</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">110</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">130</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">50</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
+
+<!-- ── CAMELLIA ── -->
+<div class="section-wrap">
+  <div class="section-label">Camellia</div>
+  <div class="room-grid">
+
+    <div class="room-card" data-name="camellia ab camellia">
+      <div class="card-bar bar-camellia"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Camellia AB</div><div class="room-dims">46 × 26 × 11.5 ft &nbsp;|&nbsp; <span>1,196 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">96</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">54</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">80</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">100</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">36</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value">36</div></div>
+        </div>
+        <div class="combine-tag" data-en="Combines: A + B" data-es="Combina: A+B">Combines: A + B</div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="camellia a camellia">
+      <div class="card-bar bar-camellia"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Camellia A</div><div class="room-dims">23 × 26 × 11.5 ft &nbsp;|&nbsp; <span>598 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">48</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">27</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">40</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">50</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">18</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value">18</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="camellia b camellia">
+      <div class="card-bar bar-camellia"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Camellia B</div><div class="room-dims">23 × 26 × 11.5 ft &nbsp;|&nbsp; <span>598 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">48</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">27</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">40</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">50</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">18</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value">18</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── LANTANA · PLUMERIA · VERBENA ── -->
+<div class="section-wrap">
+  <div class="section-label">Lantana · Plumeria · Verbena</div>
+  <div class="room-grid">
+
+    <div class="room-card" data-name="lantana">
+      <div class="card-bar bar-lantana"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Lantana</div><div class="room-dims">48 × 30 × 13 ft &nbsp;|&nbsp; <span>1,440 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">150</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">63</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">108</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">150</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">40</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="plumeria">
+      <div class="card-bar bar-plumeria"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Plumeria</div><div class="room-dims">30 × 29 × 13 ft &nbsp;|&nbsp; <span>870 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">88</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">45</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">60</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">90</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">30</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value">24</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="verbena">
+      <div class="card-bar bar-verbena"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Verbena</div><div class="room-dims">30 × 22 × 13 ft &nbsp;|&nbsp; <span>660 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">64</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">36</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">50</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">65</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">24</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value">20</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── BARTON CREEK ── -->
+<div class="section-wrap">
+  <div class="section-label">Barton Creek</div>
+  <div class="room-grid">
+
+    <div class="room-card" data-name="barton creek ab barton">
+      <div class="card-bar bar-barton"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Barton Creek AB</div><div class="room-dims">50 × 26 × 11 ft &nbsp;|&nbsp; <span>1,300 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">130</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">60</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">90</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">130</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">40</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value">30</div></div>
+        </div>
+        <div class="combine-tag" data-en="Combines: A + B" data-es="Combina: A+B">Combines: A + B</div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="barton creek a barton">
+      <div class="card-bar bar-barton"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Barton Creek A</div><div class="room-dims">25 × 26 × 11 ft &nbsp;|&nbsp; <span>650 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">60</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">30</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">40</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">60</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">20</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value">16</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="barton creek b barton">
+      <div class="card-bar bar-barton"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Barton Creek B</div><div class="room-dims">25 × 26 × 11 ft &nbsp;|&nbsp; <span>650 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">60</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">30</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value">40</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">60</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">20</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value">16</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── BOARDROOMS & SMALL ── -->
+<div class="section-wrap">
+  <div class="section-label" data-en="Boardrooms &amp; Small" data-es="Salas Pequeñas">Boardrooms &amp; Small</div>
+  <div class="room-grid">
+
+    <div class="room-card" data-name="colorado">
+      <div class="card-bar bar-small"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Colorado</div><div class="room-dims">30 × 20 × 11 ft &nbsp;|&nbsp; <span>600 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">50</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value">27</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">50</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">20</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value">16</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="congress">
+      <div class="card-bar bar-small"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Congress</div><div class="room-dims">20 × 18 × 9 ft &nbsp;|&nbsp; <span>360 sq ft</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value">30</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value">30</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">12</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="6th street boardroom">
+      <div class="card-bar bar-small"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">6th Street</div><div class="room-dims">20 × 18 × 9 ft &nbsp;|&nbsp; <span>360 sq ft</span> &nbsp;·&nbsp; <span data-en="Boardroom" data-es="Sala Juntas">Boardroom</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">10</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="rainey street boardroom">
+      <div class="card-bar bar-small"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Rainey Street</div><div class="room-dims">20 × 18 × 9 ft &nbsp;|&nbsp; <span>360 sq ft</span> &nbsp;·&nbsp; <span data-en="Boardroom" data-es="Sala Juntas">Boardroom</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value">10</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-card" data-name="foyer pre-function break lobby">
+      <div class="card-bar bar-small"></div>
+      <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
+        <div class="card-header-left"><div class="room-name">Foyer</div><div class="room-dims"><span data-en="Pre-function / break space" data-es="Espacio de descanso">Pre-function / break space</span></div></div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="cap-grid">
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-theater)">THEATER</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-schoolroom)">SCHOOLROOM</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-banquet)">BANQUET</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-reception)">RECEPTION</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-conference)">CONFERENCE</div><div class="cap-value none">—</div></div>
+          <div class="cap-item"><div class="cap-label" style="color:var(--neon-ushape)">U-Shape</div><div class="cap-value none">—</div></div>
+        </div>
+        <div class="combine-tag" data-en="Break space only" data-es="Solo descanso">Break space only</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">Room Reference · Westin Austin at The Domain · AUSDW · Rebuilt June 2026</div>
 
 <script>
-  function toggleRoom(card){ card.classList.toggle('open'); }
+function toggleCard(card){card.classList.toggle('open')}
 
-  function filterRooms(q){
-    const val = q.trim().toLowerCase();
-    document.querySelectorAll('.room-card').forEach(card=>{
-      const name = card.dataset.name || '';
-      card.classList.toggle('is-hidden', val && !name.includes(val));
+function filterRooms(q){
+  const term=q.toLowerCase().trim();
+  document.querySelectorAll('.section-wrap').forEach(sec=>{
+    let any=false;
+    sec.querySelectorAll('.room-card').forEach(card=>{
+      const match=!term||(card.dataset.name||'').toLowerCase().includes(term);
+      card.classList.toggle('hidden',!match);
+      if(match)any=true;
     });
-  }
+    sec.classList.toggle('hidden',!any);
+  });
+}
 
-  function setTheme(t){
-    document.documentElement.setAttribute('data-theme',t);
-    document.getElementById('tdk').classList.toggle('active',t==='dark');
-    document.getElementById('tlt').classList.toggle('active',t==='light');
-    localStorage.setItem('bb-theme',t);
-  }
-  function setLang(l){
-    document.documentElement.setAttribute('data-lang',l);
-    document.getElementById('len').classList.toggle('active',l==='en');
-    document.getElementById('les').classList.toggle('active',l==='es');
-    document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
-    localStorage.setItem('bb-lang',l);
-  }
-  setTheme(localStorage.getItem('bb-theme')||'dark');
-  setLang(localStorage.getItem('bb-lang')||'en');
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('bb-theme',t);
+  document.getElementById('themeBtn').textContent=t==='dark'?'☀︎':'☾';
+}
+function toggleTheme(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')}
+
+function setLang(l){
+  document.body.classList.toggle('lang-es',l==='es');
+  localStorage.setItem('bb-lang',l);
+  document.getElementById('langBtn').textContent=l==='es'?'EN':'ES';
+}
+function toggleLang(){setLang(document.body.classList.contains('lang-es')?'en':'es')}
+
+setTheme(localStorage.getItem('bb-theme')||'dark');
+setLang(localStorage.getItem('bb-lang')||'en');
 </script>
 </body>
 </html>
