@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <title>Banquet Bot</title>
-<style>html,html::before{background:#09090c!important;margin:0}body{background:#09090c}html::before{content:"";position:fixed;inset:0;background:#09090c;z-index:-1}</style>
+<style>html,body{background:#09090c}</style>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -87,6 +87,10 @@
   --t5-name: #901818; --t5-desc: rgba(140,24,24,0.55); --t5-top: rgba(180,40,40,0.38);
 }
 
+html {
+  background: var(--bg);
+  overscroll-behavior: none;
+}
 body {
   background: var(--bg);
   color: var(--text-1);
@@ -95,6 +99,18 @@ body {
   max-width: 430px;
   margin: 0 auto;
   transition: background 0.2s, color 0.2s;
+  overscroll-behavior: none;
+  /* ensure no white shows outside body on Safari back-swipe */
+  position: relative;
+}
+/* covers the full viewport background so Safari overscroll shows dark not white */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* ── HEADER ── */
@@ -225,6 +241,12 @@ body {
   padding-top: 13px; padding-bottom: 3px;
   text-align: left; padding-left: 0;
   border: none; background: transparent;
+  /* only show text in the first cell, hide the rest */
+}
+.s tr.rr td:not(:first-child) {
+  padding: 0;
+  font-size: 0;
+  opacity: 0;
 }
 .s tr.rr.rd td { color: #3A78B5; }
 .s tr.rr.rc td { color: #ff9f43; }
@@ -329,19 +351,19 @@ body {
           </tr>
         </thead>
         <tbody>
-          <tr class="rr rd"><td colspan="8" data-en="Director of Event Ops" data-es="Director de Eventos">Director of Event Ops</td></tr>
+          <tr class="rr rd"><td data-en="Director of Event Ops" data-es="Director de Eventos">Director of Event Ops</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
           <tr class="rd">
             <td class="nm">Hector</td>
             <td>8AM</td><td class="tc off">OFF</td><td class="off">OFF</td>
             <td>CORINNE</td><td>7:30A</td><td>PTO</td><td>8AM</td>
           </tr>
-          <tr class="rr rc"><td colspan="8" data-en="Banquet Captain" data-es="Capitán de Banquetes">Banquet Captain</td></tr>
+          <tr class="rr rc"><td data-en="Banquet Captain" data-es="Capitán de Banquetes">Banquet Captain</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
           <tr class="rc">
             <td class="nm">Jason</td>
             <td class="off">OFF</td><td class="tc off">OFF</td><td class="off">OFF</td>
             <td>6A–1P</td><td>6:30–12</td><td class="off">OFF</td><td class="off">OFF</td>
           </tr>
-          <tr class="rr rs"><td colspan="8" data-en="Servers" data-es="Meseros">Servers</td></tr>
+          <tr class="rr rs"><td data-en="Servers" data-es="Meseros">Servers</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
           <tr class="rs">
             <td class="nm">Dylan</td>
             <td class="off">—</td><td class="tc off">—</td><td class="off">—</td>
@@ -352,7 +374,7 @@ body {
             <td class="off">—</td><td class="tc off">—</td><td class="off">—</td>
             <td>12P–7P</td><td>6:30–12</td><td class="off">—</td><td class="off">—</td>
           </tr>
-          <tr class="rr rh"><td colspan="8" data-en="Housemen" data-es="Mozos">Housemen</td></tr>
+          <tr class="rr rh"><td data-en="Housemen" data-es="Mozos">Housemen</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
           <tr class="rh">
             <td class="nm">Jamshid</td>
             <td>10A–4P</td><td class="tc off">—</td><td class="off">—</td>
@@ -377,6 +399,8 @@ body {
     document.getElementById('tdk').classList.toggle('active',t==='dark');
     document.getElementById('tlt').classList.toggle('active',t==='light');
     localStorage.setItem('bb-theme',t);
+    document.documentElement.style.background = t==='dark' ? '#09090c' : '#f0ece3';
+    document.body.style.background = t==='dark' ? '#09090c' : '#f0ece3';
   }
 
   function setLang(l){
@@ -429,8 +453,19 @@ body {
     }
   }
   schedulePosition();
+  /* extra safety net for mobile Safari — retry until box is visibly on screen */
+  var retries=0;
+  var retryInterval=setInterval(function(){
+    positionBox();
+    retries++;
+    if(retries>=8) clearInterval(retryInterval);
+  },250);
   window.addEventListener('resize',positionBox);
   document.getElementById('tblOuter').addEventListener('scroll',positionBox);
+  /* also reposition when page becomes visible again (back navigation) */
+  document.addEventListener('visibilitychange',function(){
+    if(!document.hidden){ positionBox(); setTimeout(positionBox,200); }
+  });
 </script>
 </body>
 </html>
