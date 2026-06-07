@@ -2,12 +2,11 @@
 <html lang="en" data-theme="dark" data-lang="en">
 <head>
 <meta charset="UTF-8">
-  <style>html,body{background:#09090c!important;overscroll-behavior:none}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#09090c">
 <title>BEO Rundown — Westin Austin Domain</title>
-<style>html,body{background:#09090c}</style>
+<style>html,body{background:#09090c;overscroll-behavior:none}[data-theme="light"] html,[data-theme="light"] body{background:#f0ece3!important}</style>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
@@ -180,6 +179,7 @@ body { background:var(--bg); ... min-height:100vh; width:100%; overscroll-behavi
 </style>
 </head>
 <body>
+<div class="page-wrap">
 
 <header class="header">
   <a class="brand" href="index.html">
@@ -917,6 +917,9 @@ body { background:var(--bg); ... min-height:100vh; width:100%; overscroll-behavi
     document.getElementById('tdk').classList.toggle('active',t==='dark');
     document.getElementById('tlt').classList.toggle('active',t==='light');
     localStorage.setItem('bb-theme',t);
+    var bg=t==='dark'?'#09090c':'#f0ece3';
+    document.documentElement.style.background=bg;
+    document.body.style.background=bg;
   }
   (function(){
     const n=new Date();
@@ -971,5 +974,6 @@ body { background:var(--bg); ... min-height:100vh; width:100%; overscroll-behavi
   setTheme(localStorage.getItem('bb-theme')||'dark');
   setLang(localStorage.getItem('bb-lang')||'en');
 </script>
+</div>
 </body>
 </html>
