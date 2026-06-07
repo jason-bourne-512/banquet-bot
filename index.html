@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <title>Banquet Bot</title>
-<style>html,body{background:#09090c}</style>
+<style>html{background:#09090c!important}body{background:#09090c}</style>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -31,42 +31,21 @@
   --tog-act:     rgba(255,255,255,0.07);
   --divider:     rgba(255,255,255,0.04);
   --stripe:      rgba(255,255,255,0.014);
-
-  /* tile gradient bases — dark */
   --t1-bg: linear-gradient(135deg,#221a06 0%,#15100a 55%,#0c0905 100%);
-  --t1-border: rgba(201,168,76,0.30);
-  --t1-glow: rgba(201,168,76,0.10);
-  --t1-name: #f0cc70;
-  --t1-desc: rgba(201,168,76,0.55);
-  --t1-top: rgba(201,168,76,0.50);
-
+  --t1-border: rgba(201,168,76,0.30); --t1-glow: rgba(201,168,76,0.10);
+  --t1-name: #f0cc70; --t1-desc: rgba(201,168,76,0.55); --t1-top: rgba(201,168,76,0.50);
   --t2-bg: linear-gradient(135deg,#071a11 0%,#041410 55%,#020b08 100%);
-  --t2-border: rgba(45,189,128,0.28);
-  --t2-glow: rgba(45,189,128,0.09);
-  --t2-name: #5de8b0;
-  --t2-desc: rgba(45,189,128,0.55);
-  --t2-top: rgba(45,189,128,0.50);
-
+  --t2-border: rgba(45,189,128,0.28); --t2-glow: rgba(45,189,128,0.09);
+  --t2-name: #5de8b0; --t2-desc: rgba(45,189,128,0.55); --t2-top: rgba(45,189,128,0.50);
   --t3-bg: linear-gradient(135deg,#071225 0%,#050e1c 55%,#030810 100%);
-  --t3-border: rgba(79,142,240,0.28);
-  --t3-glow: rgba(79,142,240,0.09);
-  --t3-name: #8ab8ff;
-  --t3-desc: rgba(79,142,240,0.55);
-  --t3-top: rgba(79,142,240,0.50);
-
+  --t3-border: rgba(79,142,240,0.28); --t3-glow: rgba(79,142,240,0.09);
+  --t3-name: #8ab8ff; --t3-desc: rgba(79,142,240,0.55); --t3-top: rgba(79,142,240,0.50);
   --t4-bg: linear-gradient(135deg,#130d22 0%,#0d0918 55%,#07050f 100%);
-  --t4-border: rgba(140,100,220,0.28);
-  --t4-glow: rgba(140,100,220,0.09);
-  --t4-name: #c4a0ff;
-  --t4-desc: rgba(140,100,220,0.55);
-  --t4-top: rgba(140,100,220,0.50);
-
+  --t4-border: rgba(140,100,220,0.28); --t4-glow: rgba(140,100,220,0.09);
+  --t4-name: #c4a0ff; --t4-desc: rgba(140,100,220,0.55); --t4-top: rgba(140,100,220,0.50);
   --t5-bg: linear-gradient(135deg,#1a0a0a 0%,#120808 55%,#090404 100%);
-  --t5-border: rgba(220,80,80,0.28);
-  --t5-glow: rgba(220,80,80,0.09);
-  --t5-name: #ff9090;
-  --t5-desc: rgba(220,80,80,0.55);
-  --t5-top: rgba(220,80,80,0.50);
+  --t5-border: rgba(220,80,80,0.28); --t5-glow: rgba(220,80,80,0.09);
+  --t5-name: #ff9090; --t5-desc: rgba(220,80,80,0.55); --t5-top: rgba(220,80,80,0.50);
 }
 
 /* ── LIGHT ── */
@@ -91,42 +70,21 @@
   --tog-act:     rgba(0,0,0,0.05);
   --divider:     rgba(0,0,0,0.05);
   --stripe:      rgba(0,0,0,0.010);
-
-  /* tile gradient bases — light: warm tinted whites */
   --t1-bg: linear-gradient(135deg,#fdf5e0 0%,#faf0d0 55%,#f5e8b8 100%);
-  --t1-border: rgba(160,116,30,0.30);
-  --t1-glow: rgba(160,116,30,0.08);
-  --t1-name: #7a5810;
-  --t1-desc: rgba(120,88,16,0.55);
-  --t1-top: rgba(160,116,30,0.40);
-
+  --t1-border: rgba(160,116,30,0.30); --t1-glow: rgba(160,116,30,0.08);
+  --t1-name: #7a5810; --t1-desc: rgba(120,88,16,0.55); --t1-top: rgba(160,116,30,0.40);
   --t2-bg: linear-gradient(135deg,#e8faf2 0%,#d8f5e8 55%,#c4eeda 100%);
-  --t2-border: rgba(20,130,80,0.28);
-  --t2-glow: rgba(20,130,80,0.07);
-  --t2-name: #0f6840;
-  --t2-desc: rgba(15,100,60,0.55);
-  --t2-top: rgba(20,130,80,0.38);
-
+  --t2-border: rgba(20,130,80,0.28); --t2-glow: rgba(20,130,80,0.07);
+  --t2-name: #0f6840; --t2-desc: rgba(15,100,60,0.55); --t2-top: rgba(20,130,80,0.38);
   --t3-bg: linear-gradient(135deg,#e8f0fc 0%,#d8e8fa 55%,#c4d8f8 100%);
-  --t3-border: rgba(30,80,190,0.28);
-  --t3-glow: rgba(30,80,190,0.07);
-  --t3-name: #1840a0;
-  --t3-desc: rgba(24,64,160,0.55);
-  --t3-top: rgba(30,80,190,0.38);
-
+  --t3-border: rgba(30,80,190,0.28); --t3-glow: rgba(30,80,190,0.07);
+  --t3-name: #1840a0; --t3-desc: rgba(24,64,160,0.55); --t3-top: rgba(30,80,190,0.38);
   --t4-bg: linear-gradient(135deg,#f0e8fc 0%,#e8d8fa 55%,#dcc8f6 100%);
-  --t4-border: rgba(100,60,190,0.28);
-  --t4-glow: rgba(100,60,190,0.07);
-  --t4-name: #5828b0;
-  --t4-desc: rgba(80,40,170,0.55);
-  --t4-top: rgba(100,60,190,0.38);
-
+  --t4-border: rgba(100,60,190,0.28); --t4-glow: rgba(100,60,190,0.07);
+  --t4-name: #5828b0; --t4-desc: rgba(80,40,170,0.55); --t4-top: rgba(100,60,190,0.38);
   --t5-bg: linear-gradient(135deg,#fce8e8 0%,#fad4d4 55%,#f6c0c0 100%);
-  --t5-border: rgba(180,40,40,0.28);
-  --t5-glow: rgba(180,40,40,0.07);
-  --t5-name: #901818;
-  --t5-desc: rgba(140,24,24,0.55);
-  --t5-top: rgba(180,40,40,0.38);
+  --t5-border: rgba(180,40,40,0.28); --t5-glow: rgba(180,40,40,0.07);
+  --t5-name: #901818; --t5-desc: rgba(140,24,24,0.55); --t5-top: rgba(180,40,40,0.38);
 }
 
 body {
@@ -191,7 +149,6 @@ body {
 
 /* ── NAV TILES ── */
 .nav-list { padding: 0 16px; display: flex; flex-direction: column; gap: 7px; }
-
 .nav-tile {
   display: flex; align-items: center; gap: 13px;
   padding: 13px 14px;
@@ -204,22 +161,17 @@ body {
   box-shadow: 0 3px 18px var(--t-glow), inset 0 1px 0 var(--t-top);
 }
 .nav-tile:active { transform: scale(0.975); }
-
-/* subtle top shimmer line */
 .nav-tile::after {
   content: ''; position: absolute;
   top: 0; left: 10%; right: 10%; height: 1px;
   background: linear-gradient(90deg, transparent, var(--t-top), transparent);
   pointer-events: none;
 }
-
-/* each tile's color scheme via CSS vars */
 .t1 { --t-bg:var(--t1-bg); --t-border:var(--t1-border); --t-glow:var(--t1-glow); --t-name:var(--t1-name); --t-desc:var(--t1-desc); --t-top:var(--t1-top); }
 .t2 { --t-bg:var(--t2-bg); --t-border:var(--t2-border); --t-glow:var(--t2-glow); --t-name:var(--t2-name); --t-desc:var(--t2-desc); --t-top:var(--t2-top); }
 .t3 { --t-bg:var(--t3-bg); --t-border:var(--t3-border); --t-glow:var(--t3-glow); --t-name:var(--t3-name); --t-desc:var(--t3-desc); --t-top:var(--t3-top); }
 .t4 { --t-bg:var(--t4-bg); --t-border:var(--t4-border); --t-glow:var(--t4-glow); --t-name:var(--t4-name); --t-desc:var(--t4-desc); --t-top:var(--t4-top); }
 .t5 { --t-bg:var(--t5-bg); --t-border:var(--t5-border); --t-glow:var(--t5-glow); --t-name:var(--t5-name); --t-desc:var(--t5-desc); --t-top:var(--t5-top); }
-
 .tile-icon {
   width: 40px; height: 40px; border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
@@ -228,43 +180,60 @@ body {
   border: 1px solid var(--t-border);
 }
 [data-theme="light"] .tile-icon { background: rgba(255,255,255,0.45); }
-
 .tile-text { flex: 1; min-width: 0; }
 .tile-name { font-size: 14px; font-weight: 600; color: var(--t-name); line-height: 1.2; margin-bottom: 2px; }
 .tile-desc { font-size: 10.5px; color: var(--t-desc); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tile-arr  { font-size: 18px; color: var(--t-desc); flex-shrink: 0; }
 
-/* ── BEO CARDS ── */
-.beo-wrap { padding: 0 16px 48px; display: flex; flex-direction: column; gap: 8px; }
-.beo-live { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--green); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
-.beo-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+/* ── SCHEDULE TABLE ── */
+.sched-wrap { padding: 0 16px 48px; }
+.sched-live { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--green); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.sched-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink:0; }
 
-.beo-card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: 12px; overflow: hidden;
-  border-left: 3px solid var(--card-accent, var(--accent));
+.tbl-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; position: relative; }
+.tbl-wrap  { position: relative; display: inline-block; min-width: 100%; }
+
+/* continuous today box — positioned by JS */
+.today-box {
+  position: absolute; top: 0; bottom: 0;
+  border: 1.5px solid #1D9E75;
+  border-radius: 7px;
+  background: rgba(29,158,117,0.08);
+  box-shadow: 0 0 16px rgba(29,158,117,0.32), inset 0 0 8px rgba(29,158,117,0.04);
+  pointer-events: none;
+  z-index: 2;
+  display: none;
 }
-.beo-card.din  { --card-accent:#8c64dc; }
-.beo-card.brk  { --card-accent:var(--green); }
-.beo-card.lnch { --card-accent:var(--blue); }
 
-.beo-head { padding: 10px 13px 9px; border-bottom: 1px solid var(--divider); display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-.beo-org  { font-family: 'DM Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-3); margin-bottom: 2px; }
-.beo-name { font-size: 13px; font-weight: 600; color: var(--text-1); line-height: 1.25; }
-.beo-rt   { text-align: right; flex-shrink: 0; }
-.beo-room { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--blue); margin-bottom: 1px; font-weight: 500; }
-.beo-time { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-2); }
-.beo-body { padding: 8px 13px; display: flex; flex-direction: column; gap: 5px; }
-.beo-row  { display: flex; gap: 8px; font-size: 11px; line-height: 1.45; }
-.beo-lbl  { font-family: 'DM Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-3); min-width: 48px; padding-top: 1px; flex-shrink: 0; }
-.beo-val  { color: var(--text-2); }
-.beo-val strong { color: var(--text-1); font-weight: 500; }
-.beo-empty { background:var(--bg-card); border:1px dashed var(--border-h); border-radius:12px; padding:36px 20px; text-align:center; }
-.beo-empty-icon { font-size:28px; margin-bottom:10px; opacity:0.4; }
-.beo-empty-title { font-family:'DM Mono',monospace; font-size:11px; color:var(--text-2); letter-spacing:0.5px; margin-bottom:6px; }
-.beo-empty-sub { font-size:11px; color:var(--text-3); line-height:1.6; }
-
-.flag { display: inline-flex; align-items: center; font-family: 'DM Mono', monospace; font-size: 8px; padding: 2px 5px; border-radius: 4px; background: var(--red-dim); color: var(--red); border: 1px solid rgba(220,80,80,0.18); margin-right: 3px; }
+.s { border-collapse: collapse; font-family: 'DM Mono', monospace; font-size: 11px; width: 100%; position: relative; }
+.s th, .s td { padding: 7px 6px; text-align: center; white-space: nowrap; }
+.s td.nm { text-align: left; padding-left: 0; font-size: 11px; }
+.s thead th {
+  font-size: 9px; letter-spacing: 0.07em; text-transform: uppercase;
+  color: #3A9A8A; border-bottom: 1px solid rgba(58,154,138,0.2);
+  padding-bottom: 6px; font-weight: 500;
+}
+.s thead th.tc { color: #fff; font-size: 10px; position: relative; z-index: 3; font-weight: 500; }
+.s td { color: #c8c8d8; border-bottom: 1px solid rgba(255,255,255,0.04); }
+[data-theme="light"] .s td { color: var(--text-2); }
+[data-theme="light"] .s thead th { color: #1D9E75; }
+.s td.tc { position: relative; z-index: 3; color: #5DCAA5; font-weight: 500; }
+.s td.off { opacity: 0.22; }
+.s td.tc.off { opacity: 0.3; color: var(--text-2); }
+.s tr.rr td {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding-top: 13px; padding-bottom: 3px;
+  text-align: left; padding-left: 0;
+  border: none; background: transparent;
+}
+.s tr.rr.rd td { color: #3A78B5; }
+.s tr.rr.rc td { color: #ff9f43; }
+.s tr.rr.rs td { color: #a29bfe; }
+.s tr.rr.rh td { color: #ff4da6; }
+.s tr.rd td.nm { color: #3A78B5; font-weight: 500; }
+.s tr.rc td.nm { color: #ff9f43; font-weight: 500; }
+.s tr.rs td.nm { color: #a29bfe; font-weight: 500; }
+.s tr.rh td.nm { color: #ff4da6; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -305,7 +274,6 @@ body {
 <!-- NAV -->
 <div class="sec" data-en="Quick Access" data-es="Acceso Rápido">Quick Access</div>
 <div class="nav-list">
-
   <a class="nav-tile t1" href="rundown.html">
     <div class="tile-icon">📋</div>
     <div class="tile-text">
@@ -314,7 +282,6 @@ body {
     </div>
     <div class="tile-arr">›</div>
   </a>
-
   <a class="nav-tile t2" href="menu.html">
     <div class="tile-icon">🍽</div>
     <div class="tile-text">
@@ -323,7 +290,6 @@ body {
     </div>
     <div class="tile-arr">›</div>
   </a>
-
   <a class="nav-tile t3" href="handbook.html">
     <div class="tile-icon">📖</div>
     <div class="tile-text">
@@ -332,7 +298,6 @@ body {
     </div>
     <div class="tile-arr">›</div>
   </a>
-
   <a class="nav-tile t4" href="rooms.html">
     <div class="tile-icon">🏛</div>
     <div class="tile-text">
@@ -341,38 +306,79 @@ body {
     </div>
     <div class="tile-arr">›</div>
   </a>
-
-
 </div>
 
-<!-- BEO -->
-<div class="sec" data-en="Today's Events" data-es="Eventos de Hoy">Today's Events</div>
-<div class="beo-wrap">
-
-  <div class="beo-live" data-en="Live · updated from BEO packet" data-es="En vivo · del paquete BEO">Live · updated from BEO packet</div>
-
-  <!-- ═══ SWAP ZONE START ═══ -->
-  <div class="beo-empty">
-    <div class="beo-empty-icon">📋</div>
-    <div class="beo-empty-title" data-en="No events loaded" data-es="Sin eventos cargados">No events loaded</div>
-    <div class="beo-empty-sub" data-en="BEO cards will appear here once today's packet is uploaded." data-es="Las tarjetas BEO aparecerán aquí cuando se cargue el paquete del día.">BEO cards will appear here once today's packet is uploaded.</div>
+<!-- STAFF SCHEDULE -->
+<div class="sec" data-en="Staff Schedule · Jun 6–12" data-es="Horario · 6–12 Jun">Staff Schedule · Jun 6–12</div>
+<div class="sched-wrap">
+  <div class="sched-live" data-en="Live · week of Jun 6, 2026" data-es="En vivo · semana del 6 Jun">Live · week of Jun 6, 2026</div>
+  <div class="tbl-outer" id="tblOuter">
+    <div class="today-box" id="todayBox"></div>
+    <div class="tbl-wrap" id="tblWrap">
+      <table class="s">
+        <thead>
+          <tr>
+            <th style="text-align:left;min-width:80px"></th>
+            <th id="col6">SAT 6</th>
+            <th id="col0" class="tc">SUN 7</th>
+            <th id="col1">MON 8</th>
+            <th id="col2">TUE 9</th>
+            <th id="col3">WED 10</th>
+            <th id="col4">THU 11</th>
+            <th id="col5">FRI 12</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="rr rd"><td colspan="8" data-en="Director of Event Ops" data-es="Director de Eventos">Director of Event Ops</td></tr>
+          <tr class="rd">
+            <td class="nm">Hector</td>
+            <td>8AM</td><td class="tc off">OFF</td><td class="off">OFF</td>
+            <td>CORINNE</td><td>7:30A</td><td>PTO</td><td>8AM</td>
+          </tr>
+          <tr class="rr rc"><td colspan="8" data-en="Banquet Captain" data-es="Capitán de Banquetes">Banquet Captain</td></tr>
+          <tr class="rc">
+            <td class="nm">Jason</td>
+            <td class="off">OFF</td><td class="tc off">OFF</td><td class="off">OFF</td>
+            <td>6A–1P</td><td>6:30–12</td><td class="off">OFF</td><td class="off">OFF</td>
+          </tr>
+          <tr class="rr rs"><td colspan="8" data-en="Servers" data-es="Meseros">Servers</td></tr>
+          <tr class="rs">
+            <td class="nm">Dylan</td>
+            <td class="off">—</td><td class="tc off">—</td><td class="off">—</td>
+            <td class="off">—</td><td>12P–7P</td><td class="off">—</td><td class="off">—</td>
+          </tr>
+          <tr class="rs">
+            <td class="nm">Francisco</td>
+            <td class="off">—</td><td class="tc off">—</td><td class="off">—</td>
+            <td>12P–7P</td><td>6:30–12</td><td class="off">—</td><td class="off">—</td>
+          </tr>
+          <tr class="rr rh"><td colspan="8" data-en="Housemen" data-es="Mozos">Housemen</td></tr>
+          <tr class="rh">
+            <td class="nm">Jamshid</td>
+            <td>10A–4P</td><td class="tc off">—</td><td class="off">—</td>
+            <td>12P–7P</td><td class="off">—</td><td class="off">—</td><td class="off">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <!-- ═══ SWAP ZONE END ═══ -->
-
 </div>
 
 <script>
   const mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const d=new Date(),h=d.getHours();
+  const d=new Date(), h=d.getHours();
   document.getElementById('date-chip').textContent=
     ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()]+' '+mo[d.getMonth()]+' '+d.getDate();
-  const gr={en:h<12?'Good morning,':h<17?'Good afternoon,':'Good evening,',es:h<12?'Buenos días,':h<17?'Buenas tardes,':'Buenas noches,'};
+  const gr={en:h<12?'Good morning,':h<17?'Good afternoon,':'Good evening,',
+            es:h<12?'Buenos días,':h<17?'Buenas tardes,':'Buenas noches,'};
+
   function setTheme(t){
     document.documentElement.setAttribute('data-theme',t);
     document.getElementById('tdk').classList.toggle('active',t==='dark');
     document.getElementById('tlt').classList.toggle('active',t==='light');
     localStorage.setItem('bb-theme',t);
   }
+
   function setLang(l){
     document.documentElement.setAttribute('data-lang',l);
     document.getElementById('len').classList.toggle('active',l==='en');
@@ -381,8 +387,36 @@ body {
     document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
     localStorage.setItem('bb-lang',l);
   }
+
+  /* ── TODAY BOX — measured from actual th at runtime ── */
+  const COL_MAP={0:'col0',1:'col1',2:'col2',3:'col3',4:'col4',5:'col5',6:'col6'};
+  const WS=new Date(2026,5,6), WE=new Date(2026,5,12);
+
+  function positionBox(){
+    const box=document.getElementById('todayBox');
+    const outer=document.getElementById('tblOuter');
+    const now=new Date();
+    const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    if(today<WS||today>WE){box.style.display='none';return;}
+    const colId=COL_MAP[today.getDay()];
+    if(!colId){box.style.display='none';return;}
+    const th=document.getElementById(colId);
+    if(!th||!outer){return;}
+    /* position relative to tbl-outer so it stays fixed as user scrolls */
+    const or=outer.getBoundingClientRect();
+    const tr=th.getBoundingClientRect();
+    box.style.display='block';
+    box.style.left=(tr.left-or.left+outer.scrollLeft)+'px';
+    box.style.width=tr.width+'px';
+  }
+
   setTheme(localStorage.getItem('bb-theme')||'dark');
   setLang(localStorage.getItem('bb-lang')||'en');
+
+  /* position after fonts load for accurate measurements */
+  if(document.fonts){document.fonts.ready.then(positionBox);}else{setTimeout(positionBox,300);}
+  window.addEventListener('resize',positionBox);
+  document.getElementById('tblOuter').addEventListener('scroll',positionBox);
 </script>
 </body>
 </html>
