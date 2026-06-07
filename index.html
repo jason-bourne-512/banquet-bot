@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark" data-lang="en">
 <head>
 <meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('bb-theme')||'dark';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.background=t==='dark'?'#09090c':'#f0ece3';})()</script>
 <style>html,body{background:#09090c;overscroll-behavior:none}[data-theme="light"] html,[data-theme="light"] body{background:#f0ece3!important}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <meta name="theme-color" content="#09090c">
@@ -101,6 +102,16 @@ body {
   width: 100%;
   transition: background 0.2s, color 0.2s;
   overscroll-behavior: none;
+  position: relative;
+}
+/* covers full viewport so Safari back-swipe never reveals white */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: -1;
+  pointer-events: none;
 }
 /* inner wrapper constrains content width */
 .page-wrap {

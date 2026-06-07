@@ -43,6 +43,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .header-controls{display:flex;align-items:center;gap:0.5rem}
 .ctrl-btn{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.06em;border:1px solid var(--border);border-radius:6px;padding:0.3rem 0.6rem;background:var(--surface2);color:var(--muted);cursor:pointer;transition:all 0.2s;white-space:nowrap}
 .ctrl-btn:hover{color:var(--text);border-color:rgba(255,255,255,0.2)}
+.toggle-group{display:flex;background:var(--surface2);border:1px solid var(--border);border-radius:7px;overflow:hidden}
+.tgl{padding:5px 8px;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:var(--muted);background:none;border:none;cursor:pointer;transition:background .12s,color .12s;line-height:1}
+.tgl.active{background:var(--surface);color:var(--text)}
+.tgl+.tgl{border-left:1px solid var(--border)}
 
 /* SEARCH */
 .search-wrap{padding:0.75rem 1rem 0}
@@ -142,7 +146,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
   <div class="header-controls">
     <button class="ctrl-btn" id="langBtn" onclick="toggleLang()">ES</button>
-    <button class="ctrl-btn" id="themeBtn" onclick="toggleTheme()">☀︎</button>
+    <div class="toggle-group">
+      <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
+      <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
+    </div>
   </div>
 </div>
 
@@ -610,13 +617,13 @@ function filterRooms(q){
 
 function setTheme(t){
   document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('tdk').classList.toggle('active',t==='dark');
+  document.getElementById('tlt').classList.toggle('active',t==='light');
   localStorage.setItem('bb-theme',t);
-  document.getElementById('themeBtn').textContent=t==='dark'?'☀︎':'☾';
   var bg=t==='dark'?'#09090c':'#f5f3ef';
   document.documentElement.style.background=bg;
   document.body.style.background=bg;
 }
-function toggleTheme(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')}
 
 function setLang(l){
   document.body.classList.toggle('lang-es',l==='es');
