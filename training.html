@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en" style="background:#09090c;background-color:#09090c">
+<head>
+<meta charset="UTF-8">
+  <style>:root,html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%;overscroll-behavior:none}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f0ece3!important;background-color:#f0ece3!important}[data-theme="light"] body::before{background:#f0ece3}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+<meta name="theme-color" content="#09090c">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0ece3">
+<title>Server Training — Banquet Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+:root {
+  --bg:#09090c; --bg-card:#111316; --bg-active:#181c26;
+  --border:rgba(255,255,255,0.06); --border-h:rgba(255,255,255,0.13);
+  --text-1:#edeae2; --text-2:#7e7b74; --text-3:#44423f; --text-4:#2e2c2a;
+  --accent:#c9a84c; --accent-dim:rgba(201,168,76,0.10);
+  --green:#2dbd80; --green-dim:rgba(45,189,128,0.10);
+  --blue:#4f8ef0; --blue-dim:rgba(79,142,240,0.10);
+  --red:#e05555; --red-dim:rgba(220,80,80,0.10);
+  --purple:#a06ee8; --purple-dim:rgba(160,110,232,0.10);
+  --header-bg:rgba(9,9,12,0.94);
+  --tog-bg:#16181e; --tog-border:rgba(255,255,255,0.08); --tog-act:rgba(255,255,255,0.07);
+  --divider:rgba(255,255,255,0.04); --stripe:rgba(255,255,255,0.014);
+}
+[data-theme="light"] {
+  --bg:#f0ece3; --bg-card:#faf7f2; --bg-active:#e8e2d6;
+  --border:rgba(0,0,0,0.07); --border-h:rgba(0,0,0,0.15);
+  --text-1:#18160f; --text-2:#6b6760; --text-3:#9e9a92; --text-4:#c0bbb2;
+  --accent:#9a7422; --accent-dim:rgba(154,116,34,0.09);
+  --green:#1a8f5e; --green-dim:rgba(26,143,94,0.09);
+  --blue:#2558c4; --blue-dim:rgba(37,88,196,0.09);
+  --red:#c03030; --red-dim:rgba(180,50,50,0.08);
+  --purple:#7c45c0; --purple-dim:rgba(124,69,192,0.09);
+  --header-bg:rgba(240,236,227,0.94);
+  --tog-bg:#e4dfd4; --tog-border:rgba(0,0,0,0.08); --tog-act:rgba(0,0,0,0.05);
+  --divider:rgba(0,0,0,0.05); --stripe:rgba(0,0,0,0.010);
+}
+html { background:var(--bg); min-height:100%; overflow-x:hidden; overscroll-behavior:none; }
+body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif; min-height:100vh; min-height:100dvh; width:100%; overflow-x:hidden; overscroll-behavior:none; }
+.page-wrap { max-width:480px; min-height:100vh; min-height:100dvh; margin:0 auto; background:var(--bg); }
+@media (orientation:landscape){ .page-wrap { max-width:100%; } }
+
+.header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--header-bg); backdrop-filter:blur(14px); z-index:20; gap:8px; }
+.brand { display:flex; align-items:center; gap:9px; flex-shrink:0; text-decoration:none; }
+.brand-icon { width:32px; height:32px; background:var(--accent-dim); border:1px solid var(--accent); border-radius:7px; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; color:var(--accent); }
+.brand-name { font-family:'Bebas Neue',sans-serif; font-size:19px; letter-spacing:1.5px; color:var(--text-1); line-height:1; }
+.brand-sub { font-family:'DM Mono',monospace; font-size:8px; color:var(--text-3); margin-top:1px; }
+.controls { display:flex; align-items:center; gap:5px; flex-shrink:0; }
+.toggle-group { display:flex; background:var(--tog-bg); border:1px solid var(--tog-border); border-radius:7px; overflow:hidden; }
+.tgl { padding:5px 8px; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; color:var(--text-3); background:none; border:none; cursor:pointer; transition:background .12s,color .12s; line-height:1; }
+.tgl.active { background:var(--tog-act); color:var(--text-1); }
+.tgl+.tgl { border-left:1px solid var(--tog-border); }
+
+.page-hero { padding:20px 16px 16px; border-bottom:1px solid var(--divider); position:relative; overflow:hidden; }
+.page-hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-55deg,var(--stripe) 0px,var(--stripe) 1px,transparent 1px,transparent 18px); pointer-events:none; }
+.page-eyebrow { font-family:'DM Mono',monospace; font-size:9px; color:var(--accent); letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+.page-title { font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:1px; color:var(--text-1); line-height:0.95; margin-bottom:6px; }
+.page-meta { font-family:'DM Mono',monospace; font-size:9px; color:var(--text-3); }
+
+.search-wrap { padding:12px 16px; background:var(--bg-card); border-bottom:1px solid var(--border); position:sticky; top:57px; z-index:15; }
+.search-input { width:100%; background:var(--bg); border:1px solid var(--border-h); border-radius:20px; padding:9px 14px 9px 36px; font-family:'Inter',sans-serif; font-size:13px; color:var(--text-1); outline:none; transition:border-color .15s; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b6259' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>"); background-repeat:no-repeat; background-position:12px center; }
+.search-input:focus { border-color:var(--accent); }
+.search-input::placeholder { color:var(--text-3); }
+.search-status { font-family:'DM Mono',monospace; font-size:9px; color:var(--text-3); text-align:center; padding:8px; display:none; }
+.search-status.show { display:block; }
+
+.sec { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-4); padding:16px 16px 8px; display:flex; align-items:center; gap:10px; }
+.sec::after { content:''; flex:1; height:1px; background:var(--divider); }
+
+.content-list { padding:0 16px 48px; display:flex; flex-direction:column; gap:8px; }
+.tr-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; overflow:hidden; border-left:3px solid var(--c-color,var(--accent)); }
+.tr-card.is-hidden { display:none; }
+.tr-head { padding:13px 14px 11px; display:flex; align-items:center; gap:10px; cursor:pointer; }
+.tr-icon { font-size:16px; flex-shrink:0; }
+.tr-title { font-size:13px; font-weight:600; color:var(--text-1); flex:1; line-height:1.3; }
+.tr-chevron { font-size:11px; color:var(--text-4); transition:transform .2s; flex-shrink:0; }
+.tr-card.open .tr-chevron { transform:rotate(90deg); }
+.tr-body { display:none; padding:0 14px 14px; }
+.tr-card.open .tr-body { display:block; }
+.tr-body p { font-size:12px; color:var(--text-2); line-height:1.65; margin-bottom:10px; }
+.tr-body p:last-child { margin-bottom:0; }
+.tr-body ul { padding-left:16px; margin-bottom:10px; }
+.tr-body li { font-size:12px; color:var(--text-2); line-height:1.65; margin-bottom:4px; }
+.tr-body strong { color:var(--text-1); font-weight:600; }
+.tr-body ol { padding-left:16px; margin-bottom:10px; }
+.tr-body ol li { font-size:12px; color:var(--text-2); line-height:1.65; margin-bottom:4px; }
+
+.tr-sub { margin-bottom:10px; }
+.tr-sub-title { font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--accent); margin-bottom:6px; padding-bottom:5px; border-bottom:1px solid var(--divider); }
+
+.note-box { background:var(--blue-dim); border:1px solid rgba(79,142,240,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.note-box p { color:var(--blue); font-size:11px; margin-bottom:0; }
+.warn-box { background:var(--red-dim); border:1px solid rgba(220,80,80,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.warn-box p { color:var(--red); font-size:11px; margin-bottom:0; }
+.tip-box { background:var(--green-dim); border:1px solid rgba(45,189,128,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.tip-box p { color:var(--green); font-size:11px; margin-bottom:0; }
+
+.gloss-table { width:100%; border-collapse:collapse; margin-bottom:4px; }
+.gloss-table tr { border-bottom:1px solid var(--divider); }
+.gloss-table tr:last-child { border-bottom:none; }
+.gloss-table td { padding:6px 4px; font-size:11px; line-height:1.5; vertical-align:top; }
+.gloss-table td:first-child { font-family:'DM Mono',monospace; font-size:10px; color:var(--accent); font-weight:500; width:38%; padding-right:8px; }
+.gloss-table td:last-child { color:var(--text-2); }
+
+.wine-table { width:100%; border-collapse:collapse; margin-bottom:4px; }
+.wine-table tr { border-bottom:1px solid var(--divider); }
+.wine-table tr:last-child { border-bottom:none; }
+.wine-table th { font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--text-3); padding:6px 4px; text-align:left; }
+.wine-table td { padding:5px 4px; font-size:11px; color:var(--text-2); line-height:1.4; vertical-align:top; }
+.wine-table td:first-child { font-weight:500; color:var(--text-1); }
+
+.step-list { list-style:none; padding:0; margin-bottom:10px; counter-reset:steps; }
+.step-list li { display:flex; gap:8px; align-items:flex-start; font-size:12px; color:var(--text-2); line-height:1.6; margin-bottom:6px; counter-increment:steps; }
+.step-list li::before { content:counter(steps); font-family:'DM Mono',monospace; font-size:9px; font-weight:500; color:var(--accent); background:var(--accent-dim); border:1px solid rgba(201,168,76,0.2); border-radius:4px; min-width:18px; height:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+
+.rule-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; padding:2px 7px; border-radius:4px; font-weight:500; margin-right:4px; }
+.rb-left { background:var(--green-dim); color:var(--green); }
+.rb-right { background:var(--blue-dim); color:var(--blue); }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<header class="header">
+  <a class="brand" href="index.html">
+    <div class="brand-icon">BB</div>
+    <div>
+      <div class="brand-name">Banquet Bot</div>
+      <div class="brand-sub">Westin Austin · The Domain</div>
+    </div>
+  </a>
+  <div class="controls">
+    <div class="toggle-group">
+      <button class="tgl active" id="len" onclick="setLang('en')">EN</button>
+      <button class="tgl"        id="les" onclick="setLang('es')">ES</button>
+    </div>
+    <div class="toggle-group">
+      <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
+      <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="page-eyebrow">Associate Certification · AUSDW</div>
+  <div class="page-title" data-en="Server Training" data-es="Capacitación de Servidor">Server Training</div>
+  <div class="page-meta" data-en="Banquet Server Standards · Service, Safety &amp; Wine" data-es="Estándares de Servidor de Banquetes · Servicio, Seguridad y Vino">Banquet Server Standards · Service, Safety &amp; Wine</div>
+</div>
+
+<div class="search-wrap">
+  <input class="search-input" type="text" id="trSearch"
+    placeholder="Search training topics…"
+    oninput="filterTraining(this.value)">
+  <div class="search-status" id="searchStatus"></div>
+</div>
+
+<div class="sec" data-en="Safety &amp; Conduct" data-es="Seguridad y Conducta">Safety &amp; Conduct</div>
+<div class="content-list">
+
+  <div class="tr-card" data-keywords="safety tips do not run spill fire extinguisher cpr choking" style="--c-color:var(--red)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">⚠️</span>
+      <div class="tr-title" data-en="Banquet Area Safety" data-es="Seguridad en el Área de Banquetes">Banquet Area Safety</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <ul>
+        <li><strong data-en="Do not run" data-es="No correr">Do not run.</strong></li>
+        <li data-en="Plan ahead — rushing leads to slips, falls, and injuries." data-es="Planifica con anticipación — apresurarse provoca resbalones y lesiones.">Plan ahead — rushing leads to slips, falls, and injuries.</li>
+        <li data-en="Don't ignore spills or problems. Discard broken glass properly, respect knives." data-es="No ignores derrames ni problemas. Desecha el vidrio roto correctamente, respeta los cuchillos.">Don't ignore spills or problems. Discard broken glass properly, respect knives.</li>
+        <li data-en="Never overload a serving tray — risk of wrist/shoulder injury and spilling hot food on guests." data-es="Nunca sobrecargues una bandeja — riesgo de lesión y de derramar comida caliente sobre los invitados.">Never overload a serving tray — risk of wrist/shoulder injury and spilling hot food on guests.</li>
+        <li data-en="Clean up spills immediately. If you can't, stand by the spill until help arrives." data-es="Limpia los derrames de inmediato. Si no puedes, quédate junto al derrame hasta que llegue ayuda.">Clean up spills immediately. If you can't, stand by the spill until help arrives.</li>
+        <li data-en="Pour coffee and hot liquids away from people." data-es="Vierte café y líquidos calientes alejado de las personas.">Pour coffee and hot liquids away from people.</li>
+        <li data-en="Keep your station neat — check lights, chairs, and flooring for hazards." data-es="Mantén tu estación ordenada — revisa luces, sillas y pisos en busca de peligros.">Keep your station neat — check lights, chairs, and flooring for hazards.</li>
+        <li data-en="Know the location of every fire extinguisher." data-es="Conoce la ubicación de cada extintor de incendios.">Know the location of every fire extinguisher.</li>
+        <li data-en="Know emergency procedures for fire and weather." data-es="Conoce los procedimientos de emergencia para incendios y clima severo.">Know emergency procedures for fire and weather.</li>
+        <li data-en="Know how to help a choking victim (CPR Poster)." data-es="Sabe cómo ayudar a una persona que se atraganta (Póster de RCP).">Know how to help a choking victim (CPR Poster).</li>
+        <li data-en="Report any suspicious activity to a manager." data-es="Reporta cualquier actividad sospechosa a un gerente.">Report any suspicious activity to a manager.</li>
+        <li data-en="Use extreme caution when entering and exiting doors." data-es="Usa extrema precaución al entrar y salir por puertas.">Use extreme caution when entering and exiting doors.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="unsanitary habits hygiene hands plates glasses utensils uniform" style="--c-color:var(--red)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🧼</span>
+      <div class="tr-title" data-en="Hygiene &amp; Unsanitary Habits" data-es="Higiene y Hábitos Antihigiénicos">Hygiene &amp; Unsanitary Habits</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="warn-box"><p data-en="These habits must be eliminated — they are universally unsafe even when common." data-es="Estos hábitos deben eliminarse — son inseguros aunque sean comunes.">These habits must be eliminated — they are universally unsafe even when common.</p></div>
+      <ul>
+        <li data-en="Never place fingers on top of a plate — always serve from the bottom." data-es="Nunca coloques los dedos en la parte superior de un plato — siempre sirve desde abajo.">Never place fingers on top of a plate — always serve from the bottom.</li>
+        <li data-en="Always carry glasses on trays, never in your hand." data-es="Siempre lleva los vasos en bandejas, nunca en la mano.">Always carry glasses on trays, never in your hand.</li>
+        <li data-en="Hold utensils at the bottom (handle end), not by the business end." data-es="Sostén los cubiertos por el mango, no por el extremo activo.">Hold utensils at the bottom (handle end), not by the business end.</li>
+        <li data-en="Don't stack glasses when clearing." data-es="No apiles vasos al recoger.">Don't stack glasses when clearing.</li>
+        <li data-en="Always use utensils when serving food — never bare hands." data-es="Siempre usa utensilios al servir comida — nunca con las manos desnudas.">Always use utensils when serving food — never bare hands.</li>
+        <li data-en="Always wash hands properly before serving." data-es="Siempre lávate las manos correctamente antes de servir.">Always wash hands properly before serving.</li>
+        <li data-en="Always arrive in clean, ironed uniform with groomed appearance." data-es="Siempre llega con uniforme limpio y planchado y apariencia cuidada.">Always arrive in clean, ironed uniform with groomed appearance.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="hand washing procedure handwashing steps wash hands" style="--c-color:var(--green)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🤲</span>
+      <div class="tr-title" data-en="Proper Hand Washing (WHO Method)" data-es="Lavado de Manos Correcto (Método OMS)">Proper Hand Washing (WHO Method)</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="tip-box"><p data-en="Duration: 40–60 seconds total." data-es="Duración: 40–60 segundos en total.">Duration: 40–60 seconds total.</p></div>
+      <ol class="step-list">
+        <li data-en="Wet hands with water." data-es="Moja las manos con agua.">Wet hands with water.</li>
+        <li data-en="Apply enough soap to cover all hand surfaces." data-es="Aplica suficiente jabón para cubrir todas las superficies de las manos.">Apply enough soap to cover all hand surfaces.</li>
+        <li data-en="Rub hands palm to palm." data-es="Frota las manos palma con palma.">Rub hands palm to palm.</li>
+        <li data-en="Right palm over left dorsum with interlaced fingers, and vice versa." data-es="Palma derecha sobre dorso izquierdo con dedos entrelazados, y viceversa.">Right palm over left dorsum with interlaced fingers, and vice versa.</li>
+        <li data-en="Palm to palm with fingers interlaced." data-es="Palma con palma con dedos entrelazados.">Palm to palm with fingers interlaced.</li>
+        <li data-en="Backs of fingers to opposing palms with fingers interlocked." data-es="Dorsos de los dedos contra palmas opuestas con dedos entrelazados.">Backs of fingers to opposing palms with fingers interlocked.</li>
+        <li data-en="Rotational rubbing of left thumb clasped in right palm, and vice versa." data-es="Frotado rotacional del pulgar izquierdo en la palma derecha, y viceversa.">Rotational rubbing of left thumb clasped in right palm, and vice versa.</li>
+        <li data-en="Rotational rubbing, backwards and forwards with clasped fingers of right hand in left palm, and vice versa." data-es="Frotado rotacional con dedos entrelazados de la mano derecha en la palma izquierda, y viceversa.">Rotational rubbing, backwards and forwards with clasped fingers of right hand in left palm, and vice versa.</li>
+        <li data-en="Rinse hands with water." data-es="Enjuaga las manos con agua.">Rinse hands with water.</li>
+        <li data-en="Dry hands thoroughly with a single-use towel." data-es="Seca las manos a fondo con una toalla de un solo uso.">Dry hands thoroughly with a single-use towel.</li>
+        <li data-en="Use towel to turn off faucet. Your hands are now safe." data-es="Usa la toalla para cerrar el grifo. Tus manos ahora están limpias.">Use towel to turn off faucet. Your hands are now safe.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="teamwork breakette banquet setup fellow service staff team" style="--c-color:var(--green)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🤝</span>
+      <div class="tr-title" data-en="Teamwork" data-es="Trabajo en Equipo">Teamwork</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <p data-en="Teamwork is the way we operate. No one individual can make a guest's entire stay satisfactory — it takes everyone. Help teammates when possible and ask for help when needed." data-es="El trabajo en equipo es como operamos. Ninguna persona puede hacer que la estancia de un huésped sea completamente satisfactoria — se necesita de todos. Ayuda a tus compañeros cuando sea posible y pide ayuda cuando la necesites.">Teamwork is the way we operate. No one individual can make a guest's entire stay satisfactory — it takes everyone. Help teammates when possible and ask for help when needed.</p>
+      <table class="gloss-table">
+        <tr><td data-en="Breakette" data-es="Breakette">Breakette</td><td data-en="Keep coffee break areas restocked and equipment clean and polished." data-es="Mantén las áreas de descanso de café abastecidas y el equipo limpio y pulido.">Keep coffee break areas restocked and equipment clean and polished.</td></tr>
+        <tr><td data-en="Banquet Setup" data-es="Montaje de Banquetes">Banquet Setup</td><td data-en="Stay in contact with the house person on your shift — communicate room breaks, guest needs, and changes." data-es="Mantente en contacto con el personal de limpieza de tu turno — comunica interrupciones de sala, necesidades de huéspedes y cambios.">Stay in contact with the house person on your shift — communicate room breaks, guest needs, and changes.</td></tr>
+        <tr><td data-en="Fellow Staff" data-es="Compañeros">Fellow Staff</td><td data-en="Lend a hand whenever you can. If you see a fellow associate struggling, stop and help." data-es="Ayuda siempre que puedas. Si ves a un compañero con dificultades, detente y ayuda.">Lend a hand whenever you can. If you see a fellow associate struggling, stop and help.</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="sec" data-en="Service Standards" data-es="Estándares de Servicio">Service Standards</div>
+<div class="content-list">
+
+  <div class="tr-card" data-keywords="order of service plated meal left right clockwise ladies first serve clear" style="--c-color:var(--accent)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🍽️</span>
+      <div class="tr-title" data-en="Order of Service" data-es="Orden de Servicio">Order of Service</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="note-box"><p data-en="These rules apply to all plated meal events. Each server starts the same course at the same Guest at each table." data-es="Estas reglas aplican a todos los eventos de comida servida en plato. Cada servidor comienza el mismo plato con el mismo huésped en cada mesa.">These rules apply to all plated meal events. Each server starts the same course at the same Guest at each table.</p></div>
+      <div class="tr-sub">
+        <div class="tr-sub-title" data-en="Key Rules" data-es="Reglas Clave">Key Rules</div>
+        <ul>
+          <li><span class="rule-badge rb-left">LEFT</span> <span data-en="Food is served from guest's left with left hand." data-es="La comida se sirve por el lado izquierdo del huésped con la mano izquierda.">Food is served from guest's left with left hand.</span></li>
+          <li><span class="rule-badge rb-right">RIGHT</span> <span data-en="All beverages served from guest's right with right hand." data-es="Todas las bebidas se sirven por el lado derecho del huésped con la mano derecha.">All beverages served from guest's right with right hand.</span></li>
+          <li><span class="rule-badge rb-right">RIGHT</span> <span data-en="All food/beverage (except bread &amp; butter plates) cleared from guest's right." data-es="Toda la comida/bebida (excepto platos de pan y mantequilla) se retira por el lado derecho del huésped.">All food/beverage (except bread &amp; butter plates) cleared from guest's right.</span></li>
+          <li data-en="Walk clockwise around the table when serving." data-es="Camina en sentido horario alrededor de la mesa al servir.">Walk clockwise around the table when serving.</li>
+          <li data-en="Service starts at the 12:00 chair." data-es="El servicio comienza en la silla de las 12:00.">Service starts at the 12:00 chair.</li>
+          <li data-en="Ladies are served first, then remaining guests." data-es="Las damas se sirven primero, luego los demás huéspedes.">Ladies are served first, then remaining guests.</li>
+          <li data-en="Salad dressings cleared from left side before entrée." data-es="Los aderezos de ensalada se retiran por el lado izquierdo antes del plato principal.">Salad dressings cleared from left side before entrée.</li>
+        </ul>
+      </div>
+      <div class="tr-sub">
+        <div class="tr-sub-title" data-en="Sequence" data-es="Secuencia">Sequence</div>
+        <ul>
+          <li data-en="Greet guests at door; assist with seating and napkins." data-es="Saluda a los huéspedes en la puerta; ayuda con asientos y servilletas.">Greet guests at door; assist with seating and napkins.</li>
+          <li data-en="Tray stands brought in after guests are seated." data-es="Los soportes de bandeja se traen después de que los huéspedes están sentados.">Tray stands brought in after guests are seated.</li>
+          <li data-en="Front &amp; back server pick up first course; front server serves while back server runs more food." data-es="El servidor frontal y trasero recogen el primer plato; el frontal sirve mientras el trasero trae más comida.">Front &amp; back server pick up first course; front server serves while back server runs more food.</li>
+          <li data-en="Bread &amp; butter plates and knives cleared from left before dessert." data-es="Platos y cuchillos de pan y mantequilla se retiran por la izquierda antes del postre.">Bread &amp; butter plates and knives cleared from left before dessert.</li>
+          <li data-en="Cream and sugar served; coffee cup and saucer from guest's right." data-es="Se sirven crema y azúcar; taza de café y platillo desde el lado derecho del huésped.">Cream and sugar served; coffee cup and saucer from guest's right.</li>
+          <li data-en="Dessert served from guest's left; cleared from right." data-es="El postre se sirve por el lado izquierdo del huésped; se retira por el derecho.">Dessert served from guest's left; cleared from right.</li>
+          <li data-en="After-dinner mints passed or placed on table. Thank guests as they leave." data-es="Mentas de sobremesa pasadas o colocadas en la mesa. Agradece a los huéspedes al retirarse.">After-dinner mints passed or placed on table. Thank guests as they leave.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="breakfast standards buffet plated juice coffee tea bread" style="--c-color:var(--accent)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🌅</span>
+      <div class="tr-title" data-en="Breakfast Standards" data-es="Estándares de Desayuno">Breakfast Standards</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="tr-sub">
+        <div class="tr-sub-title">Buffet</div>
+        <ul>
+          <li data-en="Toasters recommended where bagels or toast are served." data-es="Se recomiendan tostadoras donde se sirven bagels o pan tostado.">Toasters recommended where bagels or toast are served.</li>
+          <li data-en="Juices offered at buffet table AND tableside by servers." data-es="Jugos ofrecidos en la mesa de buffet Y en la mesa por los servidores.">Juices offered at buffet table AND tableside by servers.</li>
+        </ul>
+      </div>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Plated</div>
+        <ul>
+          <li data-en="Juices offered tableside upon seating." data-es="Jugos ofrecidos en la mesa al sentarse.">Juices offered tableside upon seating.</li>
+          <li data-en="Breakfast breads pre-set before doors open. Two baskets per table. Pre-set butter, margarine, preserves, cream, and sugar." data-es="Los panes de desayuno se pre-colocan antes de abrir las puertas. Dos cestas por mesa. Pre-coloca mantequilla, margarina, mermeladas, crema y azúcar.">Breakfast breads pre-set before doors open. Two baskets per table. Pre-set butter, margarine, preserves, cream, and sugar.</li>
+        </ul>
+      </div>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Coffee Service</div>
+        <ul>
+          <li data-en="Pre-set all coffee cups and saucers. Offer and pour as guests are seated." data-es="Pre-coloca todas las tazas y platillos de café. Ofrece y sirve cuando los huéspedes están sentados.">Pre-set all coffee cups and saucers. Offer and pour as guests are seated.</li>
+          <li data-en="Regular coffee pots may be pre-set for refills. Decaf and tea available on request." data-es="Las cafeteras regulares pueden pre-colocarse para recargas. Descafeinado y té disponibles bajo pedido.">Regular coffee pots may be pre-set for refills. Decaf and tea available on request.</li>
+          <li data-en="Always have coffee and juices available throughout the meal. Juices always poured tableside." data-es="Siempre ten café y jugos disponibles durante toda la comida. Los jugos siempre se sirven en la mesa.">Always have coffee and juices available throughout the meal. Juices always poured tableside.</li>
+        </ul>
+      </div>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Tea Service</div>
+        <ul>
+          <li data-en="Present tea box with 8 selections or china plate with 4. Hot water in tea pots." data-es="Presenta caja de té con 8 selecciones o plato de porcelana con 4. Agua caliente en teteras.">Present tea box with 8 selections or china plate with 4. Hot water in tea pots.</li>
+          <li data-en="Do not steep tea — let the guest do it unless they request otherwise." data-es="No infundes el té — deja que el huésped lo haga a menos que solicite lo contrario.">Do not steep tea — let the guest do it unless they request otherwise.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="plated lunch dinner bread first course soup salad vegetarian alternative" style="--c-color:var(--accent)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🍱</span>
+      <div class="tr-title" data-en="Plated Lunch &amp; Dinner Standards" data-es="Estándares de Almuerzo y Cena Servidos en Plato">Plated Lunch &amp; Dinner Standards</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="tr-sub">
+        <div class="tr-sub-title">Bread Service</div>
+        <ul>
+          <li data-en="Bread is always the FIRST course — unless soup is en croute." data-es="El pan siempre es el PRIMER plato — a menos que la sopa esté en croute.">Bread is always the FIRST course — unless soup is en croute.</li>
+          <li data-en="Two bread baskets pre-set; minimum 3 varieties; 1.5 pieces per guest." data-es="Dos cestas de pan pre-colocadas; mínimo 3 variedades; 1.5 piezas por huésped.">Two bread baskets pre-set; minimum 3 varieties; 1.5 pieces per guest.</li>
+          <li data-en="Bread may be warm — never held in a hot box. A room-temp roll beats a poorly held warm roll." data-es="El pan puede estar caliente — nunca guardado en una caja caliente. Un panecillo a temperatura ambiente supera a uno mal conservado.">Bread may be warm — never held in a hot box. A room-temp roll beats a poorly held warm roll.</li>
+          <li data-en="Butter and margarine must be pre-set." data-es="La mantequilla y la margarina deben estar pre-colocadas.">Butter and margarine must be pre-set.</li>
+        </ul>
+      </div>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Key Rules</div>
+        <ul>
+          <li data-en="Beverages offered as soon as guests are seated." data-es="Las bebidas se ofrecen tan pronto como los huéspedes están sentados.">Beverages offered as soon as guests are seated.</li>
+          <li data-en="Appetizers are a course — not pre-set unless on the BEO." data-es="Los aperitivos son un plato — no se pre-colocan a menos que estén en el BEO.">Appetizers are a course — not pre-set unless on the BEO.</li>
+          <li data-en="No saltine crackers with soup. Use specialty crackers that match." data-es="Sin galletas saladas con la sopa. Usa galletas especiales que combinen.">No saltine crackers with soup. Use specialty crackers that match.</li>
+          <li data-en="Always check BEO for vegetarian or alternative meal requests." data-es="Siempre verifica el BEO para solicitudes de comidas vegetarianas o alternativas.">Always check BEO for vegetarian or alternative meal requests.</li>
+          <li data-en="Service and clearing of each course on signal from the Captain." data-es="El servicio y retiro de cada plato se hace a la señal del Capitán.">Service and clearing of each course on signal from the Captain.</li>
+          <li data-en="If a program follows dinner, assign a server to remain. Remove all trays and stands before the program begins." data-es="Si un programa sigue a la cena, asigna un servidor para quedarse. Retira todas las bandejas y soportes antes de que comience el programa.">If a program follows dinner, assign a server to remain. Remove all trays and stands before the program begins.</li>
+        </ul>
+      </div>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Dinner — After Entrée</div>
+        <ul>
+          <li data-en="Clear entrée, bread &amp; butter plate, S&amp;P. Move dessert fork and coffee spoon into place setting." data-es="Retira el plato principal, el plato de pan y mantequilla, sal y pimienta. Mueve el tenedor de postre y la cuchara de café al lugar de servicio.">Clear entrée, bread &amp; butter plate, S&amp;P. Move dessert fork and coffee spoon into place setting.</li>
+          <li data-en="Deliver cream and sugar → place cup and saucer as one piece → pour coffee → serve dessert." data-es="Entrega crema y azúcar → coloca la taza y el platillo como una sola pieza → sirve el café → sirve el postre.">Deliver cream and sugar → place cup and saucer as one piece → pour coffee → serve dessert.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="coffee break continental standards setup 30 minutes 90 minutes max holding cream skim airpot" style="--c-color:var(--accent)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">☕</span>
+      <div class="tr-title" data-en="Coffee Break / Continental Standards" data-es="Estándares de Descanso de Café / Continental">Coffee Break / Continental Standards</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="tip-box"><p data-en="Set up 15 min before contracted start time. Max coffee holding time: 90 minutes." data-es="Configura 15 min antes de la hora de inicio contratada. Tiempo máximo de retención de café: 90 minutos.">Set up 15 min before contracted start time. Max coffee holding time: 90 minutes.</p></div>
+      <ul>
+        <li data-en="Mineral waters served chilled." data-es="Aguas minerales servidas frías.">Mineral waters served chilled.</li>
+        <li data-en="Ice in spotlessly clean bucket with clean plastic or metal scoop." data-es="Hielo en cubeta perfectamente limpia con cuchara de plástico o metal limpia.">Ice in spotlessly clean bucket with clean plastic or metal scoop.</li>
+        <li data-en="Coffee urns must be cleaned and polished — daily rinsing is not enough." data-es="Las urnas de café deben limpiarse y pulirse — el enjuague diario no es suficiente.">Coffee urns must be cleaned and polished — daily rinsing is not enough.</li>
+        <li data-en="Standard: coffee mugs. VIP events: cups with saucers, stacked no more than 3 high." data-es="Estándar: tazas de café. Eventos VIP: tazas con platillos, apiladas no más de 3 en alto.">Standard: coffee mugs. VIP events: cups with saucers, stacked no more than 3 high.</li>
+        <li data-en="Cream standard: half &amp; half AND skim milk, clearly labeled in thermal servers." data-es="Estándar de crema: mitad &amp; mitad Y leche descremada, claramente etiquetadas en servidores térmicos.">Cream standard: half &amp; half AND skim milk, clearly labeled in thermal servers.</li>
+        <li data-en="Place a torn sugar packet in the trash container to indicate its purpose." data-es="Coloca un sobre de azúcar rasgado en el contenedor de basura para indicar su propósito.">Place a torn sugar packet in the trash container to indicate its purpose.</li>
+        <li data-en="Provide a location for guests to deposit dirty dishes — clear it frequently." data-es="Proporciona un lugar para que los huéspedes depositen los platos sucios — recógelos con frecuencia.">Provide a location for guests to deposit dirty dishes — clear it frequently.</li>
+        <li data-en="Never add fresh coffee to old coffee. Always empty, rinse, refill." data-es="Nunca agregues café fresco al café viejo. Siempre vacía, enjuaga, vuelve a llenar.">Never add fresh coffee to old coffee. Always empty, rinse, refill.</li>
+        <li data-en="Breaks for 50+ guests must be double-sided or have multiple setups." data-es="Los descansos para 50+ huéspedes deben ser de doble lado o tener múltiples configuraciones.">Breaks for 50+ guests must be double-sided or have multiple setups.</li>
+        <li data-en="Fruit preserves, jams, and honey in individual servings only." data-es="Mermeladas, jaleas y miel solo en porciones individuales.">Fruit preserves, jams, and honey in individual servings only.</li>
+        <li data-en="When attending a room during a break, restock Clutter-Free business setting and tidy trash." data-es="Al atender una sala durante un descanso, reabastece la configuración de negocios sin desorden y ordena la basura.">When attending a room during a break, restock Clutter-Free business setting and tidy trash.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="napkin placement fold refold center table salt pepper cream sugar bread baskets flatware glassware" style="--c-color:var(--accent)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🍴</span>
+      <div class="tr-title" data-en="Table Setup: Napkins, Flatware &amp; Glassware" data-es="Montaje de Mesa: Servilletas, Cubiertos y Cristalería">Table Setup: Napkins, Flatware &amp; Glassware</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="tr-sub">
+        <div class="tr-sub-title">Napkins</div>
+        <ul>
+          <li data-en="Never place in a glass or cup." data-es="Nunca coloques en un vaso o taza.">Never place in a glass or cup.</li>
+          <li data-en="Place on base plate, between forks and knives, or across top of place setting." data-es="Coloca en el plato base, entre los tenedores y cuchillos, o sobre la parte superior del lugar de servicio.">Place on base plate, between forks and knives, or across top of place setting.</li>
+          <li data-en="If a guest gets up mid-service, refold napkin and tidy the place setting." data-es="Si un huésped se levanta a mitad del servicio, dobla de nuevo la servilleta y ordena el lugar de servicio.">If a guest gets up mid-service, refold napkin and tidy the place setting.</li>
+        </ul>
+      </div>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Center of Table</div>
+        <ul>
+          <li data-en="All settings oriented to the north wall and the 12:00 chair." data-es="Todas las configuraciones orientadas hacia la pared norte y la silla de las 12:00.">All settings oriented to the north wall and the 12:00 chair.</li>
+          <li data-en="Salt on right, pepper on left (as guest faces it). Cream behind salt; sugar behind pepper." data-es="Sal a la derecha, pimienta a la izquierda (como el huésped lo ve). Crema detrás de la sal; azúcar detrás de la pimienta.">Salt on right, pepper on left (as guest faces it). Cream behind salt; sugar behind pepper.</li>
+          <li data-en="Bread baskets pre-set at 1:00 and 7:00." data-es="Cestas de pan pre-colocadas a la 1:00 y 7:00.">Bread baskets pre-set at 1:00 and 7:00.</li>
+          <li data-en="Butter and margarine dishes at 3:00 and 9:00. Two dishes per table." data-es="Platos de mantequilla y margarina a las 3:00 y 9:00. Dos platos por mesa.">Butter and margarine dishes at 3:00 and 9:00. Two dishes per table.</li>
+        </ul>
+      </div>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Flatware</div>
+        <ul>
+          <li data-en="All flatware cleaned, polished, and wiped before setting. Handle by handles only." data-es="Todos los cubiertos limpios, pulidos y limpiados antes de colocar. Solo maneja por los mangos.">All flatware cleaned, polished, and wiped before setting. Handle by handles only.</li>
+          <li data-en="Set ½ inch from edge of table, straight. Square alignment per place setting." data-es="Coloca a ½ pulgada del borde de la mesa, recto. Alineación cuadrada por lugar de servicio.">Set ½ inch from edge of table, straight. Square alignment per place setting.</li>
+          <li data-en="Max 3 pieces per side. If more needed, bring additional flatware with the relevant course." data-es="Máximo 3 piezas por lado. Si se necesitan más, trae cubiertos adicionales con el plato correspondiente.">Max 3 pieces per side. If more needed, bring additional flatware with the relevant course.</li>
+          <li data-en="Dessert fork at top, handle left. Coffee spoon above it, handle right." data-es="Tenedor de postre arriba, mango a la izquierda. Cuchara de café encima, mango a la derecha.">Dessert fork at top, handle left. Coffee spoon above it, handle right.</li>
+          <li data-en="If a utensil is dropped, replace it BEFORE picking it up." data-es="Si se cae un utensilio, reemplázalo ANTES de recogerlo.">If a utensil is dropped, replace it BEFORE picking it up.</li>
+        </ul>
+      </div>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Glassware</div>
+        <ul>
+          <li data-en="Handle only by base or stem. Inspect for chips and cracks." data-es="Solo maneja por la base o el tallo. Inspecciona en busca de astillas y grietas.">Handle only by base or stem. Inspect for chips and cracks.</li>
+          <li data-en="Water glass above tip of inside knife. Wine glasses at 45° angle below water glass." data-es="Vaso de agua sobre la punta del cuchillo interior. Copas de vino en ángulo de 45° debajo del vaso de agua.">Water glass above tip of inside knife. Wine glasses at 45° angle below water glass.</li>
+          <li data-en="Max 4 glasses per setting (including water). Never lift glassware when pouring." data-es="Máximo 4 vasos por lugar de servicio (incluyendo agua). Nunca levantes la cristalería al servir.">Max 4 glasses per setting (including water). Never lift glassware when pouring.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="clearing tray standards clear plates scrape noise three settings flatware stacking" style="--c-color:var(--accent)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🗂️</span>
+      <div class="tr-title" data-en="Clearing Tray Standards" data-es="Estándares de Retiro en Bandeja">Clearing Tray Standards</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="warn-box"><p data-en="Goal: minimize noise and keep trays tidy. Never scrape food onto the tray or stack dishes in front of guests." data-es="Objetivo: minimizar el ruido y mantener las bandejas ordenadas. Nunca raspes comida en la bandeja ni apiles platos frente a los huéspedes.">Goal: minimize noise and keep trays tidy. Never scrape food onto the tray or stack dishes in front of guests.</p></div>
+      <ul>
+        <li data-en="No more than 3 place settings cleared at a time." data-es="No más de 3 lugares de servicio se retiran a la vez.">No more than 3 place settings cleared at a time.</li>
+        <li data-en="Place similar flatware together to help the dish room." data-es="Coloca cubiertos similares juntos para ayudar al lavaplatos.">Place similar flatware together to help the dish room.</li>
+        <li data-en="Food cleared onto a plate in the CENTER of the tray — never directly onto the tray." data-es="Comida retirada a un plato en el CENTRO de la bandeja — nunca directamente en la bandeja.">Food cleared onto a plate in the CENTER of the tray — never directly onto the tray.</li>
+        <li data-en="Don't overload trays. Lift with knees, not your back." data-es="No sobrecargues las bandejas. Levanta con las rodillas, no con la espalda.">Don't overload trays. Lift with knees, not your back.</li>
+        <li data-en="Coffee pots, water pitchers, and wine bottles should never be on trays." data-es="Las cafeteras, las jarras de agua y las botellas de vino nunca deben estar en las bandejas.">Coffee pots, water pitchers, and wine bottles should never be on trays.</li>
+        <li data-en="China and glassware must be cleared to separate trays." data-es="La porcelana y la cristalería deben retirarse en bandejas separadas.">China and glassware must be cleared to separate trays.</li>
+        <li data-en="Plate covers never used during clearing." data-es="Las tapas de platos nunca se usan durante el retiro.">Plate covers never used during clearing.</li>
+      </ul>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Clearing B&amp;B Plates</div>
+        <p data-en="Stand between and slightly behind two guests. Clear the left guest's entrée from the right with your right hand → transfer to left hand → clear that guest's B&B plate from the left with your left hand → transfer to entrée plate in your right hand." data-es="Párate entre y ligeramente detrás de dos huéspedes. Retira el plato principal del huésped izquierdo por la derecha con tu mano derecha → transfiere a la mano izquierda → retira el plato de pan y mantequilla de ese huésped por la izquierda con tu mano izquierda → transfiere al plato principal en tu mano derecha.">Stand between and slightly behind two guests. Clear the left guest's entrée from the right with your right hand → transfer to left hand → clear that guest's B&amp;B plate from the left with your left hand → transfer to entrée plate in your right hand.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="tray stands supply landing stand room bring out" style="--c-color:var(--accent)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🪜</span>
+      <div class="tr-title" data-en="Tray Stands" data-es="Soportes de Bandeja">Tray Stands</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <ul>
+        <li data-en="Tray stands go into the room AFTER guests are seated." data-es="Los soportes de bandeja van a la sala DESPUÉS de que los huéspedes estén sentados.">Tray stands go into the room AFTER guests are seated.</li>
+        <li data-en="Bring 2–3 stands and 2–4 trays when you first set up." data-es="Trae 2–3 soportes y 2–4 bandejas cuando configures por primera vez.">Bring 2–3 stands and 2–4 trays when you first set up.</li>
+      </ul>
+      <table class="gloss-table">
+        <tr><td>Supply Stand</td><td data-en="Trays upside down on the stand, top one right-side up to hold wine, water pitchers, etc." data-es="Bandejas boca abajo en el soporte, la de arriba boca arriba para sostener vino, jarras de agua, etc.">Trays upside down on the stand, top one right-side up to hold wine, water pitchers, etc.</td></tr>
+        <tr><td>Landing Stand</td><td data-en="Always kept clear so an available landing tray is ready. No top tray stacked over an upside-down one." data-es="Siempre mantenido libre para que una bandeja de aterrizaje esté lista. No se apila una bandeja encima de una boca abajo.">Always kept clear so an available landing tray is ready. No top tray stacked over an upside-down one.</td></tr>
+      </table>
+      <div class="warn-box"><p data-en="Always bend at the knees when lifting — never the back." data-es="Siempre dobla las rodillas al levantar — nunca la espalda.">Always bend at the knees when lifting — never the back.</p></div>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="friendly service attentiveness greeting welcome guest chair napkin departure decorum" style="--c-color:var(--green)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">😊</span>
+      <div class="tr-title" data-en="Friendly Service &amp; Attentiveness" data-es="Servicio Amable y Atención">Friendly Service &amp; Attentiveness</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <ul>
+        <li data-en='Greet entering guests: "Good morning/afternoon/evening, welcome to the Westin Austin at The Domain."' data-es='Saluda a los huéspedes que entran: "Buenos días/tardes/noches, bienvenido al Westin Austin at The Domain."'>Greet entering guests: "Good morning/afternoon/evening, welcome to the Westin Austin at The Domain."</li>
+        <li data-en="Help guest with chair, open napkin, welcome to event." data-es="Ayuda al huésped con la silla, abre la servilleta, da la bienvenida al evento.">Help guest with chair, open napkin, welcome to event.</li>
+        <li data-en="Introduce yourself and your partner once the table is seated. Describe menu and invite special requests." data-es="Preséntate a ti mismo y a tu compañero una vez que la mesa esté sentada. Describe el menú e invita a solicitudes especiales.">Introduce yourself and your partner once the table is seated. Describe menu and invite special requests.</li>
+        <li data-en="Thank guests as they leave and wish them a good day/evening." data-es="Agradece a los huéspedes al salir y deséales un buen día/noche.">Thank guests as they leave and wish them a good day/evening.</li>
+      </ul>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Decorum on the Floor</div>
+        <ul>
+          <li data-en="Work quietly. Don't call out to other associates." data-es="Trabaja en silencio. No llames a otros empleados.">Work quietly. Don't call out to other associates.</li>
+          <li data-en="Do not speak to a customer in another language unless they initiate it." data-es="No hables a un cliente en otro idioma a menos que él lo inicie.">Do not speak to a customer in another language unless they initiate it.</li>
+          <li data-en="Do not chew gum or eat while on duty." data-es="No mastiques chicle ni comas mientras estés de servicio.">Do not chew gum or eat while on duty.</li>
+          <li data-en="The guest ALWAYS has the right of way." data-es="El huésped SIEMPRE tiene el derecho de paso.">The guest ALWAYS has the right of way.</li>
+          <li data-en="Food complaint? Remove and replace immediately. Inform the captain." data-es="¿Queja sobre la comida? Retira y reemplaza de inmediato. Informa al capitán.">Food complaint? Remove and replace immediately. Inform the captain.</li>
+          <li data-en="Accidents involving guests: offer soda water and a clean napkin first, then notify the captain." data-es="Accidentes con huéspedes: ofrece agua con gas y una servilleta limpia primero, luego notifica al capitán.">Accidents involving guests: offer soda water and a clean napkin first, then notify the captain.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="passing hors d'oeuvres butler style white gloves bev nap one bite" style="--c-color:var(--accent)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🥂</span>
+      <div class="tr-title" data-en="Passing Hors d'Oeuvres" data-es="Pasando Entremeses">Passing Hors d'Oeuvres</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <ul>
+        <li data-en="Carry plate, platter, or tray in white-gloved hands. Offer a bev-nap to each guest." data-es="Lleva el plato, bandeja o charola con guantes blancos. Ofrece una servilleta de coctel a cada huésped.">Carry plate, platter, or tray in white-gloved hands. Offer a bev-nap to each guest.</li>
+        <li data-en="Food must be one-to-two bite size. No toothpicks, frill picks, bones, or stems." data-es="La comida debe ser de uno a dos bocados. Sin palillos, picks decorativos, huesos ni tallos.">Food must be one-to-two bite size. No toothpicks, frill picks, bones, or stems.</li>
+        <li data-en="Servers must be able to name every item and its ingredients." data-es="Los servidores deben poder nombrar cada elemento y sus ingredientes.">Servers must be able to name every item and its ingredients.</li>
+        <li data-en="Sauces generally should not be offered alongside passed items to keep service clean." data-es="Las salsas generalmente no deben ofrecerse junto con los elementos pasados para mantener el servicio limpio.">Sauces generally should not be offered alongside passed items to keep service clean.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="sec" data-en="BEO" data-es="BEO">BEO</div>
+<div class="content-list">
+
+  <div class="tr-card" data-keywords="how to read beo banquet event order group name guarantee set contact date location menu" style="--c-color:var(--blue)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">📋</span>
+      <div class="tr-title" data-en="How to Read a BEO" data-es="Cómo Leer un BEO">How to Read a BEO</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <p data-en="Banquet Event Order — lists all information needed to carry out a function (food, beverage, room arrangements). Distributed to the host/meeting planner and all involved hotel staff." data-es="Orden de Evento de Banquete — lista toda la información necesaria para llevar a cabo una función (comida, bebidas, arreglos del salón). Se distribuye al anfitrión/planificador de eventos y a todo el personal del hotel involucrado.">Banquet Event Order — lists all information needed to carry out a function (food, beverage, room arrangements). Distributed to the host/meeting planner and all involved hotel staff.</p>
+      <table class="gloss-table">
+        <tr><td>A — Day/Date</td><td data-en="Always double-check date and day match." data-es="Siempre verifica que la fecha y el día coincidan.">Always double-check date and day match.</td></tr>
+        <tr><td>B — Group Name</td><td data-en="May differ from posting info." data-es="Puede diferir de la información publicada.">May differ from posting info.</td></tr>
+        <tr><td>C — Reader Board</td><td data-en="Name as it appears on daily/weekly event sheets." data-es="Nombre como aparece en las hojas de eventos diarias/semanales.">Name as it appears on daily/weekly event sheets.</td></tr>
+        <tr><td>D — BEO File #</td><td data-en="Quick ID of the BEO." data-es="ID rápido del BEO.">Quick ID of the BEO.</td></tr>
+        <tr><td>G — Contact</td><td data-en="Individual in charge of the group." data-es="Persona a cargo del grupo.">Individual in charge of the group.</td></tr>
+        <tr><td>K — Guarantee</td><td data-en="Guests confirmed within 72 hours. Minimum charge number." data-es="Huéspedes confirmados dentro de las 72 horas. Número mínimo de cargo.">Guests confirmed within 72 hours. Minimum charge number.</td></tr>
+        <tr><td>L — Set</td><td data-en="Covers to prepare — includes overset above guarantee." data-es="Cubiertos a preparar — incluye el excedente sobre la garantía.">Covers to prepare — includes overset above guarantee.</td></tr>
+        <tr><td>M — Time</td><td data-en="Must specify start AND end time." data-es="Debe especificar hora de inicio Y de fin.">Must specify start AND end time.</td></tr>
+        <tr><td>O — Location</td><td data-en="Where the event takes place. Note outdoor functions and backup rooms." data-es="Dónde se lleva a cabo el evento. Nota las funciones al aire libre y las salas de respaldo.">Where the event takes place. Note outdoor functions and backup rooms.</td></tr>
+        <tr><td>P — Menu</td><td data-en="All food and beverage items for the function." data-es="Todos los elementos de comida y bebida para la función.">All food and beverage items for the function.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="pre function briefing captain manager inspection uniform station assignments menu wine bar" style="--c-color:var(--blue)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">📢</span>
+      <div class="tr-title" data-en="Foyer Briefing (Pre-Function)" data-es="Briefing en el Foyer (Pre-Función)">Foyer Briefing (Pre-Function)</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <p data-en="Conducted by the Captain or Manager 1–2 hours before every banquet function. Purpose: review the BEO and all service details." data-es="Realizado por el Capitán o Gerente 1–2 horas antes de cada función de banquete. Propósito: revisar el BEO y todos los detalles del servicio.">Conducted by the Captain or Manager 1–2 hours before every banquet function. Purpose: review the BEO and all service details.</p>
+      <ul>
+        <li data-en="Uniform inspection: shoes, socks, nametag, pen &amp; pad, wine opener — and a smile." data-es="Inspección de uniforme: zapatos, calcetines, gafete, bolígrafo y bloc, abridor de vino — y una sonrisa.">Uniform inspection: shoes, socks, nametag, pen &amp; pad, wine opener — and a smile.</li>
+        <li data-en="Table set review: linen color, napkin fold, china/glass/flatware placement." data-es="Revisión de montaje de mesa: color de mantelería, doblez de servilleta, colocación de porcelana/cristalería/cubiertos.">Table set review: linen color, napkin fold, china/glass/flatware placement.</li>
+        <li data-en="Station and side work assignments. Mise en place location." data-es="Asignaciones de estación y trabajo lateral. Ubicación del mise en place.">Station and side work assignments. Mise en place location.</li>
+        <li data-en="Menu and BEO walkthrough — ingredients, courses, wine pairings." data-es="Revisión del menú y BEO — ingredientes, platos, maridajes de vino.">Menu and BEO walkthrough — ingredients, courses, wine pairings.</li>
+        <li data-en="Bar hours, type (host or cash), and cleanup." data-es="Horario del bar, tipo (anfitrión o efectivo) y limpieza.">Bar hours, type (host or cash), and cleanup.</li>
+        <li data-en="Special meals: vegetarian, kosher, children's, etc." data-es="Comidas especiales: vegetariana, kosher, para niños, etc.">Special meals: vegetarian, kosher, children's, etc.</li>
+        <li data-en="VIP assignments, buffet specialty stations, signals for service." data-es="Asignaciones VIP, estaciones especiales de buffet, señales de servicio.">VIP assignments, buffet specialty stations, signals for service.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="sec" data-en="Wine &amp; Bar" data-es="Vino y Bar">Wine &amp; Bar</div>
+<div class="content-list">
+
+  <div class="tr-card" data-keywords="wine service pour label right hand cork twist glass stem banquet parenthesis" style="--c-color:var(--purple)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🍷</span>
+      <div class="tr-title" data-en="Wine Service Standards" data-es="Estándares de Servicio de Vino">Wine Service Standards</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="tip-box"><p data-en="The parenthesis rule: Serve wine → Serve food → Clear food → Clear wine." data-es="La regla del paréntesis: Sirve el vino → Sirve la comida → Retira la comida → Retira el vino.">The parenthesis rule: Serve wine → Serve food → Clear food → Clear wine.</p></div>
+      <ul>
+        <li data-en="Pour from guest's right side. Label faces up toward guest. Cradle bottle from back — not with hand over top." data-es="Sirve por el lado derecho del huésped. La etiqueta mira hacia arriba hacia el huésped. Sostén la botella por detrás — no con la mano encima.">Pour from guest's right side. Label faces up toward guest. Cradle bottle from back — not with hand over top.</li>
+        <li data-en="Finish with a slight clockwise twist to stop dripping." data-es="Termina con un ligero giro en sentido horario para detener el goteo.">Finish with a slight clockwise twist to stop dripping.</li>
+        <li data-en="Portions: white ½ full, red ½ full." data-es="Porciones: blanco ½ lleno, rojo ½ lleno.">Portions: white ½ full, red ½ full.</li>
+        <li data-en="Max 4 glasses per place setting. Water glass at tip of knives; wine at 45° below." data-es="Máximo 4 copas por lugar de servicio. Vaso de agua en la punta de los cuchillos; vino a 45° debajo.">Max 4 glasses per place setting. Water glass at tip of knives; wine at 45° below.</li>
+        <li data-en="Open bottles in the back aisle. Leave corks out when carrying into the room." data-es="Abre las botellas en el pasillo trasero. Deja los corchos fuera al llevarlos a la sala.">Open bottles in the back aisle. Leave corks out when carrying into the room.</li>
+        <li data-en="Never lift a wine glass from the table to pour." data-es="Nunca levantes una copa de vino de la mesa para servir.">Never lift a wine glass from the table to pour.</li>
+        <li data-en="If guest declines wine, remove the glass. Never flip it over." data-es="Si el huésped rechaza el vino, retira la copa. Nunca la voltees boca abajo.">If guest declines wine, remove the glass. Never flip it over.</li>
+        <li data-en="Max 2 bottles per server at one time. No trays or napkin wrapping." data-es="Máximo 2 botellas por servidor a la vez. Sin bandejas ni envolturas de servilleta.">Max 2 bottles per server at one time. No trays or napkin wrapping.</li>
+        <li data-en="Host tasting not required unless specified on the BEO." data-es="La degustación del anfitrión no es requerida a menos que esté especificada en el BEO.">Host tasting not required unless specified on the BEO.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="wine 101 terminology aroma body dry finish tannins fermentation sweet fruity" style="--c-color:var(--purple)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">📖</span>
+      <div class="tr-title" data-en="Wine 101 — Terminology" data-es="Vino 101 — Terminología">Wine 101 — Terminology</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <table class="gloss-table">
+        <tr><td>Aroma</td><td data-en="The smell of wine. The nose can detect 350–800 scents." data-es="El olor del vino. La nariz puede detectar 350–800 aromas.">The smell of wine. The nose can detect 350–800 scents.</td></tr>
+        <tr><td>Body</td><td data-en="Perceived weight/texture. Skim milk = light; 2% = medium; cream = full." data-es="Peso/textura percibida. Leche descremada = ligero; 2% = medio; crema = lleno.">Perceived weight/texture. Skim milk = light; 2% = medium; cream = full.</td></tr>
+        <tr><td>Dry</td><td data-en="Not sweet." data-es="No dulce.">Not sweet.</td></tr>
+        <tr><td>Finish</td><td data-en="The impression the wine leaves as you swallow — does it linger or fade?" data-es="La impresión que deja el vino al tragar — ¿persiste o se desvanece?">The impression the wine leaves as you swallow — does it linger or fade?</td></tr>
+        <tr><td>Sweet vs Fruity</td><td data-en="Fruity = aroma of fruit. Sweet = sugar on your tongue. Hold your nose to isolate sweetness." data-es="Frutal = aroma de fruta. Dulce = azúcar en tu lengua. Tápate la nariz para aislar el dulzor.">Fruity = aroma of fruit. Sweet = sugar on your tongue. Hold your nose to isolate sweetness.</td></tr>
+        <tr><td>Tannins</td><td data-en="From grape skins/seeds/stems. Dry, puckery sensation — like over-steeped tea." data-es="De las pieles/semillas/tallos de la uva. Sensación seca y astringente — como té muy cargado.">From grape skins/seeds/stems. Dry, puckery sensation — like over-steeped tea.</td></tr>
+        <tr><td>Fermentation</td><td data-en="How alcohol develops: Sugar + Yeast = Alcohol + CO₂." data-es="Cómo se desarrolla el alcohol: Azúcar + Levadura = Alcohol + CO₂.">How alcohol develops: Sugar + Yeast = Alcohol + CO₂.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="wine pronunciations pinot noir chardonnay merlot sauvignon blanc cabernet white red riesling viognier" style="--c-color:var(--purple)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🗣️</span>
+      <div class="tr-title" data-en="Wine Pronunciations" data-es="Pronunciación de Vinos">Wine Pronunciations</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="tr-sub">
+        <div class="tr-sub-title">White Wines</div>
+        <table class="wine-table">
+          <tr><th>Name</th><th>Pronunciation</th></tr>
+          <tr><td>Albarino</td><td>Al-ba-REE-nyo</td></tr>
+          <tr><td>Pinot Grigio</td><td>Pee-no GREE-jhee-oh</td></tr>
+          <tr><td>Pinot Gris</td><td>Pee-no GREE</td></tr>
+          <tr><td>Riesling</td><td>REEZ-ling</td></tr>
+          <tr><td>Sauvignon Blanc</td><td>So-vin-yawn Blonk</td></tr>
+          <tr><td>Gewurztraminer</td><td>Geh-VIRST-Trah-MEE-Ner</td></tr>
+          <tr><td>Viognier</td><td>VEE-oh-NYAY</td></tr>
+          <tr><td>Chardonnay</td><td>Shar-dough-NAY</td></tr>
+          <tr><td>Rosé</td><td>Row-ZAY</td></tr>
+          <tr><td>White Zinfandel</td><td>White Zin-fun-dell</td></tr>
+          <tr><td>Fumé Blanc</td><td>FOO-may BLAHN</td></tr>
+          <tr><td>Pouilly-Fuissé</td><td>poo-yee fwee-SAY</td></tr>
+          <tr><td>Sancerre</td><td>sahn-SEHR</td></tr>
+        </table>
+      </div>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Red Wines</div>
+        <table class="wine-table">
+          <tr><th>Name</th><th>Pronunciation</th></tr>
+          <tr><td>Pinot Noir</td><td>Pee-no Nuh-whawr</td></tr>
+          <tr><td>Merlot</td><td>Mare-low</td></tr>
+          <tr><td>Sangiovese</td><td>Sahn-jhee-oh-VAY-see</td></tr>
+          <tr><td>Tempranillo</td><td>Tem-prah-NEE-yo</td></tr>
+          <tr><td>Malbec</td><td>Mahl-bek</td></tr>
+          <tr><td>Syrah</td><td>Sih-RAH</td></tr>
+          <tr><td>Shiraz</td><td>Shih-RAHZ</td></tr>
+          <tr><td>Zinfandel</td><td>Zin-fun-DELL</td></tr>
+          <tr><td>Cabernet Sauvignon</td><td>Cab-ur-nay So-vin-YAWN</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="wine food pairing dry whites reds sparkling blush seafood poultry meats" style="--c-color:var(--purple)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🥘</span>
+      <div class="tr-title" data-en="Wine &amp; Food Pairings" data-es="Maridajes de Vino y Comida">Wine &amp; Food Pairings</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <table class="gloss-table">
+        <tr><td>Dry Whites</td><td data-en="Seafood, poultry, lighter meats" data-es="Mariscos, aves, carnes más ligeras">Seafood, poultry, lighter meats</td></tr>
+        <tr><td>Off-Dry Whites</td><td data-en="Cocktail, fruit &amp; cheese, crab, Asian, Cajun, spicy foods" data-es="Cócteles, frutas y queso, cangrejo, asiático, cajún, comidas picantes">Cocktail, fruit &amp; cheese, crab, Asian, Cajun, spicy foods</td></tr>
+        <tr><td>Blush / Rosé</td><td data-en="Picnics, cold cuts, buffets, game birds, fowl" data-es="Picnics, fiambres, buffets, aves de caza">Picnics, cold cuts, buffets, game birds, fowl</td></tr>
+        <tr><td>Reds</td><td data-en="Red pasta sauce, red meats, cheeses, bitter chocolate" data-es="Salsa roja para pasta, carnes rojas, quesos, chocolate amargo">Red pasta sauce, red meats, cheeses, bitter chocolate</td></tr>
+        <tr><td>Sweet Whites</td><td data-en="Desserts, fruit and cheese" data-es="Postres, frutas y queso">Desserts, fruit and cheese</td></tr>
+        <tr><td>Sparkling</td><td data-en="Almost everything except red meats" data-es="Casi todo excepto carnes rojas">Almost everything except red meats</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="tr-card" data-keywords="liquor types vodka gin tequila rum whiskey bourbon scotch brandy cognac liqueur highball shot frozen mixed" style="--c-color:var(--purple)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🥃</span>
+      <div class="tr-title" data-en="Liquor &amp; Cocktail Types" data-es="Tipos de Licores y Cócteles">Liquor &amp; Cocktail Types</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="tr-sub">
+        <div class="tr-sub-title">Spirits</div>
+        <table class="gloss-table">
+          <tr><td>Vodka</td><td data-en="Grain-distilled, charcoal filtered, clear &amp; neutral. Juice, tonic, soda, or neat." data-es="Destilado de grano, filtrado con carbón, claro y neutro. Con jugo, tónica, soda o solo.">Grain-distilled, charcoal filtered, clear &amp; neutral. Juice, tonic, soda, or neat.</td></tr>
+          <tr><td>Gin</td><td data-en="Neutral grain spirit distilled with juniper. Clear. Martinis, tonic, or neat." data-es="Espíritu de grano neutro destilado con enebro. Claro. Martinis, tónica o solo.">Neutral grain spirit distilled with juniper. Clear. Martinis, tonic, or neat.</td></tr>
+          <tr><td>Tequila</td><td data-en="From maguey plant. Clear (un-aged) or gold (oak-aged). Margaritas, neat, or juice." data-es="De la planta maguey. Claro (sin añejar) o dorado (añejado en roble). Margaritas, solo o con jugo.">From maguey plant. Clear (un-aged) or gold (oak-aged). Margaritas, neat, or juice.</td></tr>
+          <tr><td>Rum</td><td data-en="Sugarcane mash. Light/dry (Puerto Rican) or dark (Jamaican). Cola, juice, Daiquiris." data-es="Melaza de caña de azúcar. Ligero/seco (puertorriqueño) u oscuro (jamaicano). Cola, jugo, Daiquiris.">Sugarcane mash. Light/dry (Puerto Rican) or dark (Jamaican). Cola, juice, Daiquiris.</td></tr>
+          <tr><td>Whiskey</td><td data-en="Grain (corn or barley), barrel-aged. Scotch, Rye, Canadian, Bourbon. Rocks, water, soda." data-es="Grano (maíz o cebada), añejado en barril. Scotch, Rye, Canadiense, Bourbon. Con hielo, agua, soda.">Grain (corn or barley), barrel-aged. Scotch, Rye, Canadian, Bourbon. Rocks, water, soda.</td></tr>
+          <tr><td>Bourbon</td><td data-en="Whiskey from corn. Aged ≥2 years in oak." data-es="Whiskey de maíz. Añejado ≥2 años en roble.">Whiskey from corn. Aged ≥2 years in oak.</td></tr>
+          <tr><td>Cognac</td><td data-en="Premium brandy from white grapes, Cognac region France. Aged up to 40 years." data-es="Brandy premium de uvas blancas, región de Cognac, Francia. Añejado hasta 40 años.">Premium brandy from white grapes, Cognac region France. Aged up to 40 years.</td></tr>
+          <tr><td>Liqueur</td><td data-en="Sweetened spirit flavored with plants, fruits, or herbs. Bailey's, Kahlúa, Drambuie." data-es="Espíritu endulzado con plantas, frutas o hierbas. Bailey's, Kahlúa, Drambuie.">Sweetened spirit flavored with plants, fruits, or herbs. Bailey's, Kahlúa, Drambuie.</td></tr>
+        </table>
+      </div>
+      <div class="tr-sub">
+        <div class="tr-sub-title">Cocktail Types</div>
+        <table class="gloss-table">
+          <tr><td>On the Rocks / Up</td><td data-en="2 oz liquor over ice or chilled &amp; strained." data-es="2 oz de licor sobre hielo o frío y colado.">2 oz liquor over ice or chilled &amp; strained.</td></tr>
+          <tr><td>Highball</td><td data-en="Single liquor + soda gun mixer. (Rum &amp; Coke, G&amp;T)" data-es="Un licor + mezcla de soda. (Ron y Cola, G&amp;T)">Single liquor + soda gun mixer.</td></tr>
+          <tr><td>Mixed Drink</td><td data-en="Base liquor + flavoring liqueur(s) ± mixer. (Margarita, Black Russian)" data-es="Licor base + licor(es) aromatizante ± mezcla. (Margarita, Ruso Negro)">Base liquor + flavoring liqueur(s) ± mixer.</td></tr>
+          <tr><td>Shot</td><td data-en="1¼ oz in a shot glass." data-es="1¼ oz en un vaso de shot.">1¼ oz in a shot glass.</td></tr>
+          <tr><td>Frozen</td><td data-en="Blended with crushed ice. (Margarita, Daiquiri, Piña Colada)" data-es="Mezclado con hielo triturado. (Margarita, Daiquiri, Piña Colada)">Blended with crushed ice. (Margarita, Daiquiri, Piña Colada)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="sec" data-en="Glossary" data-es="Glosario">Glossary</div>
+<div class="content-list">
+
+  <div class="tr-card" data-keywords="glossary terms equipment beo board butler captain report carving station show time back of house behind you 86 queen mary poker chip serpentine mise en place" style="--c-color:var(--text-3)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">📚</span>
+      <div class="tr-title" data-en="Banquet Terms A–Z" data-es="Términos de Banquetes A–Z">Banquet Terms A–Z</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <table class="gloss-table">
+        <tr><td>86</td><td data-en="Item is out of stock, or a guest has cancelled an order." data-es="El artículo está agotado, o un huésped ha cancelado un pedido.">Item is out of stock, or a guest has cancelled an order.</td></tr>
+        <tr><td>B&amp;B Plate</td><td data-en='Small 6–7" side plate for bread.' data-es='Plato lateral pequeño de 6–7" para pan.'>Small 6–7" side plate for bread.</td></tr>
+        <tr><td>Back of House</td><td data-en="Kitchen and banquet aisle — separate from guest areas." data-es="Cocina y pasillo de banquetes — separado de las áreas de huéspedes.">Kitchen and banquet aisle — separate from guest areas.</td></tr>
+        <tr><td>Behind You</td><td data-en="Call this to warn others of your approach from behind." data-es="Llama esto para advertir a otros de tu aproximación por detrás.">Call this to warn others of your approach from behind.</td></tr>
+        <tr><td>BEO Board</td><td data-en="Designated area displaying all distributed BEOs." data-es="Área designada que muestra todos los BEOs distribuidos.">Designated area displaying all distributed BEOs.</td></tr>
+        <tr><td>Butler Style</td><td data-en="Guests help themselves to food or beverage from server's tray." data-es="Los huéspedes se sirven ellos mismos de la bandeja del servidor.">Guests help themselves to food or beverage from server's tray.</td></tr>
+        <tr><td>Captain's Report</td><td data-en="Post-event critique by captain/manager evaluating service, food, staffing, bar." data-es="Crítica post-evento por el capitán/gerente evaluando servicio, comida, personal, bar.">Post-event critique by captain/manager evaluating service, food, staffing, bar.</td></tr>
+        <tr><td>Carving Station</td><td data-en="Table in banquet room for carving meat, poultry, or fish." data-es="Mesa en el salón de banquetes para trinchar carnes, aves o pescado.">Table in banquet room for carving meat, poultry, or fish.</td></tr>
+        <tr><td>Chafing Dish</td><td data-en="Covered pan with heating apparatus (Sterno) beneath to keep food hot." data-es="Bandeja cubierta con aparato calefactor (Sterno) debajo para mantener la comida caliente.">Covered pan with heating apparatus (Sterno) beneath to keep food hot.</td></tr>
+        <tr><td>Cocktail Rounds</td><td data-en='30–36" round table for receptions.' data-es='Mesa redonda de 30–36" para recepciones.'>30–36" round table for receptions.</td></tr>
+        <tr><td>Double Sided</td><td data-en="Buffet accessible from both sides — required for 50+ guests." data-es="Buffet accesible desde ambos lados — requerido para 50+ huéspedes.">Buffet accessible from both sides — required for 50+ guests.</td></tr>
+        <tr><td>Front of House</td><td data-en="Banquet rooms, meeting rooms, Foyer — areas guests use." data-es="Salones de banquetes, salas de reuniones, Foyer — áreas que usan los huéspedes.">Banquet rooms, meeting rooms, Foyer — areas guests use.</td></tr>
+        <tr><td>Guarantee</td><td data-en="Guests confirmed 72 hrs out. Minimum billing number." data-es="Huéspedes confirmados con 72 horas de anticipación. Número mínimo de facturación.">Guests confirmed 72 hrs out. Minimum billing number.</td></tr>
+        <tr><td>Mise en Place</td><td data-en="French: getting ready. Back-aisle prep with all necessary service items." data-es="Francés: prepararse. Preparación en el pasillo trasero con todos los elementos de servicio necesarios.">French: getting ready. Back-aisle prep with all necessary service items.</td></tr>
+        <tr><td>Poker Chip</td><td data-en="Portable cart used to store clean plates." data-es="Carro portátil usado para almacenar platos limpios.">Portable cart used to store clean plates.</td></tr>
+        <tr><td>Queen Mary</td><td data-en="Large metal multi-shelf cart for temporary storage of food, dishes, and equipment." data-es="Gran carro metálico de múltiples estantes para almacenamiento temporal de comida, platos y equipo.">Large metal multi-shelf cart for temporary storage of food, dishes, and equipment.</td></tr>
+        <tr><td>Serpentine</td><td data-en="Specialty curved tables — good for theme breaks and creative buffet shapes." data-es="Mesas curvas especiales — buenas para descansos temáticos y formas creativas de buffet.">Specialty curved tables — good for theme breaks and creative buffet shapes.</td></tr>
+        <tr><td>Show Time</td><td data-en="15–20 min before doors open — captain gives last-minute instructions." data-es="15–20 min antes de abrir las puertas — el capitán da instrucciones de último minuto.">15–20 min before doors open — captain gives last-minute instructions.</td></tr>
+        <tr><td>Sidework</td><td data-en="Assigned duties before a function begins and after it ends." data-es="Deberes asignados antes de que comience una función y después de que termine.">Assigned duties before a function begins and after it ends.</td></tr>
+        <tr><td>Tear Down</td><td data-en="When a function ends or room set changes." data-es="Cuando una función termina o el montaje de la sala cambia.">When a function ends or room set changes.</td></tr>
+        <tr><td>Tight Turn</td><td data-en="Complete changeover from one function set to the next in limited time." data-es="Cambio completo de una configuración de función a la siguiente en tiempo limitado.">Complete changeover from one function set to the next in limited time.</td></tr>
+        <tr><td>VIP</td><td data-en="Very Important Person/client. Any function marked VIP requires extra special attention." data-es="Persona/cliente Muy Importante. Cualquier función marcada como VIP requiere atención especial adicional.">Very Important Person/client. Any function marked VIP requires extra special attention.</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('bb-theme',t);
+  const bg=t==='light'?'#f0ece3':'#09090c';
+  document.documentElement.style.background=bg;
+  document.body.style.background=bg;
+  document.getElementById('tdk').classList.toggle('active',t==='dark');
+  document.getElementById('tlt').classList.toggle('active',t==='light');
+}
+function setLang(l){
+  document.documentElement.setAttribute('data-lang',l);
+  localStorage.setItem('bb-lang',l);
+  document.querySelectorAll('[data-en]').forEach(el=>{
+    el.textContent=l==='es'?(el.dataset.es||el.dataset.en):el.dataset.en;
+  });
+  document.getElementById('len').classList.toggle('active',l==='en');
+  document.getElementById('les').classList.toggle('active',l==='es');
+  document.getElementById('trSearch').placeholder=l==='es'?'Buscar temas de capacitación…':'Search training topics…';
+}
+function toggleCard(card){
+  card.classList.toggle('open');
+}
+function filterTraining(q){
+  const term=q.trim().toLowerCase();
+  const cards=document.querySelectorAll('.tr-card');
+  let visible=0;
+  cards.forEach(c=>{
+    const kw=(c.dataset.keywords||'').toLowerCase();
+    const titleText=(c.querySelector('.tr-title')||{textContent:''}).textContent.toLowerCase();
+    const bodyText=(c.querySelector('.tr-body')||{textContent:''}).textContent.toLowerCase();
+    const match=!term||kw.includes(term)||titleText.includes(term)||bodyText.includes(term);
+    c.classList.toggle('is-hidden',!match);
+    if(match){visible++;if(term)c.classList.add('open');}
+    else{c.classList.remove('open');}
+  });
+  const st=document.getElementById('searchStatus');
+  if(term){st.textContent=visible+' result'+(visible!==1?'s':'');st.classList.add('show');}
+  else{st.classList.remove('show');cards.forEach(c=>c.classList.remove('open'));}
+}
+(function(){
+  const t=localStorage.getItem('bb-theme')||'dark';
+  const l=localStorage.getItem('bb-lang')||'en';
+  setTheme(t);
+  setLang(l);
+})();
+</script>
+</div>
+</body>
+</html>
