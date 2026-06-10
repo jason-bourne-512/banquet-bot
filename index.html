@@ -416,6 +416,7 @@ body {
     document.getElementById('g-line').textContent=gr[l];
     document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
     localStorage.setItem('bb-lang',l);
+    requestAnimationFrame(positionBox);
   }
 
   /* ── TODAY BOX — measured from actual th at runtime ── */
