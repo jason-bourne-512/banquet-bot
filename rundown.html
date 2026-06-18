@@ -29,6 +29,7 @@
   --today-border:rgba(201,168,76,0.45); --today-glow:rgba(201,168,76,0.16);
   --today-top:rgba(201,168,76,0.60); --today-name:#f0cc70;
   --today-dow:rgba(201,168,76,0.65); --today-sum:rgba(201,168,76,0.48);
+  --silver:#a9aeb6;
 }
 [data-theme="light"] {
   --bg:#f0ece3; --bg-card:#faf7f2; --bg-active:#e8e2d6;
@@ -48,6 +49,7 @@
   --today-border:rgba(160,116,30,0.40); --today-glow:rgba(160,116,30,0.08);
   --today-top:rgba(160,116,30,0.45); --today-name:#7a5810;
   --today-dow:rgba(120,88,16,0.65); --today-sum:rgba(120,88,16,0.50);
+  --silver:#6b7280;
 }
 html { background:var(--bg); min-height:100%; overflow-x:hidden; overscroll-behavior:none; }
 body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif; min-height:100vh; min-height:100dvh; width:100%; overflow-x:hidden; overscroll-behavior:none; }
@@ -107,7 +109,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 [data-theme="light"] .day-btn { background:#faf7f2; }
 
-.day-btn.is-today { background:var(--today-bg); border:1px solid var(--today-border); box-shadow:0 4px 24px var(--today-glow),inset 0 0 16px rgba(201,168,76,0.04); }
+.day-btn.is-today { box-shadow:0 0 10px var(--ng,rgba(45,189,128,0.08)),inset 0 0 16px var(--ngi,rgba(45,189,128,0.03)),0 0 0 1.5px var(--today-border); }
 .day-btn.is-today::after { background:linear-gradient(90deg,transparent,var(--today-top),transparent); }
 
 .day-dot { width:38px; height:38px; border-radius:9px; flex-shrink:0; background:var(--nic,rgba(45,189,128,0.08)); border:1px solid var(--nib,rgba(45,189,128,0.25)); display:flex; align-items:center; justify-content:center; }
@@ -115,16 +117,12 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 .day-text { flex:1; min-width:0; }
 .day-dow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--nd); margin-bottom:4px; }
-.day-btn.is-today .day-dow { color:var(--today-dow); }
 .day-name { font-size:15px; font-weight:600; letter-spacing:-.01em; line-height:1.1; color:var(--nn,#3de8a0); }
-.day-btn.is-today .day-name { color:var(--today-name); }
-.day-summary { font-family:'DM Mono',monospace; font-size:9px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--ns,rgba(45,189,128,0.38)); }
-.day-btn.is-today .day-summary { color:var(--today-sum); }
+.day-summary { font-family:'DM Mono',monospace; font-size:9px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-1); }
 
 .today-chip { background:var(--accent); color:#09090c; font-family:'DM Mono',monospace; font-size:8px; font-weight:600; letter-spacing:.12em; padding:3px 7px; border-radius:4px; text-transform:uppercase; flex-shrink:0; }
 [data-theme="light"] .today-chip { color:#fff; }
-.chevron { font-size:16px; color:var(--nd,rgba(45,189,128,0.40)); flex-shrink:0; transition:transform .22s cubic-bezier(.4,0,.2,1); }
-.day-btn.is-today .chevron { color:var(--today-border); }
+.chevron { font-size:16px; color:var(--silver); flex-shrink:0; transition:transform .22s cubic-bezier(.4,0,.2,1); }
 .day-btn.is-open .chevron { transform:rotate(90deg); }
 
 .day-body { display:none; padding:0 16px 16px; background:var(--bg); }
