@@ -85,44 +85,34 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .days-list { padding:0 0 80px; }
 .day-section { padding:6px 0 0; border-bottom:none; }
 
-/* NEON OUTLINE DAY BUTTONS */
-.day-btn {
-  width:calc(100% - 32px); display:flex; align-items:center; gap:13px;
-  padding:13px 14px; text-align:left; border:none; cursor:pointer;
-  min-height:62px; position:relative; overflow:hidden;
-  transition:transform .12s, box-shadow .12s;
-  background:#05080e;
-  border:1px solid var(--nb,rgba(45,189,128,0.35));
-  border-radius:12px; margin:0 16px;
-  box-shadow:0 0 10px var(--ng,rgba(45,189,128,0.08)),inset 0 0 16px var(--ngi,rgba(45,189,128,0.03));
-}
-.day-btn::after { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--nt,rgba(45,189,128,0.55)),transparent); pointer-events:none; }
+/* SILVER SURFACE DAY BUTTONS */
+.day-btn { width:calc(100% - 32px); display:flex; align-items:center; gap:13px; padding:13px 14px; text-align:left; border:none; cursor:pointer; min-height:60px; position:relative; overflow:hidden; background:#0d0f12; border:1px solid rgba(255,255,255,0.09); border-left:2px solid var(--ac,rgba(255,255,255,0.15)); border-radius:12px; margin:0 16px 7px; box-shadow:none; }
+.day-btn::after { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,var(--ac,rgba(255,255,255,0.08)),transparent); pointer-events:none; }
+.day-btn.a1 { --ac:rgba(45,189,128,0.55); --dc:#3de8a0; }
+.day-btn.a2 { --ac:rgba(79,142,240,0.55); --dc:#8ab8ff; }
+.day-btn.a3 { --ac:rgba(140,100,220,0.55); --dc:#c4a0ff; }
+.day-btn.a4 { --ac:rgba(240,100,100,0.50); --dc:#ff9090; }
+.day-btn.a5 { --ac:rgba(251,146,60,0.50); --dc:#fdb070; }
+.day-btn.a-dim { --ac:rgba(80,80,80,0.25); --dc:rgba(255,255,255,0.20); }
 .day-btn:active { transform:scale(0.975); }
 
-.day-btn.has-fb    { --nb:rgba(45,189,128,0.35); --ng:rgba(45,189,128,0.09); --ngi:rgba(45,189,128,0.03); --nt:rgba(45,189,128,0.55); --nic:rgba(45,189,128,0.10); --nib:rgba(45,189,128,0.28); --nd:rgba(45,189,128,0.80); --nn:#3de8a0; --ns:rgba(45,189,128,0.45); }
-.day-btn.no-fb     { --nb:rgba(240,180,41,0.32); --ng:rgba(240,180,41,0.07); --ngi:rgba(240,180,41,0.02); --nt:rgba(240,180,41,0.45); --nic:rgba(240,180,41,0.09); --nib:rgba(240,180,41,0.24); --nd:rgba(240,180,41,0.78); --nn:#f0cc60; --ns:rgba(240,180,41,0.42); }
-.day-btn.no-events { --nb:rgba(80,80,80,0.22); --ng:rgba(0,0,0,0.04); --ngi:rgba(0,0,0,0.02); --nt:rgba(80,80,80,0.18); --nic:rgba(50,50,50,0.3); --nib:rgba(80,80,80,0.18); --nd:rgba(255,255,255,0.25); --nn:rgba(255,255,255,0.30); --ns:rgba(255,255,255,0.14); }
-[data-theme="light"] .day-btn.has-fb    { --nb:rgba(20,130,80,0.30); --ng:rgba(20,130,80,0.06); --nn:#0f6840; --nd:rgba(20,130,80,0.65); --ns:rgba(20,130,80,0.45); }
-[data-theme="light"] .day-btn.no-fb     { --nb:rgba(156,104,0,0.30); --ng:rgba(156,104,0,0.06); --nn:#7a5810; --nd:rgba(156,104,0,0.65); --ns:rgba(156,104,0,0.45); }
-[data-theme="light"] .day-btn.no-events { --nb:rgba(0,0,0,0.10); --ng:rgba(0,0,0,0.02); --nn:rgba(0,0,0,0.35); --nd:rgba(0,0,0,0.22); --ns:rgba(0,0,0,0.20); }
-
-
-[data-theme="light"] .day-btn { background:#faf7f2; }
+[data-theme="light"] .day-btn { background:#faf7f2; border-color:rgba(0,0,0,0.08); }
+[data-theme="light"] .day-btn.a-dim { --ac:rgba(0,0,0,0.15); --dc:rgba(0,0,0,0.25); }
 
 .day-btn.is-today { box-shadow:0 0 10px var(--ng,rgba(45,189,128,0.08)),inset 0 0 16px var(--ngi,rgba(45,189,128,0.03)),0 0 0 1.5px var(--today-border); }
 .day-btn.is-today::after { background:linear-gradient(90deg,transparent,var(--today-top),transparent); }
 
-.day-dot { width:38px; height:38px; border-radius:9px; flex-shrink:0; background:var(--nic,rgba(45,189,128,0.08)); border:1px solid var(--nib,rgba(45,189,128,0.25)); display:flex; align-items:center; justify-content:center; }
+.day-dot { width:36px; height:36px; border-radius:9px; flex-shrink:0; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; }
 .day-btn.is-today .day-dot { background:var(--accent-dim); border-color:rgba(201,168,76,0.35); }
 
 .day-text { flex:1; min-width:0; }
-.day-dow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--nd); margin-bottom:4px; }
+.day-dow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:4px; }
 .day-name { font-size:15px; font-weight:600; letter-spacing:-.01em; line-height:1.1; color:var(--nn,#3de8a0); }
-.day-summary { font-family:'DM Mono',monospace; font-size:9px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-1); }
+.day-summary { font-family:'DM Mono',monospace; font-size:9px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:rgba(255,255,255,0.25); }
 
 .today-chip { background:var(--accent); color:#09090c; font-family:'DM Mono',monospace; font-size:8px; font-weight:600; letter-spacing:.12em; padding:3px 7px; border-radius:4px; text-transform:uppercase; flex-shrink:0; }
 [data-theme="light"] .today-chip { color:#fff; }
-.chevron { font-size:16px; color:var(--silver); flex-shrink:0; transition:transform .22s cubic-bezier(.4,0,.2,1); }
+.chevron { font-size:16px; color:rgba(255,255,255,0.18); flex-shrink:0; transition:transform .22s cubic-bezier(.4,0,.2,1); }
 .day-btn.is-open .chevron { transform:rotate(90deg); }
 
 .day-body { display:none; padding:0 16px 16px; background:var(--bg); }
@@ -186,7 +176,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .kd-green{background:#2dbd80;} .kd-amber{background:#f0b429;} .kd-dim{background:rgba(255,255,255,0.22);}
 .key-label { font-family:'DM Mono',monospace; font-size:8px; color:rgba(255,255,255,0.28); letter-spacing:.04em; white-space:nowrap; }
 .key-div { width:1px; height:10px; background:rgba(255,255,255,0.07); margin:0 2px; }
-.day-dot-num { font-family:'DM Mono',monospace; font-size:14px; font-weight:500; color:var(--nn); opacity:0.80; line-height:1; }
+.day-dot-num { font-family:'DM Mono',monospace; font-size:14px; font-weight:500; color:var(--dc); opacity:0.85; line-height:1; }
 </style>
 </head>
 <body>
@@ -228,21 +218,13 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   <button class="pill-btn" onclick="collapseAll()" data-en="▲ Collapse All" data-es="▲ Contraer Todo">▲ Collapse All</button>
 </div>
 
-<div class="color-key">
-  <div class="key-item"><div class="key-dot kd-green"></div><span class="key-label">F&amp;B Active</span></div>
-  <div class="key-div"></div>
-  <div class="key-item"><div class="key-dot kd-amber"></div><span class="key-label">No F&amp;B</span></div>
-  <div class="key-div"></div>
-  <div class="key-item"><div class="key-dot kd-dim"></div><span class="key-label">No Events</span></div>
-</div>
-
 <div class="days-list">
 
 <div class="month-banner"><span class="month-banner-name">June</span><span class="month-banner-year">2026</span></div>
 
 <!-- ══ WED JUN 3 ══ -->
 <div class="day-section" data-date="2026-06-03">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a1" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">3</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
@@ -299,7 +281,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ THU JUN 4 ══ -->
 <div class="day-section" data-date="2026-06-04">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a2" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">4</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
@@ -379,7 +361,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ JUN 5–8 ══ -->
 <div class="day-section" data-date-start="2026-06-05" data-date-end="2026-06-08">
-<button class="day-btn no-events" onclick="toggleDay(this)">
+<button class="day-btn a-dim" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">5</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="FRI – MON" data-es="Vie 5 Jun – Lun 8 Jun">FRI – MON</div>
@@ -393,7 +375,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <div class="week-label">Week of Jun 9</div>
 <!-- ══ TUE JUN 9 ══ -->
 <div class="day-section" data-date="2026-06-09">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a3" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">9</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
@@ -456,7 +438,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ WED JUN 10 ══ -->
 <div class="day-section" data-date="2026-06-10">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a4" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">10</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
@@ -509,7 +491,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ JUN 11 ══ -->
 <div class="day-section" data-date="2026-06-11">
-<button class="day-btn no-events" onclick="toggleDay(this)">
+<button class="day-btn a-dim" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">11</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
@@ -522,7 +504,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ FRI JUN 12 ══ -->
 <div class="day-section" data-date="2026-06-12">
-<button class="day-btn no-fb" onclick="toggleDay(this)">
+<button class="day-btn a5" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">12</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="FRI" data-es="Viernes">FRI</div>
@@ -555,7 +537,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ SAT JUN 13 ══ -->
 <div class="day-section" data-date="2026-06-13">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a1" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">13</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="SAT" data-es="Sábado">SAT</div>
@@ -624,7 +606,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ SUN JUN 14 ══ -->
 <div class="day-section" data-date="2026-06-14">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a2" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">14</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="SUN" data-es="Domingo">SUN</div>
@@ -665,7 +647,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ MON JUN 15 ══ -->
 <div class="day-section" data-date="2026-06-15">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a3" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">15</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="MON" data-es="Lunes">MON</div>
@@ -699,7 +681,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <div class="week-label">Week of Jun 16</div>
 <!-- ══ TUE JUN 16 ══ -->
 <div class="day-section" data-date="2026-06-16">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a4" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">16</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
@@ -758,7 +740,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ WED JUN 17 ══ -->
 <div class="day-section" data-date="2026-06-17">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a5" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">17</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
@@ -821,7 +803,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ THU JUN 18 ══ -->
 <div class="day-section" data-date="2026-06-18">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a1" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">18</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
@@ -894,7 +876,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ FRI JUN 19 ══ -->
 <div class="day-section" data-date="2026-06-19">
-<button class="day-btn no-fb" onclick="toggleDay(this)">
+<button class="day-btn a2" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">19</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="FRI" data-es="Viernes">FRI</div>
@@ -942,7 +924,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ SAT JUN 20 ══ -->
 <div class="day-section" data-date="2026-06-20">
-<button class="day-btn no-events" onclick="toggleDay(this)">
+<button class="day-btn a-dim" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">20</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="SAT" data-es="Sábado">SAT</div>
@@ -955,7 +937,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ SUN JUN 21 ══ -->
 <div class="day-section" data-date="2026-06-21">
-<button class="day-btn no-fb" onclick="toggleDay(this)">
+<button class="day-btn a3" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">21</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="SUN" data-es="Domingo">SUN</div>
@@ -997,7 +979,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ MON JUN 22 ══ -->
 <div class="day-section" data-date="2026-06-22">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a4" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">22</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="MON" data-es="Lunes">MON</div>
@@ -1128,7 +1110,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <div class="week-label">Week of Jun 23</div>
 <!-- ══ TUE JUN 23 ══ -->
 <div class="day-section" data-date="2026-06-23">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a5" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">23</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
@@ -1250,7 +1232,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ WED JUN 24 ══ -->
 <div class="day-section" data-date="2026-06-24">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a1" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">24</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
@@ -1330,7 +1312,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ THU JUN 25 ══ -->
 <div class="day-section" data-date="2026-06-25">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a2" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">25</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
@@ -1459,7 +1441,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ JUN 26–30 ══ -->
 <div class="day-section" data-date-start="2026-06-26" data-date-end="2026-06-30">
-<button class="day-btn no-events" onclick="toggleDay(this)">
+<button class="day-btn a-dim" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">26</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="FRI – TUE" data-es="Vie 26 Jun – Mar 30 Jun">FRI – TUE</div>
@@ -1474,7 +1456,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <div class="week-label">Week of Jul 1</div>
 <!-- ══ WED JUL 1 ══ -->
 <div class="day-section" data-date="2026-07-01">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a3" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">1</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
@@ -1513,7 +1495,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ JUL 2–6 ══ -->
 <div class="day-section" data-date-start="2026-07-02" data-date-end="2026-07-06">
-<button class="day-btn no-events" onclick="toggleDay(this)">
+<button class="day-btn a-dim" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">2</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="THU – MON" data-es="Jue 2 Jul – Lun 6 Jul">THU – MON</div>
@@ -1526,7 +1508,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ TUE JUL 7 ══ -->
 <div class="day-section" data-date="2026-07-07">
-<button class="day-btn has-fb" onclick="toggleDay(this)">
+<button class="day-btn a4" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">7</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
