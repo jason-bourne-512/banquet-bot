@@ -97,20 +97,15 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .day-btn::after { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--nt,rgba(45,189,128,0.55)),transparent); pointer-events:none; }
 .day-btn:active { transform:scale(0.975); }
 
-.day-btn.nc-green { --nb:rgba(45,189,128,0.35); --ng:rgba(45,189,128,0.09); --ngi:rgba(45,189,128,0.03); --nt:rgba(45,189,128,0.55); --nic:rgba(45,189,128,0.10); --nib:rgba(45,189,128,0.28); --nd:rgba(45,189,128,0.72); --nn:#3de8a0; --ns:rgba(45,189,128,0.38); }
-.day-btn.nc-blue  { --nb:rgba(79,142,240,0.35); --ng:rgba(79,142,240,0.09); --ngi:rgba(79,142,240,0.03); --nt:rgba(79,142,240,0.55); --nic:rgba(79,142,240,0.10); --nib:rgba(79,142,240,0.28); --nd:rgba(79,142,240,0.72); --nn:#8ab8ff; --ns:rgba(79,142,240,0.38); }
-.day-btn.nc-purple { --nb:rgba(140,100,220,0.35); --ng:rgba(140,100,220,0.09); --ngi:rgba(140,100,220,0.03); --nt:rgba(140,100,220,0.55); --nic:rgba(140,100,220,0.10); --nib:rgba(140,100,220,0.28); --nd:rgba(140,100,220,0.72); --nn:#c4a0ff; --ns:rgba(140,100,220,0.38); }
-.day-btn.nc-amber  { --nb:rgba(240,180,41,0.35); --ng:rgba(240,180,41,0.09); --ngi:rgba(240,180,41,0.03); --nt:rgba(240,180,41,0.55); --nic:rgba(240,180,41,0.10); --nib:rgba(240,180,41,0.28); --nd:rgba(240,180,41,0.72); --nn:#f0cc60; --ns:rgba(240,180,41,0.38); }
-.day-btn.nc-dim    { --nb:rgba(80,80,80,0.22); --ng:rgba(0,0,0,0.04); --ngi:rgba(0,0,0,0.02); --nt:rgba(80,80,80,0.20); --nic:rgba(50,50,50,0.3); --nib:rgba(80,80,80,0.18); --nd:rgba(255,255,255,0.25); --nn:rgba(255,255,255,0.30); --ns:rgba(255,255,255,0.16); }
-.day-btn.nc-slate  { --nb:rgba(100,140,180,0.28); --ng:rgba(80,120,160,0.07); --ngi:rgba(80,120,160,0.02); --nt:rgba(100,140,180,0.40); --nic:rgba(80,120,160,0.10); --nib:rgba(100,140,180,0.22); --nd:rgba(120,160,200,0.62); --nn:#90b8d8; --ns:rgba(100,140,180,0.35); }
+.day-btn.has-fb    { --nb:rgba(45,189,128,0.35); --ng:rgba(45,189,128,0.09); --ngi:rgba(45,189,128,0.03); --nt:rgba(45,189,128,0.55); --nic:rgba(45,189,128,0.10); --nib:rgba(45,189,128,0.28); --nd:rgba(45,189,128,0.80); --nn:#3de8a0; --ns:rgba(45,189,128,0.45); }
+.day-btn.no-fb     { --nb:rgba(240,180,41,0.32); --ng:rgba(240,180,41,0.07); --ngi:rgba(240,180,41,0.02); --nt:rgba(240,180,41,0.45); --nic:rgba(240,180,41,0.09); --nib:rgba(240,180,41,0.24); --nd:rgba(240,180,41,0.78); --nn:#f0cc60; --ns:rgba(240,180,41,0.42); }
+.day-btn.no-events { --nb:rgba(80,80,80,0.22); --ng:rgba(0,0,0,0.04); --ngi:rgba(0,0,0,0.02); --nt:rgba(80,80,80,0.18); --nic:rgba(50,50,50,0.3); --nib:rgba(80,80,80,0.18); --nd:rgba(255,255,255,0.25); --nn:rgba(255,255,255,0.30); --ns:rgba(255,255,255,0.14); }
+[data-theme="light"] .day-btn.has-fb    { --nb:rgba(20,130,80,0.30); --ng:rgba(20,130,80,0.06); --nn:#0f6840; --nd:rgba(20,130,80,0.65); --ns:rgba(20,130,80,0.45); }
+[data-theme="light"] .day-btn.no-fb     { --nb:rgba(156,104,0,0.30); --ng:rgba(156,104,0,0.06); --nn:#7a5810; --nd:rgba(156,104,0,0.65); --ns:rgba(156,104,0,0.45); }
+[data-theme="light"] .day-btn.no-events { --nb:rgba(0,0,0,0.10); --ng:rgba(0,0,0,0.02); --nn:rgba(0,0,0,0.35); --nd:rgba(0,0,0,0.22); --ns:rgba(0,0,0,0.20); }
+
 
 [data-theme="light"] .day-btn { background:#faf7f2; }
-[data-theme="light"] .day-btn.nc-green { --nb:rgba(20,130,80,0.30); --ng:rgba(20,130,80,0.06); --nn:#0f6840; --nd:rgba(20,130,80,0.55); --ns:rgba(20,130,80,0.40); }
-[data-theme="light"] .day-btn.nc-blue  { --nb:rgba(37,88,196,0.30); --ng:rgba(37,88,196,0.06); --nn:#1840a0; --nd:rgba(37,88,196,0.55); --ns:rgba(37,88,196,0.40); }
-[data-theme="light"] .day-btn.nc-purple { --nb:rgba(96,48,176,0.30); --ng:rgba(96,48,176,0.06); --nn:#5828b0; --nd:rgba(96,48,176,0.55); --ns:rgba(96,48,176,0.40); }
-[data-theme="light"] .day-btn.nc-amber  { --nb:rgba(156,104,0,0.30); --ng:rgba(156,104,0,0.06); --nn:#7a5810; --nd:rgba(156,104,0,0.55); --ns:rgba(156,104,0,0.40); }
-[data-theme="light"] .day-btn.nc-dim    { --nb:rgba(0,0,0,0.10); --ng:rgba(0,0,0,0.02); --nn:rgba(0,0,0,0.35); --nd:rgba(0,0,0,0.22); --ns:rgba(0,0,0,0.20); }
-[data-theme="light"] .day-btn.nc-slate  { --nb:rgba(37,88,160,0.25); --ng:rgba(37,88,160,0.05); --nn:#1a4a80; --nd:rgba(37,88,160,0.50); --ns:rgba(37,88,160,0.38); }
 
 .day-btn.is-today { background:var(--today-bg); border:1px solid var(--today-border); box-shadow:0 4px 24px var(--today-glow),inset 0 0 16px rgba(201,168,76,0.04); }
 .day-btn.is-today::after { background:linear-gradient(90deg,transparent,var(--today-top),transparent); }
@@ -119,7 +114,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .day-btn.is-today .day-dot { background:var(--accent-dim); border-color:rgba(201,168,76,0.35); }
 
 .day-text { flex:1; min-width:0; }
-.day-dow { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:2px; color:var(--nd,rgba(45,189,128,0.50)); }
+.day-dow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--nd); margin-bottom:4px; }
 .day-btn.is-today .day-dow { color:var(--today-dow); }
 .day-name { font-size:15px; font-weight:600; letter-spacing:-.01em; line-height:1.1; color:var(--nn,#3de8a0); }
 .day-btn.is-today .day-name { color:var(--today-name); }
@@ -190,7 +185,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .color-key::-webkit-scrollbar { display:none; }
 .key-item { display:flex; align-items:center; gap:4px; flex-shrink:0; }
 .key-dot { width:7px; height:7px; border-radius:50%; }
-.kd-green{background:#2dbd80;} .kd-blue{background:#4f8ef0;} .kd-purple{background:#8c64dc;} .kd-amber{background:#f0b429;} .kd-slate{background:#90b8d8;} .kd-dim{background:rgba(255,255,255,0.22);}
+.kd-green{background:#2dbd80;} .kd-amber{background:#f0b429;} .kd-dim{background:rgba(255,255,255,0.22);}
 .key-label { font-family:'DM Mono',monospace; font-size:8px; color:rgba(255,255,255,0.28); letter-spacing:.04em; white-space:nowrap; }
 .key-div { width:1px; height:10px; background:rgba(255,255,255,0.07); margin:0 2px; }
 .day-dot-num { font-family:'DM Mono',monospace; font-size:14px; font-weight:500; color:var(--nn); opacity:0.80; line-height:1; }
@@ -236,7 +231,12 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 </div>
 
 <div class="color-key">
-  <div class="key-item"><div class="key-dot kd-green"></div><span class="key-label">F&amp;B Active</span></div>
+  <div class="key-item"><div class="key-dot kd-green"></div>
+  <div class="key-div"></div>
+  <div class="key-item"><div class="key-dot kd-amber"></div><span class="key-label">No F&amp;B</span></div>
+  <div class="key-div"></div>
+  <div class="key-item"><div class="key-dot kd-dim"></div><span class="key-label">No Events</span></div>
+</div>
   <div class="key-div"></div>
   <div class="key-item"><div class="key-dot kd-blue"></div><span class="key-label">Conference</span></div>
   <div class="key-div"></div>
@@ -255,10 +255,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ WED JUN 3 ══ -->
 <div class="day-section" data-date="2026-06-03">
-<button class="day-btn nc-green" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">3</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Wednesday" data-es="Miércoles">Wednesday</div>
+    <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
     <div class="day-summary" data-en="240 Tutoring · full day · ⚠ dietary flags" data-es="240 Tutoring · día completo · ⚠ restricciones dietéticas">240 Tutoring · full day · ⚠ dietary flags</div>
   </div>
   <span class="chevron">▶</span>
@@ -312,10 +312,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ THU JUN 4 ══ -->
 <div class="day-section" data-date="2026-06-04">
-<button class="day-btn nc-blue" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">4</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Thursday" data-es="Jueves">Thursday</div>
+    <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
     <div class="day-summary" data-en="240 Tutoring Day 2 · Modern Italian · Career Strategies suite drop" data-es="240 Tutoring Día 2 · Italiano Moderno · entrega suite Career Strategies">240 Tutoring Day 2 · Modern Italian · Career Strategies suite drop</div>
   </div>
   <span class="chevron">▶</span>
@@ -392,10 +392,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ JUN 5–8 ══ -->
 <div class="day-section" data-date-start="2026-06-05" data-date-end="2026-06-08">
-<button class="day-btn nc-dim" onclick="toggleDay(this)">
+<button class="day-btn no-events" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">5</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Fri Jun 5 – Mon Jun 8" data-es="Vie 5 Jun – Lun 8 Jun">Fri Jun 5 – Mon Jun 8</div>
+    <div class="day-dow" data-en="FRI – MON" data-es="Vie 5 Jun – Lun 8 Jun">FRI – MON</div>
     <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
   </div>
   <span class="chevron">▶</span>
@@ -406,10 +406,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <div class="week-label">Week of Jun 9</div>
 <!-- ══ TUE JUN 9 ══ -->
 <div class="day-section" data-date="2026-06-09">
-<button class="day-btn nc-green" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">9</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Tuesday" data-es="Martes">Tuesday</div>
+    <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
     <div class="day-summary" data-en="Longines Recruitment · VAST Data board mtg" data-es="Longines Reclutamiento · reunión VAST Data">Longines Recruitment · VAST Data board mtg</div>
   </div>
   <span class="chevron">▶</span>
@@ -469,10 +469,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ WED JUN 10 ══ -->
 <div class="day-section" data-date="2026-06-10">
-<button class="day-btn nc-blue" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">10</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Wednesday" data-es="Miércoles">Wednesday</div>
+    <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
     <div class="day-summary" data-en="VAST Data Day 2 · breakfast tacos + conference lunch" data-es="VAST Data Día 2 · tacos de desayuno + almuerzo de conferencia">VAST Data Day 2 · breakfast tacos + conference lunch</div>
   </div>
   <span class="chevron">▶</span>
@@ -522,10 +522,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ JUN 11 ══ -->
 <div class="day-section" data-date="2026-06-11">
-<button class="day-btn nc-dim" onclick="toggleDay(this)">
+<button class="day-btn no-events" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">11</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Thursday" data-es="Jueves">Thursday</div>
+    <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
     <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
   </div>
   <span class="chevron">▶</span>
@@ -535,10 +535,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ FRI JUN 12 ══ -->
 <div class="day-section" data-date="2026-06-12">
-<button class="day-btn nc-slate" onclick="toggleDay(this)">
+<button class="day-btn no-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">12</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Friday" data-es="Viernes">Friday</div>
+    <div class="day-dow" data-en="FRI" data-es="Viernes">FRI</div>
     <div class="day-summary" data-en="JJOA Beautillion Ball — rehearsal only, no F&amp;B" data-es="JJOA Beautillion Ball — solo ensayo, sin F&amp;B">JJOA Beautillion Ball — rehearsal only, no F&amp;B</div>
   </div>
   <span class="chevron">▶</span>
@@ -568,10 +568,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ SAT JUN 13 ══ -->
 <div class="day-section" data-date="2026-06-13">
-<button class="day-btn nc-purple" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">13</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Saturday" data-es="Sábado">Saturday</div>
+    <div class="day-dow" data-en="SAT" data-es="Sábado">SAT</div>
     <div class="day-summary" data-en="Young Rehearsal Brunch · JJOA Beautillion Ball (400 covers) · Cash Bar" data-es="Brunch Young · JJOA Beautillion Ball (400 cubiertos) · Bar en Efectivo">Young Rehearsal Brunch · JJOA Beautillion Ball (400 covers) · Cash Bar</div>
   </div>
   <span class="chevron">▶</span>
@@ -637,10 +637,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ SUN JUN 14 ══ -->
 <div class="day-section" data-date="2026-06-14">
-<button class="day-btn nc-green" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">14</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Sunday" data-es="Domingo">Sunday</div>
+    <div class="day-dow" data-en="SUN" data-es="Domingo">SUN</div>
     <div class="day-summary" data-en="Mikesich Farewell Brunch — 60 covers · Texas Sunrise · ⚠ GF guests" data-es="Brunch de Despedida Mikesich — 60 cubiertos · ⚠ sin gluten">Mikesich Farewell Brunch — 60 covers · Texas Sunrise · ⚠ GF guests</div>
   </div>
   <span class="chevron">▶</span>
@@ -678,10 +678,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ MON JUN 15 ══ -->
 <div class="day-section" data-date="2026-06-15">
-<button class="day-btn nc-slate" onclick="toggleDay(this)">
+<button class="day-btn no-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">15</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Monday" data-es="Lunes">Monday</div>
+    <div class="day-dow" data-en="MON" data-es="Lunes">MON</div>
     <div class="day-summary" data-en="Region 13 — setup only, no F&amp;B" data-es="Region 13 — solo montaje, sin F&amp;B">Region 13 — setup only, no F&amp;B</div>
   </div>
   <span class="chevron">▶</span>
@@ -712,10 +712,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <div class="week-label">Week of Jun 16</div>
 <!-- ══ TUE JUN 16 ══ -->
 <div class="day-section" data-date="2026-06-16">
-<button class="day-btn nc-amber" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">16</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Tuesday" data-es="Martes">Tuesday</div>
+    <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
     <div class="day-summary" data-en="Region 13 SGS Summit — breakfast, lunch, cocktail reception, hors d'oeuvres" data-es="Region 13 SGS Summit — desayuno, almuerzo, recepción de cócteles">Region 13 SGS Summit — breakfast, lunch, cocktail reception, hors d'oeuvres</div>
   </div>
   <span class="chevron">▶</span>
@@ -771,10 +771,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ WED JUN 17 ══ -->
 <div class="day-section" data-date="2026-06-17">
-<button class="day-btn nc-amber" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">17</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Wednesday" data-es="Miércoles">Wednesday</div>
+    <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
     <div class="day-summary" data-en="Region 13 Day 2 · breakfast + box lunch · AUSDW Quarter 2 Rally" data-es="Region 13 Día 2 · desayuno + almuerzo en caja · AUSDW Rally Q2">Region 13 Day 2 · breakfast + box lunch · AUSDW Quarter 2 Rally</div>
   </div>
   <span class="chevron">▶</span>
@@ -834,10 +834,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ THU JUN 18 ══ -->
 <div class="day-section" data-date="2026-06-18">
-<button class="day-btn nc-blue" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">18</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Thursday" data-es="Jueves">Thursday</div>
+    <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
     <div class="day-summary" data-en="Civis Solutions mtg · AUSDW Business Plan mtg · FIFA Hospitality (no F&amp;B)" data-es="Reunión Civis Solutions · Reunión Plan de Negocios AUSDW · Hospitalidad FIFA (sin F&amp;B)">Civis Solutions mtg · AUSDW Business Plan mtg · FIFA Hospitality (no F&amp;B)</div>
   </div>
   <span class="chevron">▶</span>
@@ -907,10 +907,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ FRI JUN 19 ══ -->
 <div class="day-section" data-date="2026-06-19">
-<button class="day-btn nc-slate" onclick="toggleDay(this)">
+<button class="day-btn no-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">19</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Friday" data-es="Viernes">Friday</div>
+    <div class="day-dow" data-en="FRI" data-es="Viernes">FRI</div>
     <div class="day-summary" data-en="FIFA Hospitality Day 2 (no F&amp;B) · Housekeeping Meeting" data-es="Hospitalidad FIFA Día 2 (sin F&amp;B) · Reunión de Limpieza">FIFA Hospitality Day 2 (no F&amp;B) · Housekeeping Meeting</div>
   </div>
   <span class="chevron">▶</span>
@@ -955,10 +955,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ SAT JUN 20 ══ -->
 <div class="day-section" data-date="2026-06-20">
-<button class="day-btn nc-dim" onclick="toggleDay(this)">
+<button class="day-btn no-events" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">20</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Saturday" data-es="Sábado">Saturday</div>
+    <div class="day-dow" data-en="SAT" data-es="Sábado">SAT</div>
     <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
   </div>
   <span class="chevron">▶</span>
@@ -968,10 +968,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ SUN JUN 21 ══ -->
 <div class="day-section" data-date="2026-06-21">
-<button class="day-btn nc-slate" onclick="toggleDay(this)">
+<button class="day-btn no-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">21</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Sunday" data-es="Domingo">Sunday</div>
+    <div class="day-dow" data-en="SUN" data-es="Domingo">SUN</div>
     <div class="day-summary" data-en="AbbVie (AMI Mtg) — setup day, no F&amp;B · DO NOT post AbbVie" data-es="AbbVie (Reunión AMI) — día de montaje, sin F&amp;B">AbbVie (AMI Mtg) — setup day, no F&amp;B · DO NOT post AbbVie</div>
   </div>
   <span class="chevron">▶</span>
@@ -1010,10 +1010,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ MON JUN 22 ══ -->
 <div class="day-section" data-date="2026-06-22">
-<button class="day-btn nc-green" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">22</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Monday" data-es="Lunes">Monday</div>
+    <div class="day-dow" data-en="MON" data-es="Lunes">MON</div>
     <div class="day-summary" data-en="AbbVie (AMI) Day 1 — 115pp F&amp;B, Gen Session 3pm · Simon Day 1 setup · AUSDW Orientation" data-es="AbbVie (AMI) Día 1 — 115pp F&amp;B, Sesión General 3pm · Simon Día 1 · Orientación AUSDW">AbbVie (AMI) Day 1 — 115pp F&amp;B, Gen Session 3pm · Simon Day 1 setup · AUSDW Orientation</div>
   </div>
   <span class="chevron">▶</span>
@@ -1141,10 +1141,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <div class="week-label">Week of Jun 23</div>
 <!-- ══ TUE JUN 23 ══ -->
 <div class="day-section" data-date="2026-06-23">
-<button class="day-btn nc-green" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">23</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Tuesday" data-es="Martes">Tuesday</div>
+    <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
     <div class="day-summary" data-en="AbbVie Day 2 — 6am outdoor workout · 115pp bkf+lunch · Simon Day 2 (BBQ) · AUSDW Associate Engagement" data-es="AbbVie Día 2 — ejercicio 6am · 115pp desayuno+almuerzo · Simon Día 2 (BBQ) · Compromiso Asociados AUSDW">AbbVie Day 2 — 6am outdoor workout · 115pp bkf+lunch · Simon Day 2 (BBQ) · AUSDW Associate Engagement</div>
   </div>
   <span class="chevron">▶</span>
@@ -1263,10 +1263,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ WED JUN 24 ══ -->
 <div class="day-section" data-date="2026-06-24">
-<button class="day-btn nc-amber" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">24</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Wednesday" data-es="Miércoles">Wednesday</div>
+    <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
     <div class="day-summary" data-en="⚑ White Lodging Exec/VIP visit (Bluebell) · Simon Day 3 half day · SwS working lunch" data-es="⚑ Visita Ejecutivos White Lodging (Bluebell) · Simon Día 3 medio día · Almuerzo SwS">⚑ White Lodging Exec/VIP visit (Bluebell) · Simon Day 3 half day · SwS working lunch</div>
   </div>
   <span class="chevron">▶</span>
@@ -1343,10 +1343,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ THU JUN 25 ══ -->
 <div class="day-section" data-date="2026-06-25">
-<button class="day-btn nc-green" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">25</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Thursday" data-es="Jueves">Thursday</div>
+    <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
     <div class="day-summary" data-en="Smartlinx full day (⚠ Kosher) · Simon Day 4 (final, half day) · Quality Labor Mgmt full day" data-es="Smartlinx día completo (⚠ Kosher) · Simon Día 4 (final, medio día) · Quality Labor día completo">Smartlinx full day (⚠ Kosher) · Simon Day 4 (final, half day) · Quality Labor Mgmt full day</div>
   </div>
   <span class="chevron">▶</span>
@@ -1472,10 +1472,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ JUN 26–30 ══ -->
 <div class="day-section" data-date-start="2026-06-26" data-date-end="2026-06-30">
-<button class="day-btn nc-dim" onclick="toggleDay(this)">
+<button class="day-btn no-events" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">26</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Fri Jun 26 – Tue Jun 30" data-es="Vie 26 Jun – Mar 30 Jun">Fri Jun 26 – Tue Jun 30</div>
+    <div class="day-dow" data-en="FRI – TUE" data-es="Vie 26 Jun – Mar 30 Jun">FRI – TUE</div>
     <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
   </div>
   <span class="chevron">▶</span>
@@ -1487,10 +1487,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <div class="week-label">Week of Jul 1</div>
 <!-- ══ WED JUL 1 ══ -->
 <div class="day-section" data-date="2026-07-01">
-<button class="day-btn nc-blue" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">1</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Wednesday" data-es="Miércoles">Wednesday</div>
+    <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
     <div class="day-summary" data-en="Epiphany Dermatology Leadership Workshop — U-Shape, beverage service" data-es="Taller de Liderazgo Epiphany Dermatology — Forma U, servicio de bebidas">Epiphany Dermatology Leadership Workshop — U-Shape, beverage service</div>
   </div>
   <span class="chevron">▶</span>
@@ -1526,10 +1526,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ JUL 2–6 ══ -->
 <div class="day-section" data-date-start="2026-07-02" data-date-end="2026-07-06">
-<button class="day-btn nc-dim" onclick="toggleDay(this)">
+<button class="day-btn no-events" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">2</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Thu Jul 2 – Mon Jul 6" data-es="Jue 2 Jul – Lun 6 Jul">Thu Jul 2 – Mon Jul 6</div>
+    <div class="day-dow" data-en="THU – MON" data-es="Jue 2 Jul – Lun 6 Jul">THU – MON</div>
     <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
   </div>
   <span class="chevron">▶</span>
@@ -1539,10 +1539,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 <!-- ══ TUE JUL 7 ══ -->
 <div class="day-section" data-date="2026-07-07">
-<button class="day-btn nc-blue" onclick="toggleDay(this)">
+<button class="day-btn has-fb" onclick="toggleDay(this)">
   <div class="day-dot"><span class="day-dot-num">7</span></div>
   <div class="day-text">
-    <div class="day-dow" data-en="Tuesday" data-es="Martes">Tuesday</div>
+    <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
     <div class="day-summary" data-en="Pilotbase CX Summit — all-day beverage, lunch off property" data-es="Pilotbase CX Summit — bebidas todo el día, almuerzo fuera de la propiedad">Pilotbase CX Summit — all-day beverage, lunch off property</div>
   </div>
   <span class="chevron">▶</span>
