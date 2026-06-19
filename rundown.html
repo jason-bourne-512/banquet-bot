@@ -97,7 +97,25 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .day-btn:active { transform:scale(0.975); }
 
 [data-theme="light"] .day-btn { background:#faf7f2; border-color:rgba(0,0,0,0.08); }
-[data-theme="light"] .day-btn.a-dim { --ac:rgba(0,0,0,0.15); --dc:rgba(0,0,0,0.25); }
+[data-theme="light"] .day-btn.a1 { --dg1:rgba(45,189,128,0.24); --dg2:rgba(45,189,128,0.08); }
+[data-theme="light"] .day-btn.a2 { --dg1:rgba(79,142,240,0.24); --dg2:rgba(79,142,240,0.08); }
+[data-theme="light"] .day-btn.a3 { --dg1:rgba(140,100,220,0.24); --dg2:rgba(140,100,220,0.08); }
+[data-theme="light"] .day-btn.a4 { --dg1:rgba(240,100,100,0.22); --dg2:rgba(240,100,100,0.07); }
+[data-theme="light"] .day-btn.a5 { --dg1:rgba(251,146,60,0.22); --dg2:rgba(251,146,60,0.07); }
+[data-theme="light"] .day-btn.a-dim { --ac:rgba(0,0,0,0.15); --dc:rgba(0,0,0,0.25); --dg1:rgba(0,0,0,0.12); --dg2:rgba(0,0,0,0.04); }
+[data-theme="light"] .day-dow { color:var(--dc); filter:brightness(0.40); }
+[data-theme="light"] .day-summary { color:rgba(0,0,0,0.72); }
+[data-theme="light"] .day-dot { background:linear-gradient(135deg,var(--dg1),var(--dg2)); border-color:var(--ac,rgba(0,0,0,0.12)); }
+[data-theme="light"] .day-btn.a-dim .day-dow { color:rgba(0,0,0,0.45); }
+[data-theme="light"] .day-btn.a-dim .day-summary { color:rgba(0,0,0,0.50); }
+[data-theme="light"] .day-btn.a-dim .day-dot-num { color:rgba(0,0,0,0.32); }
+[data-theme="light"] .day-btn.a1 .day-dot-num { color:var(--green); }
+[data-theme="light"] .day-btn.a2 .day-dot-num { color:var(--blue); }
+[data-theme="light"] .day-btn.a3 .day-dot-num { color:var(--purple); }
+[data-theme="light"] .day-btn.a4 .day-dot-num { color:var(--red); }
+[data-theme="light"] .day-btn.a5 .day-dot-num { color:var(--orange); }
+[data-theme="light"] .week-label { color:rgba(0,0,0,0.45); }
+[data-theme="light"] .week-label::after { background:linear-gradient(90deg,rgba(0,0,0,0.18),transparent); }
 
 .day-btn.is-today { box-shadow:0 0 10px var(--ng,rgba(45,189,128,0.08)),inset 0 0 16px var(--ngi,rgba(45,189,128,0.03)),0 0 0 1.5px var(--today-border); }
 .day-btn.is-today::after { background:linear-gradient(90deg,transparent,var(--today-top),transparent); }
