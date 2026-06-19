@@ -88,12 +88,12 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 /* SILVER SURFACE DAY BUTTONS */
 .day-btn { width:calc(100% - 32px); display:flex; align-items:center; gap:13px; padding:13px 14px; text-align:left; border:none; cursor:pointer; min-height:60px; position:relative; overflow:hidden; background:#0d0f12; border:1px solid rgba(255,255,255,0.09); border-left:2px solid var(--ac,rgba(255,255,255,0.15)); border-radius:12px; margin:0 16px 7px; box-shadow:none; }
 .day-btn::after { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,var(--ac,rgba(255,255,255,0.08)),transparent); pointer-events:none; }
-.day-btn.a1 { --ac:rgba(45,189,128,0.55); --dc:#3de8a0; }
-.day-btn.a2 { --ac:rgba(79,142,240,0.55); --dc:#8ab8ff; }
-.day-btn.a3 { --ac:rgba(140,100,220,0.55); --dc:#c4a0ff; }
-.day-btn.a4 { --ac:rgba(240,100,100,0.50); --dc:#ff9090; }
-.day-btn.a5 { --ac:rgba(251,146,60,0.50); --dc:#fdb070; }
-.day-btn.a-dim { --ac:rgba(80,80,80,0.25); --dc:rgba(255,255,255,0.20); }
+.day-btn.a1 { --ac:rgba(45,189,128,0.55); --dc:#3de8a0; --dg1:rgba(45,189,128,0.10); --dg2:rgba(45,189,128,0.03); }
+.day-btn.a2 { --ac:rgba(79,142,240,0.55); --dc:#8ab8ff; --dg1:rgba(79,142,240,0.10); --dg2:rgba(79,142,240,0.03); }
+.day-btn.a3 { --ac:rgba(140,100,220,0.55); --dc:#c4a0ff; --dg1:rgba(140,100,220,0.10); --dg2:rgba(140,100,220,0.03); }
+.day-btn.a4 { --ac:rgba(240,100,100,0.50); --dc:#ff9090; --dg1:rgba(240,100,100,0.10); --dg2:rgba(240,100,100,0.03); }
+.day-btn.a5 { --ac:rgba(251,146,60,0.50); --dc:#fdb070; --dg1:rgba(251,146,60,0.10); --dg2:rgba(251,146,60,0.03); }
+.day-btn.a-dim { --ac:rgba(80,80,80,0.25); --dc:rgba(255,255,255,0.20); --dg1:rgba(255,255,255,0.04); --dg2:rgba(255,255,255,0.01); }
 .day-btn:active { transform:scale(0.975); }
 
 [data-theme="light"] .day-btn { background:#faf7f2; border-color:rgba(0,0,0,0.08); }
@@ -102,13 +102,12 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .day-btn.is-today { box-shadow:0 0 10px var(--ng,rgba(45,189,128,0.08)),inset 0 0 16px var(--ngi,rgba(45,189,128,0.03)),0 0 0 1.5px var(--today-border); }
 .day-btn.is-today::after { background:linear-gradient(90deg,transparent,var(--today-top),transparent); }
 
-.day-dot { width:36px; height:36px; border-radius:9px; flex-shrink:0; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; }
+.day-dot { width:36px; height:36px; border-radius:9px; flex-shrink:0; background:linear-gradient(135deg,var(--dg1),var(--dg2)); border:1px solid var(--ac,rgba(255,255,255,0.08)); display:flex; align-items:center; justify-content:center; }
 .day-btn.is-today .day-dot { background:var(--accent-dim); border-color:rgba(201,168,76,0.35); }
 
 .day-text { flex:1; min-width:0; }
-.day-dow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:4px; }
-.day-name { font-size:15px; font-weight:600; letter-spacing:-.01em; line-height:1.1; color:var(--nn,#3de8a0); }
-.day-summary { font-family:'DM Mono',monospace; font-size:9px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:rgba(255,255,255,0.25); }
+.day-dow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--dc); margin-bottom:4px; }
+.day-summary { font-family:'DM Mono',monospace; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:rgba(255,255,255,0.65); }
 
 .today-chip { background:var(--accent); color:#09090c; font-family:'DM Mono',monospace; font-size:8px; font-weight:600; letter-spacing:.12em; padding:3px 7px; border-radius:4px; text-transform:uppercase; flex-shrink:0; }
 [data-theme="light"] .today-chip { color:#fff; }
