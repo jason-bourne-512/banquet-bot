@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" style="background:#09090c;background-color:#09090c">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#09090c">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0ece3">
+<title>Property Info — Westin Austin Domain</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%;overscroll-behavior:none}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f0ece3!important;background-color:#f0ece3!important}[data-theme="light"] body::before{background:#f0ece3}</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#09090c;--bg-card:#111316;--bg-active:#181c26;
+  --border:rgba(255,255,255,0.06);--border-h:rgba(255,255,255,0.13);
+  --text-1:#edeae2;--text-2:#7e7b74;--text-3:#44423f;--text-4:#2e2c2a;
+  --accent:#c9a84c;--accent-dim:rgba(201,168,76,0.10);
+  --green:#2dbd80;--green-dim:rgba(45,189,128,0.10);
+  --blue:#4f8ef0;--blue-dim:rgba(79,142,240,0.10);
+  --amber:#f0b429;--amber-dim:rgba(240,180,41,0.10);
+  --red:#e05555;--red-dim:rgba(220,80,80,0.10);
+  --purple:#8c64dc;--purple-dim:rgba(140,100,220,0.10);
+  --orange:#fb923c;--orange-dim:rgba(251,146,60,0.10);
+  --header-bg:rgba(9,9,12,0.95);
+  --tog-bg:#16181e;--tog-border:rgba(255,255,255,0.08);--tog-act:rgba(255,255,255,0.07);
+  --divider:rgba(255,255,255,0.04);--stripe:rgba(255,255,255,0.014);
+}
+[data-theme="light"]{
+  --bg:#f0ece3;--bg-card:#faf7f2;--bg-active:#e8e2d6;
+  --border:rgba(0,0,0,0.07);--border-h:rgba(0,0,0,0.15);
+  --text-1:#18160f;--text-2:#6b6760;--text-3:#9e9a92;--text-4:#c0bbb2;
+  --accent:#9a7422;--accent-dim:rgba(154,116,34,0.09);
+  --green:#1a8f5e;--green-dim:rgba(26,143,94,0.09);
+  --blue:#2558c4;--blue-dim:rgba(37,88,196,0.09);
+  --amber:#9c6800;--amber-dim:rgba(156,104,0,0.09);
+  --red:#c03030;--red-dim:rgba(180,50,50,0.08);
+  --purple:#6030b0;--purple-dim:rgba(96,48,176,0.09);
+  --orange:#c05a10;--orange-dim:rgba(192,90,16,0.09);
+  --header-bg:rgba(240,236,227,0.95);
+  --tog-bg:#e4dfd4;--tog-border:rgba(0,0,0,0.08);--tog-act:rgba(0,0,0,0.05);
+  --divider:rgba(0,0,0,0.05);--stripe:rgba(0,0,0,0.010);
+}
+html{background:var(--bg);min-height:100%;overflow-x:hidden;overscroll-behavior:none}
+body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospace;min-height:100vh;min-height:100dvh;width:100%;overflow-x:hidden;overscroll-behavior:none}
+.page-wrap{max-width:480px;min-height:100vh;min-height:100dvh;margin:0 auto;background:var(--bg)}
+@media(orientation:landscape){.page-wrap{max-width:100%}}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--header-bg);backdrop-filter:blur(14px);z-index:20;gap:8px}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
+.brand-icon{width:32px;height:32px;background:var(--accent-dim);border:1px solid var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Courier New',monospace;font-size:10px;font-weight:500;color:var(--accent)}
+.brand-name{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1.5px;color:var(--text-1);line-height:1}
+.brand-sub{font-family:'Courier New',monospace;font-size:8px;color:var(--text-3);margin-top:1px}
+.controls{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.toggle-group{display:flex;background:var(--tog-bg);border:1px solid var(--tog-border);border-radius:7px;overflow:hidden}
+.tgl{padding:5px 8px;font-family:'Courier New',monospace;font-size:10px;font-weight:500;color:var(--text-3);background:none;border:none;cursor:pointer;transition:background .12s,color .12s;line-height:1}
+.tgl.active{background:var(--tog-act);color:var(--text-1)}
+.tgl+.tgl{border-left:1px solid var(--tog-border)}
+
+/* NAV */
+.nav{display:flex;overflow-x:auto;gap:0;padding:0;border-bottom:1px solid var(--border);scrollbar-width:none;-ms-overflow-style:none;position:sticky;top:57px;background:var(--header-bg);backdrop-filter:blur(14px);z-index:18}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{flex-shrink:0;padding:10px 14px;font-family:'Courier New',monospace;font-size:10px;font-weight:500;color:var(--text-3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;letter-spacing:0.5px;transition:color .15s,border-color .15s;white-space:nowrap}
+.nav-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* HERO */
+.page-hero{padding:18px 16px 14px;border-bottom:1px solid var(--divider);position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,var(--stripe) 0px,var(--stripe) 1px,transparent 1px,transparent 18px);pointer-events:none}
+.page-eyebrow{font-family:'Courier New',monospace;font-size:9px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:1px;color:var(--text-1);line-height:0.95;margin-bottom:8px}
+.chips{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:4px;font-family:'Courier New',monospace;font-size:9px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-2)}
+.chip-green{background:var(--green-dim);color:var(--green);border-color:rgba(45,189,128,0.2)}
+.chip-gold{background:var(--accent-dim);color:var(--accent);border-color:rgba(201,168,76,0.2)}
+.chip-blue{background:var(--blue-dim);color:var(--blue);border-color:rgba(79,142,240,0.2)}
+
+/* SECTIONS */
+.section{display:none;padding:16px}
+.section.active{display:block}
+
+/* CARD */
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.card-header{padding:12px 14px 10px;border-bottom:1px solid var(--divider);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-label{font-family:'Courier New',monospace;font-size:9px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.5px;color:var(--text-1);line-height:1;margin-top:2px}
+.card-badge{font-family:'Courier New',monospace;font-size:9px;padding:3px 8px;border-radius:4px;flex-shrink:0}
+.badge-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(45,189,128,0.2)}
+.badge-amber{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(240,180,41,0.2)}
+.card-body{padding:12px 14px}
+
+/* ROW LIST */
+.row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--divider);gap:8px}
+.row:last-child{border-bottom:none;padding-bottom:0}
+.row-key{font-family:'Courier New',monospace;font-size:11px;color:var(--text-2);flex-shrink:0}
+.row-val{font-family:'Courier New',monospace;font-size:11px;color:var(--text-1);text-align:right}
+.row-val.accent{color:var(--accent)}
+.row-val.green{color:var(--green)}
+.row-val.blue{color:var(--blue)}
+
+/* HOURS TABLE */
+.hours-row{display:grid;grid-template-columns:110px 1fr;gap:8px;padding:5px 0;border-bottom:1px solid var(--divider);align-items:start}
+.hours-row:last-child{border-bottom:none;padding-bottom:0}
+.hours-day{font-family:'Courier New',monospace;font-size:11px;color:var(--text-2)}
+.hours-time{font-family:'Courier New',monospace;font-size:11px;color:var(--text-1)}
+
+/* NEARBY LIST */
+.nearby-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--divider)}
+.nearby-item:last-child{border-bottom:none;padding-bottom:0}
+.nearby-dot{width:6px;height:6px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.nearby-name{font-family:'Courier New',monospace;font-size:11px;color:var(--text-1);margin-bottom:2px}
+.nearby-meta{font-family:'Courier New',monospace;font-size:10px;color:var(--text-2)}
+
+/* SECTION LABEL */
+.section-label{font-family:'Courier New',monospace;font-size:9px;color:var(--text-3);letter-spacing:2px;text-transform:uppercase;margin:16px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--divider)}
+.section-label:first-child{margin-top:0}
+
+/* ALERT */
+.alert{background:var(--amber-dim);border:1px solid rgba(240,180,41,0.2);border-radius:8px;padding:10px 12px;margin-bottom:10px}
+.alert-text{font-family:'Courier New',monospace;font-size:11px;color:var(--amber);line-height:1.5}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--header-bg);backdrop-filter:blur(14px);border-top:1px solid var(--border);display:flex;z-index:30;padding-bottom:env(safe-area-inset-bottom)}
+@media(orientation:landscape){.bottom-nav{max-width:100%}}
+.bn-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px 6px;background:none;border:none;cursor:pointer;color:var(--text-3);font-family:'Courier New',monospace;font-size:8px;letter-spacing:0.5px;text-decoration:none;transition:color .12s}
+.bn-btn.active{color:var(--accent)}
+.bn-icon{font-size:18px;line-height:1}
+.spacer{height:64px}
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+<!-- HEADER -->
+<header class="header">
+  <a href="index.html" class="brand">
+    <div class="brand-icon">BB</div>
+    <div>
+      <div class="brand-name">BANQUET BOT</div>
+      <div class="brand-sub">WESTIN AUSTIN · DOMAIN</div>
+    </div>
+  </a>
+  <div class="controls">
+    <div class="toggle-group">
+      <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
+      <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
+    </div>
+  </div>
+</header>
+
+<!-- TAB NAV -->
+<nav class="nav" id="tabNav">
+  <button class="nav-btn active" onclick="showTab('dining',this)">DINING</button>
+  <button class="nav-btn" onclick="showTab('amenities',this)">AMENITIES</button>
+  <button class="nav-btn" onclick="showTab('parking',this)">PARKING</button>
+  <button class="nav-btn" onclick="showTab('transport',this)">TRANSPORT</button>
+  <button class="nav-btn" onclick="showTab('nearby',this)">NEARBY</button>
+  <button class="nav-btn" onclick="showTab('hotel',this)">HOTEL</button>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-eyebrow">Property Reference</div>
+  <div class="page-title">Property Info</div>
+  <div class="chips">
+    <span class="chip chip-gold">11301 Domain Dr</span>
+    <span class="chip chip-green">Fully Renovated</span>
+    <span class="chip chip-blue">AUSDW</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ DINING ═══ -->
+<div class="section active" id="tab-dining">
+
+  <div class="section-label">On-Property Restaurant</div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-label">On-Site · American</div>
+        <div class="card-title">Corinne Austin</div>
+      </div>
+      <span class="card-badge badge-green">OPEN</span>
+    </div>
+    <div class="card-body">
+      <div class="alert">
+        <div class="alert-text">⚠ Bar stays open 2 hrs past dinner close on Fri &amp; Sat — last call midnight.</div>
+      </div>
+      <div class="section-label" style="margin-top:0">Hours</div>
+      <div class="hours-row">
+        <span class="hours-day">Breakfast</span>
+        <span class="hours-time">Mon–Thu 6:30 AM – 10:30 AM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Brunch</span>
+        <span class="hours-time">Fri–Sun 6:30 AM – 3:00 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Lunch</span>
+        <span class="hours-time">Mon–Thu 11:00 AM – 4:00 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Dinner</span>
+        <span class="hours-time">Daily 5:00 PM – 10:00 PM</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Bar (Fri–Sat)</span>
+        <span class="hours-time accent">Until Midnight</span>
+      </div>
+      <div class="section-label">Contact</div>
+      <div class="row">
+        <span class="row-key">Phone</span>
+        <span class="row-val blue">512-687-9313</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Reservations</span>
+        <span class="row-val">OpenTable</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Dress code</span>
+        <span class="row-val">Casual</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-label">In-Room</div>
+        <div class="card-title">Room Service</div>
+      </div>
+      <span class="card-badge badge-green">AVAILABLE</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">Status</span>
+        <span class="row-val green">Available to all guests</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Breakfast styles</span>
+        <span class="row-val">American, Buffet, Hot, Grab &amp; Go, Continental</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Fee</span>
+        <span class="row-val">Yes — see menu</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Nearby Dining (Walking Distance)</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--blue)"></div>
+        <div>
+          <div class="nearby-name">Punch Bowl Social</div>
+          <div class="nearby-meta">0.1 mi · Scratch kitchen + cocktails · 512-368-9070</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--blue)"></div>
+        <div>
+          <div class="nearby-name">Shake Shack</div>
+          <div class="nearby-meta">0.1 mi · Burgers, patio, bocce · 512-717-0422</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--orange)"></div>
+        <div>
+          <div class="nearby-name">Gloria's Latin Cuisine</div>
+          <div class="nearby-meta">0.2 mi · Salvadoran &amp; Tex-Mex · 512-833-6400</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--orange)"></div>
+        <div>
+          <div class="nearby-name">Velvet Taco</div>
+          <div class="nearby-meta">0.3 mi · Tacos, lunch &amp; dinner</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--accent)"></div>
+        <div>
+          <div class="nearby-name">Fleming's Prime Steakhouse</div>
+          <div class="nearby-meta">0.4 mi · Upscale steakhouse + wine bar</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--green)"></div>
+        <div>
+          <div class="nearby-name">Maggiano's Little Italy</div>
+          <div class="nearby-meta">0.3 mi · Italian family dining · 512-501-7870</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--green)"></div>
+        <div>
+          <div class="nearby-name">Mia Italian Tapas &amp; Bar</div>
+          <div class="nearby-meta">0.2 mi · Italian tapas, lunch &amp; dinner</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ AMENITIES ═══ -->
+<div class="section" id="tab-amenities">
+
+  <div class="section-label">On-Site</div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-label">Fitness</div>
+        <div class="card-title">WestinWORKOUT® Studio</div>
+      </div>
+      <span class="card-badge badge-green">COMPLIMENTARY</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">Hours</span>
+        <span class="row-val green">Open 24 / 7</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Fee</span>
+        <span class="row-val">Included for guests</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Gear lending</span>
+        <span class="row-val">Hyperice + Bala equipment available</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-label">Pool</div>
+        <div class="card-title">Outdoor Pool &amp; Jacuzzi</div>
+      </div>
+      <span class="card-badge badge-green">COMPLIMENTARY</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">Type</span>
+        <span class="row-val">Heated outdoor + Whirlpool</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Fee</span>
+        <span class="row-val">Included for guests</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-label">Pool Upgrade</div>
+        <div class="card-title">Cabanas</div>
+      </div>
+      <span class="card-badge badge-amber">$250 / DAY</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">Book via</span>
+        <span class="row-val">resortpass.com</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Note</span>
+        <span class="row-val">Available to non-guests as well</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Services</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">Business center</span>
+        <span class="row-val green">On-site</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Gift shop</span>
+        <span class="row-val green">On-site</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Convenience store</span>
+        <span class="row-val green">On-site</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Dry cleaning</span>
+        <span class="row-val">Same-day available</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Concierge</span>
+        <span class="row-val green">On-site</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Front desk</span>
+        <span class="row-val green">24 hours</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Housekeeping</span>
+        <span class="row-val">Daily</span>
+      </div>
+      <div class="row">
+        <span class="row-key">EV charging</span>
+        <span class="row-val green">On-site</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Pet policy</span>
+        <span class="row-val">Dogs ≤40 lbs · $49 non-refundable fee</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Wi-Fi</span>
+        <span class="row-val">Free for Bonvoy members</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Languages (staff)</span>
+        <span class="row-val">EN, ES, ZH, AR, TL</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Nearby Spa</div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-label">0.2 mi from hotel</div>
+        <div class="card-title">Spa Sway</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">Phone</span>
+        <span class="row-val blue">512-873-0999</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Website</span>
+        <span class="row-val">spasway.com</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Note</span>
+        <span class="row-val">One of Austin's most awarded spas — refer guests here</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ PARKING ═══ -->
+<div class="section" id="tab-parking">
+
+  <div class="section-label">Self-Parking (On-Site)</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">0 – 4 hrs</span>
+        <span class="row-val accent">$9.00 + tax</span>
+      </div>
+      <div class="row">
+        <span class="row-key">4 – 8 hrs</span>
+        <span class="row-val accent">$19.00 + tax</span>
+      </div>
+      <div class="row">
+        <span class="row-key">8 – 24 hrs</span>
+        <span class="row-val accent">$29.00 + tax</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Daily max</span>
+        <span class="row-val">$29.00</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Valet</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">0 – 4 hrs</span>
+        <span class="row-val accent">$19.00 + tax</span>
+      </div>
+      <div class="row">
+        <span class="row-key">4 – 8 hrs</span>
+        <span class="row-val accent">$29.00 + tax</span>
+      </div>
+      <div class="row">
+        <span class="row-key">8 – 24 hrs</span>
+        <span class="row-val accent">$39.00 + tax</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Daily max</span>
+        <span class="row-val">$39.00</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Other</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">EV charging</span>
+        <span class="row-val green">Available on-site</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Accessible parking</span>
+        <span class="row-val green">Van-accessible spaces</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ TRANSPORT ═══ -->
+<div class="section" id="tab-transport">
+
+  <div class="section-label">Airport</div>
+
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-label">AUS · Austin-Bergstrom</div>
+        <div class="card-title">17 Miles</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">Hotel shuttle</span>
+        <span class="row-val red">Not available</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Super Shuttle</span>
+        <span class="row-val">Reservation required · 800-258-3826</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Airport phone</span>
+        <span class="row-val blue">512-530-2242</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Public Transit (CapMetro)</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">Bus stops</span>
+        <span class="row-val">Esperanza/Crossing Domain<br>Domain Bus Station<br>11100 Burnet/Kramer Station</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Rail</span>
+        <span class="row-val">MetroRail nearby</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Info</span>
+        <span class="row-val blue">capmetro.org</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Hotel Details</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">Address</span>
+        <span class="row-val">11301 Domain Drive, Austin TX 78758</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Main line</span>
+        <span class="row-val blue">512-832-4197</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Toll free</span>
+        <span class="row-val blue">888-625-4988</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ NEARBY ═══ -->
+<div class="section" id="tab-nearby">
+
+  <div class="section-label">Entertainment</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--green)"></div>
+        <div>
+          <div class="nearby-name">Topgolf Austin</div>
+          <div class="nearby-meta">0.5 mi · High-tech driving range + lounge · 214-501-5028<br>2700 Esperanza Crossing</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--purple)"></div>
+        <div>
+          <div class="nearby-name">iPic Movie Theater</div>
+          <div class="nearby-meta">At The Domain · In-seat food &amp; beverage service<br>3225 Amy Donovan Plaza</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--blue)"></div>
+        <div>
+          <div class="nearby-name">Punch Bowl Social</div>
+          <div class="nearby-meta">0.1 mi · Bowling, ping-pong, karaoke, giant Jenga, cocktails</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--orange)"></div>
+        <div>
+          <div class="nearby-name">Rock Rose Nightlife District</div>
+          <div class="nearby-meta">3 blocks east · Bars, lounges, live music</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--blue)"></div>
+        <div>
+          <div class="nearby-name">iFLY Austin</div>
+          <div class="nearby-meta">Indoor skydiving · 13265 N US-183, Suite A</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--red)"></div>
+        <div>
+          <div class="nearby-name">K1 Speed</div>
+          <div class="nearby-meta">1.5 mi · Indoor electric go-karts · 512-518-4068</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Shopping</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--accent)"></div>
+        <div>
+          <div class="nearby-name">The Domain</div>
+          <div class="nearby-meta">Across the street · 100+ stores: Neiman Marcus, Louis Vuitton, Tiffany, Apple, Macy's, Dillard's</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Sports &amp; Attractions</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--green)"></div>
+        <div>
+          <div class="nearby-name">Austin FC (Q2 Stadium)</div>
+          <div class="nearby-meta">~1 mi · MLS · Great hotel for match-night guests</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--orange)"></div>
+        <div>
+          <div class="nearby-name">UT Austin / DKR Stadium</div>
+          <div class="nearby-meta">~10 mi · University of Texas Longhorns</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--blue)"></div>
+        <div>
+          <div class="nearby-name">Lady Bird Lake</div>
+          <div class="nearby-meta">Downtown · Kayaking, running trails, paddleboard</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--purple)"></div>
+        <div>
+          <div class="nearby-name">Bob Bullock Texas History Museum</div>
+          <div class="nearby-meta">Downtown · IMAX theatre · 1800 N Congress Ave</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--blue)"></div>
+        <div>
+          <div class="nearby-name">Austin Aquarium</div>
+          <div class="nearby-meta">13530 US-183 #101</div>
+        </div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--green)"></div>
+        <div>
+          <div class="nearby-name">Dell Diamond (Round Rock Express)</div>
+          <div class="nearby-meta">MiLB · 3400 E Palm Valley Blvd, Round Rock</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════ HOTEL ═══ -->
+<div class="section" id="tab-hotel">
+
+  <div class="section-label">Property Details</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">Check-in</span>
+        <span class="row-val">3:00 PM</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Check-out</span>
+        <span class="row-val">12:00 PM (Noon)</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Min age to check in</span>
+        <span class="row-val">21</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Smoking policy</span>
+        <span class="row-val red">Smoke-free property</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Event space</span>
+        <span class="row-val accent">17,000 sq ft</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Largest ballroom</span>
+        <span class="row-val">Primrose Ballroom</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Award</span>
+        <span class="row-val">2025 TripAdvisor Travelers' Choice</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Contact</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <span class="row-key">Main line</span>
+        <span class="row-val blue">512-832-4197</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Toll free</span>
+        <span class="row-val blue">888-625-4988</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Fax</span>
+        <span class="row-val">512-973-3703</span>
+      </div>
+      <div class="row">
+        <span class="row-key">Address</span>
+        <span class="row-val">11301 Domain Drive<br>Austin TX 78758</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Corporate Neighbors</div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--blue)"></div>
+        <div><div class="nearby-name">IBM</div><div class="nearby-meta">Near The Domain</div></div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--green)"></div>
+        <div><div class="nearby-name">Indeed</div><div class="nearby-meta">Near The Domain</div></div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--blue)"></div>
+        <div><div class="nearby-name">Charles Schwab</div><div class="nearby-meta">Near The Domain</div></div>
+      </div>
+      <div class="nearby-item">
+        <div class="nearby-dot" style="background:var(--accent)"></div>
+        <div><div class="nearby-name">Microsoft</div><div class="nearby-meta">Near The Domain</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="spacer"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a href="index.html" class="bn-btn">
+    <span class="bn-icon">⌂</span>HOME
+  </a>
+  <a href="rundown.html" class="bn-btn">
+    <span class="bn-icon">◈</span>RUNDOWN
+  </a>
+  <a href="info.html" class="bn-btn active">
+    <span class="bn-icon">◉</span>INFO
+  </a>
+  <a href="rooms.html" class="bn-btn">
+    <span class="bn-icon">⊞</span>ROOMS
+  </a>
+</nav>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('bb-theme', t);
+  document.getElementById('tdk').classList.toggle('active', t === 'dark');
+  document.getElementById('tlt').classList.toggle('active', t === 'light');
+}
+(function(){
+  const saved = localStorage.getItem('bb-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  if (document.getElementById('tdk')) {
+    document.getElementById('tdk').classList.toggle('active', saved === 'dark');
+    document.getElementById('tlt').classList.toggle('active', saved === 'light');
+  }
+})();
+</script>
+</body>
+</html>
