@@ -177,7 +177,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .foot-key { color:var(--text-4); flex-shrink:0; min-width:52px; }
 .foot-val { color:var(--text-2); min-width:0; }
 
-.day-strip { margin-top:10px; background:var(--accent-dim); border:1px solid rgba(201,168,76,0.2); border-radius:8px; padding:8px 13px; display:flex; flex-wrap:wrap; gap:8px 18px; }
+.day-strip { margin-top:0; margin-bottom:10px; background:var(--accent-dim); border:1px solid rgba(201,168,76,0.2); border-radius:8px; padding:8px 13px; display:flex; flex-wrap:wrap; gap:8px 18px; }
 .strip-item { font-family:'Courier New',monospace; font-size:9.5px; color:var(--text-3); line-height:1.4; }
 .strip-item strong { color:var(--accent); font-weight:600; }
 .empty-day { padding:16px; font-family:'Courier New',monospace; font-size:10px; color:var(--text-4); text-align:center; letter-spacing:.05em; }
@@ -1967,6 +1967,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 </div><!-- /days-list -->
 
 <script>
+  document.querySelectorAll('.day-body').forEach(function(body){
+    var strip = body.querySelector('.day-strip');
+    if(strip) body.insertBefore(strip, body.firstChild);
+  });
   function setLang(l){
     document.documentElement.setAttribute('data-lang',l);
     document.getElementById('len').classList.toggle('active',l==='en');
