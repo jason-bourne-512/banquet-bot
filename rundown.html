@@ -86,7 +86,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .day-section { padding:6px 0 0; border-bottom:none; }
 
 /* SILVER SURFACE DAY BUTTONS */
-.day-btn { width:calc(100% - 32px); display:flex; align-items:center; gap:13px; padding:13px 14px; text-align:left; border:none; cursor:pointer; min-height:60px; position:relative; overflow:hidden; background:#0d0f12; border:1px solid rgba(255,255,255,0.09); border-left:4px solid var(--ac,rgba(255,255,255,0.15)); border-radius:12px; margin:0 16px 7px; box-shadow:0 0 14px var(--ac, transparent); }
+.day-btn { width:calc(100% - 32px); display:flex; align-items:center; gap:13px; padding:13px 14px; text-align:left; border:none; cursor:pointer; min-height:60px; position:relative; overflow:hidden; background:#0d0f12; border:1px solid rgba(255,255,255,0.09); border-left:4px solid var(--ac,rgba(255,255,255,0.15)); border-radius:12px; margin:0 16px 7px; box-shadow:0 0 6px var(--ac, transparent); }
 .day-btn::after { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,var(--ac,rgba(255,255,255,0.08)),transparent); pointer-events:none; }
 .day-btn.a1 { --ac:rgba(45,189,128,0.85); --dc:#3de8a0; --dg1:rgba(45,189,128,0.20); --dg2:rgba(45,189,128,0.07); }
 .day-btn.a2 { --ac:rgba(79,142,240,0.85); --dc:#8ab8ff; --dg1:rgba(79,142,240,0.20); --dg2:rgba(79,142,240,0.07); }
@@ -96,7 +96,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .day-btn.a-dim { --ac:rgba(80,80,80,0.25); --dc:rgba(255,255,255,0.20); --dg1:rgba(255,255,255,0.04); --dg2:rgba(255,255,255,0.01); }
 .day-btn:active { transform:scale(0.975); }
 
-[data-theme="light"] .day-btn { background:#faf7f2; border-color:rgba(0,0,0,0.08); box-shadow:0 0 8px var(--ac, transparent); }
+[data-theme="light"] .day-btn { background:#faf7f2; border-color:rgba(0,0,0,0.08); box-shadow:0 0 5px var(--ac, transparent); }
 [data-theme="light"] .day-btn.a1 { --dg1:rgba(45,189,128,0.24); --dg2:rgba(45,189,128,0.08); }
 [data-theme="light"] .day-btn.a2 { --dg1:rgba(79,142,240,0.24); --dg2:rgba(79,142,240,0.08); }
 [data-theme="light"] .day-btn.a3 { --dg1:rgba(140,100,220,0.24); --dg2:rgba(140,100,220,0.08); }
@@ -124,8 +124,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .day-btn.is-today .day-dot { background:var(--accent-dim); border-color:rgba(201,168,76,0.35); }
 
 .day-text { flex:1; min-width:0; }
-.day-dow { font-family:'Courier New',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--dc); margin-bottom:4px; }
-.day-summary { font-family:'Courier New',monospace; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:rgba(255,255,255,0.82); }
+.day-dow { font-family:'Courier New',monospace; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--dc); margin-bottom:4px; }
+.day-summary { font-family:'Courier New',monospace; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:rgba(255,255,255,0.92); }
 
 .today-chip { background:var(--accent); color:#09090c; font-family:'Courier New',monospace; font-size:8px; font-weight:600; letter-spacing:.12em; padding:3px 7px; border-radius:4px; text-transform:uppercase; flex-shrink:0; }
 [data-theme="light"] .today-chip { color:#fff; }
