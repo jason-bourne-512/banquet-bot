@@ -87,7 +87,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .day-section { padding:6px 0 0; border-bottom:none; }
 
 /* SILVER SURFACE DAY BUTTONS */
-.day-btn { width:calc(100% - 32px); display:flex; align-items:center; gap:13px; padding:13px 14px; text-align:left; border:none; cursor:pointer; min-height:60px; position:relative; overflow:hidden; background:#0d0f12; border:1px solid rgba(255,255,255,0.09); border-left:4px solid var(--ac,rgba(255,255,255,0.15)); border-radius:12px; margin:0 16px 7px; box-shadow:0 0 6px var(--ac, transparent); }
+.day-btn { width:calc(100% - 32px); display:flex; align-items:center; gap:13px; padding:13px 14px; text-align:left; border:none; cursor:pointer; min-height:60px; position:relative; overflow:visible; background:#0d0f12; border:1px solid rgba(255,255,255,0.09); border-left:4px solid var(--ac,rgba(255,255,255,0.15)); border-radius:12px; margin:0 16px 7px; box-shadow:0 0 6px var(--ac, transparent); }
 .day-btn::after { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,var(--ac,rgba(255,255,255,0.08)),transparent); pointer-events:none; }
 .day-btn.a1 { --ac:rgba(45,189,128,0.85); --dc:#3de8a0; --dg1:rgba(45,189,128,0.20); --dg2:rgba(45,189,128,0.07); }
 .day-btn.a2 { --ac:rgba(79,142,240,0.85); --dc:#8ab8ff; --dg1:rgba(79,142,240,0.20); --dg2:rgba(79,142,240,0.07); }
@@ -127,7 +127,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
 .day-text { flex:1; min-width:0; }
 .day-dow { font-family:'Courier New',monospace; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--dc); margin-bottom:4px; }
-.day-summary { font-family:'Courier New',monospace; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:rgba(255,255,255,0.92); }
+.day-summary { font-family:'Courier New',monospace; font-size:12px; white-space:normal; line-height:1.45; color:rgba(255,255,255,0.92); }
 
 .today-chip { background:var(--accent); color:#09090c; font-family:'Courier New',monospace; font-size:8px; font-weight:600; letter-spacing:.12em; padding:3px 7px; border-radius:4px; text-transform:uppercase; flex-shrink:0; }
 [data-theme="light"] .today-chip { color:#fff; }
@@ -323,7 +323,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">7</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
-    <div class="day-summary" data-en="Telecom Industry Trade Association Spring Training kicks off — general session + welcome reception · Aviation Tech Company CX Summit · Swatch Group training · RDO Equipment Company board meeting" data-es="Inicia Telecom Industry Trade Association Spring Training — sesión general + recepción de bienvenida · Aviation Tech Company CX Summit · Entrenamiento Swatch Group · Junta RDO Equipment Company">Telecom Industry Trade Association Spring Training kicks off — general session + welcome reception · Aviation Tech Company CX Summit · Swatch Group training · RDO Equipment Company board meeting</div>
+    <div class="day-summary" data-en="Telecom Industry Trade Association Spring Training kicks off — general session + welcome reception · Pilotbase CX Summit · Swatch Group training · RDO Equipment Company board meeting" data-es="Inicia Telecom Industry Trade Association Spring Training — sesión general + recepción de bienvenida · Pilotbase CX Summit · Entrenamiento Swatch Group · Junta RDO Equipment Company">Telecom Industry Trade Association Spring Training kicks off — general session + welcome reception · Pilotbase CX Summit · Swatch Group training · RDO Equipment Company board meeting</div>
   </div>
   <span class="chevron">▶</span>
 </button>
@@ -366,7 +366,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Aviation Tech Company — CX Summit" data-es="Aviation Tech Company — CX Summit">Aviation Tech Company — CX Summit</div>
+      <div class="card-group" data-en="Pilotbase — CX Summit" data-es="Pilotbase — CX Summit">Pilotbase — CX Summit</div>
       <div class="card-badges">
         <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
         <span class="badge badge-ic" data-en="IC: Corey" data-es="CI: Corey">IC: Corey</span>
@@ -444,7 +444,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-strip">
     <div class="strip-item"><strong>4</strong> <span data-en="groups" data-es="grupos">groups</span></div>
     <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Primrose Foyer · Primrose C · Barton · Verbena B · Camellia A · Camellia B</strong></div>
-    <div class="strip-item" data-en="⚑ Telecom Industry Trade Association welcome reception 5–7p · Aviation Tech Company lunch off property — lock doors at noon" data-es="⚑ Recepción Telecom Industry Trade Association 5–7p · Almuerzo Aviation Tech Company fuera — cerrar puertas al mediodía">⚑ Telecom Industry Trade Association welcome reception 5–7p · Aviation Tech Company lunch off property — lock doors at noon</div>
+    <div class="strip-item" data-en="⚑ Telecom Industry Trade Association welcome reception 5–7p · Pilotbase lunch off property — lock doors at noon" data-es="⚑ Recepción Telecom Industry Trade Association 5–7p · Almuerzo Pilotbase fuera — cerrar puertas al mediodía">⚑ Telecom Industry Trade Association welcome reception 5–7p · Pilotbase lunch off property — lock doors at noon</div>
   </div>
 </div>
 </div>
@@ -456,7 +456,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">8</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
-    <div class="day-summary" data-en="Telecom Industry Trade Association full conference day — breakfast, breakouts, general session · Aviation Tech Company breakfast meeting · Swatch Group Day 2 · Clayton Home Building Group leadership workshop · Texas A&amp;M University System HQ luncheon" data-es="Día completo Telecom Industry Trade Association — desayuno, sesiones, sesión general · Reunión desayuno Aviation Tech Company · Swatch Group Día 2 · Taller de liderazgo Clayton Home Building Group · Almuerzo Texas A&amp;M University System HQ">Telecom Industry Trade Association full conference day — breakfast, breakouts, general session · Aviation Tech Company breakfast meeting · Swatch Group Day 2 · Clayton Home Building Group leadership workshop · Texas A&amp;M University System HQ luncheon</div>
+    <div class="day-summary" data-en="Telecom Industry Trade Association full conference day — breakfast, breakouts, general session · Pilotbase breakfast meeting · Swatch Group Day 2 · Clayton Home Building Group leadership workshop · Texas A&amp;M University System HQ luncheon" data-es="Día completo Telecom Industry Trade Association — desayuno, sesiones, sesión general · Reunión desayuno Pilotbase · Swatch Group Día 2 · Taller de liderazgo Clayton Home Building Group · Almuerzo Texas A&amp;M University System HQ">Telecom Industry Trade Association full conference day — breakfast, breakouts, general session · Pilotbase breakfast meeting · Swatch Group Day 2 · Clayton Home Building Group leadership workshop · Texas A&amp;M University System HQ luncheon</div>
   </div>
   <span class="chevron">▶</span>
 </button>
@@ -506,7 +506,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Aviation Tech Company — CX Summit — Day 2" data-es="Aviation Tech Company — CX Summit — Día 2">Aviation Tech Company — CX Summit — Day 2</div>
+      <div class="card-group" data-en="Pilotbase — CX Summit — Day 2" data-es="Pilotbase — CX Summit — Día 2">Pilotbase — CX Summit — Day 2</div>
       <div class="card-badges">
         <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
         <span class="badge badge-ic" data-en="IC: Corey" data-es="CI: Corey">IC: Corey</span>
@@ -638,7 +638,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">9</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
-    <div class="day-summary" data-en="Telecom Industry Trade Association final day — Texas Sunrise breakfast + closing general session · Aviation Tech Company wraps (half day) · RDO Equipment Company Day 2 · Swatch Group Day 3 · Clayton Home Building Group Day 2" data-es="Último día Telecom Industry Trade Association — desayuno Texas Sunrise + sesión general de cierre · Aviation Tech Company cierra (medio día) · RDO Equipment Company Día 2 · Swatch Group Día 3 · Clayton Home Building Group Día 2">Telecom Industry Trade Association final day — Texas Sunrise breakfast + closing general session · Aviation Tech Company wraps (half day) · RDO Equipment Company Day 2 · Swatch Group Day 3 · Clayton Home Building Group Day 2</div>
+    <div class="day-summary" data-en="Telecom Industry Trade Association final day — Texas Sunrise breakfast + closing general session · Pilotbase wraps (half day) · RDO Equipment Company Day 2 · Swatch Group Day 3 · Clayton Home Building Group Day 2" data-es="Último día Telecom Industry Trade Association — desayuno Texas Sunrise + sesión general de cierre · Pilotbase cierra (medio día) · RDO Equipment Company Día 2 · Swatch Group Día 3 · Clayton Home Building Group Día 2">Telecom Industry Trade Association final day — Texas Sunrise breakfast + closing general session · Pilotbase wraps (half day) · RDO Equipment Company Day 2 · Swatch Group Day 3 · Clayton Home Building Group Day 2</div>
   </div>
   <span class="chevron">▶</span>
 </button>
@@ -674,7 +674,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Aviation Tech Company — CX Summit — Final Day" data-es="Aviation Tech Company — CX Summit — Día Final">Aviation Tech Company — CX Summit — Final Day</div>
+      <div class="card-group" data-en="Pilotbase — CX Summit — Final Day" data-es="Pilotbase — CX Summit — Día Final">Pilotbase — CX Summit — Final Day</div>
       <div class="card-badges">
         <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
         <span class="badge badge-ic" data-en="IC: Corey" data-es="CI: Corey">IC: Corey</span>
@@ -758,7 +758,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-strip">
     <div class="strip-item"><strong>5</strong> <span data-en="groups" data-es="grupos">groups</span></div>
     <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Lantana · Primrose C · Verbena A · Verbena B · Camellia A · Camellia B</strong></div>
-    <div class="strip-item" data-en="Telecom Industry Trade Association, Aviation Tech Company &amp; Clayton Home Building Group wrap today" data-es="Telecom Industry Trade Association, Aviation Tech Company y Clayton Home Building Group cierran hoy">Telecom Industry Trade Association, Aviation Tech Company &amp; Clayton Home Building Group wrap today</div>
+    <div class="strip-item" data-en="Telecom Industry Trade Association, Pilotbase &amp; Clayton Home Building Group wrap today" data-es="Telecom Industry Trade Association, Pilotbase y Clayton Home Building Group cierran hoy">Telecom Industry Trade Association, Pilotbase &amp; Clayton Home Building Group wrap today</div>
   </div>
 </div>
 </div>
@@ -995,14 +995,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">14</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
-    <div class="day-summary" data-en="Semiconductor / Tech Hardware Company Microcenter Champion arrives — staff office, registration opens, welcome dinner · Charles Schwab Inc. conference day — 3 breakouts + lunch" data-es="Llega Semiconductor / Tech Hardware Company Microcenter Champion — oficina de staff, abre registro, cena de bienvenida · Día de conferencia Charles Schwab Inc. — 3 sesiones + almuerzo">Semiconductor / Tech Hardware Company Microcenter Champion arrives — staff office, registration opens, welcome dinner · Charles Schwab Inc. conference day — 3 breakouts + lunch</div>
+    <div class="day-summary" data-en="AMD Microcenter Champion arrives — staff office, registration opens, welcome dinner · Charles Schwab Inc. conference day — 3 breakouts + lunch" data-es="Llega AMD Microcenter Champion — oficina de staff, abre registro, cena de bienvenida · Día de conferencia Charles Schwab Inc. — 3 sesiones + almuerzo">AMD Microcenter Champion arrives — staff office, registration opens, welcome dinner · Charles Schwab Inc. conference day — 3 breakouts + lunch</div>
   </div>
   <span class="chevron">▶</span>
 </button>
 <div class="day-body">
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--red)">
-      <div class="card-group" data-en="Semiconductor / Tech Hardware Company — Microcenter Champion" data-es="Semiconductor / Tech Hardware Company — Microcenter Champion">Semiconductor / Tech Hardware Company — Microcenter Champion</div>
+      <div class="card-group" data-en="AMD — Microcenter Champion" data-es="AMD — Microcenter Champion">AMD — Microcenter Champion</div>
       <div class="card-badges">
         <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
         <span class="badge badge-ic" data-en="IC: Krystal" data-es="CI: Krystal">IC: Krystal</span>
@@ -1101,14 +1101,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">15</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
-    <div class="day-summary" data-en="Semiconductor / Tech Hardware Company Microcenter Champion final day — general session + 3 simultaneous breakouts · Charles Schwab Inc. office continues" data-es="Último día Semiconductor / Tech Hardware Company Microcenter Champion — sesión general + 3 sesiones simultáneas · Continúa oficina Charles Schwab Inc.">Semiconductor / Tech Hardware Company Microcenter Champion final day — general session + 3 simultaneous breakouts · Charles Schwab Inc. office continues</div>
+    <div class="day-summary" data-en="AMD Microcenter Champion final day — general session + 3 simultaneous breakouts · Charles Schwab Inc. office continues" data-es="Último día AMD Microcenter Champion — sesión general + 3 sesiones simultáneas · Continúa oficina Charles Schwab Inc.">AMD Microcenter Champion final day — general session + 3 simultaneous breakouts · Charles Schwab Inc. office continues</div>
   </div>
   <span class="chevron">▶</span>
 </button>
 <div class="day-body">
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--red)">
-      <div class="card-group" data-en="Semiconductor / Tech Hardware Company — Microcenter Champion — Final Day" data-es="Semiconductor / Tech Hardware Company — Microcenter Champion — Día Final">Semiconductor / Tech Hardware Company — Microcenter Champion — Final Day</div>
+      <div class="card-group" data-en="AMD — Microcenter Champion — Final Day" data-es="AMD — Microcenter Champion — Día Final">AMD — Microcenter Champion — Final Day</div>
       <div class="card-badges">
         <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
         <span class="badge badge-ic" data-en="IC: Krystal" data-es="CI: Krystal">IC: Krystal</span>
@@ -1146,7 +1146,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Krystal</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Pre-Function (all-day F&amp;B) · Bluebell (office) · Primrose C (general session) · Lantana B · Primrose A · Primrose B (breakouts)" data-es="Pre-Function (F&amp;B todo el día) · Bluebell (oficina) · Primrose C (sesión general) · Lantana B · Primrose A · Primrose B (sesiones)">Pre-Function (all-day F&amp;B) · Bluebell (office) · Primrose C (general session) · Lantana B · Primrose A · Primrose B (breakouts)</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Semiconductor / Tech Hardware Company wraps today" data-es="Semiconductor / Tech Hardware Company cierra hoy">Semiconductor / Tech Hardware Company wraps today</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="AMD wraps today" data-es="AMD cierra hoy">AMD wraps today</span></div>
     </div>
   </div>
 
