@@ -102,6 +102,11 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 [data-theme="light"] .day-btn.a3 { --dg1:rgba(140,100,220,0.24); --dg2:rgba(140,100,220,0.08); }
 [data-theme="light"] .day-btn.a4 { --dg1:rgba(240,100,100,0.22); --dg2:rgba(240,100,100,0.07); }
 [data-theme="light"] .day-btn.a5 { --dg1:rgba(251,146,60,0.22); --dg2:rgba(251,146,60,0.07); }
+[data-theme="light"] .day-btn.a1 .day-dot-num { color:var(--green); }
+[data-theme="light"] .day-btn.a2 .day-dot-num { color:var(--blue); }
+[data-theme="light"] .day-btn.a3 .day-dot-num { color:var(--purple); }
+[data-theme="light"] .day-btn.a4 .day-dot-num { color:var(--red); }
+[data-theme="light"] .day-btn.a5 .day-dot-num { color:var(--orange); }
 [data-theme="light"] .day-btn.a-dim { --ac:rgba(0,0,0,0.15); --dc:rgba(0,0,0,0.25); --dg1:rgba(0,0,0,0.12); --dg2:rgba(0,0,0,0.04); }
 [data-theme="light"] .day-dow { color:var(--dc); filter:brightness(0.30); }
 [data-theme="light"] .day-summary { color:rgba(0,0,0,0.82); }
@@ -109,18 +114,13 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 [data-theme="light"] .day-btn.a-dim .day-dow { color:rgba(0,0,0,0.45); }
 [data-theme="light"] .day-btn.a-dim .day-summary { color:rgba(0,0,0,0.50); }
 [data-theme="light"] .day-btn.a-dim .day-dot-num { color:rgba(0,0,0,0.32); }
-[data-theme="light"] .day-btn.a1 .day-dot-num { color:var(--green); }
-[data-theme="light"] .day-btn.a2 .day-dot-num { color:var(--blue); }
-[data-theme="light"] .day-btn.a3 .day-dot-num { color:var(--purple); }
-[data-theme="light"] .day-btn.a4 .day-dot-num { color:var(--red); }
-[data-theme="light"] .day-btn.a5 .day-dot-num { color:var(--orange); }
 [data-theme="light"] .week-label { border-top-color:rgba(0,0,0,0.12); }
 [data-theme="light"] .week-label-main { color:rgba(0,0,0,0.72); }
 [data-theme="light"] .week-label-sub { color:rgba(0,0,0,0.42); }
 [data-theme="light"] .week-label::after { background:linear-gradient(90deg,rgba(0,0,0,0.28),transparent); }
 
-.day-btn.is-today { background:var(--today-bg); border-left-width:1px; border-left-color:var(--today-border); box-shadow:inset 0 0 0 1px rgba(201,168,76,0.30),inset 0 0 22px rgba(201,168,76,0.40),inset 0 0 8px rgba(201,168,76,0.55),inset 0 8px 22px rgba(0,0,0,0.80),0 0 0 1.5px var(--today-border); }
-[data-theme="light"] .day-btn.is-today { box-shadow:inset 0 0 0 1px rgba(160,116,30,0.25),inset 0 0 22px rgba(160,116,30,0.22),inset 0 0 8px rgba(160,116,30,0.30),inset 0 8px 18px rgba(0,0,0,0.15),0 0 0 1.5px var(--today-border); }
+.day-btn.is-today { background:var(--today-bg); border-left-width:1px; border-left-color:var(--today-border); box-shadow:inset 0 0 0 1px rgba(201,168,76,0.30),inset 0 0 22px rgba(201,168,76,0.40),inset 0 0 8px rgba(201,168,76,0.55),inset 0 8px 22px rgba(0,0,0,0.80); }
+[data-theme="light"] .day-btn.is-today { box-shadow:inset 0 0 0 1px rgba(160,116,30,0.25),inset 0 0 22px rgba(160,116,30,0.22),inset 0 0 8px rgba(160,116,30,0.30),inset 0 8px 18px rgba(0,0,0,0.15); }
 .day-btn.is-today::after { background:linear-gradient(90deg,transparent,var(--today-top),transparent); }
 
 .day-dot { width:36px; height:36px; border-radius:9px; flex-shrink:0; background:linear-gradient(135deg,var(--dg1),var(--dg2)); border:1px solid var(--ac,rgba(255,255,255,0.08)); display:flex; align-items:center; justify-content:center; }
