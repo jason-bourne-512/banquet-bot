@@ -131,6 +131,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
+@media (min-width: 900px) {
+  .header, .stats-bar, .section-wrap { max-width: 460px; margin-left: auto; margin-right: auto; }
+  .room-card:hover { transform: translateY(-2px); }
+}
 </style>
 </head>
 <body>
