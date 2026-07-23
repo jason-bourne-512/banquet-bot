@@ -125,7 +125,7 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
 .menu-group{border:1px solid var(--divider);border-radius:8px;margin-top:8px;overflow:hidden}
 .menu-group-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;cursor:pointer;background:var(--bg-active)}
 .menu-group-name{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text-1)}
-.menu-group-meta{font-family:'Courier New',monospace;font-size:9px;color:var(--text-3);margin-top:1px}
+.menu-group-meta{display:inline-flex;align-items:center;font-family:'Courier New',monospace;font-size:10px;font-weight:700;letter-spacing:0.3px;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(201,168,76,0.25);border-radius:5px;padding:2px 7px;margin-top:4px}
 .menu-group-chevron{font-size:10px;color:var(--text-3);transition:transform .15s;flex-shrink:0}
 .menu-group.open .menu-group-chevron{transform:rotate(90deg)}
 .menu-group-body{display:none;padding:2px 11px 9px}
@@ -417,6 +417,74 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
           <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Double Espresso</span><span class="menu-item-price">$4</span></div></div>
           <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Cappuccino</span><span class="menu-item-price">$5</span></div></div>
           <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Latte</span><span class="menu-item-price">$5</span></div></div>
+        </div>
+      </div>
+
+      <div class="menu-group" onclick="toggleMenuGroup(this)">
+        <div class="menu-group-head">
+          <div>
+            <div class="menu-group-name">Drink Menu</div>
+            <div class="menu-group-meta">Same list across Lunch, Brunch &amp; Dinner service</div>
+          </div>
+          <span class="menu-group-chevron">▶</span>
+        </div>
+        <div class="menu-group-body">
+          <div class="menu-sub-label">Cocktails</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Central Park Margarita</span><span class="menu-item-price">$15</span></div><div class="menu-item-desc">espolon blanco, luxardo citrus, pineapple, guava</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Corinne Signature</span><span class="menu-item-price">$16</span></div><div class="menu-item-desc">makers mark, vanilla demerara, walnut bitters</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Cafe Noir</span><span class="menu-item-price">$16</span></div><div class="menu-item-desc">tito's vodka, italian amaro, espresso, vanilla</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Summer of Amaro</span><span class="menu-item-price">$16</span></div><div class="menu-item-desc">amaras verde mezcal, montenegro, citrus oil</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Aztec After Hours</span><span class="menu-item-price">$16</span></div><div class="menu-item-desc">licor 43, mijenta blanco, macadamia liqueur, espresso</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">High Land Bloom</span><span class="menu-item-price">$16</span></div><div class="menu-item-desc">still austin bourbon, blueberry &amp; rosemary syrup, texas citrus</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Texas Sun</span><span class="menu-item-price">$16</span></div><div class="menu-item-desc">brush creek gin, apricot, strawberry oleo, lemon, house bubbles</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Taste of Tamarind</span><span class="menu-item-price">$16</span></div><div class="menu-item-desc">brush creek vodka, spiced tamarind, lime, ginger</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Agave Amor</span><span class="menu-item-price">$17</span></div><div class="menu-item-desc">amaras verde mezcal, luxardo maraschino, del santo, lime</div></div>
+          <div class="menu-sub-label">Non-Alcoholic</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Cocktails &amp; Dreams</span><span class="menu-item-price">$11</span></div><div class="menu-item-desc">giffard pineapple n/a, guava oleo, lime</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Universal Sound</span><span class="menu-item-price">$11</span></div><div class="menu-item-desc">guilt free aperitif, tropical citrus, lemon, n/a bubbles</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Last Sip of Summer</span><span class="menu-item-price">$11</span></div><div class="menu-item-desc">lavender syrup, lime, cucumber, ginger beer</div></div>
+          <div class="menu-sub-label">Draft Beer</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Icy Boys Lager</span><span class="menu-item-price">$8</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Live Oak Hefeweizen</span><span class="menu-item-price">$8</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Live Oak Amber</span><span class="menu-item-price">$8</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Pearl Snap Pilsner</span><span class="menu-item-price">$8</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">701 Sun Session IPA</span><span class="menu-item-price">$8</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Fire Eagle American IPA</span><span class="menu-item-price">$8</span></div></div>
+          <div class="menu-sub-label">Bottles &amp; Cans</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Electric Jellyfish</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">St. Elmo Carl Kolsch</span><span class="menu-item-price">$7</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Michelob Ultra</span><span class="menu-item-price">$7</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Coors Light</span><span class="menu-item-price">$7</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Modelo</span><span class="menu-item-price">$7</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Austin Eastcider Pineapple</span><span class="menu-item-price">$7</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Athletic Upside Dawn Golden Non-Alc</span><span class="menu-item-price">$7</span></div></div>
+          <div class="menu-sub-label">Sparkling Wine</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Bisol Jeio, Prosecco Brut, IT</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Ferrari, Brut, Trentino Alto Adige, IT</span><span class="menu-item-price">$60</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Moët &amp; Chandon, Imperial Brut Champagne, FR</span><span class="menu-item-price">$125</span></div></div>
+          <div class="menu-sub-label">Rosé Wine</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Blackbird Vineyards, Arriviste Rosé, Napa, CA</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Meyer-Näkel, Pinot Noir Rosé, Ahr, DE</span><span class="menu-item-price">$96</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Pierre Sparr, Crémant Brut Rosé, Alsace, FR</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Schramsberg, Mirabelle Brut Rosé, N. Coast, CA</span><span class="menu-item-price">$72</span></div></div>
+          <div class="menu-sub-label">White Wine</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">OTU, Sauvignon Blanc, Marlborough, NZ</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Cloudy Bay, Sauvignon Blanc, Marlborough, NZ</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Cantina Puiatti, Pinot Grigio, Friuli, IT</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Boen, Chardonnay, Monterey, CA</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Patz &amp; Hall, Chardonnay, Sonoma Coast, CA</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Flowers, Chardonnay, Sonoma Coast, CA</span><span class="menu-item-price">$75</span></div></div>
+          <div class="menu-sub-label">Red Wine</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Sea Sun, Pinot Noir, CA</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Hahn SLH, Pinot Noir, Lucia Highlands, CA</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Smith &amp; Hook, Cabernet, Central Coast, CA</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Skeleton Key, Cabernet, TX</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Orin Swift, 'Abstract', Red Blend, Napa, CA</span><span class="menu-item-price">$78</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Catena, Malbec, Mendoza, AR</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Ferrari-Carano, Merlot, Sonoma County, CA</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">My Favorite Neighbor, Cabernet, Paso, CA</span><span class="menu-item-price">$80</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Sanford, Pinot Noir, Sta. Rita Hills, CA</span><span class="menu-item-price">$95</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Caymus, Cabernet, Napa, CA</span></div></div>
         </div>
       </div>
     </div>
