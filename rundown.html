@@ -9,6 +9,7 @@
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0ece3">
 <title>BEO Rundown — Westin Austin Domain</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>:root,html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%;overscroll-behavior:none}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f0ece3!important;background-color:#f0ece3!important}[data-theme="light"] body::before{background:#f0ece3}</style>
 <style>
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
@@ -106,8 +107,12 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .diag-modal-title { font-family:'Courier New',monospace; font-size:12px; font-weight:700; color:var(--text-1); letter-spacing:0.3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .diag-modal-close { background:var(--bg-active); border:1px solid var(--border); color:var(--text-1); width:30px; height:30px; border-radius:50%; font-size:15px; line-height:1; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
 .diag-modal-close:active { border-color:var(--accent); color:var(--accent); }
-.diag-modal-body { flex:1; background:#e8e8ea; min-height:0; }
-.diag-modal-body iframe { width:100%; height:100%; border:none; display:block; }
+.diag-modal-body { flex:1; background:#e8e8ea; min-height:0; position:relative; overflow:hidden; touch-action:none; display:flex; align-items:center; justify-content:center; }
+.diag-canvas-wrap { transform-origin:0 0; will-change:transform; }
+#diagCanvas { display:block; box-shadow:0 4px 24px rgba(0,0,0,0.25); }
+.diag-loading { position:absolute; font-family:'Courier New',monospace; font-size:11px; letter-spacing:1px; color:#888; text-transform:uppercase; }
+.diag-modal-hint { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); font-family:'Courier New',monospace; font-size:9px; letter-spacing:0.5px; color:rgba(0,0,0,0.4); background:rgba(255,255,255,0.7); padding:4px 10px; border-radius:12px; pointer-events:none; transition:opacity .3s; }
+.diag-modal-hint.hidden { opacity:0; }
 
 .days-list { padding:0 0 80px; }
 .day-section { padding:6px 0 0; border-bottom:none; }
@@ -258,7 +263,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="page-title" data-en="BEO Rundown" data-es="Resumen BEO">BEO Rundown</div>
   <div class="header-meta">
     <span class="chip chip-gold" id="printed-date">—</span>
-    <span class="chip" data-en="Jun 11 – Aug 12, 2026" data-es="11 Jun – 12 Ago, 2026">Jun 11 – Aug 12, 2026</span>
+    <span class="chip" data-en="Jul 23 – Aug 12, 2026" data-es="23 Jul – 12 Ago, 2026">Jul 23 – Aug 12, 2026</span>
     <span class="chip chip-green"><span class="live-dot" style="width:5px;height:5px;animation:pip 2s infinite;background:var(--green)"></span>&nbsp;<span data-en="Live" data-es="En vivo">Live</span></span>
   </div>
 </div>
@@ -276,1554 +281,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 <div class="days-list" id="rundownList">
 
 <div class="month-banner"><span class="month-banner-name">July</span><span class="month-banner-year">2026</span></div>
-<div class="week-label"><span class="week-label-main" data-en="Week of Jul 1–3" data-es="Semana del 1–3 Jul">Week of Jul 1–3</span></div>
-<!-- ══ WED JUL 1 ══ -->
-<div class="day-section" data-date="2026-07-01">
-<button class="day-btn a4" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">1</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
-    <div class="day-summary" data-en="Dermatology Practice Group Leadership Workshop · AUSDW Transition Workshop (no F&amp;B)" data-es="Taller de Liderazgo Dermatology Practice Group · Taller de Transición AUSDW (sin F&amp;B)">Dermatology Practice Group Leadership Workshop · AUSDW Transition Workshop (no F&amp;B)</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Dermatology Practice Group — Leadership Workshop" data-es="Dermatology Practice Group — Taller de Liderazgo">Dermatology Practice Group — Leadership Workshop</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
-        <span class="badge badge-ic" data-en="IC: Jenna" data-es="CI: Jenna">IC: Jenna</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">1:30–<br>5:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Continuous Break" data-es="Descanso Continuo">Continuous Break</span><span class="room-pill">Camellia A</span><span class="gtd-pill">GTD 14</span></div>
-        <div class="svc-menu" data-en="Half Day Beverage Service (up to 4 hrs) $30/pp — Little City Regular &amp; Decaf Coffee · Assortment of Tazo Teas<br>Assorted Pepsi Products · Bottled Water" data-es="Bebidas Medio Día (hasta 4h) $30/pp — Café Little City · Tés Tazo<br>Pepsi · Agua">Half Day Beverage Service (up to 4 hrs) $30/pp — Little City Coffee &amp; Decaf · Tazo Teas<br>Pepsi Products · Bottled Water</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Jenna</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia A · U-Shape · 12p–5:30p · Room rental $750 · No F&amp;B minimum" data-es="Camellia A · Forma U · 12p–5:30p · Renta $750 · Sin mínimo de F&amp;B">Camellia A · U-Shape · 12p–5:30p · Room rental $750 · No F&amp;B minimum</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="AGENDA" data-es="AGENDA">AGENDA</span><span class="foot-val" data-en="Contact to arrive at 12:00 PM · Event starts 1:30 PM" data-es="Contacto llega a las 12:00 PM · El evento inicia a la 1:30 PM">Contact to arrive at 12:00 PM · Event starts 1:30 PM</span></div>
-    </div>
-  </div>
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--text-4)">
-      <div class="card-group" data-en="AUSDW Social — Transition Workshop" data-es="AUSDW Social — Taller de Transición">AUSDW Social — Transition Workshop</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Kevin" data-es="CI: Kevin">IC: Kevin</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Buttercup</span><span class="gtd-pill">EXP/GTD/SET 3</span></div>
-        <div class="svc-menu" data-en="No Food or Beverage required at this time · Conference setup" data-es="Sin alimentos ni bebidas en este momento · Montaje conferencia">No Food or Beverage required at this time · Conference setup</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Kevin</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Buttercup · Conference · 8a–5p · Room rental $500" data-es="Buttercup · Conferencia · 8a–5p · Renta $500">Buttercup · Conference · 8a–5p · Room rental $500</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>2</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Camellia A · Buttercup</strong></div>
-    <div class="strip-item" data-en="No F&amp;B day for AUSDW Social" data-es="Día sin F&amp;B para AUSDW Social">No F&amp;B day for AUSDW Social</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ JUL 2–3 ══ -->
-<div class="day-section" data-date-start="2026-07-02" data-date-end="2026-07-03">
-<button class="day-btn a-dim" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">2</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="THU – FRI" data-es="Jue 2 Jul – Vie 3 Jul">THU – FRI</div>
-    <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body"><div class="empty-day" data-en="No BEO events on file for these dates." data-es="Sin eventos BEO para estas fechas.">No BEO events on file for these dates.</div></div>
-</div>
-
-<div class="week-label"><span class="week-label-main" data-en="Week of Jul 4–10" data-es="Semana del 4–10 Jul">Week of Jul 4–10</span></div>
-<!-- ══ JUL 4–6 ══ -->
-<div class="day-section" data-date-start="2026-07-04" data-date-end="2026-07-06">
-<button class="day-btn a-dim" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">4</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="SAT – MON" data-es="Sáb 4 Jul – Lun 6 Jul">SAT – MON</div>
-    <div class="day-summary" data-en="No events on file" data-es="Sin eventos registrados">No events on file</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body"><div class="empty-day" data-en="No BEO events on file for these dates." data-es="Sin eventos BEO para estas fechas.">No BEO events on file for these dates.</div></div>
-</div>
-
-<!-- ══ TUE JUL 7 ══ -->
-<div class="day-section" data-date="2026-07-07">
-<button class="day-btn a5" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">7</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
-    <div class="day-summary" data-en="Telecom Industry Trade Association Spring Training kicks off — general session + welcome reception · Pilotbase CX Summit · Swatch Group training · RDO Equipment Company board meeting" data-es="Inicia Telecom Industry Trade Association Spring Training — sesión general + recepción de bienvenida · Pilotbase CX Summit · Entrenamiento Swatch Group · Junta RDO Equipment Company">Telecom Industry Trade Association Spring Training kicks off — general session + welcome reception · Pilotbase CX Summit · Swatch Group training · RDO Equipment Company board meeting</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="Telecom Industry Trade Association — Spring Training 2026" data-es="Telecom Industry Trade Association — Entrenamiento de Primavera 2026">Telecom Industry Trade Association — Spring Training 2026</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana / Samantha" data-es="MGR: Diana / Samantha">MGR: Diana / Samantha</span>
-        <span class="badge badge-ic" data-en="IC: Kari" data-es="CI: Kari">IC: Kari</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–11:00 AM &<br>11:30 AM–4:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Primrose Foyer</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No Food or Beverage required at this time · Registration — (2) 6x30 tables with (2) chairs each" data-es="Sin alimentos ni bebidas en este momento · Registro — (2) mesas 6x30 con (2) sillas cada una">No Food or Beverage required at this time · Registration — (2) 6x30 tables with (2) chairs each</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–<br>11:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="General Session" data-es="Sesión General"><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 100 / SET 150</span></div>
-        <div class="svc-menu" data-en="No Food or Beverage required at this time<br>Classroom set for 150<br>8x18 stage with podium &amp; steps · 6x18 table with 3 chairs on stage for panelists<br>(1) 6x30 table in back for AV · Room rental $2,500" data-es="Sin alimentos ni bebidas<br>Aula para 150<br>Escenario 8x18 con podio y escaleras · Mesa 6x18 con 3 sillas para panelistas<br>(1) mesa 6x30 al fondo para AV · Renta $2,500">No Food or Beverage required at this time<br>Classroom set for 150<br>8x18 stage with podium &amp; steps · 6x18 table with 3 chairs on stage for panelists<br>(1) 6x30 table in back for AV · Room rental $2,500</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">5:00–<br>7:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-rec" data-en="Welcome Reception" data-es="Recepción de Bienvenida">Welcome Reception</span><span class="tag tag-bar" data-en="Hosted Bar" data-es="Bar Anfitrión">Hosted Bar</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP/GTD 100</span></div>
-        <div class="svc-menu" data-en="Favorites Brands Package Bar – 2hr $49/pp — Jack Daniel's Bourbon, Dewar's White Label Scotch, Tito's Vodka, Tanqueray Gin, Canadian Club Whiskey, Jose Cuervo Gold Tequila, Bacardi Superior Rum<br>Wine by the Glass: Vista Point Chardonnay &amp; Cabernet Sauvignon<br>Imported &amp; Craft Beer: Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock<br>Domestic Beer: Budweiser, Bud Light, Miller Light, Lonestar<br>Bottled Water · Assorted Pepsi Products" data-es="Bar Marcas Favoritas – 2h $49/pp — Jack Daniel's, Dewar's, Tito's, Tanqueray, Canadian Club, Jose Cuervo, Bacardi<br>Vino por copa: Vista Point Chardonnay y Cabernet<br>Cerveza Importada y Artesanal: Dos Equis, Stella Artois, Fireman's 4, Shiner Bock<br>Cerveza Doméstica: Budweiser, Bud Light, Miller Light, Lonestar<br>Agua · Pepsi Variados">Favorites Brands Package Bar – 2hr $49/pp — Jack Daniel's Bourbon, Dewar's White Label Scotch, Tito's Vodka, Tanqueray Gin, Canadian Club Whiskey, Jose Cuervo Gold Tequila, Bacardi Superior Rum<br>Wine by the Glass: Vista Point Chardonnay &amp; Cabernet Sauvignon<br>Imported &amp; Craft Beer: Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock<br>Domestic Beer: Budweiser, Bud Light, Miller Light, Lonestar<br>Bottled Water · Assorted Pepsi Products</div>
-        <div class="note" data-en="⚑ Lounge setup in Barton" data-es="⚑ Montaje lounge en Barton">⚑ Lounge setup in Barton</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Kari</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Primrose Foyer (registration) · Primrose C (general session) · Barton (reception)" data-es="Primrose Foyer (registro) · Primrose C (sesión general) · Barton (recepción)">Primrose Foyer (registration) · Primrose C (general session) · Barton (reception)</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Pilotbase — CX Summit" data-es="Pilotbase — CX Summit">Pilotbase — CX Summit</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Corey" data-es="CI: Corey">IC: Corey</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="All Day Bev" data-es="Bebidas Todo el Día">All Day Bev</span><span class="room-pill">Verbena B</span><span class="gtd-pill">GTD 6</span></div>
-        <div class="svc-menu" data-en="All Day Beverages — Little City Regular &amp; Decaf Coffee · Hot Water + Assortment of Tazo Teas<br>2% Milk/Cream/Soy Milk/Honey/Lemon · Assorted Pepsi Products<br>Bottled Water on consumption $52 ea<br>Diet Coke on consumption $8 ea · Topo Chico on consumption $8 ea" data-es="Bebidas Todo el Día — Café Little City · Agua Caliente + Tés Tazo<br>Leche/Crema/Soya/Miel/Limón · Pepsi Variados<br>Agua al consumo $52 c/u<br>Diet Coke al consumo $8 c/u · Topo Chico al consumo $8 c/u">All Day Beverages — Little City Coffee &amp; Decaf · Hot Water + Tazo Teas<br>2% Milk/Cream/Soy/Honey/Lemon · Assorted Pepsi Products<br>Bottled Water on consumption $52 ea<br>Diet Coke on consumption $8 ea · Topo Chico on consumption $8 ea</div>
-        <div class="note" data-en="⚑ Lunch is off property — please lock doors at 12 PM" data-es="⚑ El almuerzo es fuera de la propiedad — cerrar puertas a las 12 PM">⚑ Lunch is off property — please lock doors at 12 PM</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Corey</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena B · Conference set for 8 · 8a–5p · Pads, Pens &amp; Water in back of room" data-es="Verbena B · Conferencia para 8 · 8a–5p · Blocs, bolígrafos y agua en la parte trasera">Verbena B · Conference set for 8 · 8a–5p · Pads, Pens &amp; Water in back of room</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="Swatch Group — New Store Training (Longines)" data-es="Swatch Group — Entrenamiento Nueva Tienda (Longines)">Swatch Group — New Store Training (Longines)</div>
-      <div class="card-badges">
-        <span class="badge badge-ic" data-en="IC: Annette" data-es="CI: Annette">IC: Annette</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:30 AM–<br>5:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Camellia B</span><span class="gtd-pill">EXP/GTD 10 / SET 12</span></div>
-        <div class="svc-menu" data-en="U-Shape · Room rental $200 · Little City Regular Coffee on consumption" data-es="Forma U · Renta $200 · Café Little City al consumo">U-Shape · Room rental $200 · Little City Regular Coffee on consumption</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:30–<br>9:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Camellia B</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="Grab &amp; Go Breakfast Table $33/pp — Chobani Yogurts · Overnight Oats with Dried Fruits<br>Individually Packaged Muffins · Choice of Breakfast Taco (Bacon)<br>Juice on consumption $8" data-es="Mesa Desayuno para Llevar $33/pp — Yogurts Chobani · Avena Nocturna<br>Muffins · Taco de Desayuno (Tocino)<br>Jugo al consumo $8">Grab &amp; Go Breakfast Table $33/pp — Chobani Yogurts · Overnight Oats with Dried Fruits<br>Individually Packaged Muffins · Choice of Breakfast Taco (Bacon)<br>Juice on consumption $8</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:00–<br>1:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Almuerzo">Lunch</span><span class="room-pill">Camellia B</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="Conference Dining Lunch — Classic Caesar VG $19 · Corinne Cobb GF $22<br>Wagyu Cheeseburger $25 · Toasted Grilled Cheese VG $22 · Grilled Chicken Club $22" data-es="Almuerzo Conferencia — César Clásico VG $19 · Corinne Cobb GF $22<br>Hamburguesa Wagyu $25 · Grilled Cheese VG $22 · Club de Pollo $22">Conference Dining Lunch — Classic Caesar VG $19 · Corinne Cobb GF $22<br>Wagyu Cheeseburger $25 · Toasted Grilled Cheese VG $22 · Grilled Chicken Club $22</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Annette</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia B · U-Shape · 8:30a–5:30p · F&amp;B minimum $3,200" data-es="Camellia B · Forma U · 8:30a–5:30p · Mínimo F&amp;B $3,200">Camellia B · U-Shape · 8:30a–5:30p · F&amp;B minimum $3,200</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--orange)">
-      <div class="card-group" data-en="RDO Equipment Company — CE VP Board Meeting" data-es="RDO Equipment Company — Junta Directiva CE VP">RDO Equipment Company — CE VP Board Meeting</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
-        <span class="badge badge-ic" data-en="IC: Cory" data-es="CI: Cory">IC: Cory</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:00–<br>5:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Camellia A</span><span class="gtd-pill">EXP/GTD/SET 13</span></div>
-        <div class="svc-menu" data-en="Continuous beverage on consumption — Little City Regular Coffee · Sparkling &amp; Bottled Water · Assorted Pepsi Products<br>2:30 PM Coffee Break — Indulge Afternoon Break: Assorted Candies $27/pp · House Made Kettle Chips with Caramelized Onion Dip $12/pp" data-es="Bebidas al consumo — Café Little City · Agua con Gas y Embotellada · Pepsi Variados<br>2:30 PM Descanso — Dulces Variados $27/pp · Papas Kettle con Dip de Cebolla Caramelizada $12/pp">Continuous beverage on consumption — Little City Regular Coffee · Sparkling &amp; Bottled Water · Assorted Pepsi Products<br>2:30 PM Coffee Break — Indulge Afternoon Break: Assorted Candies $27/pp · House Made Kettle Chips with Caramelized Onion Dip $12/pp</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Cory</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia A · U-Shape · 12p–5:30p · F&amp;B minimum $2,000" data-es="Camellia A · Forma U · 12p–5:30p · Mínimo F&amp;B $2,000">Camellia A · U-Shape · 12p–5:30p · F&amp;B minimum $2,000</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>4</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Primrose Foyer · Primrose C · Barton · Verbena B · Camellia A · Camellia B</strong></div>
-    <div class="strip-item" data-en="⚑ Telecom Industry Trade Association welcome reception 5–7p · Pilotbase lunch off property — lock doors at noon" data-es="⚑ Recepción Telecom Industry Trade Association 5–7p · Almuerzo Pilotbase fuera — cerrar puertas al mediodía">⚑ Telecom Industry Trade Association welcome reception 5–7p · Pilotbase lunch off property — lock doors at noon</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ WED JUL 8 ══ -->
-<div class="day-section" data-date="2026-07-08">
-<button class="day-btn a1" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">8</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
-    <div class="day-summary" data-en="Telecom Industry Trade Association full conference day — breakfast, breakouts, general session · Pilotbase breakfast meeting · Swatch Group Day 2 · Clayton Home Building Group leadership workshop · Texas A&amp;M University System HQ luncheon" data-es="Día completo Telecom Industry Trade Association — desayuno, sesiones, sesión general · Reunión desayuno Pilotbase · Swatch Group Día 2 · Taller de liderazgo Clayton Home Building Group · Almuerzo Texas A&amp;M University System HQ">Telecom Industry Trade Association full conference day — breakfast, breakouts, general session · Pilotbase breakfast meeting · Swatch Group Day 2 · Clayton Home Building Group leadership workshop · Texas A&amp;M University System HQ luncheon</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="Telecom Industry Trade Association — Spring Training 2026 — Day 2" data-es="Telecom Industry Trade Association — Entrenamiento de Primavera 2026 — Día 2">Telecom Industry Trade Association — Spring Training 2026 — Day 2</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana / Samantha" data-es="MGR: Diana / Samantha">MGR: Diana / Samantha</span>
-        <span class="badge badge-ic" data-en="IC: Kari" data-es="CI: Kari">IC: Kari</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Registration + All Day Bev" data-es="Registro + Bebidas Todo el Día">Registration + All Day Bev</span><span class="room-pill">Primrose Foyer</span><span class="gtd-pill">EXP 150 / GTD 100</span></div>
-        <div class="svc-menu" data-en="All Day Beverages — Little City Regular &amp; Decaf Coffee · Hot Water + Tazo Teas<br>2% Milk/Cream/Soy/Honey/Lemon · Assorted Pepsi<br>Bottled Water on consumption $52 ea<br>(7 doz) Assorted Cookies $75/doz · (50) White Cheddar Dusted Popcorn $8/pp<br>Existing set" data-es="Bebidas Todo el Día — Café Little City · Agua Caliente + Tés Tazo<br>Leche/Crema/Soya/Miel/Limón · Pepsi Variados<br>Agua al consumo $52 c/u<br>(7 doc) Galletas Variadas · (50) Palomitas Queso Blanco<br>Montaje existente">All Day Beverages — Little City Regular &amp; Decaf Coffee · Hot Water + Tazo Teas<br>2% Milk/Cream/Soy/Honey/Lemon · Assorted Pepsi<br>Bottled Water on consumption $52 ea<br>(7 doz) Assorted Cookies $75/doz · (50) White Cheddar Dusted Popcorn $8/pp<br>Existing set</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:30–<br>9:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast Buffet" data-es="Buffet Desayuno">Breakfast Buffet</span><span class="room-pill">Lantana</span><span class="gtd-pill">EXP 80 / GTD 100</span></div>
-        <div class="svc-menu" data-en="Early Riser Breakfast Table $51/pp — Juices · Melons &amp; Berries · Cereals<br>House Baked Pastries · Chobani Yogurts<br>Scrambled Eggs · Applewood Smoked Bacon<br>Country Style Pork Sausage · Rosemary Seasoned Gold Potatoes<br>Coffee/Tea" data-es="Mesa Madrugadora $51/pp — Jugos · Fruta · Cereales<br>Pasteles · Yogurts<br>Huevos Revueltos · Tocino<br>Salchicha · Papas con Romero<br>Café/Té">Early Riser Breakfast Table $51/pp — Juices · Melons &amp; Berries · Cereals<br>House Baked Pastries · Chobani Yogurts<br>Scrambled Eggs · Applewood Smoked Bacon<br>Country Style Pork Sausage · Rosemary Seasoned Gold Potatoes<br>Coffee/Tea</div>
-        <div class="note" data-en="⚑ Group will eat on a flow — Rounds of 10" data-es="⚑ Grupo comerá de forma continua — Mesas redondas de 10">⚑ Group will eat on a flow — Rounds of 10</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Breakouts (no F&amp;B)" data-es="Sesiones (sin F&amp;B)">Breakouts (no F&amp;B)</span></div>
-        <div class="svc-menu" data-en="Plumeria (50 EXP/54 SET, classroom): One Team One Customer Experience (9–10a)<br>The Art of Smart (10:15–11a)<br>A Cut, Now What? Navigating the Obstacles (11:15a–12p)<br>Sales + Tech = Less Friction, More Wins (1:30–2:30p)<br>OTDR Hands on Training (2:45–3:30p)<br>Technician Round Table (3:40–4:30p)<br>Primrose AB (50 EXP, rounds of 10, podium front of room) — no F&amp;B" data-es="Plumeria (50 EXP/54 montaje, aula): sesiones de servicio al cliente, ventas, OTDR y mesa redonda técnica<br>Primrose AB (50 EXP, mesas redondas de 10, podio al frente) — sin F&amp;B">Plumeria (50 EXP/54 SET, classroom): One Team One Customer Experience (9–10a)<br>The Art of Smart (10:15–11a)<br>A Cut, Now What? Navigating the Obstacles (11:15a–12p)<br>Sales + Tech = Less Friction, More Wins (1:30–2:30p)<br>OTDR Hands on Training (2:45–3:30p)<br>Technician Round Table (3:40–4:30p)<br>Primrose AB (50 EXP, rounds of 10, podium front of room) — no F&amp;B</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="General Session (no F&amp;B)" data-es="Sesión General (sin F&amp;B)"><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 100 / SET 150</span></div>
-        <div class="svc-menu" data-en="Existing set, refresh from previous day — Cloud Switching (9–9:50a)<br>Switching Gears (10–10:50a)<br>Time Coding and CPRS (11–11:50a)<br>Lunch Break (12–1:30p)<br>Fraud &amp; Internal Controls (1:30–2:45p)<br>Budgeting &amp; Excel Tips with AI (3–3:50p)<br>Operational Efficiencies and Revenue (4–5p)" data-es="Montaje existente, refresco del día anterior — Cloud Switching<br>Switching Gears<br>Codificación de Tiempo y CPRS<br>Almuerzo<br>Fraude y Controles Internos<br>Presupuesto y Excel con IA<br>Eficiencias Operativas e Ingresos">Existing set, refresh from previous day — Cloud Switching (9–9:50a)<br>Switching Gears (10–10:50a)<br>Time Coding and CPRS (11–11:50a)<br>Lunch Break (12–1:30p)<br>Fraud &amp; Internal Controls (1:30–2:45p)<br>Budgeting &amp; Excel Tips with AI (3–3:50p)<br>Operational Efficiencies and Revenue (4–5p)</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Kari</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Primrose Foyer (reg/bev) · Lantana (breakfast) · Plumeria · Primrose AB (breakouts) · Primrose C (general session)" data-es="Primrose Foyer · Lantana · Plumeria · Primrose AB · Primrose C">Primrose Foyer (reg/bev) · Lantana (breakfast) · Plumeria · Primrose AB (breakouts) · Primrose C (general session)</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Pilotbase — CX Summit — Day 2" data-es="Pilotbase — CX Summit — Día 2">Pilotbase — CX Summit — Day 2</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Corey" data-es="CI: Corey">IC: Corey</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Verbena B</span><span class="gtd-pill">EXP/SET 18</span></div>
-        <div class="svc-menu" data-en="Grab &amp; Go Breakfast Table $33/pp — Chobani Yogurts<br>Overnight Oats with Dried Fruits · Individually Packaged Muffins<br>Choice of Breakfast Taco (Sausage)<br>Coffee/Tea<br>PLUS (18) Rise and Shine Croissants $8 ea — Farm Fresh Eggs, Spicy Chorizo Sausage, Veldhuizen Jalapeno Jack on a Flaky Croissant" data-es="Mesa Desayuno para Llevar $33/pp — Yogurts Chobani<br>Avena Nocturna · Muffins<br>Taco de Desayuno (Salchicha)<br>Café/Té<br>MÁS (18) Croissants Rise and Shine $8 c/u">Grab &amp; Go Breakfast Table $33/pp — Chobani Yogurts<br>Overnight Oats with Dried Fruits · Individually Packaged Muffins<br>Choice of Breakfast Taco (Sausage)<br>Coffee/Tea<br>PLUS (18) Rise and Shine Croissants $8 ea — Farm Fresh Eggs, Spicy Chorizo Sausage, Veldhuizen Jalapeno Jack on a Flaky Croissant</div>
-        <div class="note" data-en="⚑ All Day Beverages — Diet Coke &amp; Topo Chico on consumption $8 ea · Bottled Water on consumption $52 ea" data-es="⚑ Bebidas Todo el Día — Diet Coke y Topo Chico al consumo $8 c/u · Agua al consumo $52 c/u">⚑ All Day Beverages — Diet Coke &amp; Topo Chico on consumption $8 ea · Bottled Water on consumption $52 ea</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Corey</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val">Verbena B</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="Swatch Group — New Store Training (Longines) — Day 2" data-es="Swatch Group — Entrenamiento Nueva Tienda (Longines) — Día 2">Swatch Group — New Store Training (Longines) — Day 2</div>
-      <div class="card-badges">
-        <span class="badge badge-ic" data-en="IC: Annette" data-es="CI: Annette">IC: Annette</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Camellia B</span><span class="gtd-pill">EXP/GTD 10 / SET 12</span></div>
-        <div class="svc-menu" data-en="U-Shape · Room rental $200 · Little City Regular Coffee on consumption" data-es="Forma U · Renta $200 · Café Little City al consumo">U-Shape · Room rental $200 · Little City Regular Coffee on consumption</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–<br>9:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Camellia B</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="Grab &amp; Go Breakfast Table $33/pp — English Muffin Sandwich (Eggs, Ham, Cheddar) · Chobani Yogurts<br>Overnight Oats with Dried Fruits · Individually Packaged Muffins · Juice on consumption $8" data-es="Mesa Desayuno para Llevar $33/pp — Sándwich English Muffin (Huevo, Jamón, Cheddar) · Yogurts Chobani<br>Avena Nocturna · Muffins · Jugo al consumo $8">Grab &amp; Go Breakfast Table $33/pp — English Muffin Sandwich (Eggs, Ham, Cheddar) · Chobani Yogurts<br>Overnight Oats with Dried Fruits · Individually Packaged Muffins · Juice on consumption $8</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:00–<br>1:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Almuerzo">Lunch</span><span class="room-pill">Camellia B</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="Hill Country Spa Day - Wednesday Working Lunch Buffet $68/pp — mixed greens, herb seared chicken, roasted salmon, macarons, chocolate mousse shots" data-es="Hill Country Spa Day - Almuerzo Buffet Miércoles $68/pp — ensaladas, pollo a la plancha, salmón asado, macarons, mousse de chocolate">Hill Country Spa Day - Wednesday Working Lunch Buffet $68/pp — mixed greens, herb seared chicken, roasted salmon, macarons, chocolate mousse shots</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Annette</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia B · U-Shape · 8a–5p · F&amp;B minimum $3,200" data-es="Camellia B · Forma U · 8a–5p · Mínimo F&amp;B $3,200">Camellia B · U-Shape · 8a–5p · F&amp;B minimum $3,200</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--orange)">
-      <div class="card-group" data-en="Clayton Home Building Group — TRU Belton Leadership Workshop" data-es="Clayton Home Building Group — Taller de Liderazgo TRU Belton">Clayton Home Building Group — TRU Belton Leadership Workshop</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
-        <span class="badge badge-ic" data-en="IC: Patrick" data-es="CI: Patrick">IC: Patrick</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Verbena A</span><span class="gtd-pill">EXP/GTD/SET 24</span></div>
-        <div class="svc-menu" data-en="4 crescent rounds of 6 · Room rental $500 · All day continuous beverage on consumption" data-es="4 mesas crecientes de 6 · Renta $500 · Bebidas continuas al consumo todo el día">4 crescent rounds of 6 · Room rental $500 · All day continuous beverage on consumption</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–<br>9:30 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Verbena A</span><span class="gtd-pill">GTD 24</span></div>
-        <div class="svc-menu" data-en="Early Riser Breakfast Table $45.90/pp — juices, melons &amp; berries, house baked pastries, scrambled eggs, bacon, sausage, breakfast potatoes" data-es="Mesa Madrugadora $45.90/pp — jugos, fruta, pasteles, huevos revueltos, tocino, salchicha, papas">Early Riser Breakfast Table $45.90/pp — juices, melons &amp; berries, house baked pastries, scrambled eggs, bacon, sausage, breakfast potatoes</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:00–<br>1:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Almuerzo">Lunch</span><span class="room-pill">Verbena A</span><span class="gtd-pill">GTD 24</span></div>
-        <div class="svc-menu" data-en="Hill Country Spa Day - Wednesday Working Lunch Buffet $61.20/pp" data-es="Hill Country Spa Day - Almuerzo Buffet Miércoles $61.20/pp">Hill Country Spa Day - Wednesday Working Lunch Buffet $61.20/pp</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">3:30–<br>4:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="PM Snack Break" data-es="Descanso PM">PM Snack Break</span><span class="room-pill">Verbena A</span><span class="gtd-pill">GTD 24</span></div>
-        <div class="svc-menu" data-en="Rest &amp; Recouperate Afternoon Break $24.30/pp — flax seed &amp; nut granola bites, turkey &amp; avocado finger sandwiches, strawberry mint agua fresca" data-es="Rest &amp; Recouperate Afternoon Break $24.30/pp — granola de linaza y nueces, sándwiches de pavo y aguacate, agua fresca de fresa y menta">Rest &amp; Recouperate Afternoon Break $24.30/pp — flax seed &amp; nut granola bites, turkey &amp; avocado finger sandwiches, strawberry mint agua fresca</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Patrick</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena A · Crescent Rounds · 9a–5p · F&amp;B minimum $7,000" data-es="Verbena A · Mesas Crecientes · 9a–5p · Mínimo F&amp;B $7,000">Verbena A · Crescent Rounds · 9a–5p · F&amp;B minimum $7,000</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--red)">
-      <div class="card-group" data-en="Texas A&amp;M University System HQ — CIAC Summer Luncheon" data-es="Texas A&amp;M University System HQ — Almuerzo de Verano CIAC">Texas A&amp;M University System HQ — CIAC Summer Luncheon</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa / Diana" data-es="MGR: Lisa / Diana">MGR: Lisa / Diana</span>
-        <span class="badge badge-ic" data-en="IC: Stacie" data-es="CI: Stacie">IC: Stacie</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">11:30 AM–<br>1:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Almuerzo">Lunch</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP/GTD 100</span></div>
-        <div class="svc-menu" data-en="Southern Comforts - Monday Working Lunch Buffet $78/pp — honey fried chicken, cobb &amp; sweet potato salads, cracked pepper pork loin, peach cobbler &amp; pecan pie" data-es="Southern Comforts - Almuerzo Buffet Lunes $78/pp — pollo frito con miel, ensaladas, lomo de cerdo, cobbler de durazno y pay de nuez">Southern Comforts - Monday Working Lunch Buffet $78/pp — honey fried chicken, cobb &amp; sweet potato salads, cracked pepper pork loin, peach cobbler &amp; pecan pie</div>
-        <div class="note" data-en="⚑ Crescent Rounds — 8 rounds of 8, 4 rounds of 9 · Room rental $1,000 · F&amp;B minimum $7,000" data-es="⚑ Mesas Crecientes — 8 mesas de 8, 4 mesas de 9 · Renta $1,000 · Mínimo F&amp;B $7,000">⚑ Crescent Rounds — 8 rounds of 8, 4 rounds of 9 · Room rental $1,000 · F&amp;B minimum $7,000</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Stacie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val">Primrose D</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>5</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Primrose Foyer · Lantana · Plumeria · Primrose AB · Primrose C · Primrose D · Verbena A · Verbena B · Camellia B</strong></div>
-    <div class="strip-item" data-en="⚑ Telecom Industry Trade Association full conference day — multiple simultaneous breakouts · Texas A&amp;M CIAC Summer Luncheon 11:30a–1p" data-es="⚑ Día completo Telecom Industry Trade Association — varias sesiones simultáneas · Almuerzo CIAC Texas A&amp;M 11:30a–1p">⚑ Telecom Industry Trade Association full conference day — multiple simultaneous breakouts · Texas A&amp;M CIAC Summer Luncheon 11:30a–1p</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ THU JUL 9 ══ -->
-<div class="day-section" data-date="2026-07-09">
-<button class="day-btn a2" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">9</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
-    <div class="day-summary" data-en="Telecom Industry Trade Association final day — Texas Sunrise breakfast + closing general session · Pilotbase wraps (half day) · RDO Equipment Company Day 2 · Swatch Group Day 3 · Clayton Home Building Group Day 2" data-es="Último día Telecom Industry Trade Association — desayuno Texas Sunrise + sesión general de cierre · Pilotbase cierra (medio día) · RDO Equipment Company Día 2 · Swatch Group Día 3 · Clayton Home Building Group Día 2">Telecom Industry Trade Association final day — Texas Sunrise breakfast + closing general session · Pilotbase wraps (half day) · RDO Equipment Company Day 2 · Swatch Group Day 3 · Clayton Home Building Group Day 2</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="Telecom Industry Trade Association — Spring Training 2026 — Final Day" data-es="Telecom Industry Trade Association — Entrenamiento de Primavera 2026 — Día Final">Telecom Industry Trade Association — Spring Training 2026 — Final Day</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana / Samantha" data-es="MGR: Diana / Samantha">MGR: Diana / Samantha</span>
-        <span class="badge badge-ic" data-en="IC: Kari" data-es="CI: Kari">IC: Kari</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–<br>9:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast Buffet" data-es="Buffet Desayuno">Breakfast Buffet</span><span class="room-pill">Lantana</span><span class="gtd-pill">EXP/GTD 100</span></div>
-        <div class="svc-menu" data-en="Texas Sunrise Breakfast Table $57/pp — OJ, Cranberry &amp; Apple Juices · Melons &amp; Berries<br>Freshly Baked Kolaches · Chobani Yogurts<br>Hot Gristmill Steel Cut Oatmeal<br>Migas Rancheros with Scrambled Eggs, Salsa Roja, Corn Tortillas, Queso Fresco &amp; Cilantro<br>Jalapeno Cured Bacon · Texas Hashbrown Casserole<br>Warm Biscuits &amp; Country Sausage Gravy<br>Coffee/Tea" data-es="Mesa Sunrise de Texas $57/pp — Jugos · Fruta<br>Kolaches · Yogurts<br>Avena<br>Migas Rancheros<br>Tocino de Jalapeño · Hash de Papa<br>Galletas con Salsa<br>Café/Té">Texas Sunrise Breakfast Table $57/pp — OJ, Cranberry &amp; Apple Juices · Melons &amp; Berries<br>Freshly Baked Kolaches · Chobani Yogurts<br>Hot Gristmill Steel Cut Oatmeal<br>Migas Rancheros with Scrambled Eggs, Salsa Roja, Corn Tortillas, Queso Fresco &amp; Cilantro<br>Jalapeno Cured Bacon · Texas Hashbrown Casserole<br>Warm Biscuits &amp; Country Sausage Gravy<br>Coffee/Tea</div>
-        <div class="note" data-en="⚑ Rounds of 10 · Existing set" data-es="⚑ Mesas redondas de 10 · Montaje existente">⚑ Rounds of 10 · Existing set</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00 AM–<br>12:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="General Session (no F&amp;B)" data-es="Sesión General (sin F&amp;B)"><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 100 / GTD 150</span></div>
-        <div class="svc-menu" data-en="Crescent Rounds · Existing set" data-es="Mesas Crecientes · Montaje existente">Crescent Rounds · Existing set</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Kari</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Telecom Industry Trade Association Spring Training 2026 concludes today" data-es="Telecom Industry Trade Association Spring Training 2026 concluye hoy">Telecom Industry Trade Association Spring Training 2026 concludes today</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Pilotbase — CX Summit — Final Day" data-es="Pilotbase — CX Summit — Día Final">Pilotbase — CX Summit — Final Day</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Corey" data-es="CI: Corey">IC: Corey</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>12:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Verbena B</span><span class="gtd-pill">EXP 18</span></div>
-        <div class="svc-menu" data-en="Half Day Beverage Service (up to 4 hrs) $30/pp — Little City Regular &amp; Decaf Coffee · Tazo Teas<br>Assorted Pepsi · Bottled Water<br>Diet Coke &amp; Topo Chico on consumption $8 ea<br>Conference setup" data-es="Bebidas Medio Día (hasta 4h) $30/pp — Café Little City · Tés Tazo<br>Pepsi · Agua<br>Diet Coke y Topo Chico al consumo $8 c/u<br>Montaje conferencia">Half Day Beverage Service (up to 4 hrs) $30/pp — Little City Regular &amp; Decaf Coffee · Tazo Teas<br>Assorted Pepsi · Bottled Water<br>Diet Coke &amp; Topo Chico on consumption $8 ea<br>Conference setup</div>
-        <div class="note" data-en="⚑ Lunch off property — lock doors at noon" data-es="⚑ Almuerzo fuera — cerrar puertas al mediodía">⚑ Lunch off property — lock doors at noon</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Corey</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--orange)">
-      <div class="card-group" data-en="RDO Equipment Company — CE VP Board Meeting — Day 2" data-es="RDO Equipment Company — Junta Directiva CE VP — Día 2">RDO Equipment Company — CE VP Board Meeting — Day 2</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
-        <span class="badge badge-ic" data-en="IC: Cory" data-es="CI: Cory">IC: Cory</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>5:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Camellia A</span><span class="gtd-pill">EXP/GTD/SET 13</span></div>
-        <div class="svc-menu" data-en="Continuous beverage on consumption · 9:30 AM Coffee Break — granola bars, whole fruit, rosemary almonds<br>12:00 PM Lunch — Tejas Mexicano - Thursday Working Lunch Buffet $68/pp<br>2:30 PM Coffee Break — assorted candy bars &amp; chips" data-es="Bebidas continuas al consumo · 9:30 AM Descanso — granola, fruta, almendras<br>12:00 PM Almuerzo — Tejas Mexicano - Buffet Jueves $68/pp<br>2:30 PM Descanso — dulces y botanas">Continuous beverage on consumption · 9:30 AM Coffee Break — granola bars, whole fruit, rosemary almonds<br>12:00 PM Lunch — Tejas Mexicano - Thursday Working Lunch Buffet $68/pp<br>2:30 PM Coffee Break — assorted candy bars &amp; chips</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Cory</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia A · U-Shape · 7a–5:30p · F&amp;B minimum $2,000" data-es="Camellia A · Forma U · 7a–5:30p · Mínimo F&amp;B $2,000">Camellia A · U-Shape · 7a–5:30p · F&amp;B minimum $2,000</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="Swatch Group — New Store Training (Longines) — Day 3" data-es="Swatch Group — Entrenamiento Nueva Tienda (Longines) — Día 3">Swatch Group — New Store Training (Longines) — Day 3</div>
-      <div class="card-badges">
-        <span class="badge badge-ic" data-en="IC: Annette" data-es="CI: Annette">IC: Annette</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:30 AM–<br>6:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Camellia B</span><span class="gtd-pill">EXP/GTD 10 / SET 12</span></div>
-        <div class="svc-menu" data-en="U-Shape · Room rental $200 · 8:30 AM Breakfast — Grab &amp; Go Breakfast Table $33/pp<br>12:00 PM Lunch — Gourmet Deli Lunch Buffet: tomato basil cream soup, quinoa &amp; arugula salad" data-es="Forma U · Renta $200 · 8:30 AM Desayuno — Mesa para Llevar $33/pp<br>12:00 PM Almuerzo — Buffet Gourmet Deli: sopa de tomate, ensalada de quinoa">U-Shape · Room rental $200 · 8:30 AM Breakfast — Grab &amp; Go Breakfast Table $33/pp<br>12:00 PM Lunch — Gourmet Deli Lunch Buffet: tomato basil cream soup, quinoa &amp; arugula salad</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Annette</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val">Camellia B · U-Shape · 8:30a–6:30p</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--red)">
-      <div class="card-group" data-en="Clayton Home Building Group — TRU Belton Leadership Workshop — Day 2" data-es="Clayton Home Building Group — Taller de Liderazgo TRU Belton — Día 2">Clayton Home Building Group — TRU Belton Leadership Workshop — Day 2</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
-        <span class="badge badge-ic" data-en="IC: Patrick" data-es="CI: Patrick">IC: Patrick</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Verbena A</span><span class="gtd-pill">EXP/GTD/SET 24</span></div>
-        <div class="svc-menu" data-en="Crescent Rounds, refresh from previous day · 8:00 AM Breakfast — Texas Sunrise Breakfast Table $51.30/pp<br>12:00 PM Lunch — Tejas Mexicano - Thursday Working Lunch Buffet $61.20/pp<br>3:30 PM Coffee Break — Indulge Afternoon Break + Starbucks Frappuccinos $27/pp" data-es="Mesas Crecientes, refresco del día anterior · 8:00 AM Desayuno — Mesa Sunrise de Texas $51.30/pp<br>12:00 PM Almuerzo — Tejas Mexicano - Buffet Jueves $61.20/pp<br>3:30 PM Descanso — Dulces Variados + Frappuccinos Starbucks $27/pp">Crescent Rounds, refresh from previous day · 8:00 AM Breakfast — Texas Sunrise Breakfast Table $51.30/pp<br>12:00 PM Lunch — Tejas Mexicano - Thursday Working Lunch Buffet $61.20/pp<br>3:30 PM Coffee Break — Indulge Afternoon Break + Starbucks Frappuccinos $27/pp</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Patrick</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Clayton Home Building Group wraps today" data-es="Clayton Home Building Group cierra hoy">Clayton Home Building Group wraps today</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>5</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Lantana · Primrose C · Verbena A · Verbena B · Camellia A · Camellia B</strong></div>
-    <div class="strip-item" data-en="Telecom Industry Trade Association, Pilotbase &amp; Clayton Home Building Group wrap today" data-es="Telecom Industry Trade Association, Pilotbase y Clayton Home Building Group cierran hoy">Telecom Industry Trade Association, Pilotbase &amp; Clayton Home Building Group wrap today</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ JUL 10–13 ══ -->
-<!-- ══ FRI JUL 10 ══ -->
-<div class="day-section" data-date="2026-07-10">
-<button class="day-btn a3" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">10</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="FRI" data-es="Viernes">FRI</div>
-    <div class="day-summary" data-en="Swatch Group New Store Training final day · Texas Association of School Boards (TASB) team dinner" data-es="Último día entrenamiento Swatch Group · Cena de equipo Texas Association of School Boards (TASB)">Swatch Group New Store Training final day · Texas Association of School Boards (TASB) team dinner</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="Swatch Group — New Store Training (Longines) — Final Day" data-es="Swatch Group — Entrenamiento Nueva Tienda (Longines) — Día Final">Swatch Group — New Store Training (Longines) — Final Day</div>
-      <div class="card-badges">
-        <span class="badge badge-ic" data-en="IC: Annette" data-es="CI: Annette">IC: Annette</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:30 AM–<br>3:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Camellia B</span><span class="gtd-pill">EXP/GTD 10 / SET 12</span></div>
-        <div class="svc-menu" data-en="U-Shape · Room rental $200 · 8:30 AM Breakfast — Rise and Shine Croissants Grab &amp; Go Table $33/pp<br>12:00 PM Lunch — Conference Dining Lunch (Caesar, Cobb, Wagyu Cheeseburger, Grilled Chicken Club)" data-es="Forma U · Renta $200 · 8:30 AM Desayuno — Croissants Rise and Shine, mesa para llevar $33/pp<br>12:00 PM Almuerzo — Almuerzo Conferencia (César, Cobb, Hamburguesa Wagyu, Club de Pollo)">U-Shape · Room rental $200 · 8:30 AM Breakfast — Rise and Shine Croissants Grab &amp; Go Table $33/pp<br>12:00 PM Lunch — Conference Dining Lunch (Caesar, Cobb, Wagyu Cheeseburger, Grilled Chicken Club)</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Annette</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Swatch Group New Store Training concludes today" data-es="Entrenamiento Swatch Group concluye hoy">Swatch Group New Store Training concludes today</span></div>
-    </div>
-  </div>
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--red)">
-      <div class="card-group" data-en="Texas Association of School Boards (TASB) — Team Dinner" data-es="Texas Association of School Boards (TASB) — Cena de Equipo">Texas Association of School Boards (TASB) — Team Dinner</div>
-      <div class="card-badges">
-        <span class="badge badge-ic" data-en="IC: Chase" data-es="CI: Chase">IC: Chase</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:30–<br>9:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-din" data-en="Dinner" data-es="Cena">Dinner</span><span class="tag tag-bar" data-en="Hosted Bar" data-es="Bar Anfitrión">Hosted Bar</span><span class="room-pill">Verbena</span><span class="gtd-pill">GTD 18 / SET 20</span></div>
-        <div class="svc-menu" data-en="Steakhouse Chopping Block Dinner Table $99/pp — Baby Spinach Salad · Steak House Salad<br>Creamy Scalloped Potatoes · Truffled Cream Corn · Grilled Asparagus<br>Oven Roasted Chicken Breast · Seared Branzino · Slow Roasted Strip Loin<br>Carrot Cake · Apple Crisp · Little City Coffee &amp; Tazo Teas<br>Hosted Beer &amp; Wine Bar on consumption — Imported/Craft Beer $10 ea · Domestic Beer $9 ea · Wine by the Glass $13 ea · Assorted Pepsi Products" data-es="Mesa Steakhouse $99/pp — Ensalada de Espinaca · Ensalada Steak House<br>Papas Gratinadas · Elote con Crema Trufada · Espárragos<br>Pechuga de Pollo Asada · Róbalo · Lomo de Res<br>Pastel de Zanahoria · Apple Crisp · Café Little City y Tés Tazo<br>Bar de Cerveza y Vino al consumo — Cerveza Importada/Artesanal $10 c/u · Cerveza Doméstica $9 c/u · Vino por copa $13 c/u · Pepsi Variados">Steakhouse Chopping Block Dinner Table $99/pp — Baby Spinach Salad · Steak House Salad<br>Creamy Scalloped Potatoes · Truffled Cream Corn · Grilled Asparagus<br>Oven Roasted Chicken Breast · Seared Branzino · Slow Roasted Strip Loin<br>Carrot Cake · Apple Crisp · Little City Coffee &amp; Tazo Teas<br>Hosted Beer &amp; Wine Bar on consumption — Imported/Craft Beer $10 ea · Domestic Beer $9 ea · Wine by the Glass $13 ea · Assorted Pepsi Products</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Chase</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena · 4 rounds of 6 · 7:30p–9:30p · 1 bartender (up to 4 hrs) $250" data-es="Verbena · 4 mesas de 6 · 7:30p–9:30p · 1 bartender (hasta 4h) $250">Verbena · 4 rounds of 6 · 7:30p–9:30p · 1 bartender (up to 4 hrs) $250</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>2</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Camellia B · Verbena</strong></div>
-    <div class="strip-item" data-en="Swatch Group wraps today · TASB team dinner 7:30–9:30p" data-es="Swatch Group cierra hoy · Cena de equipo TASB 7:30–9:30p">Swatch Group wraps today · TASB team dinner 7:30–9:30p</div>
-  </div>
-</div>
-</div>
-
-<div class="week-label"><span class="week-label-main" data-en="Week of Jul 11–17" data-es="Semana del 11–17 Jul">Week of Jul 11–17</span></div>
-<!-- ══ SAT JUL 11 ══ -->
-<div class="day-section" data-date="2026-07-11">
-<button class="day-btn a4" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">11</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="SAT" data-es="Sábado">SAT</div>
-    <div class="day-summary" data-en="Texas Association of School Boards (TASB) full-day meeting · Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC arrives, team dinner + walkthrough meeting" data-es="Reunión de todo el día Texas Association of School Boards (TASB) · Llega Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC, cena de equipo + reunión de recorrido">Texas Association of School Boards (TASB) full-day meeting · Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC arrives, team dinner + walkthrough meeting</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC II" data-es="Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC II">Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC II</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana / Malaika" data-es="MGR: Diana / Malaika">MGR: Diana / Malaika</span>
-        <span class="badge badge-ic" data-en="IC: Colin" data-es="CI: Colin">IC: Colin</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">6:30–<br>7:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-din" data-en="Team Dinner" data-es="Cena de Equipo">Team Dinner</span><span class="room-pill">Lantana</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="Modified Steakhouse Chopping Block Dinner Table $89.10/pp — baby spinach &amp; steakhouse salads, scalloped potatoes, mac &amp; cheese<br>roasted chicken, seared branzino, slow roasted strip loin · (4) rounds of 8" data-es="Mesa Steakhouse Modificada $89.10/pp — ensaladas, papas gratinadas, mac &amp; cheese<br>pollo asado, róbalo, lomo de res · (4) mesas de 8">Modified Steakhouse Chopping Block Dinner Table $89.10/pp — baby spinach &amp; steakhouse salads, scalloped potatoes, mac &amp; cheese<br>roasted chicken, seared branzino, slow roasted strip loin · (4) rounds of 8</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:00–<br>11:59 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Walkthrough Meeting (no F&amp;B)" data-es="Reunión de Recorrido (sin F&amp;B)"><span class="room-pill">Plumeria A</span><span class="gtd-pill">EXP 30 / SET 40</span></div>
-        <div class="svc-menu" data-en="Theater style set for 40 · Pads, Pens &amp; Water in back of room" data-es="Estilo teatro para 40 · Blocs, bolígrafos y agua en la parte trasera">Theater style set for 40 · Pads, Pens &amp; Water in back of room</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Colin</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Lantana (holding room + dinner) · Plumeria A (walkthrough)" data-es="Lantana (sala de espera + cena) · Plumeria A (recorrido)">Lantana (holding room + dinner) · Plumeria A (walkthrough)</span></div>
-    </div>
-  </div>
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--red)">
-      <div class="card-group" data-en="Texas Association of School Boards (TASB) — Meeting" data-es="Texas Association of School Boards (TASB) — Reunión">Texas Association of School Boards (TASB) — Meeting</div>
-      <div class="card-badges">
-        <span class="badge badge-ic" data-en="IC: Chase" data-es="CI: Chase">IC: Chase</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–<br>9:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast Buffet" data-es="Buffet Desayuno">Breakfast Buffet</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 18 / SET 20</span></div>
-        <div class="svc-menu" data-en="Early Riser Breakfast Table $51/pp — Juices · Melons &amp; Berries · Cereals<br>House Baked Pastries · Chobani Yogurts<br>Scrambled Eggs (cheese on side) · Applewood Smoked Bacon<br>Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes<br>Little City Regular and Decaf Coffee, Assortment of Tazo Teas" data-es="Mesa Madrugadora $51/pp — Jugos · Fruta · Cereales<br>Pasteles · Yogurts<br>Huevos Revueltos (queso aparte) · Tocino<br>Salchicha · Papas con Romero<br>Café Little City y Tés Tazo">Early Riser Breakfast Table $51/pp — Juices · Melons &amp; Berries · Cereals<br>House Baked Pastries · Chobani Yogurts<br>Scrambled Eggs (cheese on side) · Applewood Smoked Bacon<br>Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes<br>Little City Regular and Decaf Coffee, Assortment of Tazo Teas</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">10:30–<br>11:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Descanso">Coffee Break</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 18</span></div>
-        <div class="svc-menu" data-en="Assorted Chips &amp; Candy Bars - Charged on Consumption @ $7 Each · Assorted Granola Bars @ $6 Each<br>Assorted Pepsi Products · (20) Fresh Garden Vegetable Crudites Shooters @ $7/pp" data-es="Papas y Dulces Variados al consumo @ $7 c/u · Granola @ $6 c/u<br>Pepsi Variados · (20) Verduras Frescas en Shots @ $7/pp">Assorted Chips &amp; Candy Bars - Charged on Consumption @ $7 Each · Assorted Granola Bars @ $6 Each<br>Assorted Pepsi Products · (20) Fresh Garden Vegetable Crudites Shooters @ $7/pp</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">11:45 AM–<br>1:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Buffet Almuerzo">Lunch Buffet</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 18</span></div>
-        <div class="svc-menu" data-en="Game Day Tailgate - Saturday Working Lunch Buffet $68/pp — Quinoa Vegetarian Chili<br>Chopped Iceberg Salad · Classic Creamy Coleslaw · Red Skin Potato Salad<br>Grilled Nashville Chicken Thigh · Sirloin Beef Burgers<br>House Made BBQ Potato Chips · Salted Caramel Fudge Brownie · Lemon Bars<br>Iced Tea, Little City Coffee &amp; Tazo Teas" data-es="Game Day Tailgate - Buffet Sábado $68/pp — Chili Vegetariano de Quinoa<br>Ensalada Iceberg · Coleslaw · Ensalada de Papa<br>Muslo de Pollo Nashville · Hamburguesas de Res<br>Papas BBQ · Brownie de Caramelo · Barras de Limón<br>Té Helado, Café Little City y Tés Tazo">Game Day Tailgate - Saturday Working Lunch Buffet $68/pp — Quinoa Vegetarian Chili<br>Chopped Iceberg Salad · Classic Creamy Coleslaw · Red Skin Potato Salad<br>Grilled Nashville Chicken Thigh · Sirloin Beef Burgers<br>House Made BBQ Potato Chips · Salted Caramel Fudge Brownie · Lemon Bars<br>Iced Tea, Little City Coffee &amp; Tazo Teas</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">2:30–<br>3:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Descanso">Coffee Break</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 18</span></div>
-        <div class="svc-menu" data-en="(20) Warm Soft Pretzel Rods with Creole Mustard &amp; Queso @ $10/pp" data-es="(20) Pretzels Suaves con Mostaza Creole y Queso @ $10/pp">(20) Warm Soft Pretzel Rods with Creole Mustard &amp; Queso @ $10/pp</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Chase</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia · U-Shape · 9a–4:30p · Pads, Pens &amp; Water in back of room" data-es="Camellia · Forma U · 9a–4:30p · Blocs, bolígrafos y agua en la parte trasera">Camellia · U-Shape · 9a–4:30p · Pads, Pens &amp; Water in back of room</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>2</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Camellia · Lantana · Plumeria A</strong></div>
-    <div class="strip-item" data-en="⚑ TASB meeting 9a–4:30p · MLS Minnesota United FC team dinner 6:30–7:30p" data-es="⚑ Reunión TASB 9a–4:30p · Cena de equipo MLS Minnesota United FC 6:30–7:30p">⚑ TASB meeting 9a–4:30p · MLS Minnesota United FC team dinner 6:30–7:30p</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ SUN JUL 12 ══ -->
-<div class="day-section" data-date="2026-07-12">
-<button class="day-btn a5" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">12</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="SUN" data-es="Domingo">SUN</div>
-    <div class="day-summary" data-en="Major League Soccer-ASO — breakfast, lunch &amp; pre-match dinner buffets · Charles Schwab Inc. welcome bag prep begins" data-es="Major League Soccer-ASO — desayuno, almuerzo y cena pre-partido · Charles Schwab Inc. inicia preparación de bolsas de bienvenida">Major League Soccer-ASO — breakfast, lunch &amp; pre-match dinner buffets · Charles Schwab Inc. welcome bag prep begins</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC II" data-es="Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC II">Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC II</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana / Malaika" data-es="MGR: Diana / Malaika">MGR: Diana / Malaika</span>
-        <span class="badge badge-ic" data-en="IC: Colin" data-es="CI: Colin">IC: Colin</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00–<br>10:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast Buffet" data-es="Buffet Desayuno">Breakfast Buffet</span><span class="room-pill">Lantana</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="Modified Early Riser Breakfast Table $51/pp — juices, melons &amp; berries, scrambled eggs, turkey bacon, chicken sausage, breakfast potatoes<br>plus hot gristmill steel cut oatmeal $10/pp" data-es="Mesa Madrugadora Modificada $51/pp — jugos, fruta, huevos, tocino de pavo, salchicha de pollo, papas<br>más avena $10/pp">Modified Early Riser Breakfast Table $51/pp — juices, melons &amp; berries, scrambled eggs, turkey bacon, chicken sausage, breakfast potatoes<br>plus hot gristmill steel cut oatmeal $10/pp</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">11:30 AM–<br>12:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Buffet Almuerzo">Lunch Buffet</span><span class="room-pill">Lantana</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="Modified Modern Italian - Friday Working Lunch Buffet $68/pp — turkey sausage kale &amp; rice soup, arugula caesar<br>chicken piccata, salmon fillet, plain noodles option $8/pp" data-es="Italiano Moderno Modificado $68/pp — sopa de pavo y kale, ensalada caesar<br>pollo piccata, salmón, opción pasta simple $8/pp">Modified Modern Italian - Friday Working Lunch Buffet $68/pp — turkey sausage kale &amp; rice soup, arugula caesar<br>chicken piccata, salmon fillet, plain noodles option $8/pp</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">3:30–<br>4:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-din" data-en="Pre-Match Meal" data-es="Comida Pre-Partido">Pre-Match Meal</span><span class="room-pill">Lantana</span></div>
-        <div class="svc-menu" data-en="Modified Mediterranean Dinner Table $88.20/pp — Greek &amp; panzanella salads, couscous<br>Moroccan spiced salmon, roasted chicken, grilled flank steak, paella rice" data-es="Mesa Mediterránea Modificada $88.20/pp — ensaladas griegas, cuscús<br>salmón marroquí, pollo, bistec, arroz paella">Modified Mediterranean Dinner Table $88.20/pp — Greek &amp; panzanella salads, couscous<br>Moroccan spiced salmon, roasted chicken, grilled flank steak, paella rice</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">10:15 AM–<br>5:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Club Meeting Room (no F&amp;B)" data-es="Sala de Reuniones del Club (sin F&amp;B)"><span class="room-pill">Plumeria A</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="Existing set, refresh from previous day" data-es="Montaje existente, refresco del día anterior">Existing set, refresh from previous day</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Colin</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Lantana (meals) · Plumeria A (club room)" data-es="Lantana (comidas) · Plumeria A (sala club)">Lantana (meals) · Plumeria A (club room)</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="Charles Schwab Inc. — Conference Prep" data-es="Charles Schwab Inc. — Preparación de Conferencia">Charles Schwab Inc. — Conference Prep</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa / Jessica" data-es="MGR: Lisa / Jessica">MGR: Lisa / Jessica</span>
-        <span class="badge badge-ic" data-en="IC: Anne" data-es="CI: Anne">IC: Anne</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">2:00–<br>8:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Office (no F&amp;B)" data-es="Oficina (sin F&amp;B)"><span class="room-pill">Camellia A</span><span class="gtd-pill">SET 10</span></div>
-        <div class="svc-menu" data-en="Room rental $200 · 1 round of 10, 3 6x3 tables for welcome bag assembly" data-es="Renta $200 · 1 mesa de 10, 3 mesas 6x3 para armar bolsas de bienvenida">Room rental $200 · 1 round of 10, 3 6x3 tables for welcome bag assembly</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Anne</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val">Camellia A</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>2</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Lantana · Plumeria A · Camellia A</strong></div>
-  </div>
-</div>
-</div>
-
-<!-- ══ MON JUL 13 ══ -->
-<div class="day-section" data-date="2026-07-13">
-<button class="day-btn a1" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">13</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="MON" data-es="Lunes">MON</div>
-    <div class="day-summary" data-en="Major League Soccer-ASO wraps · Charles Schwab Inc. office continues ahead of conference" data-es="Major League Soccer-ASO cierra · Charles Schwab Inc. continúa oficina antes de la conferencia">Major League Soccer-ASO wraps · Charles Schwab Inc. office continues ahead of conference</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC II — Final Day" data-es="Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC II — Día Final">Major League Soccer-ASO — MLS NEXT Pro Minnesota United FC II — Final Day</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana / Malaika" data-es="MGR: Diana / Malaika">MGR: Diana / Malaika</span>
-        <span class="badge badge-ic" data-en="IC: Colin" data-es="CI: Colin">IC: Colin</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>12:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Storage / Holding Room (no F&amp;B)" data-es="Almacén / Sala de Espera (sin F&amp;B)"><span class="room-pill">Plumeria A</span><span class="gtd-pill">EXP/GTD 30</span></div>
-        <div class="svc-menu" data-en="Existing set" data-es="Montaje existente">Existing set</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Colin</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Major League Soccer-ASO wraps today" data-es="Major League Soccer-ASO cierra hoy">Major League Soccer-ASO wraps today</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="Charles Schwab Inc. — Conference Prep — Day 2" data-es="Charles Schwab Inc. — Preparación de Conferencia — Día 2">Charles Schwab Inc. — Conference Prep — Day 2</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa / Jessica" data-es="MGR: Lisa / Jessica">MGR: Lisa / Jessica</span>
-        <span class="badge badge-ic" data-en="IC: Anne" data-es="CI: Anne">IC: Anne</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Office (no F&amp;B)" data-es="Oficina (sin F&amp;B)"><span class="room-pill">Camellia A</span><span class="gtd-pill">EXP/GTD 6 / SET 10</span></div>
-        <div class="svc-menu" data-en="Room rental $400 · Little City Regular Coffee, Bottled Water &amp; Assorted Pepsi Products on consumption<br>Refresh welcome bag setup — 1 round of 10, 3 6x3 tables" data-es="Renta $400 · Café Little City, Agua Embotellada y Pepsi al consumo<br>Refresco de armado de bolsas — 1 mesa de 10, 3 mesas 6x3">Room rental $400 · Little City Regular Coffee, Bottled Water &amp; Assorted Pepsi Products on consumption<br>Refresh welcome bag setup — 1 round of 10, 3 6x3 tables</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Anne</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val">Camellia A</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>2</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Plumeria A · Camellia A</strong></div>
-    <div class="strip-item" data-en="Major League Soccer-ASO wraps today" data-es="Major League Soccer-ASO cierra hoy">Major League Soccer-ASO wraps today</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ TUE JUL 14 ══ -->
-<div class="day-section" data-date="2026-07-14">
-<button class="day-btn a3" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">14</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
-    <div class="day-summary" data-en="AMD Microcenter Champion arrives — staff office, registration opens, welcome dinner · Charles Schwab Inc. conference day — 3 breakouts + lunch" data-es="Llega AMD Microcenter Champion — oficina de staff, abre registro, cena de bienvenida · Día de conferencia Charles Schwab Inc. — 3 sesiones + almuerzo">AMD Microcenter Champion arrives — staff office, registration opens, welcome dinner · Charles Schwab Inc. conference day — 3 breakouts + lunch</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--red)">
-      <div class="card-group" data-en="AMD — Microcenter Champion" data-es="AMD — Microcenter Champion">AMD — Microcenter Champion</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Krystal" data-es="CI: Krystal">IC: Krystal</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>11:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Staff Office (no F&amp;B)" data-es="Oficina de Staff (sin F&amp;B)"><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 1 / SET 6</span></div>
-        <div class="svc-menu" data-en="Existing conference table · Pads, Pens &amp; Water set in back of room" data-es="Mesa de conferencia existente · Blocs, bolígrafos y agua en la parte trasera">Existing conference table · Pads, Pens &amp; Water set in back of room</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:00–<br>8:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Registration (no F&amp;B)" data-es="Registro (sin F&amp;B)"><span class="room-pill">Pre-Function</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="(1) 6x30 table with (2) chairs" data-es="(1) mesa 6x30 con (2) sillas">(1) 6x30 table with (2) chairs</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">5:30–<br>8:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-din" data-en="Welcome Dinner" data-es="Cena de Bienvenida">Welcome Dinner</span><span class="tag tag-bar" data-en="Hosted Bar" data-es="Bar Anfitrión">Hosted Bar</span><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 100 / GTD 80 / SET 80</span></div>
-        <div class="svc-menu" data-en="Texas BBQ Dinner Table $87.30/pp — Texas Red Chili Station (Beef Chili, Sour Cream, Green Onion, Cheddar &amp; Corn Bread)<br>Tossed Market Green Salad · Hill Country German Potato Salad<br>Classic Creamy Cole Slaw · Country Style Creamed Corn<br>Roasted Marble Potatoes · Ranch Style Baked Beans with Slab Bacon<br>Out of the Smoker Beef Brisket · Honey Fried Chicken<br>Country Style Smoked Rope Sausage<br>Vanilla Wafer Banana Pudding · Peach Cobbler<br>Ice Water, Little City Coffee &amp; Tazo Teas (based on 90 min service)<br>PLUS Breads &amp; Spreads Display Station $25.20/pp — Classic Warm Baked Brie, Basil Pesto Ricotta, Spinach Artichoke &amp; Bacon Dip, Texas Chevre with Honey &amp; Pecans<br>Favorites Brands Package Bar – 2hr $49/pp<br>(1) Bartender (1 per 100 guests, up to 4 hrs) $250" data-es="Mesa BBQ Texas $87.30/pp — Estación de Chili Rojo<br>Ensalada Verde · Ensalada de Papa Alemana<br>Ensalada de Col · Elote Cremoso<br>Papas Asadas · Frijoles Estilo Rancho con Tocino<br>Brisket Ahumado · Pollo Frito con Miel<br>Salchicha Ahumada<br>Pudín de Plátano · Cobbler de Durazno<br>Agua, Café Little City y Tés Tazo<br>MÁS Estación de Panes y Untables $25.20/pp<br>Bar Marcas Favoritas – 2h $49/pp<br>(1) Bartender $250">Texas BBQ Dinner Table $87.30/pp — Texas Red Chili Station (Beef Chili, Sour Cream, Green Onion, Cheddar &amp; Corn Bread)<br>Tossed Market Green Salad · Hill Country German Potato Salad<br>Classic Creamy Cole Slaw · Country Style Creamed Corn<br>Roasted Marble Potatoes · Ranch Style Baked Beans with Slab Bacon<br>Out of the Smoker Beef Brisket · Honey Fried Chicken<br>Country Style Smoked Rope Sausage<br>Vanilla Wafer Banana Pudding · Peach Cobbler<br>Ice Water, Little City Coffee &amp; Tazo Teas (based on 90 min service)<br>PLUS Breads &amp; Spreads Display Station $25.20/pp — Classic Warm Baked Brie, Basil Pesto Ricotta, Spinach Artichoke &amp; Bacon Dip, Texas Chevre with Honey &amp; Pecans<br>Favorites Brands Package Bar – 2hr $49/pp<br>(1) Bartender (1 per 100 guests, up to 4 hrs) $250</div>
-        <div class="note" data-en="⚑ (8) Rounds of 10 · (5) Highboys · (1) 6x30 table &amp; (1) Highboy set in front of the room" data-es="⚑ (8) Mesas redondas de 10 · (5) Highboys · (1) mesa 6x30 y (1) Highboy al frente">⚑ (8) Rounds of 10 · (5) Highboys · (1) 6x30 table &amp; (1) Highboy set in front of the room</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Krystal</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Bluebell (office) · Pre-Function (registration) · Primrose C (dinner)" data-es="Bluebell (oficina) · Pre-Function (registro) · Primrose C (cena)">Bluebell (office) · Pre-Function (registration) · Primrose C (dinner)</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="Charles Schwab Inc. — Conference Day" data-es="Charles Schwab Inc. — Día de Conferencia">Charles Schwab Inc. — Conference Day</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa / Jessica" data-es="MGR: Lisa / Jessica">MGR: Lisa / Jessica</span>
-        <span class="badge badge-ic" data-en="IC: Anne" data-es="CI: Anne">IC: Anne</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Breakout 1 (no F&amp;B)" data-es="Sesión 1 (sin F&amp;B)">Breakout 1 (no F&amp;B)</span><span class="room-pill">Verbena A</span><span class="gtd-pill">EXP/GTD/SET 32</span></div>
-        <div class="svc-menu" data-en="4 rounds of 8 · Room rental $400 · Breakout runs 1:30–4:45 PM, speakers test room 8a–1p" data-es="4 mesas de 8 · Renta $400 · Sesión 1:30–4:45 PM, prueba de sala 8a–1p">4 rounds of 8 · Room rental $400 · Breakout runs 1:30–4:45 PM, speakers test room 8a–1p</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Breakout 2 (no F&amp;B)" data-es="Sesión 2 (sin F&amp;B)">Breakout 2 (no F&amp;B)</span><span class="room-pill">Verbena B</span><span class="gtd-pill">EXP/GTD/SET 30</span></div>
-        <div class="svc-menu" data-en="3 rounds of 10 · Room rental $400 · Breakout runs 1:30–4:45 PM, speakers test room 8a–1p" data-es="3 mesas de 10 · Renta $400 · Sesión 1:30–4:45 PM, prueba de sala 8a–1p">3 rounds of 10 · Room rental $400 · Breakout runs 1:30–4:45 PM, speakers test room 8a–1p</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Breakout 3 (no F&amp;B)" data-es="Sesión 3 (sin F&amp;B)">Breakout 3 (no F&amp;B)</span><span class="room-pill">Camellia B</span><span class="gtd-pill">EXP 30 / GTD 55 / SET 30</span></div>
-        <div class="svc-menu" data-en="3 rounds of 10 · Room rental $400 · Beverage station set in foyer between breakouts · Breakout runs 1:30–4:45 PM" data-es="3 mesas de 10 · Renta $400 · Estación de bebidas en el foyer · Sesión 1:30–4:45 PM">3 rounds of 10 · Room rental $400 · Beverage station set in foyer between breakouts · Breakout runs 1:30–4:45 PM</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:15–<br>1:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Almuerzo">Lunch</span><span class="room-pill">Primrose B</span><span class="gtd-pill">EXP 80 / GTD 48 / SET 60</span></div>
-        <div class="svc-menu" data-en="Southern Comforts - Monday Working Lunch Buffet $78/pp — honey fried chicken, cobb &amp; sweet potato salads, cracked pepper pork loin, peach cobbler &amp; pecan pie<br>Room rental $1,500 · 6 rounds of 10" data-es="Southern Comforts - Almuerzo Buffet Lunes $78/pp — pollo frito con miel, ensaladas, lomo de cerdo, cobbler y pay<br>Renta $1,500 · 6 mesas de 10">Southern Comforts - Monday Working Lunch Buffet $78/pp — honey fried chicken, cobb &amp; sweet potato salads, cracked pepper pork loin, peach cobbler &amp; pecan pie<br>Room rental $1,500 · 6 rounds of 10</div>
-        <div class="note" data-en="⚑ All cheeses, nuts &amp; dressing on the side · remove red onion · label all dietary elements" data-es="⚑ Quesos, nueces y aderezo aparte · quitar cebolla morada · etiquetar todos los elementos dietéticos">⚑ All cheeses, nuts &amp; dressing on the side · remove red onion · label all dietary elements</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Office (no F&amp;B)" data-es="Oficina (sin F&amp;B)"><span class="room-pill">Camellia A</span><span class="gtd-pill">EXP/GTD 6 / SET 10</span></div>
-        <div class="svc-menu" data-en="Room rental $400 · Little City Regular Coffee, Bottled Water &amp; Assorted Pepsi Products on consumption · Refresh welcome bag setup" data-es="Renta $400 · Café Little City, Agua y Pepsi al consumo · Refresco de armado de bolsas">Room rental $400 · Little City Regular Coffee, Bottled Water &amp; Assorted Pepsi Products on consumption · Refresh welcome bag setup</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Anne</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Verbena A · Verbena B · Camellia A · Camellia B (breakouts + office) · Primrose B (lunch)" data-es="Verbena A · Verbena B · Camellia A · Camellia B (sesiones + oficina) · Primrose B (almuerzo)">Verbena A · Verbena B · Camellia A · Camellia B (breakouts + office) · Primrose B (lunch)</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>2</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Bluebell · Pre-Function · Primrose C · Verbena A · Verbena B · Camellia A · Camellia B · Primrose B</strong></div>
-    <div class="strip-item" data-en="⚑ Welcome Dinner — BBQ + hosted bar, 1 bartender · Charles Schwab Inc. 3 simultaneous breakouts 1:30–4:45p" data-es="⚑ Cena de Bienvenida — BBQ + bar anfitrión, 1 bartender · 3 sesiones simultáneas Charles Schwab Inc. 1:30–4:45p">⚑ Welcome Dinner — BBQ + hosted bar, 1 bartender · Charles Schwab Inc. 3 simultaneous breakouts 1:30–4:45p</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ WED JUL 15 ══ -->
-<div class="day-section" data-date="2026-07-15">
-<button class="day-btn a4" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">15</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
-    <div class="day-summary" data-en="AMD Microcenter Champion final day — general session + 3 simultaneous breakouts · Charles Schwab Inc. office continues" data-es="Último día AMD Microcenter Champion — sesión general + 3 sesiones simultáneas · Continúa oficina Charles Schwab Inc.">AMD Microcenter Champion final day — general session + 3 simultaneous breakouts · Charles Schwab Inc. office continues</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--red)">
-      <div class="card-group" data-en="AMD — Microcenter Champion — Final Day" data-es="AMD — Microcenter Champion — Día Final">AMD — Microcenter Champion — Final Day</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Krystal" data-es="CI: Krystal">IC: Krystal</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="All Day Meeting Package" data-es="Paquete Reunión Todo el Día">All Day Meeting Package</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">EXP 120 / GTD 80</span></div>
-        <div class="svc-menu" data-en="Registration<br>8:00–9:00 AM Breakfast Buffet — Early Riser Breakfast Table (Juices, Melons &amp; Berries, Cereals, House Baked Pastries, Chobani Yogurts, Scrambled Eggs, Applewood Smoked Bacon, Country Sausage, Rosemary Gold Potatoes, Coffee/Tea)<br>10:00 AM Coffee Break (Morning Break)<br>12:00–1:20 PM Lunch Buffet — Hill Country Spa Day Wednesday Working Lunch (Arugula, Frisée, Radicchio, Blackberries, Strawberries, Candied Pecans w/ Vanilla Honey Vinaigrette · Spinach &amp; Watercress, Beets, Goat Cheese, Toasted Walnuts w/ Champagne Vinaigrette<br>Herb Seared Petite Chicken Breast with Tomato Caper Relish · Roasted Salmon with Lemon, Garlic, Rosemary<br>Roasted Asparagus · Pan Roasted Sweet Potato Hash<br>Assorted French Macarons · Chocolate Mousse Shots · Iced Tea/Coffee/Tazo Teas)<br>2:20 PM Coffee Break (Afternoon Break — Roasted Garlic Hummus with Pita Chips, Assorted Chips &amp; Snacks)" data-es="Registro<br>8:00–9:00 AM Buffet Desayuno<br>10:00 AM Descanso Café (Mañana)<br>12:00–1:20 PM Buffet Almuerzo — Hill Country Spa Day<br>2:20 PM Descanso Café (Tarde — Hummus con Totopos de Pita, Botanas Variadas)">Registration<br>8:00–9:00 AM Breakfast Buffet — Early Riser Breakfast Table<br>10:00 AM Coffee Break (Morning Break)<br>12:00–1:20 PM Lunch Buffet — Hill Country Spa Day Wednesday Working Lunch<br>2:20 PM Coffee Break (Afternoon Break — Roasted Garlic Hummus with Pita Chips, Assorted Chips &amp; Snacks)</div>
-        <div class="note" data-en="⚑ Existing set, registration" data-es="⚑ Montaje existente, registro">⚑ Existing set, registration</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Staff Office (no F&amp;B)" data-es="Oficina de Staff (sin F&amp;B)"><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="Existing set, refresh from previous day" data-es="Montaje existente, refresco del día anterior">Existing set, refresh from previous day</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00 AM–<br>3:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="General Session (no F&amp;B)" data-es="Sesión General (sin F&amp;B)"><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 120 / GTD 80 / SET 84</span></div>
-        <div class="svc-menu" data-en="(12) Crescent Rounds of 7 · (1) 6x30 table &amp; (1) Highboy in front of the room" data-es="(12) Mesas Crecientes de 7 · (1) mesa 6x30 y (1) Highboy al frente">(12) Crescent Rounds of 7 · (1) 6x30 table &amp; (1) Highboy in front of the room</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">10:10 AM–<br>3:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="3 Simultaneous Breakouts (no F&amp;B)" data-es="3 Sesiones Simultáneas (sin F&amp;B)"><span class="room-pill">Lantana B · Primrose B · Primrose A</span><span class="gtd-pill">EXP 30 / SET 32 ea</span></div>
-        <div class="svc-menu" data-en="Each room: Schoolroom set with podium · Room rental $750 each" data-es="Cada sala: Montaje aula con podio · Renta $750 cada una">Each room: Schoolroom set with podium · Room rental $750 each</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Krystal</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Pre-Function (all-day F&amp;B) · Bluebell (office) · Primrose C (general session) · Lantana B · Primrose A · Primrose B (breakouts)" data-es="Pre-Function (F&amp;B todo el día) · Bluebell (oficina) · Primrose C (sesión general) · Lantana B · Primrose A · Primrose B (sesiones)">Pre-Function (all-day F&amp;B) · Bluebell (office) · Primrose C (general session) · Lantana B · Primrose A · Primrose B (breakouts)</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="AMD wraps today" data-es="AMD cierra hoy">AMD wraps today</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="Charles Schwab Inc. — Office" data-es="Charles Schwab Inc. — Oficina">Charles Schwab Inc. — Office</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa / Jessica" data-es="MGR: Lisa / Jessica">MGR: Lisa / Jessica</span>
-        <span class="badge badge-ic" data-en="IC: Anne" data-es="CI: Anne">IC: Anne</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Office (no F&amp;B)" data-es="Oficina (sin F&amp;B)"><span class="room-pill">Camellia A</span><span class="gtd-pill">GTD 6</span></div>
-        <div class="svc-menu" data-en="Room rental $400 · Conference setup" data-es="Renta $400 · Montaje conferencia">Room rental $400 · Conference setup</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Anne</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val">Camellia A</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>2</strong> <span data-en="groups · 80 GTD" data-es="grupos · 80 GTD">groups · 80 GTD</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Pre-Function · Bluebell · Primrose A/B/C · Lantana B · Camellia A</strong></div>
-    <div class="strip-item" data-en="⚑ 3 breakouts run simultaneously 10:10a–3:30p" data-es="⚑ 3 sesiones simultáneas 10:10a–3:30p">⚑ 3 breakouts run simultaneously 10:10a–3:30p</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ THU JUL 16 ══ -->
-<div class="day-section" data-date="2026-07-16">
-<button class="day-btn a5" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">16</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
-    <div class="day-summary" data-en="AMD Microcenter Champion arrives — Texas Sunrise breakfast + general session" data-es="Llega AMD Microcenter Champion — desayuno Texas Sunrise + sesión general">AMD Microcenter Champion arrives — Texas Sunrise breakfast + general session</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--red)">
-      <div class="card-group" data-en="AMD — Microcenter Champion" data-es="AMD — Microcenter Champion">AMD — Microcenter Champion</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Krystal" data-es="CI: Krystal">IC: Krystal</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–<br>9:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast Buffet" data-es="Buffet Desayuno">Breakfast Buffet</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">EXP 120 / SET 80</span></div>
-        <div class="svc-menu" data-en="Texas Sunrise Breakfast Table $51.30/pp — juices, melons &amp; berries, kolaches, Chobani yogurts<br>hot gristmill steel cut oatmeal, migas rancheros, jalapeno cured bacon, Texas hashbrown casserole, biscuits &amp; gravy" data-es="Mesa Sunrise de Texas $51.30/pp — jugos, fruta, kolaches, yogurts<br>avena, migas rancheros, tocino de jalapeño, hash de papa, galletas con salsa">Texas Sunrise Breakfast Table $51.30/pp — juices, melons &amp; berries, kolaches, Chobani yogurts<br>hot gristmill steel cut oatmeal, migas rancheros, jalapeno cured bacon, Texas hashbrown casserole, biscuits &amp; gravy</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00–<br>10:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="General Session (no F&amp;B)" data-es="Sesión General (sin F&amp;B)"><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP/SET 120/84</span></div>
-        <div class="svc-menu" data-en="Existing set · 10:15 AM coffee break, no F&amp;B" data-es="Montaje existente · Descanso café 10:15 AM, sin F&amp;B">Existing set · 10:15 AM coffee break, no F&amp;B</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Krystal</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Pre-Function (breakfast) · Primrose C (general session)" data-es="Pre-Function (desayuno) · Primrose C (sesión general)">Pre-Function (breakfast) · Primrose C (general session)</span></div>
-    </div>
-  </div>
-  <div class="day-strip">
-    <div class="strip-item"><strong>1</strong> <span data-en="group · 80 GTD" data-es="grupo · 80 GTD">group · 80 GTD</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Pre-Function · Primrose C</strong></div>
-  </div>
-</div>
-</div>
-
-<!-- ══ FRI JUL 17 ══ -->
-<div class="day-section" data-date="2026-07-17">
-<button class="day-btn a1" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">17</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="FRI" data-es="Viernes">FRI</div>
-    <div class="day-summary" data-en="Rein Therapeutics Team Meeting — all day in Bluebell" data-es="Reunión de Equipo Rein Therapeutics — todo el día en Bluebell">Rein Therapeutics Team Meeting — all day in Bluebell</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="Rein Therapeutics — Team Meeting" data-es="Rein Therapeutics — Reunión de Equipo">Rein Therapeutics — Team Meeting</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
-        <span class="badge badge-ic" data-en="IC: BreAnne" data-es="CI: BreAnne">IC: BreAnne</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP/GTD 5</span></div>
-        <div class="svc-menu" data-en="Conference setup · Room rental $750 · All Day Beverage Service (up to 8 hrs) $52/pp" data-es="Montaje conferencia · Renta $750 · Bebidas Todo el Día (hasta 8h) $52/pp">Conference setup · Room rental $750 · All Day Beverage Service (up to 8 hrs) $52/pp</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00–<br>10:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Desayuno">Breakfast</span><span class="room-pill">Bluebell</span><span class="gtd-pill">GTD 5</span></div>
-        <div class="svc-menu" data-en="Grab &amp; Go Breakfast Table $33/pp — Chobani yogurts, overnight oats, muffins, breakfast taco (bacon)" data-es="Mesa Desayuno para Llevar $33/pp — yogurts, avena, muffins, taco de tocino">Grab &amp; Go Breakfast Table $33/pp — Chobani yogurts, overnight oats, muffins, breakfast taco (bacon)</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">BreAnne</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell · Conference · 9a–5p · Whiteboard, markers &amp; TV monitor with connections" data-es="Bluebell · Conferencia · 9a–5p · Pizarrón, marcadores y monitor TV">Bluebell · Conference · 9a–5p · Whiteboard, markers &amp; TV monitor with connections</span></div>
-    </div>
-  </div>
-  <div class="day-strip">
-    <div class="strip-item"><strong>1</strong> <span data-en="group · 5 GTD" data-es="grupo · 5 GTD">group · 5 GTD</span></div>
-    <div class="strip-item"><span data-en="Room:" data-es="Sala:">Room:</span> <strong>Bluebell</strong></div>
-  </div>
-</div>
-</div>
 
 <div class="week-label"><span class="week-label-main" data-en="Week of Jul 18–24" data-es="Semana del 18–24 Jul">Week of Jul 18–24</span></div>
-<!-- ══ SAT JUL 18 ══ -->
-<div class="day-section" data-date="2026-07-18">
-<button class="day-btn a2" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">18</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="SAT" data-es="Sábado">SAT</div>
-    <div class="day-summary" data-en="AUSDW Social — Moses &amp; Journi Wedding Dinner, Barton" data-es="AUSDW Social — Cena de Boda de Moses y Journi, Barton">AUSDW Social — Moses &amp; Journi Wedding Dinner, Barton</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--text-4)">
-      <div class="card-group" data-en="AUSDW Social — Moses &amp; Journi Wedding Dinner" data-es="AUSDW Social — Cena de Boda de Moses y Journi">AUSDW Social — Moses &amp; Journi Wedding Dinner</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
-        <span class="badge badge-ic" data-en="IC: Moses" data-es="CI: Moses">IC: Moses</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">4:00–<br>5:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Set Up (no F&amp;B)" data-es="Montaje (sin F&amp;B)"><span class="room-pill">Barton</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="Conference setup" data-es="Montaje conferencia">Conference setup</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">6:00–<br>10:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-din" data-en="Wedding Dinner" data-es="Cena de Boda">Wedding Dinner</span><span class="tag tag-bar" data-en="Hosted Bar" data-es="Bar Anfitrión">Hosted Bar</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP/GTD/SET 19</span></div>
-        <div class="svc-menu" data-en="Three Course Dinner $80/pp — Family style first course: Handmade Burrata Cheese, Classic Caesar<br>Choice of entrée: Wagyu Flatiron 10oz · Chile Glazed Chicken · Truffled Shrimp Bucatini<br>Family style dessert: Peanut Butter Pie, Tres Leches Cake<br>Corinne Classic Bar $40/pp — 2 hrs, house old fashioned, signature margarita, Hahn chardonnay, Franciscan cabernet" data-es="Cena Tres Tiempos $80/pp — Primer tiempo: Burrata, César Clásico<br>Entrada a elegir: Wagyu Flatiron 10oz · Pollo Glaseado con Chile · Bucatini con Camarón Trufado<br>Postre: Pay de Cacahuate, Pastel Tres Leches<br>Bar Corinne Classic $40/pp — 2h, old fashioned, margarita, vinos Hahn y Franciscan">Three Course Dinner $80/pp — Family style first course: Handmade Burrata Cheese, Classic Caesar<br>Choice of entrée: Wagyu Flatiron 10oz · Chile Glazed Chicken · Truffled Shrimp Bucatini<br>Family style dessert: Peanut Butter Pie, Tres Leches Cake<br>Corinne Classic Bar $40/pp — 2 hrs, house old fashioned, signature margarita, Hahn chardonnay, Franciscan cabernet</div>
-        <div class="note" data-en="⚑ Comp black linens · comp centerpieces &amp; candles · 2 tables added for gifts/guestbook · bar &amp; high tops in PDR foyer" data-es="⚑ Manteles negros de cortesía · centros de mesa y velas de cortesía · 2 mesas para regalos · bar y mesas altas en el foyer">⚑ Comp black linens · comp centerpieces &amp; candles · 2 tables added for gifts/guestbook · bar &amp; high tops in PDR foyer</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Moses</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Barton · 6p–10p · Room rental $500 · F&amp;B minimum $2,500" data-es="Barton · 6p–10p · Renta $500 · Mínimo F&amp;B $2,500">Barton · 6p–10p · Room rental $500 · F&amp;B minimum $2,500</span></div>
-    </div>
-  </div>
-  <div class="day-strip">
-    <div class="strip-item"><strong>1</strong> <span data-en="group · 19 GTD" data-es="grupo · 19 GTD">group · 19 GTD</span></div>
-    <div class="strip-item"><span data-en="Room:" data-es="Sala:">Room:</span> <strong>Barton</strong></div>
-    <div class="strip-item" data-en="⚑ Wedding dinner 6–10p, 1 bartender required" data-es="⚑ Cena de boda 6–10p, se requiere 1 bartender">⚑ Wedding dinner 6–10p, 1 bartender required</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ SUN JUL 19 ══ -->
-<div class="day-section" data-date="2026-07-19">
-<button class="day-btn a3" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">19</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="SUN" data-es="Domingo">SUN</div>
-    <div class="day-summary" data-en="Texas Public Power Association (TPPA) load-in — exhibits &amp; registration setup, no F&amp;B" data-es="Ingreso Texas Public Power Association (TPPA) — montaje de exhibición y registro, sin F&amp;B">Texas Public Power Association (TPPA) load-in — exhibits &amp; registration setup, no F&amp;B</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Texas Public Power Association (TPPA) — Annual Conference — Load-In" data-es="Texas Public Power Association (TPPA) — Conferencia Anual — Ingreso">Texas Public Power Association (TPPA) — Annual Conference — Load-In</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Michaela" data-es="CI: Michaela">IC: Michaela</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>11:59 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Exhibits Set Up (no F&amp;B)" data-es="Montaje Exhibición (sin F&amp;B)"><span class="room-pill">Camellia</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="(6) 6x30 tables with (2) chairs each · (5) Highboys — see diagram" data-es="(6) mesas 6x30 con (2) sillas cada una · (5) Highboys — ver diagrama">(6) 6x30 tables with (2) chairs each · (5) Highboys — see diagram</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>11:59 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Registration/Exhibitors Set Up (no F&amp;B)" data-es="Montaje Registro/Exhibidores (sin F&amp;B)"><span class="room-pill">Pre-Function</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="(2) 6ft tables with (4) chairs for registration · (22) 6x30 vendor tables with (2) chairs each" data-es="(2) mesas de 6ft con (4) sillas para registro · (22) mesas 6x30 para vendedores con (2) sillas cada una">(2) 6ft tables with (4) chairs for registration · (22) 6x30 vendor tables with (2) chairs each</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Michaela</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Camellia (exhibits) · Pre-Function (registration) · Buttercup (storage) · Bluebell (office)" data-es="Camellia (exhibición) · Pre-Function (registro) · Buttercup (almacén) · Bluebell (oficina)">Camellia (exhibits) · Pre-Function (registration) · Buttercup (storage) · Bluebell (office)</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="TPPA Annual Conference load-in day — no guests on property yet" data-es="Día de ingreso TPPA — sin huéspedes de la conferencia todavía">TPPA Annual Conference load-in day — no guests on property yet</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--text-4)">
-      <div class="card-group" data-en="AUSDW In-House Account — Pre-Con TPPA Meeting" data-es="AUSDW In-House Account — Reunión Pre-Con TPPA">AUSDW In-House Account — Pre-Con TPPA Meeting</div>
-      <div class="card-badges">
-        <span class="badge badge-ic" data-en="IC: Mike" data-es="CI: Mike">IC: Mike</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">3:30–<br>4:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Meeting (no F&amp;B)" data-es="Reunión (sin F&amp;B)"><span class="room-pill">Zilker</span><span class="gtd-pill">GTD 4</span></div>
-        <div class="svc-menu" data-en="Internal walkthrough ahead of TPPA conference" data-es="Recorrido interno antes de la conferencia TPPA">Internal walkthrough ahead of TPPA conference</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mike</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val">Zilker</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>2</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Camellia · Pre-Function · Buttercup · Bluebell · Zilker</strong></div>
-    <div class="strip-item" data-en="No F&amp;B day — TPPA load-in only" data-es="Sin F&amp;B — solo ingreso TPPA">No F&amp;B day — TPPA load-in only</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ MON JUL 20 ══ -->
-<div class="day-section" data-date="2026-07-20">
-<button class="day-btn a4" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">20</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="MON" data-es="Lunes">MON</div>
-    <div class="day-summary" data-en="TPPA Day 1 — board meeting, committee breakouts, exhibits open, evening reception · BeOne Medicines USA Texas Summer Division Meeting" data-es="TPPA Día 1 — junta directiva, sesiones de comités, exhibición abre, recepción nocturna · Reunión BeOne Medicines USA Texas Summer Division">TPPA Day 1 — board meeting, committee breakouts, exhibits open, evening reception · BeOne Medicines USA Texas Summer Division Meeting</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Texas Public Power Association (TPPA) — Annual Conference — Day 1" data-es="Texas Public Power Association (TPPA) — Conferencia Anual — Día 1">Texas Public Power Association (TPPA) — Annual Conference — Day 1</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Michaela" data-es="CI: Michaela">IC: Michaela</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:00 PM–<br>6:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Registration + Exhibitor Set-Up (no F&amp;B)" data-es="Registro + Montaje Exhibidores (sin F&amp;B)"><span class="room-pill">Pre-Function</span></div>
-        <div class="svc-menu" data-en="Existing set, refresh from previous day · Exhibitors begin arriving 1–5p" data-es="Montaje existente, refresco del día anterior · Exhibidores llegan 1–5p">Existing set, refresh from previous day · Exhibitors begin arriving 1–5p</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Exhibits (no F&amp;B)" data-es="Exhibición (sin F&amp;B)"><span class="room-pill">Camellia</span><span class="gtd-pill">EXP 30</span></div>
-        <div class="svc-menu" data-en="Existing set · Exhibits open during evening reception" data-es="Montaje existente · Exhibición abre durante la recepción nocturna">Existing set · Exhibits open during evening reception</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–<br>11:30 AM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Board Meeting" data-es="Junta Directiva"><span class="room-pill">Lantana</span><span class="gtd-pill">EXP/GTD/SET 35/35/36</span></div>
-        <div class="svc-menu" data-en="U-Shape set for 36 · Podium · Coffee on consumption, refreshed only as needed" data-es="Forma U para 36 · Podio · Café al consumo, refrescado solo cuando se necesite">U-Shape set for 36 · Podium · Coffee on consumption, refreshed only as needed</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–<br>8:30 AM &amp;<br>11:30 AM–1:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Board Breakfast + Lunch" data-es="Desayuno + Almuerzo Junta">Board Breakfast + Lunch</span><span class="room-pill">Plumeria</span><span class="gtd-pill">GTD 35</span></div>
-        <div class="svc-menu" data-en="Early Riser Breakfast Table $45.90/pp · Tejas Mexicano - Thursday Working Lunch Buffet $70.20/pp — chicken fajitas, barbacoa, churros, tres leches<br>(5) rounds of 7, buffet set inside" data-es="Mesa Madrugadora $45.90/pp · Tejas Mexicano - Buffet Jueves $70.20/pp — fajitas de pollo, barbacoa, churros, tres leches<br>(5) mesas de 7, buffet dentro">Early Riser Breakfast Table $45.90/pp · Tejas Mexicano - Thursday Working Lunch Buffet $70.20/pp — chicken fajitas, barbacoa, churros, tres leches<br>(5) rounds of 7, buffet set inside</div>
-        <div class="note" data-en="⚑ Leave coffee &amp; juice out after breakfast" data-es="⚑ Dejar café y jugo después del desayuno">⚑ Leave coffee &amp; juice out after breakfast</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">1:00–<br>5:15 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Committee Breakouts (no F&amp;B)" data-es="Sesiones de Comités (sin F&amp;B)"><span class="room-pill">Lantana · Primrose AB</span><span class="gtd-pill">SET 50</span></div>
-        <div class="svc-menu" data-en="Lantana: Engineering &amp; Operations Committee (1–3:15p) · Environmental Committee (3:15–5:15p)<br>Primrose AB: Governmental/Legal Committee (1–3:15p, U-shape 50) · Marketing &amp; Customer Service Committee (3:15–5:15p)<br>Coffee on consumption both rooms" data-es="Lantana: Comité de Ingeniería y Operaciones (1–3:15p) · Comité Ambiental (3:15–5:15p)<br>Primrose AB: Comité Gubernamental/Legal (1–3:15p, forma U 50) · Comité de Marketing y Servicio al Cliente (3:15–5:15p)<br>Café al consumo en ambas salas">Lantana: Engineering &amp; Operations Committee (1–3:15p) · Environmental Committee (3:15–5:15p)<br>Primrose AB: Governmental/Legal Committee (1–3:15p, U-shape 50) · Marketing &amp; Customer Service Committee (3:15–5:15p)<br>Coffee on consumption both rooms</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">5:15–<br>6:45 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Recepción">Reception</span><span class="tag tag-bar" data-en="Hosted Bar" data-es="Bar Anfitrión">Hosted Bar</span><span class="room-pill">Camellia · Pre-Function</span><span class="gtd-pill">EXP/GTD 300</span></div>
-        <div class="svc-menu" data-en="Camellia — Chips &amp; Dips Display $22.50 · Antipasto Display $29.70/pp · Cheese Sampling Display $27/pp<br>Pre-Function — Tray Passed Hors d'Oeuvres: Coconut Tempura Shrimp, Chorizo Springroll, Mac &amp; Cheese Bites $9 ea<br>Hosted Favorite Brands Bar on consumption $13 · Wine $13/glass · Beer $9–10 · (3) Bartenders + butler passing" data-es="Camellia — Chips y Dips $22.50 · Antipasto $29.70/pp · Quesos $27/pp<br>Pre-Function — Entremeses Pasados: Camarón Tempura, Rollo de Chorizo, Mac &amp; Cheese $9 c/u<br>Bar Marcas Favoritas al consumo $13 · Vino $13/copa · Cerveza $9–10 · (3) Bartenders + pasadores">Camellia — Chips &amp; Dips Display $22.50 · Antipasto Display $29.70/pp · Cheese Sampling Display $27/pp<br>Pre-Function — Tray Passed Hors d'Oeuvres: Coconut Tempura Shrimp, Chorizo Springroll, Mac &amp; Cheese Bites $9 ea<br>Hosted Favorite Brands Bar on consumption $13 · Wine $13/glass · Beer $9–10 · (3) Bartenders + butler passing</div>
-        <div class="note" data-en="⚑ Pass hors d'oeuvres in Camellia as well · (5) scattered highboys with votive candles" data-es="⚑ Pasar entremeses en Camellia también · (5) highboys con velas">⚑ Pass hors d'oeuvres in Camellia as well · (5) scattered highboys with votive candles</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">5:15 PM–<br>11:59 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="FLIP Set Up — General Session (no F&amp;B)" data-es="Cambio de Sala — Sesión General (sin F&amp;B)"><span class="room-pill">Primrose Ballroom</span><span class="gtd-pill">EXP 300</span></div>
-        <div class="svc-menu" data-en="Classroom, 2 per 6x18 · 8x24 stage with steps both sides · Room flip fee $150" data-es="Aula, 2 por mesa 6x18 · Escenario 8x24 con escaleras · Cargo cambio de sala $150">Classroom, 2 per 6x18 · 8x24 stage with steps both sides · Room flip fee $150</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Michaela</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Pre-Function · Camellia · Lantana · Primrose AB · Primrose Ballroom · Buttercup (storage) · Bluebell (office)" data-es="Pre-Function · Camellia · Lantana · Primrose AB · Primrose Ballroom · Buttercup (almacén) · Bluebell (oficina)">Pre-Function · Camellia · Lantana · Primrose AB · Primrose Ballroom · Buttercup (storage) · Bluebell (office)</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="BeOne Medicines USA — Texas Summer Division Meeting" data-es="BeOne Medicines USA — Reunión Texas Summer Division">BeOne Medicines USA — Texas Summer Division Meeting</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
-        <span class="badge badge-ic" data-en="IC: Lonnie" data-es="CI: Lonnie">IC: Lonnie</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:00–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Zilker</span><span class="gtd-pill">EXP/GTD/SET 10</span></div>
-        <div class="svc-menu" data-en="Conference setup · Room rental $400 · 12–1p Lunch — Southern Comforts Buffet $68/pp<br>1–5p Continuous Break $30/pp — sparkling water, granola bars, whole fruit, chips on consumption" data-es="Montaje conferencia · Renta $400 · 12–1p Almuerzo — Southern Comforts $68/pp<br>1–5p Descanso Continuo $30/pp — agua con gas, granola, fruta, botanas al consumo">Conference setup · Room rental $400 · 12–1p Lunch — Southern Comforts Buffet $68/pp<br>1–5p Continuous Break $30/pp — sparkling water, granola bars, whole fruit, chips on consumption</div>
-        <div class="note" data-en="⚑ All vegetarian/vegan/nut-free/dairy-free/GF foods must be clearly labeled" data-es="⚑ Todos los alimentos vegetarianos/veganos/sin nuez/sin lácteos/sin gluten deben estar etiquetados">⚑ All vegetarian/vegan/nut-free/dairy-free/GF foods must be clearly labeled</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Lonnie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Zilker · 12p–5p · F&amp;B minimum $1,500" data-es="Zilker · 12p–5p · Mínimo F&amp;B $1,500">Zilker · 12p–5p · F&amp;B minimum $1,500</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>2</strong> <span data-en="groups · 300 GTD reception" data-es="grupos · 300 GTD recepción">groups · 300 GTD reception</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Pre-Function · Camellia · Lantana · Primrose AB · Primrose Ballroom · Zilker</strong></div>
-    <div class="strip-item" data-en="⚑ TPPA evening reception 5:15–6:45p, 300 guests · BeOne name may not appear on any posting" data-es="⚑ Recepción TPPA 5:15–6:45p, 300 personas · Nombre BeOne no debe aparecer en ningún letrero">⚑ TPPA evening reception 5:15–6:45p, 300 guests · BeOne name may not appear on any posting</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ TUE JUL 21 ══ -->
-<div class="day-section" data-date="2026-07-21">
-<button class="day-btn a5" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">21</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
-    <div class="day-summary" data-en="TPPA Day 2 — general session, Track A/B breakouts, Past Presidents Luncheon, evening reception · BeOne Medicines Day 2" data-es="TPPA Día 2 — sesión general, sesiones Track A/B, Almuerzo Past Presidents, recepción nocturna · BeOne Medicines Día 2">TPPA Day 2 — general session, Track A/B breakouts, Past Presidents Luncheon, evening reception · BeOne Medicines Day 2</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Texas Public Power Association (TPPA) — Annual Conference — Day 2" data-es="Texas Public Power Association (TPPA) — Conferencia Anual — Día 2">Texas Public Power Association (TPPA) — Annual Conference — Day 2</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Michaela" data-es="CI: Michaela">IC: Michaela</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:30 AM–<br>6:30 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Registration + Exhibits (no F&amp;B)" data-es="Registro + Exhibición (sin F&amp;B)"><span class="room-pill">Pre-Function</span><span class="gtd-pill">EXP 15 / SET 23</span></div>
-        <div class="svc-menu" data-en="Existing set, refresh from previous day" data-es="Montaje existente, refresco del día anterior">Existing set, refresh from previous day</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:30 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Holding Room + All Day Bev" data-es="Sala + Bebidas Todo el Día">Holding Room + All Day Bev</span><span class="room-pill">Camellia</span><span class="gtd-pill">EXP/GTD 300</span></div>
-        <div class="svc-menu" data-en="7:30–8:15a Continental Breakfast — melons &amp; berries, pastries, yogurt parfait<br>10:10–10:40a &amp; 3:00–3:30p Coffee Breaks — granola bars, chips, brownies &amp; cookies on consumption" data-es="7:30–8:15a Desayuno Continental — fruta, pasteles, parfait de yogurt<br>10:10–10:40a y 3:00–3:30p Descansos Café — granola, botanas, brownies y galletas al consumo">7:30–8:15a Continental Breakfast — melons &amp; berries, pastries, yogurt parfait<br>10:10–10:40a &amp; 3:00–3:30p Coffee Breaks — granola bars, chips, brownies &amp; cookies on consumption</div>
-        <div class="note" data-en="⚑ Leave pastries out for morning break too" data-es="⚑ Dejar pasteles también para el descanso matutino">⚑ Leave pastries out for morning break too</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00–<br>11:15 AM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="General Session (no F&amp;B)" data-es="Sesión General (sin F&amp;B)"><span class="room-pill">Primrose Ballroom</span><span class="gtd-pill">EXP 300</span></div>
-        <div class="svc-menu" data-en="Existing set · Add bottle of water on podium" data-es="Montaje existente · Agregar botella de agua en el podio">Existing set · Add bottle of water on podium</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">11:15 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Track A / Track B Breakouts (no F&amp;B)" data-es="Sesiones Track A / Track B (sin F&amp;B)"><span class="room-pill">Primrose AB · Primrose D</span><span class="gtd-pill">SET 150 ea</span></div>
-        <div class="svc-menu" data-en="Both rooms flip 11:15a–1p · Classroom 3/2 per 6x18, theater set for 64 behind<br>Track sessions run 1:15/1–3p &amp; 3:30–5p · Coffee on consumption both rooms" data-es="Ambas salas cambian 11:15a–1p · Aula 3/2 por mesa 6x18, teatro para 64 atrás<br>Sesiones corren 1:15/1–3p y 3:30–5p · Café al consumo en ambas salas">Both rooms flip 11:15a–1p · Classroom 3/2 per 6x18, theater set for 64 behind<br>Track sessions run 1:15/1–3p &amp; 3:30–5p · Coffee on consumption both rooms</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">11:15 AM–<br>1:15 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Past Presidents Luncheon" data-es="Almuerzo Past Presidents">Past Presidents Luncheon</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 14 / SET 20</span></div>
-        <div class="svc-menu" data-en="Hill Country Spa Day - Wednesday Working Lunch Buffet $70.20/pp — mixed greens, herb seared chicken, roasted salmon, macarons<br>(4) rounds of 4, buffet set inside" data-es="Hill Country Spa Day - Almuerzo Miércoles $70.20/pp — ensaladas, pollo, salmón, macarons<br>(4) mesas de 4, buffet dentro">Hill Country Spa Day - Wednesday Working Lunch Buffet $70.20/pp — mixed greens, herb seared chicken, roasted salmon, macarons<br>(4) rounds of 4, buffet set inside</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">5:00–<br>6:45 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Recepción">Reception</span><span class="tag tag-bar" data-en="Hosted Bar" data-es="Bar Anfitrión">Hosted Bar</span><span class="room-pill">Camellia · Pre-Function</span><span class="gtd-pill">EXP/GTD 300</span></div>
-        <div class="svc-menu" data-en="Camellia — Breads &amp; Spreads Display $25.20/pp · Deluxe Nacho Bar Display $29.70/pp<br>Pre-Function — Tray Passed Hors d'Oeuvres: Shrimp Cocktail Shooters, Chicken Potsticker, Vegetable Samosa $9 ea<br>Hosted Favorite Brands Bar on consumption · (3) Bartenders + butler passing" data-es="Camellia — Panes y Untables $25.20/pp · Bar de Nachos $29.70/pp<br>Pre-Function — Entremeses: Camarón, Potsticker de Pollo, Samosa $9 c/u<br>Bar Marcas Favoritas al consumo · (3) Bartenders + pasadores">Camellia — Breads &amp; Spreads Display $25.20/pp · Deluxe Nacho Bar Display $29.70/pp<br>Pre-Function — Tray Passed Hors d'Oeuvres: Shrimp Cocktail Shooters, Chicken Potsticker, Vegetable Samosa $9 ea<br>Hosted Favorite Brands Bar on consumption · (3) Bartenders + butler passing</div>
-        <div class="note" data-en="⚑ Pass hors d'oeuvres in Camellia as well" data-es="⚑ Pasar entremeses en Camellia también">⚑ Pass hors d'oeuvres in Camellia as well</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Michaela</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Pre-Function · Camellia · Primrose Ballroom · Primrose AB · Primrose D · Verbena · Buttercup (storage) · Bluebell (office)" data-es="Pre-Function · Camellia · Primrose Ballroom · Primrose AB · Primrose D · Verbena · Buttercup (almacén) · Bluebell (oficina)">Pre-Function · Camellia · Primrose Ballroom · Primrose AB · Primrose D · Verbena · Buttercup (storage) · Bluebell (office)</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="BeOne Medicines USA — Texas Summer Division Meeting — Day 2" data-es="BeOne Medicines USA — Reunión Texas Summer Division — Día 2">BeOne Medicines USA — Texas Summer Division Meeting — Day 2</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
-        <span class="badge badge-ic" data-en="IC: Lonnie" data-es="CI: Lonnie">IC: Lonnie</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>12:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Zilker</span><span class="gtd-pill">EXP/GTD/SET 10</span></div>
-        <div class="svc-menu" data-en="Conference setup · Room rental $200 · 7:30–8:30a Breakfast — Early Riser Table $51/pp<br>8:30a–12:30p Continuous Break $30/pp — whole fruit, popcorn, almonds, sparkling water" data-es="Montaje conferencia · Renta $200 · 7:30–8:30a Desayuno — Mesa Madrugadora $51/pp<br>8:30a–12:30p Descanso Continuo $30/pp — fruta, palomitas, almendras, agua con gas">Conference setup · Room rental $200 · 7:30–8:30a Breakfast — Early Riser Table $51/pp<br>8:30a–12:30p Continuous Break $30/pp — whole fruit, popcorn, almonds, sparkling water</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Lonnie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val">Zilker · 8a–12p</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>2</strong> <span data-en="groups · 300 GTD reception" data-es="grupos · 300 GTD recepción">groups · 300 GTD reception</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Pre-Function · Camellia · Primrose Ballroom · Primrose AB · Primrose D · Verbena · Zilker</strong></div>
-    <div class="strip-item" data-en="⚑ TPPA evening reception 5–6:45p, 300 guests" data-es="⚑ Recepción TPPA 5–6:45p, 300 personas">⚑ TPPA evening reception 5–6:45p, 300 guests</div>
-  </div>
-</div>
-</div>
-
-<!-- ══ WED JUL 22 ══ -->
-<div class="day-section" data-date="2026-07-22">
-<button class="day-btn a1" onclick="toggleDay(this)">
-  <div class="day-dot"><span class="day-dot-num">22</span></div>
-  <div class="day-text">
-    <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
-    <div class="day-summary" data-en="TPPA final day — general session + teardown · Giving Home Health Care full-day meeting · AUSDW In-House hosted meetings · Argonne National Laboratory (UChicago Argonne) meeting" data-es="Último día TPPA — sesión general + desmontaje · Reunión todo el día Giving Home Health Care · Reuniones AUSDW In-House · Reunión Argonne National Laboratory (UChicago Argonne)">TPPA final day — general session + teardown · Giving Home Health Care full-day meeting · AUSDW In-House hosted meetings · Argonne National Laboratory (UChicago Argonne) meeting</div>
-  </div>
-  <span class="chevron">▶</span>
-</button>
-<div class="day-body">
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Texas Public Power Association (TPPA) — Annual Conference — Final Day" data-es="Texas Public Power Association (TPPA) — Conferencia Anual — Día Final">Texas Public Power Association (TPPA) — Annual Conference — Final Day</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Michaela" data-es="CI: Michaela">IC: Michaela</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:30–<br>8:30 AM &amp;<br>9:00–11:00 AM &amp;<br>9:45–10:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Holding Room + Coffee Breaks" data-es="Sala + Descansos Café">Holding Room + Coffee Breaks</span><span class="room-pill">Camellia</span><span class="gtd-pill">EXP/GTD 250</span></div>
-        <div class="svc-menu" data-en="Existing set · Coffee &amp; granola bars on consumption" data-es="Montaje existente · Café y granola al consumo">Existing set · Coffee &amp; granola bars on consumption</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:30–<br>8:30 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast Buffet" data-es="Buffet Desayuno">Breakfast Buffet</span><span class="room-pill">Primrose Ballroom</span><span class="gtd-pill">EXP 200 / GTD 250</span></div>
-        <div class="svc-menu" data-en="Early Riser Breakfast Table $45.90/pp" data-es="Mesa Madrugadora $45.90/pp">Early Riser Breakfast Table $45.90/pp</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">9:00–<br>11:15 AM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="General Session (no F&amp;B)" data-es="Sesión General (sin F&amp;B)"><span class="room-pill">Primrose Ballroom</span><span class="gtd-pill">EXP 300 / SET 250</span></div>
-        <div class="svc-menu" data-en="Crescent rounds of 7 set for 300 · 8x24 stage with steps both sides · soft seating + podium on stage · room flip fee $150" data-es="Mesas crecientes de 7 para 300 · Escenario 8x24 con escaleras · asientos y podio en escenario · cargo cambio $150">Crescent rounds of 7 set for 300 · 8x24 stage with steps both sides · soft seating + podium on stage · room flip fee $150</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:45–<br>11:00 AM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Registration (no F&amp;B)" data-es="Registro (sin F&amp;B)"><span class="room-pill">Pre-Function</span></div>
-        <div class="svc-menu" data-en="Existing set · 11:15a–1p Teardown, Primrose Ballroom" data-es="Montaje existente · 11:15a–1p Desmontaje, Primrose Ballroom">Existing set · 11:15a–1p Teardown, Primrose Ballroom</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Michaela</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOMS" data-es="SALAS">ROOMS</span><span class="foot-val" data-en="Camellia · Primrose Ballroom · Pre-Function · Buttercup (storage) · Bluebell (office)" data-es="Camellia · Primrose Ballroom · Pre-Function · Buttercup (almacén) · Bluebell (oficina)">Camellia · Primrose Ballroom · Pre-Function · Buttercup (storage) · Bluebell (office)</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="TPPA Annual Conference concludes today" data-es="Conferencia Anual TPPA concluye hoy">TPPA Annual Conference concludes today</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--orange)">
-      <div class="card-group" data-en="Giving Home Health Care — Meeting" data-es="Giving Home Health Care — Reunión">Giving Home Health Care — Meeting</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
-        <span class="badge badge-ic" data-en="IC: Darna" data-es="CI: Darna">IC: Darna</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">7:30 AM–<br>5:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Lantana A</span><span class="gtd-pill">EXP/GTD/SET 20</span></div>
-        <div class="svc-menu" data-en="U-Shape · Room rental $500 · 7:30–9a Breakfast Buffet $45.90/pp · 9a–5p Continuous Break $46.80/pp<br>10:15–10:45a Coffee Break — granola bars &amp; whole fruit · 12–1p Lunch Buffet — Hill Country Spa Day $61.20/pp<br>2:45–3p Coffee Break — cookies &amp; brownies" data-es="Forma U · Renta $500 · 7:30–9a Buffet Desayuno $45.90/pp · 9a–5p Descanso Continuo $46.80/pp<br>10:15–10:45a Descanso — granola y fruta · 12–1p Buffet Almuerzo — Hill Country Spa Day $61.20/pp<br>2:45–3p Descanso — galletas y brownies">U-Shape · Room rental $500 · 7:30–9a Breakfast Buffet $45.90/pp · 9a–5p Continuous Break $46.80/pp<br>10:15–10:45a Coffee Break — granola bars &amp; whole fruit · 12–1p Lunch Buffet — Hill Country Spa Day $61.20/pp<br>2:45–3p Coffee Break — cookies &amp; brownies</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Darna</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Lantana A · U-Shape · 7:30a–5p · F&amp;B minimum $5,000" data-es="Lantana A · Forma U · 7:30a–5p · Mínimo F&amp;B $5,000">Lantana A · U-Shape · 7:30a–5p · F&amp;B minimum $5,000</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--text-4)">
-      <div class="card-group" data-en="AUSDW In-House Account — Dave Sibley &amp; Bobby Gonzalez Hosted Meetings" data-es="AUSDW In-House Account — Reuniones de Dave Sibley y Bobby Gonzalez">AUSDW In-House Account — Dave Sibley &amp; Bobby Gonzalez Hosted Meetings</div>
-      <div class="card-badges">
-        <span class="badge badge-ic" data-en="IC: Mike" data-es="CI: Mike">IC: Mike</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">8:00 AM–<br>3:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="room-pill">Barton</span><span class="gtd-pill">EXP/GTD 20</span></div>
-        <div class="svc-menu" data-en="U-Shape for 20 · Little City Regular Coffee &amp; Tazo Teas on consumption" data-es="Forma U para 20 · Café Little City y Tés Tazo al consumo">U-Shape for 20 · Little City Regular Coffee &amp; Tazo Teas on consumption</div>
-        <div class="note" data-en="⚑ Refresh room between 11–11:30 AM" data-es="⚑ Refrescar sala entre 11–11:30 AM">⚑ Refresh room between 11–11:30 AM</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mike</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val">Barton · U-Shape · 8a–3p</span></div>
-    </div>
-  </div>
-
-  <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="Argonne National Laboratory — UChicago Argonne, LLC Meeting" data-es="Argonne National Laboratory — Reunión UChicago Argonne, LLC">Argonne National Laboratory — UChicago Argonne, LLC Meeting</div>
-      <div class="card-badges">
-        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
-        <span class="badge badge-ic" data-en="IC: Ashton" data-es="CI: Ashton">IC: Ashton</span>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:30–<br>4:45 PM</div>
-      <div class="svc-content">
-        <div class="svc-top" data-en="Registration + Meeting (no F&amp;B)" data-es="Registro + Reunión (sin F&amp;B)"><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 50</span></div>
-        <div class="svc-menu" data-en="(1) 6x30 registration table in foyer · (5) rounds of 10 · Room rental $500" data-es="(1) mesa de registro 6x30 en el foyer · (5) mesas de 10 · Renta $500">(1) 6x30 registration table in foyer · (5) rounds of 10 · Room rental $500</div>
-        <div class="note" data-en="⚑ Group boxes delivered in the morning" data-es="⚑ Cajas del grupo se entregan por la mañana">⚑ Group boxes delivered in the morning</div>
-      </div>
-    </div>
-    <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Ashton</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val">Plumeria · 12:30p–4:45p</span></div>
-    </div>
-  </div>
-
-  <div class="day-strip">
-    <div class="strip-item"><strong>4</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Camellia · Primrose Ballroom · Pre-Function · Lantana A · Barton · Plumeria</strong></div>
-    <div class="strip-item" data-en="TPPA wraps today" data-es="TPPA cierra hoy">TPPA wraps today</div>
-  </div>
-</div>
-</div>
-
 <!-- ══ THU JUL 23 ══ -->
 <div class="day-section" data-date="2026-07-23">
 <button class="day-btn a2" onclick="toggleDay(this)">
@@ -2743,7 +1202,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">27</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="MON" data-es="Lunes">MON</div>
-    <div class="day-summary" data-en="2 groups with room diagrams" data-es="2 grupos con diagramas de sala">2 groups with room diagrams</div>
+    <div class="day-summary" data-en="Tiger Medical · Lettuce Entertain You — Ema Austin" data-es="Tiger Medical · Lettuce Entertain You — Ema Austin">Tiger Medical · Lettuce Entertain You — Ema Austin</div>
   </div>
   <span class="chevron">▶</span>
 </button>
@@ -2778,7 +1237,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">28</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
-    <div class="day-summary" data-en="2 groups with room diagrams" data-es="2 grupos con diagramas de sala">2 groups with room diagrams</div>
+    <div class="day-summary" data-en="Essent Guaranty Inc · Tiger Medical" data-es="Essent Guaranty Inc · Tiger Medical">Essent Guaranty Inc · Tiger Medical</div>
   </div>
   <span class="chevron">▶</span>
 </button>
@@ -2817,7 +1276,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">29</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
-    <div class="day-summary" data-en="2 groups with room diagrams" data-es="2 grupos con diagramas de sala">2 groups with room diagrams</div>
+    <div class="day-summary" data-en="Tiger Medical · Bonterra" data-es="Tiger Medical · Bonterra">Tiger Medical · Bonterra</div>
   </div>
   <span class="chevron">▶</span>
 </button>
@@ -2852,7 +1311,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">30</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
-    <div class="day-summary" data-en="2 groups with room diagrams" data-es="2 grupos con diagramas de sala">2 groups with room diagrams</div>
+    <div class="day-summary" data-en="Tiger Medical · Bonterra" data-es="Tiger Medical · Bonterra">Tiger Medical · Bonterra</div>
   </div>
   <span class="chevron">▶</span>
 </button>
@@ -2895,8 +1354,12 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     <div class="diag-modal-title" id="diagModalTitle">Diagram</div>
     <button class="diag-modal-close" onclick="closeDiagram()" aria-label="Close">✕</button>
   </div>
-  <div class="diag-modal-body">
-    <iframe id="diagModalFrame" src="" title="Room diagram"></iframe>
+  <div class="diag-modal-body" id="diagModalBody">
+    <div class="diag-loading" id="diagLoading">Loading…</div>
+    <div class="diag-canvas-wrap" id="diagCanvasWrap">
+      <canvas id="diagCanvas"></canvas>
+    </div>
+    <div class="diag-modal-hint" id="diagHint">Pinch to zoom · drag to pan</div>
   </div>
 </div>
 
@@ -2944,15 +1407,149 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   function toggleDiagGroup(el){
     el.classList.toggle('open');
   }
-  function openDiagram(path, title){
-    document.getElementById('diagModalFrame').src = path;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const DIAG_RENDER_SCALE = 3;
+  const DIAG_MIN_ZOOM = 0.5, DIAG_MAX_ZOOM = 6;
+  let diagFitScale = 1, diagZoom = 1, diagPanX = 0, diagPanY = 0;
+  let diagCanvasW = 0, diagCanvasH = 0;
+  let diagActivePointers = new Map();
+  let diagIsPanning = false, diagPanStart = {x:0,y:0}, diagPanOrigin = {x:0,y:0};
+  let diagPinchStartDist = 0, diagPinchStartScale = 1;
+  let diagLastTapTime = 0;
+
+  function diagTotalScale(){ return diagFitScale * diagZoom; }
+
+  function diagApplyTransform(){
+    document.getElementById('diagCanvasWrap').style.transform =
+      `translate(${diagPanX}px, ${diagPanY}px) scale(${diagTotalScale()})`;
+  }
+
+  function diagClamp(){
+    const body = document.getElementById('diagModalBody');
+    const total = diagTotalScale();
+    const w = diagCanvasW * total, h = diagCanvasH * total;
+    const bw = body.clientWidth, bh = body.clientHeight;
+    const padX = Math.max(w, bw) * 0.4, padY = Math.max(h, bh) * 0.4;
+    diagPanX = Math.min(padX, Math.max(bw - w - padX, diagPanX));
+    diagPanY = Math.min(padY, Math.max(bh - h - padY, diagPanY));
+  }
+
+  function diagZoomTo(newTotalScale, anchorX, anchorY){
+    const oldTotal = diagTotalScale();
+    const contentX = (anchorX - diagPanX) / oldTotal;
+    const contentY = (anchorY - diagPanY) / oldTotal;
+    diagZoom = newTotalScale / diagFitScale;
+    const total = diagTotalScale();
+    diagPanX = anchorX - contentX * total;
+    diagPanY = anchorY - contentY * total;
+    diagClamp();
+    diagApplyTransform();
+  }
+
+  function diagFitToScreen(){
+    const body = document.getElementById('diagModalBody');
+    const bw = body.clientWidth, bh = body.clientHeight, pad = 0.92;
+    diagFitScale = Math.min((bw*pad)/diagCanvasW, (bh*pad)/diagCanvasH);
+    diagZoom = 1;
+    diagPanX = (bw - diagCanvasW*diagFitScale)/2;
+    diagPanY = (bh - diagCanvasH*diagFitScale)/2;
+    diagApplyTransform();
+  }
+
+  async function openDiagram(path, title){
     document.getElementById('diagModalTitle').textContent = title;
     document.getElementById('diagModal').classList.add('open');
+    document.getElementById('diagHint').classList.remove('hidden');
+    const loading = document.getElementById('diagLoading');
+    loading.style.display = 'block';
+    loading.textContent = 'Loading…';
+    document.getElementById('diagCanvasWrap').style.transform = 'scale(0)';
+    try{
+      const pdf = await pdfjsLib.getDocument(path).promise;
+      const page = await pdf.getPage(1);
+      const viewport = page.getViewport({ scale: DIAG_RENDER_SCALE });
+      const canvas = document.getElementById('diagCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      diagCanvasW = viewport.width;
+      diagCanvasH = viewport.height;
+      await page.render({ canvasContext: ctx, viewport }).promise;
+      loading.style.display = 'none';
+      diagFitToScreen();
+    }catch(e){
+      loading.textContent = 'Could not load diagram';
+    }
   }
+
   function closeDiagram(){
     document.getElementById('diagModal').classList.remove('open');
-    document.getElementById('diagModalFrame').src = '';
+    diagActivePointers.clear();
+    diagIsPanning = false;
   }
+
+  (function(){
+    const body = document.getElementById('diagModalBody');
+    body.addEventListener('pointerdown', function(e){
+      diagActivePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+      document.getElementById('diagHint').classList.add('hidden');
+      if(diagActivePointers.size === 1){
+        const now = Date.now();
+        if(now - diagLastTapTime < 300){ diagFitToScreen(); diagLastTapTime = 0; return; }
+        diagLastTapTime = now;
+        diagIsPanning = true;
+        diagPanStart = {x:e.clientX, y:e.clientY};
+        diagPanOrigin = {x:diagPanX, y:diagPanY};
+      }else if(diagActivePointers.size === 2){
+        diagIsPanning = false;
+        const pts = [...diagActivePointers.values()];
+        diagPinchStartDist = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1;
+        diagPinchStartScale = diagTotalScale();
+      }
+      try{ body.setPointerCapture(e.pointerId); }catch(err){}
+    });
+    body.addEventListener('pointermove', function(e){
+      if(!diagActivePointers.has(e.pointerId)) return;
+      diagActivePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+      if(diagActivePointers.size === 2){
+        const pts = [...diagActivePointers.values()];
+        const dist = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1;
+        const rect = body.getBoundingClientRect();
+        const midX = (pts[0].x+pts[1].x)/2 - rect.left;
+        const midY = (pts[0].y+pts[1].y)/2 - rect.top;
+        const rawScale = diagPinchStartScale * (dist/diagPinchStartDist);
+        const minTotal = diagFitScale*DIAG_MIN_ZOOM, maxTotal = diagFitScale*DIAG_MAX_ZOOM;
+        diagZoomTo(Math.min(maxTotal, Math.max(minTotal, rawScale)), midX, midY);
+      }else if(diagActivePointers.size === 1 && diagIsPanning){
+        const p = [...diagActivePointers.values()][0];
+        diagPanX = diagPanOrigin.x + (p.x - diagPanStart.x);
+        diagPanY = diagPanOrigin.y + (p.y - diagPanStart.y);
+        diagClamp();
+        diagApplyTransform();
+      }
+    });
+    function diagPointerEnd(e){
+      diagActivePointers.delete(e.pointerId);
+      if(diagActivePointers.size === 1){
+        const p = [...diagActivePointers.values()][0];
+        diagIsPanning = true;
+        diagPanStart = {x:p.x, y:p.y};
+        diagPanOrigin = {x:diagPanX, y:diagPanY};
+      }else{
+        diagIsPanning = false;
+      }
+    }
+    body.addEventListener('pointerup', diagPointerEnd);
+    body.addEventListener('pointercancel', diagPointerEnd);
+    body.addEventListener('wheel', function(e){
+      e.preventDefault();
+      const rect = body.getBoundingClientRect();
+      const anchorX = e.clientX - rect.left, anchorY = e.clientY - rect.top;
+      const factor = e.deltaY < 0 ? 1.12 : 0.89;
+      const minTotal = diagFitScale*DIAG_MIN_ZOOM, maxTotal = diagFitScale*DIAG_MAX_ZOOM;
+      diagZoomTo(Math.min(maxTotal, Math.max(minTotal, diagTotalScale()*factor)), anchorX, anchorY);
+    }, {passive:false});
+  })();
   function switchView(view){
     const isRundown = view === 'rundown';
     document.getElementById('rundownList').style.display = isRundown ? '' : 'none';
