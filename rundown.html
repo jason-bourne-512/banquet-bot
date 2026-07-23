@@ -9,7 +9,7 @@
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0ece3">
 <title>BEO Rundown — Westin Austin Domain</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="vendor/pdf.min.js"></script>
 <style>:root,html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%;overscroll-behavior:none}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f0ece3!important;background-color:#f0ece3!important}[data-theme="light"] body::before{background:#f0ece3}</style>
 <style>
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
@@ -1407,7 +1407,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   function toggleDiagGroup(el){
     el.classList.toggle('open');
   }
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'vendor/pdf.worker.min.js';
   const DIAG_RENDER_SCALE = 3;
   const DIAG_MIN_ZOOM = 0.5, DIAG_MAX_ZOOM = 6;
   let diagFitScale = 1, diagZoom = 1, diagPanX = 0, diagPanY = 0;
@@ -1478,7 +1478,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       loading.style.display = 'none';
       diagFitToScreen();
     }catch(e){
-      loading.textContent = 'Could not load diagram';
+      loading.textContent = 'Could not load diagram: ' + (e && e.message ? e.message : e);
     }
   }
 
