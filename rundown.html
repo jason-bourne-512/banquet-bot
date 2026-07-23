@@ -3,6 +3,7 @@
 <html lang="en" data-theme="dark" data-lang="en" style="background:#09090c;background-color:#09090c">
 <head>
 <meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('bb-theme')||'dark';var bg=t==='dark'?'#09090c':'#f0ece3';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.background=bg;document.documentElement.style.setProperty('background-color',bg,'important');})()</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#09090c">
@@ -232,6 +233,11 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 @media (min-width: 900px) {
   .header, .page-hero, .day-section { max-width: 460px; margin-left: auto; margin-right: auto; }
 }
+.today-fab { position:fixed; bottom:20px; right:16px; z-index:30; display:none; align-items:center; gap:5px; background:var(--accent); color:#09090c; font-family:'Courier New',monospace; font-size:10px; font-weight:700; letter-spacing:.1em; padding:10px 16px; border:none; border-radius:22px; box-shadow:0 4px 14px rgba(0,0,0,0.45); cursor:pointer; }
+.today-fab.show { display:flex; }
+.today-fab.view-hidden { display:none !important; }
+[data-theme="light"] .today-fab { color:#fff; }
+
 </style>
 </head>
 <body>
@@ -562,20 +568,20 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     <div class="svc-row">
       <div class="svc-time">7:00–<br>9:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Recepción">Reception</span><span class="tag tag-bar" data-en="Hosted Bar" data-es="Bar Anfitrión">Hosted Bar</span><span class="room-pill">Pre-Function B</span><span class="gtd-pill">GTD 20</span></div>
+        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Recepción">Reception</span><span class="tag tag-bar" data-en="Hosted Bar" data-es="Bar Anfitrión">Hosted Bar</span><span class="room-pill">Foyer B</span><span class="gtd-pill">GTD 20</span></div>
         <div class="svc-menu" data-en="Displayed $45/pp — (25) Fig &amp; Goat Cheese Flatbread with Balsamic Glaze · (25) Antipasta Skewer with Marinated Artichoke, Roasted Tomato, Mozzarella, Kalamata Olive<br>(25) Crispy Chicken Potsticker with Ginger Soy Reduction · Custom Salad Station — Spring Mix &amp; Romaine, Marinated Chicken Breast, Herb Grilled Flank Steak<br>Hosted Favorite Brands Bar on consumption — Liquor $13 · Wine by the Glass $13 · Imported/Craft Beer $10 · Domestic Beer $9 · Assorted Pepsi Products $7<br>(1) Bartender (up to 4 hrs) $250" data-es="Exhibido $45/pp — (25) Flatbread de Higo y Queso de Cabra con Glaseado Balsámico · (25) Brocheta Antipasto con Alcachofa, Tomate Asado, Mozzarella, Aceituna Kalamata<br>(25) Potsticker de Pollo Crujiente con Reducción de Soya y Jengibre · Estación de Ensalada — Mezcla de Lechugas, Pollo Marinado, Bistec a la Parrilla<br>Bar de Marcas Favoritas al consumo — Licor $13 · Vino por copa $13 · Cerveza Importada/Artesanal $10 · Cerveza Doméstica $9 · Pepsi Variados $7<br>(1) Bartender (hasta 4h) $250">Displayed $45/pp — (25) Fig &amp; Goat Cheese Flatbread with Balsamic Glaze · (25) Antipasta Skewer with Marinated Artichoke, Roasted Tomato, Mozzarella, Kalamata Olive<br>(25) Crispy Chicken Potsticker with Ginger Soy Reduction · Custom Salad Station — Spring Mix &amp; Romaine, Marinated Chicken Breast, Herb Grilled Flank Steak<br>Hosted Favorite Brands Bar on consumption — Liquor $13 · Wine by the Glass $13 · Imported/Craft Beer $10 · Domestic Beer $9 · Assorted Pepsi Products $7<br>(1) Bartender (up to 4 hrs) $250</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Jessica</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Pre-Function B · 7p–9p · Room rental $750" data-es="Pre-Function B · 7p–9p · Renta $750">Pre-Function B · 7p–9p · Room rental $750</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Foyer B · 7p–9p · Room rental $750" data-es="Foyer B · 7p–9p · Renta $750">Foyer B · 7p–9p · Room rental $750</span></div>
       <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Kicks off multi-day Tiger Bioderma Sales Training, runs through Jul 30" data-es="Inicia el entrenamiento de ventas Tiger Bioderma de varios días, hasta el 30 de julio">Kicks off multi-day Tiger Bioderma Sales Training, runs through Jul 30</span></div>
     </div>
   </div>
 
   <div class="day-strip">
     <div class="strip-item"><strong>3</strong> <span data-en="groups" data-es="grupos">groups</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Verbena · Camellia A · Pre-Function B</strong></div>
+    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Verbena · Camellia A · Foyer B</strong></div>
     <div class="strip-item" data-en="⚑ Lettuce Entertain You is a comp event as per Barnes" data-es="⚑ Lettuce Entertain You es evento cortesía según Barnes">⚑ Lettuce Entertain You is a comp event as per Barnes</div>
   </div>
 </div>
@@ -1213,8 +1219,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <span class="diag-group-chevron">▶</span>
     </div>
     <div class="diag-group-body">
-      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PREFUNCTIONfromTigerBioderma.pdf', 'Pre-Function B — Reception')">
-        <span>Pre-Function B — Reception</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PREFUNCTIONfromTigerBioderma.pdf', 'Foyer B — Reception')">
+        <span>Foyer B — Reception</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
       </button>
     </div>
   </div>
@@ -1363,6 +1369,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   </div>
 </div>
 
+<button class="today-fab" id="todayFab" onclick="scrollToToday()" data-en="⌖ TODAY" data-es="⌖ HOY">⌖ TODAY</button>
 <script>
   document.querySelectorAll('.day-body').forEach(function(body){
     var strip = body.querySelector('.day-strip');
@@ -1557,6 +1564,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     document.getElementById('expandBar').style.display = isRundown ? '' : 'none';
     document.getElementById('viewBtnRundown').classList.toggle('active', isRundown);
     document.getElementById('viewBtnDiagrams').classList.toggle('active', !isRundown);
+    document.getElementById('todayFab').classList.toggle('view-hidden', !isRundown);
   }
   (function(){
     const n=new Date();
@@ -1570,6 +1578,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       let isToday=false;
       if(single&&single===today) isToday=true;
       else if(start&&end&&today>=start&&today<=end) isToday=true;
+      const isPast=(single&&single<today)||(end&&end<today);
+      if(isPast){ section.querySelector('.day-btn').classList.add('a-dim'); }
       if(isToday){
         const btn=section.querySelector('.day-btn');
         const body=section.querySelector('.day-body');
@@ -1587,7 +1597,34 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       }
     });
     if(matched) setTimeout(()=>matched.scrollIntoView({behavior:'smooth',block:'start'}),150);
+    window.scrollToToday=function(){ if(matched) matched.scrollIntoView({behavior:'smooth',block:'start'}); };
+    if(matched && 'IntersectionObserver' in window){
+      const fab=document.getElementById('todayFab');
+      new IntersectionObserver(entries=>{
+        fab.classList.toggle('show', !entries[0].isIntersecting);
+      },{rootMargin:'200px 0px 200px 0px'}).observe(matched.querySelector('.day-btn'));
+    }
   })();
+  /* Diagram modal: close with Escape key or phone back button */
+  let diagHistoryPushed=false;
+  const _openDiagram=openDiagram;
+  openDiagram=function(path,title){
+    history.pushState({bbDiag:1},'');
+    diagHistoryPushed=true;
+    return _openDiagram(path,title);
+  };
+  const _closeDiagram=closeDiagram;
+  closeDiagram=function(){
+    if(diagHistoryPushed){ history.back(); return; }
+    _closeDiagram();
+  };
+  window.addEventListener('popstate',function(){
+    diagHistoryPushed=false;
+    if(document.getElementById('diagModal').classList.contains('open')) _closeDiagram();
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape' && document.getElementById('diagModal').classList.contains('open')) closeDiagram();
+  });
   setTheme(localStorage.getItem('bb-theme')||'dark');
   setLang(localStorage.getItem('bb-lang')||'en');
 </script>

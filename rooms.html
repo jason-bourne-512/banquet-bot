@@ -2,11 +2,12 @@
 <html lang="en" data-theme="dark" style="background:#09090c;background-color:#09090c">
 <head>
 <meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('bb-theme')||'dark';var bg=t==='dark'?'#09090c':'#f0ece3';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.background=bg;document.documentElement.style.setProperty('background-color',bg,'important');})()</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
 <meta name="theme-color" content="#09090c">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f3ef">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0ece3">
 <title>Room Specs · Banquet Bot</title>
-<style>:root,html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%;overscroll-behavior:none}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f5f3ef!important;background-color:#f5f3ef!important}[data-theme="light"] body::before{background:#f5f3ef}</style>
+<style>:root,html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%;overscroll-behavior:none}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f0ece3!important;background-color:#f0ece3!important}[data-theme="light"] body::before{background:#f0ece3}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -26,7 +27,7 @@
   --barton:#A05040;--small:#606070;
 }
 [data-theme="light"]{
-  --bg:#f5f3ef;--surface:#ffffff;--surface2:#f0ede8;
+  --bg:#f0ece3;--surface:#ffffff;--surface2:#f0ede8;
   --border:rgba(0,0,0,0.1);--text:#1a1a22;--muted:#666677;--dim:#aaaabc;
 }
 
@@ -146,7 +147,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="header-title" data-en="ROOM SPECS" data-es="SALONES">ROOM SPECS</div>
   </div>
   <div class="header-controls">
-    <button class="ctrl-btn" id="langBtn" onclick="toggleLang()">ES</button>
+    <div class="toggle-group">
+      <button class="tgl active" id="len" onclick="setLang('en')">EN</button>
+      <button class="tgl"        id="les" onclick="setLang('es')">ES</button>
+    </div>
     <div class="toggle-group">
       <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
       <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
@@ -688,7 +692,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     <div class="room-card" data-name="pre-function foyer pre function break lobby">
       <div class="card-bar bar-small"></div>
       <div class="card-header" onclick="toggleCard(this.closest('.room-card'))">
-        <div class="card-header-left"><div class="room-name">Pre-Function</div><div class="room-dims"><span data-en="Pre-function / break space" data-es="Espacio de descanso">Pre-function / break space</span></div></div>
+        <div class="card-header-left"><div class="room-name">Foyer</div><div class="room-dims"><span data-en="Foyer / break space" data-es="Espacio de descanso">Foyer / break space</span></div></div>
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="card-body">
@@ -730,7 +734,7 @@ function setTheme(t){
   document.getElementById('tdk').classList.toggle('active',t==='dark');
   document.getElementById('tlt').classList.toggle('active',t==='light');
   localStorage.setItem('bb-theme',t);
-  var bg=t==='dark'?'#09090c':'#f5f3ef';
+  var bg=t==='dark'?'#09090c':'#f0ece3';
   document.documentElement.style.background=bg;
   document.body.style.background=bg;
 }
@@ -738,9 +742,10 @@ function setTheme(t){
 function setLang(l){
   document.body.classList.toggle('lang-es',l==='es');
   localStorage.setItem('bb-lang',l);
-  document.getElementById('langBtn').textContent=l==='es'?'EN':'ES';
+  document.getElementById('len').classList.toggle('active',l==='en');
+  document.getElementById('les').classList.toggle('active',l==='es');
+  document.querySelectorAll('[data-en][data-es]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
 }
-function toggleLang(){setLang(document.body.classList.contains('lang-es')?'en':'es')}
 
 setTheme(localStorage.getItem('bb-theme')||'dark');
 setLang(localStorage.getItem('bb-lang')||'en');
