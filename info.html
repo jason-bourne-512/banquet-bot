@@ -121,6 +121,24 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
 .alert{background:var(--amber-dim);border:1px solid rgba(240,180,41,0.2);border-radius:8px;padding:10px 12px;margin-bottom:10px}
 .alert-text{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--amber);line-height:1.5}
 
+/* MENU GROUP (collapsible, per meal period) */
+.menu-group{border:1px solid var(--divider);border-radius:8px;margin-top:8px;overflow:hidden}
+.menu-group-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;cursor:pointer;background:var(--bg-active)}
+.menu-group-name{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text-1)}
+.menu-group-meta{font-family:'Courier New',monospace;font-size:9px;color:var(--text-3);margin-top:1px}
+.menu-group-chevron{font-size:10px;color:var(--text-3);transition:transform .15s;flex-shrink:0}
+.menu-group.open .menu-group-chevron{transform:rotate(90deg)}
+.menu-group-body{display:none;padding:2px 11px 9px}
+.menu-group.open .menu-group-body{display:block}
+.menu-sub-label{font-family:'Courier New',monospace;font-size:9px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin:10px 0 2px}
+.menu-sub-label:first-child{margin-top:8px}
+.menu-item{padding:6px 0;border-bottom:1px solid var(--divider)}
+.menu-item:last-child{border-bottom:none}
+.menu-item-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.menu-item-name{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--text-1)}
+.menu-item-price{font-family:'Courier New',monospace;font-size:11px;color:var(--accent);white-space:nowrap;flex-shrink:0}
+.menu-item-desc{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text-2);margin-top:1px;line-height:1.4}
+
 /* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--header-bg);backdrop-filter:blur(14px);border-top:1px solid var(--border);display:flex;z-index:30;padding-bottom:env(safe-area-inset-bottom)}
 @media(orientation:landscape){.bottom-nav{max-width:100%}}
@@ -226,6 +244,180 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
       <div class="row">
         <span class="row-key">Dress code</span>
         <span class="row-val">Casual</span>
+      </div>
+
+      <div class="section-label">Menu</div>
+
+      <div class="menu-group" onclick="toggleMenuGroup(this)">
+        <div class="menu-group-head">
+          <div>
+            <div class="menu-group-name">Breakfast Menu</div>
+            <div class="menu-group-meta">Mon–Thu 6:30–10:30 AM</div>
+          </div>
+          <span class="menu-group-chevron">▶</span>
+        </div>
+        <div class="menu-group-body">
+          <div class="menu-sub-label">Buffet</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Buttermilk Pancakes</span></div><div class="menu-item-desc">plain, blueberry, banana, or chocolate chip</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Ham &amp; Cheese Omelet</span></div><div class="menu-item-desc">smoked ham, aged cheddar</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Egg White Frittata</span></div><div class="menu-item-desc">spinach, mushroom, roasted tomato, cotija cheese, arugula</div></div>
+          <div class="menu-sub-label">Mains</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">All American Breakfast</span><span class="menu-item-price">$18</span></div><div class="menu-item-desc">two eggs any style, sausage or bacon, smashed potatoes, choice of toast</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Avocado Toast**</span><span class="menu-item-price">$14</span></div><div class="menu-item-desc">rustic bread, spiced seeds, mint</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Ham &amp; Cheese Omelet</span><span class="menu-item-price">$18</span></div><div class="menu-item-desc">aged cheddar, smoked ham, smashed potatoes, choice of toast</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Egg White Frittata</span><span class="menu-item-price">$18</span></div><div class="menu-item-desc">spinach, mushroom, roasted tomato, cotija cheese, arugula, toast</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Buttermilk Pancakes**</span><span class="menu-item-price">$15</span></div><div class="menu-item-desc">plain, blueberry, banana, or chocolate chip</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Steel Cut Oatmeal**</span><span class="menu-item-price">$10</span></div><div class="menu-item-desc">dried cherries, brown sugar, pecans</div></div>
+          <div class="menu-sub-label">Fresh Juices</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Golden Refresher</span><span class="menu-item-price">$9</span></div><div class="menu-item-desc">carrot, golden beet, orange, pineapple, sea buckthorn</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Sea Green Immunity</span><span class="menu-item-price">$9</span></div><div class="menu-item-desc">spirulina, celery, cucumber, green apple, honeydew, nori</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Melon Berry Cooler</span><span class="menu-item-price">$9</span></div><div class="menu-item-desc">strawberry, watermelon</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Vitality Shot</span><span class="menu-item-price">$6</span></div><div class="menu-item-desc">ginger, orange, turmeric, cayenne</div></div>
+        </div>
+      </div>
+
+      <div class="menu-group" onclick="toggleMenuGroup(this)">
+        <div class="menu-group-head">
+          <div>
+            <div class="menu-group-name">Brunch Menu</div>
+            <div class="menu-group-meta">Fri–Sun 6:30 AM – 3:00 PM</div>
+          </div>
+          <span class="menu-group-chevron">▶</span>
+        </div>
+        <div class="menu-group-body">
+          <div class="menu-sub-label">Starters</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Housemade Biscuits</span></div><div class="menu-item-desc">local jam, whipped butter</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Avocado Toast**</span><span class="menu-item-price">$17</span></div><div class="menu-item-desc">rustic bread, spiced seeds, mint</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Garden Crudite**</span><span class="menu-item-price">$13</span></div><div class="menu-item-desc">cucumber, carrot, tomato, jicama, avocado dip</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Crab Croquettes</span><span class="menu-item-price">$21</span></div><div class="menu-item-desc">pommes puree, lemon, chive, citrus aioli</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Burrata Cheese</span><span class="menu-item-price">$17</span></div><div class="menu-item-desc">blistered tomato, chipotle, cilantro pesto, grilled rustic bread</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Chorizo Deviled Eggs**</span><span class="menu-item-price">$13</span></div><div class="menu-item-desc">chive, flake salt, crispy chorizo</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Steel Cut Oats**</span><span class="menu-item-price">$10</span></div><div class="menu-item-desc">dried cherries, brown sugar, pecans</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Vanilla Yogurt &amp; Berries**</span><span class="menu-item-price">$12</span></div><div class="menu-item-desc">granola</div></div>
+          <div class="menu-sub-label">Salad &amp; Sandwiches</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Corinne Cobb Salad**</span><span class="menu-item-price">$18</span></div><div class="menu-item-desc">grilled chicken, avocado, tomato, sunflower seed, egg, scallion, radish, chipotle ranch</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Classic Caesar**</span><span class="menu-item-price">$14</span></div><div class="menu-item-desc">baby romaine, parmesan, crispy crouton, garlic dressing</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Chicken Club Sandwich</span><span class="menu-item-price">$20</span></div><div class="menu-item-desc">cilantro marinade, thick bacon, pickled onion, havarti, avocado, garlic mayonnaise, fries</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Brush Creek Wagyu Burger*</span><span class="menu-item-price">$22</span></div><div class="menu-item-desc">lettuce, tomato, onion, special sauce, cheddar, fries</div></div>
+          <div class="menu-sub-label">Brunch Plates</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Prime Steak &amp; Eggs*</span><span class="menu-item-price">$28</span></div><div class="menu-item-desc">flat iron, garlic butter, breakfast potatoes, two eggs your way, choice of toast</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Eggs Your Way*</span><span class="menu-item-price">$17</span></div><div class="menu-item-desc">choice of chicken sausage, pork sausage or bacon, breakfast potatoes, choice of toast</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Wagyu Skillet*</span><span class="menu-item-price">$25</span></div><div class="menu-item-desc">sweet pepper, grilled onion, grilled mushroom, one egg your way</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Egg White Frittata</span><span class="menu-item-price">$22</span></div><div class="menu-item-desc">jumbo lump crab, crispy potato, grilled onion, cotija</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Crab Cake Benedict* **</span><span class="menu-item-price">$22</span></div><div class="menu-item-desc">spicy hollandaise, poached egg, breakfast potatoes, grilled pepper</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Tres Leches French Toast</span><span class="menu-item-price">$17</span></div><div class="menu-item-desc">fresh berries, dulce de leche syrup, whipped cream</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Huevos Rancheros*</span><span class="menu-item-price">$17</span></div><div class="menu-item-desc">mexican black beans, crispy corn tortillas, cotija, cilantro</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Grilled Chicken Tinga*</span><span class="menu-item-price">$18</span></div><div class="menu-item-desc">tostada, red chile, black bean, shredded lettuce, pickled onion, lime crema, fried egg</div></div>
+          <div class="menu-sub-label">Sides</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Thick-Cut Peppered Bacon</span><span class="menu-item-price">$7</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Chicken Sausage</span><span class="menu-item-price">$7</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Pork Sausage</span><span class="menu-item-price">$7</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Breakfast Potatoes</span><span class="menu-item-price">$7</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Choice of Toast</span><span class="menu-item-price">$5</span></div><div class="menu-item-desc">wheat, white, sourdough, multigrain</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Fresh Berries</span><span class="menu-item-price">$7</span></div></div>
+          <div class="menu-sub-label">Fresh Pressed Juice</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Golden Refresher</span><span class="menu-item-price">$9</span></div><div class="menu-item-desc">carrot, golden beet, orange, pineapple, sea buckthorn</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Sea Green Immunity</span><span class="menu-item-price">$9</span></div><div class="menu-item-desc">spirulina, celery, cucumber, green apple, honeydew, nori</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Melon Berry Cooler</span><span class="menu-item-price">$9</span></div><div class="menu-item-desc">strawberry, watermelon, agave</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Vitality Shot</span><span class="menu-item-price">$6</span></div><div class="menu-item-desc">ginger, orange, turmeric, cayenne</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Mimosa Juice Flight</span><span class="menu-item-price">$9</span></div><div class="menu-item-desc">choice of 3 juices (orange, grapefruit, fresh-pressed watermelon-strawberry, cranberry or pineapple), fresh berries</div></div>
+        </div>
+      </div>
+
+      <div class="menu-group" onclick="toggleMenuGroup(this)">
+        <div class="menu-group-head">
+          <div>
+            <div class="menu-group-name">Lunch Menu</div>
+            <div class="menu-group-meta">Mon–Thu 11:00 AM – 4:00 PM</div>
+          </div>
+          <span class="menu-group-chevron">▶</span>
+        </div>
+        <div class="menu-group-body">
+          <div class="menu-sub-label">Starters</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Handmade Burrata Cheese</span><span class="menu-item-price">$17</span></div><div class="menu-item-desc">blistered tomato, chipotle, cilantro pesto, grilled rustic bread</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Wagyu Meatballs</span><span class="menu-item-price">$19</span></div><div class="menu-item-desc">marinara, parmigiano, sourdough</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Crab Croquettes</span><span class="menu-item-price">$21</span></div><div class="menu-item-desc">pommes puree, lemon, chive, citrus aioli</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Garden Crudite**</span><span class="menu-item-price">$13</span></div><div class="menu-item-desc">cucumber, carrot, tomato, jicama, avocado dip</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Chorizo Deviled Eggs**</span><span class="menu-item-price">$13</span></div><div class="menu-item-desc">chive, flake salt, crispy chorizo</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Smoked Salmon Dip &amp; Chips</span><span class="menu-item-price">$15</span></div><div class="menu-item-desc">pickled red onion, kennebec chips</div></div>
+          <div class="menu-sub-label">Soup &amp; Salad</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Green Posole**</span><span class="menu-item-price">$14</span></div><div class="menu-item-desc">roasted chicken, hominy, poblano, cotija, cilantro</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Classic Caesar**</span><span class="menu-item-price">$14</span></div><div class="menu-item-desc">baby romaine, shaved parmesan, crispy croutons, garlic dressing</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Corinne Cobb**</span><span class="menu-item-price">$18</span></div><div class="menu-item-desc">grilled chicken, avocado, tomato, sunflower seed, egg, scallions, radish, chipotle buttermilk</div></div>
+          <div class="menu-sub-label">Plates</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Steak Frites</span><span class="menu-item-price">$38</span></div><div class="menu-item-desc">prime flat iron, garlic red chile butter, fries</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Truffled Bucatini**</span><span class="menu-item-price">$24</span></div><div class="menu-item-desc">beurre fondue, pecorino, parmigiano reggiano, black pepper</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Wild Mushroom Bolognese**</span><span class="menu-item-price">$24</span></div><div class="menu-item-desc">roasted wild mushroom, rigatoni, parmesan, basil</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Faroe Island Salmon* **</span><span class="menu-item-price">$34</span></div><div class="menu-item-desc">sweet onion puree, charred broccolini, black lentils, herb salad</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Wagyu Cheeseburger</span><span class="menu-item-price">$22</span></div><div class="menu-item-desc">lettuce, tomato, caramelized onion, special sauce, cheddar, fries</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Toasted Grilled Cheese**</span><span class="menu-item-price">$16</span></div><div class="menu-item-desc">aged white cheddar, havarti, parmesan, fries</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Grilled Chicken Club</span><span class="menu-item-price">$20</span></div><div class="menu-item-desc">thick bacon, pickled onion, havarti, avocado, tomato, garlic mayo, fries</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Grilled Shrimp Tacos</span><span class="menu-item-price">$21</span></div><div class="menu-item-desc">guacamole, pico de gallo, baja sauce, iceberg lettuce</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Mahi Mahi Sandwich</span><span class="menu-item-price">$19</span></div><div class="menu-item-desc">pickled red onion, tomato jam, remoulade, herb marinade, fries</div></div>
+        </div>
+      </div>
+
+      <div class="menu-group" onclick="toggleMenuGroup(this)">
+        <div class="menu-group-head">
+          <div>
+            <div class="menu-group-name">Dinner Menu</div>
+            <div class="menu-group-meta">Daily 5:00 PM – 10:00 PM</div>
+          </div>
+          <span class="menu-group-chevron">▶</span>
+        </div>
+        <div class="menu-group-body">
+          <div class="menu-sub-label">Starters</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Navajo Fry Bread</span><span class="menu-item-price">$8</span></div><div class="menu-item-desc">whipped brown butter, spiced agave</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Burrata Cheese</span><span class="menu-item-price">$17</span></div><div class="menu-item-desc">blistered tomato, chipotle, cilantro pesto, grilled rustic bread</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Wagyu Beef Skewers</span><span class="menu-item-price">$18</span></div><div class="menu-item-desc">red chili glaze, chimichurri</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Wagyu Meatballs</span><span class="menu-item-price">$18</span></div><div class="menu-item-desc">marinara, parmigiano, sourdough</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Crab Croquettes</span><span class="menu-item-price">$21</span></div><div class="menu-item-desc">pommes puree, lemon, chive, citrus aioli</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Garden Crudite**</span><span class="menu-item-price">$13</span></div><div class="menu-item-desc">cucumber, carrot, tomato, jicama, avocado dip</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Chorizo Deviled Eggs**</span><span class="menu-item-price">$13</span></div><div class="menu-item-desc">chive, flake salt, crispy chorizo</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Mezcal Shrimp Cocktail**</span><span class="menu-item-price">$21</span></div><div class="menu-item-desc">chipotle cocktail sauce, lemon</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Smoked Salmon Dip &amp; Chips</span><span class="menu-item-price">$15</span></div><div class="menu-item-desc">pickled red onion, kennebec chips</div></div>
+          <div class="menu-sub-label">Soup &amp; Salad</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Green Posole**</span><span class="menu-item-price">$14</span></div><div class="menu-item-desc">roasted chicken, hominy, poblano, cotija, cilantro</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Classic Caesar**</span><span class="menu-item-price">$14</span></div><div class="menu-item-desc">baby romaine, shaved parmesan, crispy croutons, garlic dressing</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Corinne Wedge**</span><span class="menu-item-price">$19</span></div><div class="menu-item-desc">gorgonzola, thick bacon, pickled onion, cucumber, buttermilk dressing</div></div>
+          <div class="menu-sub-label">Plates</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Filet Mignon*</span><span class="menu-item-price">$54</span></div><div class="menu-item-desc">pommes puree, chimichurri, house rub</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Chile Glazed Half Chicken</span><span class="menu-item-price">$34</span></div><div class="menu-item-desc">broiled sweet potato, sweet pepper</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Faroe Island Salmon*</span><span class="menu-item-price">$34</span></div><div class="menu-item-desc">sweet onion puree, charred broccolini, black lentils, herb salad</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Grilled Halibut</span><span class="menu-item-price">$39</span></div><div class="menu-item-desc">sweet corn puree, succotash, crispy sunchoke, pea tendril</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Truffled Bucatini**</span><span class="menu-item-price">$24</span></div><div class="menu-item-desc">beurre fondue, pecorino, parmigiano reggiano, black pepper</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Spicy Shrimp Pasta**</span><span class="menu-item-price">$30</span></div><div class="menu-item-desc">chorizo, corn, poblano, mafaldine pasta, cilantro, cotija, mezcal</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Wild Mushroom Bolognese**</span><span class="menu-item-price">$24</span></div><div class="menu-item-desc">roasted wild mushroom, rigatoni, parmesan, basil</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Texas Wagyu Ribeye*</span><span class="menu-item-price">$70</span></div><div class="menu-item-desc">red chile truffle butter, grilled peppers &amp; onions, crispy potatoes — Rosewood Ranch Wagyu, Ennis TX</div></div>
+          <div class="menu-sub-label">Sides</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Pommes Puree</span><span class="menu-item-price">$9</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Shoestring Fries</span><span class="menu-item-price">$9</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Broccolini</span><span class="menu-item-price">$9</span></div><div class="menu-item-desc">lemon, parsley</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Macaroni and Cheese</span><span class="menu-item-price">$10</span></div><div class="menu-item-desc">cavatappi, parmesan, bread crumb</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Street Corn</span><span class="menu-item-price">$8</span></div><div class="menu-item-desc">lime, cotija, jalapeno, kewpie mayo</div></div>
+        </div>
+      </div>
+
+      <div class="menu-group" onclick="toggleMenuGroup(this)">
+        <div class="menu-group-head">
+          <div>
+            <div class="menu-group-name">Dessert Menu</div>
+            <div class="menu-group-meta">Available with Lunch &amp; Dinner service</div>
+          </div>
+          <span class="menu-group-chevron">▶</span>
+        </div>
+        <div class="menu-group-body">
+          <div class="menu-sub-label">Dessert</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Chocolate Bread Pudding</span><span class="menu-item-price">$14</span></div><div class="menu-item-desc">brioche, salted caramel, butter, pecan ice cream</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Peanut Butter Pie</span><span class="menu-item-price">$11</span></div><div class="menu-item-desc">oreo crust, vanilla whipped cream</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Key Lime Pie</span><span class="menu-item-price">$11</span></div><div class="menu-item-desc">toasted meringue, graham cracker crust</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Tres Leches Cake</span><span class="menu-item-price">$11</span></div><div class="menu-item-desc">vanilla sponge, cinnamon chantilly, fresh strawberry</div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Sorbet Duo</span><span class="menu-item-price">$9</span></div><div class="menu-item-desc">local flavors</div></div>
+          <div class="menu-sub-label">Coffee</div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Double Espresso</span><span class="menu-item-price">$4</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Cappuccino</span><span class="menu-item-price">$5</span></div></div>
+          <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Latte</span><span class="menu-item-price">$5</span></div></div>
+        </div>
       </div>
     </div>
   </div>
@@ -816,6 +1008,9 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
 </nav>
 
 <script>
+function toggleMenuGroup(el) {
+  el.classList.toggle('open');
+}
 function showTab(id, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
