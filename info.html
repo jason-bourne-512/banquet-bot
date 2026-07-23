@@ -122,7 +122,7 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
 .alert-text{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--amber);line-height:1.5}
 
 /* MENU GROUP (collapsible, per meal period) */
-.menu-group{border:1px solid var(--divider);border-radius:8px;margin-top:8px;overflow:hidden}
+.menu-group{border:1px solid var(--divider);border-left:3px solid var(--mg-color,var(--accent));border-radius:8px;margin-top:8px;overflow:hidden}
 .menu-group-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;cursor:pointer;background:var(--bg-active)}
 .menu-group-name{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text-1)}
 .menu-group-meta{display:inline-flex;align-items:center;font-family:'Courier New',monospace;font-size:10px;font-weight:700;letter-spacing:0.3px;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(201,168,76,0.25);border-radius:5px;padding:2px 7px;margin-top:4px}
@@ -232,6 +232,10 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
         <span class="hours-day">Bar (Fri–Sat)</span>
         <span class="hours-time accent">Until Midnight</span>
       </div>
+      <div class="hours-row">
+        <span class="hours-day">Happy Hour</span>
+        <span class="hours-time accent">Thu–Sun 3:00 PM – 5:00 PM</span>
+      </div>
       <div class="section-label">Contact</div>
       <div class="row">
         <span class="row-key">Phone</span>
@@ -248,7 +252,7 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
 
       <div class="section-label">Menu</div>
 
-      <div class="menu-group" onclick="toggleMenuGroup(this)">
+      <div class="menu-group" style="--mg-color:var(--blue)" onclick="toggleMenuGroup(this)">
         <div class="menu-group-head">
           <div>
             <div class="menu-group-name">Breakfast Menu</div>
@@ -276,7 +280,7 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
         </div>
       </div>
 
-      <div class="menu-group" onclick="toggleMenuGroup(this)">
+      <div class="menu-group" style="--mg-color:var(--orange)" onclick="toggleMenuGroup(this)">
         <div class="menu-group-head">
           <div>
             <div class="menu-group-name">Brunch Menu</div>
@@ -324,7 +328,7 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
         </div>
       </div>
 
-      <div class="menu-group" onclick="toggleMenuGroup(this)">
+      <div class="menu-group" style="--mg-color:var(--green)" onclick="toggleMenuGroup(this)">
         <div class="menu-group-head">
           <div>
             <div class="menu-group-name">Lunch Menu</div>
@@ -357,7 +361,7 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
         </div>
       </div>
 
-      <div class="menu-group" onclick="toggleMenuGroup(this)">
+      <div class="menu-group" style="--mg-color:var(--purple)" onclick="toggleMenuGroup(this)">
         <div class="menu-group-head">
           <div>
             <div class="menu-group-name">Dinner Menu</div>
@@ -398,7 +402,7 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
         </div>
       </div>
 
-      <div class="menu-group" onclick="toggleMenuGroup(this)">
+      <div class="menu-group" style="--mg-color:var(--red)" onclick="toggleMenuGroup(this)">
         <div class="menu-group-head">
           <div>
             <div class="menu-group-name">Dessert Menu</div>
@@ -420,7 +424,7 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
         </div>
       </div>
 
-      <div class="menu-group" onclick="toggleMenuGroup(this)">
+      <div class="menu-group" style="--mg-color:var(--amber)" onclick="toggleMenuGroup(this)">
         <div class="menu-group-head">
           <div>
             <div class="menu-group-name">Drink Menu</div>
