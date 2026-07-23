@@ -83,6 +83,32 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .pill-btn { font-family:'Courier New',monospace; font-size:9.5px; letter-spacing:.06em; color:var(--text-2); border:1px solid var(--border); border-radius:20px; padding:5px 12px; white-space:nowrap; background:var(--bg-active); cursor:pointer; transition:all .15s; }
 .pill-btn:active { border-color:var(--accent); color:var(--accent); }
 
+.view-nav { display:flex; border-bottom:1px solid var(--border); position:sticky; top:57px; background:var(--header-bg); backdrop-filter:blur(14px); z-index:18; }
+.view-btn { flex:1; padding:12px 10px; font-family:'Courier New',monospace; font-size:12px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text-3); background:none; border:none; border-bottom:3px solid transparent; cursor:pointer; transition:color .15s,border-color .15s; }
+.view-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+.diagrams-list { padding:0 0 80px; }
+.diag-group { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; margin:0 16px 8px; overflow:hidden; }
+.diag-group-head { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:11px 13px; cursor:pointer; }
+.diag-group-name { font-family:'Courier New',monospace; font-size:12.5px; font-weight:700; color:var(--text-1); letter-spacing:0.3px; }
+.diag-group-chevron { font-size:10px; color:var(--text-3); transition:transform .15s; flex-shrink:0; }
+.diag-group.open .diag-group-chevron { transform:rotate(90deg); }
+.diag-group-body { display:none; padding:0 13px 11px; }
+.diag-group.open .diag-group-body { display:block; }
+.diag-link { display:flex; width:100%; align-items:center; justify-content:space-between; gap:8px; padding:9px 10px; margin-top:6px; background:var(--bg-active); border:1px solid var(--divider); border-radius:8px; text-decoration:none; color:var(--text-1); font:inherit; font-family:'Courier New',monospace; font-size:11px; text-align:left; cursor:pointer; transition:border-color .15s; }
+.diag-link:active { border-color:var(--accent); }
+.diag-link-open { color:var(--accent); font-size:10px; letter-spacing:0.5px; text-transform:uppercase; flex-shrink:0; }
+.diag-warn { display:block; margin-top:6px; padding:7px 9px; background:var(--red-dim); border:1px solid rgba(220,80,80,0.25); border-radius:6px; color:var(--red); font-family:'Courier New',monospace; font-size:9.5px; line-height:1.5; }
+
+.diag-modal { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.9); display:none; flex-direction:column; }
+.diag-modal.open { display:flex; }
+.diag-modal-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; padding-top:calc(12px + env(safe-area-inset-top)); border-bottom:1px solid var(--border); background:var(--bg-card); flex-shrink:0; }
+.diag-modal-title { font-family:'Courier New',monospace; font-size:12px; font-weight:700; color:var(--text-1); letter-spacing:0.3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.diag-modal-close { background:var(--bg-active); border:1px solid var(--border); color:var(--text-1); width:30px; height:30px; border-radius:50%; font-size:15px; line-height:1; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.diag-modal-close:active { border-color:var(--accent); color:var(--accent); }
+.diag-modal-body { flex:1; background:#e8e8ea; min-height:0; }
+.diag-modal-body iframe { width:100%; height:100%; border:none; display:block; }
+
 .days-list { padding:0 0 80px; }
 .day-section { padding:6px 0 0; border-bottom:none; }
 
@@ -237,12 +263,17 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   </div>
 </div>
 
-<div class="expand-bar">
+<div class="view-nav">
+  <button class="view-btn active" id="viewBtnRundown" onclick="switchView('rundown')" data-en="Rundown" data-es="Resumen">Rundown</button>
+  <button class="view-btn" id="viewBtnDiagrams" onclick="switchView('diagrams')" data-en="Diagrams" data-es="Diagramas">Diagrams</button>
+</div>
+
+<div class="expand-bar" id="expandBar">
   <button class="pill-btn" onclick="expandAll()" data-en="▼ Expand All" data-es="▼ Expandir Todo">▼ Expand All</button>
   <button class="pill-btn" onclick="collapseAll()" data-en="▲ Collapse All" data-es="▲ Contraer Todo">▲ Collapse All</button>
 </div>
 
-<div class="days-list">
+<div class="days-list" id="rundownList">
 
 <div class="month-banner"><span class="month-banner-name">July</span><span class="month-banner-year">2026</span></div>
 <div class="week-label"><span class="week-label-main" data-en="Week of Jul 1–3" data-es="Semana del 1–3 Jul">Week of Jul 1–3</span></div>
@@ -2702,6 +2733,173 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
 </div><!-- /days-list -->
 
+<div class="diagrams-list" id="diagramsList" style="display:none">
+
+<div class="month-banner"><span class="month-banner-name">July</span><span class="month-banner-year">2026</span></div>
+<div class="week-label"><span class="week-label-main" data-en="Week of Jul 25–31" data-es="Semana del 25–31 Jul">Week of Jul 25–31</span></div>
+
+<div class="day-section">
+<button class="day-btn a1" onclick="toggleDay(this)">
+  <div class="day-dot"><span class="day-dot-num">27</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="MON" data-es="Lunes">MON</div>
+    <div class="day-summary" data-en="2 groups with room diagrams" data-es="2 grupos con diagramas de sala">2 groups with room diagrams</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Tiger Medical</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PREFUNCTIONfromTigerBioderma.pdf', 'Pre-Function B — Reception')">
+        <span>Pre-Function B — Reception</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Lettuce Entertain You — Ema Austin</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/VERBENAfromEmaAustinTeamMeetingJul2026.pdf', 'Verbena — Team Meeting')">
+        <span>Verbena — Team Meeting</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="day-section">
+<button class="day-btn a2" onclick="toggleDay(this)">
+  <div class="day-dot"><span class="day-dot-num">28</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="TUE" data-es="Martes">TUE</div>
+    <div class="day-summary" data-en="2 groups with room diagrams" data-es="2 grupos con diagramas de sala">2 groups with room diagrams</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Essent Guaranty Inc</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/VERBENABCopyfromEssentMeetingJul2026.pdf', 'Verbena B — Meeting')">
+        <span>Verbena B — Meeting</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <span class="diag-warn" data-en="⚠ Diagram shows Verbena B — original BEO says Camellia A. Please verify actual room before service." data-es="⚠ El diagrama muestra Verbena B — el BEO original dice Camellia A. Verificar la sala antes del servicio.">⚠ Diagram shows Verbena B — original BEO says Camellia A. Please verify actual room before service.</span>
+    </div>
+  </div>
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Tiger Medical</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIAAfromTigerBioderma.pdf', 'Plumeria A — Sales Training')">
+        <span>Plumeria A — Sales Training</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIABfromTigerBioderma.pdf', 'Plumeria B — Hospitality Room')">
+        <span>Plumeria B — Hospitality Room</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="day-section">
+<button class="day-btn a3" onclick="toggleDay(this)">
+  <div class="day-dot"><span class="day-dot-num">29</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="WED" data-es="Miércoles">WED</div>
+    <div class="day-summary" data-en="2 groups with room diagrams" data-es="2 grupos con diagramas de sala">2 groups with room diagrams</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Tiger Medical</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/LANTANAfromTigerBioderma.pdf', 'Lantana — Sales Training')">
+        <span>Lantana — Sales Training</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Bonterra</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIAfromBonterra.pdf', 'Plumeria — Leadership Team QBR')">
+        <span>Plumeria — Leadership Team QBR</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="day-section">
+<button class="day-btn a4" onclick="toggleDay(this)">
+  <div class="day-dot"><span class="day-dot-num">30</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="THU" data-es="Jueves">THU</div>
+    <div class="day-summary" data-en="2 groups with room diagrams" data-es="2 grupos con diagramas de sala">2 groups with room diagrams</div>
+  </div>
+  <span class="chevron">▶</span>
+</button>
+<div class="day-body">
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Tiger Medical</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/LANTANAfromTigerBioderma.pdf', 'Lantana — Sales Training')">
+        <span>Lantana — Sales Training</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/CamelliaAfromTigerBioderma.pdf', 'Camellia A — Breakout Session')">
+        <span>Camellia A — Breakout Session</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/CamelliaBfromTigerBioderma.pdf', 'Camellia B — Breakout Session')">
+        <span>Camellia B — Breakout Session</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Bonterra</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIAfromBonterra.pdf', 'Plumeria — Leadership Team QBR, Day 2')">
+        <span>Plumeria — Leadership Team QBR, Day 2</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- /diagrams-list -->
+
+<div class="diag-modal" id="diagModal">
+  <div class="diag-modal-head">
+    <div class="diag-modal-title" id="diagModalTitle">Diagram</div>
+    <button class="diag-modal-close" onclick="closeDiagram()" aria-label="Close">✕</button>
+  </div>
+  <div class="diag-modal-body">
+    <iframe id="diagModalFrame" src="" title="Room diagram"></iframe>
+  </div>
+</div>
+
 <script>
   document.querySelectorAll('.day-body').forEach(function(body){
     var strip = body.querySelector('.day-strip');
@@ -2736,12 +2934,32 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     btn.classList.toggle('is-open',!open);
   }
   function expandAll(){
-    document.querySelectorAll('.day-body').forEach(b=>b.classList.add('is-open'));
-    document.querySelectorAll('.day-btn').forEach(b=>b.classList.add('is-open'));
+    document.querySelectorAll('#rundownList .day-body').forEach(b=>b.classList.add('is-open'));
+    document.querySelectorAll('#rundownList .day-btn').forEach(b=>b.classList.add('is-open'));
   }
   function collapseAll(){
-    document.querySelectorAll('.day-body').forEach(b=>b.classList.remove('is-open'));
-    document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('is-open'));
+    document.querySelectorAll('#rundownList .day-body').forEach(b=>b.classList.remove('is-open'));
+    document.querySelectorAll('#rundownList .day-btn').forEach(b=>b.classList.remove('is-open'));
+  }
+  function toggleDiagGroup(el){
+    el.classList.toggle('open');
+  }
+  function openDiagram(path, title){
+    document.getElementById('diagModalFrame').src = path;
+    document.getElementById('diagModalTitle').textContent = title;
+    document.getElementById('diagModal').classList.add('open');
+  }
+  function closeDiagram(){
+    document.getElementById('diagModal').classList.remove('open');
+    document.getElementById('diagModalFrame').src = '';
+  }
+  function switchView(view){
+    const isRundown = view === 'rundown';
+    document.getElementById('rundownList').style.display = isRundown ? '' : 'none';
+    document.getElementById('diagramsList').style.display = isRundown ? 'none' : '';
+    document.getElementById('expandBar').style.display = isRundown ? '' : 'none';
+    document.getElementById('viewBtnRundown').classList.toggle('active', isRundown);
+    document.getElementById('viewBtnDiagrams').classList.toggle('active', !isRundown);
   }
   (function(){
     const n=new Date();
