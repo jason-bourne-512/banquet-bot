@@ -107,8 +107,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .diag-modal-title { font-family:'Courier New',monospace; font-size:12px; font-weight:700; color:var(--text-1); letter-spacing:0.3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .diag-modal-close { background:var(--bg-active); border:1px solid var(--border); color:var(--text-1); width:30px; height:30px; border-radius:50%; font-size:15px; line-height:1; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
 .diag-modal-close:active { border-color:var(--accent); color:var(--accent); }
-.diag-modal-body { flex:1; background:#e8e8ea; min-height:0; position:relative; overflow:hidden; touch-action:none; display:flex; align-items:center; justify-content:center; }
-.diag-canvas-wrap { transform-origin:0 0; will-change:transform; }
+.diag-modal-body { flex:1; background:#e8e8ea; min-height:0; position:relative; overflow:hidden; touch-action:none; }
+.diag-canvas-wrap { position:absolute; top:0; left:0; transform-origin:0 0; will-change:transform; }
 #diagCanvas { display:block; box-shadow:0 4px 24px rgba(0,0,0,0.25); }
 .diag-loading { position:absolute; font-family:'Courier New',monospace; font-size:11px; letter-spacing:1px; color:#888; text-transform:uppercase; }
 .diag-modal-hint { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); font-family:'Courier New',monospace; font-size:9px; letter-spacing:0.5px; color:rgba(0,0,0,0.4); background:rgba(255,255,255,0.7); padding:4px 10px; border-radius:12px; pointer-events:none; transition:opacity .3s; }
