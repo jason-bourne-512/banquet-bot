@@ -1,0 +1,66 @@
+# Banquet Bot — Progress Log
+
+_Last updated: 2026-07-23_
+
+## How we work now
+- Claude edits the repo directly at `~/banquet-bot`, commits, and pushes from the Mac (zero-paste).
+- Revert point tag on GitHub: **`pre-fixpack1`** (points at commit `9d671bc`, the state before Fix Pack 1). To roll the live site back: `git reset --hard pre-fixpack1 && git push --force`.
+
+## Files (7 pages, all mobile-first, EN/ES + dark/light)
+- `index.html` — staff schedule hub + nav, splash screen
+- `rundown.html` — BEO daily rundown + Diagrams tab (pdf.js modal viewer)
+- `menu.html` — searchable menu reference
+- `training.html` — server training accordion
+- `handbook.html` — associate handbook accordion
+- `rooms.html` — room capacity specs
+- `info.html` — property info (6 tabs)
+- `diagrams/` — 9 room-set PDFs
+
+---
+
+## DONE — Fix Pack 1 (committed `56ca410`, pushed, tested live)
+Verified on the live GitHub Pages site with a real browser — all pass, no console errors on any page.
+
+1. **Light-theme flash fixed** on all 6 non-index pages — added the head boot script that applies saved theme before first paint (index already had it).
+2. **rooms.html brought in line with the other pages:**
+   - Swapped its odd single-button lang toggle for the standard EN/ES two-button toggle.
+   - Fixed a real bug: 18 strings had both `data-en` and `data-es` on the same element, which its old show/hide translation couldn't swap — they stayed English in Spanish mode. Now translate correctly.
+   - Standardized light background from `#f5f3ef` to `#f0ece3` to match every other page.
+3. **"Foyer" rename** — replaced "Pre-Function" display text in `rundown.html` and `rooms.html` (kept training.html's "Foyer Briefing (Pre-Function)" since it teaches the synonym; kept PDF filenames as-is).
+4. **rundown.html upgrades:**
+   - Floating **⌖ TODAY button** — appears when today scrolls out of view, taps back to today (IntersectionObserver).
+   - **Auto-dim past days** — any day with a date before today gets `.a-dim` automatically (less manual trimming).
+   - **Diagram modal closes with Escape key AND phone back button** (history.pushState/popstate) instead of the back button exiting the whole page — this was an Android annoyance.
+
+Note: pdf.js pauses rendering when a browser tab is backgrounded — caused false "timeouts" during automated testing but is a non-issue on phones (page is always foreground). Confirmed diagrams render instantly when tab is in front.
+
+---
+
+## QUEUE — agreed, do one at a time
+1. **Extract shared.js + shared.css** — `setTheme`/`setLang`/theme-boot and the `:root` color tokens + header/toggle CSS are copy-pasted across all 7 files (this duplication is what caused the Fix Pack 1 bugs). Single file = one edit fixes every page. Highest-value refactor. _(Next up.)_
+2. **Diagram chip on event cards** — small "📐 Diagram" chip on rundown event cards that have one, opening the modal directly (where a server actually looks during service). Keep the Diagrams tab too.
+3. **Offline support** — service worker caching HTML + diagram PDFs + a web app manifest for home-screen install. Great 1 Hotel interview line ("works in the service corridor with no signal").
+4. **Rundown search/filter** — by group or room; reuse the pattern already in menu/training/handbook.
+5. **info.html bilingual** — it has zero `data-en` attributes and no EN/ES toggle; the only page not translated.
+
+---
+
+## ADOPTION IDEAS (make sales/events/servers want to use it)
+**Servers** — "Happening now" view: highlight the current/next service block on page open (walk in mid-shift, see "10:15 coffee refresh, Lantana A" with no scrolling). Pair with a room filter ("I'm in Verbena today" → hide the rest) and pull allergy flags up to day level so none hide inside collapsed cards.
+
+**Events (Diana, Samantha)** — Trust + printouts: a "last updated" stamp per day, plus a print stylesheet so the daily rundown prints as a clean one-pager — quietly replaces the BEO packet shuffle (the core pitch).
+
+**Sales** — "Site visit mode": one flattering setup photo per room on the rooms page + a clean menu-highlights view = something to pull up on a tablet while walking a client through the space.
+
+**Non-code, high-leverage** — QR-code poster in the break room linking to today's rundown. Adoption is mostly about removing the "find the link" step (also why home-screen install matters).
+
+---
+
+## STANDING RULES (from project memory — keep applying)
+- Never display client phone numbers; first names only for contacts. Use industry-type aliases when demoing externally.
+- Always dynamic JS date detection for TODAY — never hardcoded dates.
+- "Foyer" not "Pre-Function" throughout.
+- Strip BEO `EXP=1` placeholders and "Post As:" prefixes.
+- Any day with any consumable (food/bev/coffee/bar/snacks/water) renders a non-dim color.
+- Include dry-set/banquet-box rooms even with no F&B block.
+- Don't upload proprietary White Lodging/Marriott docs to third-party systems.
