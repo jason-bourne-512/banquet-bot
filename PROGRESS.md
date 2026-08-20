@@ -57,7 +57,7 @@ Note: pdf.js pauses rendering when a browser tab is backgrounded — caused fals
 ---
 
 ## STANDING RULES (from project memory — keep applying)
-- Never display client phone numbers; first names only for contacts. Use industry-type aliases when demoing externally.
+- **PRIVACY — hard rule, no exceptions:** no phone numbers, no last names, anywhere in the site. Contacts (CONTACT field, MGR/IC badges, notes) are first name only — even in prose notes like "packages under Gabby or Christel." Confirmed 2026-08-19 after an audit found last names had crept into several CONTACT fields. Use industry-type aliases when demoing externally.
 - Always dynamic JS date detection for TODAY — never hardcoded dates.
 - "Foyer" not "Pre-Function" throughout.
 - Strip BEO `EXP=1` placeholders and "Post As:" prefixes.
