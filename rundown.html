@@ -2204,6 +2204,74 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 </div>
 </div>
 
+<div class="week-label"><span class="week-label-main" data-en="Week of Sep 19–25" data-es="Week of Sep 19–25">Week of Sep 19–25</span></div>
+
+<div class="day-section">
+<button class="day-btn a4" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">20</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="SUN" data-es="SUN">SUN</div>
+    <div class="day-summary" data-en="CFMA" data-es="CFMA">CFMA</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">CFMA</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/FullMeetingSpacefromCFMA.pdf', 'Full Meeting Space — Overview')">
+        <span>Full Meeting Space — Overview</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSEBALLROOMfromCFMA.pdf', 'Primrose Ballroom')">
+        <span>Primrose Ballroom</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PREFUNCTIONVendorCopyfromCFMA.pdf', 'Pre-Function — Vendor Copy')">
+        <span>Pre-Function — Vendor Copy</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <span class="diag-warn" data-en="Diagrams only — no BEO event order received yet for this date. Group name, times, and headcount to be confirmed." data-es="Diagrams only — no BEO event order received yet for this date. Group name, times, and headcount to be confirmed.">Diagrams only — no BEO event order received yet for this date. Group name, times, and headcount to be confirmed.</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="day-section">
+<button class="day-btn a5" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">21</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="MON" data-es="MON">MON</div>
+    <div class="day-summary" data-en="Informa" data-es="Informa">Informa</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Informa</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSECGeneralSessionfromInforma.pdf', 'Primrose C — General Session')">
+        <span>Primrose C — General Session</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSECDfromInforma.pdf', 'Primrose CD')">
+        <span>Primrose CD</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/CamelliafromInforma.pdf', 'Camellia')">
+        <span>Camellia</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/VERBENAfromInforma.pdf', 'Verbena')">
+        <span>Verbena</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PREFUNCTIONfromInforma.pdf', 'Pre-Function')">
+        <span>Pre-Function</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <span class="diag-warn" data-en="Diagrams only — no BEO event order received yet for this date. Group name, times, and headcount to be confirmed." data-es="Diagrams only — no BEO event order received yet for this date. Group name, times, and headcount to be confirmed.">Diagrams only — no BEO event order received yet for this date. Group name, times, and headcount to be confirmed.</span>
+    </div>
+  </div>
+</div>
+</div>
+
 </div><!-- /diagrams-list -->
 
 <div class="diag-modal" id="diagModal">
