@@ -331,6 +331,24 @@ body {
 .sched-wrap { padding: 0 16px 48px; }
 .sched-live { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--green); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
 .sched-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink:0; }
+.sched-live.off { color: var(--text-3); }
+.sched-live.off::before { background: var(--red); }
+
+/* ── MATRIX GRID (all-off-week filler) ── */
+.matrix-card { position: relative; height: 240px; overflow: hidden; background: var(--bg); animation: matrixJitter 9s infinite; }
+.matrix-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.6; display: block; }
+.matrix-card::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.22) 0px, rgba(0,0,0,0.22) 1px, transparent 1px, transparent 3px); mix-blend-mode: multiply; pointer-events: none; }
+.matrix-overlay { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 0 18px; background: radial-gradient(ellipse at center, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.72) 100%); }
+.matrix-text { font-family: 'Bebas Neue', sans-serif; font-size: 25px; letter-spacing: 2px; line-height: 1.15; color: #8CFFB8; text-shadow: 0 0 8px rgba(45,189,128,0.85), 0 0 22px rgba(45,189,128,0.45); position: relative; }
+.matrix-text::before, .matrix-text::after { content: attr(data-text); position: absolute; left: 0; top: 0; width: 100%; overflow: hidden; }
+.matrix-text::before { color: #ff3860; clip-path: inset(0 0 55% 0); animation: matrixGlitchA 4.4s infinite steps(1); opacity: 0; }
+.matrix-text::after { color: #4f8ef0; clip-path: inset(55% 0 0 0); animation: matrixGlitchB 5.6s infinite steps(1); opacity: 0; }
+@keyframes matrixGlitchA { 0%,91%,100% { transform: translate(0,0); opacity: 0; } 92% { transform: translate(-2px,0); opacity: 0.85; } 93.5% { transform: translate(2px,-1px); opacity: 0.85; } 95% { transform: translate(-1px,0); opacity: 0; } }
+@keyframes matrixGlitchB { 0%,88%,100% { transform: translate(0,0); opacity: 0; } 89% { transform: translate(2px,0); opacity: 0.85; } 90.5% { transform: translate(-2px,1px); opacity: 0.85; } 92% { transform: translate(1px,0); opacity: 0; } }
+.matrix-scan { position: absolute; left: 0; right: 0; height: 30%; background: linear-gradient(180deg, rgba(45,189,128,0) 0%, rgba(45,189,128,0.14) 50%, rgba(45,189,128,0) 100%); animation: matrixScan 4.5s linear infinite; pointer-events: none; z-index: 3; }
+@keyframes matrixScan { 0% { top: -30%; } 100% { top: 100%; } }
+@keyframes matrixJitter { 0%,97%,100% { transform: translate(0,0); } 97.3% { transform: translate(-2px,0); } 97.6% { transform: translate(2px,1px); } 98% { transform: translate(0,0); } }
+@media (prefers-reduced-motion: reduce) { .matrix-text::before, .matrix-text::after, .matrix-scan, .matrix-card { animation: none; } }
 
 .tbl-outer { overflow-x: auto; -webkit-overflow-scrolling: touch; position: relative; }
 .tbl-wrap  { position: relative; display: inline-block; min-width: 100%; }
@@ -496,53 +514,15 @@ body {
 </div>
 
 <!-- STAFF SCHEDULE -->
-<div class="sec" data-en="Staff Schedule · Aug 22–28" data-es="Horario · 22–28 Ago">Staff Schedule · Aug 22–28</div>
+<div class="sec" data-en="Staff Schedule · Aug 29–Sep 4" data-es="Horario · 29 Ago–4 Sep">Staff Schedule · Aug 29–Sep 4</div>
 <div class="sched-wrap">
-  <div class="sched-live" data-en="Live · week of Aug 22, 2026" data-es="En vivo · semana del 22 Ago">Live · week of Aug 22, 2026</div>
-  <div class="tbl-outer" id="tblOuter">
-    <div class="today-box" id="todayBox"></div>
-    <div class="tbl-wrap" id="tblWrap">
-      <table class="s">
-        <thead>
-          <tr>
-            <th style="text-align:left;min-width:80px"></th>
-            <th id="col6">SAT 22</th>
-            <th id="col0">SUN 23</th>
-            <th id="col1">MON 24</th>
-            <th id="col2">TUE 25</th>
-            <th id="col3">WED 26</th>
-            <th id="col4">THU 27</th>
-            <th id="col5">FRI 28</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="rr rd"><td data-en="Director of Event Ops" data-es="Director de Eventos">Director of Event Ops</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr class="rd">
-            <td class="nm">Hector</td>
-            <td>8A</td><td class="off">OFF</td><td>730A</td>
-            <td>530A</td><td>530A</td><td class="off">OFF</td><td>8A</td>
-          </tr>
-          <tr class="rr rc"><td data-en="Banquet Captain" data-es="Capitán de Banquetes">Banquet Captain</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr class="rc">
-            <td class="nm">Jason</td>
-            <td>5A–5P</td><td class="off">OFF</td><td class="off">OFF</td>
-            <td class="off">OFF</td><td>9A–9P</td><td>6A–5P</td><td>5A–10A</td>
-          </tr>
-          <tr class="rr rs"><td data-en="Servers" data-es="Meseros">Servers</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr class="rs"><td class="nm">Dylan W.</td><td>5A–4P</td><td>8A–3P</td><td></td><td></td><td>BAR</td><td></td><td></td></tr>
-          <tr class="rs"><td class="nm">Francisco</td><td>5A–2P</td><td></td><td>10A–2P</td><td>6A–6P</td><td>6A–9P</td><td></td><td>5A–10A</td></tr>
-          <tr class="rs"><td class="nm">Carlos</td><td></td><td></td><td></td><td></td><td>6A–2P</td><td>6A–3P</td><td></td></tr>
-          <tr class="rs"><td class="nm">Tomas C.</td><td>6A–10A</td><td></td><td>10A–2P/HOUSEMAN</td><td>530A–2P/HOUSEMAN</td><td>530A–9P</td><td></td><td></td></tr>
-          <tr class="rs"><td class="nm">Gema</td><td></td><td></td><td></td><td></td><td>6A–4P</td><td></td><td></td></tr>
-          <tr class="rs"><td class="nm">Odaly</td><td></td><td></td><td></td><td></td><td>530A–2P</td><td></td><td></td></tr>
-          <tr class="rr rb"><td data-en="Bartenders" data-es="Cantineros">Bartenders</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr class="rb"><td class="nm">Dylan W.</td><td></td><td></td><td></td><td></td><td>4P–9P</td><td></td><td></td></tr>
-          <tr class="rr rh"><td data-en="Housemen" data-es="Mozos">Housemen</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr class="rh"><td class="nm">Jamshid</td><td>12P–7P</td><td>12P–7P</td><td></td><td></td><td>2P–10P</td><td>12P–7P</td><td>12P–7P</td></tr>
-          <tr class="rh"><td class="nm">Tomas C.</td><td></td><td></td><td>2P–7P</td><td>2P–8P</td><td></td><td></td><td></td></tr>
-        </tbody>
-      </table>
+  <div class="sched-live off" data-en="Offline · week of Aug 29, 2026" data-es="Fuera de línea · semana del 29 Ago">Offline · week of Aug 29, 2026</div>
+  <div class="matrix-card">
+    <canvas class="matrix-canvas" id="matrixCanvas"></canvas>
+    <div class="matrix-overlay">
+      <div class="matrix-text" data-en="Offline Until Next Week" data-es="Fuera De Línea Hasta La Próxima Semana" data-text="Offline Until Next Week">Offline Until Next Week</div>
     </div>
+    <div class="matrix-scan"></div>
   </div>
 </div>
 
@@ -569,6 +549,7 @@ body {
     document.getElementById('les').classList.toggle('active',l==='es');
     document.getElementById('g-line').textContent=gr[l];
     document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
+    document.querySelectorAll('[data-text][data-en]').forEach(el=>el.setAttribute('data-text',el.getAttribute('data-'+l)));
     localStorage.setItem('bb-lang',l);
     requestAnimationFrame(positionBox);
   }
@@ -580,6 +561,7 @@ body {
   function positionBox(){
     const box=document.getElementById('todayBox');
     const outer=document.getElementById('tblOuter');
+    if(!box||!outer){return;}
     const now=new Date();
     const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
     if(today<WS||today>WE){box.style.display='none';return;}
@@ -629,11 +611,62 @@ body {
     if(retries>=8) clearInterval(retryInterval);
   },250);
   window.addEventListener('resize',positionBox);
-  document.getElementById('tblOuter').addEventListener('scroll',positionBox);
+  const tblOuterEl=document.getElementById('tblOuter');
+  if(tblOuterEl) tblOuterEl.addEventListener('scroll',positionBox);
   /* also reposition when page becomes visible again (back navigation) */
   document.addEventListener('visibilitychange',function(){
     if(!document.hidden){ positionBox(); setTimeout(positionBox,200); }
   });
+
+  /* ── MATRIX RAIN (all-off-week filler) ── */
+  (function(){
+    const canvas=document.getElementById('matrixCanvas');
+    if(!canvas) return;
+    const ctx=canvas.getContext('2d');
+    const chars='アイウエオカキクケコサシスセソタチツテト0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const fontSize=14;
+    let cols=0, drops=[];
+    function hexToRgb(hex){
+      hex=(hex||'#000000').trim().replace('#','');
+      if(hex.length===3) hex=hex.split('').map(c=>c+c).join('');
+      const num=parseInt(hex,16);
+      return [(num>>16)&255,(num>>8)&255,num&255];
+    }
+    function bgRgba(alpha){
+      const bg=getComputedStyle(document.documentElement).getPropertyValue('--bg');
+      const [r,g,b]=hexToRgb(bg);
+      return 'rgba('+r+','+g+','+b+','+alpha+')';
+    }
+    function resize(){
+      canvas.width=canvas.offsetWidth;
+      canvas.height=canvas.offsetHeight;
+      cols=Math.ceil(canvas.width/fontSize);
+      drops=new Array(cols).fill(0).map(()=>Math.floor(Math.random()*-20));
+    }
+    function draw(){
+      ctx.fillStyle=bgRgba(0.10);
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.font=fontSize+'px monospace';
+      for(let i=0;i<drops.length;i++){
+        const ch=chars[Math.floor(Math.random()*chars.length)];
+        const y=drops[i]*fontSize;
+        ctx.fillStyle='rgba(140,255,184,0.85)';
+        ctx.fillText(ch,i*fontSize,y);
+        if(y>canvas.height && Math.random()>0.975){ drops[i]=0; }
+        drops[i]++;
+      }
+    }
+    let matrixTimer=null;
+    const reduceMotion=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function start(){ if(matrixTimer||reduceMotion) return; matrixTimer=setInterval(draw,55); }
+    function stop(){ if(matrixTimer){ clearInterval(matrixTimer); matrixTimer=null; } }
+    resize();
+    if(reduceMotion){ ctx.fillStyle=bgRgba(1); ctx.fillRect(0,0,canvas.width,canvas.height); draw(); } else { start(); }
+    window.addEventListener('resize',resize);
+    document.addEventListener('visibilitychange',function(){
+      if(document.hidden) stop(); else start();
+    });
+  })();
 </script>
 <script>
 // ── SPLASH SCREEN (once per session) ──
