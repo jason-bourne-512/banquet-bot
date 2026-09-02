@@ -1,6 +1,9 @@
 # Banquet Bot — Progress Log
 
-_Last updated: 2026-07-23_
+_Last updated: 2026-09-02_
+
+## DONE — Full menu refresh (committed `32a69e3`, pushed, tested live)
+Refreshed `menu.html` against the live Marriott e-menu (mi.bookmarriott.com, dated Sep 01, 2026) — every section (breakfast, breaks, lunch, dinner, reception, bar & wine, packages), most items re-priced, several new items added. Caught and fixed a real error: the old page had Monday and Sunday's daily lunch buffet themes swapped (Monday was showing Gourmet Deli, Sunday was showing Southern Comforts — actually the reverse, plus Gourmet Deli is available any day, not tied to Monday). Flagged two sections not found in the current online menu (Chef Attended Omelet Station, Conference Dining) with an inline note rather than deleting them, since they may just live on a different menu (e.g. the Corrine restaurant menu). Browser-tested: category expand/collapse, search filtering, light/dark theme all confirmed working before push.
 
 ## How we work now
 - Claude edits the repo directly at `~/banquet-bot`, commits, and pushes from the Mac (zero-paste).
