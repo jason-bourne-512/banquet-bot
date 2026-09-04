@@ -2268,23 +2268,22 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   }
   function renderOverview(){
     const el = document.getElementById('ov2Days');
-    const days = buildOverviewData();
+    const now = new Date();
+    const pad = v => String(v).padStart(2,'0');
+    const today = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+    const days = buildOverviewData().filter(day => day.date >= today);
     if (!days.length){
       el.innerHTML = '<div class="ov2-empty">No events found</div>';
       return;
     }
     const DOW_EN = ["MON","TUE","WED","THU","FRI","SAT","SUN"];
     const MON_EN = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
-    const now = new Date();
-    const pad = v => String(v).padStart(2,'0');
-    const today = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
 
     el.innerHTML = days.map(day=>{
       const [y,mo,da] = day.date.split('-').map(Number);
       const dow = new Date(y, mo-1, da).getDay();
       const dowIdx = dow === 0 ? 6 : dow-1;
       const isToday = day.date === today;
-      const isPast = day.date < today;
       const label = `${DOW_EN[dowIdx]} ${MON_EN[mo-1]} ${pad(da)}`;
       const evsHtml = day.events.map(e=>{
         let head = ov2WrapWords(e.company);
@@ -2299,7 +2298,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
         });
         return `<div class="ov2-ev"><div class="ov2-ev-hd">${head}</div>${roomsHtml}</div>`;
       }).join('');
-      return `<div class="ov2-day${isPast?' ov2-past':''}"><div class="ov2-day-hd">${label}${isToday?'<span class="today">TODAY</span>':''}</div>${evsHtml}</div>`;
+      return `<div class="ov2-day"><div class="ov2-day-hd">${label}${isToday?'<span class="today">TODAY</span>':''}</div>${evsHtml}</div>`;
     }).join('');
   }
   const OV2_GLITCH_CHARS = '█▓▒░<>/\\|#$%01_-=+*';
@@ -2353,7 +2352,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       if(single&&single===today) isToday=true;
       else if(start&&end&&today>=start&&today<=end) isToday=true;
       const isPast=(single&&single<today)||(end&&end<today);
-      if(isPast){ section.querySelector('.day-btn').classList.add('a-dim'); }
+      if(isPast){ section.remove(); return; }
       if(isToday){
         const btn=section.querySelector('.day-btn');
         btn.classList.add('is-today');
