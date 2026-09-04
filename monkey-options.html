@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banquet Bot — Dancing Monkey Options</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:#050506; color:#edeae2; font-family:'Courier New',monospace; min-height:100vh; padding:30px 16px 60px; }
+h1 { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:1px; text-align:center; color:#c9a84c; margin-bottom:6px; }
+.sub { text-align:center; font-size:11px; color:#7e7b74; margin-bottom:34px; }
+.options { display:flex; flex-wrap:wrap; justify-content:center; gap:26px; max-width:1200px; margin:0 auto; }
+.opt-card { background:#111316; border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px; width:340px; }
+.opt-title { font-size:12.5px; font-weight:700; letter-spacing:.06em; color:#edeae2; margin-bottom:4px; text-transform:uppercase; text-align:center; }
+.opt-desc { font-size:10px; color:#7e7b74; line-height:1.5; margin-bottom:16px; text-align:center; min-height:44px; }
+
+/* ── mock of the real index.html hero, dark theme ── */
+.mock-hero { background:#09090c; border-radius:10px; padding:22px 16px; position:relative; overflow:hidden; border:1px solid rgba(255,255,255,0.06); }
+.mock-eyebrow { font-family:'Courier New',monospace; font-size:8px; color:#c9a84c; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+.mock-row { display:flex; align-items:center; justify-content:space-between; gap:14px; }
+.mock-title { font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:1px; color:#c9a84c; line-height:0.95; }
+
+.monkey { position:relative; width:72px; height:96px; flex-shrink:0; image-rendering:pixelated; }
+.monkey i { position:absolute; top:0; left:0; width:6px; height:6px; box-shadow: ; opacity:1; animation: monkeyFrame 0.7s steps(1) infinite; }
+.monkey i.up { box-shadow: ; animation-delay: calc(0.7s / 2); }
+@keyframes monkeyFrame { 0%,49%{ opacity:1 } 50%,100%{ opacity:0 } }
+
+.dance-classic { animation: bounceClassic 0.6s ease-in-out infinite; }
+@keyframes bounceClassic { 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-10px) } }
+
+.dance-cute { animation: swayCute 1.1s ease-in-out infinite; }
+@keyframes swayCute { 0%,100%{ transform:rotate(-8deg) translateY(0) } 50%{ transform:rotate(8deg) translateY(-4px) } }
+
+.dance-party { animation: squishParty 0.5s ease-in-out infinite; }
+@keyframes squishParty { 0%,100%{ transform:scaleY(1) translateY(0) } 40%{ transform:scaleY(0.85) translateY(4px) } 60%{ transform:scaleY(1.08) translateY(-9px) } }
+</style>
+</head>
+<body>
+<h1>DANCING PIXEL MONKEY — 3 OPTIONS</h1>
+<div class="sub">Placed next to the "Good evening, team." greeting on index.html</div>
+
+<div class="options">
+
+  <div class="opt-card">
+    <div class="opt-title">1 · Classic 8-bit</div>
+    <div class="opt-desc">Simple two-tone brown, energetic vertical bounce with arms swapping straight up.</div>
+    <div class="mock-hero">
+      <div class="mock-eyebrow">F&amp;B OPERATIONS · AUSDW</div>
+      <div class="mock-row">
+        <div class="mock-title">GOOD EVENING,<br>TEAM.</div>
+        <div class="monkey dance-classic">
+          <i class="down" style="box-shadow: 24px 0px 0 #8a5a34, 30px 0px 0 #8a5a34, 36px 0px 0 #8a5a34, 42px 0px 0 #8a5a34, 6px 6px 0 #5c3a1f, 12px 6px 0 #5c3a1f, 18px 6px 0 #8a5a34, 24px 6px 0 #8a5a34, 30px 6px 0 #8a5a34, 36px 6px 0 #8a5a34, 42px 6px 0 #8a5a34, 48px 6px 0 #8a5a34, 54px 6px 0 #5c3a1f, 60px 6px 0 #5c3a1f, 6px 12px 0 #5c3a1f, 12px 12px 0 #5c3a1f, 18px 12px 0 #8a5a34, 24px 12px 0 #e8c79a, 30px 12px 0 #e8c79a, 36px 12px 0 #e8c79a, 42px 12px 0 #e8c79a, 48px 12px 0 #8a5a34, 54px 12px 0 #5c3a1f, 60px 12px 0 #5c3a1f, 18px 18px 0 #8a5a34, 24px 18px 0 #241408, 30px 18px 0 #e8c79a, 36px 18px 0 #e8c79a, 42px 18px 0 #241408, 48px 18px 0 #8a5a34, 18px 24px 0 #8a5a34, 24px 24px 0 #e8c79a, 30px 24px 0 #e8c79a, 36px 24px 0 #e8c79a, 42px 24px 0 #e8c79a, 48px 24px 0 #8a5a34, 24px 30px 0 #e8c79a, 30px 30px 0 #241408, 36px 30px 0 #241408, 42px 30px 0 #e8c79a, 18px 36px 0 #8a5a34, 24px 36px 0 #8a5a34, 30px 36px 0 #8a5a34, 36px 36px 0 #8a5a34, 42px 36px 0 #8a5a34, 48px 36px 0 #8a5a34, 6px 42px 0 #8a5a34, 12px 42px 0 #8a5a34, 18px 42px 0 #8a5a34, 24px 42px 0 #8a5a34, 30px 42px 0 #8a5a34, 36px 42px 0 #8a5a34, 42px 42px 0 #8a5a34, 48px 42px 0 #8a5a34, 54px 42px 0 #8a5a34, 60px 42px 0 #8a5a34, 6px 48px 0 #8a5a34, 12px 48px 0 #8a5a34, 18px 48px 0 #8a5a34, 24px 48px 0 #8a5a34, 30px 48px 0 #8a5a34, 36px 48px 0 #8a5a34, 42px 48px 0 #8a5a34, 48px 48px 0 #8a5a34, 54px 48px 0 #8a5a34, 60px 48px 0 #8a5a34, 6px 54px 0 #e8c79a, 12px 54px 0 #e8c79a, 18px 54px 0 #8a5a34, 24px 54px 0 #8a5a34, 30px 54px 0 #8a5a34, 36px 54px 0 #8a5a34, 42px 54px 0 #8a5a34, 48px 54px 0 #8a5a34, 54px 54px 0 #e8c79a, 60px 54px 0 #e8c79a, 18px 60px 0 #8a5a34, 24px 60px 0 #8a5a34, 30px 60px 0 #8a5a34, 36px 60px 0 #8a5a34, 42px 60px 0 #8a5a34, 48px 60px 0 #8a5a34, 60px 60px 0 #5c3a1f, 18px 66px 0 #8a5a34, 24px 66px 0 #8a5a34, 30px 66px 0 #8a5a34, 36px 66px 0 #8a5a34, 42px 66px 0 #8a5a34, 48px 66px 0 #8a5a34, 60px 66px 0 #5c3a1f, 18px 72px 0 #5c3a1f, 24px 72px 0 #5c3a1f, 42px 72px 0 #5c3a1f, 48px 72px 0 #5c3a1f, 54px 72px 0 #5c3a1f, 18px 78px 0 #5c3a1f, 24px 78px 0 #5c3a1f, 42px 78px 0 #5c3a1f, 48px 78px 0 #5c3a1f, 18px 84px 0 #e8c79a, 24px 84px 0 #e8c79a, 42px 84px 0 #e8c79a, 48px 84px 0 #e8c79a; animation-duration:0.6s;"></i>
+          <i class="up" style="box-shadow: 6px -6px 0 #e8c79a, 12px -6px 0 #e8c79a, 54px -6px 0 #e8c79a, 60px -6px 0 #e8c79a, 6px 0px 0 #8a5a34, 12px 0px 0 #8a5a34, 24px 0px 0 #8a5a34, 30px 0px 0 #8a5a34, 36px 0px 0 #8a5a34, 42px 0px 0 #8a5a34, 54px 0px 0 #8a5a34, 60px 0px 0 #8a5a34, 6px 6px 0 #8a5a34, 12px 6px 0 #8a5a34, 18px 6px 0 #8a5a34, 24px 6px 0 #8a5a34, 30px 6px 0 #8a5a34, 36px 6px 0 #8a5a34, 42px 6px 0 #8a5a34, 48px 6px 0 #8a5a34, 54px 6px 0 #8a5a34, 60px 6px 0 #8a5a34, 6px 12px 0 #8a5a34, 12px 12px 0 #8a5a34, 18px 12px 0 #8a5a34, 24px 12px 0 #e8c79a, 30px 12px 0 #e8c79a, 36px 12px 0 #e8c79a, 42px 12px 0 #e8c79a, 48px 12px 0 #8a5a34, 54px 12px 0 #8a5a34, 60px 12px 0 #8a5a34, 6px 18px 0 #8a5a34, 12px 18px 0 #8a5a34, 18px 18px 0 #8a5a34, 24px 18px 0 #241408, 30px 18px 0 #e8c79a, 36px 18px 0 #e8c79a, 42px 18px 0 #241408, 48px 18px 0 #8a5a34, 54px 18px 0 #8a5a34, 60px 18px 0 #8a5a34, 6px 24px 0 #8a5a34, 12px 24px 0 #8a5a34, 18px 24px 0 #8a5a34, 24px 24px 0 #e8c79a, 30px 24px 0 #e8c79a, 36px 24px 0 #e8c79a, 42px 24px 0 #e8c79a, 48px 24px 0 #8a5a34, 54px 24px 0 #8a5a34, 60px 24px 0 #8a5a34, 6px 30px 0 #8a5a34, 12px 30px 0 #8a5a34, 24px 30px 0 #e8c79a, 30px 30px 0 #241408, 36px 30px 0 #241408, 42px 30px 0 #e8c79a, 54px 30px 0 #8a5a34, 60px 30px 0 #8a5a34, 6px 36px 0 #8a5a34, 12px 36px 0 #8a5a34, 18px 36px 0 #8a5a34, 24px 36px 0 #8a5a34, 30px 36px 0 #8a5a34, 36px 36px 0 #8a5a34, 42px 36px 0 #8a5a34, 48px 36px 0 #8a5a34, 54px 36px 0 #8a5a34, 60px 36px 0 #8a5a34, 18px 42px 0 #8a5a34, 24px 42px 0 #8a5a34, 30px 42px 0 #8a5a34, 36px 42px 0 #8a5a34, 42px 42px 0 #8a5a34, 48px 42px 0 #8a5a34, 18px 48px 0 #8a5a34, 24px 48px 0 #8a5a34, 30px 48px 0 #8a5a34, 36px 48px 0 #8a5a34, 42px 48px 0 #8a5a34, 48px 48px 0 #8a5a34, 18px 54px 0 #8a5a34, 24px 54px 0 #8a5a34, 30px 54px 0 #8a5a34, 36px 54px 0 #8a5a34, 42px 54px 0 #8a5a34, 48px 54px 0 #8a5a34, 54px 54px 0 #5c3a1f, 60px 54px 0 #5c3a1f, 18px 60px 0 #8a5a34, 24px 60px 0 #8a5a34, 30px 60px 0 #8a5a34, 36px 60px 0 #8a5a34, 42px 60px 0 #8a5a34, 48px 60px 0 #8a5a34, 60px 60px 0 #5c3a1f, 18px 66px 0 #8a5a34, 24px 66px 0 #8a5a34, 30px 66px 0 #8a5a34, 36px 66px 0 #8a5a34, 42px 66px 0 #8a5a34, 48px 66px 0 #8a5a34, 60px 66px 0 #5c3a1f, 18px 72px 0 #5c3a1f, 24px 72px 0 #5c3a1f, 42px 72px 0 #5c3a1f, 48px 72px 0 #5c3a1f, 54px 72px 0 #5c3a1f, 18px 78px 0 #5c3a1f, 24px 78px 0 #5c3a1f, 42px 78px 0 #5c3a1f, 48px 78px 0 #5c3a1f, 18px 84px 0 #e8c79a, 24px 84px 0 #e8c79a, 42px 84px 0 #e8c79a, 48px 84px 0 #e8c79a; animation-duration:0.6s; animation-delay:0.3s;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="opt-card">
+    <div class="opt-title">2 · Cute Chibi</div>
+    <div class="opt-desc">Softer pastel tones with pink cheeks, gentle side-to-side sway.</div>
+    <div class="mock-hero">
+      <div class="mock-eyebrow">F&amp;B OPERATIONS · AUSDW</div>
+      <div class="mock-row">
+        <div class="mock-title">GOOD EVENING,<br>TEAM.</div>
+        <div class="monkey dance-cute">
+          <i class="down" style="box-shadow: 24px 0px 0 #c98a5b, 30px 0px 0 #c98a5b, 36px 0px 0 #c98a5b, 42px 0px 0 #c98a5b, 6px 6px 0 #8a5a34, 12px 6px 0 #8a5a34, 18px 6px 0 #c98a5b, 24px 6px 0 #c98a5b, 30px 6px 0 #c98a5b, 36px 6px 0 #c98a5b, 42px 6px 0 #c98a5b, 48px 6px 0 #c98a5b, 54px 6px 0 #8a5a34, 60px 6px 0 #8a5a34, 6px 12px 0 #8a5a34, 12px 12px 0 #8a5a34, 18px 12px 0 #c98a5b, 24px 12px 0 #ffe3c2, 30px 12px 0 #ffe3c2, 36px 12px 0 #ffe3c2, 42px 12px 0 #ffe3c2, 48px 12px 0 #c98a5b, 54px 12px 0 #8a5a34, 60px 12px 0 #8a5a34, 18px 18px 0 #c98a5b, 24px 18px 0 #3a2416, 30px 18px 0 #ffe3c2, 36px 18px 0 #ffe3c2, 42px 18px 0 #3a2416, 48px 18px 0 #c98a5b, 18px 24px 0 #c98a5b, 24px 24px 0 #ffb0a8, 30px 24px 0 #ffe3c2, 36px 24px 0 #ffe3c2, 42px 24px 0 #ffb0a8, 48px 24px 0 #c98a5b, 24px 30px 0 #ffe3c2, 30px 30px 0 #3a2416, 36px 30px 0 #3a2416, 42px 30px 0 #ffe3c2, 18px 36px 0 #c98a5b, 24px 36px 0 #c98a5b, 30px 36px 0 #c98a5b, 36px 36px 0 #c98a5b, 42px 36px 0 #c98a5b, 48px 36px 0 #c98a5b, 6px 42px 0 #c98a5b, 12px 42px 0 #c98a5b, 18px 42px 0 #c98a5b, 24px 42px 0 #c98a5b, 30px 42px 0 #c98a5b, 36px 42px 0 #c98a5b, 42px 42px 0 #c98a5b, 48px 42px 0 #c98a5b, 54px 42px 0 #c98a5b, 60px 42px 0 #c98a5b, 6px 48px 0 #c98a5b, 12px 48px 0 #c98a5b, 18px 48px 0 #c98a5b, 24px 48px 0 #c98a5b, 30px 48px 0 #c98a5b, 36px 48px 0 #c98a5b, 42px 48px 0 #c98a5b, 48px 48px 0 #c98a5b, 54px 48px 0 #c98a5b, 60px 48px 0 #c98a5b, 6px 54px 0 #ffe3c2, 12px 54px 0 #ffe3c2, 18px 54px 0 #c98a5b, 24px 54px 0 #c98a5b, 30px 54px 0 #c98a5b, 36px 54px 0 #c98a5b, 42px 54px 0 #c98a5b, 48px 54px 0 #c98a5b, 54px 54px 0 #ffe3c2, 60px 54px 0 #ffe3c2, 18px 60px 0 #c98a5b, 24px 60px 0 #c98a5b, 30px 60px 0 #c98a5b, 36px 60px 0 #c98a5b, 42px 60px 0 #c98a5b, 48px 60px 0 #c98a5b, 60px 60px 0 #8a5a34, 18px 66px 0 #c98a5b, 24px 66px 0 #c98a5b, 30px 66px 0 #c98a5b, 36px 66px 0 #c98a5b, 42px 66px 0 #c98a5b, 48px 66px 0 #c98a5b, 60px 66px 0 #8a5a34, 18px 72px 0 #8a5a34, 24px 72px 0 #8a5a34, 42px 72px 0 #8a5a34, 48px 72px 0 #8a5a34, 54px 72px 0 #8a5a34, 18px 78px 0 #8a5a34, 24px 78px 0 #8a5a34, 42px 78px 0 #8a5a34, 48px 78px 0 #8a5a34, 18px 84px 0 #ffe3c2, 24px 84px 0 #ffe3c2, 42px 84px 0 #ffe3c2, 48px 84px 0 #ffe3c2; animation-duration:1.1s;"></i>
+          <i class="up" style="box-shadow: 6px -6px 0 #ffe3c2, 12px -6px 0 #ffe3c2, 54px -6px 0 #ffe3c2, 60px -6px 0 #ffe3c2, 6px 0px 0 #c98a5b, 12px 0px 0 #c98a5b, 24px 0px 0 #c98a5b, 30px 0px 0 #c98a5b, 36px 0px 0 #c98a5b, 42px 0px 0 #c98a5b, 54px 0px 0 #c98a5b, 60px 0px 0 #c98a5b, 6px 6px 0 #c98a5b, 12px 6px 0 #c98a5b, 18px 6px 0 #c98a5b, 24px 6px 0 #c98a5b, 30px 6px 0 #c98a5b, 36px 6px 0 #c98a5b, 42px 6px 0 #c98a5b, 48px 6px 0 #c98a5b, 54px 6px 0 #c98a5b, 60px 6px 0 #c98a5b, 6px 12px 0 #c98a5b, 12px 12px 0 #c98a5b, 18px 12px 0 #c98a5b, 24px 12px 0 #ffe3c2, 30px 12px 0 #ffe3c2, 36px 12px 0 #ffe3c2, 42px 12px 0 #ffe3c2, 48px 12px 0 #c98a5b, 54px 12px 0 #c98a5b, 60px 12px 0 #c98a5b, 6px 18px 0 #c98a5b, 12px 18px 0 #c98a5b, 18px 18px 0 #c98a5b, 24px 18px 0 #3a2416, 30px 18px 0 #ffe3c2, 36px 18px 0 #ffe3c2, 42px 18px 0 #3a2416, 48px 18px 0 #c98a5b, 54px 18px 0 #c98a5b, 60px 18px 0 #c98a5b, 6px 24px 0 #c98a5b, 12px 24px 0 #c98a5b, 18px 24px 0 #c98a5b, 24px 24px 0 #ffb0a8, 30px 24px 0 #ffe3c2, 36px 24px 0 #ffe3c2, 42px 24px 0 #ffb0a8, 48px 24px 0 #c98a5b, 54px 24px 0 #c98a5b, 60px 24px 0 #c98a5b, 6px 30px 0 #c98a5b, 12px 30px 0 #c98a5b, 24px 30px 0 #ffe3c2, 30px 30px 0 #3a2416, 36px 30px 0 #3a2416, 42px 30px 0 #ffe3c2, 54px 30px 0 #c98a5b, 60px 30px 0 #c98a5b, 6px 36px 0 #c98a5b, 12px 36px 0 #c98a5b, 18px 36px 0 #c98a5b, 24px 36px 0 #c98a5b, 30px 36px 0 #c98a5b, 36px 36px 0 #c98a5b, 42px 36px 0 #c98a5b, 48px 36px 0 #c98a5b, 54px 36px 0 #c98a5b, 60px 36px 0 #c98a5b, 18px 42px 0 #c98a5b, 24px 42px 0 #c98a5b, 30px 42px 0 #c98a5b, 36px 42px 0 #c98a5b, 42px 42px 0 #c98a5b, 48px 42px 0 #c98a5b, 18px 48px 0 #c98a5b, 24px 48px 0 #c98a5b, 30px 48px 0 #c98a5b, 36px 48px 0 #c98a5b, 42px 48px 0 #c98a5b, 48px 48px 0 #c98a5b, 18px 54px 0 #c98a5b, 24px 54px 0 #c98a5b, 30px 54px 0 #c98a5b, 36px 54px 0 #c98a5b, 42px 54px 0 #c98a5b, 48px 54px 0 #c98a5b, 54px 54px 0 #8a5a34, 60px 54px 0 #8a5a34, 18px 60px 0 #c98a5b, 24px 60px 0 #c98a5b, 30px 60px 0 #c98a5b, 36px 60px 0 #c98a5b, 42px 60px 0 #c98a5b, 48px 60px 0 #c98a5b, 60px 60px 0 #8a5a34, 18px 66px 0 #c98a5b, 24px 66px 0 #c98a5b, 30px 66px 0 #c98a5b, 36px 66px 0 #c98a5b, 42px 66px 0 #c98a5b, 48px 66px 0 #c98a5b, 60px 66px 0 #8a5a34, 18px 72px 0 #8a5a34, 24px 72px 0 #8a5a34, 42px 72px 0 #8a5a34, 48px 72px 0 #8a5a34, 54px 72px 0 #8a5a34, 18px 78px 0 #8a5a34, 24px 78px 0 #8a5a34, 42px 78px 0 #8a5a34, 48px 78px 0 #8a5a34, 18px 84px 0 #ffe3c2, 24px 84px 0 #ffe3c2, 42px 84px 0 #ffe3c2, 48px 84px 0 #ffe3c2; animation-duration:1.1s; animation-delay:0.55s;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="opt-card">
+    <div class="opt-title">3 · Party Monkey</div>
+    <div class="opt-desc">Classic palette plus a tiny party hat, quick squash-and-stretch bounce.</div>
+    <div class="mock-hero">
+      <div class="mock-eyebrow">F&amp;B OPERATIONS · AUSDW</div>
+      <div class="mock-row">
+        <div class="mock-title">GOOD EVENING,<br>TEAM.</div>
+        <div class="monkey dance-party">
+          <i class="down" style="box-shadow: 36px -12px 0 #e0507a, 30px -6px 0 #e0507a, 36px -6px 0 #e0507a, 24px 0px 0 #8a5a34, 30px 0px 0 #8a5a34, 36px 0px 0 #8a5a34, 42px 0px 0 #8a5a34, 6px 6px 0 #5c3a1f, 12px 6px 0 #5c3a1f, 18px 6px 0 #8a5a34, 24px 6px 0 #8a5a34, 30px 6px 0 #8a5a34, 36px 6px 0 #8a5a34, 42px 6px 0 #8a5a34, 48px 6px 0 #8a5a34, 54px 6px 0 #5c3a1f, 60px 6px 0 #5c3a1f, 6px 12px 0 #5c3a1f, 12px 12px 0 #5c3a1f, 18px 12px 0 #8a5a34, 24px 12px 0 #e8c79a, 30px 12px 0 #e8c79a, 36px 12px 0 #e8c79a, 42px 12px 0 #e8c79a, 48px 12px 0 #8a5a34, 54px 12px 0 #5c3a1f, 60px 12px 0 #5c3a1f, 18px 18px 0 #8a5a34, 24px 18px 0 #241408, 30px 18px 0 #e8c79a, 36px 18px 0 #e8c79a, 42px 18px 0 #241408, 48px 18px 0 #8a5a34, 18px 24px 0 #8a5a34, 24px 24px 0 #e8c79a, 30px 24px 0 #e8c79a, 36px 24px 0 #e8c79a, 42px 24px 0 #e8c79a, 48px 24px 0 #8a5a34, 24px 30px 0 #e8c79a, 30px 30px 0 #241408, 36px 30px 0 #241408, 42px 30px 0 #e8c79a, 18px 36px 0 #8a5a34, 24px 36px 0 #8a5a34, 30px 36px 0 #8a5a34, 36px 36px 0 #8a5a34, 42px 36px 0 #8a5a34, 48px 36px 0 #8a5a34, 6px 42px 0 #8a5a34, 12px 42px 0 #8a5a34, 18px 42px 0 #8a5a34, 24px 42px 0 #8a5a34, 30px 42px 0 #8a5a34, 36px 42px 0 #8a5a34, 42px 42px 0 #8a5a34, 48px 42px 0 #8a5a34, 54px 42px 0 #8a5a34, 60px 42px 0 #8a5a34, 6px 48px 0 #8a5a34, 12px 48px 0 #8a5a34, 18px 48px 0 #8a5a34, 24px 48px 0 #8a5a34, 30px 48px 0 #8a5a34, 36px 48px 0 #8a5a34, 42px 48px 0 #8a5a34, 48px 48px 0 #8a5a34, 54px 48px 0 #8a5a34, 60px 48px 0 #8a5a34, 6px 54px 0 #e8c79a, 12px 54px 0 #e8c79a, 18px 54px 0 #8a5a34, 24px 54px 0 #8a5a34, 30px 54px 0 #8a5a34, 36px 54px 0 #8a5a34, 42px 54px 0 #8a5a34, 48px 54px 0 #8a5a34, 54px 54px 0 #e8c79a, 60px 54px 0 #e8c79a, 18px 60px 0 #8a5a34, 24px 60px 0 #8a5a34, 30px 60px 0 #8a5a34, 36px 60px 0 #8a5a34, 42px 60px 0 #8a5a34, 48px 60px 0 #8a5a34, 60px 60px 0 #5c3a1f, 18px 66px 0 #8a5a34, 24px 66px 0 #8a5a34, 30px 66px 0 #8a5a34, 36px 66px 0 #8a5a34, 42px 66px 0 #8a5a34, 48px 66px 0 #8a5a34, 60px 66px 0 #5c3a1f, 18px 72px 0 #5c3a1f, 24px 72px 0 #5c3a1f, 42px 72px 0 #5c3a1f, 48px 72px 0 #5c3a1f, 54px 72px 0 #5c3a1f, 18px 78px 0 #5c3a1f, 24px 78px 0 #5c3a1f, 42px 78px 0 #5c3a1f, 48px 78px 0 #5c3a1f, 18px 84px 0 #e8c79a, 24px 84px 0 #e8c79a, 42px 84px 0 #e8c79a, 48px 84px 0 #e8c79a; animation-duration:0.5s;"></i>
+          <i class="up" style="box-shadow: 36px -12px 0 #e0507a, 6px -6px 0 #e8c79a, 12px -6px 0 #e8c79a, 30px -6px 0 #e0507a, 36px -6px 0 #e0507a, 54px -6px 0 #e8c79a, 60px -6px 0 #e8c79a, 6px 0px 0 #8a5a34, 12px 0px 0 #8a5a34, 24px 0px 0 #8a5a34, 30px 0px 0 #8a5a34, 36px 0px 0 #8a5a34, 42px 0px 0 #8a5a34, 54px 0px 0 #8a5a34, 60px 0px 0 #8a5a34, 6px 6px 0 #8a5a34, 12px 6px 0 #8a5a34, 18px 6px 0 #8a5a34, 24px 6px 0 #8a5a34, 30px 6px 0 #8a5a34, 36px 6px 0 #8a5a34, 42px 6px 0 #8a5a34, 48px 6px 0 #8a5a34, 54px 6px 0 #8a5a34, 60px 6px 0 #8a5a34, 6px 12px 0 #8a5a34, 12px 12px 0 #8a5a34, 18px 12px 0 #8a5a34, 24px 12px 0 #e8c79a, 30px 12px 0 #e8c79a, 36px 12px 0 #e8c79a, 42px 12px 0 #e8c79a, 48px 12px 0 #8a5a34, 54px 12px 0 #8a5a34, 60px 12px 0 #8a5a34, 6px 18px 0 #8a5a34, 12px 18px 0 #8a5a34, 18px 18px 0 #8a5a34, 24px 18px 0 #241408, 30px 18px 0 #e8c79a, 36px 18px 0 #e8c79a, 42px 18px 0 #241408, 48px 18px 0 #8a5a34, 54px 18px 0 #8a5a34, 60px 18px 0 #8a5a34, 6px 24px 0 #8a5a34, 12px 24px 0 #8a5a34, 18px 24px 0 #8a5a34, 24px 24px 0 #e8c79a, 30px 24px 0 #e8c79a, 36px 24px 0 #e8c79a, 42px 24px 0 #e8c79a, 48px 24px 0 #8a5a34, 54px 24px 0 #8a5a34, 60px 24px 0 #8a5a34, 6px 30px 0 #8a5a34, 12px 30px 0 #8a5a34, 24px 30px 0 #e8c79a, 30px 30px 0 #241408, 36px 30px 0 #241408, 42px 30px 0 #e8c79a, 54px 30px 0 #8a5a34, 60px 30px 0 #8a5a34, 6px 36px 0 #8a5a34, 12px 36px 0 #8a5a34, 18px 36px 0 #8a5a34, 24px 36px 0 #8a5a34, 30px 36px 0 #8a5a34, 36px 36px 0 #8a5a34, 42px 36px 0 #8a5a34, 48px 36px 0 #8a5a34, 54px 36px 0 #8a5a34, 60px 36px 0 #8a5a34, 18px 42px 0 #8a5a34, 24px 42px 0 #8a5a34, 30px 42px 0 #8a5a34, 36px 42px 0 #8a5a34, 42px 42px 0 #8a5a34, 48px 42px 0 #8a5a34, 18px 48px 0 #8a5a34, 24px 48px 0 #8a5a34, 30px 48px 0 #8a5a34, 36px 48px 0 #8a5a34, 42px 48px 0 #8a5a34, 48px 48px 0 #8a5a34, 18px 54px 0 #8a5a34, 24px 54px 0 #8a5a34, 30px 54px 0 #8a5a34, 36px 54px 0 #8a5a34, 42px 54px 0 #8a5a34, 48px 54px 0 #8a5a34, 54px 54px 0 #5c3a1f, 60px 54px 0 #5c3a1f, 18px 60px 0 #8a5a34, 24px 60px 0 #8a5a34, 30px 60px 0 #8a5a34, 36px 60px 0 #8a5a34, 42px 60px 0 #8a5a34, 48px 60px 0 #8a5a34, 60px 60px 0 #5c3a1f, 18px 66px 0 #8a5a34, 24px 66px 0 #8a5a34, 30px 66px 0 #8a5a34, 36px 66px 0 #8a5a34, 42px 66px 0 #8a5a34, 48px 66px 0 #8a5a34, 60px 66px 0 #5c3a1f, 18px 72px 0 #5c3a1f, 24px 72px 0 #5c3a1f, 42px 72px 0 #5c3a1f, 48px 72px 0 #5c3a1f, 54px 72px 0 #5c3a1f, 18px 78px 0 #5c3a1f, 24px 78px 0 #5c3a1f, 42px 78px 0 #5c3a1f, 48px 78px 0 #5c3a1f, 18px 84px 0 #e8c79a, 24px 84px 0 #e8c79a, 42px 84px 0 #e8c79a, 48px 84px 0 #e8c79a; animation-duration:0.5s; animation-delay:0.25s;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -2,6 +2,11 @@
 
 _Last updated: 2026-09-04_
 
+## DONE — Pixel-art dancing monkey on index.html
+Previewed 3 hand-authored pixel sprites in Chrome (`monkey-options.html`, kept as reference — box-shadow single-div technique, generated via a Python script so the pixel grid never has to be hand-typed): Classic 8-bit, Cute Chibi, Party Monkey (small pink party hat). Jason picked Party Monkey, much smaller than shown in the preview.
+
+Sits next to "Good evening, team." in the hero, ~36×48px, positioned in the gap between the text and the edge (not glued to either — `.hero-row` capped at `max-width:62%` with `space-between`). Two box-shadow frames (arms down / arms raised overhead) swap via CSS `steps()` animation for the dance, with a squash-and-stretch bounce. **Only dances on even hours** — `updateMonkeyDance()` checks `new Date().getHours() % 2 === 0` on load and every 60s (so it flips live if the page stays open across an hour boundary); on odd hours it just stands still in the arms-down pose. No manual scheduling — always derived from the current hour like every other dynamic-date bit in this app.
+
 ## DONE — Real app icon (favicon + apple-touch-icon), all 7 pages
 Previewed 3 directions in Chrome (`icon-options.html`, kept as reference): a gold hex "BB" monogram matching the splash screen, a service-cloche glyph, and a live-grid-pulse abstract mark. Jason picked the hex monogram.
 
