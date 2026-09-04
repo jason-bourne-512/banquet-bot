@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banquet Bot — Icon Options</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:#09090c; color:#edeae2; font-family:'Courier New',monospace; min-height:100vh; padding:30px 16px 60px; }
+h1 { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:1px; text-align:center; color:#c9a84c; margin-bottom:6px; }
+.sub { text-align:center; font-size:11px; color:#7e7b74; margin-bottom:36px; }
+.options { display:flex; flex-wrap:wrap; justify-content:center; gap:32px; max-width:1100px; margin:0 auto; }
+.opt-card { background:#111316; border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:22px; width:300px; text-align:center; }
+.opt-title { font-size:13px; font-weight:700; letter-spacing:.08em; color:#edeae2; margin-bottom:4px; text-transform:uppercase; }
+.opt-desc { font-size:10.5px; color:#7e7b74; line-height:1.5; margin-bottom:18px; min-height:48px; }
+.big { width:128px; height:128px; margin:0 auto 18px; }
+.row { display:flex; align-items:center; justify-content:center; gap:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.06); }
+.row-label { font-size:9px; color:#44423f; letter-spacing:.1em; text-transform:uppercase; }
+.sizes { display:flex; align-items:center; gap:14px; }
+.tab-mock { display:flex; align-items:center; gap:6px; background:#e8e8ea; border-radius:8px 8px 0 0; padding:6px 10px; }
+.tab-mock span { font-size:9px; color:#444; font-family:Arial,sans-serif; }
+.fav16 { width:16px; height:16px; }
+.home60 { width:44px; height:44px; border-radius:11px; }
+</style>
+</head>
+<body>
+<h1>BANQUET BOT — ICON OPTIONS</h1>
+<div class="sub">Three directions · shown large, at favicon size, and as a home-screen icon</div>
+
+<div class="options">
+
+  <!-- ══════ OPTION 1 — Hex Monogram (matches existing splash) ══════ -->
+  <div class="opt-card">
+    <div class="opt-title">1 · Hex Monogram</div>
+    <div class="opt-desc">Matches the splash screen already in the app — gold hexagon badge, "BB" letters, dark ground.</div>
+    <svg class="big" viewBox="0 0 100 100">
+      <rect width="100" height="100" rx="22" fill="#09090c"/>
+      <polygon points="50,10 84,29 84,71 50,90 16,71 16,29" fill="none" stroke="#c9a84c" stroke-width="3"/>
+      <polygon points="50,10 84,29 84,71 50,90 16,71 16,29" fill="#c9a84c" fill-opacity="0.10"/>
+      <text x="50" y="61" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="32" fill="#f0cc70">BB</text>
+    </svg>
+    <div class="row">
+      <div class="sizes">
+        <div class="tab-mock"><svg class="fav16" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#09090c"/><polygon points="50,10 84,29 84,71 50,90 16,71 16,29" fill="#c9a84c" fill-opacity="0.14" stroke="#c9a84c" stroke-width="6"/><text x="50" y="63" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="34" fill="#f0cc70">BB</text></svg><span>rundown.html</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <span class="row-label">Home screen</span>
+      <svg class="home60" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#09090c"/><polygon points="50,10 84,29 84,71 50,90 16,71 16,29" fill="#c9a84c" fill-opacity="0.14" stroke="#c9a84c" stroke-width="4"/><text x="50" y="62" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="33" fill="#f0cc70">BB</text></svg>
+    </div>
+  </div>
+
+  <!-- ══════ OPTION 2 — Banquet Cloche ══════ -->
+  <div class="opt-card">
+    <div class="opt-title">2 · Service Cloche</div>
+    <div class="opt-desc">A silver-service dome — instantly reads "banquet," no letters needed. Clean line-art in gold on dark.</div>
+    <svg class="big" viewBox="0 0 100 100">
+      <rect width="100" height="100" rx="22" fill="#09090c"/>
+      <path d="M22 66 A28 26 0 0 1 78 66" fill="none" stroke="#c9a84c" stroke-width="4.5" stroke-linecap="round"/>
+      <line x1="16" y1="66" x2="84" y2="66" stroke="#c9a84c" stroke-width="4.5" stroke-linecap="round"/>
+      <line x1="50" y1="40" x2="50" y2="30" stroke="#c9a84c" stroke-width="4.5" stroke-linecap="round"/>
+      <circle cx="50" cy="25" r="5" fill="#c9a84c"/>
+      <line x1="16" y1="76" x2="84" y2="76" stroke="#c9a84c" stroke-width="4.5" stroke-linecap="round" opacity="0.55"/>
+    </svg>
+    <div class="row">
+      <div class="sizes">
+        <div class="tab-mock"><svg class="fav16" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#09090c"/><path d="M20 64 A30 28 0 0 1 80 64" fill="none" stroke="#c9a84c" stroke-width="8" stroke-linecap="round"/><line x1="14" y1="64" x2="86" y2="64" stroke="#c9a84c" stroke-width="8" stroke-linecap="round"/><circle cx="50" cy="24" r="7" fill="#c9a84c"/></svg><span>rundown.html</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <span class="row-label">Home screen</span>
+      <svg class="home60" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#09090c"/><path d="M20 64 A30 28 0 0 1 80 64" fill="none" stroke="#c9a84c" stroke-width="7" stroke-linecap="round"/><line x1="14" y1="64" x2="86" y2="64" stroke="#c9a84c" stroke-width="7" stroke-linecap="round"/><circle cx="50" cy="24" r="6" fill="#c9a84c"/></svg>
+    </div>
+  </div>
+
+  <!-- ══════ OPTION 3 — Live Grid Pulse ══════ -->
+  <div class="opt-card">
+    <div class="opt-title">3 · Live Grid Pulse</div>
+    <div class="opt-desc">Ties to the app's own "Live" dot + BEO-grid feel — a seating/schedule grid with one pulsing event highlighted.</div>
+    <svg class="big" viewBox="0 0 100 100">
+      <rect width="100" height="100" rx="22" fill="#09090c"/>
+      <g fill="none" stroke="#7e7b74" stroke-width="2.4" opacity="0.55">
+        <rect x="20" y="20" width="16" height="16" rx="3"/>
+        <rect x="42" y="20" width="16" height="16" rx="3"/>
+        <rect x="64" y="20" width="16" height="16" rx="3"/>
+        <rect x="20" y="42" width="16" height="16" rx="3"/>
+        <rect x="20" y="64" width="16" height="16" rx="3"/>
+        <rect x="64" y="64" width="16" height="16" rx="3"/>
+      </g>
+      <rect x="42" y="42" width="38" height="38" rx="5" fill="#c9a84c" fill-opacity="0.18" stroke="#c9a84c" stroke-width="3"/>
+      <circle cx="61" cy="61" r="6" fill="#2dbd80"/>
+    </svg>
+    <div class="row">
+      <div class="sizes">
+        <div class="tab-mock"><svg class="fav16" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#09090c"/><g fill="none" stroke="#9a978f" stroke-width="5" opacity="0.6"><rect x="18" y="18" width="18" height="18" rx="4"/><rect x="64" y="18" width="18" height="18" rx="4"/><rect x="18" y="64" width="18" height="18" rx="4"/></g><rect x="40" y="40" width="42" height="42" rx="6" fill="#c9a84c" fill-opacity="0.22" stroke="#c9a84c" stroke-width="6"/><circle cx="61" cy="61" r="9" fill="#2dbd80"/></svg><span>rundown.html</span></div>
+      </div>
+    </div>
+    <div class="row">
+      <span class="row-label">Home screen</span>
+      <svg class="home60" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#09090c"/><g fill="none" stroke="#9a978f" stroke-width="4" opacity="0.6"><rect x="18" y="18" width="18" height="18" rx="4"/><rect x="64" y="18" width="18" height="18" rx="4"/><rect x="18" y="64" width="18" height="18" rx="4"/></g><rect x="40" y="40" width="42" height="42" rx="6" fill="#c9a84c" fill-opacity="0.22" stroke="#c9a84c" stroke-width="5"/><circle cx="61" cy="61" r="8" fill="#2dbd80"/></svg>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

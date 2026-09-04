@@ -2,6 +2,11 @@
 
 _Last updated: 2026-09-04_
 
+## DONE — Real app icon (favicon + apple-touch-icon), all 7 pages
+Previewed 3 directions in Chrome (`icon-options.html`, kept as reference): a gold hex "BB" monogram matching the splash screen, a service-cloche glyph, and a live-grid-pulse abstract mark. Jason picked the hex monogram.
+
+Rendered it with Pillow (not a browser screenshot) for pixel-exact output at every size — rounded-square dark ground, gold hex ring (outer/inner polygon subtraction, not a stroked line, to avoid a corner-miter artifact PIL's line-join left at the top vertex), "BB" in Georgia Bold. Generated `favicon-32.png`, `favicon-16.png`, `apple-touch-icon.png` (180×180), and `icon-512.png` (kept for a future web-app-manifest, not yet referenced anywhere). Added the `<link rel="icon">` / `<link rel="apple-touch-icon">` tags to all 7 pages (index, rundown, menu, handbook, training, rooms, info) right after each page's existing `theme-color` meta tag. Confirmed via DOM query that all three link tags resolve correctly on index.html.
+
 ## DONE — "Overview" tab added to rundown.html (browser-tested, pushed)
 Third tab on `rundown.html`, between Rundown and Diagrams: a flat, no-accordion view of every event — everything expanded, nothing to tap open. Parses the same `.day-section[data-date]` markup already on the page (no fetch, can't go stale) and condenses each company/group down to `Company / Contact / start–finish`, then per room, `time  LABEL`.
 
