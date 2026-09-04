@@ -1,6 +1,15 @@
 # Banquet Bot — Progress Log
 
-_Last updated: 2026-09-02_
+_Last updated: 2026-09-03_
+
+## DONE — Rundown update from Sep 3–23 BEO packet (pushed, tested live)
+Extended `rundown.html` coverage from Sep 17 through Sep 23 (added Sep 18 UIL NFHS breakfast, and a new "Week of Sep 19–25" with Sep 21–23 — Austin Commercial LP's ATX Leadership Collaborative and Informa TechTarget's 3-day STRATA conference across Primrose AB/CD, Primrose Foyer C, Bluebell, Verbena and Barton). CFMA (Sep 20) still has no event order in this packet, so it stays diagram-only as before.
+
+Cross-checked the new packet against what was already live and caught two real gaps:
+- **Missing events**: Regeneron Pharmaceuticals' Buttercup meetings on Sep 11 (afternoon, pork shoulder prep) and Sep 12 (morning wrap-up) weren't in the rundown at all — added both as new event-cards.
+- **Wrong headcounts**: Arbonne's Rise Up Retreat (Sep 11–12) was showing "Set for 114 · 19 crescent rounds of 6" and GTD 100 — the BEO says 96 guests, 16 rounds of 6. Corrected both days. Also fixed Rhonda & Ale's wedding (Sep 5) showing "EXP 25" when the BEO guarantees GTD 20 (and the chicken count was off, 25 vs the BEO's 18).
+- **Stale "Final Day" labels**: Sep 17's UIL NFHS card said "Final Day," but the new packet shows UIL NFHS continues through Sep 18 — updated the day-summary, card title, and note.
+- Flagged one ambiguity rather than guessing: the Sep 22 Informa lunch prints as "11:30 PM–12:30 PM" in the BEO, which can't be right given the day runs 6am–3pm — left a note in the card asking to confirm with Lisa, displayed the sensible AM reading.
 
 ## DONE — Full menu refresh (committed `32a69e3`, pushed, tested live)
 Refreshed `menu.html` against the live Marriott e-menu (mi.bookmarriott.com, dated Sep 01, 2026) — every section (breakfast, breaks, lunch, dinner, reception, bar & wine, packages), most items re-priced, several new items added. Caught and fixed a real error: the old page had Monday and Sunday's daily lunch buffet themes swapped (Monday was showing Gourmet Deli, Sunday was showing Southern Comforts — actually the reverse, plus Gourmet Deli is available any day, not tied to Monday). Flagged two sections not found in the current online menu (Chef Attended Omelet Station, Conference Dining) with an inline note rather than deleting them, since they may just live on a different menu (e.g. the Corrine restaurant menu). Browser-tested: category expand/collapse, search filtering, light/dark theme all confirmed working before push.
