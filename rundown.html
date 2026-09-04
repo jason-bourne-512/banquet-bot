@@ -273,6 +273,50 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .menu-line-header { font-size:14.5px; margin-bottom:5px; }
 .menu-line-solo { opacity:0.75; }
 
+/* ══════════════════════════════════════════
+   OVERVIEW TAB — black/green digital terminal
+   ══════════════════════════════════════════ */
+#overviewList { background:#060807; padding:0 0 80px; position:relative; overflow:hidden; }
+#overviewList::before {
+  content:''; position:fixed; left:0; right:0; top:-40px; height:40px;
+  background:linear-gradient(180deg,transparent,rgba(140,255,220,0.10) 70%,rgba(180,255,225,0.35) 94%,rgba(210,255,235,0.65) 100%);
+  z-index:5; pointer-events:none;
+  animation:ov2Scan 11s linear infinite;
+}
+#overviewList::after {
+  content:''; position:fixed; left:0; right:0; top:-1px; height:1px;
+  background:rgba(210,255,230,0.9);
+  box-shadow:0 0 4px rgba(150,255,210,0.85), 0 0 10px rgba(74,222,128,0.45);
+  z-index:6; pointer-events:none;
+  animation:ov2ScanLine 11s linear infinite;
+}
+@keyframes ov2Scan { 0%{transform:translateY(0)} 100%{transform:translateY(calc(100vh + 40px))} }
+@keyframes ov2ScanLine { 0%{transform:translateY(0)} 100%{transform:translateY(calc(100vh + 1px))} }
+.ov2-legend { margin:14px 16px; padding:10px 12px; background:#0b120d; border:1px solid rgba(34,197,94,0.22); border-radius:8px; font-family:'Courier New',monospace; font-size:9.5px; color:#5fae7c; line-height:1.7; }
+.ov2-legend b { color:#4ade80; }
+.ov2-day { padding:0 16px; }
+.ov2-day-hd { display:flex; align-items:center; gap:8px; font-family:'Courier New',monospace; font-size:12px; letter-spacing:1.5px; color:#4ade80; margin:18px 0 8px; text-shadow:0 0 5px rgba(74,222,128,0.4); }
+.ov2-day-hd .today { background:#4ade80; color:#062b14; font-size:8px; font-weight:700; letter-spacing:.1em; padding:2px 6px; border-radius:4px; text-transform:uppercase; }
+.ov2-day-hd::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(74,222,128,0.35),transparent); }
+.ov2-day.ov2-past { opacity:0.42; }
+.ov2-ev { background:#0b120d; border:1px solid rgba(34,197,94,0.22); border-radius:6px; padding:10px 12px; margin-bottom:10px; box-shadow:0 0 14px rgba(34,197,94,0.05) inset; font-family:'Courier New',monospace; }
+.ov2-ev-hd { font-size:13px; font-weight:700; color:#eafff0; line-height:1.4; }
+.ov2-ev-hd .dim { color:#5fae7c; font-weight:400; }
+.ov2-room { font-size:9.5px; letter-spacing:1.2px; text-transform:uppercase; color:#5fae7c; margin-top:8px; }
+.ov2-row { display:flex; gap:10px; font-size:11.5px; padding:2px 0; color:#c8ffd8; }
+.ov2-row .t { color:#4ade80; min-width:76px; flex-shrink:0; }
+.ov2-row .l { padding:0 5px; border-radius:3px; background:rgba(74,222,128,0.08); }
+.ov2-w { position:relative; display:inline-block; }
+.ov2-w.fuzz { animation:ov2WordFuzz 0.32s steps(3,end); }
+@keyframes ov2WordFuzz {
+  0%   { transform:translate(0,0); text-shadow:none; }
+  25%  { transform:translate(-2px,1px); text-shadow:2px 0 rgba(255,45,110,0.85),-2px 0 rgba(34,224,255,0.85); }
+  50%  { transform:translate(2px,-1px); text-shadow:-2px 0 rgba(255,45,110,0.85),2px 0 rgba(34,224,255,0.85); }
+  75%  { transform:translate(-1px,0); text-shadow:1px 0 rgba(255,45,110,0.6); }
+  100% { transform:translate(0,0); text-shadow:none; }
+}
+.ov2-empty { padding:40px 16px; text-align:center; font-family:'Courier New',monospace; font-size:11px; color:#3f8a5a; letter-spacing:.05em; }
+
 </style>
 </head>
 <body>
@@ -311,6 +355,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
 <div class="view-nav">
   <button class="view-btn active" id="viewBtnRundown" onclick="switchView('rundown')" data-en="Rundown" data-es="Resumen">Rundown</button>
+  <button class="view-btn" id="viewBtnOverview" onclick="switchView('overview')" data-en="Overview" data-es="Resumen General">Overview</button>
   <button class="view-btn" id="viewBtnDiagrams" onclick="switchView('diagrams')" data-en="Diagrams" data-es="Diagramas">Diagrams</button>
 </div>
 
@@ -1782,6 +1827,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
 </div><!-- /diagrams-list -->
 
+<div id="overviewList" style="display:none">
+  <div class="ov2-legend" data-en-legend="1">
+    <b>BKF</b> breakfast · <b>LNCH</b> lunch · <b>DIN</b> dinner · <b>BRK</b> break · <b>ADB</b> all-day beverage · <b>REC</b> reception · <b>BAR-C/H</b> cash/hosted bar · <b>REG</b> regular coffee · <b>DEC</b> decaf · <b>HW</b> hot water/tea<br>
+    <b>MTG</b> meeting · <b>SETUP</b> setup · <b>REGIS</b> registration · <b>GS</b> general session · <b>BRD</b> board meeting · <b>BRKO</b> breakout · <b>EXH</b> exhibits · <b>STOR</b> storage · <b>TRDN</b> teardown · <b>OFC</b> office · <b>GRN</b> green room · <b>WAIT</b> waiting room
+  </div>
+  <div id="ov2Days"></div>
+</div>
+
 <div class="diag-modal" id="diagModal">
   <div class="diag-modal-head">
     <div class="diag-modal-title" id="diagModalTitle">Diagram</div>
@@ -2038,12 +2091,254 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     }, {passive:false});
   })();
   function switchView(view){
-    const isRundown = view === 'rundown';
-    document.getElementById('rundownList').style.display = isRundown ? '' : 'none';
-    document.getElementById('diagramsList').style.display = isRundown ? 'none' : '';
-    document.getElementById('viewBtnRundown').classList.toggle('active', isRundown);
-    document.getElementById('viewBtnDiagrams').classList.toggle('active', !isRundown);
-    document.getElementById('todayFab').classList.toggle('view-hidden', !isRundown);
+    document.getElementById('rundownList').style.display = view === 'rundown' ? '' : 'none';
+    document.getElementById('overviewList').style.display = view === 'overview' ? '' : 'none';
+    document.getElementById('diagramsList').style.display = view === 'diagrams' ? '' : 'none';
+    document.getElementById('viewBtnRundown').classList.toggle('active', view === 'rundown');
+    document.getElementById('viewBtnOverview').classList.toggle('active', view === 'overview');
+    document.getElementById('viewBtnDiagrams').classList.toggle('active', view === 'diagrams');
+    document.getElementById('todayFab').classList.toggle('view-hidden', view !== 'rundown');
+    if (view === 'overview') initOverview();
+  }
+
+  // ── OVERVIEW TAB: flat condensed view built from the rundown data already on this page ──
+  let ov2Initialized = false;
+  const OV2_ACTIVITY_ABBR = {
+    "Board Meeting":"BRD", "Breakout":"BRKO", "Exhibits":"EXH", "General Session":"GS",
+    "Green Room":"GRN", "Meeting":"MTG", "Office":"OFC", "Registration":"REGIS",
+    "Set Up":"SETUP", "Storage":"STOR", "Teardown":"TRDN", "Waiting Room":"WAIT",
+  };
+  const OV2_TRAILING_SUFFIXES = [
+    "Breakfast Table","Afternoon Break","Dinner Table","Display Station",
+    "Beverage Service","On Consumption","Bar (Cash)","Working Lunch Buffet",
+    "Lunch Buffet","Buffet Table","Buffet","Table","Break","Display","Service","Station",
+  ];
+  function ov2ShortenMenuName(name){
+    name = name.trim().replace(/^MODIFIED\s+/,'');
+    if (name.indexOf(' - ') !== -1){
+      name = name.split(' - ')[0].trim();
+    } else {
+      name = name.replace(/,?\s*On Consumption$/i,'').trim();
+      for (const suf of OV2_TRAILING_SUFFIXES){
+        const re = new RegExp('\\s+'+suf.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'$','i');
+        if (re.test(name)){ name = name.replace(re,'').trim(); break; }
+      }
+    }
+    return name;
+  }
+  const OV2_COURSE_PREFIX = /^(first course|second course|third course|dessert)\s*:?\s*(,?\s*choice of\s*—?\s*)?/i;
+  function ov2CleanFoodItem(item){
+    item = item.trim().replace(OV2_COURSE_PREFIX,'');
+    item = item.replace(/^\(\d+\)\s*/,'');
+    item = item.split(/\s+@\s*\$/)[0];
+    item = item.split(/\s+—\s+/)[0];
+    item = item.replace(/,?\s*(all\s+)?on consumption$/i,'');
+    item = item.split(/,\s*/)[0];
+    return item.trim().replace(/\.$/,'');
+  }
+  const OV2_BEV_PATTERNS = [
+    ["REG", /regular\b/i], ["DEC", /decaf/i], ["HW", /hot water|tazo tea|assortment of teas/i],
+    ["Pepsi", /\bpepsi\b/i], ["Coke", /\bcoke\b/i], ["Red Bull", /red bull/i], ["Sparkling", /sparkling water/i],
+  ];
+  const OV2_SKIP_SEGMENT = /^(bottled water|little city)/i;
+  function ov2LabelFromMenu(tagName, tagClass, menuHtml){
+    if (!tagClass){
+      const base = tagName.split('—')[0].trim();
+      return OV2_ACTIVITY_ABBR[base] || base.slice(0,6).trim().toUpperCase();
+    }
+    menuHtml = menuHtml.replace(/<br\s*\/?>/gi,' · ');
+    if (menuHtml.indexOf('No food or beverage required') !== -1 || !menuHtml.trim()){
+      const base = tagName.split('—')[0].trim();
+      return OV2_ACTIVITY_ABBR[base] || base.slice(0,6).trim().toUpperCase();
+    }
+    const hl = /<strong class='menu-hl'>(.*?)<\/strong>/.exec(menuHtml);
+    if (hl) return ov2ShortenMenuName(hl[1]);
+
+    const plain = menuHtml.replace(/<[^>]+>/g,'');
+    const segments = plain.split('·').map(s=>s.trim()).filter(Boolean);
+    const bevFound = OV2_BEV_PATTERNS.filter(([,pat])=>pat.test(plain)).map(([code])=>code);
+    const foodItems = [];
+    for (const seg of segments){
+      const isBevSeg = OV2_BEV_PATTERNS.some(([,pat])=>pat.test(seg));
+      if (!isBevSeg && !OV2_SKIP_SEGMENT.test(seg)){
+        const cleaned = ov2CleanFoodItem(seg);
+        if (cleaned && !/^(all on consumption|on consumption)$/i.test(cleaned)){
+          const pm = /@\s*\$(\d+)/.exec(seg);
+          const price = pm ? parseInt(pm[1],10) : -1;
+          foodItems.push([price, cleaned]);
+        }
+      }
+    }
+    const parts = bevFound.slice();
+    if (foodItems.length){
+      foodItems.sort((a,b)=>b[0]-a[0]);
+      parts.push(foodItems[0][1]);
+    }
+    if (parts.length) return parts.join(' + ');
+    const base = tagName.split('—')[0].trim();
+    return OV2_ACTIVITY_ABBR[base] || base.slice(0,6).trim().toUpperCase();
+  }
+  function ov2ParseTime(raw){
+    raw = raw.replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
+    const m = /(\d{1,2}):(\d{2})\s*(AM|PM)?\s*[–-]\s*(\d{1,2}):(\d{2})\s*(AM|PM)/.exec(raw);
+    if (!m) return {startStr:raw, endStr:raw, smin:0, emin:0};
+    let [, sh, sm, sap, eh, em, eap] = m;
+    if (!sap) sap = eap;
+    sh = parseInt(sh,10); eh = parseInt(eh,10); sm = parseInt(sm,10); em = parseInt(em,10);
+    const toMin = (h,mnt,ap)=>{ h = h % 12; if (ap==='PM') h += 12; return h*60+mnt; };
+    const smin = toMin(sh,sm,sap), emin = toMin(eh,em,eap);
+    const samePeriod = sap === eap;
+    const fmt = (h,mnt,ap)=>{ const suf = ap==='AM'?'a':'p'; return mnt ? `${h}:${String(mnt).padStart(2,'0')}${suf}` : `${h}${suf}`; };
+    const startStr = samePeriod ? (sm ? `${sh}:${String(sm).padStart(2,'0')}` : `${sh}`) : fmt(sh,sm,sap);
+    const endStr = fmt(eh,em,eap);
+    return {startStr, endStr, smin, emin};
+  }
+  function ov2FmtClock(totalMin){
+    const h = Math.floor(totalMin/60)%24, mnt = totalMin%60;
+    const ap = h < 12 ? 'a' : 'p';
+    let h12 = h % 12; if (h12===0) h12 = 12;
+    return mnt ? `${h12}:${String(mnt).padStart(2,'0')}${ap}` : `${h12}${ap}`;
+  }
+  function ov2WrapWords(text){
+    return text.split(' ').map(w=>`<span class="ov2-w">${w}</span>`).join(' ');
+  }
+  function buildOverviewData(){
+    const daySections = Array.from(document.querySelectorAll('#rundownList .day-section[data-date]'));
+    const days = [];
+    for (const section of daySections){
+      const dateStr = section.dataset.date;
+      const cards = Array.from(section.querySelectorAll('.event-card'));
+      const parsedCards = cards.map(card=>{
+        const groupEl = card.querySelector('.card-group');
+        const group = groupEl ? groupEl.getAttribute('data-en') : '?';
+        let contact = null;
+        card.querySelectorAll('.foot-row').forEach(fr=>{
+          const key = fr.querySelector('.foot-key');
+          if (key && key.getAttribute('data-en') === 'CONTACT'){
+            const val = fr.querySelector('.foot-val');
+            if (val) contact = val.textContent.trim();
+          }
+        });
+        const rows = [];
+        card.querySelectorAll('.svc-row').forEach(row=>{
+          const timeEl = row.querySelector('.svc-time');
+          const tagEl = row.querySelector('.tag');
+          const roomEl = row.querySelector('.room-pill');
+          const menuEl = row.querySelector('.svc-menu');
+          if (!timeEl) return;
+          const tagName = tagEl ? tagEl.getAttribute('data-en') : '?';
+          const tagClass = tagEl ? Array.from(tagEl.classList).find(c=>c.startsWith('tag-')) || '' : '';
+          const room = roomEl ? roomEl.textContent.trim() : '?';
+          const menuHtml = menuEl ? (menuEl.getAttribute('data-en')||'') : '';
+          const {startStr, endStr, smin, emin} = ov2ParseTime(timeEl.innerHTML);
+          const label = ov2LabelFromMenu(tagName, tagClass, menuHtml);
+          rows.push({startStr, endStr, smin, emin, label, room});
+        });
+        return {group, contact, rows};
+      }).filter(c => c.rows.length);
+
+      const merged = new Map();
+      const order = [];
+      for (const c of parsedCards){
+        const base = c.group.split('—')[0].trim();
+        if (!merged.has(base)){ merged.set(base, {contact:null, rows:[]}); order.push(base); }
+        const e = merged.get(base);
+        if (c.contact) e.contact = c.contact;
+        e.rows.push(...c.rows);
+      }
+      const events = order.map(base=>{
+        const e = merged.get(base);
+        const rooms = new Map();
+        for (const r of e.rows){
+          if (!rooms.has(r.room)) rooms.set(r.room, []);
+          rooms.get(r.room).push(r);
+        }
+        const overallStart = Math.min(...e.rows.map(r=>r.smin));
+        const overallEnd = Math.max(...e.rows.map(r=>r.emin));
+        return {
+          company: base,
+          contact: e.contact || '',
+          range: `${ov2FmtClock(overallStart)}–${ov2FmtClock(overallEnd)}`,
+          rooms,
+        };
+      });
+      if (events.length) days.push({date: dateStr, events});
+    }
+    return days;
+  }
+  function renderOverview(){
+    const el = document.getElementById('ov2Days');
+    const days = buildOverviewData();
+    if (!days.length){
+      el.innerHTML = '<div class="ov2-empty">No events found</div>';
+      return;
+    }
+    const DOW_EN = ["MON","TUE","WED","THU","FRI","SAT","SUN"];
+    const MON_EN = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+    const now = new Date();
+    const pad = v => String(v).padStart(2,'0');
+    const today = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+
+    el.innerHTML = days.map(day=>{
+      const [y,mo,da] = day.date.split('-').map(Number);
+      const dow = new Date(y, mo-1, da).getDay();
+      const dowIdx = dow === 0 ? 6 : dow-1;
+      const isToday = day.date === today;
+      const isPast = day.date < today;
+      const label = `${DOW_EN[dowIdx]} ${MON_EN[mo-1]} ${pad(da)}`;
+      const evsHtml = day.events.map(e=>{
+        let head = ov2WrapWords(e.company);
+        if (e.contact) head += `<span class="dim"> / ${e.contact}</span>`;
+        head += `<span class="dim"> / ${e.range}</span>`;
+        let roomsHtml = '';
+        e.rooms.forEach((rows, room)=>{
+          roomsHtml += `<div class="ov2-room">${ov2WrapWords(room)}</div>`;
+          rows.forEach(r=>{
+            roomsHtml += `<div class="ov2-row"><span class="t">${r.startStr}–${r.endStr}</span><span class="l ov2-w">${r.label}</span></div>`;
+          });
+        });
+        return `<div class="ov2-ev"><div class="ov2-ev-hd">${head}</div>${roomsHtml}</div>`;
+      }).join('');
+      return `<div class="ov2-day${isPast?' ov2-past':''}"><div class="ov2-day-hd">${label}${isToday?'<span class="today">TODAY</span>':''}</div>${evsHtml}</div>`;
+    }).join('');
+  }
+  const OV2_GLITCH_CHARS = '█▓▒░<>/\\|#$%01_-=+*';
+  function ov2GlitchWord(elm){
+    if (elm.dataset.glitching) return;
+    elm.dataset.glitching = '1';
+    const original = elm.textContent;
+    elm.classList.add('fuzz');
+    let n = 0;
+    const iv = setInterval(()=>{
+      elm.textContent = original.split('').map(c =>
+        Math.random() < 0.55 ? OV2_GLITCH_CHARS[Math.floor(Math.random()*OV2_GLITCH_CHARS.length)] : c
+      ).join('');
+      n++;
+      if (n > 3){
+        clearInterval(iv);
+        elm.textContent = original;
+        elm.classList.remove('fuzz');
+        delete elm.dataset.glitching;
+      }
+    }, 45);
+  }
+  function ov2GlitchTick(){
+    if (document.getElementById('viewBtnOverview').classList.contains('active')){
+      const words = document.querySelectorAll('#overviewList .ov2-w');
+      if (words.length){
+        const count = 1 + Math.floor(Math.random()*3);
+        for (let i=0; i<count; i++){
+          ov2GlitchWord(words[Math.floor(Math.random()*words.length)]);
+        }
+      }
+    }
+    setTimeout(ov2GlitchTick, 500 + Math.random()*1200);
+  }
+  function initOverview(){
+    if (ov2Initialized) return;
+    ov2Initialized = true;
+    renderOverview();
+    ov2GlitchTick();
   }
   (function(){
     const n=new Date();

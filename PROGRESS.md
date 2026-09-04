@@ -2,14 +2,16 @@
 
 _Last updated: 2026-09-04_
 
-## IN PROGRESS — "Overview" condensed view (not yet wired into rundown.html)
-Goal: a second tab on `rundown.html` (alongside Rundown/Diagrams) that shows every event flat — no accordions, everything expanded — condensed to company / contact / room / time / a short label per meal-beverage-or-activity, styled as a black-background "digital terminal" look (green glow text, glitch text on random words, a thin horizontal scan-line beam sweeping top to bottom).
+## DONE — "Overview" tab added to rundown.html (browser-tested, pushed)
+Third tab on `rundown.html`, between Rundown and Diagrams: a flat, no-accordion view of every event — everything expanded, nothing to tap open. Parses the same `.day-section[data-date]` markup already on the page (no fetch, can't go stale) and condenses each company/group down to `Company / Contact / start–finish`, then per room, `time  LABEL`.
 
-- `overview.html` — first draft, standalone page (fetches + parses `rundown.html` live so it never goes stale), accordion/dropdown day list. **Superseded** — direction changed to a flat, no-dropdown tab inside `rundown.html` itself. Left in the repo unlinked from `index.html` as reference for the parsing logic (label abbreviation, time-range merge-by-company) which is reusable.
-- `design-options.html` — scratch/demo page (not linked anywhere, not for the live site) used to preview 3 visual directions in Chrome before building the real thing. Landed on a "Modern Terminal Cards" direction: green-on-black cards, random words briefly scramble into glitch characters, thin horizontal beam sweeps top→bottom on a slow loop.
-- `index.html` — reverted back to the single "BEO Rundown" tile (the earlier split into Rundown/Overview tiles was abandoned once Overview became a rundown tab instead of its own page).
+Labels: a named menu package (e.g. "Tejas Mexicano," "Healthy Start") shows its real name, shortened; a plain coffee/tea break with no named package shows REG/DEC/HW/Pepsi/Coke/etc.; a plated meal with no named package shows the priciest listed dish (usually the entrée); non-F&B activities (meeting, setup, registration, general session, breakout, exhibits, storage, teardown, office, green room, waiting room, board meeting) get short activity codes. Full key is a legend block at the top of the tab.
 
-**Next session:** build the real Overview tab inside `rundown.html` — add a third `view-btn`/`view-nav` entry, port the label-abbreviation JS from `overview.html`, apply the chosen "Modern Terminal" visual treatment from `design-options.html`, and render against the actual rundown data (not the 3-day sample in design-options.html). Browser-test before pushing, per usual.
+Look: always renders in a black-background/green-glow "digital terminal" style regardless of the site's own light/dark toggle (a deliberate distinct mode, not theme-linked) — random words briefly scramble into glitch characters, and a thin horizontal beam slowly sweeps top→bottom on an 11s loop. Past days are dimmed, today gets a TODAY badge, matching the Rundown tab's conventions.
+
+Known gap: day headers (MON, TUE, …) in this tab stay in English even when the page is switched to Spanish — everything else in the app translates, this tab doesn't yet. Left as-is for now (confirmed acceptable).
+
+`overview.html` (standalone first draft) and `design-options.html` (visual-direction scratch page) are still in the repo, unlinked from `index.html` — kept as reference/history of how this feature evolved, not part of the live nav. `index.html` itself is unchanged (single "BEO Rundown" tile, no separate Overview entry point — Overview only lives inside rundown.html now).
 
 ## DONE — Rundown update from Sep 3–23 BEO packet (pushed, tested live)
 Extended `rundown.html` coverage from Sep 17 through Sep 23 (added Sep 18 UIL NFHS breakfast, and a new "Week of Sep 19–25" with Sep 21–23 — Austin Commercial LP's ATX Leadership Collaborative and Informa TechTarget's 3-day STRATA conference across Primrose AB/CD, Primrose Foyer C, Bluebell, Verbena and Barton). CFMA (Sep 20) still has no event order in this packet, so it stays diagram-only as before.
