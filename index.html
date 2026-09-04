@@ -505,13 +505,47 @@ body {
 </div>
 
 <!-- STAFF SCHEDULE -->
-<div class="sec" data-en="Staff Schedule · Aug 29–Sep 4" data-es="Horario · 29 Ago–4 Sep">Staff Schedule · Aug 29–Sep 4</div>
+<div class="sec" data-en="Staff Schedule · Sep 5–11" data-es="Horario · 5–11 Sep">Staff Schedule · Sep 5–11</div>
 <div class="sched-wrap">
-  <div class="sched-live off" data-en="Offline · week of Aug 29, 2026" data-es="Fuera de línea · semana del 29 Ago">Offline · week of Aug 29, 2026</div>
-  <div class="matrix-card">
-    <canvas class="matrix-canvas" id="matrixCanvas"></canvas>
-    <div class="matrix-overlay">
-      <div class="matrix-text" data-en="Offline Until Next Week" data-es="Fuera De Línea Hasta La Próxima Semana" data-text="Offline Until Next Week">Offline Until Next Week</div>
+  <div class="sched-live" data-en="Live · week of Sep 5, 2026" data-es="En vivo · semana del 5 Sep">Live · week of Sep 5, 2026</div>
+  <div class="tbl-outer" id="tblOuter">
+    <div class="today-box" id="todayBox"></div>
+    <div class="tbl-wrap" id="tblWrap">
+      <table class="s">
+        <thead>
+          <tr>
+            <th style="text-align:left;min-width:80px"></th>
+            <th id="col6">SAT 5</th>
+            <th id="col0">SUN 6</th>
+            <th id="col1">MON 7</th>
+            <th id="col2">TUE 8</th>
+            <th id="col3">WED 9</th>
+            <th id="col4">THU 10</th>
+            <th id="col5">FRI 11</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="rr rd"><td data-en="Director of Event Ops" data-es="Director de Eventos">Director of Event Ops</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rd">
+            <td class="nm">Hector</td>
+            <td>7A</td><td class="off">OFF</td><td class="off">OFF</td>
+            <td>6A–12P/AMD</td><td>7A</td><td>7A</td><td>8A</td>
+          </tr>
+          <tr class="rr rc"><td data-en="Banquet Captain" data-es="Capitán de Banquetes">Banquet Captain</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rc">
+            <td class="nm">Jason</td>
+            <td>11A–7P</td><td class="off">OFF</td><td class="off">OFF</td>
+            <td>10A–7P</td><td>5A–2P</td><td>7A–2P</td><td class="off">OFF</td>
+          </tr>
+          <tr class="rr rs"><td data-en="Servers" data-es="Meseros">Servers</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Dylan W.</td><td>12P–7P</td><td></td><td></td><td>5A–930A/1P–7P</td><td>6A–2P</td><td>7A–2P</td><td class="off">R-OFF</td></tr>
+          <tr class="rs"><td class="nm">Francisco</td><td>2P–7P</td><td>9A–5P</td><td></td><td>6A–230P</td><td>5A–5P</td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Tomas C.</td><td></td><td>HOUSEMAN</td><td></td><td>5A–930A/HOUSEMAN</td><td>5A–10A</td><td>HOUSEMAN</td><td></td></tr>
+          <tr class="rr rh"><td data-en="Housemen" data-es="Mozos">Housemen</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rh"><td class="nm">Jamshid</td><td>12P–7P</td><td></td><td></td><td></td><td>12P–7P</td><td></td><td>12P–9P</td></tr>
+          <tr class="rh"><td class="nm">Tomas C.</td><td></td><td>12P–7P</td><td></td><td>SERVER/12P–8P</td><td>SERVER</td><td>1P–8P</td><td></td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -546,7 +580,7 @@ body {
 
   /* ── TODAY BOX — measured from actual th at runtime ── */
   const COL_MAP={0:'col0',1:'col1',2:'col2',3:'col3',4:'col4',5:'col5',6:'col6'};
-  const WS=new Date(2026,7,22), WE=new Date(2026,7,28);
+  const WS=new Date(2026,8,5), WE=new Date(2026,8,11);
 
   function positionBox(){
     const box=document.getElementById('todayBox');
