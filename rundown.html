@@ -277,23 +277,6 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
    OVERVIEW TAB — black/green digital terminal
    ══════════════════════════════════════════ */
 #overviewList { background:#060807; padding:0 0 80px; position:relative; overflow:hidden; }
-#overviewList::before {
-  content:''; position:fixed; left:0; right:0; top:-40px; height:40px;
-  background:linear-gradient(180deg,transparent,rgba(140,255,220,0.10) 70%,rgba(180,255,225,0.35) 94%,rgba(210,255,235,0.65) 100%);
-  z-index:5; pointer-events:none;
-  animation:ov2Scan 11s linear infinite;
-}
-#overviewList::after {
-  content:''; position:fixed; left:0; right:0; top:-1px; height:1px;
-  background:rgba(210,255,230,0.9);
-  box-shadow:0 0 4px rgba(150,255,210,0.85), 0 0 10px rgba(74,222,128,0.45);
-  z-index:6; pointer-events:none;
-  animation:ov2ScanLine 11s linear infinite;
-}
-@keyframes ov2Scan { 0%{transform:translateY(0)} 100%{transform:translateY(calc(100vh + 40px))} }
-@keyframes ov2ScanLine { 0%{transform:translateY(0)} 100%{transform:translateY(calc(100vh + 1px))} }
-.ov2-legend { margin:14px 16px; padding:10px 12px; background:#0b120d; border:1px solid rgba(34,197,94,0.22); border-radius:8px; font-family:'Courier New',monospace; font-size:9.5px; color:#5fae7c; line-height:1.7; }
-.ov2-legend b { color:#4ade80; }
 .ov2-day { padding:0 16px; }
 .ov2-day-hd { display:flex; align-items:center; gap:8px; font-family:'Courier New',monospace; font-size:12px; letter-spacing:1.5px; color:#4ade80; margin:18px 0 8px; text-shadow:0 0 5px rgba(74,222,128,0.4); }
 .ov2-day-hd .today { background:#4ade80; color:#062b14; font-size:8px; font-weight:700; letter-spacing:.1em; padding:2px 6px; border-radius:4px; text-transform:uppercase; }
@@ -1828,10 +1811,6 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 </div><!-- /diagrams-list -->
 
 <div id="overviewList" style="display:none">
-  <div class="ov2-legend" data-en-legend="1">
-    <b>BKF</b> breakfast · <b>LNCH</b> lunch · <b>DIN</b> dinner · <b>BRK</b> break · <b>ADB</b> all-day beverage · <b>REC</b> reception · <b>BAR-C/H</b> cash/hosted bar · <b>REG</b> regular coffee · <b>DEC</b> decaf · <b>HW</b> hot water/tea<br>
-    <b>MTG</b> meeting · <b>SETUP</b> setup · <b>REGIS</b> registration · <b>GS</b> general session · <b>BRD</b> board meeting · <b>BRKO</b> breakout · <b>EXH</b> exhibits · <b>STOR</b> storage · <b>TRDN</b> teardown · <b>OFC</b> office · <b>GRN</b> green room · <b>WAIT</b> waiting room
-  </div>
   <div id="ov2Days"></div>
 </div>
 
