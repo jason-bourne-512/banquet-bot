@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en" style="background:#09090c;background-color:#09090c">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('bb-theme')||'dark';var bg=t==='dark'?'#09090c':'#f0ece3';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.background=bg;document.documentElement.style.setProperty('background-color',bg,'important');})()</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#09090c">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0ece3">
+<title>Overview — Westin Austin Domain</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>:root,html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%;overscroll-behavior:none}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f0ece3!important;background-color:#f0ece3!important}[data-theme="light"] body::before{background:#f0ece3}</style>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+:root {
+  --bg:#09090c; --bg-card:#111316; --bg-active:#181c26;
+  --border:rgba(255,255,255,0.06); --border-h:rgba(255,255,255,0.13);
+  --text-1:#edeae2; --text-2:#7e7b74; --text-3:#44423f; --text-4:#2e2c2a;
+  --accent:#c9a84c; --accent-dim:rgba(201,168,76,0.10);
+  --green:#2dbd80; --green-dim:rgba(45,189,128,0.10);
+  --blue:#4f8ef0; --blue-dim:rgba(79,142,240,0.10);
+  --header-bg:rgba(9,9,12,0.95);
+  --tog-bg:#16181e; --tog-border:rgba(255,255,255,0.08); --tog-act:rgba(255,255,255,0.07);
+  --divider:rgba(255,255,255,0.04); --stripe:rgba(255,255,255,0.014);
+  --today-bg:linear-gradient(135deg,#221a06 0%,#15100a 55%,#0c0905 100%);
+  --today-border:rgba(201,168,76,0.45); --today-top:rgba(201,168,76,0.60);
+}
+[data-theme="light"] {
+  --bg:#f0ece3; --bg-card:#faf7f2; --bg-active:#e8e2d6;
+  --border:rgba(0,0,0,0.07); --border-h:rgba(0,0,0,0.15);
+  --text-1:#18160f; --text-2:#6b6760; --text-3:#9e9a92; --text-4:#c0bbb2;
+  --accent:#9a7422; --accent-dim:rgba(154,116,34,0.09);
+  --green:#1a8f5e; --green-dim:rgba(26,143,94,0.09);
+  --blue:#2558c4; --blue-dim:rgba(37,88,196,0.09);
+  --header-bg:rgba(240,236,227,0.95);
+  --tog-bg:#e4dfd4; --tog-border:rgba(0,0,0,0.08); --tog-act:rgba(0,0,0,0.05);
+  --divider:rgba(0,0,0,0.05); --stripe:rgba(0,0,0,0.010);
+  --today-bg:linear-gradient(135deg,#fdf5e0 0%,#faf0d0 55%,#f5e8b8 100%);
+  --today-border:rgba(160,116,30,0.40); --today-top:rgba(160,116,30,0.45);
+}
+html { background:var(--bg); min-height:100%; overflow-x:hidden; overscroll-behavior:none; }
+body { background:var(--bg); color:var(--text-1); font-family:'Courier New',monospace; min-height:100vh; min-height:100dvh; width:100%; overflow-x:hidden; overscroll-behavior:none; }
+.page-wrap { max-width:480px; min-height:100vh; min-height:100dvh; margin:0 auto; background:var(--bg); }
+@media (orientation:landscape){ .page-wrap { max-width:100%; } }
+
+.header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--header-bg); backdrop-filter:blur(14px); z-index:20; gap:8px; }
+.brand { display:flex; align-items:center; gap:9px; text-decoration:none; flex-shrink:0; }
+.brand-icon { width:32px; height:32px; background:var(--accent-dim); border:1px solid var(--accent); border-radius:7px; display:flex; align-items:center; justify-content:center; font-family:'Courier New',monospace; font-size:10px; font-weight:500; color:var(--accent); }
+.brand-name { font-family:'Bebas Neue',sans-serif; font-size:19px; letter-spacing:1.5px; color:var(--text-1); line-height:1; }
+.brand-sub  { font-family:'Courier New',monospace; font-size:8px; color:var(--text-3); margin-top:1px; }
+.controls { display:flex; align-items:center; gap:5px; flex-shrink:0; }
+.toggle-group { display:flex; background:var(--tog-bg); border:1px solid var(--tog-border); border-radius:7px; overflow:hidden; }
+.tgl { padding:5px 8px; font-family:'Courier New',monospace; font-size:10px; font-weight:500; color:var(--text-3); background:none; border:none; cursor:pointer; transition:background .12s,color .12s; line-height:1; }
+.tgl.active { background:var(--tog-act); color:var(--text-1); }
+.tgl+.tgl { border-left:1px solid var(--tog-border); }
+.live-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pip 2s infinite; }
+@keyframes pip { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+.page-hero { padding:18px 16px 14px; border-bottom:1px solid var(--divider); position:relative; overflow:hidden; }
+.page-hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-55deg,var(--stripe) 0px,var(--stripe) 1px,transparent 1px,transparent 18px); pointer-events:none; }
+.page-eyebrow { font-family:'Courier New',monospace; font-size:9px; color:var(--accent); letter-spacing:2px; text-transform:uppercase; margin-bottom:5px; }
+.page-title { font-family:'Bebas Neue',sans-serif; font-size:34px; letter-spacing:1px; color:var(--text-1); line-height:0.95; margin-bottom:8px; }
+.header-meta { display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+.chip { display:inline-flex; align-items:center; gap:4px; font-family:'Courier New',monospace; font-size:9px; padding:3px 8px; border-radius:5px; border:1px solid var(--border); background:var(--bg-card); color:var(--text-2); }
+.chip-green { background:var(--green-dim); color:var(--green); border-color:rgba(45,189,128,0.2); }
+.chip-gold  { background:var(--accent-dim); color:var(--accent); border-color:rgba(201,168,76,0.2); }
+
+.days-list { padding:10px 0 80px; }
+
+.day-btn { width:calc(100% - 32px); display:flex; align-items:center; gap:13px; padding:13px 14px; text-align:left; border:none; cursor:pointer; min-height:56px; position:relative; background:#0d0f12; border:1px solid rgba(255,255,255,0.09); border-left:4px solid var(--accent); border-radius:12px; margin:0 16px 8px; }
+[data-theme="light"] .day-btn { background:#faf7f2; border-color:rgba(0,0,0,0.08); }
+.day-btn.a-dim { border-left-color:rgba(255,255,255,0.15); opacity:0.55; }
+[data-theme="light"] .day-btn.a-dim { border-left-color:rgba(0,0,0,0.15); }
+.day-btn.is-today { background:var(--today-bg); border-left-color:var(--today-border); }
+.day-btn:active { transform:scale(0.98); }
+.day-dot { width:36px; height:36px; border-radius:9px; flex-shrink:0; background:var(--accent-dim); border:1px solid var(--accent); display:flex; align-items:center; justify-content:center; }
+.day-dot-num { font-family:'Courier New',monospace; font-size:16px; font-weight:600; color:var(--accent); line-height:1; }
+.day-text { flex:1; min-width:0; }
+.day-dow-row { display:flex; align-items:center; margin-bottom:3px; }
+.day-dow { font-family:'Courier New',monospace; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+.day-summary { font-family:'Courier New',monospace; font-size:11.5px; line-height:1.4; color:var(--text-2); }
+.today-chip { background:var(--accent); color:#09090c; font-family:'Courier New',monospace; font-size:8px; font-weight:600; letter-spacing:.12em; padding:3px 7px; border-radius:4px; text-transform:uppercase; flex-shrink:0; margin-left:6px; }
+[data-theme="light"] .today-chip { color:#fff; }
+.day-chevron { font-size:12px; color:var(--text-3); flex-shrink:0; transition:transform .15s; }
+.day-btn.open .day-chevron { transform:rotate(90deg); }
+
+.day-body { display:none; padding:0 16px 6px; }
+.day-body.open { display:block; }
+
+.ov-event { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:10px 12px; margin-top:8px; }
+.ov-head { font-family:'Courier New',monospace; font-size:12.5px; font-weight:700; color:var(--text-1); line-height:1.4; }
+.ov-head .sep { color:var(--text-3); font-weight:400; margin:0 3px; }
+.ov-head .contact { color:var(--text-2); font-weight:400; }
+.ov-head .range { color:var(--accent); font-weight:400; }
+.ov-room-name { font-family:'Courier New',monospace; font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-3); margin-top:8px; margin-bottom:3px; }
+.ov-row { display:flex; gap:10px; font-family:'Courier New',monospace; font-size:11px; padding:2px 0; }
+.ov-time { color:var(--text-2); min-width:82px; flex-shrink:0; }
+.ov-label { color:var(--text-1); }
+
+.ov-loading, .ov-empty { padding:30px 16px; text-align:center; font-family:'Courier New',monospace; font-size:11px; color:var(--text-3); letter-spacing:.05em; }
+.ov-key { margin:0 16px 4px; padding:10px 12px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-family:'Courier New',monospace; font-size:9.5px; color:var(--text-3); line-height:1.7; }
+.ov-key b { color:var(--accent); }
+
+@media (min-width: 900px) {
+  .header, .page-hero, .day-section, .ov-key { max-width: 460px; margin-left: auto; margin-right: auto; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<header class="header">
+  <a class="brand" href="index.html">
+    <div class="brand-icon">BB</div>
+    <div>
+      <div class="brand-name">Banquet Bot</div>
+      <div class="brand-sub">Westin Austin · The Domain</div>
+    </div>
+  </a>
+  <div class="controls">
+    <div class="toggle-group">
+      <button class="tgl active" id="len" onclick="setLang('en')">EN</button>
+      <button class="tgl"        id="les" onclick="setLang('es')">ES</button>
+    </div>
+    <div class="toggle-group">
+      <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
+      <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
+    </div>
+    <div class="live-dot"></div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="page-eyebrow" data-en="At A Glance" data-es="De Un Vistazo">At A Glance</div>
+  <div class="page-title" data-en="Overview" data-es="Resumen General">Overview</div>
+  <div class="header-meta">
+    <span class="chip chip-gold" id="printed-date">—</span>
+    <span class="chip chip-green"><span class="live-dot" style="width:5px;height:5px;background:var(--green)"></span>&nbsp;<span data-en="Live from Rundown" data-es="En vivo desde Resumen">Live from Rundown</span></span>
+  </div>
+</div>
+
+<div class="ov-key">
+  <b>BKF</b> breakfast · <b>LNCH</b> lunch · <b>DIN</b> dinner · <b>BRK</b> break · <b>ADB</b> all-day beverage · <b>REC</b> reception · <b>BAR-C/H</b> cash/hosted bar · <b>REG</b> regular coffee · <b>DEC</b> decaf · <b>HW</b> hot water/tea<br>
+  <b>MTG</b> meeting · <b>SETUP</b> setup · <b>REGIS</b> registration · <b>GS</b> general session · <b>BRD</b> board meeting · <b>BRKO</b> breakout · <b>EXH</b> exhibits · <b>STOR</b> storage · <b>TRDN</b> teardown · <b>OFC</b> office · <b>GRN</b> green room · <b>WAIT</b> waiting room
+</div>
+
+<div class="days-list" id="daysList">
+  <div class="ov-loading" data-en="Loading rundown…" data-es="Cargando resumen…">Loading rundown…</div>
+</div>
+
+</div>
+
+<script>
+// ── label abbreviation logic (ported from the rundown parser) ──
+const ACTIVITY_ABBR = {
+  "Board Meeting":"BRD", "Breakout":"BRKO", "Exhibits":"EXH", "General Session":"GS",
+  "Green Room":"GRN", "Meeting":"MTG", "Office":"OFC", "Registration":"REGIS",
+  "Set Up":"SETUP", "Storage":"STOR", "Teardown":"TRDN", "Waiting Room":"WAIT",
+};
+const TRAILING_SUFFIXES = [
+  "Breakfast Table","Afternoon Break","Dinner Table","Display Station",
+  "Beverage Service","On Consumption","Bar (Cash)","Working Lunch Buffet",
+  "Lunch Buffet","Buffet Table","Buffet","Table","Break","Display","Service","Station",
+];
+function shortenMenuName(name){
+  name = name.trim().replace(/^MODIFIED\s+/,'');
+  if (name.indexOf(' - ') !== -1){
+    name = name.split(' - ')[0].trim();
+  } else {
+    name = name.replace(/,?\s*On Consumption$/i,'').trim();
+    for (const suf of TRAILING_SUFFIXES){
+      const re = new RegExp('\\s+'+suf.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'$','i');
+      if (re.test(name)){ name = name.replace(re,'').trim(); break; }
+    }
+  }
+  return name;
+}
+const COURSE_PREFIX = /^(first course|second course|third course|dessert)\s*:?\s*(,?\s*choice of\s*—?\s*)?/i;
+function cleanFoodItem(item){
+  item = item.trim().replace(COURSE_PREFIX,'');
+  item = item.replace(/^\(\d+\)\s*/,'');
+  item = item.split(/\s+@\s*\$/)[0];
+  item = item.split(/\s+—\s+/)[0];
+  item = item.replace(/,?\s*(all\s+)?on consumption$/i,'');
+  item = item.split(/,\s*/)[0];
+  return item.trim().replace(/\.$/,'');
+}
+const BEV_PATTERNS = [
+  ["REG", /regular\b/i], ["DEC", /decaf/i], ["HW", /hot water|tazo tea|assortment of teas/i],
+  ["Pepsi", /\bpepsi\b/i], ["Coke", /\bcoke\b/i], ["Red Bull", /red bull/i], ["Sparkling", /sparkling water/i],
+];
+const SKIP_SEGMENT = /^(bottled water|little city)/i;
+function labelFromMenu(tagName, tagClass, menuHtml){
+  if (!tagClass){
+    const base = tagName.split('—')[0].trim();
+    return ACTIVITY_ABBR[base] || base.slice(0,6).trim().toUpperCase();
+  }
+  menuHtml = menuHtml.replace(/<br\s*\/?>/gi,' · ');
+  if (menuHtml.indexOf('No food or beverage required') !== -1 || !menuHtml.trim()){
+    const base = tagName.split('—')[0].trim();
+    return ACTIVITY_ABBR[base] || base.slice(0,6).trim().toUpperCase();
+  }
+  const hl = /<strong class='menu-hl'>(.*?)<\/strong>/.exec(menuHtml);
+  if (hl) return shortenMenuName(hl[1]);
+
+  const plain = menuHtml.replace(/<[^>]+>/g,'');
+  const segments = plain.split('·').map(s=>s.trim()).filter(Boolean);
+  const bevFound = BEV_PATTERNS.filter(([,pat])=>pat.test(plain)).map(([code])=>code);
+  const foodItems = [];
+  for (const seg of segments){
+    const isBevSeg = BEV_PATTERNS.some(([,pat])=>pat.test(seg));
+    if (!isBevSeg && !SKIP_SEGMENT.test(seg)){
+      const cleaned = cleanFoodItem(seg);
+      if (cleaned && !/^(all on consumption|on consumption)$/i.test(cleaned)){
+        const pm = /@\s*\$(\d+)/.exec(seg);
+        const price = pm ? parseInt(pm[1],10) : -1;
+        foodItems.push([price, cleaned]);
+      }
+    }
+  }
+  const parts = bevFound.slice();
+  if (foodItems.length){
+    foodItems.sort((a,b)=>b[0]-a[0]);
+    parts.push(foodItems[0][1]);
+  }
+  if (parts.length) return parts.join(' + ');
+  const base = tagName.split('—')[0].trim();
+  return ACTIVITY_ABBR[base] || base.slice(0,6).trim().toUpperCase();
+}
+
+// ── time parsing ──
+function parseTime(raw){
+  raw = raw.replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
+  const m = /(\d{1,2}):(\d{2})\s*(AM|PM)?\s*[–-]\s*(\d{1,2}):(\d{2})\s*(AM|PM)/.exec(raw);
+  if (!m) return {startStr:raw, endStr:raw, smin:0, emin:0};
+  let [, sh, sm, sap, eh, em, eap] = m;
+  if (!sap) sap = eap;
+  sh = parseInt(sh,10); eh = parseInt(eh,10); sm = parseInt(sm,10); em = parseInt(em,10);
+  const toMin = (h,mnt,ap)=>{ h = h % 12; if (ap==='PM') h += 12; return h*60+mnt; };
+  const smin = toMin(sh,sm,sap), emin = toMin(eh,em,eap);
+  const samePeriod = sap === eap;
+  const fmt = (h,mnt,ap)=>{ const suf = ap==='AM'?'a':'p'; return mnt ? `${h}:${String(mnt).padStart(2,'0')}${suf}` : `${h}${suf}`; };
+  const startStr = samePeriod ? (sm ? `${sh}:${String(sm).padStart(2,'0')}` : `${sh}`) : fmt(sh,sm,sap);
+  const endStr = fmt(eh,em,eap);
+  return {startStr, endStr, smin, emin};
+}
+function fmtClock(totalMin){
+  const h = Math.floor(totalMin/60)%24, mnt = totalMin%60;
+  const ap = h < 12 ? 'a' : 'p';
+  let h12 = h % 12; if (h12===0) h12 = 12;
+  return mnt ? `${h12}:${String(mnt).padStart(2,'0')}${ap}` : `${h12}${ap}`;
+}
+
+// ── fetch + parse rundown.html, build day data ──
+async function loadOverview(){
+  const listEl = document.getElementById('daysList');
+  let html;
+  try {
+    const res = await fetch('rundown.html', {cache:'no-store'});
+    html = await res.text();
+  } catch(err){
+    listEl.innerHTML = '<div class="ov-empty" data-en="Could not load rundown.html" data-es="No se pudo cargar rundown.html">Could not load rundown.html</div>';
+    return;
+  }
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const daySections = Array.from(doc.querySelectorAll('.day-section'));
+
+  const days = [];
+  for (const section of daySections){
+    const dateStr = section.dataset.date;
+    if (!dateStr) continue;
+    const cards = Array.from(section.querySelectorAll('.event-card'));
+    const parsedCards = cards.map(card=>{
+      const groupEl = card.querySelector('.card-group');
+      const group = groupEl ? groupEl.getAttribute('data-en') : '?';
+      let contact = null;
+      card.querySelectorAll('.foot-row').forEach(fr=>{
+        const key = fr.querySelector('.foot-key');
+        if (key && key.getAttribute('data-en') === 'CONTACT'){
+          const val = fr.querySelector('.foot-val');
+          if (val) contact = val.textContent.trim();
+        }
+      });
+      const rows = [];
+      card.querySelectorAll('.svc-row').forEach(row=>{
+        const timeEl = row.querySelector('.svc-time');
+        const tagEl = row.querySelector('.tag');
+        const roomEl = row.querySelector('.room-pill');
+        const menuEl = row.querySelector('.svc-menu');
+        if (!timeEl) return;
+        const tagName = tagEl ? tagEl.getAttribute('data-en') : '?';
+        const tagClass = tagEl ? Array.from(tagEl.classList).find(c=>c.startsWith('tag-')) || '' : '';
+        const room = roomEl ? roomEl.textContent.trim() : '?';
+        const menuHtml = menuEl ? (menuEl.getAttribute('data-en')||'') : '';
+        const {startStr, endStr, smin, emin} = parseTime(timeEl.innerHTML);
+        const label = labelFromMenu(tagName, tagClass, menuHtml);
+        rows.push({startStr, endStr, smin, emin, label, room});
+      });
+      return {group, contact, rows};
+    }).filter(c => c.rows.length);
+
+    // merge cards by base company name
+    const merged = new Map();
+    const order = [];
+    for (const c of parsedCards){
+      const base = c.group.split('—')[0].trim();
+      if (!merged.has(base)){ merged.set(base, {contact:null, rows:[]}); order.push(base); }
+      const e = merged.get(base);
+      if (c.contact) e.contact = c.contact;
+      e.rows.push(...c.rows);
+    }
+    const events = order.map(base=>{
+      const e = merged.get(base);
+      const rooms = new Map();
+      for (const r of e.rows){
+        if (!rooms.has(r.room)) rooms.set(r.room, []);
+        rooms.get(r.room).push(r);
+      }
+      const overallStart = Math.min(...e.rows.map(r=>r.smin));
+      const overallEnd = Math.max(...e.rows.map(r=>r.emin));
+      return {
+        company: base,
+        contact: e.contact || '',
+        range: `${fmtClock(overallStart)}–${fmtClock(overallEnd)}`,
+        rooms,
+      };
+    });
+    if (events.length) days.push({date: dateStr, events});
+  }
+  renderDays(days);
+}
+
+function renderDays(days){
+  const listEl = document.getElementById('daysList');
+  listEl.innerHTML = '';
+  if (!days.length){
+    listEl.innerHTML = '<div class="ov-empty" data-en="No events found" data-es="No se encontraron eventos">No events found</div>';
+    return;
+  }
+  const DOW_EN = ["MON","TUE","WED","THU","FRI","SAT","SUN"];
+  const DOW_ES = ["LUN","MAR","MIÉ","JUE","VIE","SÁB","DOM"];
+  const MON_EN = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  const now = new Date();
+  const pad = v => String(v).padStart(2,'0');
+  const today = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+  let matched = null;
+
+  days.forEach(day=>{
+    const [y,mo,da] = day.date.split('-').map(Number);
+    const dt = new Date(y, mo-1, da);
+    const dow = dt.getDay() === 0 ? 6 : dt.getDay()-1; // Mon=0..Sun=6
+    const isToday = day.date === today;
+    const isPast = day.date < today;
+
+    const section = document.createElement('div');
+    section.className = 'day-section';
+
+    const btn = document.createElement('button');
+    btn.className = 'day-btn' + (isPast ? ' a-dim' : '') + (isToday ? ' is-today' : '');
+    const summary = day.events.map(e=>e.company).join(' · ');
+    btn.innerHTML = `
+      <div class="day-dot"><span class="day-dot-num">${da}</span></div>
+      <div class="day-text">
+        <div class="day-dow-row">
+          <span class="day-dow" data-en="${DOW_EN[dow]}" data-es="${DOW_ES[dow]}">${DOW_EN[dow]}</span>
+          ${isToday ? '<span class="today-chip" data-en="TODAY" data-es="HOY">TODAY</span>' : ''}
+        </div>
+        <div class="day-summary">${summary}</div>
+      </div>
+      <div class="day-chevron">›</div>`;
+    btn.addEventListener('click', ()=>{
+      btn.classList.toggle('open');
+      body.classList.toggle('open');
+    });
+
+    const body = document.createElement('div');
+    body.className = 'day-body';
+    day.events.forEach(e=>{
+      const evDiv = document.createElement('div');
+      evDiv.className = 'ov-event';
+      let headHtml = `${e.company}`;
+      if (e.contact) headHtml += `<span class="sep">/</span><span class="contact">${e.contact}</span>`;
+      headHtml += `<span class="sep">/</span><span class="range">${e.range}</span>`;
+      let inner = `<div class="ov-head">${headHtml}</div>`;
+      e.rooms.forEach((rows, room)=>{
+        inner += `<div class="ov-room-name">${room}</div>`;
+        rows.forEach(r=>{
+          inner += `<div class="ov-row"><span class="ov-time">${r.startStr}–${r.endStr}</span><span class="ov-label">${r.label}</span></div>`;
+        });
+      });
+      evDiv.innerHTML = inner;
+      body.appendChild(evDiv);
+    });
+
+    section.appendChild(btn);
+    section.appendChild(body);
+    listEl.appendChild(section);
+    if (isToday) matched = section;
+  });
+
+  if (matched){
+    matched.querySelector('.day-btn').classList.add('open');
+    matched.querySelector('.day-body').classList.add('open');
+    setTimeout(()=>matched.scrollIntoView({behavior:'smooth',block:'start'}), 150);
+  }
+  setLang(localStorage.getItem('bb-lang')||'en');
+}
+
+function setLang(l){
+  document.documentElement.setAttribute('data-lang',l);
+  document.getElementById('len').classList.toggle('active', l==='en');
+  document.getElementById('les').classList.toggle('active', l==='es');
+  document.querySelectorAll('[data-en]').forEach(el=>{
+    const v = el.getAttribute('data-'+l);
+    if (v !== null) el.textContent = v;
+  });
+  localStorage.setItem('bb-lang', l);
+}
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('tdk').classList.toggle('active', t==='dark');
+  document.getElementById('tlt').classList.toggle('active', t==='light');
+  localStorage.setItem('bb-theme', t);
+  const bg = t==='dark' ? '#09090c' : '#f0ece3';
+  document.documentElement.style.background = bg;
+  document.body.style.background = bg;
+}
+(function(){
+  const n = new Date();
+  const mo = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('printed-date').textContent =
+    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][n.getDay()]+' '+mo[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
+})();
+setTheme(localStorage.getItem('bb-theme')||'dark');
+setLang(localStorage.getItem('bb-lang')||'en');
+loadOverview();
+</script>
+</body>
+</html>

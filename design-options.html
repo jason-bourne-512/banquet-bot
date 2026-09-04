@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overview — Design Options</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { background:#000; }
+body { min-height:100vh; font-family:'Share Tech Mono',monospace; }
+
+/* ── switcher bar ── */
+.switcher { position:sticky; top:0; z-index:50; display:flex; gap:0; background:#0a0a0a; border-bottom:1px solid #1a1a1a; }
+.switcher button { flex:1; padding:14px 8px; background:#0a0a0a; border:none; color:#4a4a4a; font-family:'Share Tech Mono',monospace; font-size:12px; letter-spacing:1px; cursor:pointer; border-bottom:2px solid transparent; text-transform:uppercase; }
+.switcher button.active { color:#39ff6a; border-bottom-color:#39ff6a; }
+
+.opt { display:none; max-width:480px; margin:0 auto; position:relative; }
+.opt.show { display:block; }
+
+/* ═══════════════════════════════════════════
+   OPTION 1 — Classic CRT Terminal
+   ═══════════════════════════════════════════ */
+.opt1 { background:#040604; color:#37f26a; padding-bottom:60px; }
+.opt1::before {
+  content:''; position:fixed; top:0; bottom:0; left:50%; width:1px;
+  background:linear-gradient(180deg,transparent,rgba(55,242,106,0.55) 10%,rgba(55,242,106,0.15) 50%,rgba(55,242,106,0.55) 90%,transparent);
+  box-shadow:0 0 8px rgba(55,242,106,0.6), 0 0 22px rgba(55,242,106,0.25);
+  animation:o1flicker 3.4s infinite steps(30);
+  z-index:5; pointer-events:none;
+}
+@keyframes o1flicker { 0%,100%{opacity:1} 42%{opacity:1} 43%{opacity:.3} 44%{opacity:1} 71%{opacity:1} 72%{opacity:.4} 73%{opacity:1} }
+.opt1 .scan { position:fixed; inset:0; pointer-events:none; z-index:4;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,0.14) 0px,rgba(0,0,0,0.14) 1px,transparent 1px,transparent 3px);
+  mix-blend-mode:multiply; }
+.opt1 .head { padding:20px 16px 14px; border-bottom:1px solid rgba(55,242,106,0.25); }
+.opt1 .head .brand { font-size:11px; letter-spacing:4px; color:rgba(55,242,106,0.5); }
+.opt1 .head h1 { font-size:26px; letter-spacing:3px; text-shadow:0 0 6px rgba(55,242,106,0.75), 0 0 18px rgba(55,242,106,0.35); margin-top:4px; }
+.opt1 .head .sub { font-size:10px; color:rgba(55,242,106,0.4); margin-top:6px; letter-spacing:1px; }
+.opt1 .day { padding:16px; }
+.opt1 .day-hd { font-size:13px; letter-spacing:2px; color:#37f26a; text-shadow:0 0 5px rgba(55,242,106,0.6); border-bottom:1px dashed rgba(55,242,106,0.35); padding-bottom:5px; margin-bottom:9px; }
+.opt1 .ev { margin-bottom:14px; padding-left:10px; border-left:2px solid rgba(55,242,106,0.35); }
+.opt1 .ev-hd { font-size:13px; color:#8fffb0; text-shadow:0 0 4px rgba(55,242,106,0.5); }
+.opt1 .ev-hd .dim { color:rgba(55,242,106,0.4); }
+.opt1 .room { font-size:10.5px; color:rgba(55,242,106,0.55); letter-spacing:1.5px; margin-top:6px; }
+.opt1 .row { display:flex; gap:10px; font-size:12px; padding:2px 0; color:rgba(143,255,176,0.9); }
+.opt1 .row .t { color:rgba(55,242,106,0.6); min-width:78px; flex-shrink:0; }
+
+/* ═══════════════════════════════════════════
+   OPTION 2 — Modern Terminal Cards
+   ═══════════════════════════════════════════ */
+.opt2 { background:#060807; color:#c8ffd8; padding-bottom:60px; }
+.opt2::before {
+  content:''; position:fixed; left:0; right:0; top:-40px; height:40px;
+  background:linear-gradient(180deg,transparent,rgba(140,255,220,0.10) 70%,rgba(180,255,225,0.35) 94%,rgba(210,255,235,0.65) 100%);
+  z-index:5; pointer-events:none;
+  animation:o2scan 11s linear infinite;
+}
+.opt2::after {
+  content:''; position:fixed; left:0; right:0; top:-1px; height:1px;
+  background:rgba(210,255,230,0.9);
+  box-shadow:0 0 4px rgba(150,255,210,0.85), 0 0 10px rgba(74,222,128,0.45);
+  z-index:6; pointer-events:none;
+  animation:o2scanline 11s linear infinite;
+}
+@keyframes o2scan {
+  0%   { transform:translateY(0); }
+  100% { transform:translateY(calc(100vh + 40px)); }
+}
+@keyframes o2scanline {
+  0%   { transform:translateY(0); }
+  100% { transform:translateY(calc(100vh + 1px)); }
+}
+.opt2 .head { padding:22px 16px 16px; border-bottom:1px solid rgba(34,197,94,0.18); }
+.opt2 .head .brand { font-size:10.5px; letter-spacing:3px; color:#3f8a5a; }
+.opt2 .head h1 { font-family:'VT323',monospace; font-size:38px; letter-spacing:1px; color:#4ade80; line-height:1; margin-top:2px; }
+.opt2 .head .sub { font-size:10px; color:#3f8a5a; margin-top:6px; }
+.opt2 .day { padding:14px 16px 0; }
+.opt2 .day-hd { display:flex; align-items:center; gap:8px; font-size:12px; letter-spacing:1.5px; color:#4ade80; margin-bottom:8px; }
+.opt2 .day-hd::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(74,222,128,0.35),transparent); }
+.opt2 .ev { background:#0b120d; border:1px solid rgba(34,197,94,0.22); border-radius:6px; padding:10px 12px; margin-bottom:10px; box-shadow:0 0 14px rgba(34,197,94,0.05) inset; }
+.opt2 .ev-hd { font-size:13px; font-weight:700; color:#eafff0; }
+.opt2 .ev-hd .dim { color:#5fae7c; font-weight:400; }
+.opt2 .room { font-size:9.5px; letter-spacing:1.2px; text-transform:uppercase; color:#5fae7c; margin-top:8px; }
+.opt2 .row { display:flex; gap:10px; font-size:11.5px; padding:2px 0; color:#c8ffd8; }
+.opt2 .row .t { color:#4ade80; min-width:76px; flex-shrink:0; }
+.opt2 .row .l { padding:0 5px; border-radius:3px; background:rgba(74,222,128,0.08); }
+.opt2 .w { position:relative; display:inline-block; }
+.opt2 .w.fuzz { animation:o2wordfuzz 0.32s steps(3,end); }
+@keyframes o2wordfuzz {
+  0%   { transform:translate(0,0); text-shadow:none; }
+  25%  { transform:translate(-2px,1px); text-shadow:2px 0 rgba(255,45,110,0.85),-2px 0 rgba(34,224,255,0.85); }
+  50%  { transform:translate(2px,-1px); text-shadow:-2px 0 rgba(255,45,110,0.85),2px 0 rgba(34,224,255,0.85); }
+  75%  { transform:translate(-1px,0); text-shadow:1px 0 rgba(255,45,110,0.6); }
+  100% { transform:translate(0,0); text-shadow:none; }
+}
+
+/* ═══════════════════════════════════════════
+   OPTION 3 — Heavy Glitch / Matrix
+   ═══════════════════════════════════════════ */
+.opt3 { background:#000; color:#00ff66; padding-bottom:60px; }
+.opt3::before, .opt3::after {
+  content:''; position:fixed; top:0; bottom:0; left:50%; width:1px;
+  z-index:5; pointer-events:none;
+}
+.opt3::before { background:#00ff66; box-shadow:0 0 10px #00ff66,0 0 30px rgba(0,255,102,0.5); transform:translateX(-2px); animation:o3glitch 2.6s infinite; }
+.opt3::after { background:rgba(255,0,90,0.5); transform:translateX(2px); animation:o3glitch2 2.6s infinite; }
+@keyframes o3glitch { 0%,94%,100%{opacity:.55; transform:translateX(-2px)} 95%{opacity:1; transform:translateX(-5px)} 96%{opacity:.2; transform:translateX(1px)} 97%{opacity:1; transform:translateX(-3px)} }
+@keyframes o3glitch2 { 0%,94%,100%{opacity:0} 95%{opacity:.7; transform:translateX(4px)} 96%{opacity:0} 97%{opacity:.5; transform:translateX(-2px)} }
+.opt3 .head { padding:20px 16px 14px; border-bottom:1px solid #113322; }
+.opt3 .head .brand { font-size:10px; letter-spacing:4px; color:#0a6; }
+.opt3 .head h1 { font-size:24px; letter-spacing:2px; text-shadow:0 0 6px #0f6, 2px 0 rgba(255,0,90,0.4), -2px 0 rgba(0,180,255,0.3); margin-top:4px; }
+.opt3 .head .sub { font-size:10px; color:#0a6; margin-top:6px; }
+.opt3 .day { padding:16px; }
+.opt3 .day-hd { font-size:13px; letter-spacing:2px; color:#00ff66; margin-bottom:2px; }
+.opt3 .day-hd::before { content:'['; color:#0a6; } .opt3 .day-hd::after { content:']'; color:#0a6; }
+.opt3 .day-rule { height:1px; background:repeating-linear-gradient(90deg,#0a6 0px,#0a6 4px,transparent 4px,transparent 8px); margin:6px 0 10px; opacity:0.5; }
+.opt3 .ev { margin-bottom:16px; }
+.opt3 .ev-hd { font-size:13px; color:#baffce; }
+.opt3 .ev-hd .dim { color:#0a6; }
+.opt3 .ev-hd::before { content:'>> '; color:#0a6; }
+.opt3 .room { font-size:10px; color:#0a6; letter-spacing:1px; margin-top:7px; }
+.opt3 .room::before { content:'· '; }
+.opt3 .row { display:flex; gap:10px; font-size:12px; padding:2px 0 2px 12px; color:#baffce; }
+.opt3 .row .t { color:#0f6; min-width:78px; flex-shrink:0; }
+
+</style>
+</head>
+<body>
+
+<div class="switcher">
+  <button class="active" onclick="show(1,this)">Option 1 — CRT</button>
+  <button onclick="show(2,this)">Option 2 — Modern</button>
+  <button onclick="show(3,this)">Option 3 — Glitch</button>
+</div>
+
+<!-- ══════════ OPTION 1 ══════════ -->
+<div class="opt opt1 show" id="opt1">
+<div class="scan"></div>
+<div class="head">
+  <div class="brand">BANQUET BOT // WESTIN AUSTIN DOMAIN</div>
+  <h1>OVERVIEW</h1>
+  <div class="sub">FRI SEP 04 2026 — LIVE FEED</div>
+</div>
+<div id="days1"></div>
+</div>
+
+<!-- ══════════ OPTION 2 ══════════ -->
+<div class="opt opt2" id="opt2">
+<div class="head">
+  <div class="brand">BANQUET BOT · WESTIN AUSTIN DOMAIN</div>
+  <h1>Overview</h1>
+  <div class="sub">Fri Sep 04, 2026 · live from rundown</div>
+</div>
+<div id="days2"></div>
+</div>
+
+<!-- ══════════ OPTION 3 ══════════ -->
+<div class="opt opt3" id="opt3">
+<div class="head">
+  <div class="brand">BANQUET_BOT :: WESTIN_AUSTIN_DOMAIN</div>
+  <h1>OVERVIEW.SYS</h1>
+  <div class="sub">FRI.SEP.04.2026 :: STREAM_ACTIVE</div>
+</div>
+<div id="days3"></div>
+</div>
+
+<script>
+function show(n, btn){
+  document.querySelectorAll('.opt').forEach(el=>el.classList.remove('show'));
+  document.getElementById('opt'+n).classList.add('show');
+  document.querySelectorAll('.switcher button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// sample data — a quiet day, a medium day, and the 6-room Texas Tech stress test
+const DAYS = [
+  { label:'SAT SEP 05', events:[
+    { company:'Azazie Inc', contact:'Lin', range:'8a–5p', rooms:[
+      { room:'Primrose C', rows:[ {t:'8–10a', l:'SETUP'}, {t:'10a–5p', l:'MTG'} ] }
+    ]},
+    { company:'AUSDW Wedding Account', contact:'Rhonda', range:'2p–6p', rooms:[
+      { room:'Plumeria', rows:[ {t:'2–6p', l:'Favorite Brands'}, {t:'2:30–4p', l:'Porcini Dusted Top Sirloin'} ] }
+    ]},
+  ]},
+  { label:'WED SEP 09', events:[
+    { company:'Microsoft Corporation', contact:'Kristina', range:'6:45a–9a', rooms:[
+      { room:'Verbena', rows:[ {t:'6:45–9a', l:'Healthy Start'} ] }
+    ]},
+    { company:'Frandevco', contact:'Kirsten', range:'8a–5p', rooms:[
+      { room:'Plumeria B', rows:[ {t:'8a–5p', l:'REG + DEC + Coke'}, {t:'12–1p', l:'Hill Country Spa Day'} ] }
+    ]},
+    { company:'Texas Mutual Insurance', contact:'Lynda', range:'12p–5p', rooms:[
+      { room:'Lantana', rows:[ {t:'12–1p', l:'Tejas Mexicano'}, {t:'1–5p', l:'REG + Pepsi + Red Bull + Sparkling'}, {t:'3:30–4p', l:'Rest & Recouperate'} ] }
+    ]},
+  ]},
+  { label:'SUN SEP 13', events:[
+    { company:'Texas Tech University', contact:'Veronica', range:'1p–5p', rooms:[
+      { room:'Foyer', rows:[ {t:'1:30–5p', l:'REGIS'}, {t:'1:15–5p', l:'Deluxe Nacho Bar'} ] },
+      { room:'Primrose C', rows:[ {t:'2–5p', l:'GS'} ] },
+      { room:'Primrose D', rows:[ {t:'1–5p', l:'BRKO'} ] },
+      { room:'Camellia', rows:[ {t:'1–5p', l:'BRKO'} ] },
+      { room:'Primrose AB', rows:[ {t:'1:30–5p', l:'EXH'} ] },
+      { room:'Verbena', rows:[ {t:'1–5p', l:'STOR'} ] },
+    ]},
+  ]},
+];
+
+function wrapWords(text){
+  return text.split(' ').map(w=>`<span class="w">${w}</span>`).join(' ');
+}
+
+function render(targetId, cls){
+  const el = document.getElementById(targetId);
+  const wrap = cls === 'opt2' ? wrapWords : (t=>t);
+  el.innerHTML = DAYS.map(day=>{
+    const evs = day.events.map(e=>{
+      const rooms = e.rooms.map(r=>{
+        const rows = r.rows.map(row=>`<div class="row"><span class="t">${row.t}</span><span class="l">${wrap(row.l)}</span></div>`).join('');
+        return `<div class="room">${wrap(r.room)}</div>${rows}`;
+      }).join('');
+      return `<div class="ev"><div class="ev-hd">${wrap(e.company)}<span class="dim"> / ${e.contact} / ${e.range}</span></div>${rooms}</div>`;
+    }).join('');
+    const rule = cls === 'opt3' ? '<div class="day-rule"></div>' : '';
+    return `<div class="day"><div class="day-hd">${day.label}</div>${rule}${evs}</div>`;
+  }).join('');
+}
+render('days1','opt1');
+render('days2','opt2');
+render('days3','opt3');
+
+// ── Option 2: random word fuzz / scramble, "broken future tech" ──
+const GLITCH_CHARS = '█▓▒░<>/\\|#$%01_-=+*';
+function glitchWord(el){
+  if (el.dataset.glitching) return;
+  el.dataset.glitching = '1';
+  const original = el.textContent;
+  el.classList.add('fuzz');
+  let n = 0;
+  const iv = setInterval(()=>{
+    el.textContent = original.split('').map(c =>
+      Math.random() < 0.55 ? GLITCH_CHARS[Math.floor(Math.random()*GLITCH_CHARS.length)] : c
+    ).join('');
+    n++;
+    if (n > 3){
+      clearInterval(iv);
+      el.textContent = original;
+      el.classList.remove('fuzz');
+      delete el.dataset.glitching;
+    }
+  }, 45);
+}
+function randomGlitchTick(){
+  const words = document.querySelectorAll('#opt2 .w');
+  if (words.length){
+    const count = 1 + Math.floor(Math.random()*3);
+    for (let i=0; i<count; i++){
+      glitchWord(words[Math.floor(Math.random()*words.length)]);
+    }
+  }
+  setTimeout(randomGlitchTick, 500 + Math.random()*1200);
+}
+randomGlitchTick();
+</script>
+</body>
+</html>
