@@ -2049,7 +2049,6 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     const isRundown = view === 'rundown';
     document.getElementById('rundownList').style.display = isRundown ? '' : 'none';
     document.getElementById('diagramsList').style.display = isRundown ? 'none' : '';
-    document.getElementById('expandBar').style.display = isRundown ? '' : 'none';
     document.getElementById('viewBtnRundown').classList.toggle('active', isRundown);
     document.getElementById('viewBtnDiagrams').classList.toggle('active', !isRundown);
     document.getElementById('todayFab').classList.toggle('view-hidden', !isRundown);
