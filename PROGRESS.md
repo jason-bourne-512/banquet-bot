@@ -7,7 +7,14 @@ Previewed 3 hand-authored pixel sprites in Chrome (`monkey-options.html`, kept a
 
 Sits next to "Good evening, team." in the hero, ~36×48px, positioned in the gap between the text and the edge (not glued to either — `.hero-row` capped at `max-width:62%` with `space-between`). Two box-shadow frames (arms down / arms raised overhead) swap via CSS `steps()` animation for the dance.
 
-**Schedule (2026-09-04, revised same day):** stands still before 11am. From 11am it dances, with a different move each window — **dance-1** (11am–2pm): squash-and-stretch vertical bounce. **dance-2** (2–5pm): side-to-side groove sway/rotate. **dance-3** (5pm+): quicker rotate+scale wiggle. `updateMonkeyDance()` derives this from `new Date().getHours()` on load and every 60s (flips live if the page stays open across a boundary) — no manual scheduling, matching every other dynamic-date bit in this app. (First pass was "dances on even hours" — replaced same session once Jason specified the actual 11/2/5 windows.)
+**Final schedule (2026-09-04, iterated same session):**
+- **11pm–6am:** asleep — a separate lying-down pixel frame (reuses the same head design, body reoriented horizontal, on a small pillow, eyes closed) with three staggered floating "z"s at increasing size/height.
+- **6–11am:** awake, standing still (no dance).
+- **11am–2pm → dance-1:** mild vertical bounce.
+- **2–5pm → dance-2:** medium side-to-side groove sway/rotate.
+- **5–11pm → dance-3:** wildest — bigger rotate + bounce + scale pulse, fastest tempo.
+
+Movement intensity escalates through the day by design (mild → medium → wild), each window's `--dance-dur` CSS custom property also dropping (1s → 0.75s → 0.5s) so the frame-swap speeds up alongside the motion. `updateMonkeyDance()` derives all of this from `new Date().getHours()` on load and every 60s (flips live if the page stays open across a boundary) — no manual scheduling, matching every other dynamic-date bit in this app. (Earlier same-session passes: "dances on even hours," then "dances 11–2/2–5/5+" with eyes-closed-standing for sleep — both superseded by the above.)
 
 ## DONE — Real app icon (favicon + apple-touch-icon), all 7 pages
 Previewed 3 directions in Chrome (`icon-options.html`, kept as reference): a gold hex "BB" monogram matching the splash screen, a service-cloche glyph, and a live-grid-pulse abstract mark. Jason picked the hex monogram.
