@@ -291,6 +291,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .ov2-room { font-size:9.5px; letter-spacing:1.2px; text-transform:uppercase; color:#5fae7c; margin-top:8px; }
 .ov2-row { display:flex; gap:10px; font-size:11.5px; padding:2px 0; color:#c8ffd8; }
 .ov2-row .t { color:#4ade80; min-width:76px; flex-shrink:0; }
+.ov2-row .t .g { color:#4ade80; opacity:.6; font-size:9.5px; }
 .ov2-row .l { padding:0 5px; border-radius:3px; background:rgba(74,222,128,0.08); }
 .ov2-w { position:relative; display:inline-block; }
 .ov2-w.fuzz { animation:ov2WordFuzz 0.32s steps(3,end); }
@@ -2800,14 +2801,17 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
           const tagEl = row.querySelector('.tag');
           const roomEl = row.querySelector('.room-pill');
           const menuEl = row.querySelector('.svc-menu');
+          const gtdEl = row.querySelector('.gtd-pill');
           if (!timeEl) return;
           const tagName = tagEl ? tagEl.getAttribute('data-en') : '?';
           const tagClass = tagEl ? Array.from(tagEl.classList).find(c=>c.startsWith('tag-')) || '' : '';
           const room = roomEl ? roomEl.textContent.trim() : '?';
           const menuHtml = menuEl ? (menuEl.getAttribute('data-en')||'') : '';
+          const gtdMatch = gtdEl ? gtdEl.textContent.match(/\d+/) : null;
+          const gtd = gtdMatch ? gtdMatch[0] : '';
           const {startStr, endStr, smin, emin} = ov2ParseTime(timeEl.innerHTML);
           const label = ov2LabelFromMenu(tagName, tagClass, menuHtml);
-          rows.push({startStr, endStr, smin, emin, label, room});
+          rows.push({startStr, endStr, smin, emin, label, room, gtd});
         });
         return {group, contact, rows};
       }).filter(c => c.rows.length);
@@ -2830,10 +2834,13 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
         }
         const overallStart = Math.min(...e.rows.map(r=>r.smin));
         const overallEnd = Math.max(...e.rows.map(r=>r.emin));
+        const gtdNums = e.rows.map(r=>r.gtd).filter(Boolean).map(Number);
+        const maxGtd = gtdNums.length ? Math.max(...gtdNums) : null;
         return {
           company: base,
           contact: e.contact || '',
           range: `${ov2FmtClock(overallStart)}–${ov2FmtClock(overallEnd)}`,
+          maxGtd,
           rooms,
         };
       });
@@ -2862,13 +2869,13 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       const label = `${DOW_EN[dowIdx]} ${MON_EN[mo-1]} ${pad(da)}`;
       const evsHtml = day.events.map(e=>{
         let head = ov2WrapWords(e.company);
-        if (e.contact) head += `<span class="dim"> / ${e.contact}</span>`;
         head += `<span class="dim"> / ${e.range}</span>`;
+        if (e.maxGtd !== null) head += `<span class="dim"> / ${e.maxGtd}</span>`;
         let roomsHtml = '';
         e.rooms.forEach((rows, room)=>{
           roomsHtml += `<div class="ov2-room">${ov2WrapWords(room)}</div>`;
           rows.forEach(r=>{
-            roomsHtml += `<div class="ov2-row"><span class="t">${r.startStr}–${r.endStr}</span><span class="l ov2-w">${r.label}</span></div>`;
+            roomsHtml += `<div class="ov2-row"><span class="t">${r.startStr}–${r.endStr}${r.gtd ? ` <span class="g">${r.gtd}</span>` : ''}</span><span class="l ov2-w">${r.label}</span></div>`;
           });
         });
         return `<div class="ov2-ev"><div class="ov2-ev-hd">${head}</div>${roomsHtml}</div>`;
