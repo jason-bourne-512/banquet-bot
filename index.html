@@ -311,8 +311,18 @@ body {
 @keyframes floatZ { 0% { transform: translateY(0); opacity: 0; } 25% { opacity: 0.9; } 100% { transform: translateY(-10px); opacity: 0; } }
 .monkey.jumping { animation: monkeyJump 0.5s ease-out; }
 @keyframes monkeyJump { 0%,100% { transform: translateY(0); } 35%,55% { transform: translateY(-16px); } }
-.monkey .no-bubble { display: none; position: absolute; top: -14px; left: 18px; font-family: 'Courier New', monospace; font-weight: 700; font-size: 12px; color: var(--accent); }
+.monkey.karate { animation: monkeyKarate 0.7s ease-in-out; }
+@keyframes monkeyKarate {
+  0%   { transform: rotate(0deg) translateX(0) scale(1); }
+  15%  { transform: rotate(-16deg) translateX(-3px) scale(1); }
+  35%  { transform: rotate(22deg) translateX(7px) scale(1.08); }
+  55%  { transform: rotate(-12deg) translateX(-4px) scale(1); }
+  75%  { transform: rotate(14deg) translateX(4px) scale(1.05); }
+  100% { transform: rotate(0deg) translateX(0) scale(1); }
+}
+.monkey .no-bubble, .monkey .hiya-bubble { display: none; position: absolute; top: -14px; left: 18px; font-family: 'Courier New', monospace; font-weight: 700; font-size: 12px; color: var(--accent); }
 .monkey.protest .no-bubble { display: block; animation: popNo 1.1s ease-out; }
+.monkey.karate .hiya-bubble { display: block; animation: popNo 1.1s ease-out; }
 @keyframes popNo { 0% { transform: translateY(4px) scale(0.7); opacity: 0; } 20% { transform: translateY(0) scale(1.1); opacity: 1; } 35% { transform: scale(1); } 100% { transform: translateY(-6px) scale(1); opacity: 0; } }
 .hero-meta { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
 .chip { display: inline-flex; align-items: center; gap: 5px; font-family: 'DM Mono', monospace; font-size: 9px; padding: 3px 8px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-2); }
@@ -493,6 +503,7 @@ body {
       <span class="z z2">z</span>
       <span class="z z3">z</span>
       <span class="no-bubble">No!</span>
+      <span class="hiya-bubble">HI-YA!</span>
     </div>
   </div>
   <div class="hero-meta">
@@ -622,11 +633,11 @@ body {
   updateMonkeyDance();
   setInterval(updateMonkeyDance, 60000);
 
-  // tap cycles: dancing -> still -> jump -> back to dancing -> repeat; asleep -> protest "No!"
+  // tap cycles: dancing -> still -> jump -> karate -> back to dancing -> repeat; asleep -> protest "No!"
   (function(){
     const el = document.getElementById('monkey');
     let protestTimer;
-    let tapPhase = 0; // 0: normal (dancing/still per schedule), 1: forced still, 2: jumped, waiting to resume
+    let tapPhase = 0; // 0: normal (dancing/still per schedule), 1: forced still, 2: jumped, 3: karate, waiting to resume
     el.addEventListener('click', function(){
       if (el.classList.contains('asleep')){
         clearTimeout(protestTimer);
@@ -649,6 +660,17 @@ body {
         });
         setTimeout(()=> el.classList.remove('jumping'), 600);
         tapPhase = 2;
+      } else if (tapPhase === 2){
+        el.classList.remove('jumping');
+        el.classList.add('karate');
+        el.addEventListener('animationend', function onKarateEnd(e){
+          if (e.animationName === 'monkeyKarate'){
+            el.classList.remove('karate');
+            el.removeEventListener('animationend', onKarateEnd);
+          }
+        });
+        setTimeout(()=> el.classList.remove('karate'), 800);
+        tapPhase = 3;
       } else {
         updateMonkeyDance();
         tapPhase = 0;
