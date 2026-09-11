@@ -288,7 +288,9 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .ov2-ev { background:#0b120d; border:1px solid rgba(34,197,94,0.22); border-radius:6px; padding:10px 12px; margin-bottom:10px; box-shadow:0 0 14px rgba(34,197,94,0.05) inset; font-family:'Courier New',monospace; }
 .ov2-ev-hd { font-size:13px; font-weight:700; color:#eafff0; line-height:1.4; }
 .ov2-ev-hd .dim { color:#5fae7c; font-weight:400; }
-.ov2-room { font-size:9.5px; letter-spacing:1.2px; text-transform:uppercase; color:#5fae7c; margin-top:8px; }
+.ov2-room { font-size:9.5px; letter-spacing:1.2px; text-transform:uppercase; color:#5fae7c; margin-top:8px; display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.ov2-diag-btn { font-family:'Courier New',monospace; font-size:9px; letter-spacing:0.3px; text-transform:none; color:#4ade80; background:rgba(74,222,128,0.08); border:1px solid rgba(74,222,128,0.35); border-radius:4px; padding:2px 7px; cursor:pointer; }
+.ov2-diag-btn:active { background:rgba(74,222,128,0.2); }
 .ov2-row { display:flex; gap:10px; font-size:11.5px; padding:2px 0; color:#c8ffd8; }
 .ov2-row .t { color:#4ade80; min-width:76px; flex-shrink:0; }
 .ov2-row .t .g { color:#4ade80; opacity:.6; font-size:9.5px; }
@@ -342,7 +344,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
 <div class="view-nav">
   <button class="view-btn active" id="viewBtnRundown" onclick="switchView('rundown')" data-en="Rundown" data-es="Resumen">Rundown</button>
-  <button class="view-btn" id="viewBtnOverview" onclick="switchView('overview')" data-en="Overview" data-es="Resumen General">Overview</button>
+  <button class="view-btn" id="viewBtnOverview" onclick="switchView('overview')" data-en="Overview / Diagram" data-es="Resumen / Diagrama">Overview / Diagram</button>
   <button class="view-btn" id="viewBtnDiagrams" onclick="switchView('diagrams')" data-en="Diagrams" data-es="Diagramas">Diagrams</button>
 </div>
 
@@ -1014,6 +1016,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Suzy</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose C · Set for 96 · 16 crescent rounds of 6 · Stage — refer to diagram · 2–3 water stations in back room · Room rental $4,000" data-es="Primrose C · Set for 96 · 16 crescent rounds of 6 · Stage — refer to diagram · 2–3 water stations in back room · Room rental $4,000">Primrose C · Set for 96 · 16 crescent rounds of 6 · Stage — refer to diagram · 2–3 water stations in back room · Room rental $4,000</span></div>
       <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Day 2 of 2 — final day, follows Sep 11 setup, same room" data-es="Day 2 of 2 — final day, follows Sep 11 setup, same room">Day 2 of 2 — final day, follows Sep 11 setup, same room</span></div>
+      <div class="foot-row">
+        <span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span>
+        <span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSECfromArbonneEventSep2026.pdf', 'Primrose C — 16 rounds of 6, stage, water stations')"><span>Primrose C — 16 rounds of 6, stage, water stations</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span>
+      </div>
     </div>
   </div>
 
@@ -1269,6 +1275,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Lynn</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia A · (4) Crescent rounds of 8, banquet choice of centerpieces" data-es="Camellia A · (4) Crescent rounds of 8, banquet choice of centerpieces">Camellia A · (4) Crescent rounds of 8, banquet choice of centerpieces</span></div>
       <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Setup day ahead of Amgen's meeting Sep 16" data-es="Setup day ahead of Amgen's meeting Sep 16">Setup day ahead of Amgen's meeting Sep 16</span></div>
+      <div class="foot-row">
+        <span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span>
+        <span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/CamelliaAfromAmgenMeetingSep2026_setup.pdf', 'Camellia A — Set 32, 4 rounds of 8')"><span>Camellia A — Set 32, 4 rounds of 8</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span>
+      </div>
     </div>
   </div>
 
@@ -1290,6 +1300,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Caroline</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Barton &amp; PDR Foyer · Cocktail rounds, scattered highboys · Bar in PDR Foyer · Glasswall open" data-es="Barton &amp; PDR Foyer · Cocktail rounds, scattered highboys · Bar in PDR Foyer · Glasswall open">Barton &amp; PDR Foyer · Cocktail rounds, scattered highboys · Bar in PDR Foyer · Glasswall open</span></div>
+      <div class="foot-row">
+        <span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span>
+        <span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/BartonFoyerfromUILNFHSSep2026.pdf', 'Barton &amp; PDR Foyer — cocktail rounds, bar in Foyer, black linen')"><span>Barton &amp; PDR Foyer — cocktail rounds, bar in Foyer, black linen</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span>
+      </div>
     </div>
   </div>
 
@@ -1363,6 +1377,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Caroline</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria B · 5 rounds of 10" data-es="Plumeria B · 5 rounds of 10">Plumeria B · 5 rounds of 10</span></div>
       <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="A large number of the party board a bus 6:15–6:30am to go golfing" data-es="A large number of the party board a bus 6:15–6:30am to go golfing">A large number of the party board a bus 6:15–6:30am to go golfing</span></div>
+      <div class="foot-row">
+        <span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span>
+        <span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIABfromUILNFHSSep2026.pdf', 'Plumeria B — 5 rounds of 10')"><span>Plumeria B — 5 rounds of 10</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span>
+      </div>
     </div>
   </div>
 
@@ -1406,6 +1424,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Lynn</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia A · Existing set · Room rental $350" data-es="Camellia A · Existing set · Room rental $350">Camellia A · Existing set · Room rental $350</span></div>
       <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Day 1 of 2 — continues Sep 17 (final day)" data-es="Day 1 of 2 — continues Sep 17 (final day)">Day 1 of 2 — continues Sep 17 (final day)</span></div>
+      <div class="foot-row">
+        <span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span>
+        <span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/CamelliaAfromAmgenMeetingSep2026.pdf', 'Camellia A — 4 rounds of 8')"><span>Camellia A — 4 rounds of 8</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span>
+      </div>
     </div>
   </div>
 
@@ -1435,6 +1457,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Caroline</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Lantana · 7 crescent rounds of 7 (one of 8) — refer to diagram · (2) 6ft tables in front · Podium · Room rental $1,500 · Plumeria A · Conference for 12" data-es="Lantana · 7 crescent rounds of 7 (one of 8) — refer to diagram · (2) 6ft tables in front · Podium · Room rental $1,500 · Plumeria A · Conference for 12">Lantana · 7 crescent rounds of 7 (one of 8) — refer to diagram · (2) 6ft tables in front · Podium · Room rental $1,500 · Plumeria A · Conference for 12</span></div>
       <div class="foot-row"><span class="foot-key" data-en="AV" data-es="AV">AV</span><span class="foot-val" data-en="Screen and projector in Lantana" data-es="Screen and projector in Lantana">Screen and projector in Lantana</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Diagram shows a handwritten callout to add an extra 6ft table in Lantana on the 17th — confirm with Lisa/Jessica" data-es="Diagram shows a handwritten callout to add an extra 6ft table in Lantana on the 17th — confirm with Lisa/Jessica">Diagram shows a handwritten callout to add an extra 6ft table in Lantana on the 17th — confirm with Lisa/Jessica</span></div>
+      <div class="foot-row">
+        <span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span>
+        <span class="foot-val" style="display:flex; flex-direction:column; gap:6px">
+          <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/LANTANAfromUILNFHSSep2026.pdf', 'Lantana — 7 crescent rounds of 7 (8th to add)')"><span>Lantana — 7 crescent rounds of 7 (8th to add)</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button>
+          <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIAAfromUILNFHSSep2026.pdf', 'Plumeria A — Conference for 12')"><span>Plumeria A — Conference for 12</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button>
+        </span>
+      </div>
     </div>
   </div>
 
@@ -1604,6 +1634,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Lynn</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia A · Existing set, refresh from previous day · Camellia B · U-Shape set for 12 · Room rental $350" data-es="Camellia A · Existing set, refresh from previous day · Camellia B · U-Shape set for 12 · Room rental $350">Camellia A · Existing set, refresh from previous day · Camellia B · U-Shape set for 12 · Room rental $350</span></div>
       <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Day 2 of 2 — final day, wraps at noon" data-es="Day 2 of 2 — final day, wraps at noon">Day 2 of 2 — final day, wraps at noon</span></div>
+      <div class="foot-row">
+        <span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span>
+        <span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/CamelliaABfromAmgenMeetingSep2026_final.pdf', 'Camellia A+B — rounds + U-shape, buffet between')"><span>Camellia A+B — rounds + U-shape, buffet between</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span>
+      </div>
     </div>
   </div>
 
@@ -2350,7 +2384,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 <div class="month-banner"><span class="month-banner-name">September</span><span class="month-banner-year">2026</span></div>
 <div class="week-label"><span class="week-label-main" data-en="Week of Sep 5–11" data-es="Week of Sep 5–11">Week of Sep 5–11</span></div>
 
-<div class="day-section">
+<div class="day-section" data-date="2026-09-05">
 <button class="day-btn a3" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">5</span></div>
   <div class="day-text">
@@ -2373,7 +2407,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 </div>
 </div>
 
-<div class="day-section">
+<div class="day-section" data-date="2026-09-09">
 <button class="day-btn a1" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">9</span></div>
   <div class="day-text">
@@ -2399,7 +2433,30 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
 <div class="week-label"><span class="week-label-main" data-en="Week of Sep 12–18" data-es="Week of Sep 12–18">Week of Sep 12–18</span></div>
 
-<div class="day-section">
+<div class="day-section" data-date="2026-09-12">
+<button class="day-btn a4" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">12</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="SAT" data-es="SAT">SAT</div>
+    <div class="day-summary" data-en="Arbonne International — Rise Up Retreat — Main Event Day" data-es="Arbonne International — Rise Up Retreat — Main Event Day">Arbonne International — Rise Up Retreat — Main Event Day</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Arbonne International — Rise Up Retreat — Main Event Day</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSECfromArbonneEventSep2026.pdf', 'Primrose C — 16 rounds of 6, stage, water stations')">
+        <span>Primrose C — 16 rounds of 6, stage, water stations</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="day-section" data-date="2026-09-14">
 <button class="day-btn a2" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">14</span></div>
   <div class="day-text">
@@ -2422,9 +2479,115 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 </div>
 </div>
 
+<div class="day-section" data-date="2026-09-15">
+<button class="day-btn a3" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">15</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="TUE" data-es="TUE">TUE</div>
+    <div class="day-summary" data-en="Amgen — Client Setup · UIL NFHS — Reception" data-es="Amgen — Client Setup · UIL NFHS — Reception">Amgen — Client Setup · UIL NFHS — Reception</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Amgen — Client Setup</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/CamelliaAfromAmgenMeetingSep2026_setup.pdf', 'Camellia A — Set 32, 4 rounds of 8')">
+        <span>Camellia A — Set 32, 4 rounds of 8</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">UIL NFHS — Reception</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/BartonFoyerfromUILNFHSSep2026.pdf', 'Barton &amp; PDR Foyer — cocktail rounds, bar in Foyer, black linen')">
+        <span>Barton &amp; PDR Foyer — cocktail rounds, bar in Foyer, black linen</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="day-section" data-date="2026-09-16">
+<button class="day-btn a4" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">16</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="WED" data-es="WED">WED</div>
+    <div class="day-summary" data-en="Amgen — Meeting · UIL NFHS — General Session &amp; Board Meeting" data-es="Amgen — Meeting · UIL NFHS — General Session &amp; Board Meeting">Amgen — Meeting · UIL NFHS — General Session &amp; Board Meeting</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">UIL NFHS — Private Breakfast</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIABfromUILNFHSSep2026.pdf', 'Plumeria B — 5 rounds of 10')">
+        <span>Plumeria B — 5 rounds of 10</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Amgen — Meeting</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/CamelliaAfromAmgenMeetingSep2026.pdf', 'Camellia A — 4 rounds of 8')">
+        <span>Camellia A — 4 rounds of 8</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">UIL NFHS — General Session &amp; Board Meeting</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/LANTANAfromUILNFHSSep2026.pdf', 'Lantana — 7 crescent rounds of 7 (8th to add)')">
+        <span>Lantana — 7 crescent rounds of 7 (8th to add)</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIAAfromUILNFHSSep2026.pdf', 'Plumeria A — Conference for 12')">
+        <span>Plumeria A — Conference for 12</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+      <span class="diag-warn" data-en="Diagram shows a handwritten callout to add an extra 6ft table in Lantana on the 17th — confirm with Lisa/Jessica." data-es="Diagram shows a handwritten callout to add an extra 6ft table in Lantana on the 17th — confirm with Lisa/Jessica.">Diagram shows a handwritten callout to add an extra 6ft table in Lantana on the 17th — confirm with Lisa/Jessica.</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="day-section" data-date="2026-09-17">
+<button class="day-btn a5" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">17</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="THU" data-es="THU">THU</div>
+    <div class="day-summary" data-en="Amgen — Meeting, Final Day" data-es="Amgen — Meeting, Final Day">Amgen — Meeting, Final Day</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">Amgen — Meeting — Final Day</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/CamelliaABfromAmgenMeetingSep2026_final.pdf', 'Camellia A+B — rounds + U-shape, buffet between')">
+        <span>Camellia A+B — rounds + U-shape, buffet between</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
 <div class="week-label"><span class="week-label-main" data-en="Week of Sep 19–25" data-es="Week of Sep 19–25">Week of Sep 19–25</span></div>
 
-<div class="day-section">
+<div class="day-section" data-date="2026-09-20">
 <button class="day-btn a4" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">20</span></div>
   <div class="day-text">
@@ -2454,7 +2617,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 </div>
 </div>
 
-<div class="day-section">
+<div class="day-section" data-date="2026-09-21">
 <button class="day-btn a5" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">21</span></div>
   <div class="day-text">
@@ -2933,6 +3096,38 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     }
     return days;
   }
+  function buildDiagramIndex(){
+    const index = {};
+    document.querySelectorAll('#diagramsList .day-section[data-date]').forEach(sec=>{
+      const date = sec.getAttribute('data-date');
+      const groups = [];
+      sec.querySelectorAll('.diag-group').forEach(g=>{
+        const nameEl = g.querySelector('.diag-group-name');
+        const name = nameEl ? nameEl.textContent.trim() : '';
+        const links = Array.from(g.querySelectorAll('.diag-link')).map(btn=>{
+          const m = btn.getAttribute('onclick').match(/openDiagram\('([^']+)',\s*'([^']+)'\)/);
+          return m ? {path: m[1], label: m[2]} : null;
+        }).filter(Boolean);
+        if (links.length) groups.push({name, links});
+      });
+      if (groups.length) index[date] = groups;
+    });
+    return index;
+  }
+  function ov2DiagramsFor(index, date, company, room){
+    const groups = index[date];
+    if (!groups) return [];
+    const companyNorm = company.toLowerCase();
+    const roomNorm = room.toLowerCase();
+    let matches = [];
+    groups.forEach(g=>{
+      const nameNorm = g.name.toLowerCase();
+      if (nameNorm.startsWith(companyNorm) || companyNorm.startsWith(nameNorm.split('—')[0].trim())){
+        g.links.forEach(l=>{ if (l.label.toLowerCase().includes(roomNorm)) matches.push(l); });
+      }
+    });
+    return matches;
+  }
   function renderOverview(){
     const el = document.getElementById('ov2Days');
     const now = new Date();
@@ -2943,6 +3138,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       el.innerHTML = '<div class="ov2-empty">No events found</div>';
       return;
     }
+    const diagIndex = buildDiagramIndex();
     const DOW_EN = ["MON","TUE","WED","THU","FRI","SAT","SUN"];
     const MON_EN = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
@@ -2958,7 +3154,12 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
         if (e.maxGtd !== null) head += `<span class="dim"> / ${e.maxGtd}</span>`;
         let roomsHtml = '';
         e.rooms.forEach((rows, room)=>{
-          roomsHtml += `<div class="ov2-room">${ov2WrapWords(room)}</div>`;
+          const diagrams = ov2DiagramsFor(diagIndex, day.date, e.company, room);
+          let diagHtml = '';
+          if (diagrams.length){
+            diagHtml = diagrams.map(d=>`<button type="button" class="ov2-diag-btn" onclick="openDiagram('${d.path}', '${d.label.replace(/'/g,"\\'")}')">⌗ ${d.label}</button>`).join('');
+          }
+          roomsHtml += `<div class="ov2-room">${ov2WrapWords(room)}${diagHtml}</div>`;
           rows.forEach(r=>{
             roomsHtml += `<div class="ov2-row"><span class="t">${r.startStr}–${r.endStr}${r.gtd ? ` <span class="g">${r.gtd}</span>` : ''}</span><span class="l ov2-w">${r.label}</span></div>`;
           });
