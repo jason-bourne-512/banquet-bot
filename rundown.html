@@ -163,6 +163,9 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .day-text { flex:1; min-width:0; }
 .day-dow { font-family:'Courier New',monospace; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--dc); margin-bottom:4px; }
 .day-summary { font-family:'Courier New',monospace; font-size:12px; white-space:normal; line-height:1.45; color:rgba(255,255,255,0.92); }
+.day-summary-line { display:block; margin-top:3px; }
+.day-summary-line:first-child { margin-top:0; }
+.ds-head { font-weight:700; }
 
 .today-chip { background:var(--accent); color:#09090c; font-family:'Courier New',monospace; font-size:8px; font-weight:600; letter-spacing:.12em; padding:3px 7px; border-radius:4px; text-transform:uppercase; flex-shrink:0; }
 [data-theme="light"] .today-chip { color:#fff; }
@@ -269,12 +272,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .day-full-view .card-foot { padding:13px 16px; }
 .day-full-view .foot-row { font-size:11.5px; gap:10px; }
 .day-full-view .foot-key { min-width:60px; }
-.day-full-view .foot-val { color:#a8c8ff; text-shadow:0 0 6px rgba(150,190,255,0.85), 0 0 14px rgba(150,190,255,0.5); }
-[data-theme="light"] .day-full-view .foot-val { color:#1543a0; text-shadow:0 0 5px rgba(37,88,196,0.45); }
+.day-full-view .foot-val { color:var(--text-1); }
+.day-full-view .svc-row { border-bottom-color:var(--border-h); }
 .day-full-view .svc-menu { font-size:14px; line-height:1.5; opacity:1; }
 .menu-line { padding:3px 0; }
 .menu-line-header { font-size:14.5px; margin-bottom:5px; }
 .menu-line-solo { opacity:0.75; }
+.menu-item { padding:2px 0 2px 12px; position:relative; }
+.menu-item::before { content:'·'; position:absolute; left:0; color:var(--text-3); }
 
 /* ══════════════════════════════════════════
    OVERVIEW TAB — black/green digital terminal
@@ -2685,6 +2690,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     document.getElementById('les').classList.toggle('active',l==='es');
     document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
     if(typeof applyMenuLineSplit==='function' && dayFullMenuEls.length) applyMenuLineSplit();
+    if(typeof applyDaySummarySplit==='function') applyDaySummarySplit();
     localStorage.setItem('bb-lang',l);
   }
   function setTheme(t){
@@ -2709,12 +2715,24 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     const header = idx === -1 ? '' : html.slice(0, idx);
     const body = idx === -1 ? html : html.slice(idx+3);
     const itemsHtml = body.split('<br>').map(block=>block.trim()).filter(Boolean)
-      .map(block=>'<div class="menu-line">'+block+'</div>').join('');
+      .map(block=>block.split(' · ').map(s=>s.trim()).filter(Boolean)
+        .map(item=>'<div class="menu-item">'+item+'</div>').join('')).join('');
     if(header) return '<div class="menu-line menu-line-header">'+header+'</div>' + itemsHtml;
     return itemsHtml;
   }
   function applyMenuLineSplit(){
     dayFullMenuEls.forEach(el=>{ el.innerHTML = splitMenuIntoLines(el.innerHTML); });
+  }
+  function formatDaySummaryClause(text){
+    const idx = text.indexOf(' — ');
+    if(idx === -1) return '<div class="day-summary-line">'+text+'</div>';
+    return '<div class="day-summary-line"><span class="ds-head">'+text.slice(0,idx)+'</span> — '+text.slice(idx+3)+'</div>';
+  }
+  function applyDaySummarySplit(){
+    document.querySelectorAll('.day-summary').forEach(el=>{
+      const clauses = el.innerHTML.split(' · ').map(s=>s.trim()).filter(Boolean);
+      el.innerHTML = clauses.map(formatDaySummaryClause).join('');
+    });
   }
   function openDayFull(btn){
     const daySection = btn.closest('.day-section');
