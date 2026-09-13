@@ -1,131 +1,206 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Schedule — Sunday, September 13, 2026</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEO Daily Brief — Sunday, September 13, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#09090c; --bg-card:#111316; --border:#232323;
-  --text-1:#edeae2; --text-2:#7e7b74;
-  --green:#2dbd80; --blue:#4f8ef0; --amber:#f0b429; --purple:#8c64dc;
-}
-* { box-sizing:border-box; }
-body { background:var(--bg); color:var(--text-1); font-family:'Courier New',monospace; margin:0; padding:20px 16px 40px; max-width:480px; margin-inline:auto; }
-h1 { font-family:'Georgia',serif; font-size:24px; margin:0 0 4px; color:var(--text-1); }
-.subtitle { color:var(--text-2); font-size:12px; margin-bottom:24px; letter-spacing:.04em; text-transform:uppercase; }
-.event-card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; margin-bottom:16px; overflow:hidden; }
-.card-head { font-weight:bold; padding:12px 14px; border-bottom:1px solid var(--border); font-size:14px; }
-.svc-row { display:flex; gap:12px; padding:10px 14px; border-bottom:1px solid var(--border); }
-.svc-row:last-child { border-bottom:none; }
-.svc-time { color:var(--text-2); font-size:12px; min-width:70px; white-space:nowrap; }
-.svc-body { flex:1; min-width:0; }
-.svc-top { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
-.tag { border:1px solid; border-radius:5px; padding:2px 7px; font-size:11px; }
-.room-pill { background:#1a1a1a; border-radius:5px; padding:2px 7px; font-size:11px; }
-.gtd-pill { background:var(--blue); color:#fff; border-radius:5px; padding:2px 7px; font-size:11px; }
-.menu { color:var(--text-2); font-size:12px; margin-top:6px; line-height:1.4; }
-.card-foot { padding:10px 14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-2); }
-.foot-key { font-weight:bold; color:var(--text-1); margin-right:4px; }
-.foot-row + .foot-row { margin-top:4px; }
-.empty { color:var(--text-2); font-style:italic; padding:40px 0; text-align:center; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0E0D0B; --surface: #161410; --card: #1C1A16; --border: #2E2A23; --border-light: #3A3630;
+    --gold: #C8963E; --gold-dim: #8A6420; --gold-glow: rgba(200,150,62,0.12);
+    --cream: #E8E0D0; --muted: #6B6458; --muted2: #4A4540; --white: #F2EDE5;
+  }
+  body {
+    background: var(--bg); color: var(--cream); font-family: 'Instrument Sans', sans-serif;
+    min-height: 100vh; padding: 2rem 1rem 4rem;
+    background-image: radial-gradient(ellipse at 0% 0%, rgba(200,150,62,0.04) 0%, transparent 60%), radial-gradient(ellipse at 100% 100%, rgba(90,122,80,0.03) 0%, transparent 50%);
+  }
+  .page-wrap { max-width: 720px; margin: 0 auto; }
+  .header { padding-bottom: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .hotel-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+  .page-title { font-family: 'DM Serif Display', serif; font-size: 2.2rem; line-height: 1; color: var(--white); }
+  .page-title span { color: var(--gold); }
+  .date-chip { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--gold); color: var(--bg); padding: 0.45rem 0.9rem; border-radius: 2px; font-weight: 500; white-space: nowrap; align-self: flex-start; }
+  .summary-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .summary-stat { display: flex; flex-direction: column; gap: 0.15rem; }
+  .summary-stat .num { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--gold); line-height: 1; }
+  .summary-stat .lbl { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .day-timeline { display: flex; align-items: center; gap: 0; margin-bottom: 2rem; overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: none; }
+  .day-timeline::-webkit-scrollbar { display: none; }
+  .tl-item { display: flex; flex-direction: column; align-items: center; position: relative; flex-shrink: 0; }
+  .tl-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border-light); background: var(--card); margin-bottom: 0.4rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .tl-dot.active { border-color: var(--gold); background: var(--gold-glow); }
+  .tl-dot .inner { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+  .tl-label { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.08em; color: var(--muted); text-align: center; white-space: nowrap; }
+  .tl-event { font-size: 0.6rem; color: var(--gold); text-align: center; white-space: nowrap; margin-top: 0.1rem; max-width: 80px; overflow: hidden; text-overflow: ellipsis; }
+  .tl-spacer { flex: 1; min-width: 2rem; height: 1px; background: var(--border); align-self: flex-start; margin-top: 8px; }
+  .section-heading { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+  .section-heading::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .event-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 1.25rem; }
+  .card-header { padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .client-name { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--white); line-height: 1.2; margin-bottom: 0.3rem; }
+  .card-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+  .meta-chip { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 2px; border: 1px solid; }
+  .meta-chip.room { color: var(--gold); border-color: var(--gold-dim); background: var(--gold-glow); }
+  .meta-chip.type { color: var(--muted); border-color: var(--border-light); background: transparent; }
+  .time-block { text-align: right; flex-shrink: 0; }
+  .time-main { font-family: 'DM Mono', monospace; font-size: 0.95rem; color: var(--gold); font-weight: 500; white-space: nowrap; }
+  .card-body { padding: 1rem 1.25rem; }
+  .info-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem 1rem; margin-bottom: 1rem; }
+  .info-item .lbl { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.2rem; }
+  .info-item .val { font-size: 0.88rem; font-weight: 500; color: var(--cream); line-height: 1.3; }
+  .food-section { border-top: 1px solid var(--border); padding-top: 0.85rem; margin-top: 0.85rem; }
+  .food-header { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .food-items { display: flex; flex-direction: column; gap: 0.25rem; }
+  .food-item { font-size: 0.8rem; color: var(--cream); opacity: 0.8; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.4; }
+  .food-item::before { content: '·'; color: var(--gold-dim); flex-shrink: 0; }
+  .meal-group { margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+  .meal-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .setup-row { border-top: 1px solid var(--border); padding-top: 0.75rem; margin-top: 0.75rem; display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+  .setup-label { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-right: 0.25rem; }
+  .setup-pill { display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(255,255,255,0.04); border: 1px solid var(--border-light); color: var(--cream); font-size: 0.78rem; padding: 0.25rem 0.65rem; border-radius: 20px; }
+  .ops-note { background: rgba(200,150,62,0.06); border-left: 2px solid var(--gold-dim); padding: 0.65rem 0.9rem; margin-top: 0.85rem; border-radius: 0 4px 4px 0; }
+  .ops-note .text { font-size: 0.8rem; color: var(--cream); opacity: 0.8; line-height: 1.5; }
+  .footer { margin-top: 2.5rem; text-align: center; font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted2); }
+  @media (max-width: 520px) { .info-row { grid-template-columns: 1fr 1fr; } .page-title { font-size: 1.7rem; } .summary-row { gap: 1rem; } }
 </style></head>
 <body>
-<h1>Today's Schedule</h1>
-<div class="subtitle">Sunday, September 13, 2026</div>
-
-    <div class="event-card">
-      <div class="card-head">Texas Tech University — Registration &amp; Reception</div>
-      
-        <div class="svc-row">
-          <div class="svc-time">13:30&ndash;17:00</div>
-          <div class="svc-body">
-            <div class="svc-top">
-              <span class="tag" style="border-color:var(--text-2);color:var(--text-2)">📋 Registration — No F&amp;B</span>
-              <span class="room-pill">Foyer</span>
-              <span class="gtd-pill">GTD 5</span>
-            </div>
-            
-          </div>
-        </div>
-        <div class="svc-row">
-          <div class="svc-time">13:15&ndash;17:00</div>
-          <div class="svc-body">
-            <div class="svc-top">
-              <span class="tag" style="border-color:var(--green);color:var(--green)">🍽️ Reception</span>
-              <span class="room-pill">Foyer</span>
-              <span class="gtd-pill">GTD 250</span>
-            </div>
-            <div class="menu">Deluxe Nacho Bar Display Station $35/pp — Ancho Rubbed Shredded Chicken, Pulled Barbacoa Beef, Spicy Queso, Salsa Rojo, Tomatillo Salsa Verde, Guacamole, Sour Cream, Diced Tomato, Jalapenos, Crispy Tortilla Chips(90) Custom Quesadilla Bar — Carnitas with pickled onion &amp; cilantro, Shrimp with Fire Roasted Chiles, Chipotle Chicken, served with salsa, guacamole, cilantro lime sour cream · Brownies or Blondies · Assorted Cookies · Freshly Brewed Iced Tea</div>
-          </div>
-        </div>
-      <div class="card-foot"><div class="foot-row"><span class="foot-key">CONTACT</span> Veronica</div><div class="foot-row"><span class="foot-key">NOTE</span> Please have F&amp;B ready to go by 1:15pm</div></div>
+<div class="page-wrap">
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="hotel-eyebrow">Westin Austin at The Domain &middot; Banquet Operations</div>
+        <div class="page-title">Daily <span>Brief</span></div>
+      </div>
+      <div class="date-chip">Sunday &middot; September 13, 2026</div>
     </div>
-    <div class="event-card">
-      <div class="card-head">Texas Tech University — General Session</div>
-      
-        <div class="svc-row">
-          <div class="svc-time">14:00&ndash;17:00</div>
-          <div class="svc-body">
-            <div class="svc-top">
-              <span class="tag" style="border-color:var(--text-2);color:var(--text-2)">📋 General Session — No F&amp;B</span>
-              <span class="room-pill">Primrose C</span>
-              <span class="gtd-pill">EXP 300</span>
-            </div>
-            
-          </div>
-        </div>
-      <div class="card-foot"><div class="foot-row"><span class="foot-key">CONTACT</span> Veronica</div></div>
+    
+    <div class="summary-row">
+      <div class="summary-stat"><div class="num">4</div><div class="lbl">Groups</div></div>
+      <div class="summary-stat"><div class="num">6</div><div class="lbl">Rooms Active</div></div>
+      <div class="summary-stat"><div class="num">~300</div><div class="lbl">Peak Covers</div></div>
+      <div class="summary-stat"><div class="num">1:00 PM</div><div class="lbl">First Event</div></div>
+      <div class="summary-stat"><div class="num">5:00 PM</div><div class="lbl">Last Event</div></div>
     </div>
-    <div class="event-card">
-      <div class="card-head">Texas Tech University — Breakout Rooms</div>
-      
-        <div class="svc-row">
-          <div class="svc-time">13:00&ndash;17:00</div>
-          <div class="svc-body">
-            <div class="svc-top">
-              <span class="tag" style="border-color:var(--text-2);color:var(--text-2)">📋 Breakout — No F&amp;B</span>
-              <span class="room-pill">Primrose D</span>
-              <span class="gtd-pill">SET 208</span>
-            </div>
-            
-          </div>
+  </div>
+  <div class="day-timeline">
+      <div class="tl-item">
+        <div class="tl-dot active"><div class="inner"></div></div>
+        <div class="tl-label">1:15 PM</div>
+        <div class="tl-event">Reception</div>
+      </div>
+      <div class="tl-spacer"></div></div>
+  <div class="section-heading">Events &mdash; Chronological</div>
+  
+  <div class="event-card">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="client-name">Texas Tech University — Registration &amp; Reception</div>
+        <div class="card-meta">
+          <span class="meta-chip room">Foyer</span>
+          <span class="meta-chip type">Registration — No F&B &middot; Reception</span>
         </div>
-        <div class="svc-row">
-          <div class="svc-time">13:00&ndash;17:00</div>
-          <div class="svc-body">
-            <div class="svc-top">
-              <span class="tag" style="border-color:var(--text-2);color:var(--text-2)">📋 Breakout — No F&amp;B</span>
-              <span class="room-pill">Camellia</span>
-              <span class="gtd-pill">EXP 18</span>
-            </div>
-            
-          </div>
-        </div>
-      <div class="card-foot"><div class="foot-row"><span class="foot-key">CONTACT</span> Veronica</div></div>
+      </div>
+      <div class="time-block">
+        <div class="time-main">1:15 PM &ndash; 5:00 PM</div>
+      </div>
     </div>
-    <div class="event-card">
-      <div class="card-head">Texas Tech University — Exhibits &amp; Storage</div>
-      
-        <div class="svc-row">
-          <div class="svc-time">13:30&ndash;17:00</div>
-          <div class="svc-body">
-            <div class="svc-top">
-              <span class="tag" style="border-color:var(--text-2);color:var(--text-2)">📋 Exhibits — No F&amp;B</span>
-              <span class="room-pill">Primrose AB</span>
-              <span class="gtd-pill">EXP 18</span>
-            </div>
-            
-          </div>
-        </div>
-        <div class="svc-row">
-          <div class="svc-time">13:00&ndash;17:00</div>
-          <div class="svc-body">
-            <div class="svc-top">
-              <span class="tag" style="border-color:var(--text-2);color:var(--text-2)">📋 Storage — No F&amp;B</span>
-              <span class="room-pill">Verbena</span>
-              <span class="gtd-pill">EXP 10</span>
-            </div>
-            
-          </div>
-        </div>
-      
+    <div class="card-body">
+      <div class="info-row"><div class="info-item"><div class="lbl">Contact</div><div class="val">Veronica</div></div><div class="info-item"><div class="lbl">Rooms</div><div class="val">Foyer</div></div></div>
+      <div class="food-section">
+      <div class="meal-group">
+        <div class="food-header">1:30 PM &ndash; 5:00 PM &middot; Registration — No F&amp;B &mdash; Foyer</div>
+        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
+      </div>
+    <div class="meal-group">
+      <div class="food-header">1:15 PM &ndash; 5:00 PM &middot; Reception &mdash; Foyer</div>
+      <div class="food-item">Deluxe Nacho Bar Display Station $35/pp — Ancho Rubbed Shredded Chicken, Pulled Barbacoa Beef, Spicy Queso, Salsa Rojo, Tomatillo Salsa Verde, Guacamole, Sour Cream, Diced Tomato, Jalapenos, Crispy Tortilla Chips(90) Custom Quesadilla Bar — Carnitas with pickled onion &amp; cilantro, Shrimp with Fire Roasted Chiles, Chipotle Chicken, served with salsa, guacamole, cilantro lime sour cream</div><div class="food-item">Brownies or Blondies</div><div class="food-item">Assorted Cookies</div><div class="food-item">Freshly Brewed Iced Tea</div>
+      <div class="food-item" style="color:var(--gold);opacity:1">GTD 250</div>
+    </div></div>
+      <div class="ops-note"><div class="text">Please have F&amp;B ready to go by 1:15pm</div></div>
+      <div class="setup-row"><span class="setup-label">Setup:</span><span class="setup-pill">Foyer · See diagram — (2) 6ft tables for promo items across from Primrose B, near Plumeria · (3) 6ft tables between Primrose B &amp; C doors for registration</span></div>
     </div>
+  </div>
+  <div class="event-card">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="client-name">Texas Tech University — General Session</div>
+        <div class="card-meta">
+          <span class="meta-chip room">Primrose C</span>
+          <span class="meta-chip type">General Session — No F&B</span>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-main">2:00 PM &ndash; 5:00 PM</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="info-row"><div class="info-item"><div class="lbl">Contact</div><div class="val">Veronica</div></div><div class="info-item"><div class="lbl">Rooms</div><div class="val">Primrose C</div></div></div>
+      <div class="food-section">
+      <div class="meal-group">
+        <div class="food-header">2:00 PM &ndash; 5:00 PM &middot; General Session — No F&amp;B &mdash; Primrose C</div>
+        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
+      </div></div>
+      
+      <div class="setup-row"><span class="setup-label">Setup:</span><span class="setup-pill">Primrose C · Theatre seating for 300 · (6) soft seats on 8x24 stage · (1) 6x30 AV table in back · Room rental $7,500</span></div>
+    </div>
+  </div>
+  <div class="event-card">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="client-name">Texas Tech University — Breakout Rooms</div>
+        <div class="card-meta">
+          <span class="meta-chip room">Primrose D &middot; Camellia</span>
+          <span class="meta-chip type">Breakout — No F&B</span>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-main">1:00 PM &ndash; 5:00 PM</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="info-row"><div class="info-item"><div class="lbl">Contact</div><div class="val">Veronica</div></div><div class="info-item"><div class="lbl">Rooms</div><div class="val">Primrose D &middot; Camellia</div></div></div>
+      <div class="food-section">
+      <div class="meal-group">
+        <div class="food-header">1:00 PM &ndash; 5:00 PM &middot; Breakout — No F&amp;B &mdash; Primrose D</div>
+        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
+      </div>
+      <div class="meal-group">
+        <div class="food-header">1:00 PM &ndash; 5:00 PM &middot; Breakout — No F&amp;B &mdash; Camellia</div>
+        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
+      </div></div>
+      
+      <div class="setup-row"><span class="setup-label">Setup:</span><span class="setup-pill">Primrose D · Theater set for 208 · 8x18 stage with stairs on left · Podium on stage · (1) 6x30 tech table in back · Camellia · (3) rounds of 6 · Room rental $800</span></div>
+    </div>
+  </div>
+  <div class="event-card">
+    <div class="card-header">
+      <div class="card-header-left">
+        <div class="client-name">Texas Tech University — Exhibits &amp; Storage</div>
+        <div class="card-meta">
+          <span class="meta-chip room">Primrose AB &middot; Verbena</span>
+          <span class="meta-chip type">Exhibits — No F&B &middot; Storage — No F&B</span>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-main">1:00 PM &ndash; 5:00 PM</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="info-row"><div class="info-item"><div class="lbl">Rooms</div><div class="val">Primrose AB &middot; Verbena</div></div></div>
+      <div class="food-section">
+      <div class="meal-group">
+        <div class="food-header">1:30 PM &ndash; 5:00 PM &middot; Exhibits — No F&amp;B &mdash; Primrose AB</div>
+        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
+      </div>
+      <div class="meal-group">
+        <div class="food-header">1:00 PM &ndash; 5:00 PM &middot; Storage — No F&amp;B &mdash; Verbena</div>
+        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
+      </div></div>
+      
+      <div class="setup-row"><span class="setup-label">Setup:</span><span class="setup-pill">Primrose AB · See diagram — 18 exhibit tables with linen around perimeter, food outside room, beverages on credenzas inside · Verbena · "Clean and Clear" storage · Room rental $800</span></div>
+    </div>
+  </div>
+  <div class="footer">Banquet Brief &middot; Westin Austin at The Domain &middot; Sunday, September 13, 2026</div>
+</div>
 </body></html>
