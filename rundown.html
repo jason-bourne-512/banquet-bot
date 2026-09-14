@@ -14,7 +14,7 @@
 <title>BEO Rundown — Westin Austin Domain</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="vendor/pdf.min.js"></script>
-<style>:root,html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%;overscroll-behavior:none}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f0ece3!important;background-color:#f0ece3!important}[data-theme="light"] body::before{background:#f0ece3}</style>
+<style>:root,html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f0ece3!important;background-color:#f0ece3!important}[data-theme="light"] body::before{background:#f0ece3}</style>
 <style>
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 :root {
@@ -57,8 +57,8 @@
   --today-dow:rgba(120,88,16,0.65); --today-sum:rgba(120,88,16,0.50);
   --silver:#6b7280;
 }
-html { background:var(--bg); min-height:100%; overflow-x:hidden; overscroll-behavior:none; }
-body { background:var(--bg); color:var(--text-1); font-family:'Courier New',monospace; min-height:100vh; min-height:100dvh; width:100%; overflow-x:hidden; overscroll-behavior:none; }
+html { background:var(--bg); min-height:100%; overflow-x:hidden; }
+body { background:var(--bg); color:var(--text-1); font-family:'Courier New',monospace; min-height:100vh; min-height:100dvh; width:100%; overflow-x:hidden; }
 .page-wrap { max-width:480px; min-height:100vh; min-height:100dvh; margin:0 auto; background:var(--bg); }
 @media (orientation:landscape){ .page-wrap { max-width:100%; } }
 
@@ -304,7 +304,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .ov2-day-hd::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,rgba(74,222,128,0.35),transparent); }
 .ov2-day.ov2-past { opacity:0.42; }
 .ov2-ev { background:#0b120d; border:1px solid rgba(34,197,94,0.22); border-radius:6px; padding:10px 12px; margin-bottom:10px; box-shadow:0 0 14px rgba(34,197,94,0.05) inset; font-family:'Courier New',monospace; }
-.ov2-ev-hd { font-size:13px; font-weight:700; color:#eafff0; line-height:1.4; }
+.ov2-client { font-size:13.5px; font-weight:700; letter-spacing:.25px; color:#a8ffcf; text-shadow:0 0 9px rgba(74,222,128,0.65),0 0 2px rgba(74,222,128,0.9); line-height:1.4; margin-bottom:2px; }
+.ov2-ev-hd { font-size:11px; font-weight:400; color:#eafff0; line-height:1.4; }
 .ov2-ev-hd .dim { color:#5fae7c; font-weight:400; }
 .ov2-room { font-size:9.5px; letter-spacing:1.2px; text-transform:uppercase; color:#5fae7c; margin-top:8px; display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
 .ov2-diag-btn { font-family:'Courier New',monospace; font-size:9px; letter-spacing:0.3px; text-transform:none; color:#4ade80; background:rgba(74,222,128,0.08); border:1px solid rgba(74,222,128,0.35); border-radius:4px; padding:2px 7px; cursor:pointer; }
@@ -1496,35 +1497,35 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     <div class="svc-row">
       <div class="svc-time">7:00 AM–<br>1:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Holding Room — No F&amp;B" data-es="Holding Room — No F&amp;B">Holding Room — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 130</span></div>
+        <div class="svc-top"><span class="tag" data-en="Holding Room — No F&amp;B" data-es="Holding Room — No F&amp;B">Holding Room — No F&amp;B</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 130</span></div>
         <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">7:45–<br>9:00 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Primrose C</span><span class="gtd-pill">GTD 100</span></div>
-        <div class="svc-menu" data-en="Breakfast service — EXP 150" data-es="Breakfast service — EXP 150">Breakfast service — EXP 150</div>
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 100</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Early Riser Breakfast Table</strong> $51/pp — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas" data-es="<strong class='menu-hl'>Early Riser Breakfast Table</strong> $51/pp — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas"><strong class='menu-hl'>Early Riser Breakfast Table</strong> $51/pp — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">10:00–<br>10:30 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Coffee Break">Coffee Break</span><span class="room-pill">Primrose C</span></div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Coffee Break">Coffee Break</span><span class="room-pill">Primrose AB</span></div>
         <div class="svc-menu" data-en="Coffee break service" data-es="Coffee break service">Coffee break service</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">11:58 AM–<br>1:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Primrose C</span><span class="gtd-pill">GTD 130</span></div>
-        <div class="svc-menu" data-en="Lunch service — EXP 150" data-es="Lunch service — EXP 150">Lunch service — EXP 150</div>
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 130</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Hill Country Spa Day - Wednesday Working Lunch Buffet</strong> $68/pp — Arugula, Frisee, Radicchio, Blackberries, Strawberries, Candied Pecans, Vanilla Honey Vinaigrette · Spinach &amp; Watercress, Beets, Goat Cheese, Toasted Walnuts, Champagne Vinaigrette<br>Herb Seared Petite Chicken Breast, Fresh Tomato Caper Relish · Roasted Salmon with Lemon, Garlic, Rosemary · Roasted Asparagus, EVOO, Crushed Red Pepper · Pan Roasted Sweet Potato Hash, Swiss Chard, Queso Fresco · Assorted French Macarons · Chocolate Mousse Shots · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas" data-es="<strong class='menu-hl'>Hill Country Spa Day - Wednesday Working Lunch Buffet</strong> $68/pp — Arugula, Frisee, Radicchio, Blackberries, Strawberries, Candied Pecans, Vanilla Honey Vinaigrette · Spinach &amp; Watercress, Beets, Goat Cheese, Toasted Walnuts, Champagne Vinaigrette<br>Herb Seared Petite Chicken Breast, Fresh Tomato Caper Relish · Roasted Salmon with Lemon, Garlic, Rosemary · Roasted Asparagus, EVOO, Crushed Red Pepper · Pan Roasted Sweet Potato Hash, Swiss Chard, Queso Fresco · Assorted French Macarons · Chocolate Mousse Shots · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas"><strong class='menu-hl'>Hill Country Spa Day - Wednesday Working Lunch Buffet</strong> $68/pp — Arugula, Frisee, Radicchio, Blackberries, Strawberries, Candied Pecans, Vanilla Honey Vinaigrette · Spinach &amp; Watercress, Beets, Goat Cheese, Toasted Walnuts, Champagne Vinaigrette<br>Herb Seared Petite Chicken Breast, Fresh Tomato Caper Relish · Roasted Salmon with Lemon, Garlic, Rosemary · Roasted Asparagus, EVOO, Crushed Red Pepper · Pan Roasted Sweet Potato Hash, Swiss Chard, Queso Fresco · Assorted French Macarons · Chocolate Mousse Shots · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">3:30–<br>4:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="PM Break" data-es="PM Break">PM Break</span><span class="room-pill">Primrose C</span></div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="PM Break" data-es="PM Break">PM Break</span><span class="room-pill">Primrose AB</span></div>
         <div class="svc-menu" data-en="Afternoon break service" data-es="Afternoon break service">Afternoon break service</div>
       </div>
     </div>
@@ -3580,8 +3581,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       const isToday = day.date === today;
       const label = `${DOW_EN[dowIdx]} ${MON_EN[mo-1]} ${pad(da)}`;
       const evsHtml = day.events.map(e=>{
-        let head = ov2WrapWords(e.company);
-        head += `<span class="dim"> / ${e.range}</span>`;
+        const client = ov2WrapWords(e.contact || e.company);
+        let head = `<span class="dim">${e.range}</span>`;
         if (e.maxGtd !== null) head += `<span class="dim"> / ${e.maxGtd}</span>`;
         let roomsHtml = '';
         e.rooms.forEach((rows, room)=>{
@@ -3595,7 +3596,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
             roomsHtml += `<div class="ov2-row"><span class="t">${r.startStr}–${r.endStr}${r.gtd ? ` <span class="g">${r.gtd}</span>` : ''}</span><span class="l ov2-w">${r.label}</span></div>`;
           });
         });
-        return `<div class="ov2-ev"><div class="ov2-ev-hd">${head}</div>${roomsHtml}</div>`;
+        return `<div class="ov2-ev"><div class="ov2-client">${client}</div><div class="ov2-ev-hd">${head}</div>${roomsHtml}</div>`;
       }).join('');
       return `<div class="ov2-day"><div class="ov2-day-hd">${label}${isToday?'<span class="today">TODAY</span>':''}</div>${evsHtml}</div>`;
     }).join('');
@@ -3665,6 +3666,24 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
         }
         matched=section;
       }
+    });
+    // Week-of dividers are static siblings of .day-section, not generated
+    // from it, so removing a whole past week's days above leaves an empty
+    // "Week of ..." header with nothing under it. Drop any week-label that
+    // has no day-section before the next week-label (or end of list).
+    ['rundownList','diagramsList'].forEach(id=>{
+      const container=document.getElementById(id);
+      if(!container) return;
+      let pendingLabel=null, hasDay=false;
+      Array.from(container.children).forEach(child=>{
+        if(child.classList.contains('week-label')){
+          if(pendingLabel && !hasDay) pendingLabel.remove();
+          pendingLabel=child; hasDay=false;
+        } else if(child.classList.contains('day-section')){
+          hasDay=true;
+        }
+      });
+      if(pendingLabel && !hasDay) pendingLabel.remove();
     });
     if(matched) setTimeout(()=>matched.scrollIntoView({behavior:'smooth',block:'start'}),150);
     window.scrollToToday=function(){ if(matched) matched.scrollIntoView({behavior:'smooth',block:'start'}); };
