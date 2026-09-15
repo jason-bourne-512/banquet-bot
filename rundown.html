@@ -1669,16 +1669,24 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       </div>
     </div>
     <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>7:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="General Session" data-es="General Session">General Session</span><span class="room-pill">Lantana</span><span class="gtd-pill">GTD 50</span></div>
+        <div class="svc-menu" data-en="Crescent rounds set · group steps out for the Detour Event, returns at 3pm" data-es="Crescent rounds set · group steps out for the Detour Event, returns at 3pm">Crescent rounds set · group steps out for the Detour Event, returns at 3pm</div>
+      </div>
+    </div>
+    <div class="svc-row">
       <div class="svc-time">3:00–<br>7:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="General Session" data-es="General Session">General Session</span><span class="room-pill">Lantana</span><span class="gtd-pill">GTD 50</span></div>
-        <div class="svc-menu" data-en="<strong class='menu-hl'>Half Day Beverage Service</strong> $30/pp — Little City Regular &amp; Decaf Coffee, Assortment of Tazo Teas, Assorted Pepsi Products &amp; Bottled Water · (2) Dozen Brownies · (20) Assorted Chips · (40) Warm Soft Pretzel Rods with Creole Mustard &amp; Queso" data-es="<strong class='menu-hl'>Half Day Beverage Service</strong> $30/pp — Little City Regular &amp; Decaf Coffee, Assortment of Tazo Teas, Assorted Pepsi Products &amp; Bottled Water · (2) Dozen Brownies · (20) Assorted Chips · (40) Warm Soft Pretzel Rods with Creole Mustard &amp; Queso"><strong class='menu-hl'>Half Day Beverage Service</strong> $30/pp — Little City Regular &amp; Decaf Coffee, Assortment of Tazo Teas, Assorted Pepsi Products &amp; Bottled Water · (2) Dozen Brownies · (20) Assorted Chips · (40) Warm Soft Pretzel Rods with Creole Mustard &amp; Queso</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Continuous Break" data-es="Continuous Break">Continuous Break</span><span class="room-pill">Lantana</span><span class="gtd-pill">GTD 50</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Half Day Beverage Service</strong> $30/pp (up to 4 hrs) — Little City Regular &amp; Decaf Coffee, Assortment of Tazo Teas, Assorted Pepsi Products &amp; Bottled Water · (2) Dozen Brownies @ $75/dozen · (1) Diet Coke on consumption @ $8 · (40) Warm Soft Pretzel Rods with Creole Mustard &amp; Queso @ $10/pp · (20) Assorted Chips @ $7 each" data-es="<strong class='menu-hl'>Half Day Beverage Service</strong> $30/pp (up to 4 hrs) — Little City Regular &amp; Decaf Coffee, Assortment of Tazo Teas, Assorted Pepsi Products &amp; Bottled Water · (2) Dozen Brownies @ $75/dozen · (1) Diet Coke on consumption @ $8 · (40) Warm Soft Pretzel Rods with Creole Mustard &amp; Queso @ $10/pp · (20) Assorted Chips @ $7 each"><strong class='menu-hl'>Half Day Beverage Service</strong> $30/pp (up to 4 hrs) — Little City Regular &amp; Decaf Coffee, Assortment of Tazo Teas, Assorted Pepsi Products &amp; Bottled Water · (2) Dozen Brownies @ $75/dozen · (1) Diet Coke on consumption @ $8 · (40) Warm Soft Pretzel Rods with Creole Mustard &amp; Queso @ $10/pp · (20) Assorted Chips @ $7 each</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Caroline</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Lantana · Crescent rounds · Room rental $1,500" data-es="Lantana · Crescent rounds · Room rental $1,500">Lantana · Crescent rounds · Room rental $1,500</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="&quot;Detour Event&quot; 9:30–11:30am — group makes their own BBQ spice rub as a take-home keepsake, needs a 6ft table · REFRESH" data-es="&quot;Detour Event&quot; 9:30–11:30am — group makes their own BBQ spice rub as a take-home keepsake, needs a 6ft table · REFRESH">"Detour Event" 9:30–11:30am — group makes their own BBQ spice rub as a take-home keepsake, needs a 6ft table · REFRESH</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="AV" data-es="AV">AV</span><span class="foot-val" data-en="Projector and screen" data-es="Projector and screen">Projector and screen</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="&quot;Detour Event&quot; 9:30–11:30am — group makes their own BBQ spice rub as a take-home keepsake, needs a 6ft table · Group returns at 3pm for meeting until 6:30pm · REFRESH" data-es="&quot;Detour Event&quot; 9:30–11:30am — group makes their own BBQ spice rub as a take-home keepsake, needs a 6ft table · Group returns at 3pm for meeting until 6:30pm · REFRESH">"Detour Event" 9:30–11:30am — group makes their own BBQ spice rub as a take-home keepsake, needs a 6ft table · Group returns at 3pm for meeting until 6:30pm · REFRESH</span></div>
     </div>
   </div>
 
@@ -3581,7 +3589,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       const isToday = day.date === today;
       const label = `${DOW_EN[dowIdx]} ${MON_EN[mo-1]} ${pad(da)}`;
       const evsHtml = day.events.map(e=>{
-        const client = ov2WrapWords(e.contact || e.company);
+        const client = ov2WrapWords(e.contact ? `${e.company} - ${e.contact}` : e.company);
         let head = `<span class="dim">${e.range}</span>`;
         if (e.maxGtd !== null) head += `<span class="dim"> / ${e.maxGtd}</span>`;
         let roomsHtml = '';
