@@ -1834,7 +1834,11 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria · Room rental $250" data-es="Plumeria · Room rental $250">Plumeria · Room rental $250</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Continues Sep 19" data-es="Continues Sep 19">Continues Sep 19</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Continues Sep 19 · Room diagram just added shows Primrose AB, set for 54 (6 rounds of 9) — conflicts with this BEO text (Plumeria, EXP 51). Confirm actual room/count with Lisa/Jessica before setup." data-es="Continues Sep 19 · Room diagram just added shows Primrose AB, set for 54 (6 rounds of 9) — conflicts with this BEO text (Plumeria, EXP 51). Confirm actual room/count with Lisa/Jessica before setup.">Continues Sep 19 · Room diagram just added shows Primrose AB, set for 54 (6 rounds of 9) — conflicts with this BEO text (Plumeria, EXP 51). Confirm actual room/count with Lisa/Jessica before setup.</span></div>
+      <div class="foot-row">
+        <span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span>
+        <span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSEABfromCJ3ConsultingSep2026.pdf', 'Primrose AB — set for 54, 6 rounds of 9')"><span>Primrose AB — set for 54, 6 rounds of 9</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span>
+      </div>
     </div>
   </div>
 
@@ -3006,6 +3010,29 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     <div class="diag-group-body">
       <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/CamelliaABfromAmgenMeetingSep2026_final.pdf', 'Camellia A+B — rounds + U-shape, buffet between')">
         <span>Camellia A+B — rounds + U-shape, buffet between</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="day-section" data-date="2026-09-18">
+<button class="day-btn a1" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">18</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="FRI" data-es="FRI">FRI</div>
+    <div class="day-summary" data-en="CJ3 Consulting — Meeting" data-es="CJ3 Consulting — Meeting">CJ3 Consulting — Meeting</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="diag-group" onclick="toggleDiagGroup(this)">
+    <div class="diag-group-head">
+      <div class="diag-group-name">CJ3 Consulting — Meeting</div>
+      <span class="diag-group-chevron">▶</span>
+    </div>
+    <div class="diag-group-body">
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSEABfromCJ3ConsultingSep2026.pdf', 'Primrose AB — set for 54, 6 rounds of 9')">
+        <span>Primrose AB — set for 54, 6 rounds of 9</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
       </button>
     </div>
   </div>
