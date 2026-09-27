@@ -294,8 +294,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .menu-line { padding:3px 0; }
 .menu-line-header { font-size:14.5px; margin-bottom:5px; }
 .menu-line-solo { opacity:0.75; }
-.menu-item { padding:2px 0 2px 12px; position:relative; }
-.menu-item::before { content:'·'; position:absolute; left:0; color:var(--text-3); }
+.menu-item { padding:2px 0 2px 16px; position:relative; }
+.menu-item::before { content:''; position:absolute; left:2px; top:0.65em; width:5px; height:5px; border-radius:50%; background:var(--text-3); }
 
 /* ══════════════════════════════════════════
    OVERVIEW TAB — black/green digital terminal
@@ -365,7 +365,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
 <div class="view-nav">
   <button class="view-btn active" id="viewBtnRundown" onclick="switchView('rundown')" data-en="Rundown" data-es="Resumen">Rundown</button>
-  <button class="view-btn" id="viewBtnOverview" onclick="switchView('overview')" data-en="Overview / Diagram" data-es="Resumen / Diagrama">Overview / Diagram</button>
+  <button class="view-btn" id="viewBtnOverview" onclick="switchView('overview')" data-en="Overview" data-es="Resumen">Overview</button>
   <button class="view-btn" id="viewBtnDiagrams" onclick="switchView('diagrams')" data-en="Diagrams" data-es="Diagramas">Diagrams</button>
 </div>
 
@@ -1057,7 +1057,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">13</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="SUN" data-es="SUN">SUN</div>
-    <div class="day-summary" data-en="Texas Tech University — Recruitment Event, Primrose C &amp; Pre-Function" data-es="Texas Tech University — Recruitment Event, Primrose C &amp; Pre-Function">Texas Tech University — Recruitment Event, Primrose C &amp; Pre-Function</div>
+    <div class="day-summary" data-en="Texas Tech University — Recruitment Event, Primrose C &amp; Foyer" data-es="Texas Tech University — Recruitment Event, Primrose C &amp; Foyer">Texas Tech University — Recruitment Event, Primrose C &amp; Foyer</div>
   </div>
 </button>
 <div class="day-body">
@@ -2976,7 +2976,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">27</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="SUN" data-es="SUN">SUN</div>
-    <div class="day-summary" data-en="CFMA — Regional Meeting Setup &amp; Welcome Reception, Plumeria/Verbena/Camellia/Pre-Function · NRI ONE — Indian Property Expo, Final Day, Primrose D" data-es="CFMA — Regional Meeting Setup &amp; Welcome Reception, Plumeria/Verbena/Camellia/Pre-Function · NRI ONE — Indian Property Expo, Final Day, Primrose D">CFMA — Regional Meeting Setup &amp; Welcome Reception, Plumeria/Verbena/Camellia/Pre-Function · NRI ONE — Indian Property Expo, Final Day, Primrose D</div>
+    <div class="day-summary" data-en="CFMA — Regional Meeting Setup &amp; Welcome Reception, Plumeria/Verbena/Camellia/Foyer · NRI ONE — Indian Property Expo, Final Day, Primrose D" data-es="CFMA — Regional Meeting Setup &amp; Welcome Reception, Plumeria/Verbena/Camellia/Foyer · NRI ONE — Indian Property Expo, Final Day, Primrose D">CFMA — Regional Meeting Setup &amp; Welcome Reception, Plumeria/Verbena/Camellia/Foyer · NRI ONE — Indian Property Expo, Final Day, Primrose D</div>
   </div>
 </button>
 <div class="day-body">
@@ -3027,7 +3027,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     <div class="svc-row">
       <div class="svc-time">12:00–<br>4:30 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">EXP 15</span></div>
+        <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Foyer</span><span class="gtd-pill">EXP 15</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
@@ -3041,13 +3041,13 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     <div class="svc-row">
       <div class="svc-time">5:30–<br>7:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">GTD 212</span></div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 212</span></div>
         <div class="svc-menu" data-en="<strong class='menu-hl'>Hosted Bar</strong> — (1) Mocktail · Hosted Favorite Brands @ $13 (Jack Daniel's Bourbon, Dewar's White Label Scotch, Tito's Vodka, Tanqueray Gin, Canadian Club Whiskey, Jose Cuervo Gold Tequila, Bacardi Superior Rum) · Hosted Wine by the Glass @ $13 (Vista Point Chardonnay, Vista Point Cabernet Sauvignon) · Hosted Imported &amp; Craft Beer @ $10 (Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock, Austin Eastciders) · Hosted Domestic Beer @ $9 (Budweiser, Bud Light, Miller Lite, Lonestar) · Assorted Pepsi Products @ $7 each · (2) Bartenders (1 per 100 guests, up to 4 hours) @ $250 each" data-es="<strong class='menu-hl'>Hosted Bar</strong> — (1) Mocktail · Hosted Favorite Brands @ $13 (Jack Daniel's Bourbon, Dewar's White Label Scotch, Tito's Vodka, Tanqueray Gin, Canadian Club Whiskey, Jose Cuervo Gold Tequila, Bacardi Superior Rum) · Hosted Wine by the Glass @ $13 (Vista Point Chardonnay, Vista Point Cabernet Sauvignon) · Hosted Imported &amp; Craft Beer @ $10 (Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock, Austin Eastciders) · Hosted Domestic Beer @ $9 (Budweiser, Bud Light, Miller Lite, Lonestar) · Assorted Pepsi Products @ $7 each · (2) Bartenders (1 per 100 guests, up to 4 hours) @ $250 each"><strong class='menu-hl'>Hosted Bar</strong> — (1) Mocktail · Hosted Favorite Brands @ $13 (Jack Daniel's Bourbon, Dewar's White Label Scotch, Tito's Vodka, Tanqueray Gin, Canadian Club Whiskey, Jose Cuervo Gold Tequila, Bacardi Superior Rum) · Hosted Wine by the Glass @ $13 (Vista Point Chardonnay, Vista Point Cabernet Sauvignon) · Hosted Imported &amp; Craft Beer @ $10 (Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock, Austin Eastciders) · Hosted Domestic Beer @ $9 (Budweiser, Bud Light, Miller Lite, Lonestar) · Assorted Pepsi Products @ $7 each · (2) Bartenders (1 per 100 guests, up to 4 hours) @ $250 each</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Marie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia · SEE DIAGRAM<br>(2) 6x30 tables w/4 chairs for registration<br>(6) 6x30 tables w/2 chairs for vendors<br>Pre-Function<br>(17) 6x30 tables set in foyer with 2 chairs" data-es="Camellia · SEE DIAGRAM<br>(2) 6x30 tables w/4 chairs for registration<br>(6) 6x30 tables w/2 chairs for vendors<br>Pre-Function<br>(17) 6x30 tables set in foyer with 2 chairs">Camellia · SEE DIAGRAM<br>(2) 6x30 tables w/4 chairs for registration<br>(6) 6x30 tables w/2 chairs for vendors<br>Pre-Function<br>(17) 6x30 tables set in foyer with 2 chairs</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia · SEE DIAGRAM<br>(2) 6x30 tables w/4 chairs for registration<br>(6) 6x30 tables w/2 chairs for vendors<br>Foyer<br>(17) 6x30 tables set in foyer with 2 chairs" data-es="Camellia · SEE DIAGRAM<br>(2) 6x30 tables w/4 chairs for registration<br>(6) 6x30 tables w/2 chairs for vendors<br>Foyer<br>(17) 6x30 tables set in foyer with 2 chairs">Camellia · SEE DIAGRAM<br>(2) 6x30 tables w/4 chairs for registration<br>(6) 6x30 tables w/2 chairs for vendors<br>Foyer<br>(17) 6x30 tables set in foyer with 2 chairs</span></div>
       <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="450 drink tickets to be handed to client — bar goes from hosted to cash once tickets are used" data-es="450 drink tickets to be handed to client — bar goes from hosted to cash once tickets are used">450 drink tickets to be handed to client — bar goes from hosted to cash once tickets are used</span></div>
     </div>
   </div>
@@ -3098,7 +3098,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
   <div class="day-strip">
     <div class="strip-item"><strong>2</strong> <span data-en="groups · 5 rooms" data-es="grupos · 5 salas">groups · 5 rooms</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Plumeria · Camellia · Pre-Function · Verbena · Primrose D</strong></div>
+    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Plumeria · Camellia · Foyer · Verbena · Primrose D</strong></div>
   </div>
 </div>
 </div>
@@ -3109,13 +3109,13 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">28</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="MON" data-es="MON">MON</div>
-    <div class="day-summary" data-en="CFMA — Regional Meeting Day 1, Pre-Function/Verbena/Primrose CD/Camellia/Primrose AB · AbbVie — Private Meeting Setup, Lantana" data-es="CFMA — Regional Meeting Day 1, Pre-Function/Verbena/Primrose CD/Camellia/Primrose AB · AbbVie — Private Meeting Setup, Lantana">CFMA — Regional Meeting Day 1, Pre-Function/Verbena/Primrose CD/Camellia/Primrose AB · AbbVie — Private Meeting Setup, Lantana</div>
+    <div class="day-summary" data-en="CFMA — Regional Meeting Day 1, Foyer/Verbena/Primrose CD/Camellia/Primrose AB · AbbVie — Private Meeting Setup, Lantana" data-es="CFMA — Regional Meeting Day 1, Foyer/Verbena/Primrose CD/Camellia/Primrose AB · AbbVie — Private Meeting Setup, Lantana">CFMA — Regional Meeting Day 1, Foyer/Verbena/Primrose CD/Camellia/Primrose AB · AbbVie — Private Meeting Setup, Lantana</div>
   </div>
 </button>
 <div class="day-body">
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="CFMA — Breakfast &amp; Lunch (Pre-Function)" data-es="CFMA — Breakfast &amp; Lunch (Pre-Function)">CFMA — Breakfast &amp; Lunch (Pre-Function)</div>
+      <div class="card-group" data-en="CFMA — Breakfast &amp; Lunch (Foyer)" data-es="CFMA — Breakfast &amp; Lunch (Foyer)">CFMA — Breakfast &amp; Lunch (Foyer)</div>
       <div class="card-badges">
         <span class="badge badge-mgr" data-en="MGR: Diana / Samantha" data-es="MGR: Diana / Samantha">MGR: Diana / Samantha</span>
         <span class="badge badge-ic" data-en="IC: Marie" data-es="IC: Marie">IC: Marie</span>
@@ -3124,28 +3124,28 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     <div class="svc-row">
       <div class="svc-time">7:00–<br>8:15 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast Buffet" data-es="Breakfast Buffet">Breakfast Buffet</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">GTD 245</span></div>
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast Buffet" data-es="Breakfast Buffet">Breakfast Buffet</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 245</span></div>
         <div class="svc-menu" data-en="<strong class='menu-hl'>Early Riser Breakfast Table</strong> $49.50/pp — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas" data-es="<strong class='menu-hl'>Early Riser Breakfast Table</strong> $49.50/pp — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas"><strong class='menu-hl'>Early Riser Breakfast Table</strong> $49.50/pp — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Coffee Break">Coffee Break</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">GTD 245</span></div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Coffee Break">Coffee Break</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 245</span></div>
         <div class="svc-menu" data-en="<strong class='menu-hl'>All Day Beverages</strong> $46.80/pp — Little City Regular &amp; Decaf Coffee · Hot Water &amp; Assortment of Teas · 2% Milk, Cream, Soy Milk, Honey, Lemon · Assorted Pepsi Products · Bottled Water on consumption" data-es="<strong class='menu-hl'>All Day Beverages</strong> $46.80/pp — Little City Regular &amp; Decaf Coffee · Hot Water &amp; Assortment of Teas · 2% Milk, Cream, Soy Milk, Honey, Lemon · Assorted Pepsi Products · Bottled Water on consumption"><strong class='menu-hl'>All Day Beverages</strong> $46.80/pp — Little City Regular &amp; Decaf Coffee · Hot Water &amp; Assortment of Teas · 2% Milk, Cream, Soy Milk, Honey, Lemon · Assorted Pepsi Products · Bottled Water on consumption</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">11:50 AM–<br>12:45 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Lunch Buffet">Lunch Buffet</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">GTD 278</span></div>
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Lunch Buffet">Lunch Buffet</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 278</span></div>
         <div class="svc-menu" data-en="<strong class='menu-hl'>Monday-Southern Comforts</strong> $61.20/pp — Southwestern Cobb Salad (Romaine, Bell Pepper, Hard Boiled Egg, Red Onion, Bacon, Blue Cheese) · Elote Corn Salad (Roasted Peppers, Cilantro, Lime, Tajin, Cotija, Mayo)<br>Cracked Pepper Roasted Pork Loin · Honey Fried Chicken · Roasted Garlic Mashed Potatoes · Southern Style Braised Greens · Peach Cobbler · Pecan Pie · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas" data-es="<strong class='menu-hl'>Monday-Southern Comforts</strong> $61.20/pp — Southwestern Cobb Salad (Romaine, Bell Pepper, Hard Boiled Egg, Red Onion, Bacon, Blue Cheese) · Elote Corn Salad (Roasted Peppers, Cilantro, Lime, Tajin, Cotija, Mayo)<br>Cracked Pepper Roasted Pork Loin · Honey Fried Chicken · Roasted Garlic Mashed Potatoes · Southern Style Braised Greens · Peach Cobbler · Pecan Pie · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas"><strong class='menu-hl'>Monday-Southern Comforts</strong> $61.20/pp — Southwestern Cobb Salad (Romaine, Bell Pepper, Hard Boiled Egg, Red Onion, Bacon, Blue Cheese) · Elote Corn Salad (Roasted Peppers, Cilantro, Lime, Tajin, Cotija, Mayo)<br>Cracked Pepper Roasted Pork Loin · Honey Fried Chicken · Roasted Garlic Mashed Potatoes · Southern Style Braised Greens · Peach Cobbler · Pecan Pie · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Marie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Pre-Function · Existing set" data-es="Pre-Function · Existing set">Pre-Function · Existing set</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Double-sided buffet inside Camellia, second buffet in Pre-Function · Day 1 of 3 — continues Sep 29" data-es="Double-sided buffet inside Camellia, second buffet in Pre-Function · Day 1 of 3 — continues Sep 29">Double-sided buffet inside Camellia, second buffet in Pre-Function · Day 1 of 3 — continues Sep 29</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Foyer · Existing set" data-es="Foyer · Existing set">Foyer · Existing set</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Double-sided buffet inside Camellia, second buffet in Foyer · Day 1 of 3 — continues Sep 29" data-es="Double-sided buffet inside Camellia, second buffet in Foyer · Day 1 of 3 — continues Sep 29">Double-sided buffet inside Camellia, second buffet in Foyer · Day 1 of 3 — continues Sep 29</span></div>
     </div>
   </div>
 
@@ -3268,7 +3268,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
   <div class="day-strip">
     <div class="strip-item"><strong>2</strong> <span data-en="groups · 6 rooms" data-es="grupos · 6 salas">groups · 6 rooms</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Pre-Function · Primrose CD · Camellia · Primrose AB · Verbena · Lantana</strong></div>
+    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Foyer · Primrose CD · Camellia · Primrose AB · Verbena · Lantana</strong></div>
   </div>
 </div>
 </div>
@@ -3279,13 +3279,13 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="day-dot"><span class="day-dot-num">29</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="TUE" data-es="TUE">TUE</div>
-    <div class="day-summary" data-en="CFMA — Regional Meeting Day 2, Pre-Function/Camellia/Primrose CD/Primrose AB/Verbena · AbbVie — Meeting &amp; Private Meeting, Plumeria/Lantana" data-es="CFMA — Regional Meeting Day 2, Pre-Function/Camellia/Primrose CD/Primrose AB/Verbena · AbbVie — Meeting &amp; Private Meeting, Plumeria/Lantana">CFMA — Regional Meeting Day 2, Pre-Function/Camellia/Primrose CD/Primrose AB/Verbena · AbbVie — Meeting &amp; Private Meeting, Plumeria/Lantana</div>
+    <div class="day-summary" data-en="CFMA — Regional Meeting Day 2, Foyer/Camellia/Primrose CD/Primrose AB/Verbena · AbbVie — Meeting &amp; Private Meeting, Plumeria/Lantana" data-es="CFMA — Regional Meeting Day 2, Foyer/Camellia/Primrose CD/Primrose AB/Verbena · AbbVie — Meeting &amp; Private Meeting, Plumeria/Lantana">CFMA — Regional Meeting Day 2, Foyer/Camellia/Primrose CD/Primrose AB/Verbena · AbbVie — Meeting &amp; Private Meeting, Plumeria/Lantana</div>
   </div>
 </button>
 <div class="day-body">
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="CFMA — Breakfast, Lunch &amp; Exhibits (Pre-Function)" data-es="CFMA — Breakfast, Lunch &amp; Exhibits (Pre-Function)">CFMA — Breakfast, Lunch &amp; Exhibits (Pre-Function)</div>
+      <div class="card-group" data-en="CFMA — Breakfast, Lunch &amp; Exhibits (Foyer)" data-es="CFMA — Breakfast, Lunch &amp; Exhibits (Foyer)">CFMA — Breakfast, Lunch &amp; Exhibits (Foyer)</div>
       <div class="card-badges">
         <span class="badge badge-mgr" data-en="MGR: Diana / Samantha" data-es="MGR: Diana / Samantha">MGR: Diana / Samantha</span>
         <span class="badge badge-ic" data-en="IC: Marie" data-es="IC: Marie">IC: Marie</span>
@@ -3294,42 +3294,42 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     <div class="svc-row">
       <div class="svc-time">7:00–<br>8:15 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast Buffet" data-es="Breakfast Buffet">Breakfast Buffet</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">GTD 261</span></div>
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast Buffet" data-es="Breakfast Buffet">Breakfast Buffet</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 261</span></div>
         <div class="svc-menu" data-en="<strong class='menu-hl'>Early Riser Breakfast Table</strong> $49.50/pp — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas" data-es="<strong class='menu-hl'>Early Riser Breakfast Table</strong> $49.50/pp — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas"><strong class='menu-hl'>Early Riser Breakfast Table</strong> $49.50/pp — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:50–<br>9:00 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Coffee Break">Coffee Break</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">EXP 300</span></div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Coffee Break">Coffee Break</span><span class="room-pill">Foyer</span><span class="gtd-pill">EXP 300</span></div>
         <div class="svc-menu" data-en="(7) Gallons Little City Regular Coffee @ $121.50/gal · (4) Gallons Assortment of Teas @ $94.50/gal" data-es="(7) Gallons Little City Regular Coffee @ $121.50/gal · (4) Gallons Assortment of Teas @ $94.50/gal">(7) Gallons Little City Regular Coffee @ $121.50/gal · (4) Gallons Assortment of Teas @ $94.50/gal</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">9:50–<br>10:20 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Coffee Break">Coffee Break</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">GTD 229</span></div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Coffee Break">Coffee Break</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 229</span></div>
         <div class="svc-menu" data-en="(9) Gallons Little City Regular Coffee @ $121.50/gal · (5) Gallons Assortment of Teas @ $94.50/gal · Assorted Pepsi Products on consumption @ $6.30 each · Bottled Water on consumption @ $6.30 each" data-es="(9) Gallons Little City Regular Coffee @ $121.50/gal · (5) Gallons Assortment of Teas @ $94.50/gal · Assorted Pepsi Products on consumption @ $6.30 each · Bottled Water on consumption @ $6.30 each">(9) Gallons Little City Regular Coffee @ $121.50/gal · (5) Gallons Assortment of Teas @ $94.50/gal · Assorted Pepsi Products on consumption @ $6.30 each · Bottled Water on consumption @ $6.30 each</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">11:35 AM–<br>12:30 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Lunch Buffet">Lunch Buffet</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">GTD 261</span></div>
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Lunch Buffet">Lunch Buffet</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 261</span></div>
         <div class="svc-menu" data-en="<strong class='menu-hl'>Austin BBQ - Tuesday Working Lunch Buffet</strong> $61.20/pp — Chopped Iceberg &amp; Romaine, Cheddar, Grilled Corn, Baby Heirloom Tomatoes, Red Onion, Jalapeno Ranch · Hill Country German Potato Salad, Grainy Mustard, Bacon, Parsley · Kale &amp; Broccoli Slaw, Sundried Cranberries, Toasted Almond, Celery Vinaigrette<br>Gochujang BBQ Glazed Chicken Thighs, Sesame &amp; Green Onions · Sliced Pickles, Hawaiian Rolls · Salt &amp; Pepper Rubbed 12 Hour Smoked Brisket · Ranch Style Baked Beans · Creamy Green Chili Mac 'n' Cheese · Warm Sweet Cornbread · Golden Delicious Apple Skillet Crisp, Caramel Sauce · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas" data-es="<strong class='menu-hl'>Austin BBQ - Tuesday Working Lunch Buffet</strong> $61.20/pp — Chopped Iceberg &amp; Romaine, Cheddar, Grilled Corn, Baby Heirloom Tomatoes, Red Onion, Jalapeno Ranch · Hill Country German Potato Salad, Grainy Mustard, Bacon, Parsley · Kale &amp; Broccoli Slaw, Sundried Cranberries, Toasted Almond, Celery Vinaigrette<br>Gochujang BBQ Glazed Chicken Thighs, Sesame &amp; Green Onions · Sliced Pickles, Hawaiian Rolls · Salt &amp; Pepper Rubbed 12 Hour Smoked Brisket · Ranch Style Baked Beans · Creamy Green Chili Mac 'n' Cheese · Warm Sweet Cornbread · Golden Delicious Apple Skillet Crisp, Caramel Sauce · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas"><strong class='menu-hl'>Austin BBQ - Tuesday Working Lunch Buffet</strong> $61.20/pp — Chopped Iceberg &amp; Romaine, Cheddar, Grilled Corn, Baby Heirloom Tomatoes, Red Onion, Jalapeno Ranch · Hill Country German Potato Salad, Grainy Mustard, Bacon, Parsley · Kale &amp; Broccoli Slaw, Sundried Cranberries, Toasted Almond, Celery Vinaigrette<br>Gochujang BBQ Glazed Chicken Thighs, Sesame &amp; Green Onions · Sliced Pickles, Hawaiian Rolls · Salt &amp; Pepper Rubbed 12 Hour Smoked Brisket · Ranch Style Baked Beans · Creamy Green Chili Mac 'n' Cheese · Warm Sweet Cornbread · Golden Delicious Apple Skillet Crisp, Caramel Sauce · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00 AM–<br>3:30 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Exhibits — No F&amp;B" data-es="Exhibits — No F&amp;B">Exhibits — No F&amp;B</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">EXP 15</span></div>
+        <div class="svc-top"><span class="tag" data-en="Exhibits — No F&amp;B" data-es="Exhibits — No F&amp;B">Exhibits — No F&amp;B</span><span class="room-pill">Foyer</span><span class="gtd-pill">EXP 15</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Marie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Pre-Function · Existing set" data-es="Pre-Function · Existing set">Pre-Function · Existing set</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Double-sided buffet inside Camellia, second buffet in Pre-Function · Confirm with client before refreshing beverages · Day 2 of 3 — continues Sep 30" data-es="Double-sided buffet inside Camellia, second buffet in Pre-Function · Confirm with client before refreshing beverages · Day 2 of 3 — continues Sep 30">Double-sided buffet inside Camellia, second buffet in Pre-Function · Confirm with client before refreshing beverages · Day 2 of 3 — continues Sep 30</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Foyer · Existing set" data-es="Foyer · Existing set">Foyer · Existing set</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Double-sided buffet inside Camellia, second buffet in Foyer · Confirm with client before refreshing beverages · Day 2 of 3 — continues Sep 30" data-es="Double-sided buffet inside Camellia, second buffet in Foyer · Confirm with client before refreshing beverages · Day 2 of 3 — continues Sep 30">Double-sided buffet inside Camellia, second buffet in Foyer · Confirm with client before refreshing beverages · Day 2 of 3 — continues Sep 30</span></div>
     </div>
   </div>
 
@@ -3358,7 +3358,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Marie</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia · Existing set" data-es="Camellia · Existing set">Camellia · Existing set</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="POST AS: Exhibit Overflow · Set coffee break in this room as well as Pre-Function" data-es="POST AS: Exhibit Overflow · Set coffee break in this room as well as Pre-Function">POST AS: Exhibit Overflow · Set coffee break in this room as well as Pre-Function</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="POST AS: Exhibit Overflow · Set coffee break in this room as well as Foyer" data-es="POST AS: Exhibit Overflow · Set coffee break in this room as well as Foyer">POST AS: Exhibit Overflow · Set coffee break in this room as well as Foyer</span></div>
     </div>
   </div>
 
@@ -3502,7 +3502,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
   <div class="day-strip">
     <div class="strip-item"><strong>2</strong> <span data-en="groups · 7 rooms" data-es="grupos · 7 salas">groups · 7 rooms</span></div>
-    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Pre-Function · Camellia · Primrose CD · Primrose AB · Verbena · Plumeria · Lantana</strong></div>
+    <div class="strip-item"><span data-en="Rooms:" data-es="Salas:">Rooms:</span> <strong>Foyer · Camellia · Primrose CD · Primrose AB · Verbena · Plumeria · Lantana</strong></div>
   </div>
 </div>
 </div>
@@ -4799,8 +4799,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSEBALLROOMfromCFMA.pdf', 'Primrose Ballroom')">
         <span>Primrose Ballroom</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
       </button>
-      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PREFUNCTIONVendorCopyfromCFMA.pdf', 'Pre-Function — Vendor Copy')">
-        <span>Pre-Function — Vendor Copy</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PREFUNCTIONVendorCopyfromCFMA.pdf', 'Foyer — Vendor Copy')">
+        <span>Foyer — Vendor Copy</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
       </button>
       <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/VERBENAfromCFMA.pdf', 'Verbena')">
         <span>Verbena</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
@@ -4854,8 +4854,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/VERBENAfromInforma.pdf', 'Verbena')">
         <span>Verbena</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
       </button>
-      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PREFUNCTIONfromInforma.pdf', 'Pre-Function')">
-        <span>Pre-Function</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
+      <button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PREFUNCTIONfromInforma.pdf', 'Foyer')">
+        <span>Foyer</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span>
       </button>
       <span class="diag-warn" data-en="Diagrams only — no BEO event order received yet for this date. Group name, times, and headcount to be confirmed." data-es="Diagrams only — no BEO event order received yet for this date. Group name, times, and headcount to be confirmed.">Diagrams only — no BEO event order received yet for this date. Group name, times, and headcount to be confirmed.</span>
     </div>
@@ -4979,6 +4979,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
     if(typeof applyMenuLineSplit==='function' && dayFullMenuEls.length) applyMenuLineSplit();
     if(typeof applyDaySummarySplit==='function') applyDaySummarySplit();
+    if(typeof rebuildDaySummaries==='function') rebuildDaySummaries();
     localStorage.setItem('bb-lang',l);
   }
   function setTheme(t){
@@ -5011,9 +5012,60 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     return '<div class="day-summary-line"><span class="ds-head">'+text.slice(0,idx)+'</span> — '+text.slice(idx+3)+'</div>';
   }
   function applyDaySummarySplit(){
-    document.querySelectorAll('.day-summary').forEach(el=>{
+    // Diagram-only placeholder days have no real event-card to derive a
+    // summary from, so they keep the old hand-typed-text + split approach.
+    document.querySelectorAll('#diagramsList .day-summary').forEach(el=>{
       const clauses = el.innerHTML.split(' · ').map(s=>s.trim()).filter(Boolean);
       el.innerHTML = clauses.map(formatDaySummaryClause).join('');
+    });
+  }
+  // Builds one day-summary line — "Group / Contact / Rooms (day-count)" —
+  // straight from a real event-card's own data, instead of a hand-typed
+  // string that has to be kept in sync by hand (and drifts, same failure
+  // class as the stale week-labels/date-chip bugs this repo has already
+  // hit). Day-count comes from a "Day X of Y" pattern already present in
+  // either the card-group name or the NOTE foot-row; defaults to "(1)".
+  function extractCardSummaryLine(card){
+    const groupEl = card.querySelector('.card-group');
+    let group = groupEl ? (groupEl.getAttribute('data-en') || groupEl.textContent).trim() : '?';
+    const groupDayMatch = /—\s*Day\s+(\d+)\s+of\s+(\d+)\s*$/i.exec(group);
+    if (groupDayMatch) group = group.slice(0, groupDayMatch.index).replace(/—\s*$/,'').trim();
+
+    let contact = null, noteDayMatch = null;
+    card.querySelectorAll('.foot-row').forEach(fr=>{
+      const key = fr.querySelector('.foot-key');
+      if (!key) return;
+      const keyEn = key.getAttribute('data-en');
+      const val = fr.querySelector('.foot-val');
+      if (keyEn === 'CONTACT' && val) contact = val.textContent.trim();
+      if (keyEn === 'NOTE' && val && !noteDayMatch){
+        noteDayMatch = /Day\s+(\d+)\s+of\s+(\d+)/i.exec(val.getAttribute('data-en') || val.textContent);
+      }
+    });
+
+    const dayMatch = noteDayMatch || groupDayMatch;
+    const dayLabel = (dayMatch && Number(dayMatch[2]) > 1) ? `(${dayMatch[1]}/${dayMatch[2]})` : '(1)';
+
+    const rooms = [];
+    card.querySelectorAll('.room-pill').forEach(rp=>{
+      const r = rp.textContent.trim();
+      if (r && !rooms.includes(r)) rooms.push(r);
+    });
+
+    const parts = [group];
+    if (contact) parts.push(contact);
+    parts.push(rooms.join(', ') || '?');
+    return parts.join(' / ') + ' ' + dayLabel;
+  }
+  function rebuildDaySummaries(){
+    document.querySelectorAll('#rundownList .day-section').forEach(section=>{
+      const summaryEl = section.querySelector('.day-summary');
+      if (!summaryEl) return;
+      const cards = Array.from(section.querySelectorAll('.event-card'));
+      if (!cards.length) return;
+      summaryEl.innerHTML = cards.map(card =>
+        '<div class="day-summary-line">'+extractCardSummaryLine(card)+'</div>'
+      ).join('');
     });
   }
   function openDayFull(btn){
