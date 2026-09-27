@@ -314,7 +314,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .ov2-diag-btn { font-family:'Courier New',monospace; font-size:9px; letter-spacing:0.3px; text-transform:none; color:#4ade80; background:rgba(74,222,128,0.08); border:1px solid rgba(74,222,128,0.35); border-radius:4px; padding:2px 7px; cursor:pointer; }
 .ov2-diag-btn:active { background:rgba(74,222,128,0.2); }
 .ov2-row { display:flex; gap:10px; font-size:11.5px; padding:2px 0 2px 14px; color:#c8ffd8; }
-.ov2-row .t { color:#4ade80; min-width:76px; flex-shrink:0; }
+.ov2-row .t { color:#4ade80; width:118px; flex-shrink:0; }
 .ov2-row .t .g { color:#4ade80; opacity:.6; font-size:9.5px; }
 .ov2-row .l { padding:0 5px; border-radius:3px; background:rgba(74,222,128,0.08); }
 .ov2-w { position:relative; display:inline-block; }
@@ -5007,7 +5007,6 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     document.querySelectorAll('[data-en]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
     if(typeof applyMenuLineSplit==='function' && dayFullMenuEls.length) applyMenuLineSplit();
     if(typeof applyDaySummarySplit==='function') applyDaySummarySplit();
-    if(typeof rebuildDaySummaries==='function') rebuildDaySummaries();
     localStorage.setItem('bb-lang',l);
   }
   function setTheme(t){
@@ -5040,60 +5039,9 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     return '<div class="day-summary-line"><span class="ds-head">'+text.slice(0,idx)+'</span> — '+text.slice(idx+3)+'</div>';
   }
   function applyDaySummarySplit(){
-    // Diagram-only placeholder days have no real event-card to derive a
-    // summary from, so they keep the old hand-typed-text + split approach.
-    document.querySelectorAll('#diagramsList .day-summary').forEach(el=>{
+    document.querySelectorAll('.day-summary').forEach(el=>{
       const clauses = el.innerHTML.split(' · ').map(s=>s.trim()).filter(Boolean);
       el.innerHTML = clauses.map(formatDaySummaryClause).join('');
-    });
-  }
-  // Builds one day-summary line — "Group / Contact / Rooms (day-count)" —
-  // straight from a real event-card's own data, instead of a hand-typed
-  // string that has to be kept in sync by hand (and drifts, same failure
-  // class as the stale week-labels/date-chip bugs this repo has already
-  // hit). Day-count comes from a "Day X of Y" pattern already present in
-  // either the card-group name or the NOTE foot-row; defaults to "(1)".
-  function extractCardSummaryLine(card){
-    const groupEl = card.querySelector('.card-group');
-    let group = groupEl ? (groupEl.getAttribute('data-en') || groupEl.textContent).trim() : '?';
-    const groupDayMatch = /—\s*Day\s+(\d+)\s+of\s+(\d+)\s*$/i.exec(group);
-    if (groupDayMatch) group = group.slice(0, groupDayMatch.index).replace(/—\s*$/,'').trim();
-
-    let contact = null, noteDayMatch = null;
-    card.querySelectorAll('.foot-row').forEach(fr=>{
-      const key = fr.querySelector('.foot-key');
-      if (!key) return;
-      const keyEn = key.getAttribute('data-en');
-      const val = fr.querySelector('.foot-val');
-      if (keyEn === 'CONTACT' && val) contact = val.textContent.trim();
-      if (keyEn === 'NOTE' && val && !noteDayMatch){
-        noteDayMatch = /Day\s+(\d+)\s+of\s+(\d+)/i.exec(val.getAttribute('data-en') || val.textContent);
-      }
-    });
-
-    const dayMatch = noteDayMatch || groupDayMatch;
-    const dayLabel = (dayMatch && Number(dayMatch[2]) > 1) ? `(${dayMatch[1]}/${dayMatch[2]})` : '(1)';
-
-    const rooms = [];
-    card.querySelectorAll('.room-pill').forEach(rp=>{
-      const r = rp.textContent.trim();
-      if (r && !rooms.includes(r)) rooms.push(r);
-    });
-
-    const parts = [group];
-    if (contact) parts.push(contact);
-    parts.push(rooms.join(', ') || '?');
-    return parts.join(' / ') + ' ' + dayLabel;
-  }
-  function rebuildDaySummaries(){
-    document.querySelectorAll('#rundownList .day-section').forEach(section=>{
-      const summaryEl = section.querySelector('.day-summary');
-      if (!summaryEl) return;
-      const cards = Array.from(section.querySelectorAll('.event-card'));
-      if (!cards.length) return;
-      summaryEl.innerHTML = cards.map(card =>
-        '<div class="day-summary-line">'+extractCardSummaryLine(card)+'</div>'
-      ).join('');
     });
   }
   function openDayFull(btn){
