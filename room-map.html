@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Room Map — Banquet Bot</title>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --bg:#09090c; --bg-card:#111316; --bg-row:#15181d;
+  --border:rgba(255,255,255,0.08); --border-h:rgba(255,255,255,0.16);
+  --text-1:#edeae2; --text-2:#8a877f; --text-3:#5a5751;
+  --green:#2dbd80; --green-dim:rgba(45,189,128,0.16);
+}
+html,body { background:var(--bg); color:var(--text-1); min-height:100%; }
+body { font-family:'Courier New',monospace; padding:24px 28px 80px; max-width:1200px; margin:0 auto; }
+a { color:var(--green); }
+
+.hdr { margin-bottom:6px; }
+.hdr h1 { font-size:1.5rem; letter-spacing:0.02em; }
+.hdr p { color:var(--text-2); font-size:0.85rem; margin-top:6px; max-width:820px; line-height:1.5; }
+.hdr .backlink { display:inline-block; margin-top:10px; font-size:0.8rem; }
+
+.daynav { display:flex; flex-wrap:wrap; gap:6px; margin:22px 0 28px; padding:12px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; max-height:160px; overflow-y:auto; }
+.daynav a { font-size:0.72rem; padding:4px 8px; border-radius:6px; background:var(--bg-row); border:1px solid var(--border); text-decoration:none; color:var(--text-2); white-space:nowrap; }
+.daynav a.is-today { color:var(--green); border-color:var(--green); }
+.daynav a:hover { color:var(--text-1); border-color:var(--border-h); }
+
+.day { padding:14px 16px; margin-bottom:10px; border:1px solid var(--border); border-radius:10px; background:var(--bg-card); scroll-margin-top:12px; }
+.day.is-today { border-color:var(--green); }
+.day-hd { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
+.day-hd h2 { font-size:1rem; }
+.day-hd.is-today h2 { color:var(--green); }
+.day-hd .stat { font-size:0.72rem; color:var(--text-2); }
+
+.room-chip { display:inline-block; background:var(--green-dim); color:var(--green); border-radius:5px; padding:3px 9px; margin:2px 4px 2px 0; font-size:0.75rem; }
+.none { color:var(--text-3); font-size:0.8rem; font-style:italic; }
+
+.foot-note { margin-top:32px; font-size:0.72rem; color:var(--text-3); line-height:1.6; border-top:1px solid var(--border); padding-top:16px; }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>ROOM MAP — Open All Day</h1>
+  <p>Which rooms have nothing booked on them at all, for a given day — for finding staging/storage space for tables and completed buffets between uses.</p>
+  <a class="backlink" href="rundown.html">&larr; Back to BEO Rundown</a>
+</div>
+
+<div id="daynav" class="daynav"></div>
+<div id="days"></div>
+
+<div class="foot-note" id="footnote"></div>
+
+<script>
+// Physical bookable atomic rooms — the finest units. Compound room-pill
+// names (e.g. "Primrose AB") get expanded to the atomic units they cover
+// before occupancy is computed, so "fully open" is judged at the finest
+// grain a booking could actually block.
+const ATOMIC_ROOMS = [
+  'Primrose A','Primrose B','Primrose C','Primrose D',
+  'Camellia A','Camellia B',
+  'Lantana A','Lantana B',
+  'Plumeria A','Plumeria B',
+  'Verbena A','Verbena B',
+  'Barton','Bluebell','Buttercup','Zilker','Bonnell',
+  'Primrose Foyer B','Primrose Foyer C','Primrose Foyer CD','PDR Foyer','Pre-Function',
+  'Foyer (unspecified)'
+];
+
+// Compound name -> atomic units it occupies. Anything not listed here
+// (including every atomic room above) passes through unchanged.
+// NOTE: foyer/support-space names were NOT decomposed against each other
+// (e.g. whether "Primrose Foyer CD" overlaps "Primrose Foyer C") since the
+// physical adjacency isn't confidently known from the BEO text alone.
+const COMPOUND_MAP = {
+  'Primrose AB': ['Primrose A','Primrose B'],
+  'Primrose CD': ['Primrose C','Primrose D'],
+  'Primrose ABC': ['Primrose A','Primrose B','Primrose C'],
+  'Primrose Ballroom': ['Primrose A','Primrose B','Primrose C','Primrose D'],
+  'Camellia': ['Camellia A','Camellia B'],
+  'Lantana': ['Lantana A','Lantana B'],
+  'Plumeria': ['Plumeria A','Plumeria B'],
+  'Verbena': ['Verbena A','Verbena B'],
+  'Foyer': ['Foyer (unspecified)'],
+};
+
+function expandRoom(name) {
+  return COMPOUND_MAP[name] || [name];
+}
+
+async function main() {
+  const res = await fetch('data/rundown.json');
+  const data = await res.json();
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const dates = Object.keys(data).filter(d => d >= todayStr).sort();
+
+  const daynavEl = document.getElementById('daynav');
+  const daysEl = document.getElementById('days');
+
+  for (const date of dates) {
+    const day = data[date];
+    const isToday = date === todayStr;
+
+    const bookedRooms = new Set();
+    for (const ev of day.events) {
+      for (const it of ev.items) {
+        for (const room of expandRoom(it.room)) bookedRooms.add(room);
+      }
+    }
+    const openAllDay = ATOMIC_ROOMS.filter(r => !bookedRooms.has(r));
+
+    const dObj = new Date(date + 'T12:00:00');
+    const label = dObj.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+
+    const pill = document.createElement('a');
+    pill.href = '#d-' + date;
+    pill.textContent = label;
+    if (isToday) pill.className = 'is-today';
+    daynavEl.appendChild(pill);
+
+    const sec = document.createElement('div');
+    sec.className = 'day' + (isToday ? ' is-today' : '');
+    sec.id = 'd-' + date;
+
+    let html = `<div class="day-hd${isToday ? ' is-today' : ''}"><h2>${label}${isToday ? ' — TODAY' : ''}</h2>` +
+      `<span class="stat">${openAllDay.length} of ${ATOMIC_ROOMS.length} rooms fully open</span></div>`;
+
+    if (openAllDay.length) {
+      html += openAllDay.map(r => `<span class="room-chip">${r}</span>`).join('');
+    } else {
+      html += `<span class="none">Every room has at least one booking today.</span>`;
+    }
+
+    sec.innerHTML = html;
+    daysEl.appendChild(sec);
+  }
+
+  document.getElementById('footnote').innerHTML =
+    `Built from <code>data/rundown.json</code> (auto-regenerated from rundown.html on every commit) — always reflects whatever's currently live. ` +
+    `A room only counts as "open" if it has zero bookings anywhere that day, even a short one. ` +
+    `"Foyer" (unspecified) is kept separate from the named Primrose Foyer B/C/CD entries since the physical relationship between them isn't confidently known from BEO text alone.`;
+
+  const todayLink = document.querySelector('#daynav a.is-today');
+  if (todayLink) todayLink.scrollIntoView({ block: 'center', inline: 'center' });
+}
+
+main().catch(err => {
+  document.getElementById('days').innerHTML = `<p style="color:#e05555">Failed to load data/rundown.json: ${err.message}</p>`;
+});
+</script>
+</body>
+</html>

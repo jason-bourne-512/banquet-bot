@@ -236,7 +236,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .key-div { width:1px; height:10px; background:rgba(255,255,255,0.07); margin:0 2px; }
 .day-dot-num { font-family:'Courier New',monospace; font-size:16px; font-weight:600; color:var(--dc); opacity:1; line-height:1; }
 @media (min-width: 900px) {
-  .header, .page-hero, .day-section { max-width: 460px; margin-left: auto; margin-right: auto; }
+  .header, .page-hero, .day-section { max-width: 720px; margin-left: auto; margin-right: auto; }
 }
 .today-fab { position:fixed; bottom:20px; right:16px; z-index:30; display:none; align-items:center; gap:5px; background:var(--accent); color:#09090c; font-family:'Courier New',monospace; font-size:10px; font-weight:700; letter-spacing:.1em; padding:10px 16px; border:none; border-radius:22px; box-shadow:0 4px 14px rgba(0,0,0,0.45); cursor:pointer; }
 .today-fab.show { display:flex; }
@@ -246,6 +246,9 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 /* ── FULL-PAGE DAY VIEW ── */
 .day-full-view { display:none; position:fixed; inset:0; z-index:45; background:var(--bg); overflow-y:auto; -webkit-overflow-scrolling:touch; }
 .day-full-inner { max-width:460px; margin:0 auto; padding:16px 16px 120px; }
+@media (min-width: 900px) {
+  .day-full-inner { max-width:720px; }
+}
 .day-full-topbar { position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 16px; background:var(--bg); border-bottom:1px solid var(--border); }
 .day-full-topbar .day-full-header { display:flex; align-items:center; gap:12px; margin:0; }
 .back-fab { flex-shrink:0; display:flex; align-items:center; gap:6px; background:var(--accent); color:#09090c; font-family:'Courier New',monospace; font-size:11px; font-weight:700; letter-spacing:.08em; padding:10px 16px; border:none; border-radius:22px; box-shadow:0 2px 8px rgba(0,0,0,0.35); cursor:pointer; }
@@ -310,7 +313,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 .ov2-room { font-size:9.5px; letter-spacing:1.2px; text-transform:uppercase; color:#5fae7c; margin-top:8px; display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
 .ov2-diag-btn { font-family:'Courier New',monospace; font-size:9px; letter-spacing:0.3px; text-transform:none; color:#4ade80; background:rgba(74,222,128,0.08); border:1px solid rgba(74,222,128,0.35); border-radius:4px; padding:2px 7px; cursor:pointer; }
 .ov2-diag-btn:active { background:rgba(74,222,128,0.2); }
-.ov2-row { display:flex; gap:10px; font-size:11.5px; padding:2px 0; color:#c8ffd8; }
+.ov2-row { display:flex; gap:10px; font-size:11.5px; padding:2px 0 2px 14px; color:#c8ffd8; }
 .ov2-row .t { color:#4ade80; min-width:76px; flex-shrink:0; }
 .ov2-row .t .g { color:#4ade80; opacity:.6; font-size:9.5px; }
 .ov2-row .l { padding:0 5px; border-radius:3px; background:rgba(74,222,128,0.08); }
@@ -355,8 +358,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
   <div class="page-eyebrow" data-en="F&amp;B Only · No Houseman" data-es="Solo F&amp;B · Sin Ama de Llaves">F&amp;B Only · No Houseman</div>
   <div class="page-title" data-en="BEO Rundown" data-es="Resumen BEO">BEO Rundown</div>
   <div class="header-meta">
-    <span class="chip chip-gold" id="printed-date">—</span>
-    <span class="chip" data-en="Aug 31 – Oct 14, 2026" data-es="31 Ago – 14 Oct, 2026">Aug 31 – Oct 14, 2026</span>
+    <span class="chip chip-gold" id="date-range-chip" data-en="Aug 31 – Oct 14, 2026" data-es="31 Ago – 14 Oct, 2026">Aug 31 – Oct 14, 2026</span>
     <span class="chip chip-green"><span class="live-dot" style="width:5px;height:5px;animation:pip 2s infinite;background:var(--green)"></span>&nbsp;<span data-en="Live" data-es="En vivo">Live</span></span>
   </div>
 </div>
@@ -498,7 +500,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">7:00–<br>10:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -545,7 +547,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">10:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 200</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -613,7 +615,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">10:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 200</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -944,7 +946,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00–<br>11:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">SET 96</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -1028,7 +1030,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>10:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">GTD 90</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -1071,7 +1073,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">1:30–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Registration — No F&amp;B" data-es="Registration — No F&amp;B">Registration — No F&amp;B</span><span class="room-pill">Foyer</span><span class="gtd-pill">GTD 5</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -1100,7 +1102,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">2:00–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 300</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -1121,14 +1123,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">1:00–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Primrose D</span><span class="gtd-pill">SET 208</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">1:00–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Camellia</span><span class="gtd-pill">EXP 18</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -1149,14 +1151,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">1:30–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Exhibits — No F&amp;B" data-es="Exhibits — No F&amp;B">Exhibits — No F&amp;B</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 18</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">1:00–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Storage — No F&amp;B" data-es="Storage — No F&amp;B">Storage — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -1287,7 +1289,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">12:00–<br>7:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Camellia A</span><span class="gtd-pill">SET 32</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -1337,7 +1339,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>1:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">SET 156</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -1498,7 +1500,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">7:00 AM–<br>1:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Holding Room — No F&amp;B" data-es="Holding Room — No F&amp;B">Holding Room — No F&amp;B</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 130</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -1590,7 +1592,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Buttercup</span><span class="gtd-pill">EXP 5</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -1663,7 +1665,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Camellia B</span><span class="gtd-pill">SET 12</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -1725,7 +1727,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">1:00–<br>3:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Room Flip — No F&amp;B" data-es="Room Flip — No F&amp;B">Room Flip — No F&amp;B</span><span class="room-pill">Primrose C</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -1739,14 +1741,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">3:00–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Primrose B</span><span class="gtd-pill">SET 60</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">3:00–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Primrose A</span><span class="gtd-pill">SET 60</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -1767,7 +1769,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">6:00 AM–<br>7:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Board Meeting — No F&amp;B" data-es="Board Meeting — No F&amp;B">Board Meeting — No F&amp;B</span><span class="room-pill">Plumeria A</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -1839,14 +1841,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">12:00–<br>3:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Plumeria</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">3:30–<br>6:30 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 51</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -1953,7 +1955,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00–<br>11:00 AM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -2000,21 +2002,21 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">2:00 PM–<br>11:49 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose Foyer C</span><span class="gtd-pill">EXP 2</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">2:00–<br>11:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Office — No F&amp;B" data-es="Office — No F&amp;B">Office — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">2:00 PM–<br>11:49 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Storage — No F&amp;B" data-es="Storage — No F&amp;B">Storage — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time — POP-UP BEO #515435: Verbena added for Monday set-up, client storing boxes in this room" data-es="No food or beverage required at this time — POP-UP BEO #515435: Verbena added for Monday set-up, client storing boxes in this room">No food or beverage required at this time — POP-UP BEO #515435: Verbena added for Monday set-up, client storing boxes in this room</div>
+        <div class="svc-menu" data-en="No F&amp;B — POP-UP BEO #515435: Verbena added for Monday set-up, client storing boxes in this room" data-es="No F&amp;B — POP-UP BEO #515435: Verbena added for Monday set-up, client storing boxes in this room">No F&amp;B — POP-UP BEO #515435: Verbena added for Monday set-up, client storing boxes in this room</div>
       </div>
     </div>
     <div class="svc-row">
@@ -2128,7 +2130,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">2:00–<br>4:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Teardown — No F&amp;B" data-es="Teardown — No F&amp;B">Teardown — No F&amp;B</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2150,14 +2152,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">7:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Office — No F&amp;B" data-es="Office — No F&amp;B">Office — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00 AM–<br>4:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Green Room — No F&amp;B" data-es="Green Room — No F&amp;B">Green Room — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -2188,7 +2190,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">12:00 PM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Office — No F&amp;B" data-es="Office — No F&amp;B">Office — No F&amp;B</span><span class="room-pill">Buttercup</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2266,7 +2268,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Office — No F&amp;B" data-es="Office — No F&amp;B">Office — No F&amp;B</span><span class="room-pill">Buttercup</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2286,7 +2288,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Plumeria B</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2306,14 +2308,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">9:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">GTD 120</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">1:00 PM–<br>11:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">GTD 120</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2377,7 +2379,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 20</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -2476,7 +2478,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Office — No F&amp;B" data-es="Office — No F&amp;B">Office — No F&amp;B</span><span class="room-pill">Buttercup</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2496,7 +2498,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Plumeria B</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2516,7 +2518,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2540,7 +2542,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">7:00 AM–<br>11:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">GTD 120</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2610,7 +2612,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>3:30 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -2639,7 +2641,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 20</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -2709,7 +2711,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Primrose D</span><span class="gtd-pill">GTD 115</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -2755,7 +2757,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Office — No F&amp;B" data-es="Office — No F&amp;B">Office — No F&amp;B</span><span class="room-pill">Buttercup</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2775,7 +2777,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">GTD 120</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2800,42 +2802,42 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Plumeria B</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Plumeria A</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Lantana B</span><span class="gtd-pill">GTD 20</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Lantana A</span><span class="gtd-pill">GTD 20</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Primrose B</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Primrose A</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2883,22 +2885,37 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       </div>
     </div>
     <div class="svc-row">
+      <div class="svc-time">8:00 AM–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 55</span></div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>9:20 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-brk" data-en="Continuous Break" data-es="Continuous Break">Continuous Break</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 55</span></div>
+        <div class="svc-menu" data-en="Half Day Beverage Service (5hr) — Reg, Decaf, Tazo Teas, Bottled Water" data-es="Half Day Beverage Service (5hr) — Reg, Decaf, Tazo Teas, Bottled Water">Half Day Beverage Service (5hr) — Reg, Decaf, Tazo Teas, Bottled Water</div>
+      </div>
+    </div>
+    <div class="svc-row">
       <div class="svc-time">9:20–<br>10:30 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 80</span></div>
-        <div class="svc-menu" data-en="<strong class='menu-hl'>Executive Continental Breakfast Table</strong> $49/pp · (5) Coconut Chia Pudding @ $8 each · (5) English Muffin Sandwiches @ $9 each" data-es="<strong class='menu-hl'>Executive Continental Breakfast Table</strong> $49/pp · (5) Coconut Chia Pudding @ $8 each · (5) English Muffin Sandwiches @ $9 each"><strong class='menu-hl'>Executive Continental Breakfast Table</strong> $49/pp · (5) Coconut Chia Pudding @ $8 each · (5) English Muffin Sandwiches @ $9 each</div>
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 55</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Modified Executive Continental Breakfast Table</strong> — add: Egg White Frittata (red onion, arugula, tomato, cotija), Coconut Chia Pudding (dried mango, toasted coconut), English Muffin Sandwiches (farm fresh eggs, smoked ham, aged cheddar)" data-es="<strong class='menu-hl'>Modified Executive Continental Breakfast Table</strong> — add: Egg White Frittata (red onion, arugula, tomato, cotija), Coconut Chia Pudding (dried mango, toasted coconut), English Muffin Sandwiches (farm fresh eggs, smoked ham, aged cheddar)"><strong class='menu-hl'>Modified Executive Continental Breakfast Table</strong> — add: Egg White Frittata (red onion, arugula, tomato, cotija), Coconut Chia Pudding (dried mango, toasted coconut), English Muffin Sandwiches (farm fresh eggs, smoked ham, aged cheddar)</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">10:30 AM–<br>12:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Continuous Break" data-es="Continuous Break">Continuous Break</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 80</span></div>
-        <div class="svc-menu" data-en="Coffee &amp; tea · Nitro Cold Brew @ $9 each" data-es="Coffee &amp; tea · Nitro Cold Brew @ $9 each">Coffee &amp; tea · Nitro Cold Brew @ $9 each</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Continuous Break" data-es="Continuous Break">Continuous Break</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 55</span></div>
+        <div class="svc-menu" data-en="Reg, Decaf, Tazo Teas, Nitro Cold Brew" data-es="Reg, Decaf, Tazo Teas, Nitro Cold Brew">Reg, Decaf, Tazo Teas, Nitro Cold Brew</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Taylor</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose AB · Schoolroom · (2) 6ft tables outside for check-in/materials" data-es="Primrose AB · Schoolroom · (2) 6ft tables outside for check-in/materials">Primrose AB · Schoolroom · (2) 6ft tables outside for check-in/materials</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose AB · Schoolroom, Set 60 · (2) 6ft tables outside for check-in/materials" data-es="Primrose AB · Schoolroom, Set 60 · (2) 6ft tables outside for check-in/materials">Primrose AB · Schoolroom, Set 60 · (2) 6ft tables outside for check-in/materials</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Agenda: 8a staff arrival · 9:20a F&amp;B out · 9:30a guests arrive · 10a presentation · 10:45a Q&amp;A panel · 11:15a mingle w/ staff (apple for admission) · 12p guest departure · 1p staff departure" data-es="Agenda: 8a staff arrival · 9:20a F&amp;B out · 9:30a guests arrive · 10a presentation · 10:45a Q&amp;A panel · 11:15a mingle w/ staff (apple for admission) · 12p guest departure · 1p staff departure">Agenda: 8a staff arrival · 9:20a F&amp;B out · 9:30a guests arrive · 10a presentation · 10:45a Q&amp;A panel · 11:15a mingle w/ staff (apple for admission) · 12p guest departure · 1p staff departure</span></div>
     </div>
   </div>
 
@@ -2914,7 +2931,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">9:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Exhibits — No F&amp;B" data-es="Exhibits — No F&amp;B">Exhibits — No F&amp;B</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 150</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2936,7 +2953,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">12:00–<br>1:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -2982,7 +2999,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>1:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3004,14 +3021,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">12:00–<br>4:30 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Camellia</span><span class="gtd-pill">EXP 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">12:00–<br>4:30 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">EXP 15</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -3030,7 +3047,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Marie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia · SEE DIAGRAM · (2) 6x30 tables w/4 chairs for registration · (6) 6x30 tables w/2 chairs for vendors · Pre-Function · (17) 6x30 tables set in foyer with 2 chairs" data-es="Camellia · SEE DIAGRAM · (2) 6x30 tables w/4 chairs for registration · (6) 6x30 tables w/2 chairs for vendors · Pre-Function · (17) 6x30 tables set in foyer with 2 chairs">Camellia · SEE DIAGRAM · (2) 6x30 tables w/4 chairs for registration · (6) 6x30 tables w/2 chairs for vendors · Pre-Function · (17) 6x30 tables set in foyer with 2 chairs</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia · SEE DIAGRAM<br>(2) 6x30 tables w/4 chairs for registration<br>(6) 6x30 tables w/2 chairs for vendors<br>Pre-Function<br>(17) 6x30 tables set in foyer with 2 chairs" data-es="Camellia · SEE DIAGRAM<br>(2) 6x30 tables w/4 chairs for registration<br>(6) 6x30 tables w/2 chairs for vendors<br>Pre-Function<br>(17) 6x30 tables set in foyer with 2 chairs">Camellia · SEE DIAGRAM<br>(2) 6x30 tables w/4 chairs for registration<br>(6) 6x30 tables w/2 chairs for vendors<br>Pre-Function<br>(17) 6x30 tables set in foyer with 2 chairs</span></div>
       <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="450 drink tickets to be handed to client — bar goes from hosted to cash once tickets are used" data-es="450 drink tickets to be handed to client — bar goes from hosted to cash once tickets are used">450 drink tickets to be handed to client — bar goes from hosted to cash once tickets are used</span></div>
     </div>
   </div>
@@ -3047,7 +3064,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">12:00 PM–<br>11:59 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Office — No F&amp;B" data-es="Office — No F&amp;B">Office — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 14</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3069,7 +3086,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">9:00 AM–<br>5:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Exhibits — No F&amp;B" data-es="Exhibits — No F&amp;B">Exhibits — No F&amp;B</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 150</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3144,7 +3161,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">SET 288</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3195,7 +3212,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:15 AM–<br>5:30 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 100</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3217,7 +3234,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">7:00 AM–<br>11:59 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Office — No F&amp;B" data-es="Office — No F&amp;B">Office — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 14</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3239,7 +3256,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">6:00 PM–<br>11:59 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Lantana</span><span class="gtd-pill">SET 30</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3306,7 +3323,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>3:30 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Exhibits — No F&amp;B" data-es="Exhibits — No F&amp;B">Exhibits — No F&amp;B</span><span class="room-pill">Pre-Function</span><span class="gtd-pill">EXP 15</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3335,7 +3352,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>3:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Exhibits — No F&amp;B" data-es="Exhibits — No F&amp;B">Exhibits — No F&amp;B</span><span class="room-pill">Camellia</span><span class="gtd-pill">EXP 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3357,7 +3374,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>3:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">SET 288</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3379,7 +3396,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>1:20 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 90</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3401,7 +3418,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>3:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Office — No F&amp;B" data-es="Office — No F&amp;B">Office — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 14</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3548,7 +3565,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">7:00 AM–<br>7:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Plumeria B</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3591,7 +3608,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Lantana</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3613,14 +3630,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">1:00–<br>4:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">4:00–<br>7:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Interviews — No F&amp;B" data-es="Interviews — No F&amp;B">Interviews — No F&amp;B</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">EXP 200</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3670,7 +3687,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">4:00–<br>7:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Verbena B</span><span class="gtd-pill">EXP 15</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3708,7 +3725,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>2:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Verbena A</span><span class="gtd-pill">GTD 18</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -3819,7 +3836,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">9:00 AM–<br>4:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Board Meeting — No F&amp;B" data-es="Board Meeting — No F&amp;B">Board Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 3</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -3893,7 +3910,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">7:00 AM–<br>11:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 50</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -4008,14 +4025,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:30 AM–<br>12:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">GTD 35</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">1:00–<br>4:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">GTD 35</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -4061,7 +4078,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>6:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Barton</span><span class="gtd-pill">GTD 30</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -4162,7 +4179,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:30–<br>11:00 AM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">GTD 35</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -4208,7 +4225,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">8:00 AM–<br>6:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Barton</span><span class="gtd-pill">GTD 15</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -4344,7 +4361,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">7:00 AM–<br>5:30 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria A</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -4411,7 +4428,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">7:30 AM–<br>1:30 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria A</span><span class="gtd-pill">GTD 10</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -4440,7 +4457,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">11:00 AM–<br>5:15 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Camellia B</span><span class="gtd-pill">EXP 25</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
@@ -4475,7 +4492,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       <div class="svc-time">6:00–<br>9:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Holding Room — No F&amp;B" data-es="Holding Room — No F&amp;B">Holding Room — No F&amp;B</span><span class="room-pill">PDR Foyer</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No food or beverage required at this time" data-es="No food or beverage required at this time">No food or beverage required at this time</div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
@@ -4973,12 +4990,6 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     document.documentElement.style.background=bg;
     document.body.style.background=bg;
   }
-  (function(){
-    const n=new Date();
-    const mo=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    document.getElementById('printed-date').textContent=
-      ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][n.getDay()]+' '+mo[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
-  })();
   let dayFullMenuEls = [];
   let dayFullReturnView = 'rundown';
   function splitMenuIntoLines(html){
@@ -5216,11 +5227,6 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
 
   // ── OVERVIEW TAB: flat condensed view built from the rundown data already on this page ──
   let ov2Initialized = false;
-  const OV2_ACTIVITY_ABBR = {
-    "Board Meeting":"BRD", "Breakout":"BRKO", "Exhibits":"EXH", "General Session":"GS",
-    "Green Room":"GRN", "Meeting":"MTG", "Office":"OFC", "Registration":"REGIS",
-    "Set Up":"SETUP", "Storage":"STOR", "Teardown":"TRDN", "Waiting Room":"WAIT",
-  };
   const OV2_TRAILING_SUFFIXES = [
     "Breakfast Table","Afternoon Break","Dinner Table","Display Station",
     "Beverage Service","On Consumption","Bar (Cash)","Working Lunch Buffet",
@@ -5250,19 +5256,17 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
     return item.trim().replace(/\.$/,'');
   }
   const OV2_BEV_PATTERNS = [
-    ["REG", /regular\b/i], ["DEC", /decaf/i], ["HW", /hot water|tazo tea|assortment of teas/i],
-    ["Pepsi", /\bpepsi\b/i], ["Coke", /\bcoke\b/i], ["Red Bull", /red bull/i], ["Sparkling", /sparkling water/i],
+    ["Coffee", /regular\b/i], ["Decaf", /decaf/i], ["Tea", /hot water|tazo tea|assortment of teas/i],
+    ["Pepsi", /\bpepsi\b/i], ["Coke", /\bcoke\b/i], ["Red Bull", /red bull/i], ["Sparkling Water", /sparkling water/i],
   ];
   const OV2_SKIP_SEGMENT = /^(bottled water|little city)/i;
   function ov2LabelFromMenu(tagName, tagClass, menuHtml){
     if (!tagClass){
-      const base = tagName.split('—')[0].trim();
-      return OV2_ACTIVITY_ABBR[base] || base.slice(0,6).trim().toUpperCase();
+      return tagName.split('—')[0].trim();
     }
     menuHtml = menuHtml.replace(/<br\s*\/?>/gi,' · ');
-    if (menuHtml.indexOf('No food or beverage required') !== -1 || !menuHtml.trim()){
-      const base = tagName.split('—')[0].trim();
-      return OV2_ACTIVITY_ABBR[base] || base.slice(0,6).trim().toUpperCase();
+    if (menuHtml.indexOf('No F&amp;B') !== -1 || !menuHtml.trim()){
+      return tagName.split('—')[0].trim();
     }
     const hl = /<strong class='menu-hl'>(.*?)<\/strong>/.exec(menuHtml);
     if (hl) return ov2ShortenMenuName(hl[1]);
@@ -5288,8 +5292,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       parts.push(foodItems[0][1]);
     }
     if (parts.length) return parts.join(' + ');
-    const base = tagName.split('—')[0].trim();
-    return OV2_ACTIVITY_ABBR[base] || base.slice(0,6).trim().toUpperCase();
+    return tagName.split('—')[0].trim();
   }
   function ov2ParseTime(raw){
     raw = raw.replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
@@ -5549,6 +5552,28 @@ body { background:var(--bg); color:var(--text-1); font-family:'Courier New',mono
       new IntersectionObserver(entries=>{
         fab.classList.toggle('show', !entries[0].isIntersecting);
       },{rootMargin:'200px 0px 200px 0px'}).observe(matched.querySelector('.day-btn'));
+    }
+  })();
+  // Header date-range chip: today's real date through the last day still on
+  // the page (after the past-day purge above), so it never goes stale the
+  // way a hand-typed range does after the next packet ingest.
+  (function(){
+    const n=new Date();
+    const moEn=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const moEs=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    const fmtEn=d=>`${moEn[d.getMonth()]} ${d.getDate()}`;
+    const fmtEs=d=>`${d.getDate()} ${moEs[d.getMonth()]}`;
+    let maxDate=n;
+    document.querySelectorAll('#rundownList .day-section[data-date], #rundownList .day-section[data-dateEnd]').forEach(sec=>{
+      const raw=sec.dataset.dateEnd||sec.dataset.date;
+      if(!raw) return;
+      const d=new Date(raw+'T12:00:00');
+      if(d>maxDate) maxDate=d;
+    });
+    const chip=document.getElementById('date-range-chip');
+    if(chip){
+      chip.setAttribute('data-en', `${fmtEn(n)} – ${fmtEn(maxDate)}, ${maxDate.getFullYear()}`);
+      chip.setAttribute('data-es', `${fmtEs(n)} – ${fmtEs(maxDate)}, ${maxDate.getFullYear()}`);
     }
   })();
   /* Diagram modal: close with Escape key or phone back button */

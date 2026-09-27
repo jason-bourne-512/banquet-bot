@@ -28,9 +28,13 @@ const OUT_PATH = path.resolve(__dirname, '../data/rundown.json');
 function textOrDataEn($, el) {
   const dataEn = $(el).attr('data-en');
   if (dataEn === undefined) return $(el).text().trim();
-  // data-en attribute values can themselves contain markup (e.g. <strong>),
-  // so re-parse the fragment to strip tags and decode entities.
-  return cheerio.load(`<div>${dataEn}</div>`)('div').text().trim();
+  // data-en attribute values can themselves contain markup (e.g. <strong>,
+  // <br>), so re-parse the fragment to strip tags and decode entities.
+  // <br> carries no text of its own, so plain tag-stripping would run the
+  // text on both sides together with zero separator — replace it with a
+  // space first so line breaks degrade into readable prose instead.
+  const withBreaksAsSpaces = dataEn.replace(/<br\s*\/?>/gi, ' ');
+  return cheerio.load(`<div>${withBreaksAsSpaces}</div>`)('div').text().replace(/\s+/g, ' ').trim();
 }
 
 function extractCardFoot($, $card) {
