@@ -83,6 +83,11 @@ body.bb-ref>*{position:relative;z-index:1}
   box-shadow:0 8px 18px #00000038,inset 0 1px #ffffff06}
 .bb-ref .stat-chip{background:linear-gradient(135deg,#1c3142,#13222d);border-color:#395368}
 
+/* ── LAPTOP: one centred column, same width as the Rundown ── */
+@media (min-width:900px){
+  .bb-ref .page-wrap{max-width:720px!important;margin:0 auto}
+}
+
 /* ── MOTION ── */
 @keyframes ref-lattice{from{background-position:0 0,0 0,0 0,0 0,0 0}to{background-position:0 0,0 0,68px 40px,-68px 40px,0 0}}
 @keyframes ref-signal{0%,100%{opacity:.55;filter:drop-shadow(0 0 2px #87d1ff20)}50%{opacity:1;filter:drop-shadow(0 0 7px #87d1ff66)}}
