@@ -402,6 +402,8 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .service{display:block;padding:8px 0;border-top:1px solid #9ebbd41e}
 #bb-app .time{font-size:15px;font-weight:600;line-height:1.35;white-space:nowrap;margin-bottom:3px;color:#b9e5ff;font-variant-numeric:tabular-nums}
 #bb-app .time small{display:inline;font:inherit;color:inherit;margin:0 0 0 3px}
+/* Everything under a time (tag, count, menu, details) sits slightly indented */
+#bb-app .service>.time+div{padding-left:12px}
 #bb-app .service strong{display:inline;font-weight:600;font-size:13px;line-height:1.4}
 #bb-app .count{display:inline-block;font-size:11px;margin:0 0 0 8px;color:#c0daed}
 #bb-app .menu-name{font-size:13px;line-height:1.45;margin:3px 0 0;color:#deebf5}

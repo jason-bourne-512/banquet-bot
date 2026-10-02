@@ -223,6 +223,61 @@
       </table>
       </div>
     </div>
+    <!-- PREVIOUS WEEK — shown automatically until its last day ends (hotel time), then the table above takes over.
+         When posting next week early, move the current table here and update PWS/PWE in the script. -->
+    <div class="sched-prev" hidden>
+      <div class="weekly-scroll" role="region" aria-label="Weekly staff schedule, scroll horizontally for more days" tabindex="0">
+      <table class="s-prev">
+        <thead>
+          <tr>
+            <th style="text-align:left;min-width:80px"></th>
+            <th>SAT 26</th>
+            <th>SUN 27</th>
+            <th>MON 28</th>
+            <th>TUE 29</th>
+            <th>WED 30</th>
+            <th>THU 1</th>
+            <th>FRI 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="rr rd"><td data-en="Director of Event Ops" data-es="Director de Eventos">Director of Event Ops</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rd">
+            <td class="nm">Hector</td>
+            <td>7A</td><td>7A</td><td>5A</td>
+            <td>5A</td><td>6A</td><td>730A</td><td>730A</td>
+          </tr>
+          <tr class="rr rc"><td data-en="Banquet Captain" data-es="Capitán de Banquetes">Banquet Captain</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rc">
+            <td class="nm">Jason</td>
+            <td class="off">OFF</td><td>11A–8P</td><td>10A–6P</td>
+            <td>10A–6P</td><td>10A–830P</td><td>6A–2P</td><td class="off">OFF</td>
+          </tr>
+          <tr class="rr rs"><td data-en="Servers" data-es="Meseros">Servers</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Dylan W.</td><td>7A–2P</td><td>BAR</td><td>5A–6P</td><td>5A–5P</td><td>12P–730P</td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Francisco</td><td></td><td>6A–1030A/330P–8P</td><td>5A–3P</td><td>5A–2P</td><td></td><td>6A–6P</td><td>10A–530P</td></tr>
+          <tr class="rs"><td class="nm">Tomas C.</td><td>HSMN</td><td>330P–8P/HSMN</td><td>5A–2P/HSMN</td><td>5A–4P/HSMN</td><td>130P–730P</td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Carlos</td><td></td><td>330P–830P</td><td>5A–2P</td><td>6A–4P</td><td>6A–3P</td><td></td><td>6A–2P</td></tr>
+          <tr class="rs"><td class="nm">Gema</td><td></td><td></td><td></td><td>5A–2P</td><td></td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Odaly</td><td>720A–1130A</td><td></td><td>5A–2P</td><td>5A–2P</td><td>6A–330P</td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Adrian</td><td></td><td></td><td>5A–2P</td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Liza</td><td></td><td></td><td></td><td>730A–230P</td><td></td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Raibely</td><td></td><td></td><td>5A–2P</td><td>5A–2P</td><td></td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Ozzy</td><td></td><td>BAR</td><td>5A–2P</td><td>5A–2P</td><td></td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Leodan (ENG)</td><td></td><td></td><td></td><td>5A–2P</td><td></td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Leonardo (ENG)</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10A–530P</td></tr>
+          <tr class="rs"><td class="nm">Victoria (JW)</td><td></td><td></td><td>5A–2P</td><td></td><td>130P–730P</td><td></td><td></td></tr>
+          <tr class="rs"><td class="nm">Open</td><td></td><td></td><td class="hl">5A–2P</td><td class="hl">5A–2P</td><td></td><td></td><td></td></tr>
+          <tr class="rr rb"><td data-en="Bartenders" data-es="Cantineros">Bartenders</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rb"><td class="nm">Dylan W.</td><td></td><td>330P–8P</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rb"><td class="nm">Ozzy</td><td></td><td>330P–8P</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rr rh"><td data-en="Housemen" data-es="Mozos">Housemen</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="rh"><td class="nm">Jamshid</td><td>12P–9P</td><td></td><td></td><td>2P–10P</td><td>2P–10P</td><td>2P–9P</td><td>2P–9P</td></tr>
+          <tr class="rh"><td class="nm">Tomas C.</td><td>2P–9P</td><td>SVR/8P–10P</td><td>2P–9P</td><td>4P–10P</td><td>SVR</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
   </section>
 </main>
 </div>
@@ -327,22 +382,32 @@ try{ localStorage.removeItem('bb-lang'); localStorage.removeItem('bb-theme'); }c
 // ── STAFF SCHEDULE ──
 // WS/WE are the week anchor; scripts/extract-staff-schedule.js reads WS from this exact line.
 const WS=new Date(2026,9,3), WE=new Date(2026,9,9);
+// Previous week: still shown until it ends, so an early-posted schedule doesn't hide today's shifts.
+const PWS=new Date(2026,8,26), PWE=new Date(2026,9,2);
 (function(){
-  const table=document.querySelector('.sched-wrap table.s');
-  if(!table) return;
-  table.classList.add('roster');
   const MON=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   const pad=n=>String(n).padStart(2,'0');
   const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
   const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  const prevTable=document.querySelector('.sched-prev table');
+  const usePrev=!!prevTable&&today>=iso(PWS)&&today<=iso(PWE)&&today<iso(WS);
+  const table=usePrev?prevTable:document.querySelector('.sched-wrap table.s');
+  if(!table) return;
+  const WS_=usePrev?PWS:WS, WE_=usePrev?PWE:WE;
+  if(usePrev){ document.querySelector('.sched-wrap').hidden=true; document.querySelector('.sched-prev').hidden=false; }
+  table.classList.add('roster');
+  // A page left open past midnight reloads so the right week shows.
+  document.addEventListener('visibilitychange',function(){
+    if(!document.hidden&&new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())!==today) location.reload();
+  });
 
   document.getElementById('weekLabel').textContent=
-    MON[WS.getMonth()]+' '+WS.getDate()+' – '+MON[WE.getMonth()]+' '+WE.getDate();
+    MON[WS_.getMonth()]+' '+WS_.getDate()+' – '+MON[WE_.getMonth()]+' '+WE_.getDate();
 
   // Column i (after the name column) is WS + i days, same rule the extractor uses.
   const headCells=Array.from(table.querySelectorAll('thead th'));
   const todayCol=headCells.slice(1).findIndex(function(th,i){
-    const d=new Date(WS); d.setDate(d.getDate()+i);
+    const d=new Date(WS_); d.setDate(d.getDate()+i);
     return iso(d)===today;
   });
   const markToday=function(row){
