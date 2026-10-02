@@ -1,0 +1,30 @@
+/* Banquet Bot shell — shared by index.html and rundown.html.
+   Dark navy, ice-blue light, lavender accents. Page-specific styles live inline in each page. */
+:root{
+  --bb-bg:#101820;
+  --bb-ink:#eaf1f7;
+  --bb-dim:#a1b7c8;
+  --bb-blue:#8bd1ff;
+  --bb-lavender:#b7c5ff;
+  color-scheme:dark;
+}
+html,body{margin:0;padding:0;background:var(--bb-bg);color:var(--bb-ink);-webkit-text-size-adjust:100%}
+body{font:13px/1.5 Manrope,Arial,sans-serif;overflow-x:hidden}
+*,*:before,*:after{box-sizing:border-box}
+button{font-family:inherit}
+a{color:inherit}
+[hidden]{display:none!important}
+
+/* Header + brand mark */
+.bb-header{position:relative;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:13px;padding:20px;padding-top:max(20px,env(safe-area-inset-top));border-bottom:1px solid #ffffff0b;background:linear-gradient(115deg,#243d4e22,#0e182000)}
+.bb-brand{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:1.7px;font-weight:700;color:var(--bb-ink);text-decoration:none}
+.bb-mark{display:grid;place-items:center;width:30px;height:30px;border:1px solid #81ccff80;border-radius:8px;color:#81ccff;font:20px Georgia,serif;letter-spacing:-1px;box-shadow:0 0 14px #81ccff18;animation:bb-signal 5s ease-in-out infinite}
+
+/* Small header/nav button (‹ Home, ‹ Week) */
+.bb-btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid #577c97;background:#1c3445;color:#d3edff;border-radius:7px;font:12px Manrope,Arial,sans-serif;min-height:40px;padding:8px 11px;text-decoration:none;cursor:pointer}
+
+@keyframes bb-signal{0%,100%{opacity:.55;filter:drop-shadow(0 0 2px #87d1ff20)}50%{opacity:1;filter:drop-shadow(0 0 7px #87d1ff66)}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+}

@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-lang="en" style="background:#09090c;background-color:#09090c">
+<html lang="en" data-theme="dark" data-lang="en">
 <head>
 <meta charset="UTF-8">
-<script>(function(){var t=localStorage.getItem('bb-theme')||'dark';var bg=t==='dark'?'#09090c':'#f0ece3';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.background=bg;document.documentElement.style.setProperty('background-color',bg,'important');})()</script>
-  <style>:root,html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f0ece3!important;background-color:#f0ece3!important}[data-theme="light"] body::before{background:#f0ece3}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-<meta name="theme-color" content="#09090c">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0ece3">
+<meta name="theme-color" content="#101820">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="icon" href="favicon-16.png" sizes="16x16">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -18,12 +15,12 @@
   --bg:#09090c; --bg-card:#111316; --bg-active:#181c26;
   --border:rgba(255,255,255,0.06); --border-h:rgba(255,255,255,0.13);
   --text-1:#edeae2; --text-2:#7e7b74; --text-3:#44423f; --text-4:#2e2c2a;
-  --accent:#c9a84c; --accent-dim:rgba(201,168,76,0.10);
-  --green:#2dbd80; --green-dim:rgba(45,189,128,0.10);
-  --blue:#4f8ef0; --blue-dim:rgba(79,142,240,0.10);
-  --red:#e05555; --red-dim:rgba(220,80,80,0.10);
+  --accent:#c9a84c; --accent-dim:rgba(139,209,255,0.10);
+  --green:#2dbd80; --green-dim:rgba(120,214,202,0.10);
+  --blue:#4f8ef0; --blue-dim:rgba(139,209,255,0.10);
+  --red:#e05555; --red-dim:rgba(255,143,143,0.10);
   --purple:#a06ee8; --purple-dim:rgba(160,110,232,0.10);
-  --header-bg:rgba(9,9,12,0.94);
+  --header-bg:rgba(16,24,32,0.94);
   --tog-bg:#16181e; --tog-border:rgba(255,255,255,0.08); --tog-act:rgba(255,255,255,0.07);
   --divider:rgba(255,255,255,0.04); --stripe:rgba(255,255,255,0.014);
 }
@@ -93,11 +90,11 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .tr-sub { margin-bottom:10px; }
 .tr-sub-title { font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--accent); margin-bottom:6px; padding-bottom:5px; border-bottom:1px solid var(--divider); }
 
-.note-box { background:var(--blue-dim); border:1px solid rgba(79,142,240,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.note-box { background:var(--blue-dim); border:1px solid rgba(139,209,255,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
 .note-box p { color:var(--blue); font-size:11px; margin-bottom:0; }
-.warn-box { background:var(--red-dim); border:1px solid rgba(220,80,80,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.warn-box { background:var(--red-dim); border:1px solid rgba(255,143,143,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
 .warn-box p { color:var(--red); font-size:11px; margin-bottom:0; }
-.tip-box { background:var(--green-dim); border:1px solid rgba(45,189,128,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.tip-box { background:var(--green-dim); border:1px solid rgba(120,214,202,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
 .tip-box p { color:var(--green); font-size:11px; margin-bottom:0; }
 
 .gloss-table { width:100%; border-collapse:collapse; margin-bottom:4px; }
@@ -116,7 +113,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 .step-list { list-style:none; padding:0; margin-bottom:10px; counter-reset:steps; }
 .step-list li { display:flex; gap:8px; align-items:flex-start; font-size:12px; color:var(--text-2); line-height:1.6; margin-bottom:6px; counter-increment:steps; }
-.step-list li::before { content:counter(steps); font-family:'DM Mono',monospace; font-size:9px; font-weight:500; color:var(--accent); background:var(--accent-dim); border:1px solid rgba(201,168,76,0.2); border-radius:4px; min-width:18px; height:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+.step-list li::before { content:counter(steps); font-family:'DM Mono',monospace; font-size:9px; font-weight:500; color:var(--accent); background:var(--accent-dim); border:1px solid rgba(139,209,255,0.2); border-radius:4px; min-width:18px; height:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
 
 .rule-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; padding:2px 7px; border-radius:4px; font-weight:500; margin-right:4px; }
 .rb-left { background:var(--green-dim); color:var(--green); }
@@ -126,28 +123,15 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   .tr-card:hover { transform: translateY(-2px); }
 }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/bb-reference.css">
 </head>
-<body>
+<body class="bb-ref">
 <div class="page-wrap">
 
-<header class="header">
-  <a class="brand" href="index.html">
-    <div class="brand-icon">BB</div>
-    <div>
-      <div class="brand-name">Banquet Bot</div>
-      <div class="brand-sub">Westin Austin · The Domain</div>
-    </div>
-  </a>
-  <div class="controls">
-    <div class="toggle-group">
-      <button class="tgl active" id="len" onclick="setLang('en')">EN</button>
-      <button class="tgl"        id="les" onclick="setLang('es')">ES</button>
-    </div>
-    <div class="toggle-group">
-      <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
-      <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
-    </div>
-  </div>
+<header class="ref-header">
+  <a class="bb-brand" href="index.html"><span class="bb-mark">bb</span>BANQUET BOT</a>
+  <a class="bb-btn" href="index.html">‹ Home</a>
 </header>
 
 <div class="page-hero">
@@ -754,23 +738,11 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 </div>
 
 <script>
-function setTheme(t){
-  document.documentElement.setAttribute('data-theme',t);
-  localStorage.setItem('bb-theme',t);
-  const bg=t==='light'?'#f0ece3':'#09090c';
-  document.documentElement.style.background=bg;
-  document.body.style.background=bg;
-  document.getElementById('tdk').classList.toggle('active',t==='dark');
-  document.getElementById('tlt').classList.toggle('active',t==='light');
-}
 function setLang(l){
   document.documentElement.setAttribute('data-lang',l);
-  localStorage.setItem('bb-lang',l);
   document.querySelectorAll('[data-en]').forEach(el=>{
     el.textContent=l==='es'?(el.dataset.es||el.dataset.en):el.dataset.en;
   });
-  document.getElementById('len').classList.toggle('active',l==='en');
-  document.getElementById('les').classList.toggle('active',l==='es');
   document.getElementById('trSearch').placeholder=l==='es'?'Buscar temas de capacitación…':'Search training topics…';
 }
 function toggleCard(card){
@@ -793,12 +765,7 @@ function filterTraining(q){
   if(term){st.textContent=visible+' result'+(visible!==1?'s':'');st.classList.add('show');}
   else{st.classList.remove('show');cards.forEach(c=>c.classList.remove('open'));}
 }
-(function(){
-  const t=localStorage.getItem('bb-theme')||'dark';
-  const l=localStorage.getItem('bb-lang')||'en';
-  setTheme(t);
-  setLang(l);
-})();
+setLang('en');
 </script>
 </div>
 </body>

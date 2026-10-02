@@ -1,0 +1,92 @@
+/* Banquet Bot reference pages (menu, rooms, info, training, handbook).
+   Loaded after each page's own styles: remaps the pages' shared color tokens to the
+   navy / ice-blue / lavender palette and restyles the common header, hero, search
+   and card surfaces. Page-specific layout stays in each page. */
+
+/* ── TOKENS (html:root outranks the pages' :root and [data-theme] blocks) ── */
+html:root,html[data-theme]{
+  color-scheme:dark;
+  /* menu / info / training / handbook */
+  --bg:#101820;--bg-card:#162530;--bg-active:#1d3344;
+  --border:rgba(139,209,255,.12);--border-h:rgba(139,209,255,.28);
+  --text-1:#eaf3fa;--text-2:#b1c6d6;--text-3:#8aa4b8;--text-4:#6f8aa0;
+  --accent:#8bd1ff;--accent-dim:rgba(139,209,255,.10);
+  --green:#78d6ca;--green-dim:rgba(120,214,202,.10);
+  --blue:#8bd1ff;--blue-dim:rgba(139,209,255,.10);
+  --amber:#ffc085;--amber-dim:rgba(255,192,133,.10);
+  --red:#ff8f8f;--red-dim:rgba(255,143,143,.10);
+  --purple:#c1baff;--purple-dim:rgba(193,186,255,.12);
+  --orange:#e2b089;--orange-dim:rgba(226,176,137,.10);
+  --header-bg:rgba(16,24,32,.88);
+  --divider:rgba(166,216,255,.07);--stripe:rgba(130,207,255,.03);
+  /* rooms */
+  --surface:#162530;--surface2:#1d3344;--text:#eaf3fa;--muted:#a1b7c8;--dim:#7f98ab;
+  --neon-theater:#ffc085;--neon-schoolroom:#f3dc8f;--neon-banquet:#f59ac6;
+  --neon-reception:#e3b0ff;--neon-conference:#c1baff;--neon-ushape:#8bd1ff;
+  --ballroom:#d9b48a;--primrose:#8bd1ff;--camellia:#78d6ca;--lantana:#e2b089;
+  --plumeria:#c1baff;--verbena:#7fcfd8;--barton:#f59ac6;--small:#7f98ab;
+  /* shell */
+  --ref-header-h:58px;
+}
+html,body{background:var(--bg)!important;background-color:var(--bg)!important}
+body.bb-ref{font-family:Manrope,Arial,sans-serif;color:var(--text-1);-webkit-font-smoothing:antialiased}
+
+/* ── BACKGROUND: a slow-drifting isometric lattice with an ice/lavender glow ── */
+body.bb-ref::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 100% 0,#2a4f6a59,transparent 46%),
+    radial-gradient(ellipse at 0 100%,#5a4f9a24,transparent 52%),
+    repeating-linear-gradient(60deg,transparent 0 33px,#84d3ff0c 33px 34px),
+    repeating-linear-gradient(-60deg,transparent 0 33px,#b7a8ff0a 33px 34px),
+    var(--bg);
+  background-size:100% 100%,100% 100%,140% 140%,140% 140%,auto;
+  animation:ref-lattice 40s linear infinite alternate}
+body.bb-ref>*{position:relative;z-index:1}
+.bb-ref .page-wrap{background:transparent!important}
+
+/* ── HEADER ── */
+.ref-header{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  box-sizing:content-box;height:var(--ref-header-h);padding:env(safe-area-inset-top,0px) 16px 0;
+  background:var(--header-bg);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-bottom:1px solid #ffffff0b}
+.ref-header .bb-brand{display:flex;align-items:center;gap:10px;font:700 11px Manrope,Arial,sans-serif;letter-spacing:1.7px;color:#eaf1f7;text-decoration:none}
+.ref-header .bb-mark{display:grid;place-items:center;width:30px;height:30px;border:1px solid #81ccff80;border-radius:8px;color:#81ccff;font:20px Georgia,serif;letter-spacing:-1px;box-shadow:0 0 14px #81ccff18;animation:ref-signal 5s ease-in-out infinite}
+.ref-header .bb-btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid #577c97;background:#1c3445;color:#d3edff;border-radius:7px;font:12px Manrope,Arial,sans-serif;min-height:40px;padding:8px 11px;text-decoration:none}
+/* Elements that stick under the header */
+.bb-ref .search-wrap,.bb-ref .nav{top:calc(var(--ref-header-h) + 1px + env(safe-area-inset-top,0px))}
+
+/* ── HERO ── */
+.bb-ref .page-hero{padding:20px 18px 16px;border-bottom:1px solid var(--divider);background:repeating-linear-gradient(0deg,transparent 0 5px,#82cfff05 5px 6px),linear-gradient(130deg,#1e405850,#0d172200)}
+.bb-ref .page-hero::after{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,#8bd7ff90,transparent);box-shadow:0 0 12px #80ceff55;animation:ref-scan 8s linear infinite;pointer-events:none}
+.bb-ref .page-eyebrow{font:600 9px Manrope,Arial,sans-serif;letter-spacing:1.8px;color:var(--accent);text-transform:uppercase;margin-bottom:8px}
+.bb-ref .page-eyebrow::before{content:'';display:inline-block;width:5px;height:5px;margin:0 7px 1px 0;background:#91dbff;box-shadow:0 0 9px #91dbff;border-radius:50%;animation:ref-signal 3.8s ease-in-out infinite}
+.bb-ref .page-title{font:600 36px/1 'Barlow Condensed',Arial,sans-serif;letter-spacing:.5px;text-transform:uppercase;color:#edf5fa;margin-bottom:7px}
+.bb-ref .page-meta{font-family:Manrope,Arial,sans-serif;font-size:10px;color:var(--text-3)}
+
+/* Display type that used Bebas Neue → Barlow Condensed */
+.bb-ref .card-title,.bb-ref .section-label,.bb-ref .room-name{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+.bb-ref .stat-num,.bb-ref .cap-value{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:600}
+
+/* ── SECTION LABELS ── */
+.bb-ref .sec{font-family:Manrope,Arial,sans-serif;font-weight:600;font-size:9px;letter-spacing:1.6px;color:#89b4cf}
+
+/* ── SEARCH ── */
+.bb-ref .search-wrap{background:var(--header-bg);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.bb-ref .search-input{background-color:#0b151e;border:1px solid #527b995e;border-radius:9px;box-shadow:inset 0 3px 9px #00000050,0 1px #a5dfff0b;font-family:Manrope,Arial,sans-serif;font-size:16px;color:#e0effa;min-height:44px}
+.bb-ref .search-input:focus{border-color:#89cdff;box-shadow:0 0 14px #82cdff17}
+.bb-ref .search-input::placeholder{font-size:12px;color:#89a5b9}
+
+/* ── CARD SURFACES ── */
+.bb-ref .menu-cat,.bb-ref .tr-card,.bb-ref .hb-card,.bb-ref .room-card,.bb-ref .card{
+  background:radial-gradient(ellipse at 100% 0,#39729714,transparent 65%),linear-gradient(135deg,#1c3142,#13222d 70%);
+  border-color:#395368;border-top-color:#739db75e;border-radius:3px 13px 3px 3px;
+  box-shadow:0 8px 18px #00000038,inset 0 1px #ffffff06}
+.bb-ref .stat-chip{background:linear-gradient(135deg,#1c3142,#13222d);border-color:#395368}
+
+/* ── MOTION ── */
+@keyframes ref-lattice{from{background-position:0 0,0 0,0 0,0 0,0 0}to{background-position:0 0,0 0,68px 40px,-68px 40px,0 0}}
+@keyframes ref-signal{0%,100%{opacity:.55;filter:drop-shadow(0 0 2px #87d1ff20)}50%{opacity:1;filter:drop-shadow(0 0 7px #87d1ff66)}}
+@keyframes ref-scan{0%{transform:translateY(0);opacity:0}15%{opacity:.6}85%{opacity:.6}100%{transform:translateY(120px);opacity:0}}
+@media (prefers-reduced-motion:reduce){
+  .bb-ref *,.bb-ref *::before,.bb-ref *::after,body.bb-ref::before{animation:none!important}
+}

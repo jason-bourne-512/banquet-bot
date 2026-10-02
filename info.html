@@ -1,32 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" style="background:#09090c;background-color:#09090c">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<script>(function(){var t=localStorage.getItem('bb-theme')||'dark';var bg=t==='dark'?'#09090c':'#f0ece3';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.background=bg;document.documentElement.style.setProperty('background-color',bg,'important');})()</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#09090c">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0ece3">
+<meta name="theme-color" content="#101820">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="icon" href="favicon-16.png" sizes="16x16">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Property Info — Westin Austin Domain</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-<style>html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f0ece3!important;background-color:#f0ece3!important}[data-theme="light"] body::before{background:#f0ece3}</style>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#09090c;--bg-card:#111316;--bg-active:#181c26;
   --border:rgba(255,255,255,0.06);--border-h:rgba(255,255,255,0.13);
   --text-1:#edeae2;--text-2:#7e7b74;--text-3:#44423f;--text-4:#2e2c2a;
-  --accent:#c9a84c;--accent-dim:rgba(201,168,76,0.10);
-  --green:#2dbd80;--green-dim:rgba(45,189,128,0.10);
-  --blue:#4f8ef0;--blue-dim:rgba(79,142,240,0.10);
-  --amber:#f0b429;--amber-dim:rgba(240,180,41,0.10);
-  --red:#e05555;--red-dim:rgba(220,80,80,0.10);
-  --purple:#8c64dc;--purple-dim:rgba(140,100,220,0.10);
+  --accent:#c9a84c;--accent-dim:rgba(139,209,255,0.10);
+  --green:#2dbd80;--green-dim:rgba(120,214,202,0.10);
+  --blue:#4f8ef0;--blue-dim:rgba(139,209,255,0.10);
+  --amber:#f0b429;--amber-dim:rgba(255,192,133,0.10);
+  --red:#e05555;--red-dim:rgba(255,143,143,0.10);
+  --purple:#c1baff;--purple-dim:rgba(140,100,220,0.10);
   --orange:#fb923c;--orange-dim:rgba(251,146,60,0.10);
-  --header-bg:rgba(9,9,12,0.95);
+  --header-bg:rgba(16,24,32,0.95);
   --tog-bg:#16181e;--tog-border:rgba(255,255,255,0.08);--tog-act:rgba(255,255,255,0.07);
   --divider:rgba(255,255,255,0.04);--stripe:rgba(255,255,255,0.014);
 }
@@ -77,9 +74,9 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
 .page-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:1px;color:var(--text-1);line-height:0.95;margin-bottom:8px}
 .chips{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .chip{display:inline-flex;align-items:center;gap:4px;font-family:'Courier New',monospace;font-size:9px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-2)}
-.chip-green{background:var(--green-dim);color:var(--green);border-color:rgba(45,189,128,0.2)}
-.chip-gold{background:var(--accent-dim);color:var(--accent);border-color:rgba(201,168,76,0.2)}
-.chip-blue{background:var(--blue-dim);color:var(--blue);border-color:rgba(79,142,240,0.2)}
+.chip-green{background:var(--green-dim);color:var(--green);border-color:rgba(120,214,202,0.2)}
+.chip-gold{background:var(--accent-dim);color:var(--accent);border-color:rgba(139,209,255,0.2)}
+.chip-blue{background:var(--blue-dim);color:var(--blue);border-color:rgba(139,209,255,0.2)}
 
 /* SECTIONS */
 .section{display:none;padding:16px}
@@ -91,8 +88,8 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
 .card-label{font-family:'Courier New',monospace;font-size:9px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase}
 .card-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.5px;color:var(--text-1);line-height:1;margin-top:2px}
 .card-badge{font-family:'Courier New',monospace;font-size:9px;padding:3px 8px;border-radius:4px;flex-shrink:0}
-.badge-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(45,189,128,0.2)}
-.badge-amber{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(240,180,41,0.2)}
+.badge-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(120,214,202,0.2)}
+.badge-amber{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(255,192,133,0.2)}
 .card-body{padding:12px 14px}
 
 /* ROW LIST */
@@ -122,14 +119,14 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
 .section-label:first-child{margin-top:0}
 
 /* ALERT */
-.alert{background:var(--amber-dim);border:1px solid rgba(240,180,41,0.2);border-radius:8px;padding:10px 12px;margin-bottom:10px}
+.alert{background:var(--amber-dim);border:1px solid rgba(255,192,133,0.2);border-radius:8px;padding:10px 12px;margin-bottom:10px}
 .alert-text{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--amber);line-height:1.5}
 
 /* MENU GROUP (collapsible, per meal period) */
 .menu-group{border:1px solid var(--divider);border-left:3px solid var(--mg-color,var(--accent));border-radius:8px;margin-top:8px;overflow:hidden}
 .menu-group-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;cursor:pointer;background:var(--bg-active)}
 .menu-group-name{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text-1)}
-.menu-group-meta{display:inline-flex;align-items:center;font-family:'Courier New',monospace;font-size:10px;font-weight:700;letter-spacing:0.3px;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(201,168,76,0.25);border-radius:5px;padding:2px 7px;margin-top:4px}
+.menu-group-meta{display:inline-flex;align-items:center;font-family:'Courier New',monospace;font-size:10px;font-weight:700;letter-spacing:0.3px;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(139,209,255,0.25);border-radius:5px;padding:2px 7px;margin-top:4px}
 .menu-group-chevron{font-size:10px;color:var(--text-3);transition:transform .15s;flex-shrink:0}
 .menu-group.open .menu-group-chevron{transform:rotate(90deg)}
 .menu-group-body{display:none;padding:2px 11px 9px}
@@ -155,26 +152,17 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
   .card:hover { transform: translateY(-2px); }
 }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/bb-reference.css">
 </head>
-<body>
+<body class="bb-ref">
 
 <div class="page-wrap">
 
 <!-- HEADER -->
-<header class="header">
-  <a href="index.html" class="brand">
-    <div class="brand-icon">BB</div>
-    <div>
-      <div class="brand-name">BANQUET BOT</div>
-      <div class="brand-sub">WESTIN AUSTIN · DOMAIN</div>
-    </div>
-  </a>
-  <div class="controls">
-    <div class="toggle-group">
-      <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
-      <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
-    </div>
-  </div>
+<header class="ref-header">
+  <a class="bb-brand" href="index.html"><span class="bb-mark">bb</span>BANQUET BOT</a>
+  <a class="bb-btn" href="index.html">‹ Home</a>
 </header>
 
 <!-- TAB NAV -->
@@ -1103,20 +1091,6 @@ function showTab(id, btn) {
   btn.classList.add('active');
   btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 }
-function setTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('bb-theme', t);
-  document.getElementById('tdk').classList.toggle('active', t === 'dark');
-  document.getElementById('tlt').classList.toggle('active', t === 'light');
-}
-(function(){
-  const saved = localStorage.getItem('bb-theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', saved);
-  if (document.getElementById('tdk')) {
-    document.getElementById('tdk').classList.toggle('active', saved === 'dark');
-    document.getElementById('tlt').classList.toggle('active', saved === 'light');
-  }
-})();
 </script>
 </body>
 </html>

@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" style="background:#09090c;background-color:#09090c">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<script>(function(){var t=localStorage.getItem('bb-theme')||'dark';var bg=t==='dark'?'#09090c':'#f0ece3';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.background=bg;document.documentElement.style.setProperty('background-color',bg,'important');})()</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-<meta name="theme-color" content="#09090c">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0ece3">
+<meta name="theme-color" content="#101820">
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="icon" href="favicon-16.png" sizes="16x16">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Room Specs · Banquet Bot</title>
-<style>:root,html,body{background:#09090c!important;background-color:#09090c!important;min-height:100%}body{margin:0;overflow-x:hidden}body::before{content:"";position:fixed;inset:-100vw;background:#09090c;z-index:0;pointer-events:none;transform:translateZ(0)}body>*{position:relative;z-index:1}[data-theme="light"],[data-theme="light"] body{background:#f0ece3!important;background-color:#f0ece3!important}[data-theme="light"] body::before{background:#f0ece3}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -39,8 +36,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .page-wrap{min-height:100vh;min-height:100dvh;background:var(--bg)}
 
 /* HEADER */
-.header{position:sticky;top:0;z-index:100;background:rgba(9,9,12,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:0.75rem}
-[data-theme="light"] .header{background:rgba(245,243,239,0.92)}
+.header{position:sticky;top:0;z-index:100;background:rgba(16,24,32,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:0.75rem}
+[data-theme="light"] .header{background:rgba(16,24,32,0.92)}
 .header-left{display:flex;align-items:center;gap:0.75rem}
 .back-btn{display:flex;align-items:center;gap:0.35rem;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--muted);text-decoration:none;letter-spacing:0.05em;transition:color 0.2s;padding:0.3rem 0}
 .back-btn:hover{color:var(--text)}
@@ -58,7 +55,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .search-wrap{padding:0.75rem 1rem 0}
 .search-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.65rem 0.85rem;font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--text);outline:none;transition:border-color 0.2s}
 .search-input::placeholder{color:var(--dim)}
-.search-input:focus{border-color:rgba(255,159,67,0.4)}
+.search-input:focus{border-color:rgba(255,192,133,0.4)}
 [data-theme="light"] .search-input{background:#fff}
 
 /* STATS */
@@ -140,25 +137,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   .room-card:hover { transform: translateY(-2px); }
 }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/bb-reference.css">
 </head>
-<body>
+<body class="bb-ref">
 <div class="page-wrap">
 
-<div class="header">
-  <div class="header-left">
-    <a class="back-btn" href="index.html">← <span data-en="HOME" data-es="INICIO">HOME</span></a>
-    <div class="header-title" data-en="ROOM SPECS" data-es="SALONES">ROOM SPECS</div>
-  </div>
-  <div class="header-controls">
-    <div class="toggle-group">
-      <button class="tgl active" id="len" onclick="setLang('en')">EN</button>
-      <button class="tgl"        id="les" onclick="setLang('es')">ES</button>
-    </div>
-    <div class="toggle-group">
-      <button class="tgl active" id="tdk" onclick="setTheme('dark')">🌙</button>
-      <button class="tgl"        id="tlt" onclick="setTheme('light')">☀️</button>
-    </div>
-  </div>
+<header class="ref-header">
+  <a class="bb-brand" href="index.html"><span class="bb-mark">bb</span>BANQUET BOT</a>
+  <a class="bb-btn" href="index.html">‹ Home</a>
+</header>
+
+<div class="page-hero">
+  <div class="page-eyebrow">Westin Austin · AUSDW</div>
+  <div class="page-title">Room Specs</div>
 </div>
 
 <div class="search-wrap">
@@ -732,26 +724,13 @@ function filterRooms(q){
   });
 }
 
-function setTheme(t){
-  document.documentElement.setAttribute('data-theme',t);
-  document.getElementById('tdk').classList.toggle('active',t==='dark');
-  document.getElementById('tlt').classList.toggle('active',t==='light');
-  localStorage.setItem('bb-theme',t);
-  var bg=t==='dark'?'#09090c':'#f0ece3';
-  document.documentElement.style.background=bg;
-  document.body.style.background=bg;
-}
 
 function setLang(l){
   document.body.classList.toggle('lang-es',l==='es');
-  localStorage.setItem('bb-lang',l);
-  document.getElementById('len').classList.toggle('active',l==='en');
-  document.getElementById('les').classList.toggle('active',l==='es');
   document.querySelectorAll('[data-en][data-es]').forEach(el=>el.innerHTML=el.getAttribute('data-'+l));
 }
 
-setTheme(localStorage.getItem('bb-theme')||'dark');
-setLang(localStorage.getItem('bb-lang')||'en');
+setLang('en');
 </script>
 </div>
 </body>
