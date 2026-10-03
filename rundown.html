@@ -442,6 +442,7 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .original-row{display:grid;grid-template-columns:122px minmax(0,1fr);gap:7px;padding:4px 0 4px 7px;font-size:12px;line-height:1.5;color:#ecf5ff}
 #bb-app .original-time{color:#b4e3ff;font-weight:600;font-variant-numeric:tabular-nums;text-shadow:0 1px 2px #00000080}
 #bb-app .original-count{display:inline-block;margin-left:5px;font-size:11px;font-weight:400;color:#c5d1e8}
+#bb-app .original-total{margin:2px 0 0;font:700 13px/1.4 'Courier New',monospace;letter-spacing:.4px;color:#e6f4ff;text-shadow:0 0 10px #8bd1ff30}
 #bb-app .original-label{padding:0 5px;border-left:1px solid #a7cced24;border-radius:3px;overflow-wrap:anywhere;color:#f0f5fc;background:linear-gradient(90deg,#a8cfff0d,transparent);text-shadow:0 1px 2px #00000070}
 #bb-app .original-diag{order:3;padding:2px 7px;font:600 10px Manrope,Arial,sans-serif;letter-spacing:.3px;text-transform:none;color:#d1daff;border:1px solid #a9bcff4a;border-radius:5px;background:#697fb51f}
 
@@ -7046,6 +7047,10 @@ body{font-family:Manrope,Arial,sans-serif}
         const head=node('div','original-client',e.company);
         if(e.contact) head.append(node('span','original-contact',e.contact));
         card.append(head);
+        // Same count on every row → state it once under the client, not on each row.
+        const counts=new Set(); e.rooms.forEach(rows=>rows.forEach(r=>counts.add(r.gtdText||'')));
+        const sharedCount=counts.size===1?[...counts][0]:'';
+        if(sharedCount) card.append(node('div','original-total',sharedCount));
         e.rooms.forEach(function(rows,room){
           const r=node('div','original-room',room);
           ov2DiagramsFor(diagIndex,d,e.company,room).forEach(function(dg){
@@ -7057,7 +7062,7 @@ body{font-family:Manrope,Arial,sans-serif}
           rows.forEach(function(row){
             const line=node('div','original-row');
             const t=node('span','original-time',row.startStr+'–'+row.endStr);
-            if(row.gtdText) t.append(node('span','original-count',row.gtdText));
+            if(row.gtdText&&!sharedCount) t.append(node('span','original-count',row.gtdText));
             line.append(t, node('span','original-label',row.label));
             card.append(line);
           });
