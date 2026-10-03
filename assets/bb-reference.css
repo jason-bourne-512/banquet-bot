@@ -84,7 +84,7 @@ body.bb-ref>*{position:relative;z-index:1}
 .bb-ref .stat-chip{background:linear-gradient(135deg,#1c3142,#13222d);border-color:#395368}
 
 /* ── LAPTOP: one centred column, same width as the Rundown ── */
-@media (min-width:900px){
+@media (min-width:600px){
   .bb-ref .page-wrap{max-width:720px!important;margin:0 auto}
 }
 
