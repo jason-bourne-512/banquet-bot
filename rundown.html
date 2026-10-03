@@ -491,7 +491,6 @@ body{font-family:Manrope,Arial,sans-serif}
   <div class="tabs" role="group" aria-label="Choose view">
     <button type="button" data-screen="rundown" aria-pressed="true">Rundown</button>
     <button type="button" data-screen="overview" aria-pressed="false">Overview</button>
-    <button type="button" data-screen="diagrams" aria-pressed="false">Diagrams</button>
   </div>
   <main><section id="rdScreen" aria-live="polite"></section></main>
 </div>
@@ -7550,7 +7549,7 @@ body{font-family:Manrope,Arial,sans-serif}
           title=document.getElementById('rdTitle'), dateLine=document.getElementById('rdDate'),
           back=document.getElementById('rdBack'), caption=document.getElementById('rdCaption');
     const tabs=Array.from(app.querySelectorAll('.tabs [data-screen]'));
-    const TITLES={rundown:'THE RUNDOWN.',overview:'THE OVERVIEW.',diagrams:'THE DIAGRAMS.'};
+    const TITLES={rundown:'THE RUNDOWN.',overview:'THE OVERVIEW.'};
     let tab=location.hash==='#overview'?'overview':'rundown', mode='day', selected=TODAY;
 
     function headings(){
@@ -7686,23 +7685,10 @@ body{font-family:Manrope,Arial,sans-serif}
       });
     }
 
-    function renderDiagrams(d){
-      const sec=document.querySelector('#diagramsList .day-section[data-date="'+d+'"]');
-      const groups=sec?Array.from(sec.querySelectorAll('.diag-group')):[];
-      if(!groups.length) return empty('No diagrams for this date.');
-      groups.forEach(function(g){
-        const card=node('article','original-event');
-        const name=g.querySelector('.diag-group-name');
-        card.append(node('div','original-client',name?name.textContent.trim():'Diagrams'));
-        g.querySelectorAll('.diag-link,.diag-warn').forEach(b=>card.append(b.cloneNode(true)));
-        screen.append(card);
-      });
-    }
-
     function renderDay(d){
       selected=d; mode='day';
       screen.replaceChildren();
-      ({rundown:renderRundown,overview:renderOverview,diagrams:renderDiagrams})[tab](d);
+      ({rundown:renderRundown,overview:renderOverview})[tab](d);
       headings();
     }
 
