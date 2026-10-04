@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Housemen — Banquet Bot</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#101820;--card:#162530;--card2:#1d3344;--line:rgba(139,209,255,.12);--line2:rgba(139,209,255,.26);
+  --t1:#eaf3fa;--t2:#b1c6d6;--t3:#8aa4b8;--t4:#6f8aa0;
+  --accent:#8bd1ff;--accent-d:rgba(139,209,255,.12);
+  --set:#8bd1ff;--set-d:rgba(139,209,255,.13);
+  --ref:#78d6ca;--ref-d:rgba(120,214,202,.13);
+  --clr:#e2b089;--clr-d:rgba(226,176,137,.14);
+  --amber:#ffc085;--amber-d:rgba(255,192,133,.13);
+  --red:#ff8f8f;--red-d:rgba(255,143,143,.13);
+  --done:#7fe0a0;--done-d:rgba(127,224,160,.13);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--t1);font-family:Manrope,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(ellipse at 100% 0,#2a4f6a59,transparent 46%),radial-gradient(ellipse at 0 100%,#5a4f9a24,transparent 52%),
+  repeating-linear-gradient(60deg,transparent 0 33px,#84d3ff0c 33px 34px),repeating-linear-gradient(-60deg,transparent 0 33px,#b7a8ff0a 33px 34px),var(--bg)}
+.wrap{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:0 14px 90px}
+button{font:inherit;color:inherit;cursor:pointer}
+
+/* header */
+.top{position:sticky;top:0;z-index:30;margin:0 -14px;padding:calc(env(safe-area-inset-top,0px) + 10px) 14px 10px;background:rgba(16,24,32,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid #ffffff0b}
+.brand{display:flex;align-items:center;gap:10px;font:700 11px Manrope;letter-spacing:1.7px;color:#eaf1f7;text-decoration:none}
+.mark{display:grid;place-items:center;width:28px;height:28px;border:1px solid #81ccff80;border-radius:8px;color:#81ccff;font:19px Georgia,serif;box-shadow:0 0 14px #81ccff18}
+.who{margin-left:auto;border:1px solid var(--line2);background:var(--card);border-radius:20px;padding:5px 10px;font:700 10.5px Manrope;letter-spacing:.3px;color:var(--t2)}
+.who.in{color:var(--done);border-color:#7fe0a055}
+.sync{width:7px;height:7px;border-radius:50%;background:var(--t4);flex:none}
+.sync.ok{background:var(--done);box-shadow:0 0 8px var(--done)} .sync.bad{background:var(--red);box-shadow:0 0 8px var(--red)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;padding:4px;background:#0b151e;border:1px solid var(--line);border-radius:11px}
+.seg button{border:0;background:transparent;padding:9px 0;border-radius:8px;font-weight:700;font-size:13px;color:var(--t3)}
+.seg button.on{background:var(--card2);color:var(--t1);box-shadow:0 0 0 1px var(--line2)}
+.days{display:flex;gap:6px;overflow-x:auto;margin-top:10px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.days button{flex:none;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:6px 11px;text-align:center;min-width:54px}
+.days button b{display:block;font:600 17px 'Barlow Condensed';letter-spacing:.5px}
+.days button span{font-size:9px;letter-spacing:1px;color:var(--t3);font-weight:700}
+.days button.on{border-color:var(--accent);background:var(--accent-d)}
+.days button .pip{display:block;height:3px;border-radius:2px;margin-top:4px;background:#ffffff14;overflow:hidden}
+.days button .pip i{display:block;height:100%;background:var(--done)}
+
+/* hero */
+.hero{padding:16px 2px 10px}
+.eyebrow{font:700 9px Manrope;letter-spacing:1.8px;color:var(--accent);text-transform:uppercase}
+.eyebrow::before{content:'';display:inline-block;width:5px;height:5px;margin:0 7px 1px 0;background:#91dbff;box-shadow:0 0 9px #91dbff;border-radius:50%}
+h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5px;margin:7px 0 4px}
+.sub{font-size:12px;color:var(--t2)}
+.sub b{color:var(--t1)}
+.progress{margin:12px 0 4px;display:flex;align-items:center;gap:10px}
+.bar{flex:1;height:8px;border-radius:5px;background:#ffffff10;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#5fc98a,var(--done));border-radius:5px;transition:width .35s}
+.pct{font:600 20px 'Barlow Condensed';min-width:58px;text-align:right}
+
+/* room cards */
+.room{margin-top:9px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:12px;overflow:hidden;transition:opacity .2s,border-color .2s}
+.room.set{--c:var(--set);--cd:var(--set-d)} .room.ref{--c:var(--ref);--cd:var(--ref-d)} .room.clr{--c:var(--clr);--cd:var(--clr-d)}
+.room.isdone{--c:var(--done);opacity:.62}
+.room.isprob{--c:var(--red)}
+.rhead{display:flex;align-items:center;gap:10px;padding:11px 12px;width:100%;border:0;background:transparent;text-align:left}
+.num{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--cd);color:var(--c);font:700 17px 'Barlow Condensed';border:1px solid var(--c)}
+.room.isdone .num{background:var(--done);color:#0e2418;border-color:var(--done)}
+.rmain{flex:1;min-width:0}
+.type{font:800 8.5px Manrope;letter-spacing:1.2px;text-transform:uppercase;color:var(--c);background:var(--cd);padding:2px 6px;border-radius:4px}
+.rname{font:600 21px/1.05 'Barlow Condensed';text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
+.rfor{font-size:11.5px;color:var(--t3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rend{flex:none;text-align:right;font-size:10px;color:var(--t3);font-weight:700}
+.rend b{display:block;font:600 15px 'Barlow Condensed';color:var(--t2);letter-spacing:.3px}
+.status{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;margin-top:4px;padding:2px 8px;border-radius:20px}
+.st-done{color:var(--done);background:var(--done-d)} .st-prog{color:var(--accent);background:var(--accent-d)} .st-prob{color:var(--red);background:var(--red-d)} .st-none{color:var(--t4);background:#ffffff08}
+.rbody{display:none;padding:0 12px 12px 52px}
+.room.open .rbody{display:block}
+.items{list-style:none;margin:0;padding:0}
+.items li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.3;cursor:pointer}
+.items li:first-child{border-top:0}
+.box{flex:none;width:22px;height:22px;border-radius:6px;border:1.6px solid var(--line2);display:grid;place-items:center;margin-top:-1px}
+.items li.ck .box{background:var(--done);border-color:var(--done)}
+.items li.ck .box::after{content:'';width:6px;height:11px;border:solid #0e2418;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.items li.ck span{color:var(--t3);text-decoration:line-through}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}
+.tag{font-size:10.5px;font-weight:700;padding:4px 8px;border-radius:6px;background:#ffffff0a;color:var(--t2);text-decoration:none;border:1px solid var(--line)}
+.tag.diag{color:var(--accent);border-color:#8bd1ff40}
+.tag.flag{color:var(--amber);background:var(--amber-d);border-color:#ffc08533}
+.tag.next{color:var(--clr);background:var(--clr-d);border-color:#e2b08933}
+.acts{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
+.btn{border:0;border-radius:11px;padding:14px 12px;font-weight:800;font-size:14px;letter-spacing:.3px}
+.btn-done{background:var(--done);color:#0e2418;box-shadow:0 6px 18px #7fe0a025}
+.btn-undo{background:var(--card2);color:var(--t2);border:1px solid var(--line2)}
+.btn-prob{background:var(--red-d);color:var(--red);border:1px solid #ff8f8f40;padding:14px 16px}
+.doneline{font-size:12px;color:var(--done);margin-top:10px;font-weight:600}
+.probline{font-size:12px;color:var(--red);margin-top:10px;font-weight:600;background:var(--red-d);padding:8px 10px;border-radius:8px}
+.std{margin:2px 0 10px;font-size:11px;color:var(--t3)}
+
+/* captain */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 4px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 11px}
+.stat b{display:block;font:600 28px/1 'Barlow Condensed'}
+.stat span{font-size:9.5px;font-weight:700;letter-spacing:1.2px;color:var(--t3);text-transform:uppercase}
+.sec{font:700 9.5px Manrope;letter-spacing:1.6px;color:#89b4cf;text-transform:uppercase;margin:18px 2px 6px}
+.crow{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--card);border:1px solid var(--line);border-radius:11px;margin-top:6px}
+.crow .num{width:26px;height:26px;font-size:15px}
+.crow .rname{font-size:18px;margin:0}
+.crow .meta{font-size:11px;color:var(--t3)}
+.crow .right{margin-left:auto;text-align:right}
+.flagrow{padding:10px 12px;border-radius:11px;background:var(--amber-d);border:1px solid #ffc08533;margin-top:6px;font-size:12.5px;color:var(--t1)}
+.flagrow b{color:var(--amber)}
+.flagrow.prob{background:var(--red-d);border-color:#ff8f8f40}
+.flagrow.prob b{color:var(--red)}
+.resolve{margin-top:8px;border:1px solid var(--line2);background:var(--card2);color:var(--t1);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700}
+.feed{border-left:2px solid var(--line2);margin:6px 0 0 8px;padding-left:14px}
+.ev{position:relative;padding:6px 0;font-size:12.5px;color:var(--t2)}
+.ev::before{content:'';position:absolute;left:-20px;top:11px;width:10px;height:10px;border-radius:50%;background:var(--c,var(--accent));box-shadow:0 0 8px var(--c,var(--accent))}
+.ev time{color:var(--t4);font-size:11px;margin-right:6px}
+.empty{color:var(--t3);font-size:13px;padding:14px 4px}
+
+/* sheets */
+.sheet-bg{position:fixed;inset:0;z-index:50;background:#000a;display:none;align-items:flex-end;justify-content:center}
+.sheet-bg.on{display:flex}
+.sheet{width:100%;max-width:520px;background:#14212b;border:1px solid var(--line2);border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px))}
+.sheet h3{margin:0 0 4px;font:600 22px 'Barlow Condensed';text-transform:uppercase}
+.sheet p{margin:0 0 12px;font-size:12px;color:var(--t3)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chips button{border:1px solid var(--line2);background:var(--card);border-radius:20px;padding:9px 13px;font-size:13px;font-weight:600}
+.chips button.on{background:var(--red-d);border-color:var(--red);color:var(--red)}
+.sheet textarea{width:100%;margin-top:12px;min-height:70px;border-radius:10px;border:1px solid var(--line2);background:#0b151e;color:var(--t1);font:16px Manrope;padding:10px}
+.sheet .acts{grid-template-columns:auto 1fr}
+.dots{display:flex;justify-content:center;gap:14px;margin:6px 0 14px}
+.dots i{width:14px;height:14px;border-radius:50%;border:1.6px solid var(--line2)}
+.dots i.f{background:var(--accent);border-color:var(--accent)}
+.dots.err i{border-color:var(--red)} .dots.err i.f{background:var(--red)}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pad button{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:14px 0;font:600 24px 'Barlow Condensed'}
+.pad button:active{background:var(--card2)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(30px);opacity:0;z-index:60;background:#0e2418;color:var(--done);border:1px solid var(--done);border-radius:30px;padding:10px 16px;font-size:13px;font-weight:700;transition:.3s;white-space:nowrap;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.bad{background:#2a0d0d;color:var(--red);border-color:var(--red)}
+.foot{margin-top:24px;font-size:10.5px;color:var(--t4);text-align:center;line-height:1.6}
+.foot a,.linkbtn{color:var(--t3);background:none;border:0;text-decoration:underline;font-size:10.5px}
+</style></head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><a class="brand" href="index.html"><span class="mark">B</span>HOUSEMEN</a><span class="sync" id="sync" title="Live sync"></span><button class="who" id="who">Sign in</button></div>
+    <div class="seg"><button id="vHsm" class="on">Houseman</button><button id="vCap">Captain</button></div>
+    <div class="days" id="days"></div>
+  </div>
+  <main id="main"></main>
+  <div class="foot" id="foot"></div>
+</div>
+
+<div class="sheet-bg" id="pinBg"><div class="sheet">
+  <h3>Enter your PIN</h3><p id="pinWhy">Your PIN puts your name on what you check off.</p>
+  <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
+  <div class="pad" id="pad"></div>
+  <div class="acts" style="grid-template-columns:1fr"><button class="btn btn-undo" id="pinCancel">Cancel</button></div>
+</div></div>
+
+<div class="sheet-bg" id="sheetBg"><div class="sheet">
+  <h3>Report a problem</h3><p id="sheetRoom"></p>
+  <div class="chips" id="chips"></div>
+  <textarea id="note" placeholder="Add a note (optional)"></textarea>
+  <div class="acts"><button class="btn btn-undo" id="cancel">Cancel</button><button class="btn btn-prob" id="send" style="background:var(--red);color:#2a0d0d">Send to captain</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ── WEEKLY DATA — update each week from the BEOs + schedule. Rooms are in setup order.
+// end = time the room's booking ends that day ("" = empty when the houseman clocks in).
+// BEO end times are room holds; groups usually leave by 5–6 PM, so they're shown, never flagged.
+const DIAG = "diagrams/";
+const DAYS = [
+ { iso:"2026-10-04", target:"Monday 10/5", crew:"Jamshid", shift:"12P–7P", rooms:[
+   {t:"set", room:"Primrose CD", for:"Q2 Software · Set Up / AV Rehearsal", diag:"PRIMROSECDCopyfromQ2DevDaysDecisionsandPathForward.pdf",
+    items:["8x24 stage, steps on both sides","Podium on stage","3 white chairs on stage","3 blue chairs on stage","Schoolroom for 225","2 rows theater style for 32","(2) 6x30 tables w/ chairs in back for AV","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"],
+    flags:["Diagram shows 1 AV table"]},
+   {t:"set", room:"Verbena AB", for:"Q2 Software · Hospitality Room", diag:"VERBENAfromQ2DevDaysDecisionsandPathForward.pdf", items:["Blue chairs","Scattered highboys & lowboys"]},
+   {t:"set", room:"Lantana B", for:"Boehringer-Ingelheim · Day 1 of 4", diag:"LANTANABfromDistrictPSCFAM3MeetingOct2026.pdf", items:["(3) crescent rounds of 4","(1) 6' table in front of room"], flags:["Diagram says set for 13"]},
+   {t:"set", room:"Barton", for:"TADA · Welcome Reception", items:["Lounge","Scattered highboys"], flags:["No diagram on file"]},
+   {t:"set", room:"Pre-Function", for:"Q2 Software · Registration", items:["(2) 6x30 tables, 2 chairs each","Vendor brings TV monitors for the foyer"], flags:["From BEO — not on original list"]},
+   {t:"ref", room:"Bluebell", for:"Cabot · Board Meeting (conference)"},
+   {t:"ref", room:"Camellia AB", for:"Q2 Software · Set Up (existing set)", end:"5:00 PM"},
+   {t:"ref", room:"Plumeria AB", for:"Standing set · next use Tue: TADA", end:"7:00 PM"},
+   {t:"clr", room:"Primrose AB", for:"CGTV finished", end:"7:00 PM", next:"Flip Mon night → Q2 overflow, 15 rounds of 10"},
+ ]},
+ { iso:"2026-10-05", target:"Tuesday 10/6", crew:"Tomas", shift:"1P–9P", rooms:[
+   {t:"set", room:"Primrose AB", for:"Q2 Software · Overflow seating", diag:"PRIMROSEABfromQ2DevDaysDecisionsandPathForward.pdf", items:["(15) rounds of 10 — set for 150"]},
+   {t:"set", room:"Plumeria", for:"TADA · Leadership Network", diag:"PLUMERIAfromTADA2026LeadershipNetworkOct2026.pdf", items:["Strike CGTV theatre set","Schoolroom for 24 — 4 rows of 3 tables","(3) rounds of 8 — set for 24","Podium"], flags:["BEO says schoolroom only — diagram adds 3 rounds"]},
+   {t:"set", room:"Lantana A", for:"Cabot · Meal Room", diag:"LANTANAAfromCabotFallCommercialTeamMeeting.pdf", items:["(4) rounds of 8 — set for 32"]},
+   {t:"set", room:"Bluebell", for:"Q2 Software · Office", end:"4:00 PM", items:["Office set","Pads, pens & water in back of room"], flags:["No diagram on file"]},
+   {t:"ref", room:"Lantana B", for:"Boehringer-Ingelheim · Day 2 of 4", end:"5:00 PM"},
+   {t:"ref", room:"Camellia", for:"Q2 Software · Hospitality (existing set)", end:"5:00 PM"},
+   {t:"ref", room:"Pre-Function", for:"Q2 Software · Registration stays", end:"5:30 PM"},
+   {t:"set", room:"Barton", for:"Cabot · Meeting, Day 2 of 4", end:"7:30 PM", diag:"BartonfromCabotFallCommercialTeamMeeting.pdf", items:["Flip from TADA reception lounge","Schoolroom for 30 — 5 rows of 3 tables, 2 chairs each","Screen front of room","Podium"]},
+   {t:"ref", room:"Primrose CD", for:"Q2 Software · General Session (existing set)", end:"11:00 PM"},
+   {t:"ref", room:"Verbena", for:"Q2 Software · Hospitality (existing set)", end:"11:00 PM"},
+ ]},
+ { iso:"2026-10-06", target:"Wednesday 10/7", crew:"Jamshid", shift:"12P–8P", rooms:[
+   {t:"ref", room:"Primrose AB", for:"Q2 Software · Overflow", end:"2:00 PM"},
+   {t:"ref", room:"Lantana A", for:"Cabot · Meal Room", end:"2:00 PM"},
+   {t:"ref", room:"Plumeria", for:"TADA · Final day", end:"4:00 PM"},
+   {t:"ref", room:"Primrose CD", for:"Q2 Software · General Session", end:"5:00 PM"},
+   {t:"ref", room:"Lantana B", for:"Boehringer-Ingelheim · Day 3 of 4", end:"5:00 PM", flags:["BEO says set for 12 — diagram 13"]},
+   {t:"ref", room:"Camellia", for:"Q2 Software · Hospitality", end:"5:00 PM"},
+   {t:"ref", room:"Bluebell", for:"Q2 Software · Office", end:"5:00 PM"},
+   {t:"ref", room:"Barton", for:"Cabot · Day 3 of 4", end:"6:00 PM"},
+   {t:"ref", room:"Verbena", for:"Q2 Software · Hospitality", end:"11:00 PM"},
+   {t:"ref", room:"Pre-Function", for:"Q2 Software", end:"11:30 PM"},
+ ]},
+ { iso:"2026-10-07", target:"Thursday 10/8", crew:"Jamshid", shift:"2P–10P", rooms:[
+   {t:"ref", room:"Lantana A", for:"Cabot · Meal Room, final day", end:"2:00 PM"},
+   {t:"clr", room:"Plumeria", for:"TADA finished", next:"No event on file through 10/10"},
+   {t:"clr", room:"Primrose AB", for:"Q2 finished", end:"2:00 PM", next:"No event on file through 10/10"},
+   {t:"clr", room:"Bluebell", for:"Q2 finished", end:"2:00 PM", next:"No event on file through 10/10"},
+   {t:"ref", room:"Lantana B", for:"Boehringer-Ingelheim · Final day", end:"5:00 PM"},
+   {t:"clr", room:"Primrose CD", for:"Q2 finished", end:"5:00 PM", next:"No event on file through 10/10"},
+   {t:"clr", room:"Pre-Function", for:"Q2 finished", end:"5:00 PM", next:"Pull registration tables"},
+   {t:"ref", room:"Barton", for:"Cabot · Final day", end:"6:00 PM"},
+   {t:"clr", room:"Camellia", for:"Q2 finished", end:"11:00 PM", next:"Sat 10/10 → TPEA hollow square"},
+   {t:"clr", room:"Verbena", for:"Q2 finished", end:"11:00 PM", next:"No event on file through 10/10"},
+ ]},
+ { iso:"2026-10-08", target:"Friday 10/9", crew:"Jamshid", shift:"2P–9P", rooms:[
+   {t:"clr", room:"Lantana B", for:"Boehringer-Ingelheim finished", end:"2:00 PM", next:"No event on file through 10/10"},
+   {t:"clr", room:"Lantana A", for:"Cabot finished", end:"2:00 PM", next:"No event on file through 10/10"},
+   {t:"clr", room:"Barton", for:"Cabot finished", end:"6:00 PM", next:"No event on file through 10/10"},
+ ]},
+ { iso:"2026-10-09", target:"Saturday 10/10", crew:"Tomas", shift:"12P–8P", rooms:[
+   {t:"set", room:"Camellia", for:"TPEA · Board Training Seminar", diag:"CamelliafromTPEABoardTraining.pdf", items:["Hollow square","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Two diagrams on file: U-shape & hollow square — BEO says hollow square"]},
+ ]},
+ { iso:"2026-10-10", target:"Sunday 10/11", crew:"", shift:"", rooms:[
+   {t:"clr", room:"Camellia", for:"TPEA finished", end:"2:00 PM", next:"No event on file through 10/12"},
+ ]},
+];
+
+const REFRESH = ["Vacuum","Tray jack + clean tray in the room","Tray with pens, pads & candy on the credenza"];
+const CLEAR = ["Clear all tables & chairs per manager","Pull linens, trash & leftover materials","Vacuum"];
+const PROBLEMS = ["Room still occupied","Short on chairs","Short on tables","Missing linens","Doesn't match diagram","Equipment damaged","Other"];
+const TYPE = {set:"Set", ref:"Refresh", clr:"Clear"};
+// PINs are not stored here — only SHA-256("bb-hsm-v1:" + PIN). A speed bump against mistakes, not real security.
+const PEOPLE = [
+  {name:"Jamshid", role:"hsm", h:"2027b2be27174637d95513f3b8f638018a4db18e01960bfa882f5f2f41a2d107"},
+  {name:"Tomas", role:"hsm", h:"4db88e701804cface93717b74523d79e31860c8da902719f357f8cdbb32e0e50"},
+  {name:"Francisco", role:"hsm", h:"44ebaaa5e671c84395dae9a1a6937bfe64f182e417811dbcc74d5790eb4ebe71"},
+  {name:"Jason", role:"captain", h:"5b18ac1addea60f0f4b383c4ff04b4a226d52b44b7d210945372e6b879e048c4"},
+];
+
+// ── storage: live Firestore (the-wire project). localhost → test collection; ?mock → this device only.
+const LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+const MOCK = new URLSearchParams(location.search).has("mock");
+const COL = LOCAL ? "housemen_test" : "housemen";
+const TZ = "America/Chicago";
+const todayISO = () => new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
+const dObj = iso => new Date(iso + "T12:00:00Z");
+const dow = iso => dObj(iso).toLocaleDateString("en-US",{timeZone:"UTC",weekday:"short"}).toUpperCase();
+const longDay = iso => dObj(iso).toLocaleDateString("en-US",{timeZone:"UTC",weekday:"long"});
+const md = iso => { const [,m,d] = iso.split("-"); return `${+m}/${+d}`; };
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const nowLabel = () => new Date().toLocaleTimeString("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"});
+const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+
+// Standing rule: days before today are removed, never shown (hotel time).
+const VISIBLE = DAYS.filter(d => d.iso >= todayISO());
+const STATE = {};          // iso -> { slug -> {items, done, prob} }
+let db = null;
+const setSync = c => { document.getElementById("sync").className = "sync " + c; };
+
+if (MOCK) {
+  try { Object.assign(STATE, JSON.parse(localStorage.getItem("bb-hsm-mock") || "{}")); } catch(e) {}
+  setSync("ok");
+} else {
+  const app = initializeApp({
+    apiKey:"AIzaSyCr9z1e8neChgnRsEeSHX7fM_5h_jhTcxQ", authDomain:"the-wire-587e6.firebaseapp.com", projectId:"the-wire-587e6",
+    storageBucket:"the-wire-587e6.firebasestorage.app", messagingSenderId:"18587866711", appId:"1:18587866711:web:96ca4822f8a73512"
+  });
+  db = getFirestore(app);
+  for (const d of VISIBLE) {
+    onSnapshot(doc(db, COL, d.iso),
+      snap => { STATE[d.iso] = (snap.exists() && snap.data().rooms) || {}; setSync("ok"); render(); },
+      err => { console.error("[housemen]", err); setSync("bad"); toast("Can't reach the live list — showing what's saved", true); });
+  }
+}
+
+// Write a patch for one room. Merge keeps everything else in the day's doc.
+async function save(iso, rslug, patch) {
+  const day = (STATE[iso] ||= {}), cur = (day[rslug] ||= {items:{}, done:null, prob:null});
+  const before = JSON.parse(JSON.stringify(cur));
+  if (patch.items) Object.assign(cur.items, patch.items);
+  for (const k of ["done","prob"]) if (k in patch) cur[k] = patch[k];
+  render();
+  if (MOCK) { try { localStorage.setItem("bb-hsm-mock", JSON.stringify(STATE)); } catch(e) {} return; }
+  try { await setDoc(doc(db, COL, iso), {rooms:{[rslug]:patch}, updated:Date.now()}, {merge:true}); }
+  catch (e) { console.error("[housemen] save failed", e); day[rslug] = before; render(); setSync("bad"); toast("Didn't save — check signal and try again", true); }
+}
+
+// ── who's signed in (this phone)
+let WHO = null;
+try { WHO = JSON.parse(localStorage.getItem("bb-hsm-who")); } catch(e) {}
+const sha = async s => Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)))).map(b=>b.toString(16).padStart(2,"0")).join("");
+let pinResolve = null, pinBuf = "";
+function askPin(why) {
+  return new Promise(res => {
+    pinResolve = res; pinBuf = ""; drawDots();
+    document.getElementById("pinWhy").textContent = why || "Your PIN puts your name on what you check off.";
+    document.getElementById("pinBg").classList.add("on");
+  });
+}
+function drawDots(err) { const d = document.getElementById("dots"); d.className = "dots" + (err ? " err" : ""); d.innerHTML = [0,1,2,3].map(i=>`<i class="${i<pinBuf.length?"f":""}"></i>`).join(""); }
+document.getElementById("pad").innerHTML = ["1","2","3","4","5","6","7","8","9","","0","⌫"].map(k=>k?`<button data-k="${k}">${k}</button>`:"<span></span>").join("");
+document.getElementById("pad").addEventListener("click", async e => {
+  const b = e.target.closest("[data-k]"); if (!b) return;
+  if (b.dataset.k == "⌫") pinBuf = pinBuf.slice(0,-1); else if (pinBuf.length < 4) pinBuf += b.dataset.k;
+  drawDots();
+  if (pinBuf.length == 4) {
+    const h = await sha("bb-hsm-v1:" + pinBuf), p = PEOPLE.find(x => x.h == h);
+    if (!p) { drawDots(true); pinBuf = ""; setTimeout(drawDots, 600); toast("PIN not recognized", true); return; }
+    WHO = {name:p.name, role:p.role};
+    try { localStorage.setItem("bb-hsm-who", JSON.stringify(WHO)); } catch(e) {}
+    document.getElementById("pinBg").classList.remove("on"); toast(`Signed in as ${p.name}`); render();
+    const r = pinResolve; pinResolve = null; r && r(WHO);
+  }
+});
+document.getElementById("pinCancel").onclick = () => { document.getElementById("pinBg").classList.remove("on"); const r = pinResolve; pinResolve = null; r && r(null); };
+const needWho = async why => WHO || await askPin(why);
+document.getElementById("who").onclick = async () => {
+  if (WHO) { if (confirmSignOut()) { WHO = null; try { localStorage.removeItem("bb-hsm-who"); } catch(e) {} render(); toast("Signed out"); } }
+  else await askPin();
+};
+// Two taps to sign out (no browser dialogs).
+let soArmed = 0;
+function confirmSignOut() { if (Date.now() - soArmed < 3000) return true; soArmed = Date.now(); toast(`Tap again to sign out ${WHO.name}`); return false; }
+
+// ── state helpers
+let view = "hsm", dayISO = (VISIBLE[0] || {}).iso, openId = null, sheetFor = null, sheetPick = new Set();
+const dayOf = iso => DAYS.find(d => d.iso == iso);
+const rs = (iso, r) => ((STATE[iso] || {})[slug(r.room)]) || {items:{}, done:null, prob:null};
+const itemsOf = r => r.items && r.items.length ? r.items : (r.t == "ref" ? REFRESH : CLEAR);
+function roomState(iso, r) {
+  const s = rs(iso, r), list = itemsOf(r), n = list.filter((_,k)=>s.items && s.items[k]).length;
+  if (s.prob && !s.done) return {cls:"isprob", pill:`<span class="status st-prob">⚠ ${esc(s.prob.what)}</span>`, s, n, list};
+  if (s.done) return {cls:"isdone", pill:`<span class="status st-done">✓ Done · ${esc(s.done.by)} ${esc(s.done.at)}</span>`, s, n, list};
+  if (n) return {cls:"", pill:`<span class="status st-prog">${n} of ${list.length} items</span>`, s, n, list};
+  return {cls:"", pill:`<span class="status st-none">Not started</span>`, s, n, list};
+}
+const dayProgress = d => { const done = d.rooms.filter(r=>rs(d.iso,r).done).length; return [done, d.rooms.length]; };
+
+// ── render
+function renderDays() {
+  document.getElementById("days").innerHTML = VISIBLE.map(d => {
+    const [a,b] = dayProgress(d);
+    return `<button data-day="${d.iso}" class="${d.iso==dayISO?"on":""}"><span>${dow(d.iso)}</span><b>${+d.iso.slice(8)}</b><span class="pip"><i style="width:${b?a/b*100:0}%"></i></span></button>`;
+  }).join("");
+}
+function renderHsm(d) {
+  const [a,b] = dayProgress(d);
+  let h = `<div class="hero"><div class="eyebrow">Tonight · setting for ${esc(d.target)}</div><h1>${longDay(d.iso)} ${md(d.iso)}</h1>
+    <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}${d.rooms.length} rooms in setup order</div>
+    <div class="progress"><div class="bar"><i style="width:${b?a/b*100:0}%"></i></div><div class="pct">${a}/${b}</div></div></div>`;
+  d.rooms.forEach((r,i) => {
+    const id = d.iso + "|" + i, R = roomState(d.iso, r), open = openId == id, flags = r.flags || [];
+    h += `<div class="room ${r.t} ${R.cls} ${open?"open":""}">
+      <button class="rhead" data-open="${id}"><span class="num">${R.s.done?"✓":i+1}</span>
+        <span class="rmain"><span class="type">${TYPE[r.t]}</span><div class="rname">${esc(r.room)}</div><div class="rfor">${esc(r.for)}</div>${R.pill}</span>
+        ${r.end?`<span class="rend">ENDS<b>${esc(r.end)}</b></span>`:""}</button>
+      <div class="rbody"><ul class="items">${R.list.map((x,k)=>`<li data-item="${id}" data-k="${k}" class="${R.s.items&&R.s.items[k]?"ck":""}"><span class="box"></span><span>${esc(x)}</span></li>`).join("")}</ul>
+        ${(r.diag||flags.length||r.next)?`<div class="tags">${r.diag?`<a class="tag diag" href="${DIAG+r.diag}" target="_blank" rel="noopener">See diagram →</a>`:""}${r.next?`<span class="tag next">Next: ${esc(r.next)}</span>`:""}${flags.map(f=>`<span class="tag flag">⚑ ${esc(f)}</span>`).join("")}</div>`:""}
+        ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)} ${esc(R.s.prob.at)}</div>`:""}
+        ${R.s.done?`<div class="doneline">✓ Marked done by ${esc(R.s.done.by)} at ${esc(R.s.done.at)}</div>
+          <div class="acts" style="grid-template-columns:1fr"><button class="btn btn-undo" data-undo="${id}">Undo</button></div>`
+        :`<div class="acts"><button class="btn btn-done" data-done="${id}">Mark ${esc(r.room)} done</button><button class="btn btn-prob" data-prob="${id}">⚠ Issue</button></div>`}
+      </div></div>`;
+  });
+  return h;
+}
+function renderCap(d) {
+  const list = d.rooms.map((r,i)=>({r,i,R:roomState(d.iso,r)}));
+  const done = list.filter(x=>x.R.s.done).length, prob = list.filter(x=>x.R.s.prob&&!x.R.s.done).length;
+  let h = `<div class="hero"><div class="eyebrow">Captain view · ${longDay(d.iso)} ${md(d.iso)}</div><h1>Setup status</h1>
+    <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}setting for ${esc(d.target)}</div>
+    <div class="stats"><div class="stat"><b style="color:var(--done)">${done}</b><span>Done</span></div><div class="stat"><b>${list.length-done-prob}</b><span>Left</span></div><div class="stat"><b style="color:${prob?"var(--red)":"inherit"}">${prob}</b><span>Problems</span></div></div>
+    <div class="progress"><div class="bar"><i style="width:${list.length?done/list.length*100:0}%"></i></div><div class="pct">${list.length?Math.round(done/list.length*100):0}%</div></div></div>`;
+  const probs = list.filter(x=>x.R.s.prob&&!x.R.s.done);
+  if (probs.length) h += `<div class="sec">Needs you</div>` + probs.map(x=>`<div class="flagrow prob"><b>⚠ ${esc(x.r.room)}</b> — ${esc(x.R.s.prob.what)}${x.R.s.prob.note?`: “${esc(x.R.s.prob.note)}”`:""} <span style="color:var(--t3)">· ${esc(x.R.s.prob.by)} ${esc(x.R.s.prob.at)}</span>
+      ${WHO&&WHO.role=="captain"?`<div><button class="resolve" data-resolve="${d.iso}|${x.i}">Mark resolved</button></div>`:""}</div>`).join("");
+  const flags = list.filter(x=>(x.r.flags||[]).length);
+  if (flags.length) h += `<div class="sec">Check before the shift</div>` + flags.map(x=>`<div class="flagrow"><b>⚑ ${esc(x.r.room)}</b> — ${x.r.flags.map(esc).join(" · ")}</div>`).join("");
+  h += `<div class="sec">Rooms in setup order</div>` + list.map(x=>`<div class="crow"><span class="num" style="${x.R.s.done?"background:var(--done);color:#0e2418;border-color:var(--done)":""}">${x.R.s.done?"✓":x.i+1}</span>
+      <div><div class="rname">${esc(x.r.room)}</div><div class="meta">${TYPE[x.r.t]}${x.r.end?` · ends ${esc(x.r.end)}`:""}</div></div><div class="right">${x.R.pill}</div></div>`).join("");
+  const feed = [];
+  list.forEach(x => { const s = x.R.s;
+    if (s.done) feed.push({ts:s.done.ts, c:"var(--done)", txt:`<b>${esc(s.done.by)}</b> finished ${esc(x.r.room)}`, at:s.done.at});
+    if (s.prob) feed.push({ts:s.prob.ts, c:"var(--red)", txt:`<b>${esc(s.prob.by)}</b> flagged ${esc(x.r.room)}: ${esc(s.prob.what)}`, at:s.prob.at}); });
+  feed.sort((a,b)=>b.ts-a.ts);
+  h += `<div class="sec">Activity</div>` + (feed.length ? `<div class="feed">${feed.map(e=>`<div class="ev" style="--c:${e.c}"><time>${esc(e.at)}</time>${e.txt}</div>`).join("")}</div>` : `<div class="empty">Nothing checked off yet tonight.</div>`);
+  return h;
+}
+function render() {
+  const w = document.getElementById("who");
+  w.textContent = WHO ? `✓ ${WHO.name}` : "Sign in"; w.classList.toggle("in", !!WHO);
+  document.getElementById("vHsm").classList.toggle("on", view=="hsm");
+  document.getElementById("vCap").classList.toggle("on", view=="cap");
+  const d = dayOf(dayISO);
+  if (!d) { document.getElementById("days").innerHTML = ""; document.getElementById("main").innerHTML = `<div class="empty" style="padding-top:30px">No houseman lists posted for this week yet.</div>`; return; }
+  renderDays();
+  document.getElementById("main").innerHTML = view=="hsm" ? renderHsm(d) : renderCap(d);
+}
+let toastT;
+function toast(msg, bad) { const t = document.getElementById("toast"); t.textContent = msg; t.className = "toast on" + (bad ? " bad" : ""); clearTimeout(toastT); toastT = setTimeout(()=>t.className = "toast", 2200); }
+const parseId = id => { const [iso, i] = id.split("|"); return {iso, r: dayOf(iso).rooms[+i], i:+i}; };
+
+// ── actions
+document.addEventListener("click", async e => {
+  const t = e.target.closest("[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve]");
+  if (!t) return;
+  if (t.dataset.day) { dayISO = t.dataset.day; openId = null; render(); return; }
+  if (t.dataset.open) { openId = openId == t.dataset.open ? null : t.dataset.open; render(); return; }
+  if (t.dataset.prob) { if (await needWho("Sign in to report a problem.")) openSheet(t.dataset.prob); return; }
+  const id = t.dataset.item || t.dataset.done || t.dataset.undo || t.dataset.resolve;
+  const who = await needWho("Sign in to check things off."); if (!who) return;
+  const {iso, r, i} = parseId(id), rsl = slug(r.room), cur = rs(iso, r);
+  if (t.dataset.item) { const k = t.dataset.k; await save(iso, rsl, {items:{[k]: !(cur.items && cur.items[k])}}); return; }
+  if (t.dataset.done) {
+    const all = {}; itemsOf(r).forEach((_,k)=>all[k]=true);
+    const d = dayOf(iso);
+    const nxt = d.rooms.findIndex((x,j)=>j!=i && !rs(iso,x).done);
+    openId = nxt >= 0 ? iso + "|" + nxt : null;
+    await save(iso, rsl, {items:all, done:{by:who.name, at:nowLabel(), ts:Date.now()}});
+    toast(`✓ ${r.room} done`); return;
+  }
+  if (t.dataset.undo) { await save(iso, rsl, {done:null}); toast(`${r.room} reopened`); return; }
+  if (t.dataset.resolve) { await save(iso, rsl, {prob:null}); toast(`Resolved ${r.room}`); return; }
+});
+function openSheet(id) {
+  sheetFor = id; sheetPick = new Set();
+  document.getElementById("sheetRoom").textContent = parseId(id).r.room + " · goes straight to the captain";
+  document.getElementById("chips").innerHTML = PROBLEMS.map(p=>`<button data-chip="${esc(p)}">${esc(p)}</button>`).join("");
+  document.getElementById("note").value = "";
+  document.getElementById("sheetBg").classList.add("on");
+}
+document.getElementById("chips").addEventListener("click", e => { const b = e.target.closest("[data-chip]"); if (!b) return;
+  const v = b.dataset.chip; sheetPick.has(v) ? sheetPick.delete(v) : sheetPick.add(v); b.classList.toggle("on"); });
+document.getElementById("cancel").onclick = () => document.getElementById("sheetBg").classList.remove("on");
+document.getElementById("sheetBg").onclick = e => { if (e.target.id == "sheetBg") document.getElementById("sheetBg").classList.remove("on"); };
+document.getElementById("send").onclick = async () => {
+  const note = document.getElementById("note").value.trim().slice(0, 300);
+  if (!sheetPick.size && !note) { toast("Pick a problem or add a note", true); return; }
+  const {iso, r} = parseId(sheetFor);
+  document.getElementById("sheetBg").classList.remove("on");
+  await save(iso, slug(r.room), {prob:{what:[...sheetPick].join(", ") || "Problem", note, by:WHO.name, at:nowLabel(), ts:Date.now()}});
+  toast("⚠ Sent to captain");
+};
+document.getElementById("vHsm").onclick = () => { view = "hsm"; render(); };
+document.getElementById("vCap").onclick = () => { view = "cap"; render(); };
+document.getElementById("foot").innerHTML = `${MOCK ? "Practice mode — saves on this phone only" : LOCAL ? "Test copy — writes to the test list" : "Live — updates show on every phone"}<br><a href="index.html">← Banquet Bot</a>`;
+if (MOCK) setSync("ok");
+render();
+</script>
+</body></html>
