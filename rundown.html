@@ -396,6 +396,17 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .room>summary::-webkit-details-marker{display:none}
 #bb-app .room>summary:before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:2px;background:var(--blue);box-shadow:0 0 12px #89cfff77;animation:rundown-beacon 4.5s ease-in-out infinite}
 #bb-app .room-name{display:block;font:500 21px 'Barlow Condensed',sans-serif;letter-spacing:.3px}
+/* Organization name: soft green glow. */
+#bb-app .group h2{color:#a8f2c7;text-shadow:0 0 14px #7fe0a061,0 0 2px #7fe0a080}
+/* Staff assigned to a room (assignments.json): position badge + name + duty, colored by duty. */
+#bb-app .room-title{display:flex;flex-direction:column;gap:7px;min-width:0}
+#bb-app .crew{display:flex;flex-wrap:wrap;gap:5px}
+#bb-app .crew-chip{--k:#7fe0a0;display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:3px 9px 3px 3px;border-radius:20px;border:1px solid color-mix(in srgb,var(--k) 40%,transparent);background:color-mix(in srgb,var(--k) 11%,transparent);font:600 12.5px/1.25 Manrope,'Instrument Sans',Arial,sans-serif;letter-spacing:0;text-transform:none}
+#bb-app .crew-pos{flex:none;padding:2px 6px;border-radius:12px;font:800 9px/1.3 Manrope,Arial,sans-serif;letter-spacing:1px;color:#0c1a14;background:#7fe0a0}
+#bb-app .crew-pos.p-bar{background:#c1baff;color:#17123a} #bb-app .crew-pos.p-cpt{background:#8bd1ff;color:#0b1f2e} #bb-app .crew-pos.p-hsmn{background:#ffc085;color:#2e1a08}
+#bb-app .crew-name{font-weight:800;color:#eef6fc}
+#bb-app .crew-duty{color:var(--k);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#bb-app .crew-chip.k-buffet{--k:#ffc085} #bb-app .crew-chip.k-bev{--k:#8bd1ff} #bb-app .crew-chip.k-roll{--k:#c1baff} #bb-app .crew-chip.k-assist{--k:#78d6ca}
 #bb-app .expand{font-size:20px;color:var(--blue);transition:transform .2s}
 #bb-app .room[open]>summary .expand{transform:rotate(45deg)}
 #bb-app .room-body{padding:0 11px 6px}
@@ -7532,6 +7543,28 @@ body{font-family:Manrope,Arial,sans-serif}
       sec.querySelectorAll('.event-card').forEach(c=>day.events.push(readCard(c)));
     });
     let overviewDays=null, diagIndex=null;
+    // Staff assignments (assignments.json): matched by date, part of the client name, and room.
+    let ASSIGN={};
+    const lc=s=>String(s||'').toLowerCase().trim();
+    function crewFor(d,ev,rooms){
+      const out=[];
+      (ASSIGN[d]||[]).forEach(function(a){
+        if(lc(ev.base).includes(lc(a.group))&&rooms.some(r=>lc(r)===lc(a.room))) out.push(...(a.staff||[]));
+      });
+      return out;
+    }
+    const dutyKind=t=>/buffet/i.test(t)?'k-buffet':/bev|break|coffee|bar/i.test(t)?'k-bev':/roll|clean/i.test(t)?'k-roll':/assist|help/i.test(t)?'k-assist':'';
+    function crewNode(list){
+      const wrap=node('div','crew');
+      list.forEach(function(p){
+        const chip=node('span','crew-chip '+dutyKind(p.duty||''));
+        const pos=String(p.pos||'SVR').toUpperCase();
+        chip.append(node('span','crew-pos p-'+pos.toLowerCase(),pos), node('span','crew-name',p.name));
+        if(p.duty) chip.append(node('span','crew-duty',p.duty));
+        wrap.append(chip);
+      });
+      return wrap;
+    }
 
     // ── state + elements ──
     const app=document.getElementById('bb-app'), screen=document.getElementById('rdScreen');
@@ -7571,7 +7604,11 @@ body{font-family:Manrope,Arial,sans-serif}
         const box=node('details','room'); box.open=true;
         const sum=node('summary');
         const rooms=Array.from(new Set(ev.items.map(i=>i.room).filter(Boolean)));
-        sum.append(node('span','room-name',(rooms.join(' / ')||ev.subtitle||ev.base).toUpperCase()), node('span','expand','+'));
+        const titleBox=node('div','room-title');
+        titleBox.append(node('span','room-name',(rooms.join(' / ')||ev.subtitle||ev.base).toUpperCase()));
+        const crew=crewFor(d,ev,rooms);
+        if(crew.length) titleBox.append(crewNode(crew));
+        sum.append(titleBox, node('span','expand','+'));
         sum.lastChild.setAttribute('aria-hidden','true');
         box.append(sum);
         const body=node('div','room-body');
@@ -7733,6 +7770,10 @@ body{font-family:Manrope,Arial,sans-serif}
       if(!document.hidden&&todayISO()!==TODAY) location.reload();
     });
     renderDay(TODAY);
+    fetch('assignments.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(function(j){
+      ASSIGN=j||{};
+      if(mode==='day'&&tab==='rundown') renderDay(selected);
+    }).catch(()=>{});
   })();
 
   // ══ BACKGROUND — slow mathematical curves, orbital forms and a sparse drifting field ══

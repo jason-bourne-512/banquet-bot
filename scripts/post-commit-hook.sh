@@ -1,7 +1,7 @@
 #!/bin/bash
 # Auto-generated for the Banquet Bot Telegram notification pipeline.
 #
-# Whenever a commit touches rundown.html, index.html, or any of the
+# Whenever a commit touches rundown.html, index.html, assignments.json, or any of the
 # reference pages (menu/rooms/info/training/handbook), re-extracts the
 # relevant data, copies it into the (separate, sibling) banquet-bot-telegram
 # repo, commits+pushes it there, and — for rundown/index changes —
@@ -45,6 +45,18 @@ if echo "$CHANGED_FILES" | grep -qx 'index.html'; then
   fi
 fi
 
+if echo "$CHANGED_FILES" | grep -qx 'assignments.json'; then
+  echo "[post-commit] assignments.json changed — checking names against the rundown"
+  if node scripts/check-assignments.js; then
+    mkdir -p "$TELEGRAM_DIR/data"
+    cp assignments.json "$TELEGRAM_DIR/data/assignments.json"
+    schedule_needs_refresh=true
+    data_changed=true
+  else
+    echo "[post-commit] check-assignments.js FAILED — fix the unmatched entries; telegram assignments.json left untouched" >&2
+  fi
+fi
+
 # Reference pages: no schedule impact, just re-extract clean text for Q&A grounding.
 for page in menu rooms info training handbook; do
   if echo "$CHANGED_FILES" | grep -qx "$page.html"; then
@@ -69,7 +81,7 @@ if [ "$data_changed" = true ]; then
     node src/generateSchedule.js "$TOMORROW" || echo "[post-commit] generateSchedule.js failed for $TOMORROW" >&2
   fi
 
-  git add data/rundown.json data/staff-schedule.json data/reference/*.txt 2>/dev/null
+  git add data/rundown.json data/staff-schedule.json data/assignments.json data/reference/*.txt 2>/dev/null
 
   if ! git diff --cached --quiet; then
     git commit -q -m "Auto-update data from banquet-bot"
