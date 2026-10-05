@@ -94,6 +94,19 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
 .btn-done{background:var(--done);color:#0e2418;box-shadow:0 6px 18px #7fe0a025}
 .btn-undo{background:var(--card2);color:var(--t2);border:1px solid var(--line2)}
 .btn-prob{background:var(--red-d);color:var(--red);border:1px solid #ff8f8f40;padding:14px 16px}
+.diags{display:grid;gap:8px;margin-top:10px}
+.diag-prev{display:block;width:100%;padding:0;border:1px solid var(--line2);border-radius:10px;overflow:hidden;background:#fff;text-align:left}
+.diag-prev img{display:block;width:100%;height:230px;object-fit:contain;background:#fff}
+.diag-prev span{display:flex;justify-content:space-between;padding:7px 10px;background:var(--card2);color:var(--accent);font-size:11.5px;font-weight:700}
+.viewer{position:fixed;inset:0;z-index:70;background:#05090df2;display:none;flex-direction:column}
+.viewer.on{display:flex}
+.vbar{display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 10px) 14px 10px;border-bottom:1px solid var(--line)}
+.vbar b{flex:1;font:600 20px 'Barlow Condensed';text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vbar a,.vbar button{border:1px solid var(--line2);background:var(--card);color:var(--t1);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;text-decoration:none}
+.vscroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:12px}
+.vscroll img{display:block;width:100%;background:#fff;border-radius:6px;transition:width .2s}
+.vscroll img.big{width:220%}
+.vhint{text-align:center;font-size:11px;color:var(--t3);padding:6px 0 calc(env(safe-area-inset-bottom,0px) + 8px)}
 .doneline{font-size:12px;color:var(--done);margin-top:10px;font-weight:600}
 .probline{font-size:12px;color:var(--red);margin-top:10px;font-weight:600;background:var(--red-d);padding:8px 10px;border-radius:8px}
 .std{margin:2px 0 10px;font-size:11px;color:var(--t3)}
@@ -168,6 +181,8 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
   <textarea id="note" placeholder="Add a note (optional)"></textarea>
   <div class="acts"><button class="btn btn-undo" id="cancel">Cancel</button><button class="btn btn-prob" id="send" style="background:var(--red);color:#2a0d0d">Send to captain</button></div>
 </div></div>
+<div class="viewer" id="viewer"><div class="vbar"><b id="vTitle"></b><a id="vPdf" target="_blank" rel="noopener">PDF</a><button id="vClose">✕ Close</button></div>
+  <div class="vscroll"><img id="vImg" alt="Room diagram"></div><div class="vhint">Tap the diagram to zoom · pinch to zoom further</div></div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
@@ -197,34 +212,34 @@ const DAYS = [
    {t:"set", room:"Plumeria", for:"TADA · Leadership Network", diag:"PLUMERIAfromTADA2026LeadershipNetworkOct2026.pdf", items:["Strike CGTV theatre set","Schoolroom for 24 — 4 rows of 3 tables","(3) rounds of 8 — set for 24","Podium"], flags:["BEO says schoolroom only — diagram adds 3 rounds"]},
    {t:"set", room:"Lantana A", for:"Cabot · Meal Room", diag:"LANTANAAfromCabotFallCommercialTeamMeeting.pdf", items:["(4) rounds of 8 — set for 32"]},
    {t:"set", room:"Bluebell", for:"Q2 Software · Office", end:"4:00 PM", items:["Office set","Pads, pens & water in back of room"], flags:["No diagram on file"]},
-   {t:"ref", room:"Lantana B", for:"Boehringer-Ingelheim · Day 2 of 4", end:"5:00 PM"},
-   {t:"ref", room:"Camellia", for:"Q2 Software · Hospitality (existing set)", end:"5:00 PM"},
-   {t:"ref", room:"Pre-Function", for:"Q2 Software · Registration stays", end:"5:30 PM"},
+   {t:"ref", room:"Lantana B", for:"Boehringer-Ingelheim · Day 2 of 4", end:"5:00 PM", diag:"LANTANABfromDistrictPSCFAM3MeetingOct2026.pdf"},
+   {t:"ref", room:"Camellia", for:"Q2 Software · Hospitality (existing set)", end:"5:00 PM", diag:"CamelliafromQ2DevDaysDecisionsandPathForward.pdf"},
+   {t:"ref", room:"Pre-Function", for:"Q2 Software · Registration stays", end:"5:30 PM", diag:"PREFUNCTIONfromQ2DevDaysDecisionsandPathForward.pdf"},
    {t:"set", room:"Barton", for:"Cabot · Meeting, Day 2 of 4", end:"7:30 PM", diag:"BartonfromCabotFallCommercialTeamMeeting.pdf", items:["Flip from TADA reception lounge","Schoolroom for 30 — 5 rows of 3 tables, 2 chairs each","Screen front of room","Podium"]},
-   {t:"ref", room:"Primrose CD", for:"Q2 Software · General Session (existing set)", end:"11:00 PM"},
-   {t:"ref", room:"Verbena", for:"Q2 Software · Hospitality (existing set)", end:"11:00 PM"},
+   {t:"ref", room:"Primrose CD", for:"Q2 Software · General Session (existing set)", end:"11:00 PM", diag:"PRIMROSECDCopyfromQ2DevDaysDecisionsandPathForward.pdf"},
+   {t:"ref", room:"Verbena", for:"Q2 Software · Hospitality (existing set)", end:"11:00 PM", diag:"VERBENAfromQ2DevDaysDecisionsandPathForward.pdf"},
  ]},
  { iso:"2026-10-06", target:"Wednesday 10/7", crew:"Jamshid", shift:"12P–8P", rooms:[
-   {t:"ref", room:"Primrose AB", for:"Q2 Software · Overflow", end:"2:00 PM"},
-   {t:"ref", room:"Lantana A", for:"Cabot · Meal Room", end:"2:00 PM"},
-   {t:"ref", room:"Plumeria", for:"TADA · Final day", end:"4:00 PM"},
-   {t:"ref", room:"Primrose CD", for:"Q2 Software · General Session", end:"5:00 PM"},
-   {t:"ref", room:"Lantana B", for:"Boehringer-Ingelheim · Day 3 of 4", end:"5:00 PM", flags:["BEO says set for 12 — diagram 13"]},
-   {t:"ref", room:"Camellia", for:"Q2 Software · Hospitality", end:"5:00 PM"},
+   {t:"ref", room:"Primrose AB", for:"Q2 Software · Overflow", end:"2:00 PM", diag:"PRIMROSEABfromQ2DevDaysDecisionsandPathForward.pdf"},
+   {t:"ref", room:"Lantana A", for:"Cabot · Meal Room", end:"2:00 PM", diag:"LANTANAAfromCabotFallCommercialTeamMeeting.pdf"},
+   {t:"ref", room:"Plumeria", for:"TADA · Final day", end:"4:00 PM", diag:"PLUMERIAfromTADA2026LeadershipNetworkOct2026.pdf"},
+   {t:"ref", room:"Primrose CD", for:"Q2 Software · General Session", end:"5:00 PM", diag:"PRIMROSECDCopyfromQ2DevDaysDecisionsandPathForward.pdf"},
+   {t:"ref", room:"Lantana B", for:"Boehringer-Ingelheim · Day 3 of 4", end:"5:00 PM", diag:"LANTANABfromDistrictPSCFAM3MeetingOct2026.pdf", flags:["BEO says set for 12 — diagram 13"]},
+   {t:"ref", room:"Camellia", for:"Q2 Software · Hospitality", end:"5:00 PM", diag:"CamelliafromQ2DevDaysDecisionsandPathForward.pdf"},
    {t:"ref", room:"Bluebell", for:"Q2 Software · Office", end:"5:00 PM"},
-   {t:"ref", room:"Barton", for:"Cabot · Day 3 of 4", end:"6:00 PM"},
-   {t:"ref", room:"Verbena", for:"Q2 Software · Hospitality", end:"11:00 PM"},
-   {t:"ref", room:"Pre-Function", for:"Q2 Software", end:"11:30 PM"},
+   {t:"ref", room:"Barton", for:"Cabot · Day 3 of 4", end:"6:00 PM", diag:"BartonfromCabotFallCommercialTeamMeeting.pdf"},
+   {t:"ref", room:"Verbena", for:"Q2 Software · Hospitality", end:"11:00 PM", diag:"VERBENAfromQ2DevDaysDecisionsandPathForward.pdf"},
+   {t:"ref", room:"Pre-Function", for:"Q2 Software", end:"11:30 PM", diag:"PREFUNCTIONfromQ2DevDaysDecisionsandPathForward.pdf"},
  ]},
  { iso:"2026-10-07", target:"Thursday 10/8", crew:"Jamshid", shift:"2P–10P", rooms:[
-   {t:"ref", room:"Lantana A", for:"Cabot · Meal Room, final day", end:"2:00 PM"},
+   {t:"ref", room:"Lantana A", for:"Cabot · Meal Room, final day", end:"2:00 PM", diag:"LANTANAAfromCabotFallCommercialTeamMeeting.pdf"},
    {t:"clr", room:"Plumeria", for:"TADA finished", next:"No event on file through 10/10"},
    {t:"clr", room:"Primrose AB", for:"Q2 finished", end:"2:00 PM", next:"No event on file through 10/10"},
    {t:"clr", room:"Bluebell", for:"Q2 finished", end:"2:00 PM", next:"No event on file through 10/10"},
-   {t:"ref", room:"Lantana B", for:"Boehringer-Ingelheim · Final day", end:"5:00 PM"},
+   {t:"ref", room:"Lantana B", for:"Boehringer-Ingelheim · Final day", end:"5:00 PM", diag:"LANTANABfromDistrictPSCFAM3MeetingOct2026.pdf"},
    {t:"clr", room:"Primrose CD", for:"Q2 finished", end:"5:00 PM", next:"No event on file through 10/10"},
    {t:"clr", room:"Pre-Function", for:"Q2 finished", end:"5:00 PM", next:"Pull registration tables"},
-   {t:"ref", room:"Barton", for:"Cabot · Final day", end:"6:00 PM"},
+   {t:"ref", room:"Barton", for:"Cabot · Final day", end:"6:00 PM", diag:"BartonfromCabotFallCommercialTeamMeeting.pdf"},
    {t:"clr", room:"Camellia", for:"Q2 finished", end:"11:00 PM", next:"Sat 10/10 → TPEA hollow square"},
    {t:"clr", room:"Verbena", for:"Q2 finished", end:"11:00 PM", next:"No event on file through 10/10"},
  ]},
@@ -234,7 +249,7 @@ const DAYS = [
    {t:"clr", room:"Barton", for:"Cabot finished", end:"6:00 PM", next:"No event on file through 10/10"},
  ]},
  { iso:"2026-10-09", target:"Saturday 10/10", crew:"Tomas", shift:"12P–8P", rooms:[
-   {t:"set", room:"Camellia", for:"TPEA · Board Training Seminar", diag:"CamelliafromTPEABoardTraining.pdf", items:["Hollow square","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Two diagrams on file: U-shape & hollow square — BEO says hollow square"]},
+   {t:"set", room:"Camellia", for:"TPEA · Board Training Seminar", diag:["CamelliafromTPEABoardTraining.pdf","CamelliafromTPEABoardTraining_2.pdf"], items:["Hollow square","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Two diagrams on file: U-shape & hollow square — BEO says hollow square"]},
  ]},
  { iso:"2026-10-10", target:"Sunday 10/11", crew:"", shift:"", rooms:[
    {t:"clr", room:"Camellia", for:"TPEA finished", end:"2:00 PM", next:"No event on file through 10/12"},
@@ -342,6 +357,8 @@ function confirmSignOut() { if (Date.now() - soArmed < 3000) return true; soArme
 let view = "hsm", dayISO = (VISIBLE[0] || {}).iso, openId = null, sheetFor = null, sheetPick = new Set();
 const dayOf = iso => DAYS.find(d => d.iso == iso);
 const rs = (iso, r) => ((STATE[iso] || {})[slug(r.room)]) || {items:{}, done:null, prob:null};
+const diagsOf = r => r.diag ? [].concat(r.diag) : [];
+const previewOf = f => DIAG + "previews/" + f.replace(/\.pdf$/i, ".png");
 const itemsOf = r => r.items && r.items.length ? r.items : (r.t == "ref" ? REFRESH : CLEAR);
 function roomState(iso, r) {
   const s = rs(iso, r), list = itemsOf(r), n = list.filter((_,k)=>s.items && s.items[k]).length;
@@ -371,7 +388,8 @@ function renderHsm(d) {
         <span class="rmain"><span class="type">${TYPE[r.t]}</span><div class="rname">${esc(r.room)}</div><div class="rfor">${esc(r.for)}</div>${R.pill}</span>
         ${r.end?`<span class="rend">ENDS<b>${esc(r.end)}</b></span>`:""}</button>
       <div class="rbody"><ul class="items">${R.list.map((x,k)=>`<li data-item="${id}" data-k="${k}" class="${R.s.items&&R.s.items[k]?"ck":""}"><span class="box"></span><span>${esc(x)}</span></li>`).join("")}</ul>
-        ${(r.diag||flags.length||r.next)?`<div class="tags">${r.diag?`<a class="tag diag" href="${DIAG+r.diag}" target="_blank" rel="noopener">See diagram →</a>`:""}${r.next?`<span class="tag next">Next: ${esc(r.next)}</span>`:""}${flags.map(f=>`<span class="tag flag">⚑ ${esc(f)}</span>`).join("")}</div>`:""}
+        ${(flags.length||r.next)?`<div class="tags">${r.next?`<span class="tag next">Next: ${esc(r.next)}</span>`:""}${flags.map(f=>`<span class="tag flag">⚑ ${esc(f)}</span>`).join("")}</div>`:""}
+        ${open&&diagsOf(r).length?`<div class="diags">${diagsOf(r).map((f,j,a)=>`<button class="diag-prev" data-diag="${esc(f)}" data-room="${esc(r.room)}"><img src="${previewOf(f)}" alt="${esc(r.room)} diagram"><span>${a.length>1?`Diagram ${j+1} of ${a.length}`:"Diagram"}<em style="font-style:normal">Tap to enlarge ↗</em></span></button>`).join("")}</div>`:""}
         ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)} ${esc(R.s.prob.at)}</div>`:""}
         ${R.s.done?`<div class="doneline">✓ Marked done by ${esc(R.s.done.by)} at ${esc(R.s.done.at)}</div>
           <div class="acts" style="grid-template-columns:1fr"><button class="btn btn-undo" data-undo="${id}">Undo</button></div>`
@@ -393,7 +411,7 @@ function renderCap(d) {
   const flags = list.filter(x=>(x.r.flags||[]).length);
   if (flags.length) h += `<div class="sec">Check before the shift</div>` + flags.map(x=>`<div class="flagrow"><b>⚑ ${esc(x.r.room)}</b> — ${x.r.flags.map(esc).join(" · ")}</div>`).join("");
   h += `<div class="sec">Rooms in setup order</div>` + list.map(x=>`<div class="crow"><span class="num" style="${x.R.s.done?"background:var(--done);color:#0e2418;border-color:var(--done)":""}">${x.R.s.done?"✓":x.i+1}</span>
-      <div><div class="rname">${esc(x.r.room)}</div><div class="meta">${TYPE[x.r.t]}${x.r.end?` · ends ${esc(x.r.end)}`:""}</div></div><div class="right">${x.R.pill}</div></div>`).join("");
+      <div><div class="rname">${esc(x.r.room)}</div><div class="meta">${TYPE[x.r.t]}${x.r.end?` · ends ${esc(x.r.end)}`:""}${diagsOf(x.r).length?" · diagram":""}</div></div><div class="right">${x.R.pill}</div></div>`).join("");
   const feed = [];
   list.forEach(x => { const s = x.R.s;
     if (s.done) feed.push({ts:s.done.ts, c:"var(--done)", txt:`<b>${esc(s.done.by)}</b> finished ${esc(x.r.room)}`, at:s.done.at});
@@ -418,8 +436,9 @@ const parseId = id => { const [iso, i] = id.split("|"); return {iso, r: dayOf(is
 
 // ── actions
 document.addEventListener("click", async e => {
-  const t = e.target.closest("[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve]");
+  const t = e.target.closest("[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag]");
   if (!t) return;
+  if (t.dataset.diag) { openViewer(t.dataset.diag, t.dataset.room); return; }
   if (t.dataset.day) { dayISO = t.dataset.day; openId = null; render(); return; }
   if (t.dataset.open) { openId = openId == t.dataset.open ? null : t.dataset.open; render(); return; }
   if (t.dataset.prob) { if (await needWho("Sign in to report a problem.")) openSheet(t.dataset.prob); return; }
@@ -438,6 +457,15 @@ document.addEventListener("click", async e => {
   if (t.dataset.undo) { await save(iso, rsl, {done:null}); toast(`${r.room} reopened`); return; }
   if (t.dataset.resolve) { await save(iso, rsl, {prob:null}); toast(`Resolved ${r.room}`); return; }
 });
+function openViewer(f, room) {
+  const img = document.getElementById("vImg");
+  img.classList.remove("big"); img.src = previewOf(f);
+  document.getElementById("vTitle").textContent = (room || "") + " — diagram";
+  document.getElementById("vPdf").href = DIAG + f;
+  document.getElementById("viewer").classList.add("on");
+}
+document.getElementById("vClose").onclick = () => document.getElementById("viewer").classList.remove("on");
+document.getElementById("vImg").onclick = e => e.target.classList.toggle("big");
 function openSheet(id) {
   sheetFor = id; sheetPick = new Set();
   document.getElementById("sheetRoom").textContent = parseId(id).r.room + " · goes straight to the captain";
