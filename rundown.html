@@ -399,14 +399,12 @@ body{font-family:Manrope,Arial,sans-serif}
 /* Organization name: soft green glow. */
 #bb-app .group h2{color:#a8f2c7;text-shadow:0 0 14px #7fe0a061,0 0 2px #7fe0a080}
 /* Staff assigned to a room (assignments.json): position badge + name + duty, colored by duty. */
-#bb-app .room-title{display:flex;flex-direction:column;gap:7px;min-width:0}
-#bb-app .crew{display:flex;flex-wrap:wrap;gap:5px}
-#bb-app .crew-chip{--k:#7fe0a0;display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:3px 9px 3px 3px;border-radius:20px;border:1px solid color-mix(in srgb,var(--k) 40%,transparent);background:color-mix(in srgb,var(--k) 11%,transparent);font:600 12.5px/1.25 Manrope,'Instrument Sans',Arial,sans-serif;letter-spacing:0;text-transform:none}
-#bb-app .crew-pos{flex:none;padding:2px 6px;border-radius:12px;font:800 9px/1.3 Manrope,Arial,sans-serif;letter-spacing:1px;color:#0c1a14;background:#7fe0a0}
+#bb-app .room-title{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;min-width:0}
+#bb-app .crew{font:600 12.5px/1.45 Manrope,'Instrument Sans',Arial,sans-serif;letter-spacing:0;text-transform:none;color:#eef6fc}
+#bb-app .crew-pos{display:inline-block;margin-right:6px;padding:1px 5px;border-radius:4px;font:800 9px/1.4 Manrope,Arial,sans-serif;letter-spacing:1px;color:#0c1a14;background:#7fe0a0;vertical-align:1px}
 #bb-app .crew-pos.p-bar{background:#c1baff;color:#17123a} #bb-app .crew-pos.p-cpt{background:#8bd1ff;color:#0b1f2e} #bb-app .crew-pos.p-hsmn{background:#ffc085;color:#2e1a08}
-#bb-app .crew-name{font-weight:800;color:#eef6fc}
-#bb-app .crew-duty{color:var(--k);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#bb-app .crew-chip.k-buffet{--k:#ffc085} #bb-app .crew-chip.k-bev{--k:#8bd1ff} #bb-app .crew-chip.k-roll{--k:#c1baff} #bb-app .crew-chip.k-assist{--k:#78d6ca}
+#bb-app .crew-duty{color:#7fe0a0} #bb-app .crew-duty.k-buffet{color:#ffc085} #bb-app .crew-duty.k-bev{color:#8bd1ff} #bb-app .crew-duty.k-roll{color:#c1baff} #bb-app .crew-duty.k-assist{color:#78d6ca}
+#bb-app .crew-sep{color:#8aa4b8;margin:0 5px}
 #bb-app .expand{font-size:20px;color:var(--blue);transition:transform .2s}
 #bb-app .room[open]>summary .expand{transform:rotate(45deg)}
 #bb-app .room-body{padding:0 11px 6px}
@@ -7554,14 +7552,25 @@ body{font-family:Manrope,Arial,sans-serif}
       return out;
     }
     const dutyKind=t=>/buffet/i.test(t)?'k-buffet':/bev|break|coffee|bar/i.test(t)?'k-bev':/roll|clean/i.test(t)?'k-roll':/assist|help/i.test(t)?'k-assist':'';
+    // One compact line: people grouped by duty ("Buffet: Dylan, Carlos V. · Bev & breaks: …").
+    // Position shows once when everyone shares it, otherwise after each name.
     function crewNode(list){
-      const wrap=node('div','crew');
+      const wrap=node('span','crew');
+      const posOf=p=>String(p.pos||'SVR').toUpperCase();
+      const one=new Set(list.map(posOf)).size===1;
+      if(one) wrap.append(node('span','crew-pos p-'+posOf(list[0]).toLowerCase(),posOf(list[0])));
+      const groups=new Map();
       list.forEach(function(p){
-        const chip=node('span','crew-chip '+dutyKind(p.duty||''));
-        const pos=String(p.pos||'SVR').toUpperCase();
-        chip.append(node('span','crew-pos p-'+pos.toLowerCase(),pos), node('span','crew-name',p.name));
-        if(p.duty) chip.append(node('span','crew-duty',p.duty));
-        wrap.append(chip);
+        const duty=String(p.duty||'').trim(), key=/^server$/i.test(duty)?'':duty;
+        if(!groups.has(key)) groups.set(key,[]);
+        groups.get(key).push(one?p.name:p.name+' ('+posOf(p)+')');
+      });
+      let first=true;
+      groups.forEach(function(names,duty){
+        if(!first) wrap.append(node('span','crew-sep','·'));
+        first=false;
+        if(duty) wrap.append(node('span','crew-duty '+dutyKind(duty),duty+': '));
+        wrap.append(document.createTextNode(names.join(', ')));
       });
       return wrap;
     }

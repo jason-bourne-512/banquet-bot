@@ -1,27 +1,96 @@
 {
   "_about": "Staff assignments per day, shown next to the room on the rundown and added to Telegram notifications. group = part of the client name, label = optional short name for messages, room = the room on the card. pos: SVR server, BAR bartender, CPT captain, HSMN houseman. First names only.",
   "2026-10-06": [
-    { "group": "Cabot", "room": "Barton", "staff": [
-      { "name": "Tomas", "pos": "SVR", "duty": "Server" },
-      { "name": "Gema", "pos": "SVR", "duty": "Assist" }
-    ] },
-    { "group": "Cabot", "room": "Lantana A", "staff": [
-      { "name": "Carlos P.", "pos": "SVR", "duty": "Server" }
-    ] },
-    { "group": "Boehringer", "room": "Lantana B", "staff": [
-      { "name": "Tomas", "pos": "SVR", "duty": "Server" }
-    ] },
-    { "group": "Q2", "room": "Pre-Function", "staff": [
-      { "name": "Dylan", "pos": "SVR", "duty": "Buffet 1" },
-      { "name": "Carlos V.", "pos": "SVR", "duty": "Buffet 2" },
-      { "name": "Francisco", "pos": "SVR", "duty": "Beverage stations · AM/PM break" },
-      { "name": "Leodan", "pos": "SVR", "duty": "Beverage stations · AM/PM break" },
-      { "name": "Gema", "pos": "SVR", "duty": "Roll-ups · Cleaning" },
-      { "name": "Raibely", "pos": "SVR", "duty": "Roll-ups · Cleaning" },
-      { "name": "Margri", "pos": "SVR", "duty": "Roll-ups · Cleaning" }
-    ] },
-    { "group": "Texas Automobile Dealers", "label": "TADA", "room": "Plumeria", "staff": [
-      { "name": "Odaly", "pos": "SVR", "duty": "Server" }
-    ] }
+    {
+      "group": "Cabot",
+      "room": "Barton",
+      "staff": [
+        {
+          "name": "Tomas",
+          "pos": "SVR",
+          "duty": "Server"
+        },
+        {
+          "name": "Gema",
+          "pos": "SVR",
+          "duty": "Assist"
+        }
+      ]
+    },
+    {
+      "group": "Cabot",
+      "room": "Lantana A",
+      "staff": [
+        {
+          "name": "Carlos P.",
+          "pos": "SVR",
+          "duty": "Server"
+        }
+      ]
+    },
+    {
+      "group": "Boehringer",
+      "room": "Lantana B",
+      "staff": [
+        {
+          "name": "Tomas",
+          "pos": "SVR",
+          "duty": "Server"
+        }
+      ]
+    },
+    {
+      "group": "Q2",
+      "room": "Pre-Function",
+      "staff": [
+        {
+          "name": "Dylan",
+          "pos": "SVR",
+          "duty": "Buffet 1"
+        },
+        {
+          "name": "Carlos V.",
+          "pos": "SVR",
+          "duty": "Buffet 2"
+        },
+        {
+          "name": "Francisco",
+          "pos": "SVR",
+          "duty": "Bev & breaks"
+        },
+        {
+          "name": "Leodan",
+          "pos": "SVR",
+          "duty": "Bev & breaks"
+        },
+        {
+          "name": "Gema",
+          "pos": "SVR",
+          "duty": "Roll-ups & cleaning"
+        },
+        {
+          "name": "Raibely",
+          "pos": "SVR",
+          "duty": "Roll-ups & cleaning"
+        },
+        {
+          "name": "Margri",
+          "pos": "SVR",
+          "duty": "Roll-ups & cleaning"
+        }
+      ]
+    },
+    {
+      "group": "Texas Automobile Dealers",
+      "label": "TADA",
+      "room": "Plumeria",
+      "staff": [
+        {
+          "name": "Odaly",
+          "pos": "SVR",
+          "duty": "Server"
+        }
+      ]
+    }
   ]
 }
