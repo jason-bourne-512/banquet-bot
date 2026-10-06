@@ -10085,7 +10085,16 @@ body{font-family:Manrope,Arial,sans-serif}
       const startOf=ev=>Math.min(Infinity,...ev.items.map(i=>i.time.start).filter(v=>v!=null));
       const groupStart=new Map();
       ((days[d]&&days[d].events)||[]).forEach(ev=>groupStart.set(ev.base,Math.min(groupStart.has(ev.base)?groupStart.get(ev.base):Infinity,startOf(ev))));
-      const events=((days[d]&&days[d].events)||[]).map((ev,i)=>({ev,i})).sort(function(a,b){
+      // One block per room: a card that spans several rooms (e.g. Q2's hospitality rooms) is split
+      // so each room shows its own times and its own staff. Note + event order details stay on the first room.
+      const blocks=[];
+      ((days[d]&&days[d].events)||[]).forEach(function(ev){
+        const order=[], byRoom=new Map();
+        ev.items.forEach(function(it){ const r=it.room||''; if(!byRoom.has(r)){ byRoom.set(r,[]); order.push(r); } byRoom.get(r).push(it); });
+        if(order.length<=1){ blocks.push(Object.assign({},ev,{firstRoom:true})); return; }
+        order.forEach((r,k)=>blocks.push(Object.assign({},ev,{items:byRoom.get(r),firstRoom:k===0})));
+      });
+      const events=blocks.map((ev,i)=>({ev,i})).sort(function(a,b){
         const g=groupStart.get(a.ev.base)-groupStart.get(b.ev.base);
         if(g) return g;
         if(a.ev.base!==b.ev.base) return a.ev.base<b.ev.base?-1:1;
@@ -10131,7 +10140,7 @@ body{font-family:Manrope,Arial,sans-serif}
           row.append(time,content);
           body.append(row);
         });
-        if(ev.note) body.append(htmlNode('div','flag',clean(ev.note)));
+        if(ev.note&&ev.firstRoom) body.append(htmlNode('div','flag',clean(ev.note)));
         // Setup: everything from the card footer/badges that isn't shown above.
         const setup=[];
         const line=(key,html,text)=>{
@@ -10153,7 +10162,7 @@ body{font-family:Manrope,Arial,sans-serif}
           ev.diagram.querySelectorAll('.diag-link,.diag-warn').forEach(b=>p.val.append(b.cloneNode(true)));
           setup.push(p);
         }
-        if(setup.length){
+        if(setup.length&&ev.firstRoom){
           const more=node('details','room-more');
           more.append(node('summary','','Event order details'), ...setup);
           body.append(more);
