@@ -7599,7 +7599,16 @@ body{font-family:Manrope,Arial,sans-serif}
     function empty(text){ screen.append(node('p','date-empty',text)); }
 
     function renderRundown(d){
-      const events=(days[d]&&days[d].events)||[];
+      // Earliest group first; inside a group, earliest room first (ties keep BEO order).
+      const startOf=ev=>Math.min(Infinity,...ev.items.map(i=>i.time.start).filter(v=>v!=null));
+      const groupStart=new Map();
+      ((days[d]&&days[d].events)||[]).forEach(ev=>groupStart.set(ev.base,Math.min(groupStart.has(ev.base)?groupStart.get(ev.base):Infinity,startOf(ev))));
+      const events=((days[d]&&days[d].events)||[]).map((ev,i)=>({ev,i})).sort(function(a,b){
+        const g=groupStart.get(a.ev.base)-groupStart.get(b.ev.base);
+        if(g) return g;
+        if(a.ev.base!==b.ev.base) return a.ev.base<b.ev.base?-1:1;
+        return (startOf(a.ev)-startOf(b.ev))||(a.i-b.i);
+      }).map(x=>x.ev);
       if(!events.length) return empty(d===TODAY?'No events listed today.':'No events listed for this date.');
       let prevBase=null;
       events.forEach(function(ev){
