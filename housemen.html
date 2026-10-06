@@ -211,6 +211,8 @@ const DAYS = [
    {t:"set", room:"Primrose AB", for:"Q2 Software · Meal Room", diag:"PRIMROSEABfromQ2DevDaysDecisionsandPathForward.pdf", items:["(15) rounds of 10 — set for 150"], flags:["Events report 10/5: Meal Room, set 165 — diagram shows 150"]},
    {t:"set", room:"Plumeria", for:"TADA · Leadership Network", diag:"PLUMERIAfromTADA2026LeadershipNetworkOct2026.pdf", items:["Strike CGTV theatre set","Schoolroom for 24 — 4 rows of 3 tables","(3) rounds of 8 — set for 24","Podium"], flags:["BEO says schoolroom only — diagram adds 3 rounds"]},
    {t:"set", room:"Lantana A", for:"Cabot · Meal Room", diag:"LANTANAAfromCabotFallCommercialTeamMeeting.pdf", items:["(4) rounds of 8 — set for 32"]},
+   {t:"set", room:"Buttercup", for:"AUSDW In-House · Orientation", items:["Conference set for 2"], flags:["Added from events report 10/5"]},
+   {t:"set", room:"Bonnell", for:"AUSDW In-House · ASML dinner (6 PM)", items:["Conference set for 17"], flags:["Added from events report 10/5"]},
    {t:"set", room:"Bluebell", for:"Q2 Software · Office", end:"4:00 PM", items:["Office set","Pads, pens & water in back of room"], flags:["No diagram on file"]},
    {t:"ref", room:"Lantana B", for:"Boehringer-Ingelheim · Day 2 of 4", end:"5:00 PM", diag:"LANTANABfromDistrictPSCFAM3MeetingOct2026.pdf"},
    {t:"ref", room:"Camellia", for:"Q2 Software · Hospitality (existing set)", end:"5:00 PM", diag:"CamelliafromQ2DevDaysDecisionsandPathForward.pdf"},
@@ -229,6 +231,8 @@ const DAYS = [
    {t:"ref", room:"Bluebell", for:"Q2 Software · Office", end:"5:00 PM"},
    {t:"ref", room:"Barton", for:"Cabot · Day 3 of 4", end:"6:00 PM", diag:"BartonfromCabotFallCommercialTeamMeeting.pdf"},
    {t:"ref", room:"Verbena", for:"Q2 Software · Hospitality", end:"11:00 PM", diag:"VERBENAfromQ2DevDaysDecisionsandPathForward.pdf"},
+   {t:"ref", room:"Buttercup", for:"AUSDW In-House · Orientation, day 2", end:"1:00 PM", flags:["Added from events report 10/5"]},
+   {t:"set", room:"Bonnell", for:"Futuri Media · Meeting (3 PM)", end:"8:00 PM", items:["Flip from ASML dinner","Conference set for 5"], flags:["Added from events report 10/5"]},
    {t:"ref", room:"Pre-Function", for:"Q2 Software", end:"11:30 PM", diag:"PREFUNCTIONfromQ2DevDaysDecisionsandPathForward.pdf"},
  ]},
  { iso:"2026-10-07", target:"Thursday 10/8", crew:"Jamshid", shift:"2P–10P", rooms:[
@@ -242,14 +246,18 @@ const DAYS = [
    {t:"ref", room:"Barton", for:"Cabot · Final day", end:"6:00 PM", diag:"BartonfromCabotFallCommercialTeamMeeting.pdf"},
    {t:"clr", room:"Camellia", for:"Q2 finished", end:"11:00 PM", next:"Sat 10/10 → TPEA hollow square"},
    {t:"clr", room:"Verbena", for:"Q2 finished", end:"11:00 PM", next:"No event on file through 10/10"},
+   {t:"ref", room:"Bonnell", for:"Futuri Media · Day 2", end:"7:00 PM", flags:["Added from events report 10/5"]},
+   {t:"clr", room:"Buttercup", for:"AUSDW orientation finished", end:"1:00 PM", flags:["Added from events report 10/5"]},
  ]},
  { iso:"2026-10-08", target:"Friday 10/9", crew:"Jamshid", shift:"2P–9P", rooms:[
    {t:"clr", room:"Lantana B", for:"Boehringer-Ingelheim finished", end:"2:00 PM", next:"No event on file through 10/10"},
    {t:"clr", room:"Lantana A", for:"Cabot finished", end:"2:00 PM", next:"No event on file through 10/10"},
    {t:"clr", room:"Barton", for:"Cabot finished", end:"6:00 PM", next:"No event on file through 10/10"},
+   {t:"ref", room:"Bonnell", for:"Futuri Media · Day 3", end:"5:00 PM", flags:["Added from events report 10/5"]},
  ]},
  { iso:"2026-10-09", target:"Saturday 10/10", crew:"Tomas", shift:"12P–8P", rooms:[
-   {t:"set", room:"Camellia", for:"TPEA · Board Training Seminar", diag:["CamelliafromTPEABoardTraining.pdf","CamelliafromTPEABoardTraining_2.pdf"], items:["Hollow square","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Two diagrams on file: U-shape & hollow square — BEO says hollow square"]},
+   {t:"set", room:"Camellia", for:"TPEA · Board Training Seminar", diag:["CamelliafromTPEABoardTraining.pdf","CamelliafromTPEABoardTraining_2.pdf"], items:["Hollow square","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Events report 10/5 says U-Shape, exp 20 — BEO said hollow square; both diagrams on file"]},
+   {t:"clr", room:"Bonnell", for:"Futuri Media finished", end:"5:00 PM", flags:["Added from events report 10/5"]},
  ]},
  { iso:"2026-10-10", target:"Sunday 10/11", crew:"", shift:"", rooms:[
    {t:"clr", room:"Camellia", for:"TPEA finished", end:"2:00 PM", next:"No event on file through 10/12"},
