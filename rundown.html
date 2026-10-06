@@ -10121,7 +10121,10 @@ body{font-family:Manrope,Arial,sans-serif}
         sum.lastChild.setAttribute('aria-hidden','true');
         box.append(sum);
         const body=node('div','room-body');
-        ev.items.forEach(function(item){
+        // A room that has food or beverage doesn't need its "— No F&B" booking line; a dry room keeps it.
+        const noFnb=it=>/no f&b/i.test(it.tag||'');
+        const shown=ev.items.some(it=>!noFnb(it))?ev.items.filter(it=>!noFnb(it)):ev.items;
+        shown.forEach(function(item){
           const row=node('div','service');
           const time=node('div','time');
           if(item.time.start!=null){ time.textContent=clock(item.time.start); time.append(node('small','','– '+clock(item.time.end))); }
