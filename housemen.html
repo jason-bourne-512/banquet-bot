@@ -290,8 +290,10 @@ const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""
 const nowLabel = () => new Date().toLocaleTimeString("en-US",{timeZone:TZ,hour:"numeric",minute:"2-digit"});
 const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 
-// Standing rule: days before today are removed, never shown (hotel time).
-const VISIBLE = DAYS.filter(d => d.iso >= todayISO());
+// Show yesterday (no earlier), today, and the rest of the week; open on today (hotel time).
+const isoMinus1 = iso => { const t = dObj(iso); t.setUTCDate(t.getUTCDate() - 1); return t.toISOString().slice(0, 10); };
+const YESTERDAY = isoMinus1(todayISO());
+const VISIBLE = DAYS.filter(d => d.iso >= YESTERDAY);
 const STATE = {};          // iso -> { slug -> {items, done, prob} }
 let db = null;
 const setSync = c => { document.getElementById("sync").className = "sync " + c; };
@@ -362,7 +364,7 @@ let soArmed = 0;
 function confirmSignOut() { if (Date.now() - soArmed < 3000) return true; soArmed = Date.now(); toast(`Tap again to sign out ${WHO.name}`); return false; }
 
 // ── state helpers
-let view = "hsm", dayISO = (VISIBLE[0] || {}).iso, openId = null, sheetFor = null, sheetPick = new Set();
+let view = "hsm", dayISO = ((VISIBLE.find(d => d.iso >= todayISO()) || VISIBLE[VISIBLE.length - 1]) || {}).iso, openId = null, sheetFor = null, sheetPick = new Set();
 const dayOf = iso => DAYS.find(d => d.iso == iso);
 const rs = (iso, r) => ((STATE[iso] || {})[slug(r.room)]) || {items:{}, done:null, prob:null};
 const diagsOf = r => r.diag ? [].concat(r.diag) : [];
@@ -378,6 +380,12 @@ function roomState(iso, r) {
 const dayProgress = d => { const done = d.rooms.filter(r=>rs(d.iso,r).done).length; return [done, d.rooms.length]; };
 
 // ── render
+let daysSnapped = false;
+function snapDays() {
+  if (daysSnapped) return;
+  const on = document.querySelector("#days button.on");
+  if (on) { const strip = on.parentElement; strip.scrollLeft = on.offsetLeft - (strip.clientWidth - on.clientWidth) / 2; daysSnapped = true; }
+}
 function renderDays() {
   document.getElementById("days").innerHTML = VISIBLE.map(d => {
     const [a,b] = dayProgress(d);
@@ -436,6 +444,7 @@ function render() {
   const d = dayOf(dayISO);
   if (!d) { document.getElementById("days").innerHTML = ""; document.getElementById("main").innerHTML = `<div class="empty" style="padding-top:30px">No houseman lists posted for this week yet.</div>`; return; }
   renderDays();
+  snapDays();
   document.getElementById("main").innerHTML = view=="hsm" ? renderHsm(d) : renderCap(d);
 }
 let toastT;
