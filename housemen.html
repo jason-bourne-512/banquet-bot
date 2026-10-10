@@ -271,6 +271,7 @@ const DAYS = [
  ]},
  { iso:"2026-10-13", target:"Wednesday 10/14", crew:"", shift:"", rooms:[
    {t:"set", room:"Verbena", for:"Varian Medical Systems · Meeting", diag:"VERBENAfromVarianSHSIOMedicalAffairsTeamMeeting.pdf", items:["(6) Rounds of 6","(3) 6x30 tables (1 front, 2 back)","podium","(1) registration table outside room","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Primrose D", for:"Varian Medical Systems · Meal Room", diag:"PRIMROSEDfromVarianSHSIOMedicalAffairsTeamMeeting.pdf", items:["(6) Rounds of 6","Buffet set inside the room","Vacuum","Tray jack + clean tray"], flags:["Revised 10/10: Varian breakfast + lunch moved here from Verbena (BEO 372011)"]},
    {t:"set", room:"Camellia A", for:"Insight · Meeting", diag:"CamelliaAfromInSightMeetingOct2026_2.pdf", items:["Crescent Rounds","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"set", room:"Camellia B", for:"Insight · Meeting", diag:"CamelliaBfromInSightMeetingOct2026.pdf", items:["Crescent Rounds","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"set", room:"Bluebell", for:"Varian Medical Systems · Breakouts", items:["Pads","pens and water set in back of room Lantana","(6) pods with (2) chairs each","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
@@ -280,13 +281,14 @@ const DAYS = [
    {t:"ref", room:"Primrose AB", for:"Dell Technologies · Global Alliances Presales Meeting", end:"5:00 PM", diag:"PRIMROSEABfromDellGlobalAlliancesPresalesMeeting.pdf"},
    {t:"ref", room:"Plumeria A", for:"Qualico · Executive Strategic Planning", end:"5:30 PM", diag:"PLUMERIAAfromQualicoExecutiveStrategicPlanning.pdf"},
    {t:"set", room:"Lantana", for:"Varian Medical Systems · Breakouts", end:"9:00 PM", diag:"LANTANAfromVarianSHSIOMedicalAffairsTeamMeeting.pdf", items:["Flip from Vision Service Plan","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
-   {t:"clr", room:"Zilker", for:"Varian Medical Systems finished", end:"4:00 PM", next:"Mon 10/19 → AUSDW In-House"},
+   {t:"clr", room:"Zilker", for:"Varian Medical Systems finished", end:"5:00 PM", next:"Mon 10/19 → AUSDW In-House"},
  ]},
  { iso:"2026-10-14", target:"Thursday 10/15", crew:"", shift:"", rooms:[
    {t:"set", room:"Buttercup", for:"Varian Medical Systems · Breakout Rooms", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
    {t:"set", room:"Bluebell", for:"Varian Medical Systems · Breakout Rooms", end:"4:30 PM", items:["Setup changes from today","Conference","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"ref", room:"Primrose AB", for:"Dell Technologies · Global Alliances Presales Meeting", end:"5:00 PM", diag:"PRIMROSEABfromDellGlobalAlliancesPresalesMeeting.pdf"},
    {t:"ref", room:"Verbena", for:"Varian Medical Systems · Meeting", end:"5:00 PM", diag:"VERBENAfromVarianSHSIOMedicalAffairsTeamMeeting.pdf"},
+   {t:"ref", room:"Primrose D", for:"Varian Medical Systems · Meal Room", end:"2:00 PM", diag:"PRIMROSEDfromVarianSHSIOMedicalAffairsTeamMeeting.pdf"},
    {t:"ref", room:"Camellia A", for:"Insight · Meeting", end:"5:15 PM", diag:"CamelliaAfromInSightMeetingOct2026_2.pdf"},
    {t:"ref", room:"Camellia B", for:"Insight · Meeting", end:"5:15 PM", diag:"CamelliaBfromInSightMeetingOct2026.pdf"},
    {t:"set", room:"Barton", for:"Fortra · Breakfast Business", end:"9:00 PM", diag:"BartonfromFortraBreakfastBusinessOct2026.pdf", items:["Flip from Insight","U-Shape","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
@@ -297,6 +299,7 @@ const DAYS = [
  ]},
  { iso:"2026-10-15", target:"Friday 10/16", crew:"", shift:"", rooms:[
    {t:"set", room:"Bluebell", for:"Ayn Rand Centre · Meeting #4 - Office", end:"12:00 PM", items:["Flip from Varian Medical Systems","Conference","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["From events report — no event order yet"]},
+   {t:"clr", room:"Primrose D", for:"Varian finished", end:"2:00 PM", next:"Set Fri night → Ayn Rand Centre, Sat 10/17"},
    {t:"set", room:"Plumeria", for:"Ayn Rand Centre · Meeting #2 - VIP Room", end:"6:00 PM", diag:"PLUMERIAfromTheIrreplaceableSparkConference.pdf", items:["Flip from Telarus","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order","From events report — no event order yet"]},
    {t:"clr", room:"Barton", for:"Fortra finished", end:"11:00 AM", next:"Sun 10/18 → University of Texas"},
    {t:"clr", room:"Buttercup", for:"Varian Medical Systems finished", end:"12:00 PM", next:"Tue 10/20 → Herring Bank"},
