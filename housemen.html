@@ -156,6 +156,13 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
 .toast.bad{background:#2a0d0d;color:var(--red);border-color:var(--red)}
 .foot{margin-top:24px;font-size:10.5px;color:var(--t4);text-align:center;line-height:1.6}
 .foot a,.linkbtn{color:var(--t3);background:none;border:0;text-decoration:underline;font-size:10.5px}
+.idel{margin-left:auto;flex:none;border:0;background:transparent;color:var(--t4);font-size:13px;padding:2px 6px;border-radius:6px}
+.idel:hover{color:var(--red);background:var(--red-d)}
+.items li.added span:nth-child(2)::after{content:" · added";color:var(--t4);font-size:10px}
+.iadd{display:flex;gap:6px;margin:8px 0 2px}
+.iadd input{flex:1;min-width:0;border:1px solid var(--line2);background:#0b151e;color:var(--t1);border-radius:9px;padding:8px 10px;font:500 13px Manrope}
+.iadd button{border:1px solid var(--line2);background:var(--card2);border-radius:9px;padding:0 14px;font-weight:700;font-size:12px}
+.irestore{margin-top:6px;border:0;background:none;color:var(--t3);font-size:11px;text-decoration:underline;padding:0}
 .printbtn{margin-top:12px;width:100%;border:1px solid var(--line);background:var(--card);color:inherit;border-radius:12px;padding:11px;font:700 14px 'Barlow Condensed',sans-serif;letter-spacing:.04em}
 
 /* captain theme — only when the captain (Jason) is signed in */
@@ -553,7 +560,7 @@ async function save(iso, rslug, patch) {
   const day = (STATE[iso] ||= {}), cur = (day[rslug] ||= {items:{}, done:null, prob:null});
   const before = JSON.parse(JSON.stringify(cur));
   if (patch.items) Object.assign(cur.items, patch.items);
-  for (const k of ["done","prob"]) if (k in patch) cur[k] = patch[k];
+  for (const k of ["done","prob","extra","removed"]) if (k in patch) cur[k] = patch[k];
   render();
   if (MOCK) { try { localStorage.setItem("bb-hsm-mock", JSON.stringify(STATE)); } catch(e) {} return; }
   try { await setDoc(doc(db, COL, iso), {rooms:{[rslug]:patch}, updated:Date.now()}, {merge:true}); }
@@ -603,9 +610,16 @@ const dayOf = iso => DAYS.find(d => d.iso == iso);
 const rs = (iso, r) => ((STATE[iso] || {})[slug(r.room)]) || {items:{}, done:null, prob:null};
 const diagsOf = r => r.diag ? [].concat(r.diag) : [];
 const previewOf = f => DIAG + "previews/" + f.replace(/\.pdf$/i, ".png");
-const itemsOf = r => r.items && r.items.length ? r.items : (r.t == "ref" ? REFRESH : CLEAR);
+const baseItems = r => r.items && r.items.length ? r.items : (r.t == "ref" ? REFRESH : CLEAR);
+// Daily checklist = posted items minus any a lead removed, plus any a lead added (saved live per day).
+function listOf(iso, r) {
+  const s = rs(iso, r), gone = new Set(s.removed || []);
+  return baseItems(r).map((text,k)=>({key:String(k), text})).filter(x=>!gone.has(x.text))
+    .concat((s.extra || []).map(x=>({key:"x"+x.id, text:x.text, added:true})));
+}
+const itemsOf = r => baseItems(r);
 function roomState(iso, r) {
-  const s = rs(iso, r), list = itemsOf(r), n = list.filter((_,k)=>s.items && s.items[k]).length;
+  const s = rs(iso, r), list = listOf(iso, r), n = list.filter(x=>s.items && s.items[x.key]).length;
   if (s.prob && !s.done) return {cls:"isprob", pill:`<span class="status st-prob">⚠ ${esc(s.prob.what)}</span>`, s, n, list};
   if (s.done) return {cls:"isdone", pill:`<span class="status st-done">✓ Done · ${esc(s.done.by)} ${esc(s.done.at)}</span>`, s, n, list};
   if (n) return {cls:"", pill:`<span class="status st-prog">${n} of ${list.length} items</span>`, s, n, list};
@@ -627,7 +641,7 @@ function renderDays() {
   }).join("");
 }
 function renderHsm(d) {
-  const [a,b] = dayProgress(d);
+  const [a,b] = dayProgress(d), lead = !!(WHO && LEAD(WHO.role));
   let h = `<div class="hero"><div class="eyebrow">Tonight · setting for ${esc(d.target)}</div><h1>${longDay(d.iso)} ${md(d.iso)}</h1>
     <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}${d.rooms.length} rooms in setup order</div>
     <div class="progress"><div class="bar"><i style="width:${b?a/b*100:0}%"></i></div><div class="pct">${a}/${b}</div></div></div>`;
@@ -637,7 +651,9 @@ function renderHsm(d) {
       <button class="rhead" data-open="${id}"><span class="num">${R.s.done?"✓":i+1}</span>
         <span class="rmain"><span class="type">${TYPE[r.t]}</span><div class="rname">${esc(r.room)}</div><div class="rfor">${esc(r.for)}</div>${R.pill}</span>
         ${r.end?`<span class="rend">ENDS<b>${esc(r.end)}</b></span>`:""}</button>
-      <div class="rbody"><ul class="items">${R.list.map((x,k)=>`<li data-item="${id}" data-k="${k}" class="${R.s.items&&R.s.items[k]?"ck":""}"><span class="box"></span><span>${esc(x)}</span></li>`).join("")}</ul>
+      <div class="rbody"><ul class="items">${R.list.map(x=>`<li data-item="${id}" data-k="${x.key}" class="${R.s.items&&R.s.items[x.key]?"ck":""}${x.added?" added":""}"><span class="box"></span><span>${esc(x.text)}</span>${lead?`<button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove item">✕</button>`:""}</li>`).join("")}</ul>
+        ${lead?`<div class="iadd"><input id="add-${id}" maxlength="120" placeholder="+ Add an item for tonight"><button data-addbtn="${id}">Add</button></div>
+          ${(R.s.removed||[]).length?`<button class="irestore" data-restore="${id}">↺ Restore ${R.s.removed.length} removed item${R.s.removed.length>1?"s":""}</button>`:""}`:""}
         ${(flags.length||r.next)?`<div class="tags">${r.next?`<span class="tag next">Next: ${esc(r.next)}</span>`:""}${flags.map(f=>`<span class="tag flag">⚑ ${esc(f)}</span>`).join("")}</div>`:""}
         ${open&&diagsOf(r).length?`<div class="diags">${diagsOf(r).map((f,j,a)=>`<button class="diag-prev" data-diag="${esc(f)}" data-room="${esc(r.room)}"><img src="${previewOf(f)}" alt="${esc(r.room)} diagram"><span>${a.length>1?`Diagram ${j+1} of ${a.length}`:"Diagram"}<em style="font-style:normal">Tap to enlarge ↗</em></span></button>`).join("")}</div>`:""}
         ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)} ${esc(R.s.prob.at)}</div>`:""}
@@ -686,7 +702,11 @@ function render() {
   if (!d) { document.getElementById("days").innerHTML = ""; document.getElementById("main").innerHTML = `<div class="empty" style="padding-top:30px">No houseman lists posted for this week yet.</div>`; return; }
   renderDays();
   snapDays();
+  const ae = document.activeElement, keep = ae && ae.id && ae.id.startsWith("add-") ? {id:ae.id, v:ae.value} : null;
+  const drafts = {}; document.querySelectorAll('.iadd input').forEach(i => { if (i.value) drafts[i.id] = i.value; });
   document.getElementById("main").innerHTML = view=="hsm" ? renderHsm(d) : renderCap(d);
+  for (const k in drafts) { const i = document.getElementById(k); if (i) i.value = drafts[k]; }
+  if (keep) { const i = document.getElementById(keep.id); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }
 }
 let toastT;
 function toast(msg, bad) { const t = document.getElementById("toast"); t.textContent = msg; t.className = "toast on" + (bad ? " bad" : ""); clearTimeout(toastT); toastT = setTimeout(()=>t.className = "toast", 2200); }
@@ -694,9 +714,10 @@ const parseId = id => { const [iso, i] = id.split("|"); return {iso, r: dayOf(is
 
 // ── actions
 document.addEventListener("click", async e => {
-  const t = e.target.closest("[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print]");
+  const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print]");
   if (!t) return;
   if (t.dataset.print) { printDay(t.dataset.print); return; }
+  if (t.dataset.del || t.dataset.addbtn || t.dataset.restore) { await editItems(t); return; }
   if (t.dataset.diag) { openViewer(t.dataset.diag, t.dataset.room); return; }
   if (t.dataset.day) { dayISO = t.dataset.day; openId = null; render(); return; }
   if (t.dataset.open) { openId = openId == t.dataset.open ? null : t.dataset.open; render(); return; }
@@ -706,7 +727,7 @@ document.addEventListener("click", async e => {
   const {iso, r, i} = parseId(id), rsl = slug(r.room), cur = rs(iso, r);
   if (t.dataset.item) { const k = t.dataset.k; await save(iso, rsl, {items:{[k]: !(cur.items && cur.items[k])}}); return; }
   if (t.dataset.done) {
-    const all = {}; itemsOf(r).forEach((_,k)=>all[k]=true);
+    const all = {}; listOf(iso, r).forEach(x=>all[x.key]=true);
     const d = dayOf(iso);
     const nxt = d.rooms.findIndex((x,j)=>j!=i && !rs(iso,x).done);
     openId = nxt >= 0 ? iso + "|" + nxt : null;
@@ -716,6 +737,24 @@ document.addEventListener("click", async e => {
   if (t.dataset.undo) { await save(iso, rsl, {done:null}); toast(`${r.room} reopened`); return; }
   if (t.dataset.resolve) { await save(iso, rsl, {prob:null}); toast(`Resolved ${r.room}`); return; }
 });
+// ── lead editing: add / remove / restore checklist items for one room on one day
+async function editItems(t) {
+  if (!(WHO && LEAD(WHO.role))) { toast("Only the captain or director can edit the list", true); return; }
+  const id = t.dataset.del || t.dataset.addbtn || t.dataset.restore;
+  const {iso, r} = parseId(id), rsl = slug(r.room), cur = rs(iso, r);
+  if (t.dataset.restore) { await save(iso, rsl, {removed:[]}); toast("Items restored"); return; }
+  if (t.dataset.addbtn) {
+    const box = document.getElementById("add-" + id), text = (box && box.value || "").trim().slice(0, 120);
+    if (!text) { toast("Type the item first", true); return; }
+    const extra = (cur.extra || []).concat({id: Date.now().toString(36), text, by: WHO.name});
+    box.value = ""; await save(iso, rsl, {extra}); toast(`Added to ${r.room}`); return;
+  }
+  const k = t.dataset.k;
+  if (k.startsWith("x")) await save(iso, rsl, {extra:(cur.extra||[]).filter(x=>"x"+x.id != k)});
+  else { const text = baseItems(r)[+k]; await save(iso, rsl, {removed:[...new Set((cur.removed||[]).concat(text))]}); }
+  toast(`Removed from ${r.room}`);
+}
+document.addEventListener("keydown", e => { if (e.key == "Enter" && e.target.id && e.target.id.startsWith("add-")) { const b = document.querySelector(`[data-addbtn="${e.target.id.slice(4)}"]`); b && b.click(); } });
 // ── print: Word-style checklist (room | setup) + one diagram per page. Save as PDF from the print dialog.
 function printDay(iso) {
   const d = dayOf(iso); if (!d) return;
@@ -727,7 +766,7 @@ function printDay(iso) {
     const ds = diagsOf(r);
     return `<tr><td class="n">${i+1}</td>
       <td class="room"><b>${esc(r.room)}</b><div class="ty">${TYPE[r.t]}${r.end?` · ends ${esc(r.end)}`:""}</div><div class="for">${esc(r.for)}</div></td>
-      <td class="set"><ul>${itemsOf(r).map(x=>`<li>☐ ${esc(x)}</li>`).join("")}</ul>
+      <td class="set"><ul>${listOf(iso, r).map(x=>`<li>☐ ${esc(x.text)}</li>`).join("")}</ul>
         ${r.next?`<div class="nx">Next: ${esc(r.next)}</div>`:""}${(r.flags||[]).map(f=>`<div class="fl">⚑ ${esc(f)}</div>`).join("")}
         ${ds.length?`<div class="sd">See diagram${ds.length>1?"s":""} → page ${ds.map(f=>pageOf(i,f)).join(", ")}</div>`:""}</td></tr>`;
   }).join("");
