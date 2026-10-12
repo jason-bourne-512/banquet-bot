@@ -178,7 +178,8 @@ body.cap .eyebrow::before{background:#f2c879;box-shadow:0 0 9px #f2c879}
 body.cap .seg button.on{box-shadow:0 0 0 1px #f2c87966;color:#f6dca6}
 body.cap .room .num{border-color:#f2c87955}
 body.cap .printbtn{border-color:#f2c87966;color:#f2c879}
-</style></head>
+</style><script src="theme.js"></script>
+</head>
 <body>
 <div class="wrap">
   <div class="top">
@@ -590,6 +591,7 @@ document.getElementById("pad").addEventListener("click", async e => {
     if (!p) { drawDots(true); pinBuf = ""; setTimeout(drawDots, 600); toast("PIN not recognized", true); return; }
     WHO = {name:p.name, role:p.role};
     try { localStorage.setItem("bb-hsm-who", JSON.stringify(WHO)); } catch(e) {}
+    window.bbTheme && window.bbTheme.signIn(p.name);
     document.getElementById("pinBg").classList.remove("on"); toast(`Signed in as ${p.name}${p.role=="director"?" · Director":""}`); render();
     const r = pinResolve; pinResolve = null; r && r(WHO);
   }
@@ -597,7 +599,7 @@ document.getElementById("pad").addEventListener("click", async e => {
 document.getElementById("pinCancel").onclick = () => { document.getElementById("pinBg").classList.remove("on"); const r = pinResolve; pinResolve = null; r && r(null); };
 const needWho = async why => WHO || await askPin(why);
 document.getElementById("who").onclick = async () => {
-  if (WHO) { if (confirmSignOut()) { WHO = null; try { localStorage.removeItem("bb-hsm-who"); } catch(e) {} render(); toast("Signed out"); } }
+  if (WHO) { if (confirmSignOut()) { WHO = null; try { localStorage.removeItem("bb-hsm-who"); } catch(e) {} window.bbTheme && window.bbTheme.off(); render(); toast("Signed out"); } }
   else await askPin();
 };
 // Two taps to sign out (no browser dialogs).
