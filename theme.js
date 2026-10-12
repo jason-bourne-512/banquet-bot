@@ -1,6 +1,6 @@
 // Personal looks for Banquet Bot. Open any page once with ?me=<name> and this phone keeps that look
 // (?me=off clears it). The Housemen page also switches it on when that person signs in.
-// Colors and flags only — no team logos.
+// Includes team logo (hotlinked from ESPN) and the Venezuelan flag (img/flag-venezuela.svg).
 (function () {
   function vars(v) {
     return "html:root,html body{" + Object.keys(v).map(function (k) { return "--" + k + ":" + v[k] + "!important"; }).join(";") + "}";
@@ -17,7 +17,9 @@
   var THEMES = {
     // Baltimore Ravens: purple, black, gold
     dylan: {
-      label: "◆ DYLAN · RAVENS FLOCK",
+      label: "DYLAN · RAVENS FLOCK",
+      img: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
+      mark: {src: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png", opacity: .07},
       tint: {color: "#5b2bd6", opacity: .55},
       css: palette("#a98bf0", "rgba(169,139,240,.14)", "#0c0816", "#171027", "#231839", "rgba(169,139,240,.14)", "rgba(201,162,39,.35)") +
         "body::before{background:radial-gradient(ellipse at 100% 0,#24177399,transparent 50%),radial-gradient(ellipse at 0 100%,#c9a22722,transparent 55%),#0c0816!important}" +
@@ -26,16 +28,18 @@
     },
     // Venezuelan flag: yellow, blue, red + the arc of eight stars
     tomas: {
-      label: "✦✦✦✦✦✦✦✦ TOMAS · VENEZUELA",
+      label: "TOMAS · VENEZUELA",
+      img: "img/flag-venezuela.svg",
+      mark: {src: "img/flag-venezuela.svg", opacity: .05},
       css: palette("#ffd23f", "rgba(255,210,63,.14)", "#06102a", "#0d1c45", "#14275c", "rgba(255,210,63,.14)", "rgba(207,20,43,.45)") +
         "body::before{background:linear-gradient(180deg,#ffcc0033 0,#ffcc0024 33%,#00247d44 33%,#00247d44 66%,#cf142b2e 66%),#06102a!important}" +
         "h1,h2{color:#fff2c2}" + BADGE +
-        ".bb-me-badge{color:#fff;text-shadow:0 1px 2px #000a;border:1px solid #ffffff55;" +
-        "background:linear-gradient(180deg,#ffcc00 0 33%,#00247d 33% 67%,#cf142b 67%)}"
+        ".bb-me-badge{color:#ffd23f;border:1px solid #ffcc0099;background:linear-gradient(135deg,#00247d,#001447)}"
     },
     // La Vinotinto (Venezuela's national team): wine red and gold
     francisco: {
-      label: "◆ FRANCISCO · LA VINOTINTO",
+      label: "FRANCISCO · LA VINOTINTO",
+      img: "img/flag-venezuela.svg",
       aurora: true,
       tint: {color: "#9e1f45", opacity: .45},
       css: palette("#f2c14e", "rgba(242,193,78,.14)", "#1a070d", "#2a0d17", "#3a1220", "rgba(242,193,78,.14)", "rgba(242,193,78,.38)") +
@@ -58,6 +62,7 @@
     var oldB = document.querySelector(".bb-me-badge"); if (oldB) oldB.remove();
     var oldA = document.querySelector(".bb-aurora"); if (oldA) oldA.remove();
     var oldT = document.querySelector(".bb-tint"); if (oldT) oldT.remove();
+    var oldM = document.querySelector(".bb-mark"); if (oldM) oldM.remove();
     if (document.body) document.body.className = document.body.className.replace(/\bme-\S+/g, "").trim();
     var t = key && THEMES[key];
     if (!t) return;
@@ -65,8 +70,17 @@
     document.head.appendChild(st);
     var addBadge = function () {
       document.body.classList.add("me-" + key);
-      var b = document.createElement("div"); b.className = "bb-me-badge"; b.textContent = t.label;
+      var b = document.createElement("div"); b.className = "bb-me-badge";
+      if (t.img) { var im = document.createElement("img"); im.src = t.img; im.alt = "";
+        im.style.cssText = "height:18px;width:auto;vertical-align:middle;margin:-3px 7px -3px -4px;border-radius:2px"; b.appendChild(im); }
+      b.appendChild(document.createTextNode(t.label));
       document.body.appendChild(b);
+      if (t.mark) { var m = document.createElement("img"); m.className = "bb-mark"; m.src = t.mark.src; m.alt = "";
+        var ms = {position:"fixed", left:"50%", top:"52%", width:"min(70vw,420px)", height:"auto", "max-height":"60vh", "object-fit":"contain",
+          transform:"translate(-50%,-50%)", "z-index":"9997", "pointer-events":"none", opacity:String(t.mark.opacity),
+          border:"0", "border-radius":"0", background:"none", margin:"0", padding:"0", "box-shadow":"none"};
+        for (var k in ms) m.style.setProperty(k, ms[k], "important");
+        document.body.appendChild(m); }
       if (t.aurora) { var a = document.createElement("div"); a.className = "bb-aurora"; document.body.prepend(a); }
       // Pages with fixed blue colors get a hue overlay: blues shift to the person's color; whites and text stay put.
       // The Housemen page is fully themed through its variables, so it skips this.
