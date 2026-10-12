@@ -661,6 +661,10 @@ function render() {
   const w = document.getElementById("who");
   w.textContent = WHO ? `✓ ${WHO.name}${WHO.role=="director"?" · Director":""}` : "Sign in"; w.classList.toggle("in", !!WHO);
   document.getElementById("vCap").textContent = leadName();
+  // The Captain/Director tab exists only for leads; everyone else sees the houseman list only.
+  const lead = !!(WHO && LEAD(WHO.role));
+  document.querySelector(".seg").style.display = lead ? "" : "none";
+  if (!lead && view == "cap") view = "hsm";
   document.getElementById("vHsm").classList.toggle("on", view=="hsm");
   document.getElementById("vCap").classList.toggle("on", view=="cap");
   const d = dayOf(dayISO);
@@ -774,7 +778,7 @@ document.getElementById("send").onclick = async () => {
   toast("⚠ Sent to captain");
 };
 document.getElementById("vHsm").onclick = () => { view = "hsm"; render(); };
-document.getElementById("vCap").onclick = () => { view = "cap"; render(); };
+document.getElementById("vCap").onclick = () => { if (WHO && LEAD(WHO.role)) { view = "cap"; render(); } };
 document.getElementById("foot").innerHTML = `${MOCK ? "Practice mode — saves on this phone only" : LOCAL ? "Test copy — writes to the test list" : "Live — updates show on every phone"}<br><a href="index.html">← Banquet Bot</a>`;
 if (MOCK) setSync("ok");
 render();
