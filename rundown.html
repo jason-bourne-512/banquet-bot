@@ -5596,13 +5596,14 @@ body{font-family:Manrope,Arial,sans-serif}
       <div class="svc-time">5:15–<br>6:30 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Lantana</span><span class="gtd-pill">EXP 40</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-menu" data-en="Per client email 10/1 (event order not yet received): Steakhouse Chopping Block (in the foyer)<br>Desserts (in the room)<br>Soda on consumption" data-es="Per client email 10/1 (event order not yet received): Steakhouse Chopping Block (in the foyer)<br>Desserts (in the room)<br>Soda on consumption">Per client email 10/1 (event order not yet received): Steakhouse Chopping Block (in the foyer)<br>Desserts (in the room)<br>Soda on consumption</div>
       </div>
     </div>
     <div class="card-foot">
-      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Tiffany</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Cayleigh</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Lantana · Crescent Rounds · set 42" data-es="Lantana · Crescent Rounds · set 42">Lantana · Crescent Rounds · set 42</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="VSP 101 Workshop Oct2026 · from events report 10/5 — no event order yet" data-es="VSP 101 Workshop Oct2026 · from events report 10/5 — no event order yet">VSP 101 Workshop Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="VSP 101 Workshop Oct2026 · from events report 10/5 — Diana sent the event order to the client 10/2, not yet in the banquet packet<br>5 UPS boxes must be in Lantana by 12:00 PM Tue — see SHIPPING" data-es="VSP 101 Workshop Oct2026 · from events report 10/5 — Diana sent the event order to the client 10/2, not yet in the banquet packet<br>5 UPS boxes must be in Lantana by 12:00 PM Tue — see SHIPPING">VSP 101 Workshop Oct2026 · from events report 10/5 — Diana sent the event order to the client 10/2, not yet in the banquet packet<br>5 UPS boxes must be in Lantana by 12:00 PM Tue — see SHIPPING</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="SHIPPING" data-es="ENVÍOS">SHIPPING</span><span class="foot-val" data-en="5 UPS boxes inbound — in Lantana by 12:00 PM Tue 10/13 (Diana, email 10/12)<br>1Z8868310190785180<br>1Z8868310191546212<br>1Z8868310193433401<br>1Z8868310194354398<br>1Z8868310194721777<br>Return pickup Wed 10/14 — client asking where to send UPS and for help moving their labeled boxes; location TBD, confirm with Diana" data-es="5 UPS boxes inbound — in Lantana by 12:00 PM Tue 10/13 (Diana, email 10/12)<br>1Z8868310190785180<br>1Z8868310191546212<br>1Z8868310193433401<br>1Z8868310194354398<br>1Z8868310194721777<br>Return pickup Wed 10/14 — client asking where to send UPS and for help moving their labeled boxes; location TBD, confirm with Diana">5 UPS boxes inbound — in Lantana by 12:00 PM Tue 10/13 (Diana, email 10/12)<br>1Z8868310190785180<br>1Z8868310191546212<br>1Z8868310193433401<br>1Z8868310194354398<br>1Z8868310194721777<br>Return pickup Wed 10/14 — client asking where to send UPS and for help moving their labeled boxes; location TBD, confirm with Diana</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/LANTANAfromVSPOct2026.pdf', 'Lantana — layout')"><span>Lantana — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
@@ -10536,7 +10537,7 @@ body{font-family:Manrope,Arial,sans-serif}
         base:(cut<0?client:client.slice(0,cut)).trim(),
         subtitle:cut<0?'':client.slice(cut+1).trim(),
         badges:Array.from(card.querySelectorAll('.card-badges .badge')).map(b=>b.textContent.trim()).filter(Boolean),
-        contact:'', note:'', room:'', av:'', food:'', billing:'', diagram:null, items:[]
+        contact:'', note:'', room:'', av:'', food:'', billing:'', shipping:'', diagram:null, items:[]
       };
       card.querySelectorAll('.card-foot .foot-row').forEach(function(row){
         const key=row.querySelector('.foot-key'), val=row.querySelector('.foot-val');
@@ -10548,6 +10549,7 @@ body{font-family:Manrope,Arial,sans-serif}
           case 'AV': ev.av=htmlOf(val); break;
           case 'FOOD': ev.food=htmlOf(val); break;
           case 'BILLING': ev.billing=htmlOf(val); break;
+          case 'SHIPPING': ev.shipping=htmlOf(val); break;
           case 'DIAGRAM': ev.diagram=val; break;
         }
       });
@@ -10709,6 +10711,7 @@ body{font-family:Manrope,Arial,sans-serif}
         if(ev.food) setup.push(line('FOOD',clean(ev.food)));
         if(ev.av) setup.push(line('AV',clean(ev.av)));
         if(ev.billing) setup.push(line('BILLING',clean(ev.billing)));
+        if(ev.shipping) setup.push(line('SHIPPING',clean(ev.shipping)));
         if(ev.badges.length) setup.push(line('TEAM','',ev.badges.join(' · ')));
         if(ev.diagram){
           const p=line('DIAGRAM');

@@ -157,11 +157,25 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
 .foot{margin-top:24px;font-size:10.5px;color:var(--t4);text-align:center;line-height:1.6}
 .foot a,.linkbtn{color:var(--t3);background:none;border:0;text-decoration:underline;font-size:10.5px}
 .printbtn{margin-top:12px;width:100%;border:1px solid var(--line);background:var(--card);color:inherit;border-radius:12px;padding:11px;font:700 14px 'Barlow Condensed',sans-serif;letter-spacing:.04em}
+
+/* captain theme — only when the captain (Jason) is signed in */
+.capbadge{display:none;align-items:center;gap:5px;margin-left:8px;padding:3px 8px;border:1px solid #f2c87966;border-radius:20px;font:800 9px Manrope;letter-spacing:1.6px;color:#f2c879;background:linear-gradient(135deg,#f2c8791f,#f2c87905);box-shadow:0 0 12px #f2c8791c}
+body.cap{--accent:#f2c879;--accent-d:rgba(242,200,121,.13);--line:rgba(242,200,121,.13);--line2:rgba(242,200,121,.32)}
+body.cap::before{background:radial-gradient(ellipse at 100% 0,#7a5a1f55,transparent 46%),radial-gradient(ellipse at 0 100%,#5a3f1a2e,transparent 52%),
+  repeating-linear-gradient(60deg,transparent 0 33px,#f2c8790a 33px 34px),repeating-linear-gradient(-60deg,transparent 0 33px,#f2c87908 33px 34px),var(--bg)}
+body.cap .top{border-bottom:1px solid #f2c87933;box-shadow:inset 0 2px 0 #f2c879}
+body.cap .mark{border-color:#f2c87999;color:#f2c879;box-shadow:0 0 16px #f2c87930}
+body.cap .capbadge{display:inline-flex}
+body.cap .who.in{color:#f2c879;border-color:#f2c87966;background:#f2c8790f}
+body.cap .eyebrow::before{background:#f2c879;box-shadow:0 0 9px #f2c879}
+body.cap .seg button.on{box-shadow:0 0 0 1px #f2c87966;color:#f6dca6}
+body.cap .room .num{border-color:#f2c87955}
+body.cap .printbtn{border-color:#f2c87966;color:#f2c879}
 </style></head>
 <body>
 <div class="wrap">
   <div class="top">
-    <div class="brand"><a class="brand" href="index.html"><span class="mark">B</span>HOUSEMEN</a><span class="sync" id="sync" title="Live sync"></span><button class="who" id="who">Sign in</button></div>
+    <div class="brand"><a class="brand" href="index.html"><span class="mark">B</span>HOUSEMEN</a><span class="capbadge">★ CAPTAIN</span><span class="sync" id="sync" title="Live sync"></span><button class="who" id="who">Sign in</button></div>
     <div class="seg"><button id="vHsm" class="on">Houseman</button><button id="vCap">Captain</button></div>
     <div class="days" id="days"></div>
   </div>
@@ -267,7 +281,7 @@ const DAYS = [
  { iso:"2026-10-12", target:"Tuesday 10/13", crew:"", shift:"", rooms:[
    {t:"set", room:"Plumeria A", for:"Qualico · Executive Strategic Planning", diag:"PLUMERIAAfromQualicoExecutiveStrategicPlanning.pdf", items:["Conference","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"set", room:"Primrose AB", for:"Dell Technologies · Global Alliances Presales Meeting", diag:"PRIMROSEABfromDellGlobalAlliancesPresalesMeeting.pdf", items:["U-Shape for 35 — (4) 6x18 tables with (2) chairs each set behind the U-Shape","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
-   {t:"set", room:"Lantana", for:"Vision Service Plan · Meeting", diag:"LANTANAfromVSPOct2026.pdf", items:["Crescent Rounds","set 42","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["From events report — no event order yet"]},
+   {t:"set", room:"Lantana", for:"Vision Service Plan · Meeting", diag:"LANTANAfromVSPOct2026.pdf", items:["Crescent Rounds","set 42","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["From events report — no event order yet","5 UPS boxes due in Lantana by 12 PM Tue — check receiving (tracking on the rundown card)"]},
    {t:"set", room:"Zilker", for:"Varian Medical Systems · Board Meeting", items:["Conference","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
  ]},
  { iso:"2026-10-13", target:"Wednesday 10/14", crew:"", shift:"", rooms:[
@@ -661,6 +675,7 @@ function render() {
   const w = document.getElementById("who");
   w.textContent = WHO ? `✓ ${WHO.name}${WHO.role=="director"?" · Director":""}` : "Sign in"; w.classList.toggle("in", !!WHO);
   document.getElementById("vCap").textContent = leadName();
+  document.body.classList.toggle("cap", !!(WHO && WHO.role == "captain"));
   // The Captain/Director tab exists only for leads; everyone else sees the houseman list only.
   const lead = !!(WHO && LEAD(WHO.role));
   document.querySelector(".seg").style.display = lead ? "" : "none";
