@@ -109,3 +109,5 @@
     off: function () { try { localStorage.removeItem("bb-me"); } catch (e) {} apply(null); }
   };
 })();
+// Desktop mode for leads (desktop.js) — loaded here so every page that has the personal looks gets it too.
+(function () { var s = document.createElement("script"); s.src = "desktop.js"; s.defer = true; document.head.appendChild(s); })();
