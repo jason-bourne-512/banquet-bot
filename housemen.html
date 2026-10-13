@@ -241,12 +241,26 @@ body.cap .eyebrow::before{background:#f2c879;box-shadow:0 0 9px #f2c879}
 body.cap .seg button.on{box-shadow:0 0 0 1px #f2c87966;color:#f6dca6}
 body.cap .room .num{border-color:#f2c87955}
 body.cap .printbtn{border-color:#f2c87966;color:#f2c879}
+/* director theme — Hector (Director of Event Operations): same treatment in his mint, matching desktop mode */
+@media (max-width:480px){.who-ttl{display:none}}
+.dirbadge{display:none;align-items:center;gap:5px;margin-left:8px;padding:3px 8px;border:1px solid #5fe3c066;border-radius:20px;font:800 9px Manrope;letter-spacing:1.6px;color:#5fe3c0;background:linear-gradient(135deg,#5fe3c01f,#5fe3c005);box-shadow:0 0 12px #5fe3c01c;white-space:nowrap}
+body.dir{--accent:#5fe3c0;--accent-d:rgba(95,227,192,.13);--line:rgba(95,227,192,.13);--line2:rgba(95,227,192,.32)}
+body.dir::before{background:radial-gradient(ellipse at 100% 0,#1f6a5a55,transparent 46%),radial-gradient(ellipse at 0 100%,#1a4a5a2e,transparent 52%),
+  repeating-linear-gradient(60deg,transparent 0 33px,#5fe3c00a 33px 34px),repeating-linear-gradient(-60deg,transparent 0 33px,#5fe3c008 33px 34px),var(--bg)}
+body.dir .top{border-bottom:1px solid #5fe3c033;box-shadow:inset 0 2px 0 #5fe3c0}
+body.dir .mark{border-color:#5fe3c099;color:#5fe3c0;box-shadow:0 0 16px #5fe3c030}
+body.dir .dirbadge{display:inline-flex}
+body.dir .who.in{color:#5fe3c0;border-color:#5fe3c066;background:#5fe3c00f}
+body.dir .eyebrow::before{background:#5fe3c0;box-shadow:0 0 9px #5fe3c0}
+body.dir .seg button.on{box-shadow:0 0 0 1px #5fe3c066;color:#bdf5e6}
+body.dir .room .num{border-color:#5fe3c055}
+body.dir .printbtn{border-color:#5fe3c066;color:#5fe3c0}
 </style><script src="theme.js"></script>
 </head>
 <body>
 <div class="wrap">
   <div class="top">
-    <div class="brand"><a class="brand" href="index.html"><span class="mark">B</span>HOUSEMEN</a><span class="capbadge">★ CAPTAIN</span><span class="sync" id="sync" title="Live sync"></span><button class="who" id="who">Sign in</button><button class="who deskbtn" id="desk" style="display:none">🖥 Desktop</button></div>
+    <div class="brand"><a class="brand" href="index.html"><span class="mark">B</span>HOUSEMEN</a><span class="capbadge">★ CAPTAIN</span><span class="dirbadge">★ DIRECTOR</span><span class="sync" id="sync" title="Live sync"></span><button class="who" id="who">Sign in</button><button class="who deskbtn" id="desk" style="display:none">🖥 Desktop</button></div>
     <div class="seg"><button id="vHsm" class="on">Houseman</button><button id="vCap">Captain</button></div>
     <div class="days" id="days"></div>
   </div>
@@ -591,7 +605,7 @@ const PEOPLE = [
 ];
 // Director = every captain ability, shown with the Director title.
 const LEAD = role => role == "captain" || role == "director";
-const TITLE = {hsm:"Houseman", captain:"Captain", director:"Director"};
+const TITLE = {hsm:"Houseman", captain:"Captain", director:"Director of Event Operations"};
 const leadName = () => WHO && WHO.role == "director" ? "Director" : "Captain";
 
 // ── storage: live Firestore (the-wire project). localhost → test collection; ?mock → this device only.
@@ -720,7 +734,7 @@ document.getElementById("pad").addEventListener("click", async e => {
     WHO = {name:p.name, role:p.role};
     try { localStorage.setItem("bb-hsm-who", JSON.stringify(WHO)); } catch(e) {}
     window.bbTheme && window.bbTheme.signIn(p.name);
-    document.getElementById("pinBg").classList.remove("on"); toast(`Signed in as ${p.name}${p.role=="director"?" · Director":""}`); render();
+    document.getElementById("pinBg").classList.remove("on"); toast(`Signed in as ${p.name}${p.role=="director"?" · Director of Event Operations":""}`); render();
     const r = pinResolve; pinResolve = null; r && r(WHO);
   }
 });
@@ -903,9 +917,10 @@ function renderBoard() {
 function render() {
   if (SORTING) { renderPending = true; return; }
   const w = document.getElementById("who");
-  w.textContent = WHO ? `✓ ${WHO.name}${WHO.role=="director"?" · Director":""}` : "Sign in"; w.classList.toggle("in", !!WHO);
+  w.innerHTML = WHO ? `✓ ${esc(WHO.name)}${WHO.role=="director"?`<span class="who-ttl"> · Director of Event Operations</span>`:""}` : "Sign in"; w.classList.toggle("in", !!WHO);
   document.getElementById("vCap").textContent = WHO && WHO.role == "director" ? "Operations" : "Captain";
   document.body.classList.toggle("cap", !!(WHO && WHO.role == "captain"));
+  document.body.classList.toggle("dir", !!(WHO && WHO.role == "director"));
   // The Captain/Operations tab exists only for leads; everyone else sees the houseman list only.
   const lead = !!(WHO && LEAD(WHO.role));
   document.querySelector(".seg").style.display = lead ? "" : "none";

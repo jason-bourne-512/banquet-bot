@@ -130,7 +130,7 @@
     ".bbd-me{position:relative;padding:12px;border-top:1px solid rgba(139,209,255,.12);display:grid;gap:8px}" +
     ".bbd-user{display:flex;align-items:center;gap:10px;color:#eaf3fa;font:700 13px Manrope,Arial}" +
     ".bbd-user em{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:color-mix(in srgb,var(--bbd-acc) 18%,transparent);color:var(--bbd-acc);font:800 14px Manrope,Arial;font-style:normal;border:1px solid var(--bbd-acc)}" +
-    ".bbd-user small{display:block;font:800 9px Manrope,Arial;letter-spacing:1.8px;color:var(--bbd-acc);text-transform:uppercase}" +
+    ".bbd-user small{display:block;font:800 9px/1.35 Manrope,Arial;letter-spacing:1.4px;color:var(--bbd-acc);text-transform:uppercase}" +
     ".bbd-me .row{display:grid;grid-template-columns:1fr 1fr;gap:6px}" +
     ".bbd-btn{border:1px solid #ffffff1c;background:#ffffff08;color:#d6e3ee;border-radius:8px;padding:7px 8px;font:700 11px Manrope,Arial;cursor:pointer}" +
     ".bbd-btn:hover{border-color:var(--bbd-acc);color:var(--bbd-acc)}" +
@@ -265,7 +265,7 @@
         return (i == 6 ? '<div class="lbl">Reference</div>' : "") +
           '<a href="' + p[0] + '" class="' + (p[0] == cur ? "on" : "") + '"><i>' + p[2] + "</i>" + p[1] + "</a>";
       }).join("") + "</nav>" +
-      '<div class="bbd-me"><div class="bbd-user"><em>' + esc(w.name.slice(0, 1)) + "</em><div>" + esc(w.name) + "<small>" + (w.role == "director" ? "Director" : "Captain") + "</small></div></div>" +
+      '<div class="bbd-me"><div class="bbd-user"><em>' + esc(w.name.slice(0, 1)) + "</em><div>" + esc(w.name) + "<small>" + (w.role == "director" ? "Director of Event Operations" : "Captain") + "</small></div></div>" +
       '<div class="row"><button class="bbd-btn" data-bbd="phone">📱 Phone view</button><button class="bbd-btn" data-bbd="out">Sign out</button></div></div>';
     var top = document.createElement("header");
     top.className = "bbd-top";
