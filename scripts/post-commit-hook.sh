@@ -14,6 +14,10 @@ set -uo pipefail
 REPO_DIR="/Users/star69/banquet-bot"
 TELEGRAM_DIR="/Users/star69/banquet-bot-telegram"
 TZ_NAME="America/Chicago"
+# Telegram bot retired 2026-10-13 (Railway trial ended). Extraction into this repo's data/ still runs;
+# set TELEGRAM_SYNC=true to resume copying to banquet-bot-telegram and pushing it.
+TELEGRAM_SYNC=false
+sync_cp() { [ "$TELEGRAM_SYNC" = true ] || return 0; mkdir -p "$(dirname "$2")"; cp "$1" "$2"; }
 
 cd "$REPO_DIR" || exit 0
 
@@ -24,8 +28,7 @@ data_changed=false
 if echo "$CHANGED_FILES" | grep -qx 'rundown.html'; then
   echo "[post-commit] rundown.html changed — regenerating rundown.json"
   if node scripts/extract-rundown.js; then
-    mkdir -p "$TELEGRAM_DIR/data"
-    cp data/rundown.json "$TELEGRAM_DIR/data/rundown.json"
+    sync_cp data/rundown.json "$TELEGRAM_DIR/data/rundown.json"
     schedule_needs_refresh=true
     data_changed=true
   else
@@ -36,8 +39,7 @@ fi
 if echo "$CHANGED_FILES" | grep -qx 'index.html'; then
   echo "[post-commit] index.html changed — regenerating staff-schedule.json"
   if node scripts/extract-staff-schedule.js; then
-    mkdir -p "$TELEGRAM_DIR/data"
-    cp data/staff-schedule.json "$TELEGRAM_DIR/data/staff-schedule.json"
+    sync_cp data/staff-schedule.json "$TELEGRAM_DIR/data/staff-schedule.json"
     schedule_needs_refresh=true
     data_changed=true
   else
@@ -48,8 +50,7 @@ fi
 if echo "$CHANGED_FILES" | grep -qx 'assignments.json'; then
   echo "[post-commit] assignments.json changed — checking names against the rundown"
   if node scripts/check-assignments.js; then
-    mkdir -p "$TELEGRAM_DIR/data"
-    cp assignments.json "$TELEGRAM_DIR/data/assignments.json"
+    sync_cp assignments.json "$TELEGRAM_DIR/data/assignments.json"
     schedule_needs_refresh=true
     data_changed=true
   else
@@ -62,8 +63,7 @@ for page in menu rooms info training handbook; do
   if echo "$CHANGED_FILES" | grep -qx "$page.html"; then
     echo "[post-commit] $page.html changed — regenerating reference text"
     if node scripts/extract-page-text.js "$page.html" "data/reference/$page.txt"; then
-      mkdir -p "$TELEGRAM_DIR/data/reference"
-      cp "data/reference/$page.txt" "$TELEGRAM_DIR/data/reference/$page.txt"
+      sync_cp "data/reference/$page.txt" "$TELEGRAM_DIR/data/reference/$page.txt"
       data_changed=true
     else
       echo "[post-commit] extract-page-text.js FAILED for $page.html — leaving telegram copy untouched" >&2
@@ -71,7 +71,7 @@ for page in menu rooms info training handbook; do
   fi
 done
 
-if [ "$data_changed" = true ]; then
+if [ "$data_changed" = true ] && [ "$TELEGRAM_SYNC" = true ]; then
   cd "$TELEGRAM_DIR" || exit 0
 
   if [ "$schedule_needs_refresh" = true ]; then
