@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 170">
+  <!-- Diana · H-Town · Space City: Houston skyline with a launch (original drawing for Banquet Bot) -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e3d6ff"/><stop offset="1" stop-color="#a98bf0"/></linearGradient>
+    <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2c2"/><stop offset=".5" stop-color="#ffc085"/><stop offset="1" stop-color="#ff5f5f" stop-opacity="0"/></linearGradient>
+  </defs>
+  <g fill="#fff">
+    <circle cx="30" cy="22" r="1.4"/><circle cx="58" cy="40" r="1"/><circle cx="96" cy="16" r="1.2"/><circle cx="140" cy="30" r="1"/>
+    <circle cx="210" cy="56" r="1.3"/><circle cx="18" cy="60" r="1"/><circle cx="120" cy="52" r="1.1"/>
+  </g>
+  <!-- rocket -->
+  <g transform="translate(186 18) rotate(18)">
+    <path d="M0 0 C8 8 9 26 6 40 H-6 C-9 26 -8 8 0 0Z" fill="#f4f4ff" stroke="#c1a6ff" stroke-width="1.5"/>
+    <circle cx="0" cy="18" r="3.4" fill="#6fb6ff" stroke="#c1a6ff" stroke-width="1"/>
+    <path d="M-6 30 L-13 44 L-6 40Z M6 30 L13 44 L6 40Z" fill="#c1a6ff"/>
+    <path d="M-5 41 Q0 70 5 41Z" fill="url(#flame)"/>
+  </g>
+  <!-- skyline -->
+  <g fill="url(#sky)" stroke="#f3dc8f" stroke-width="1.2">
+    <path d="M14 150 V112 H30 V150Z"/>
+    <path d="M32 150 V96 H48 V150Z"/>
+    <path d="M50 150 V70 L58 58 L66 70 V150Z"/>
+    <path d="M68 150 V84 H86 V150Z"/>
+    <path d="M88 150 V48 L94 40 H104 L110 48 V150Z"/>
+    <path d="M112 150 V62 H122 V54 H132 V62 H142 V150Z"/>
+    <path d="M144 150 V78 L152 70 L160 78 V150Z"/>
+    <path d="M162 150 V100 H180 V150Z"/>
+    <path d="M182 150 V118 H196 V150Z"/>
+    <path d="M198 150 V106 H214 V150Z"/>
+    <path d="M216 150 V124 H228 V150Z"/>
+  </g>
+  <g fill="#3a2a5a" opacity=".55">
+    <rect x="92" y="56" width="3" height="80"/><rect x="100" y="56" width="3" height="80"/>
+    <rect x="118" y="70" width="3" height="66"/><rect x="128" y="70" width="3" height="66"/>
+    <rect x="72" y="92" width="3" height="48"/><rect x="38" y="104" width="3" height="40"/>
+  </g>
+  <path d="M8 150 H232" stroke="#f3dc8f" stroke-width="2"/>
+  <text x="120" y="166" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="11" letter-spacing="2" fill="#c1a6ff">H-TOWN · SPACE CITY</text>
+</svg>

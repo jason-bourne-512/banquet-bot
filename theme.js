@@ -59,6 +59,21 @@
         "@keyframes bbAurora{0%{transform:translateX(-6%) skewY(-3deg) scaleY(.9)}50%{transform:translateX(4%) skewY(2deg) scaleY(1.1)}100%{transform:translateX(8%) skewY(-1deg) scaleY(.95)}}" +
         "@keyframes bbAurora2{0%{transform:translateX(-10%);opacity:.6}100%{transform:translateX(10%);opacity:1}}" +
         "@media (prefers-reduced-motion:reduce){.bb-aurora,.bb-aurora::after{animation:none}}"
+    },
+    // Lisa (Events Manager): Puro San Antonio — the Alamo under Fiesta papel picado (img/me, original art).
+    // No palette change: her rose accent comes from the Housemen page.
+    lisa: {
+      label: "LISA · PURO SAN ANTONIO",
+      img: "img/me/lisa-san-antonio.svg",
+      mark: {src: "img/me/lisa-san-antonio.svg", opacity: .08},
+      css: BADGE + ".bb-me-badge{color:#ffd1e4;background:linear-gradient(135deg,#5a1f3a,#2a0f1d);border:1px solid #ff9ec788}"
+    },
+    // Diana (Senior Events Manager): H-Town · Space City — Houston skyline with a launch (img/me, original art).
+    diana: {
+      label: "DIANA · H-TOWN · SPACE CITY",
+      img: "img/me/diana-houston.svg",
+      mark: {src: "img/me/diana-houston.svg", opacity: .08},
+      css: BADGE + ".bb-me-badge{color:#e3d6ff;background:linear-gradient(135deg,#2e1f5a,#140d2e);border:1px solid #c1a6ff88}"
     }
   };
   function apply(key) {
