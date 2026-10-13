@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BEO Daily Brief — Sunday, September 13, 2026</title>
+<title>Daily Brief — Banquet Bot</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -73,135 +73,168 @@
         <div class="hotel-eyebrow">Westin Austin at The Domain &middot; Banquet Operations</div>
         <div class="page-title">Daily <span>Brief</span></div>
       </div>
-      <div class="date-chip">Sunday &middot; September 13, 2026</div>
+      <div class="tb-nav"><button class="tb-arrow" id="prev" aria-label="Previous day">&lsaquo;</button><div class="date-chip" id="dateChip">Loading&hellip;</div><button class="tb-arrow" id="next" aria-label="Next day">&rsaquo;</button></div>
     </div>
-    
-    <div class="summary-row">
-      <div class="summary-stat"><div class="num">4</div><div class="lbl">Groups</div></div>
-      <div class="summary-stat"><div class="num">6</div><div class="lbl">Rooms Active</div></div>
-      <div class="summary-stat"><div class="num">~300</div><div class="lbl">Peak Covers</div></div>
-      <div class="summary-stat"><div class="num">1:00 PM</div><div class="lbl">First Event</div></div>
-      <div class="summary-stat"><div class="num">5:00 PM</div><div class="lbl">Last Event</div></div>
-    </div>
+    <div class="summary-row" id="summary"></div>
   </div>
-  <div class="day-timeline">
-      <div class="tl-item">
-        <div class="tl-dot active"><div class="inner"></div></div>
-        <div class="tl-label">1:15 PM</div>
-        <div class="tl-event">Reception</div>
-      </div>
-      <div class="tl-spacer"></div></div>
-  <div class="section-heading">Events &mdash; Chronological</div>
-  
-  <div class="event-card">
-    <div class="card-header">
-      <div class="card-header-left">
-        <div class="client-name">Texas Tech University — Registration &amp; Reception</div>
-        <div class="card-meta">
-          <span class="meta-chip room">Foyer</span>
-          <span class="meta-chip type">Registration — No F&B &middot; Reception</span>
-        </div>
-      </div>
-      <div class="time-block">
-        <div class="time-main">1:15 PM &ndash; 5:00 PM</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="info-row"><div class="info-item"><div class="lbl">Contact</div><div class="val">Veronica</div></div><div class="info-item"><div class="lbl">Rooms</div><div class="val">Foyer</div></div></div>
-      <div class="food-section">
-      <div class="meal-group">
-        <div class="food-header">1:30 PM &ndash; 5:00 PM &middot; Registration — No F&amp;B &mdash; Foyer</div>
-        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
-      </div>
-    <div class="meal-group">
-      <div class="food-header">1:15 PM &ndash; 5:00 PM &middot; Reception &mdash; Foyer</div>
-      <div class="food-item">Deluxe Nacho Bar Display Station $35/pp — Ancho Rubbed Shredded Chicken, Pulled Barbacoa Beef, Spicy Queso, Salsa Rojo, Tomatillo Salsa Verde, Guacamole, Sour Cream, Diced Tomato, Jalapenos, Crispy Tortilla Chips(90) Custom Quesadilla Bar — Carnitas with pickled onion &amp; cilantro, Shrimp with Fire Roasted Chiles, Chipotle Chicken, served with salsa, guacamole, cilantro lime sour cream</div><div class="food-item">Brownies or Blondies</div><div class="food-item">Assorted Cookies</div><div class="food-item">Freshly Brewed Iced Tea</div>
-      <div class="food-item" style="color:var(--gold);opacity:1">GTD 250</div>
-    </div></div>
-      <div class="ops-note"><div class="text">Please have F&amp;B ready to go by 1:15pm</div></div>
-      <div class="setup-row"><span class="setup-label">Setup:</span><span class="setup-pill">Foyer · See diagram — (2) 6ft tables for promo items across from Primrose B, near Plumeria · (3) 6ft tables between Primrose B &amp; C doors for registration</span></div>
-    </div>
-  </div>
-  <div class="event-card">
-    <div class="card-header">
-      <div class="card-header-left">
-        <div class="client-name">Texas Tech University — General Session</div>
-        <div class="card-meta">
-          <span class="meta-chip room">Primrose C</span>
-          <span class="meta-chip type">General Session — No F&B</span>
-        </div>
-      </div>
-      <div class="time-block">
-        <div class="time-main">2:00 PM &ndash; 5:00 PM</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="info-row"><div class="info-item"><div class="lbl">Contact</div><div class="val">Veronica</div></div><div class="info-item"><div class="lbl">Rooms</div><div class="val">Primrose C</div></div></div>
-      <div class="food-section">
-      <div class="meal-group">
-        <div class="food-header">2:00 PM &ndash; 5:00 PM &middot; General Session — No F&amp;B &mdash; Primrose C</div>
-        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
-      </div></div>
-      
-      <div class="setup-row"><span class="setup-label">Setup:</span><span class="setup-pill">Primrose C · Theatre seating for 300 · (6) soft seats on 8x24 stage · (1) 6x30 AV table in back · Room rental $7,500</span></div>
-    </div>
-  </div>
-  <div class="event-card">
-    <div class="card-header">
-      <div class="card-header-left">
-        <div class="client-name">Texas Tech University — Breakout Rooms</div>
-        <div class="card-meta">
-          <span class="meta-chip room">Primrose D &middot; Camellia</span>
-          <span class="meta-chip type">Breakout — No F&B</span>
-        </div>
-      </div>
-      <div class="time-block">
-        <div class="time-main">1:00 PM &ndash; 5:00 PM</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="info-row"><div class="info-item"><div class="lbl">Contact</div><div class="val">Veronica</div></div><div class="info-item"><div class="lbl">Rooms</div><div class="val">Primrose D &middot; Camellia</div></div></div>
-      <div class="food-section">
-      <div class="meal-group">
-        <div class="food-header">1:00 PM &ndash; 5:00 PM &middot; Breakout — No F&amp;B &mdash; Primrose D</div>
-        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
-      </div>
-      <div class="meal-group">
-        <div class="food-header">1:00 PM &ndash; 5:00 PM &middot; Breakout — No F&amp;B &mdash; Camellia</div>
-        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
-      </div></div>
-      
-      <div class="setup-row"><span class="setup-label">Setup:</span><span class="setup-pill">Primrose D · Theater set for 208 · 8x18 stage with stairs on left · Podium on stage · (1) 6x30 tech table in back · Camellia · (3) rounds of 6 · Room rental $800</span></div>
-    </div>
-  </div>
-  <div class="event-card">
-    <div class="card-header">
-      <div class="card-header-left">
-        <div class="client-name">Texas Tech University — Exhibits &amp; Storage</div>
-        <div class="card-meta">
-          <span class="meta-chip room">Primrose AB &middot; Verbena</span>
-          <span class="meta-chip type">Exhibits — No F&B &middot; Storage — No F&B</span>
-        </div>
-      </div>
-      <div class="time-block">
-        <div class="time-main">1:00 PM &ndash; 5:00 PM</div>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="info-row"><div class="info-item"><div class="lbl">Rooms</div><div class="val">Primrose AB &middot; Verbena</div></div></div>
-      <div class="food-section">
-      <div class="meal-group">
-        <div class="food-header">1:30 PM &ndash; 5:00 PM &middot; Exhibits — No F&amp;B &mdash; Primrose AB</div>
-        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
-      </div>
-      <div class="meal-group">
-        <div class="food-header">1:00 PM &ndash; 5:00 PM &middot; Storage — No F&amp;B &mdash; Verbena</div>
-        <div class="food-items"><div class="food-item" style="opacity:.6">No food or beverage required at this time</div></div>
-      </div></div>
-      
-      <div class="setup-row"><span class="setup-label">Setup:</span><span class="setup-pill">Primrose AB · See diagram — 18 exhibit tables with linen around perimeter, food outside room, beverages on credenzas inside · Verbena · "Clean and Clear" storage · Room rental $800</span></div>
-    </div>
-  </div>
-  <div class="footer">Banquet Brief &middot; Westin Austin at The Domain &middot; Sunday, September 13, 2026</div>
+  <div id="crewWrap"></div>
+  <div class="day-timeline" id="timeline"></div>
+  <div class="section-heading" id="evHead">Events &mdash; Chronological</div>
+  <div id="events"></div>
+  <div class="footer" id="foot">Live from the Rundown &middot; <a href="rundown.html" style="color:inherit">Open the Rundown &rarr;</a></div>
 </div>
-</body></html>
+<style>
+  .tb-nav { display:flex; align-items:center; gap:6px; }
+  .tb-arrow { border:1px solid var(--border-light); background:var(--card); color:var(--cream); border-radius:6px; width:30px; height:30px; font-size:18px; line-height:1; cursor:pointer; }
+  .tb-arrow:hover { border-color:var(--gold); color:var(--gold); }
+  .crew { display:flex; flex-wrap:wrap; gap:6px; margin:-0.75rem 0 1.75rem; }
+  .crew-chip { font-size:0.75rem; padding:0.3rem 0.65rem; border:1px solid var(--border-light); border-radius:20px; background:var(--card); color:var(--cream); }
+  .crew-chip b { color:var(--gold); font-weight:600; margin-right:4px; }
+  .crew-chip i { font-style:normal; color:var(--muted); margin-left:4px; font-size:0.68rem; }
+  .booking { font-size:0.75rem; color:var(--muted); margin-top:0.5rem; line-height:1.5; }
+  .empty-day { padding:2rem 0; color:var(--muted); text-align:center; }
+  .empty-day a { color:var(--gold); }
+</style>
+<script>
+// Daily Brief, built live from the Rundown (rundown.html day sections) and the posted schedule (index.html).
+// Nothing on this page is hand-written any more: open it any day and it shows that day.
+(function () {
+  var TZ = "America/Chicago";
+  var todayISO = function () { return new Intl.DateTimeFormat("en-CA", {timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date()); };
+  var q = new URLSearchParams(location.search).get("date");
+  var ISO = /^\d{4}-\d{2}-\d{2}$/.test(q || "") ? q : todayISO();
+  var dObj = function (iso) { return new Date(iso + "T12:00:00Z"); };
+  var shift = function (iso, n) { var t = dObj(iso); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };
+  var longDate = function (iso) { return dObj(iso).toLocaleDateString("en-US", {timeZone: "UTC", weekday: "long", month: "long", day: "numeric", year: "numeric"}); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); };
+  var txt = function (el) { if (!el) return ""; var c = el.cloneNode(true); c.querySelectorAll("br").forEach(function (b) { b.replaceWith(" "); }); return c.textContent.replace(/\s+/g, " ").trim(); };
+  // House rules: no prices anywhere, first names only.
+  var noPrice = function (s) {
+    return s.replace(/\s*·?\s*Room rental\s*\$[\d,.]+/gi, "")
+      .replace(/\s*(?:@\s*)?\$[\d,.]+(?:\s*\/\s*\$[\d,.]+)?(?:\s*(?:\/\s*pp|per\s+\w+|each|\+\+))?/gi, "")
+      .replace(/\s+([,·)])/g, "$1").replace(/\(\s*\)/g, "").replace(/\s{2,}/g, " ").trim();
+  };
+  var firstName = function (s) { return s.replace(/\s+[A-Z]\.?$/, "").trim(); };
+
+  // "7:00–8:00 AM" / "11:30 AM–1:00 PM" → minutes for sorting + a clean label
+  function parseSpan(s) {
+    var m = s.replace(/\s+/g, " ").match(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?\s*[–-]\s*(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?/i);
+    if (!m) return {a: 9e3, b: 9e3, label: s};
+    var ap2 = (m[6] || m[3] || "").toUpperCase(), ap1 = (m[3] || "").toUpperCase();
+    var h1 = +m[1], h2 = +m[4];
+    var mins = function (h, mm, ap) { h = h % 12 + (ap == "PM" ? 12 : 0); return h * 60 + (+mm || 0); };
+    // A start with no AM/PM shares the end's, unless that would put it after the end (11:30–1:00 PM → 11:30 AM).
+    if (!ap1) { ap1 = ap2; if (mins(h1, m[2], ap1) > mins(h2, m[5], ap2)) ap1 = ap2 == "PM" ? "AM" : "PM"; }
+    var lbl = function (h, mm, ap) { return h + ":" + (mm || "00") + " " + ap; };
+    return {a: mins(h1, m[2], ap1), b: mins(h2, m[5], ap2), label: lbl(h1, m[2], ap1) + " – " + lbl(h2, m[5], ap2), start: lbl(h1, m[2], ap1), end: lbl(h2, m[5], ap2)};
+  }
+
+  function readDay(doc) {
+    var sec = doc.querySelector('.day-section[data-date="' + ISO + '"]');
+    if (!sec) return null;
+    return [].map.call(sec.querySelectorAll(".event-card"), function (card) {
+      var foot = {};
+      card.querySelectorAll(".foot-row").forEach(function (r) { var k = txt(r.querySelector(".foot-key")).toUpperCase(); if (k) foot[k] = txt(r.querySelector(".foot-val")); });
+      var badges = [].map.call(card.querySelectorAll(".card-badges .badge"), txt);
+      var svc = [].map.call(card.querySelectorAll(".svc-row"), function (row) {
+        var t = parseSpan(txt(row.querySelector(".svc-time")));
+        t.tag = txt(row.querySelector(".svc-top .tag"));
+        t.room = txt(row.querySelector(".room-pill"));
+        t.gtd = txt(row.querySelector(".gtd-pill"));
+        t.menu = noPrice(txt(row.querySelector(".svc-menu")));
+        t.nofb = /No F&B/i.test(t.tag) || /^No F&B$/i.test(t.menu);
+        return t;
+      }).sort(function (x, y) { return x.a - y.a; });
+      var pick = function (re) { var b = badges.filter(function (x) { return re.test(x); })[0]; return b ? firstName(b.replace(/^[A-Z]+:\s*/, "")) : ""; };
+      return {title: txt(card.querySelector(".card-group")), mgr: pick(/^MGR/), ic: pick(/^IC/), foot: foot, svc: svc,
+        a: Math.min.apply(null, svc.map(function (s) { return s.a; }).concat(9e3)), b: Math.max.apply(null, svc.map(function (s) { return s.b; }).concat(0))};
+    }).sort(function (x, y) { return x.a - y.a; });
+  }
+
+  // Crew for the day from the first schedule table on index.html (column header like "TUE 13").
+  function readCrew(doc) {
+    var d = dObj(ISO), want = d.toLocaleDateString("en-US", {timeZone: "UTC", weekday: "short"}).toUpperCase() + " " + d.getUTCDate();
+    var out = [];
+    [].some.call(doc.querySelectorAll("table"), function (tb) {
+      var rows = [].slice.call(tb.querySelectorAll("tr")); if (!rows.length) return false;
+      var head = [].map.call(rows[0].querySelectorAll("th,td"), function (c) { return txt(c).toUpperCase(); });
+      var col = head.indexOf(want); if (col < 0) return false;
+      var role = "";
+      rows.slice(1).forEach(function (r) {
+        var cells = [].map.call(r.querySelectorAll("th,td"), txt);
+        if (cells.slice(1).every(function (c) { return !c; })) { role = cells[0]; return; }
+        var v = cells[col] || ""; if (!v || /^(OFF|R-OFF|—|-|SVR|HSMN)$/i.test(v)) return;
+        out.push({name: firstName(cells[0]), role: role, shift: v});
+      });
+      return true;
+    });
+    return out;
+  }
+
+  function render(events, crew) {
+    document.title = "Daily Brief — " + longDate(ISO);
+    document.getElementById("dateChip").textContent = longDate(ISO).replace(/, (\w+ \d+), /, " · $1, ").toUpperCase() + (ISO == todayISO() ? " · TODAY" : "");
+    var C = document.getElementById("crewWrap");
+    C.innerHTML = crew.length ? '<div class="section-heading">On the schedule</div><div class="crew">' + crew.map(function (c) {
+      return '<span class="crew-chip"><b>' + esc(c.name) + "</b>" + esc(c.shift) + (c.role ? "<i>" + esc(c.role.replace(/Servers$/i, "Server").replace(/Bartenders$/i, "Bartender").replace(/Housemen$/i, "Houseman")) + "</i>" : "") + "</span>"; }).join("") + "</div>" : "";
+    var E = document.getElementById("events"), T = document.getElementById("timeline"), S = document.getElementById("summary");
+    if (!events || !events.length) {
+      S.innerHTML = ""; T.innerHTML = ""; document.getElementById("evHead").style.display = "none";
+      E.innerHTML = '<div class="empty-day">No events on the Rundown for ' + esc(longDate(ISO)) + '.<br><a href="rundown.html">Open the Rundown &rarr;</a></div>';
+      return;
+    }
+    document.getElementById("evHead").style.display = "";
+    var rooms = {}, all = [];
+    events.forEach(function (e) { e.svc.forEach(function (s) { if (s.room) rooms[s.room] = 1; all.push(s); }); });
+    var gtds = events.map(function (e) { return Math.max.apply(null, e.svc.map(function (s) { return +(s.gtd.match(/\d+/) || [0])[0]; }).concat(0)); });
+    var first = all.slice().sort(function (x, y) { return x.a - y.a; })[0], last = all.slice().sort(function (x, y) { return y.b - x.b; })[0];
+    S.innerHTML = [[events.length, "Groups"], [Object.keys(rooms).length, "Rooms Active"], [gtds.reduce(function (a, b) { return a + b; }, 0), "Guests (GTD)"],
+      [first.start, "First Event"], [last.end, "Last Event"]].map(function (x) { return '<div class="summary-stat"><div class="num">' + esc(x[0]) + '</div><div class="lbl">' + x[1] + "</div></div>"; }).join("");
+    var fb = all.filter(function (s) { return !s.nofb; }).sort(function (x, y) { return x.a - y.a; });
+    T.innerHTML = fb.map(function (s, i) {
+      return (i ? '<div class="tl-spacer"></div>' : "") + '<div class="tl-item"><div class="tl-dot active"><div class="inner"></div></div><div class="tl-label">' + esc(s.start) + '</div><div class="tl-event">' + esc(s.tag) + "</div></div>"; }).join("");
+    E.innerHTML = events.map(function (e) {
+      var rs = []; e.svc.forEach(function (s) { if (s.room && rs.indexOf(s.room) < 0) rs.push(s.room); });
+      var food = e.svc.filter(function (s) { return !s.nofb; }), book = e.svc.filter(function (s) { return s.nofb; });
+      var contact = firstName(e.foot.CONTACT || e.ic || "");
+      var notes = ["NOTE", "FOOD", "SHIPPING"].map(function (k) { return e.foot[k] ? noPrice(e.foot[k]) : ""; }).filter(Boolean);
+      var setup = e.foot.ROOM ? noPrice(e.foot.ROOM) : "";
+      return '<div class="event-card"><div class="card-header"><div class="card-header-left"><div class="client-name">' + esc(e.title) + '</div><div class="card-meta">' +
+        rs.map(function (r) { return '<span class="meta-chip room">' + esc(r) + "</span>"; }).join("") +
+        (book.length ? '<span class="meta-chip type">' + esc(book.map(function (b) { return b.tag.replace(/\s*—\s*No F&B/i, ""); }).filter(function (v, i, a) { return a.indexOf(v) == i; }).join(" · ")) + "</span>" : "") +
+        '</div></div><div class="time-block"><div class="time-main">' + esc(parseLabel(e)) + "</div></div></div>" +
+        '<div class="card-body"><div class="info-row">' +
+          (contact ? '<div class="info-item"><div class="lbl">Contact</div><div class="val">' + esc(contact) + "</div></div>" : "") +
+          (e.mgr ? '<div class="info-item"><div class="lbl">Manager</div><div class="val">' + esc(e.mgr) + "</div></div>" : "") +
+          '<div class="info-item"><div class="lbl">Rooms</div><div class="val">' + esc(rs.join(" · ")) + "</div></div></div>" +
+        (food.length ? '<div class="food-section">' + food.map(function (s) {
+          return '<div class="meal-group"><div class="food-header">' + esc(s.label) + " &middot; " + esc(s.tag) + " &mdash; " + esc(s.room) + (s.gtd ? " &middot; " + esc(s.gtd) : "") + '</div><div class="food-items">' +
+            s.menu.split(/\s+·\s+|\s+\/\s+/).filter(Boolean).map(function (it) { return '<div class="food-item">' + esc(it) + "</div>"; }).join("") + "</div></div>"; }).join("") + "</div>"
+          : '<div class="booking">No food or beverage.</div>') +
+        (book.length && food.length ? '<div class="booking">' + book.map(function (b) { return esc(b.tag.replace(/\s*—\s*No F&B/i, "")) + " " + esc(b.label) + (b.room ? " · " + esc(b.room) : ""); }).join("<br>") + "</div>" : "") +
+        notes.map(function (n) { return '<div class="ops-note"><div class="text">' + esc(n) + "</div></div>"; }).join("") +
+        (setup ? '<div class="setup-row"><span class="setup-label">Setup:</span><span class="setup-pill">' + esc(setup) + "</span></div>" : "") +
+        "</div></div>";
+    }).join("");
+  }
+  function parseLabel(e) {
+    var a = e.svc.slice().sort(function (x, y) { return x.a - y.a; })[0], b = e.svc.slice().sort(function (x, y) { return y.b - x.b; })[0];
+    return a && b ? a.start + " – " + b.end : "";
+  }
+
+  document.getElementById("prev").onclick = function () { location.search = "?date=" + shift(ISO, -1); };
+  document.getElementById("next").onclick = function () { location.search = "?date=" + shift(ISO, 1); };
+  var parse = function (t) { return new DOMParser().parseFromString(t, "text/html"); };
+  Promise.all([
+    fetch("rundown.html", {cache: "no-cache"}).then(function (r) { return r.text(); }).then(parse),
+    fetch("index.html", {cache: "no-cache"}).then(function (r) { return r.text(); }).then(parse).catch(function () { return null; })
+  ]).then(function (d) {
+    render(readDay(d[0]), d[1] ? readCrew(d[1]) : []);
+  }).catch(function (err) {
+    console.error("[today]", err);
+    document.getElementById("events").innerHTML = '<div class="empty-day">Couldn\'t load the Rundown. <a href="rundown.html">Open it directly &rarr;</a></div>';
+  });
+})();
+</script>
+</body>
+</html>
