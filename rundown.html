@@ -444,6 +444,7 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .original-event{position:relative;overflow:hidden;padding:16px 12px 17px;margin:12px 0 15px;font-family:'Courier New',monospace;background:radial-gradient(ellipse at 100% 0,#6484ba16,transparent 65%),linear-gradient(135deg,#1b2f41,#101e2b);border:1px solid #648aaa70;border-radius:3px 14px 3px 3px;box-shadow:0 8px 18px #00000045,inset 0 1px #bcdfff18}
 #bb-app .original-event:before{content:'';position:absolute;top:0;left:-35%;width:32%;height:2px;background:linear-gradient(90deg,transparent,#a5e2ff,transparent);box-shadow:0 0 12px #75c6ff88;animation:bb-edge-travel 6s ease-in-out infinite;pointer-events:none}
 #bb-app .original-client{display:flex;align-items:baseline;flex-wrap:wrap;gap:9px;margin-bottom:2px;font-size:15px;font-weight:700;line-height:1.4;color:#f0f8ff;text-shadow:0 1px 2px #00000080,0 0 14px #94cfff28}
+#bb-app .mgr-chip{padding:3px 8px;font:700 12px/1.4 Manrope,Arial,sans-serif;letter-spacing:.3px;color:#ffd9b0;border:1px solid #ffc0855c;border-radius:5px;background:linear-gradient(135deg,#ffc08524,#ffc08508);white-space:nowrap}
 #bb-app .original-contact{padding:3px 8px;font-size:13px;font-weight:700;letter-spacing:.2px;color:#d1daff;border:1px solid #a9bcff4a;border-radius:5px;background:linear-gradient(135deg,#697fb52e,#34466535);box-shadow:inset 0 1px #d2dcff18;text-shadow:0 0 9px #a8baff20}
 #bb-app .original-room{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:15px 0 5px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c4e5ff}
 #bb-app .original-room:before{content:'';width:3px;height:12px;border-radius:2px;background:#9bd9ff;box-shadow:0 0 8px #83cfff55}
@@ -10402,6 +10403,8 @@ body{font-family:Manrope,Arial,sans-serif}
         const groupEl = card.querySelector('.card-group');
         const group = groupEl ? groupEl.getAttribute('data-en') : '?';
         let contact = null;
+        const mgrEl = card.querySelector('.card-badges .badge-mgr');
+        const mgr = mgrEl ? mgrEl.textContent.replace(/^\s*MGR:?\s*/i,'').trim() : '';
         card.querySelectorAll('.foot-row').forEach(fr=>{
           const key = fr.querySelector('.foot-key');
           if (key && key.getAttribute('data-en') === 'CONTACT'){
@@ -10428,16 +10431,17 @@ body{font-family:Manrope,Arial,sans-serif}
           const label = ov2LabelFromMenu(tagName, tagClass, menuHtml);
           rows.push({startStr, endStr, smin, emin, label, room, gtd, gtdText});
         });
-        return {group, contact, rows};
+        return {group, contact, mgr, rows};
       }).filter(c => c.rows.length);
 
       const merged = new Map();
       const order = [];
       for (const c of parsedCards){
         const base = c.group.split('—')[0].trim();
-        if (!merged.has(base)){ merged.set(base, {contact:null, rows:[]}); order.push(base); }
+        if (!merged.has(base)){ merged.set(base, {contact:null, mgr:'', rows:[]}); order.push(base); }
         const e = merged.get(base);
         if (c.contact) e.contact = c.contact;
+        if (c.mgr && !e.mgr) e.mgr = c.mgr;
         e.rows.push(...c.rows);
       }
       const events = order.map(base=>{
@@ -10454,6 +10458,7 @@ body{font-family:Manrope,Arial,sans-serif}
         return {
           company: base,
           contact: e.contact || '',
+          mgr: e.mgr || '',
           range: `${ov2FmtClock(overallStart)}–${ov2FmtClock(overallEnd)}`,
           maxGtd,
           rooms,
@@ -10698,6 +10703,8 @@ body{font-family:Manrope,Arial,sans-serif}
           const group=node('div','group');
           group.append(node('h2','',ev.base));
           if(ev.contact) group.append(node('span','group-contact',ev.contact));
+          const mgrB=(ev.badges||[]).find(b=>/^MGR/i.test(b));
+          if(mgrB) group.append(node('span','mgr-chip','MGR · '+mgrB.replace(/^MGR:?\s*/i,'').trim()));
           screen.append(group);
           prevBase=ev.base;
         }
@@ -10798,6 +10805,7 @@ body{font-family:Manrope,Arial,sans-serif}
         const card=node('article','original-event');
         const head=node('div','original-client',e.company);
         if(e.contact) head.append(node('span','original-contact',e.contact));
+        if(e.mgr) head.append(node('span','mgr-chip','MGR · '+e.mgr));
         card.append(head);
         // Same count on every row → state it once under the client, not on each row.
         const counts=new Set(); e.rooms.forEach(rows=>rows.forEach(r=>counts.add(r.gtdText||'')));
