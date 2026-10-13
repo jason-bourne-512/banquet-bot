@@ -165,6 +165,41 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
 .irestore{margin-top:6px;border:0;background:none;color:var(--t3);font-size:11px;text-decoration:underline;padding:0}
 .printbtn{margin-top:12px;width:100%;border:1px solid var(--line);background:var(--card);color:inherit;border-radius:12px;padding:11px;font:700 14px 'Barlow Condensed',sans-serif;letter-spacing:.04em}
 
+/* operations (leads): replace diagrams, move builds between nights, desktop week board */
+.ops{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.ops button,.mini{border:1px solid var(--line2);background:var(--card2);color:var(--t1);border-radius:8px;padding:6px 10px;font-size:11.5px;font-weight:700}
+.crow{flex-wrap:wrap}
+.crow .ops{flex-basis:100%;margin:2px 0 0 36px}
+.tag.mv{color:#c1baff;background:rgba(193,186,255,.12);border-color:#c1baff40}
+.gone{margin-top:6px;padding:8px 12px;border:1px dashed var(--line2);border-radius:11px;font-size:12px;color:var(--t3);display:flex;align-items:center;gap:8px}
+.gone button{margin-left:auto}
+.deskbtn{margin-left:6px}
+.dgcur{display:grid;gap:8px;max-height:46vh;overflow:auto}
+.dgcur img{display:block;width:100%;max-height:40vh;object-fit:contain;background:#fff;border-radius:8px}
+.dgcur .lbl{font-size:11px;color:var(--t3);font-weight:700}
+.dglink{display:block;margin-top:10px;border:0;background:none;color:var(--t3);text-decoration:underline;font-size:12px;padding:0}
+#mvDays button.on{background:var(--accent-d);border-color:var(--accent);color:var(--accent)}
+body.desk .wrap{max-width:none;padding:0 22px 60px}
+body.desk .top{margin:0 -22px;padding-left:22px;padding-right:22px}
+body.desk .days{display:none}
+body.desk .seg{max-width:420px}
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,1fr);gap:12px;overflow-x:auto;padding:4px 0 14px;align-items:start}
+.col{background:#0b151ecc;border:1px solid var(--line);border-radius:14px;padding:10px;min-height:240px}
+.col.today{border-color:var(--accent)}
+.col.over{outline:2px dashed var(--accent);outline-offset:2px}
+.col header{display:flex;align-items:baseline;gap:8px;padding:2px 2px 8px;border-bottom:1px solid var(--line)}
+.col header b{font:600 20px 'Barlow Condensed';letter-spacing:.4px;white-space:nowrap}
+.col header span{font-size:11px;color:var(--t3)}
+.col header .cnt{margin-left:auto;font-weight:800;color:var(--t2)}
+.bcard{margin-top:8px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:11px;padding:9px 10px;cursor:grab}
+.bcard.set{--c:var(--set);--cd:var(--set-d)} .bcard.ref{--c:var(--ref);--cd:var(--ref-d)} .bcard.clr{--c:var(--clr);--cd:var(--clr-d)}
+.bcard.isdone{--c:var(--done);opacity:.65} .bcard.isprob{--c:var(--red)} .bcard.dragging{opacity:.4}
+.bcard .bh{display:flex;gap:8px;align-items:flex-start}
+.bcard .num{width:24px;height:24px;font-size:14px}
+.bcard .rname{font-size:17px}
+.bcard .thumb{display:block;width:100%;margin-top:8px;padding:0;border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:#fff}
+.bcard .thumb img{display:block;width:100%;height:120px;object-fit:contain}
+
 /* captain theme — only when the captain (Jason) is signed in */
 .capbadge{display:none;align-items:center;gap:5px;margin-left:8px;padding:3px 8px;border:1px solid #f2c87966;border-radius:20px;font:800 9px Manrope;letter-spacing:1.6px;color:#f2c879;background:linear-gradient(135deg,#f2c8791f,#f2c87905);box-shadow:0 0 12px #f2c8791c}
 body.cap{--accent:#f2c879;--accent-d:rgba(242,200,121,.13);--line:rgba(242,200,121,.13);--line2:rgba(242,200,121,.32)}
@@ -183,7 +218,7 @@ body.cap .printbtn{border-color:#f2c87966;color:#f2c879}
 <body>
 <div class="wrap">
   <div class="top">
-    <div class="brand"><a class="brand" href="index.html"><span class="mark">B</span>HOUSEMEN</a><span class="capbadge">★ CAPTAIN</span><span class="sync" id="sync" title="Live sync"></span><button class="who" id="who">Sign in</button></div>
+    <div class="brand"><a class="brand" href="index.html"><span class="mark">B</span>HOUSEMEN</a><span class="capbadge">★ CAPTAIN</span><span class="sync" id="sync" title="Live sync"></span><button class="who" id="who">Sign in</button><button class="who deskbtn" id="desk" style="display:none">🖥 Desktop</button></div>
     <div class="seg"><button id="vHsm" class="on">Houseman</button><button id="vCap">Captain</button></div>
     <div class="days" id="days"></div>
   </div>
@@ -204,13 +239,25 @@ body.cap .printbtn{border-color:#f2c87966;color:#f2c879}
   <textarea id="note" placeholder="Add a note (optional)"></textarea>
   <div class="acts"><button class="btn btn-undo" id="cancel">Cancel</button><button class="btn btn-prob" id="send" style="background:var(--red);color:#2a0d0d">Send to captain</button></div>
 </div></div>
+<div class="sheet-bg" id="dgBg"><div class="sheet">
+  <h3>Diagram</h3><p id="dgRoom"></p>
+  <div class="dgcur" id="dgCur"></div>
+  <input type="file" id="dgFile" accept="image/*,application/pdf" hidden>
+  <div class="acts" id="dgActs"></div>
+  <div id="dgMore"></div>
+</div></div>
+<div class="sheet-bg" id="mvBg"><div class="sheet">
+  <h3>Move build</h3><p id="mvRoom"></p>
+  <div class="chips" id="mvDays"></div>
+  <div class="acts" style="grid-template-columns:1fr"><button class="btn btn-undo" id="mvCancel">Cancel</button></div>
+</div></div>
 <div class="viewer" id="viewer"><div class="vbar"><b id="vTitle"></b><a id="vPdf" target="_blank" rel="noopener">PDF</a><button id="vClose">✕ Close</button></div>
   <div class="vscroll"><img id="vImg" alt="Room diagram"></div><div class="vhint">Tap the diagram to zoom · pinch to zoom further</div></div>
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // ── WEEKLY DATA — update each week from the BEOs + schedule. Rooms are in setup order.
 // end = time the room's booking ends that day ("" = empty when the houseman clocks in).
@@ -562,11 +609,51 @@ async function save(iso, rslug, patch) {
   const day = (STATE[iso] ||= {}), cur = (day[rslug] ||= {items:{}, done:null, prob:null});
   const before = JSON.parse(JSON.stringify(cur));
   if (patch.items) Object.assign(cur.items, patch.items);
-  for (const k of ["done","prob","extra","removed"]) if (k in patch) cur[k] = patch[k];
+  for (const k of ["done","prob","extra","removed","moved","diag"]) if (k in patch) cur[k] = patch[k];
   render();
   if (MOCK) { try { localStorage.setItem("bb-hsm-mock", JSON.stringify(STATE)); } catch(e) {} return; }
   try { await setDoc(doc(db, COL, iso), {rooms:{[rslug]:patch}, updated:Date.now()}, {merge:true}); }
   catch (e) { console.error("[housemen] save failed", e); day[rslug] = before; render(); setSync("bad"); toast("Didn't save — check signal and try again", true); }
+}
+
+// Uploaded diagrams live as their own docs in the same collection ("diag-<id>": a JPEG data URL under ~900 KB),
+// so a room's day doc only carries a small pointer: rooms.<slug>.diag = {id, by, at, ts} or {none:true, ...}.
+const UPL = {};            // id -> data URL ("" = missing, null = loading)
+const BLANK = "data:image/gif;base64,R0lGODlhAQABAAAAACw=";
+const MOCK_DIAG = "bb-hsm-mock-diag";
+function ensureDiag(id) {
+  if (id in UPL) return;
+  UPL[id] = null;
+  if (MOCK) { try { UPL[id] = JSON.parse(localStorage.getItem(MOCK_DIAG) || "{}")[id] || ""; } catch(e) { UPL[id] = ""; } return; }
+  getDoc(doc(db, COL, "diag-" + id)).then(s => { UPL[id] = s.exists() ? s.data().data : ""; render(); }, e => { console.error("[housemen] diagram load", e); UPL[id] = ""; });
+}
+async function putDiag(id, data, room) {
+  UPL[id] = data;
+  if (MOCK) { const all = (() => { try { return JSON.parse(localStorage.getItem(MOCK_DIAG) || "{}"); } catch(e) { return {}; } })(); all[id] = data; localStorage.setItem(MOCK_DIAG, JSON.stringify(all)); return; }
+  await setDoc(doc(db, COL, "diag-" + id), {data, room, by: WHO.name, ts: Date.now()});
+}
+// Photo / image / PDF (first page) → white-backed JPEG small enough for one Firestore doc.
+async function fileToJpeg(file) {
+  let src;
+  if (file.type == "application/pdf" || /\.pdf$/i.test(file.name)) {
+    const pdfjs = await import("https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.min.mjs");
+    pdfjs.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs";
+    const page = await (await pdfjs.getDocument({data: await file.arrayBuffer()}).promise).getPage(1);
+    const v1 = page.getViewport({scale: 1}), vp = page.getViewport({scale: 1800 / Math.max(v1.width, v1.height)});
+    src = document.createElement("canvas"); src.width = Math.round(vp.width); src.height = Math.round(vp.height);
+    const g = src.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, src.width, src.height);
+    await page.render({canvasContext: g, viewport: vp}).promise;
+  } else {
+    src = await createImageBitmap(file);
+  }
+  for (const [px, q] of [[1800,.82],[1800,.68],[1500,.62],[1200,.6],[1000,.55]]) {
+    const s = Math.min(1, px / Math.max(src.width, src.height)), c = document.createElement("canvas");
+    c.width = Math.round(src.width * s); c.height = Math.round(src.height * s);
+    const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.drawImage(src, 0, 0, c.width, c.height);
+    const url = c.toDataURL("image/jpeg", q);
+    if (url.length < 900000) return url;
+  }
+  throw new Error("Diagram too large");
 }
 
 // ── who's signed in (this phone)
@@ -611,8 +698,30 @@ function confirmSignOut() { if (Date.now() - soArmed < 3000) return true; soArme
 let view = "hsm", dayISO = ((VISIBLE.find(d => d.iso >= todayISO()) || VISIBLE[VISIBLE.length - 1]) || {}).iso, openId = null, sheetFor = null, sheetPick = new Set();
 const dayOf = iso => DAYS.find(d => d.iso == iso);
 const rs = (iso, r) => ((STATE[iso] || {})[slug(r.room)]) || {items:{}, done:null, prob:null};
-const diagsOf = r => r.diag ? [].concat(r.diag) : [];
-const previewOf = f => DIAG + "previews/" + f.replace(/\.pdf$/i, ".png");
+const origDiags = r => r.diag ? [].concat(r.diag) : [];
+// A lead's override wins: an uploaded diagram ("up:<id>") or none at all. o = the room's own night (where its state lives).
+function diagsOf(r, o) {
+  const v = rs(o, r).diag;
+  if (v && v.none) return [];
+  if (v && v.id) { ensureDiag(v.id); return ["up:" + v.id]; }
+  return origDiags(r);
+}
+const isUp = f => f.startsWith("up:");
+const previewOf = f => isUp(f) ? (UPL[f.slice(3)] || BLANK) : DIAG + "previews/" + f.replace(/\.pdf$/i, ".png");
+// Rooms on a night after lead moves: its own rooms minus any moved away, plus rooms moved in from other nights.
+// Each entry keeps o (the night it was posted on) + i, so checkoffs keep saving to the original night's doc.
+function roomsOn(iso) {
+  const out = [], d = dayOf(iso);
+  if (d) d.rooms.forEach((r,i) => { const m = rs(iso, r).moved; if (!(m && m.to && m.to != iso)) out.push({r, i, o:iso}); });
+  for (const od of VISIBLE) if (od.iso != iso) od.rooms.forEach((r,i) => { const m = rs(od.iso, r).moved; if (m && m.to == iso) out.push({r, i, o:od.iso, from:od.iso}); });
+  return out;
+}
+function movedOut(iso) {
+  const d = dayOf(iso); if (!d) return [];
+  return d.rooms.map((r,i) => ({r, i, o:iso, to:(rs(iso, r).moved || {}).to})).filter(x => x.to && x.to != iso);
+}
+const dayLbl = iso => `${dow(iso).slice(0,1)}${dow(iso).slice(1).toLowerCase()} ${md(iso)}`;
+let desk = false; try { desk = localStorage.getItem("bb-hsm-desk") == "1"; } catch(e) {}
 const baseItems = r => r.items && r.items.length ? r.items : (r.t == "ref" ? REFRESH : CLEAR);
 // Daily checklist = posted items minus any a lead removed, plus any a lead added (saved live per day).
 function listOf(iso, r) {
@@ -628,7 +737,7 @@ function roomState(iso, r) {
   if (n) return {cls:"", pill:`<span class="status st-prog">${n} of ${list.length} items</span>`, s, n, list};
   return {cls:"", pill:`<span class="status st-none">Not started</span>`, s, n, list};
 }
-const dayProgress = d => { const done = d.rooms.filter(r=>rs(d.iso,r).done).length; return [done, d.rooms.length]; };
+const dayProgress = d => { const l = roomsOn(d.iso), done = l.filter(x=>rs(x.o,x.r).done).length; return [done, l.length]; };
 
 // ── render
 let daysSnapped = false;
@@ -644,44 +753,51 @@ function renderDays() {
   }).join("");
 }
 function renderHsm(d) {
-  const [a,b] = dayProgress(d), lead = !!(WHO && LEAD(WHO.role));
+  const [a,b] = dayProgress(d), lead = !!(WHO && LEAD(WHO.role)), rooms = roomsOn(d.iso);
   let h = `<div class="hero"><div class="eyebrow">Tonight · setting for ${esc(d.target)}</div><h1>${longDay(d.iso)} ${md(d.iso)}</h1>
-    <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}${d.rooms.length} rooms in setup order</div>
+    <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}${rooms.length} rooms in setup order</div>
     <div class="progress"><div class="bar"><i style="width:${b?a/b*100:0}%"></i></div><div class="pct">${a}/${b}</div></div></div>`;
-  d.rooms.forEach((r,i) => {
-    const id = d.iso + "|" + i, R = roomState(d.iso, r), open = openId == id, flags = r.flags || [];
+  rooms.forEach(({r, i, o, from}, k) => {
+    const id = o + "|" + i, R = roomState(o, r), open = openId == id, flags = r.flags || [], ds = diagsOf(r, o);
     h += `<div class="room ${r.t} ${R.cls} ${open?"open":""}">
-      <button class="rhead" data-open="${id}"><span class="num">${R.s.done?"✓":i+1}</span>
-        <span class="rmain"><span class="type">${TYPE[r.t]}</span><div class="rname">${esc(r.room)}</div><div class="rfor">${esc(r.for)}</div>${R.pill}</span>
+      <button class="rhead" data-open="${id}"><span class="num">${R.s.done?"✓":k+1}</span>
+        <span class="rmain"><span class="type">${TYPE[r.t]}</span>${from?` <span class="type" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ from ${dayLbl(from)}</span>`:""}<div class="rname">${esc(r.room)}</div><div class="rfor">${esc(r.for)}</div>${R.pill}</span>
         ${r.end?`<span class="rend">ENDS<b>${esc(r.end)}</b></span>`:""}</button>
       <div class="rbody"><ul class="items">${R.list.map(x=>`<li data-item="${id}" data-k="${x.key}" class="${R.s.items&&R.s.items[x.key]?"ck":""}${x.added?" added":""}"><span class="box"></span><span>${esc(x.text)}</span>${lead?`<button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove item">✕</button>`:""}</li>`).join("")}</ul>
         ${lead?`<div class="iadd"><input id="add-${id}" maxlength="120" placeholder="+ Add an item for tonight"><button data-addbtn="${id}">Add</button></div>
           ${(R.s.removed||[]).length?`<button class="irestore" data-restore="${id}">↺ Restore ${R.s.removed.length} removed item${R.s.removed.length>1?"s":""}</button>`:""}`:""}
         ${(flags.length||r.next)?`<div class="tags">${r.next?`<span class="tag next">Next: ${esc(r.next)}</span>`:""}${flags.map(f=>`<span class="tag flag">⚑ ${esc(f)}</span>`).join("")}</div>`:""}
-        ${open&&diagsOf(r).length?`<div class="diags">${diagsOf(r).map((f,j,a)=>`<button class="diag-prev" data-diag="${esc(f)}" data-room="${esc(r.room)}"><img src="${previewOf(f)}" alt="${esc(r.room)} diagram"><span>${a.length>1?`Diagram ${j+1} of ${a.length}`:"Diagram"}<em style="font-style:normal">Tap to enlarge ↗</em></span></button>`).join("")}</div>`:""}
+        ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move to another night</button></div>`:""}
+        ${open&&ds.length?`<div class="diags">${ds.map((f,j,a)=>`<button class="diag-prev" data-diag="${esc(f)}" data-room="${esc(r.room)}"><img src="${previewOf(f)}" alt="${esc(r.room)} diagram"><span>${a.length>1?`Diagram ${j+1} of ${a.length}`:"Diagram"}<em style="font-style:normal">Tap to enlarge ↗</em></span></button>`).join("")}</div>`:""}
         ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)} ${esc(R.s.prob.at)}</div>`:""}
         ${R.s.done?`<div class="doneline">✓ Marked done by ${esc(R.s.done.by)} at ${esc(R.s.done.at)}</div>
           <div class="acts" style="grid-template-columns:1fr"><button class="btn btn-undo" data-undo="${id}">Undo</button></div>`
         :`<div class="acts"><button class="btn btn-done" data-done="${id}">Mark ${esc(r.room)} done</button><button class="btn btn-prob" data-prob="${id}">⚠ Issue</button></div>`}
       </div></div>`;
   });
+  h += movedOut(d.iso).map(x => `<div class="gone">→ ${esc(x.r.room)} (${esc(x.r.for)}) moved to ${dayLbl(x.to)}${lead?`<button class="mini" data-back="${x.o}|${x.i}">↩ Bring back</button>`:""}</div>`).join("");
   return h;
 }
 function renderCap(d) {
-  const list = d.rooms.map((r,i)=>({r,i,R:roomState(d.iso,r)}));
+  const list = roomsOn(d.iso).map(x=>({...x, R:roomState(x.o,x.r)}));
   const done = list.filter(x=>x.R.s.done).length, prob = list.filter(x=>x.R.s.prob&&!x.R.s.done).length;
-  let h = `<div class="hero"><div class="eyebrow">${leadName()} view · ${longDay(d.iso)} ${md(d.iso)}</div><h1>Setup status</h1>
+  let h = `<div class="hero"><div class="eyebrow">${WHO&&WHO.role=="director"?"Operations":"Captain view"} · ${longDay(d.iso)} ${md(d.iso)}</div><h1>Setup status</h1>
     <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}setting for ${esc(d.target)}</div>
     <div class="stats"><div class="stat"><b style="color:var(--done)">${done}</b><span>Done</span></div><div class="stat"><b>${list.length-done-prob}</b><span>Left</span></div><div class="stat"><b style="color:${prob?"var(--red)":"inherit"}">${prob}</b><span>Problems</span></div></div>
     <div class="progress"><div class="bar"><i style="width:${list.length?done/list.length*100:0}%"></i></div><div class="pct">${list.length?Math.round(done/list.length*100):0}%</div></div>
     <button class="printbtn" data-print="${d.iso}">🖨 Print checklist + diagrams</button></div>`;
   const probs = list.filter(x=>x.R.s.prob&&!x.R.s.done);
   if (probs.length) h += `<div class="sec">Needs you</div>` + probs.map(x=>`<div class="flagrow prob"><b>⚠ ${esc(x.r.room)}</b> — ${esc(x.R.s.prob.what)}${x.R.s.prob.note?`: “${esc(x.R.s.prob.note)}”`:""} <span style="color:var(--t3)">· ${esc(x.R.s.prob.by)} ${esc(x.R.s.prob.at)}</span>
-      ${WHO&&LEAD(WHO.role)?`<div><button class="resolve" data-resolve="${d.iso}|${x.i}">Mark resolved</button></div>`:""}</div>`).join("");
+      ${WHO&&LEAD(WHO.role)?`<div><button class="resolve" data-resolve="${x.o}|${x.i}">Mark resolved</button></div>`:""}</div>`).join("");
   const flags = list.filter(x=>(x.r.flags||[]).length);
   if (flags.length) h += `<div class="sec">Check before the shift</div>` + flags.map(x=>`<div class="flagrow"><b>⚑ ${esc(x.r.room)}</b> — ${x.r.flags.map(esc).join(" · ")}</div>`).join("");
-  h += `<div class="sec">Rooms in setup order</div>` + list.map(x=>`<div class="crow"><span class="num" style="${x.R.s.done?"background:var(--done);color:#0e2418;border-color:var(--done)":""}">${x.R.s.done?"✓":x.i+1}</span>
-      <div><div class="rname">${esc(x.r.room)}</div><div class="meta">${TYPE[x.r.t]}${x.r.end?` · ends ${esc(x.r.end)}`:""}${diagsOf(x.r).length?" · diagram":""}</div></div><div class="right">${x.R.pill}</div></div>`).join("");
+  const lead = !!(WHO && LEAD(WHO.role));
+  h += `<div class="sec">Rooms in setup order</div>` + list.map((x,k)=>{ const id = x.o+"|"+x.i, dv = x.R.s.diag;
+    return `<div class="crow"><span class="num" style="${x.R.s.done?"background:var(--done);color:#0e2418;border-color:var(--done)":""}">${x.R.s.done?"✓":k+1}</span>
+      <div><div class="rname">${esc(x.r.room)}</div><div class="meta">${TYPE[x.r.t]}${x.r.end?` · ends ${esc(x.r.end)}`:""}${diagsOf(x.r,x.o).length?(dv&&dv.id?" · new diagram":" · diagram"):(dv&&dv.none?" · diagram hidden":"")}${x.from?` · <span style="color:#c1baff">⇄ from ${dayLbl(x.from)}</span>`:""}</div></div><div class="right">${x.R.pill}</div>
+      ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button></div>`:""}</div>`; }).join("");
+  const out = movedOut(d.iso);
+  if (out.length) h += `<div class="sec">Moved to another night</div>` + out.map(x => `<div class="gone">→ ${esc(x.r.room)} · ${dayLbl(x.to)}${lead?`<button class="mini" data-back="${x.o}|${x.i}">↩ Bring back</button>`:""}</div>`).join("");
   const feed = [];
   list.forEach(x => { const s = x.R.s;
     if (s.done) feed.push({ts:s.done.ts, c:"var(--done)", txt:`<b>${esc(s.done.by)}</b> finished ${esc(x.r.room)}`, at:s.done.at});
@@ -690,15 +806,41 @@ function renderCap(d) {
   h += `<div class="sec">Activity</div>` + (feed.length ? `<div class="feed">${feed.map(e=>`<div class="ev" style="--c:${e.c}"><time>${esc(e.at)}</time>${e.txt}</div>`).join("")}</div>` : `<div class="empty">Nothing checked off yet tonight.</div>`);
   return h;
 }
+// Desktop week board (leads): one column per night; drag a room card onto another night to move the build.
+function renderBoard() {
+  let h = `<div class="hero"><div class="eyebrow">${WHO.role=="director"?"Operations":"Captain view"} · week board</div><h1>Setup board</h1>
+    <div class="sub">Drag a room onto another night to move the build · 🖼 to replace or hide a diagram · ⚠ cards need you</div></div><div class="board">`;
+  for (const d of VISIBLE) {
+    const list = roomsOn(d.iso), [a,b] = dayProgress(d);
+    h += `<section class="col ${d.iso==todayISO()?"today":""}" data-drop="${d.iso}"><header><b>${dayLbl(d.iso)}</b><span>for ${esc(d.target)}</span><span class="cnt">${a}/${b}</span><button class="mini" data-print="${d.iso}" title="Print">🖨</button></header>`;
+    h += list.map((x,k) => {
+      const id = x.o+"|"+x.i, R = roomState(x.o, x.r), ds = diagsOf(x.r, x.o);
+      return `<div class="bcard ${x.r.t} ${R.cls}" draggable="true" data-drag="${id}"><div class="bh"><span class="num">${R.s.done?"✓":k+1}</span>
+        <div style="min-width:0"><span class="type">${TYPE[x.r.t]}</span>${x.r.end?` <span class="type" style="color:var(--t3);background:#ffffff0a">ends ${esc(x.r.end)}</span>`:""}<div class="rname">${esc(x.r.room)}</div><div class="rfor">${esc(x.r.for)}</div></div></div>
+        ${R.pill}${x.from?` <span class="status" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ from ${dayLbl(x.from)}</span>`:""}
+        ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)}<div><button class="resolve" data-resolve="${id}">Mark resolved</button></div></div>`:""}
+        ${ds.length?`<button class="thumb" data-diag="${esc(ds[0])}" data-room="${esc(x.r.room)}"><img src="${previewOf(ds[0])}" alt="${esc(x.r.room)} diagram"></button>`:""}
+        <div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button></div></div>`;
+    }).join("") || `<div class="empty">No rooms</div>`;
+    h += movedOut(d.iso).map(x => `<div class="gone">→ ${esc(x.r.room)} · ${dayLbl(x.to)}<button class="mini" data-back="${x.o}|${x.i}">↩</button></div>`).join("");
+    h += `</section>`;
+  }
+  return h + `</div>`;
+}
 function render() {
   const w = document.getElementById("who");
   w.textContent = WHO ? `✓ ${WHO.name}${WHO.role=="director"?" · Director":""}` : "Sign in"; w.classList.toggle("in", !!WHO);
-  document.getElementById("vCap").textContent = leadName();
+  document.getElementById("vCap").textContent = WHO && WHO.role == "director" ? "Operations" : "Captain";
   document.body.classList.toggle("cap", !!(WHO && WHO.role == "captain"));
-  // The Captain/Director tab exists only for leads; everyone else sees the houseman list only.
+  // The Captain/Operations tab exists only for leads; everyone else sees the houseman list only.
   const lead = !!(WHO && LEAD(WHO.role));
   document.querySelector(".seg").style.display = lead ? "" : "none";
   if (!lead && view == "cap") view = "hsm";
+  const board = lead && desk && view == "cap";
+  const db_ = document.getElementById("desk");
+  db_.style.display = lead && view == "cap" ? "" : "none"; db_.textContent = desk ? "📱 Phone view" : "🖥 Desktop";
+  document.body.classList.toggle("desk", board);
+  if (board) { renderDays(); document.getElementById("main").innerHTML = renderBoard(); document.getElementById("vHsm").classList.remove("on"); document.getElementById("vCap").classList.add("on"); return; }
   document.getElementById("vHsm").classList.toggle("on", view=="hsm");
   document.getElementById("vCap").classList.toggle("on", view=="cap");
   const d = dayOf(dayISO);
@@ -714,12 +856,20 @@ function render() {
 let toastT;
 function toast(msg, bad) { const t = document.getElementById("toast"); t.textContent = msg; t.className = "toast on" + (bad ? " bad" : ""); clearTimeout(toastT); toastT = setTimeout(()=>t.className = "toast", 2200); }
 const parseId = id => { const [iso, i] = id.split("|"); return {iso, r: dayOf(iso).rooms[+i], i:+i}; };
+document.getElementById("desk").onclick = () => { desk = !desk; try { localStorage.setItem("bb-hsm-desk", desk ? "1" : "0"); } catch(e) {} render(); };
 
 // ── actions
 document.addEventListener("click", async e => {
-  const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print]");
+  const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back]");
   if (!t) return;
   if (t.dataset.print) { printDay(t.dataset.print); return; }
+  if (t.dataset.dgm || t.dataset.move || t.dataset.back) {
+    if (!(WHO && LEAD(WHO.role))) { toast("Only the captain or director can change this", true); return; }
+    if (t.dataset.dgm) openDiagSheet(t.dataset.dgm);
+    else if (t.dataset.move) openMoveSheet(t.dataset.move);
+    else await moveBuild(t.dataset.back, parseId(t.dataset.back).iso);
+    return;
+  }
   if (t.dataset.del || t.dataset.addbtn || t.dataset.restore) { await editItems(t); return; }
   if (t.dataset.diag) { openViewer(t.dataset.diag, t.dataset.room); return; }
   if (t.dataset.day) { dayISO = t.dataset.day; openId = null; render(); return; }
@@ -731,15 +881,89 @@ document.addEventListener("click", async e => {
   if (t.dataset.item) { const k = t.dataset.k; await save(iso, rsl, {items:{[k]: !(cur.items && cur.items[k])}}); return; }
   if (t.dataset.done) {
     const all = {}; listOf(iso, r).forEach(x=>all[x.key]=true);
-    const d = dayOf(iso);
-    const nxt = d.rooms.findIndex((x,j)=>j!=i && !rs(iso,x).done);
-    openId = nxt >= 0 ? iso + "|" + nxt : null;
+    const nxt = roomsOn(dayISO).find(x => !(x.o == iso && x.i == i) && !rs(x.o, x.r).done);
+    openId = nxt ? nxt.o + "|" + nxt.i : null;
     await save(iso, rsl, {items:all, done:{by:who.name, at:nowLabel(), ts:Date.now()}});
     toast(`✓ ${r.room} done`); return;
   }
   if (t.dataset.undo) { await save(iso, rsl, {done:null}); toast(`${r.room} reopened`); return; }
   if (t.dataset.resolve) { await save(iso, rsl, {prob:null}); toast(`Resolved ${r.room}`); return; }
 });
+// ── lead operations: move a build to another night (state stays on its original night's doc)
+async function moveBuild(id, to) {
+  const {iso, r} = parseId(id);
+  await save(iso, slug(r.room), {moved: to == iso ? null : {to, by: WHO.name, at: nowLabel(), ts: Date.now()}});
+  toast(to == iso ? `${r.room} back on ${dayLbl(iso)}` : `${r.room} moved to ${dayLbl(to)}`);
+}
+let mvFor = null;
+function openMoveSheet(id) {
+  mvFor = id;
+  const {iso, r} = parseId(id), at = (rs(iso, r).moved || {}).to || iso;
+  document.getElementById("mvRoom").textContent = `${r.room} · ${r.for} — posted for ${dayLbl(iso)}. Pick the night to build it.`;
+  document.getElementById("mvDays").innerHTML = VISIBLE.map(d => `<button data-mvto="${d.iso}" class="${d.iso==at?"on":""}">${dayLbl(d.iso)}${d.iso==iso?" · original":""}</button>`).join("");
+  document.getElementById("mvBg").classList.add("on");
+}
+document.getElementById("mvDays").addEventListener("click", async e => {
+  const b = e.target.closest("[data-mvto]"); if (!b) return;
+  document.getElementById("mvBg").classList.remove("on");
+  await moveBuild(mvFor, b.dataset.mvto);
+});
+document.getElementById("mvCancel").onclick = () => document.getElementById("mvBg").classList.remove("on");
+document.getElementById("mvBg").onclick = e => { if (e.target.id == "mvBg") document.getElementById("mvBg").classList.remove("on"); };
+// Drag a board card onto another night's column.
+document.addEventListener("dragstart", e => { const c = e.target.closest && e.target.closest("[data-drag]"); if (!c) return; e.dataTransfer.setData("text/plain", c.dataset.drag); e.dataTransfer.effectAllowed = "move"; c.classList.add("dragging"); });
+document.addEventListener("dragend", e => { document.querySelectorAll(".dragging,.over").forEach(x => x.classList.remove("dragging","over")); });
+document.addEventListener("dragover", e => { const col = e.target.closest && e.target.closest("[data-drop]"); if (!col) return; e.preventDefault(); document.querySelectorAll(".col.over").forEach(x => x != col && x.classList.remove("over")); col.classList.add("over"); });
+document.addEventListener("drop", async e => {
+  const col = e.target.closest && e.target.closest("[data-drop]"); if (!col) return;
+  e.preventDefault(); col.classList.remove("over");
+  const id = e.dataTransfer.getData("text/plain"); if (!id || !(WHO && LEAD(WHO.role))) return;
+  const {iso, r} = parseId(id), at = (rs(iso, r).moved || {}).to || iso;
+  if (col.dataset.drop != at) await moveBuild(id, col.dataset.drop);
+});
+
+// ── lead operations: replace a room's diagram (photo / image / PDF), hide it, or go back to the original
+let dgFor = null, dgNew = null;
+function openDiagSheet(id) { dgFor = id; dgNew = null; drawDiagSheet(); document.getElementById("dgBg").classList.add("on"); }
+function drawDiagSheet() {
+  const {iso, r} = parseId(dgFor), v = rs(iso, r).diag, cur = diagsOf(r, iso), orig = origDiags(r);
+  document.getElementById("dgRoom").textContent = `${r.room} · ${r.for}`;
+  const pics = dgNew ? [[dgNew, "New diagram — not saved yet"]]
+    : cur.map((f,j,a) => [previewOf(f), isUp(f) ? `Uploaded by ${v.by} · ${v.at}` : (a.length>1 ? `Current diagram ${j+1} of ${a.length}` : "Current diagram")]);
+  document.getElementById("dgCur").innerHTML = pics.length ? pics.map(([src, l]) => `<div><div class="lbl">${esc(l)}</div><img src="${src}" alt=""></div>`).join("")
+    : `<div class="empty">${v && v.none ? `Diagram hidden by ${esc(v.by)} · ${esc(v.at)}` : "No diagram on file."}</div>`;
+  document.getElementById("dgActs").innerHTML = dgNew
+    ? `<button class="btn btn-undo" data-dg="cancel">Cancel</button><button class="btn btn-done" data-dg="save">✓ Replace diagram</button>`
+    : `<button class="btn btn-undo" data-dg="close">Close</button><button class="btn btn-done" data-dg="pick">⬆ Upload new diagram</button>`;
+  document.getElementById("dgMore").innerHTML = dgNew ? "" :
+    (v && (v.id || v.none) ? `<button class="dglink" data-dg="orig">↺ Go back to the original diagram${orig.length?"":" (none on file)"}</button>` : "") +
+    (cur.length ? `<button class="dglink" data-dg="hide">✕ Hide the current diagram (no diagram for this room)</button>` : "");
+}
+document.getElementById("dgBg").addEventListener("click", async e => {
+  if (e.target.id == "dgBg") { document.getElementById("dgBg").classList.remove("on"); return; }
+  const b = e.target.closest("[data-dg]"); if (!b) return;
+  const act = b.dataset.dg, {iso, r} = parseId(dgFor), rsl = slug(r.room);
+  if (act == "close") { document.getElementById("dgBg").classList.remove("on"); return; }
+  if (act == "cancel") { dgNew = null; drawDiagSheet(); return; }
+  if (act == "pick") { document.getElementById("dgFile").click(); return; }
+  if (act == "orig") { await save(iso, rsl, {diag: null}); toast(`${r.room}: original diagram back`); drawDiagSheet(); return; }
+  if (act == "hide") { await save(iso, rsl, {diag: {none: true, by: WHO.name, at: nowLabel(), ts: Date.now()}}); toast(`${r.room}: diagram hidden`); drawDiagSheet(); return; }
+  if (act == "save") {
+    b.disabled = true; b.textContent = "Saving…";
+    const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    try { await putDiag(id, dgNew, r.room); }
+    catch (err) { console.error("[housemen] diagram upload", err); b.disabled = false; b.textContent = "✓ Replace diagram"; toast("Upload failed — try again", true); return; }
+    await save(iso, rsl, {diag: {id, by: WHO.name, at: nowLabel(), ts: Date.now()}});
+    dgNew = null; document.getElementById("dgBg").classList.remove("on"); toast(`${r.room}: new diagram is live`);
+  }
+});
+document.getElementById("dgFile").addEventListener("change", async e => {
+  const f = e.target.files && e.target.files[0]; e.target.value = ""; if (!f) return;
+  toast("Reading diagram…");
+  try { dgNew = await fileToJpeg(f); drawDiagSheet(); }
+  catch (err) { console.error("[housemen] diagram read", err); toast(err.message == "Diagram too large" ? "That file is too large — try a smaller photo" : "Couldn't read that file", true); }
+});
+
 // ── lead editing: add / remove / restore checklist items for one room on one day
 async function editItems(t) {
   if (!(WHO && LEAD(WHO.role))) { toast("Only the captain or director can edit the list", true); return; }
@@ -761,15 +985,15 @@ document.addEventListener("keydown", e => { if (e.key == "Enter" && e.target.id 
 // ── print: Word-style checklist (room | setup) + one diagram per page. Save as PDF from the print dialog.
 function printDay(iso) {
   const d = dayOf(iso); if (!d) return;
-  const abs = f => new URL(previewOf(f), location.href).href;
-  const diags = [];
-  d.rooms.forEach((r,i) => diagsOf(r).forEach((f,j,a) => diags.push({r, i, f, label: a.length>1 ? `Diagram ${j+1} of ${a.length}` : "Diagram"})));
+  const abs = f => isUp(f) ? previewOf(f) : new URL(previewOf(f), location.href).href;
+  const diags = [], rooms = roomsOn(iso);
+  rooms.forEach(({r, o}, i) => diagsOf(r, o).forEach((f,j,a) => diags.push({r, i, f, label: a.length>1 ? `Diagram ${j+1} of ${a.length}` : "Diagram"})));
   const pageOf = (i, f) => diags.findIndex(x => x.i == i && x.f == f) + 2;
-  const rows = d.rooms.map((r,i) => {
-    const ds = diagsOf(r);
+  const rows = rooms.map(({r, o, from}, i) => {
+    const ds = diagsOf(r, o);
     return `<tr><td class="n">${i+1}</td>
-      <td class="room"><b>${esc(r.room)}</b><div class="ty">${TYPE[r.t]}${r.end?` · ends ${esc(r.end)}`:""}</div><div class="for">${esc(r.for)}</div></td>
-      <td class="set"><ul>${listOf(iso, r).map(x=>`<li>☐ ${esc(x.text)}</li>`).join("")}</ul>
+      <td class="room"><b>${esc(r.room)}</b><div class="ty">${TYPE[r.t]}${r.end?` · ends ${esc(r.end)}`:""}${from?` · moved from ${dayLbl(from)}`:""}</div><div class="for">${esc(r.for)}</div></td>
+      <td class="set"><ul>${listOf(o, r).map(x=>`<li>☐ ${esc(x.text)}</li>`).join("")}</ul>
         ${r.next?`<div class="nx">Next: ${esc(r.next)}</div>`:""}${(r.flags||[]).map(f=>`<div class="fl">⚑ ${esc(f)}</div>`).join("")}
         ${ds.length?`<div class="sd">See diagram${ds.length>1?"s":""} → page ${ds.map(f=>pageOf(i,f)).join(", ")}</div>`:""}</td></tr>`;
   }).join("");
@@ -794,7 +1018,7 @@ function printDay(iso) {
   <div class="bar"><button onclick="print()">Print / Save as PDF</button><span>Tip: choose “Save as PDF” as the printer.</span></div>
   <div class="doc">
     <h1>Housemen Checklist — ${longDay(iso)} ${md(iso)}</h1>
-    <p class="meta">Setting for <b>${esc(d.target)}</b>${d.crew?` · ${esc(d.crew)} · ${esc(d.shift)}`:""} · ${d.rooms.length} rooms in setup order</p>
+    <p class="meta">Setting for <b>${esc(d.target)}</b>${d.crew?` · ${esc(d.crew)} · ${esc(d.shift)}`:""} · ${rooms.length} rooms in setup order</p>
     <table><thead><tr><th>#</th><th>Room</th><th>Setup</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="sign"><span>&nbsp;</span><span>&nbsp;</span><br>Completed by &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checked by</div>
     <div class="foot">Printed from Banquet Bot · ${new Date().toLocaleString("en-US",{timeZone:TZ})}</div>
@@ -810,7 +1034,8 @@ function openViewer(f, room) {
   const img = document.getElementById("vImg");
   img.classList.remove("big"); img.src = previewOf(f);
   document.getElementById("vTitle").textContent = (room || "") + " — diagram";
-  document.getElementById("vPdf").href = DIAG + f;
+  const pdf = document.getElementById("vPdf");
+  pdf.style.display = isUp(f) ? "none" : ""; if (!isUp(f)) pdf.href = DIAG + f;
   document.getElementById("viewer").classList.add("on");
 }
 document.getElementById("vClose").onclick = () => document.getElementById("viewer").classList.remove("on");
