@@ -64,9 +64,11 @@
       "html.bbd-skin .meta-chip,html.bbd-skin .setup-pill{border-radius:6px!important}" +
       "html.bbd-skin .date-chip{color:#0c141b!important;border-radius:8px!important}" +
       "html.bbd-skin .ops-note{background:rgba(255,192,133,.08)!important;border-left-color:#ffc085!important}" +
-      "html.bbd-skin .page-wrap .svc-time{font:600 26px/1 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:.5px!important;color:var(--k)!important}" +
-      "html.bbd-skin .page-wrap .svc-tag{font-size:11px!important;letter-spacing:1px!important}" +
-      "html.bbd-skin .page-wrap .tl-item .tl-label{font:600 18px 'Barlow Condensed',Arial,sans-serif!important;color:var(--k)!important}" +
+      "html.bbd-skin .page-wrap .svc-time{font:600 21px/1 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:.5px!important;color:var(--k)!important}" +
+      "html.bbd-skin .page-wrap .svc-tag{font-size:9.5px!important;letter-spacing:.8px!important}" +
+      "html.bbd-skin .page-wrap .client-name{margin-bottom:12px!important}" +
+      "html.bbd-skin .page-wrap .card-meta{margin-bottom:6px!important}" +
+      "html.bbd-skin .page-wrap .tl-item .tl-label{font:600 16px 'Barlow Condensed',Arial,sans-serif!important;color:var(--k)!important}" +
       "html.bbd-skin .page-wrap .tl-item .tl-event{font-size:12px!important;font-weight:700!important;max-width:130px!important}" +
       "html.bbd-skin .day-timeline{padding:14px 10px 12px!important;border-radius:12px;background:#16253099;border:1px solid rgba(139,209,255,.12)}"
   };

@@ -38,8 +38,8 @@
   .section-heading::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .event-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 1.25rem; }
   .card-header { padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .client-name { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--white); line-height: 1.2; margin-bottom: 0.3rem; }
-  .card-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+  .client-name { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--white); line-height: 1.25; margin-bottom: 0.7rem; }
+  .card-meta { display: flex; gap: 0.5rem 0.6rem; flex-wrap: wrap; align-items: center; margin-bottom: 0.35rem; }
   .meta-chip { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.55rem; border-radius: 2px; border: 1px solid; }
   .meta-chip.room { color: var(--gold); border-color: var(--gold-dim); background: var(--gold-glow); }
   .meta-chip.type { color: var(--muted); border-color: var(--border-light); background: transparent; }
@@ -95,8 +95,8 @@
   .k-meal { --k:#ff9f5a; --kd:rgba(255,159,90,.14); } .k-brk { --k:#4fd6c0; --kd:rgba(79,214,192,.14); } .k-bev { --k:#6fb6ff; --kd:rgba(111,182,255,.14); }
   .meal-group[class*="k-"] { border-left:4px solid var(--k); background:var(--kd); border-radius:0 8px 8px 0; padding:0.6rem 0.75rem !important; border-bottom:none !important; margin-bottom:0.6rem !important; }
   .svc-head { display:flex; align-items:center; flex-wrap:wrap; gap:0.45rem 0.6rem; margin-bottom:0.45rem; }
-  .svc-time { font-size:1.15rem; font-weight:700; color:var(--k); letter-spacing:.01em; white-space:nowrap; }
-  .svc-tag { font-size:0.68rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:#0e1a26; background:var(--k); padding:0.2rem 0.55rem; border-radius:20px; }
+  .svc-time { font-size:1rem; font-weight:700; color:var(--k); letter-spacing:.01em; white-space:nowrap; }
+  .svc-tag { font-size:0.62rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:#0e1a26; background:var(--k); padding:0.16rem 0.5rem; border-radius:20px; }
   .svc-where { font-size:0.75rem; color:var(--muted); }
   .tl-item[class*="k-"] .tl-dot { border-color:var(--k); background:var(--kd); }
   .tl-item[class*="k-"] .tl-dot .inner { background:var(--k); }
@@ -104,7 +104,8 @@
   .tl-item[class*="k-"] .tl-event { color:var(--cream); max-width:110px; }
   /* collapsible menu / setup tables */
   .dd { margin-top:0.35rem; }
-  .dd > summary { cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:6px; font-size:0.72rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--cream); opacity:.85; padding:0.25rem 0.6rem; border:1px solid var(--border-light); border-radius:20px; }
+  .dd > summary { cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:6px; max-width:100%; font-size:0.82rem; font-weight:700; color:var(--cream); padding:0.3rem 0.7rem; border:1px solid var(--border-light); border-radius:20px; }
+  .dd > summary:hover { border-color:var(--k, var(--gold)); }
   .dd > summary::-webkit-details-marker { display:none; }
   .dd > summary::before { content:'▸'; color:var(--k, var(--gold)); transition:transform .15s; }
   .dd[open] > summary::before { transform:rotate(90deg); }
@@ -244,10 +245,11 @@
           '<div class="info-item"><div class="lbl">Rooms</div><div class="val">' + esc(rs.join(" · ")) + "</div></div></div>" +
         (food.length ? '<div class="food-section">' + food.map(function (s) {
           var k = kindOf(s.tag, s.menu), cut = s.menu.indexOf(" — "), mhead = cut < 0 ? "" : s.menu.slice(0, cut),
-            items = (cut < 0 ? s.menu : s.menu.slice(cut + 3)).split(/\s*·\s*|\s+\/\s+/).map(function (x) { return x.trim(); }).filter(Boolean);
+            items = (cut < 0 ? s.menu : s.menu.slice(cut + 3)).split(/\s*·\s*|\s+\/\s+/).map(function (x) { return x.trim(); }).filter(Boolean),
+            mname = mhead || items[0] || s.tag, rest = mhead ? items : items.slice(1);
           return '<div class="meal-group k-' + k + '"><div class="svc-head"><span class="svc-time">' + esc(s.label) + '</span><span class="svc-tag">' + KIND[k] + " " + esc(s.tag) + '</span><span class="svc-where">' + esc(s.room) + (s.gtd ? " &middot; " + esc(s.gtd) : "") + '</span></div><div class="food-items">' +
-            '<details class="dd"' + (DESK ? "" : " open") + '><summary>Menu <em>' + items.length + (items.length == 1 ? " item" : " items") + '</em></summary><table class="dd-t">' +
-            (mhead ? '<tr><th class="mh">' + esc(mhead) + "</th></tr>" : "") + items.map(function (it) { return "<tr><td>" + esc(it) + "</td></tr>"; }).join("") + "</table></details></div></div>"; }).join("") + "</div>"
+            '<details class="dd"' + (DESK ? "" : " open") + '><summary>' + esc(mname) + (rest.length ? ' <em>' + rest.length + (rest.length == 1 ? " item" : " items") + '</em>' : "") + '</summary><table class="dd-t">' +
+            rest.map(function (it) { return "<tr><td>" + esc(it) + "</td></tr>"; }).join("") + "</table></details></div></div>"; }).join("") + "</div>"
           : '<div class="booking">No food or beverage.</div>') +
         (book.length && food.length ? '<div class="booking">' + book.map(function (b) { return esc(b.tag.replace(/\s*—\s*No F&B/i, "")) + " " + esc(b.label) + (b.room ? " · " + esc(b.room) : ""); }).join("<br>") + "</div>" : "") +
         (notes.length || setup ? '<details class="dd dd-setup"' + (DESK ? "" : " open") + '><summary>Setup &amp; notes</summary><table class="dd-t kv">' +
