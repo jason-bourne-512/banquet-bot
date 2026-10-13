@@ -765,10 +765,9 @@ document.getElementById("pad").addEventListener("click", async e => {
 });
 document.getElementById("pinCancel").onclick = () => { document.getElementById("pinBg").classList.remove("on"); const r = pinResolve; pinResolve = null; r && r(null); };
 const needWho = async why => WHO || await askPin(why);
-document.getElementById("who").onclick = async () => {
-  if (WHO) { if (confirmSignOut()) { WHO = null; try { localStorage.removeItem("bb-hsm-who"); } catch(e) {} window.bbTheme && window.bbTheme.off(); render(); toast("Signed out"); } }
-  else await askPin();
-};
+document.getElementById("who").onclick = () => toast("Sign in or out from the Banquet Bot home page");
+// Pick up a sign-in / sign-out made on the home page (or another tab).
+window.addEventListener("storage", e => { if (e.key == "bb-hsm-who") { try { WHO = JSON.parse(e.newValue); } catch(err) { WHO = null; } render(); } });
 // Two taps to sign out (no browser dialogs).
 let soArmed = 0;
 function confirmSignOut() { if (Date.now() - soArmed < 3000) return true; soArmed = Date.now(); toast(`Tap again to sign out ${WHO.name}`); return false; }
@@ -943,6 +942,7 @@ function renderBoard() {
 function render() {
   if (SORTING) { renderPending = true; return; }
   const w = document.getElementById("who");
+  w.style.display = WHO ? "" : "none";   // signing in/out happens on the home page now
   w.innerHTML = WHO ? `✓ ${esc(WHO.name)}${SHOWN_TITLE(WHO.role)?`<span class="who-ttl"> · ${esc(SHOWN_TITLE(WHO.role))}</span>`:""}` : "Sign in"; w.classList.toggle("in", !!WHO);
   document.getElementById("vCap").textContent = WHO && WHO.role == "director" ? "Operations" : WHO && !LEAD(WHO.role) ? "Status" : "Captain";
   document.body.classList.toggle("cap", !!(WHO && WHO.role == "captain"));
