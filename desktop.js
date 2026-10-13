@@ -101,6 +101,26 @@
     ".bbd #rdScreen>*{break-inside:avoid}" +
     ".bbd #rdScreen>.bbd-span{break-after:avoid;margin-top:0!important;padding-top:10px}" +
     ".bbd #rdScreen>.room{margin-bottom:14px!important;display:block}" +
+    // Info page: Amenities / Parking / Transport flow as newspaper columns — each heading stays with its card.
+    ".bbd #tab-amenities.active,.bbd #tab-parking.active,.bbd #tab-transport.active{display:block!important;columns:380px 3;column-gap:16px}" +
+    ".bbd #tab-amenities>*,.bbd #tab-parking>*,.bbd #tab-transport>*{max-width:none!important;margin-left:0!important;margin-right:0!important;break-inside:avoid}" +
+    ".bbd #tab-amenities>.section-label,.bbd #tab-parking>.section-label,.bbd #tab-transport>.section-label{break-after:avoid;margin-top:0!important;padding-top:6px}" +
+    ".bbd #tab-amenities>.card,.bbd #tab-parking>.card,.bbd #tab-transport>.card{display:block;margin:0 0 16px!important}" +
+    // Info > Dining: restaurant hours + contact rows compact (label and value side by side, flowing in columns); menu untouched.
+    ".bbd #tab-dining .card-body>.hours-row,.bbd #tab-dining .card-body>.row{display:inline-flex!important;width:360px;max-width:100%;margin-right:28px;justify-content:flex-start!important;gap:14px;vertical-align:top}" +
+    ".bbd #tab-dining .card-body>.hours-row>:first-child,.bbd #tab-dining .card-body>.row>:first-child{flex:0 0 120px}" +
+    ".bbd #tab-dining .card-body>.hours-row>:last-child,.bbd #tab-dining .card-body>.row>:last-child{text-align:left!important;margin-left:0!important}" +
+    ".bbd #tab-dining .card-body>.alert{max-width:780px!important}" +
+    // Info > Corinne menu: each meal period in its own color (--mg-color), serif dish names, italic descriptions.
+    ".bbd #tab-dining .menu-group{border-left-width:4px!important;border-radius:12px!important;margin-top:12px!important}" +
+    ".bbd #tab-dining .menu-group-head{padding:12px 14px!important;background:linear-gradient(90deg,color-mix(in srgb,var(--mg-color,#8bd1ff) 18%,transparent),transparent 70%)!important}" +
+    ".bbd #tab-dining .menu-group-name{font:600 24px/1.1 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:.8px!important;text-transform:uppercase;color:var(--mg-color,#8bd1ff)!important}" +
+    ".bbd #tab-dining .menu-group-meta{margin-top:4px}" +
+    ".bbd #tab-dining .menu-sub-label{justify-self:start;width:fit-content!important;display:inline-block;margin:16px 0 8px!important;padding:3px 10px;border-radius:20px;font:800 10px Manrope,Arial,sans-serif!important;letter-spacing:1.6px!important;color:#0e1a26!important;background:var(--mg-color,#8bd1ff)}" +
+    ".bbd #tab-dining .menu-item-name{font:400 17px/1.25 'DM Serif Display',Georgia,serif!important;letter-spacing:.2px!important;color:#f3f8fc!important}" +
+    ".bbd #tab-dining .menu-item-desc{font:italic 400 12.5px/1.45 Manrope,Arial,sans-serif!important;color:#a9bfd0!important}" +
+    ".bbd #tab-dining .menu-item-price{font:700 14px 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:.4px!important;color:var(--mg-color,#8bd1ff)!important}" +
+    ".bbd #tab-dining .menu-item{padding:9px 2px!important}" +
     // No Rundown/Overview tabs on desktop — the sidebar switches views.
     ".bbd #bb-app .tabs{display:none!important}" +
     // Overview + week list: room between days and a date you can read from across the office.
@@ -180,6 +200,10 @@
       var l = document.createElement("link"); l.rel = "stylesheet";
       l.href = "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Manrope:wght@400;600;700;800&display=swap";
       document.head.appendChild(l);
+    }
+    if (!document.getElementById("bbd-serif")) {
+      var sf = document.createElement("link"); sf.id = "bbd-serif"; sf.rel = "stylesheet";
+      sf.href = "https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap"; document.head.appendChild(sf);
     }
     var s = document.getElementById("bbd-style") || document.createElement("style");
     s.id = "bbd-style"; s.textContent = CSS(acc); document.head.appendChild(s);
