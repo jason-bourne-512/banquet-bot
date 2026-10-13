@@ -453,6 +453,9 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .original-time{color:#b4e3ff;font-weight:600;font-variant-numeric:tabular-nums;text-shadow:0 1px 2px #00000080}
 #bb-app .original-count{display:inline-block;margin-left:5px;font-size:11px;font-weight:400;color:#c5d1e8}
 #bb-app .original-total{margin:2px 0 0;font:700 13px/1.4 'Courier New',monospace;letter-spacing:.4px;color:#e6f4ff;text-shadow:0 0 10px #8bd1ff30}
+/* Guarantee / expected counts in amber so they stand out (Rundown + Overview) */
+#bb-app .count,#bb-app .original-count{padding:1px 7px;border-radius:10px;font-weight:700!important;color:#ffd9a6!important;background:#ffc0851f;border:1px solid #ffc08540}
+#bb-app .original-total{display:inline-block;padding:2px 9px;border-radius:10px;color:#ffd9a6!important;background:#ffc0851f;border:1px solid #ffc08547;text-shadow:none!important}
 #bb-app .original-label{padding:0 5px;border-left:1px solid #a7cced24;border-radius:3px;overflow-wrap:anywhere;color:#f0f5fc;background:linear-gradient(90deg,#a8cfff0d,transparent);text-shadow:0 1px 2px #00000070}
 #bb-app .original-diag{order:3;padding:2px 7px;font:600 10px Manrope,Arial,sans-serif;letter-spacing:.3px;text-transform:none;color:#d1daff;border:1px solid #a9bcff4a;border-radius:5px;background:#697fb51f}
 
@@ -5578,8 +5581,11 @@ body{font-family:Manrope,Arial,sans-serif}
   </div>
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Vision Service Plan — Meeting" data-es="Vision Service Plan — Meeting">Vision Service Plan — Meeting</div>
-      <div class="card-badges"></div>
+      <div class="card-group" data-en="Vision Service Plan — VSP 101 Workshop" data-es="Vision Service Plan — VSP 101 Workshop">Vision Service Plan — VSP 101 Workshop</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Cayleigh" data-es="IC: Cayleigh">IC: Cayleigh</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">12:00–<br>9:00 PM</div>
@@ -5591,21 +5597,21 @@ body{font-family:Manrope,Arial,sans-serif}
     <div class="svc-row">
       <div class="svc-time">5:15–<br>6:30 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Coffee Break">Coffee Break</span><span class="room-pill">Lantana</span><span class="gtd-pill">EXP 40</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Lantana</span><span class="gtd-pill">EXP 40</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Steakhouse Chopping Block Dinner Table</strong> — Baby Spinach Salad: Strawberries, Dried Apples, Feta, Candied Pecans, Champagne Vinaigrette · Steak House Salad: Iceberg, Romaine, Fresh Parsley, Cherry Tomato, Cucumber &amp; Red Onion with Ranch · Creamy Scalloped Potatoes with Cheddar Cheese · Truffled Cream Corn · Grilled Asparagus · Oven Roasted Free Range Chicken Breast, Mushroom Madeira Sauce &amp; Thyme · Seared Branzino (White Fish),Tomato Olive Broth, Crispy Capers · Slow Roasted Strip Loin, Red Wine Reduction, Sweet Hawaiian Rolls · Carrot Cake · Golden Delicious Apple Crisp, Caramel Sauce · Dinner Tables include Ice Water, Freshly Brewed Little City Coffee &amp; Assorted Tazo Herbal Teas · Iced Tea Available Upon Request. · Based on 90 Minutes of Service · Assorted Pepsi Products · Pepsi | Diet Pepsi | Starry | Mountain Dew | Diet Mountain Dew" data-es="<strong class='menu-hl'>Steakhouse Chopping Block Dinner Table</strong> — Baby Spinach Salad: Strawberries, Dried Apples, Feta, Candied Pecans, Champagne Vinaigrette · Steak House Salad: Iceberg, Romaine, Fresh Parsley, Cherry Tomato, Cucumber &amp; Red Onion with Ranch · Creamy Scalloped Potatoes with Cheddar Cheese · Truffled Cream Corn · Grilled Asparagus · Oven Roasted Free Range Chicken Breast, Mushroom Madeira Sauce &amp; Thyme · Seared Branzino (White Fish),Tomato Olive Broth, Crispy Capers · Slow Roasted Strip Loin, Red Wine Reduction, Sweet Hawaiian Rolls · Carrot Cake · Golden Delicious Apple Crisp, Caramel Sauce · Dinner Tables include Ice Water, Freshly Brewed Little City Coffee &amp; Assorted Tazo Herbal Teas · Iced Tea Available Upon Request. · Based on 90 Minutes of Service · Assorted Pepsi Products · Pepsi | Diet Pepsi | Starry | Mountain Dew | Diet Mountain Dew"><strong class='menu-hl'>Steakhouse Chopping Block Dinner Table</strong> — Baby Spinach Salad: Strawberries, Dried Apples, Feta, Candied Pecans, Champagne Vinaigrette · Steak House Salad: Iceberg, Romaine, Fresh Parsley, Cherry Tomato, Cucumber &amp; Red Onion with Ranch · Creamy Scalloped Potatoes with Cheddar Cheese · Truffled Cream Corn · Grilled Asparagus · Oven Roasted Free Range Chicken Breast, Mushroom Madeira Sauce &amp; Thyme · Seared Branzino (White Fish),Tomato Olive Broth, Crispy Capers · Slow Roasted Strip Loin, Red Wine Reduction, Sweet Hawaiian Rolls · Carrot Cake · Golden Delicious Apple Crisp, Caramel Sauce · Dinner Tables include Ice Water, Freshly Brewed Little City Coffee &amp; Assorted Tazo Herbal Teas · Iced Tea Available Upon Request. · Based on 90 Minutes of Service · Assorted Pepsi Products · Pepsi | Diet Pepsi | Starry | Mountain Dew | Diet Mountain Dew</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">5:15–<br>6:30 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Lantana</span><span class="gtd-pill">EXP 40</span></div>
-        <div class="svc-menu" data-en="Per client email 10/1 (event order not yet received): Steakhouse Chopping Block (in the foyer)<br>Desserts (in the room)<br>Soda on consumption" data-es="Per client email 10/1 (event order not yet received): Steakhouse Chopping Block (in the foyer)<br>Desserts (in the room)<br>Soda on consumption">Per client email 10/1 (event order not yet received): Steakhouse Chopping Block (in the foyer)<br>Desserts (in the room)<br>Soda on consumption</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break" data-es="Coffee Break">Coffee Break</span><span class="room-pill">Lantana</span><span class="gtd-pill">EXP 40</span></div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Cayleigh</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Lantana · Crescent Rounds · set 42" data-es="Lantana · Crescent Rounds · set 42">Lantana · Crescent Rounds · set 42</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="VSP 101 Workshop Oct2026 · from events report 10/5 — Diana sent the event order to the client 10/2, not yet in the banquet packet<br>5 UPS boxes must be in Lantana by 12:00 PM Tue — see SHIPPING" data-es="VSP 101 Workshop Oct2026 · from events report 10/5 — Diana sent the event order to the client 10/2, not yet in the banquet packet<br>5 UPS boxes must be in Lantana by 12:00 PM Tue — see SHIPPING">VSP 101 Workshop Oct2026 · from events report 10/5 — Diana sent the event order to the client 10/2, not yet in the banquet packet<br>5 UPS boxes must be in Lantana by 12:00 PM Tue — see SHIPPING</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Lantana · Crescent Rounds" data-es="Lantana · Crescent Rounds">Lantana · Crescent Rounds</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="VSP 101 Workshop Oct2026 · Set buffet in foyer · Set Beverages and Desserts inside of room" data-es="VSP 101 Workshop Oct2026 · Set buffet in foyer · Set Beverages and Desserts inside of room">VSP 101 Workshop Oct2026 · Set buffet in foyer · Set Beverages and Desserts inside of room</span></div>
       <div class="foot-row"><span class="foot-key" data-en="SHIPPING" data-es="ENVÍOS">SHIPPING</span><span class="foot-val" data-en="5 UPS boxes inbound — in Lantana by 12:00 PM Tue 10/13 (Diana, email 10/12)<br>1Z8868310190785180<br>1Z8868310191546212<br>1Z8868310193433401<br>1Z8868310194354398<br>1Z8868310194721777<br>Return pickup Wed 10/14 — client asking where to send UPS and for help moving their labeled boxes; location TBD, confirm with Diana" data-es="5 UPS boxes inbound — in Lantana by 12:00 PM Tue 10/13 (Diana, email 10/12)<br>1Z8868310190785180<br>1Z8868310191546212<br>1Z8868310193433401<br>1Z8868310194354398<br>1Z8868310194721777<br>Return pickup Wed 10/14 — client asking where to send UPS and for help moving their labeled boxes; location TBD, confirm with Diana">5 UPS boxes inbound — in Lantana by 12:00 PM Tue 10/13 (Diana, email 10/12)<br>1Z8868310190785180<br>1Z8868310191546212<br>1Z8868310193433401<br>1Z8868310194354398<br>1Z8868310194721777<br>Return pickup Wed 10/14 — client asking where to send UPS and for help moving their labeled boxes; location TBD, confirm with Diana</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/LANTANAfromVSPOct2026.pdf', 'Lantana — layout')"><span>Lantana — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
@@ -6206,34 +6212,51 @@ body{font-family:Manrope,Arial,sans-serif}
 </div>
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Telarus — Meeting" data-es="Telarus — Meeting">Telarus — Meeting</div>
-      <div class="card-badges"></div>
+      <div class="card-group" data-en="Telarus — Beyond the Solution" data-es="Telarus — Beyond the Solution">Telarus — Beyond the Solution</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Monica" data-es="IC: Monica">IC: Monica</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">11:00 AM–<br>5:00 PM</div>
+      <div class="svc-time">11:00 AM–<br>12:30 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 60</span></div>
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Plumeria</span><span class="gtd-pill">GTD 35</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Austin BBQ - Tuesday Working Lunch Buffet</strong> — Chopped Iceberg &amp; Romaine, Cheddar, Grilled Corn, Baby Heirloom Tomatoes, Red Onion, Jalapeno Ranch · Hill Country German Potato Salad, Grainy Mustard, Bacon, Parsley · Kale &amp; Broccoli Slaw, Sundried Cranberries, Toasted Almond, Celery Vinaigrette · Gochujang BBQ Glazed Chicken Thighs, Sesame &amp; Green Onions · Sliced Pickles, Hawaiian Rolls · Salt &amp; Pepper Rubbed 12 Hour Smoked Brisket · Ranch Style Baked Beans · Creamy Green Chili Mac 'n' Cheese · Warm Sweet Cornbread · Golden Delicious Apple Skillet Crisp, Caramel Sauce · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas" data-es="<strong class='menu-hl'>Austin BBQ - Tuesday Working Lunch Buffet</strong> — Chopped Iceberg &amp; Romaine, Cheddar, Grilled Corn, Baby Heirloom Tomatoes, Red Onion, Jalapeno Ranch · Hill Country German Potato Salad, Grainy Mustard, Bacon, Parsley · Kale &amp; Broccoli Slaw, Sundried Cranberries, Toasted Almond, Celery Vinaigrette · Gochujang BBQ Glazed Chicken Thighs, Sesame &amp; Green Onions · Sliced Pickles, Hawaiian Rolls · Salt &amp; Pepper Rubbed 12 Hour Smoked Brisket · Ranch Style Baked Beans · Creamy Green Chili Mac 'n' Cheese · Warm Sweet Cornbread · Golden Delicious Apple Skillet Crisp, Caramel Sauce · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas"><strong class='menu-hl'>Austin BBQ - Tuesday Working Lunch Buffet</strong> — Chopped Iceberg &amp; Romaine, Cheddar, Grilled Corn, Baby Heirloom Tomatoes, Red Onion, Jalapeno Ranch · Hill Country German Potato Salad, Grainy Mustard, Bacon, Parsley · Kale &amp; Broccoli Slaw, Sundried Cranberries, Toasted Almond, Celery Vinaigrette · Gochujang BBQ Glazed Chicken Thighs, Sesame &amp; Green Onions · Sliced Pickles, Hawaiian Rolls · Salt &amp; Pepper Rubbed 12 Hour Smoked Brisket · Ranch Style Baked Beans · Creamy Green Chili Mac 'n' Cheese · Warm Sweet Cornbread · Golden Delicious Apple Skillet Crisp, Caramel Sauce · Iced Tea, Freshly Brewed Little City Coffee and Assorted Herbal Teas</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">1:00–<br>4:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">GTD 35</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-time">12:00–<br>4:30 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 60</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break — All Day Beverage" data-es="Coffee Break — All Day Beverage">Coffee Break — All Day Beverage</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 60</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>All Day Beverages</strong> — Gallon(s) - Little City Regular Coffee" data-es="<strong class='menu-hl'>All Day Beverages</strong> — Gallon(s) - Little City Regular Coffee"><strong class='menu-hl'>All Day Beverages</strong> — Gallon(s) - Little City Regular Coffee</div>
       </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">5:00–<br>6:00 PM</div>
+      <div class="svc-time">1:00–<br>1:30 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 60</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break — PM Break" data-es="Coffee Break — PM Break">Coffee Break — PM Break</span><span class="room-pill">Plumeria</span><span class="gtd-pill">GTD 35</span></div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">4:30–<br>5:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Plumeria</span><span class="gtd-pill">GTD 35</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>TRAY PASSED HORS D'OEUVRES</strong> — (30) Gulf Coast Crab Cake with Tequila Remoulade Piece · (30) Mini Beef Tenderloin en Croute, Caramelized Onion Dip Piece · HOSTED FAVORITE BRANDS BAR ON CONSUMPTION* · Hosted Favorite Brands · Jack Daniel's Bourbon, Dewar's White Label Scotch, Tito's Vodka, Tanqueray Gin, Canadian Club Whiskey · Jose Cuervo Gold Tequila, Bacardi Superior Rum · Hosted Wine by the Glass Glass · Vista Point Chardonnay · Vista Point Cabernet Sauvignon · Hosted Imported &amp; Craft Beer · Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock, Austin Eastciders · Hosted Domestic Beer · Budweiser, Bud Light, Miller Light, Lonestar · Assorted Pepsi Products · Pepsi | Diet Pepsi | Starry | Mountain Dew | Diet Mountain Dew · (1) Bartender (1 per 100 guests - up to 4 Hours) · (1) Butler Passing Fee - per Hour" data-es="<strong class='menu-hl'>TRAY PASSED HORS D'OEUVRES</strong> — (30) Gulf Coast Crab Cake with Tequila Remoulade Piece · (30) Mini Beef Tenderloin en Croute, Caramelized Onion Dip Piece · HOSTED FAVORITE BRANDS BAR ON CONSUMPTION* · Hosted Favorite Brands · Jack Daniel's Bourbon, Dewar's White Label Scotch, Tito's Vodka, Tanqueray Gin, Canadian Club Whiskey · Jose Cuervo Gold Tequila, Bacardi Superior Rum · Hosted Wine by the Glass Glass · Vista Point Chardonnay · Vista Point Cabernet Sauvignon · Hosted Imported &amp; Craft Beer · Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock, Austin Eastciders · Hosted Domestic Beer · Budweiser, Bud Light, Miller Light, Lonestar · Assorted Pepsi Products · Pepsi | Diet Pepsi | Starry | Mountain Dew | Diet Mountain Dew · (1) Bartender (1 per 100 guests - up to 4 Hours) · (1) Butler Passing Fee - per Hour"><strong class='menu-hl'>TRAY PASSED HORS D'OEUVRES</strong> — (30) Gulf Coast Crab Cake with Tequila Remoulade Piece · (30) Mini Beef Tenderloin en Croute, Caramelized Onion Dip Piece · HOSTED FAVORITE BRANDS BAR ON CONSUMPTION* · Hosted Favorite Brands · Jack Daniel's Bourbon, Dewar's White Label Scotch, Tito's Vodka, Tanqueray Gin, Canadian Club Whiskey · Jose Cuervo Gold Tequila, Bacardi Superior Rum · Hosted Wine by the Glass Glass · Vista Point Chardonnay · Vista Point Cabernet Sauvignon · Hosted Imported &amp; Craft Beer · Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock, Austin Eastciders · Hosted Domestic Beer · Budweiser, Bud Light, Miller Light, Lonestar · Assorted Pepsi Products · Pepsi | Diet Pepsi | Starry | Mountain Dew | Diet Mountain Dew · (1) Bartender (1 per 100 guests - up to 4 Hours) · (1) Butler Passing Fee - per Hour</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Monica</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria · Crescent Rounds" data-es="Plumeria · Crescent Rounds">Plumeria · Crescent Rounds</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Telarus Beyond the Solution - Austin Oct2026 · from events report 10/5 — no event order yet" data-es="Telarus Beyond the Solution - Austin Oct2026 · from events report 10/5 — no event order yet">Telarus Beyond the Solution - Austin Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria · Cocktail Rounds" data-es="Plumeria · Cocktail Rounds">Plumeria · Cocktail Rounds</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Telarus Beyond the Solution - Austin Oct2026 · Set Highboys and Bar in foyer space" data-es="Telarus Beyond the Solution - Austin Oct2026 · Set Highboys and Bar in foyer space">Telarus Beyond the Solution - Austin Oct2026 · Set Highboys and Bar in foyer space</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIAfromTelarusBeyondSolution.pdf', 'Plumeria — layout')"><span>Plumeria — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
@@ -6254,40 +6277,46 @@ body{font-family:Manrope,Arial,sans-serif}
 <div class="day-body">
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Ayn Rand Centre — Meeting #4 - Office" data-es="Ayn Rand Centre — Meeting #4 - Office">Ayn Rand Centre — Meeting #4 - Office</div>
-      <div class="card-badges"></div>
+      <div class="card-group" data-en="Ayn Rand Centre — Office" data-es="Ayn Rand Centre — Office">Ayn Rand Centre — Office</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Mackenzie" data-es="IC: Mackenzie">IC: Mackenzie</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">7:00 AM–<br>11:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 5</span></div>
+        <div class="svc-top"><span class="tag" data-en="Meeting — Office — No F&amp;B" data-es="Meeting — Office — No F&amp;B">Meeting — Office — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 5</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mackenzie</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell · Conference" data-es="Bluebell · Conference">Bluebell · Conference</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet" data-es="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet">The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613" data-es="The Irreplaceable Spark Conference HPN 112613">The Irreplaceable Spark Conference HPN 112613</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/FullMeetingSpacefromTheIrreplaceableSparkConference.pdf', 'Full meeting space')"><span>Full meeting space</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PREFUNCTIONfromTheIrreplaceableSparkConference.pdf', 'Pre-Function — layout (room not on events report yet)')"><span>Pre-Function — layout (room not on events report yet)</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="Ayn Rand Centre — Meeting #2 - VIP Room" data-es="Ayn Rand Centre — Meeting #2 - VIP Room">Ayn Rand Centre — Meeting #2 - VIP Room</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="Ayn Rand Centre — VIP Room" data-es="Ayn Rand Centre — VIP Room">Ayn Rand Centre — VIP Room</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Mackenzie" data-es="IC: Mackenzie">IC: Mackenzie</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">6:00–<br>11:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 50</span></div>
+        <div class="svc-top"><span class="tag" data-en="Meeting — VIP Room — No F&amp;B" data-es="Meeting — VIP Room — No F&amp;B">Meeting — VIP Room — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 50</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mackenzie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria" data-es="Plumeria">Plumeria</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet" data-es="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet">The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria · (3) Rounds of 7 · (3) Low boys with 3 chairs" data-es="Plumeria · (3) Rounds of 7 · (3) Low boys with 3 chairs">Plumeria · (3) Rounds of 7 · (3) Low boys with 3 chairs</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613" data-es="The Irreplaceable Spark Conference HPN 112613">The Irreplaceable Spark Conference HPN 112613</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIAfromTheIrreplaceableSparkConference.pdf', 'Plumeria — layout')"><span>Plumeria — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
@@ -6305,101 +6334,134 @@ body{font-family:Manrope,Arial,sans-serif}
 <div class="day-body">
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Ayn Rand Centre — Meeting #1 - General Session" data-es="Ayn Rand Centre — Meeting #1 - General Session">Ayn Rand Centre — Meeting #1 - General Session</div>
-      <div class="card-badges"></div>
+      <div class="card-group" data-en="Ayn Rand Centre — General Session &amp; Reception" data-es="Ayn Rand Centre — General Session &amp; Reception">Ayn Rand Centre — General Session &amp; Reception</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Mackenzie" data-es="IC: Mackenzie">IC: Mackenzie</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>11:00 PM</div>
+      <div class="svc-time">9:00 AM–<br>4:15 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 130</span></div>
+        <div class="svc-top"><span class="tag" data-en="Meeting — General Session — No F&amp;B" data-es="Meeting — General Session — No F&amp;B">Meeting — General Session — No F&amp;B</span><span class="room-pill">Primrose D</span><span class="gtd-pill">GTD 60</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>11:00 PM</div>
+      <div class="svc-time">10:05–<br>10:20 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-brk" data-en="Continuous Break" data-es="Continuous Break">Continuous Break</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 130</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Continuous Break" data-es="Continuous Break">Continuous Break</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 60</span></div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">4:15–<br>6:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Room Ready — No F&amp;B" data-es="Room Ready — No F&amp;B">Room Ready — No F&amp;B</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 1</span></div>
+        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>10:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Primrose D</span><span class="gtd-pill">GTD 30</span></div>
+        <div class="svc-menu" data-en="(1) Bartender (1 per 100 guests - up to 4 Hours)" data-es="(1) Bartender (1 per 100 guests - up to 4 Hours)">(1) Bartender (1 per 100 guests - up to 4 Hours)</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mackenzie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose D · Rounds of 10 · set 60" data-es="Primrose D · Rounds of 10 · set 60">Primrose D · Rounds of 10 · set 60</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet" data-es="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet">The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose D · (12) Crescent rounds of 5 · 8x12 stage · Room Ready Primrose D · (6) Crescent rounds of 6 · (6) Highboys · Round mirrors and votive candles on round tables" data-es="Primrose D · (12) Crescent rounds of 5 · 8x12 stage · Room Ready Primrose D · (6) Crescent rounds of 6 · (6) Highboys · Round mirrors and votive candles on round tables">Primrose D · (12) Crescent rounds of 5 · 8x12 stage · Room Ready Primrose D · (6) Crescent rounds of 6 · (6) Highboys · Round mirrors and votive candles on round tables</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · Agenda on the event order (session times + breaks)" data-es="The Irreplaceable Spark Conference HPN 112613 · Agenda on the event order (session times + breaks)">The Irreplaceable Spark Conference HPN 112613 · Agenda on the event order (session times + breaks)</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/FullMeetingSpacefromTheIrreplaceableSparkConference.pdf', 'Full meeting space')"><span>Full meeting space</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSEDCopyfromTheIrreplaceableSparkConference.pdf', 'Primrose D — alternate layout')"><span>Primrose D — alternate layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSEDfromTheIrreplaceableSparkConference.pdf', 'Primrose D — layout')"><span>Primrose D — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="Ayn Rand Centre — Meeting #2 - VIP Room" data-es="Ayn Rand Centre — Meeting #2 - VIP Room">Ayn Rand Centre — Meeting #2 - VIP Room</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="Ayn Rand Centre — VIP Room" data-es="Ayn Rand Centre — VIP Room">Ayn Rand Centre — VIP Room</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Mackenzie" data-es="IC: Mackenzie">IC: Mackenzie</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>11:00 PM</div>
+      <div class="svc-time">7:00 AM–<br>6:30 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 50</span></div>
+        <div class="svc-top"><span class="tag" data-en="Meeting — VIP Room — No F&amp;B" data-es="Meeting — VIP Room — No F&amp;B">Meeting — VIP Room — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">GTD 20</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:00–<br>8:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 20</span></div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">7:00 AM–<br>11:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag tag-brk" data-en="Continuous Break" data-es="Continuous Break">Continuous Break</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 50</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
       </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">5:00–<br>8:00 PM</div>
+      <div class="svc-time">1:15–<br>2:15 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 50</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 20</span></div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mackenzie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria" data-es="Plumeria">Plumeria</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet" data-es="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet">The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria · (3) Rounds of 7 · (3) Low boys with 3 chairs" data-es="Plumeria · (3) Rounds of 7 · (3) Low boys with 3 chairs">Plumeria · (3) Rounds of 7 · (3) Low boys with 3 chairs</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · Set Buffet inside of room" data-es="The Irreplaceable Spark Conference HPN 112613 · Set Buffet inside of room">The Irreplaceable Spark Conference HPN 112613 · Set Buffet inside of room</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIAfromTheIrreplaceableSparkConference.pdf', 'Plumeria — layout')"><span>Plumeria — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="Ayn Rand Centre — Meeting #3 - Market" data-es="Ayn Rand Centre — Meeting #3 - Market">Ayn Rand Centre — Meeting #3 - Market</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="Ayn Rand Centre — 1:1 Sessions" data-es="Ayn Rand Centre — 1:1 Sessions">Ayn Rand Centre — 1:1 Sessions</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Mackenzie" data-es="IC: Mackenzie">IC: Mackenzie</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>11:00 PM</div>
+      <div class="svc-time">9:00 AM–<br>4:15 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 130</span></div>
+        <div class="svc-top"><span class="tag" data-en="Meeting — 1 :1 Session — No F&amp;B" data-es="Meeting — 1 :1 Session — No F&amp;B">Meeting — 1 :1 Session — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 1</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mackenzie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena" data-es="Verbena">Verbena</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet" data-es="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet">The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena · (1) (1) Rounds of of in Verbena A and (1) Rounds of 4in Verbena B" data-es="Verbena · (1) (1) Rounds of of in Verbena A and (1) Rounds of 4in Verbena B">Verbena · (1) (1) Rounds of of in Verbena A and (1) Rounds of 4in Verbena B</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613" data-es="The Irreplaceable Spark Conference HPN 112613">The Irreplaceable Spark Conference HPN 112613</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/VERBENAfromTheIrreplaceableSparkConference.pdf', 'Verbena — layout')"><span>Verbena — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--amber)">
-      <div class="card-group" data-en="Ayn Rand Centre — Meeting #4 - Office" data-es="Ayn Rand Centre — Meeting #4 - Office">Ayn Rand Centre — Meeting #4 - Office</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="Ayn Rand Centre — Office" data-es="Ayn Rand Centre — Office">Ayn Rand Centre — Office</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Mackenzie" data-es="IC: Mackenzie">IC: Mackenzie</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">7:00 AM–<br>11:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 5</span></div>
+        <div class="svc-top"><span class="tag" data-en="Meeting — Office — No F&amp;B" data-es="Meeting — Office — No F&amp;B">Meeting — Office — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 5</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mackenzie</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell · Conference" data-es="Bluebell · Conference">Bluebell · Conference</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet" data-es="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet">The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613" data-es="The Irreplaceable Spark Conference HPN 112613">The Irreplaceable Spark Conference HPN 112613</span></div>
     </div>
   </div>
 
@@ -6416,120 +6478,146 @@ body{font-family:Manrope,Arial,sans-serif}
 <div class="day-body">
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="University of Texas — Breakfast" data-es="University of Texas — Breakfast">University of Texas — Breakfast</div>
-      <div class="card-badges"></div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">6:45–<br>7:45 AM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 35</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+      <div class="card-group" data-en="University of Texas — UIL Breakfast &amp; Lunch" data-es="University of Texas — UIL Breakfast &amp; Lunch">University of Texas — UIL Breakfast &amp; Lunch</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+        <span class="badge badge-ic" data-en="IC: Caroline" data-es="IC: Caroline">IC: Caroline</span>
       </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">11:45 AM–<br>1:00 PM</div>
+      <div class="svc-time">6:30–<br>7:45 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 70</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Barton</span><span class="gtd-pill">GTD 35</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Early Riser Breakfast Table</strong> — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas" data-es="<strong class='menu-hl'>Early Riser Breakfast Table</strong> — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas"><strong class='menu-hl'>Early Riser Breakfast Table</strong> — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · House Baked Pastries · Individual Chobani Fruit Yogurts · Scrambled Eggs · Applewood Smoked Bacon · Country Style Pork Sausage · Rosemary Seasoned Gold Breakfast Potatoes · Little City Regular and Decaf Coffee, Assortment of Teas</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">11:30 AM–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Barton</span><span class="gtd-pill">GTD 70</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>(70) Plated Lunch</strong> — Served as a three course option and include your choice of soup or salad, entrée with seasonal vegetable, dessert, rolls &amp; iced tea. · *PRESET SALAD AND DESSERT* · FIRST COURSE · Traditional Caesar Salad · Crisp Whole Leaf Romaine, Garlic Herb Croutons, Parmesan, Creamy Caesar Dressing · SECOND COURSE" data-es="<strong class='menu-hl'>(70) Plated Lunch</strong> — Served as a three course option and include your choice of soup or salad, entrée with seasonal vegetable, dessert, rolls &amp; iced tea. · *PRESET SALAD AND DESSERT* · FIRST COURSE · Traditional Caesar Salad · Crisp Whole Leaf Romaine, Garlic Herb Croutons, Parmesan, Creamy Caesar Dressing · SECOND COURSE"><strong class='menu-hl'>(70) Plated Lunch</strong> — Served as a three course option and include your choice of soup or salad, entrée with seasonal vegetable, dessert, rolls &amp; iced tea. · *PRESET SALAD AND DESSERT* · FIRST COURSE · Traditional Caesar Salad · Crisp Whole Leaf Romaine, Garlic Herb Croutons, Parmesan, Creamy Caesar Dressing · SECOND COURSE</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Caroline</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Barton · Rounds of 10" data-es="Barton · Rounds of 10">Barton · Rounds of 10</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet" data-es="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet">UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Barton" data-es="Barton">Barton</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026" data-es="UIL Legislative Meeting Oct2026">UIL Legislative Meeting Oct2026</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/BartonCopyfromUILLegislativeMeetingOct2026.pdf', 'Barton — alternate layout')"><span>Barton — alternate layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/BartonfromUILLegislativeMeetingOct2026.pdf', 'Barton — layout')"><span>Barton — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="University of Texas — General Session" data-es="University of Texas — General Session">University of Texas — General Session</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="University of Texas — UIL General Session" data-es="University of Texas — UIL General Session">University of Texas — UIL General Session</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+        <span class="badge badge-ic" data-en="IC: Caroline" data-es="IC: Caroline">IC: Caroline</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">8:00–<br>10:30 AM</div>
+      <div class="svc-time">6:30–<br>7:14 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 169</span></div>
+        <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">GTD 171</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:15–<br>11:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="General Session" data-es="General Session">General Session</span><span class="room-pill">Primrose C</span><span class="gtd-pill">GTD 171</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Diet Coke - Charge on Consumption</strong> — (4) Gallon(s) Little City Decaffeinated Coffee - Charge on Consumption Gallon · (start with 4) · (4) Gallon(s) - Little City Regular Coffee - Charge on Consumption Gallon · (start with 4) · Bottled Water - Charge on Consumption · Assorted Pepsi Soft Drinks - Charge on Consumption · (1) Dozen Mini Assorted Croissants Dozen · (1) Dozen Cream Cheese Glazed Cinnamon Buns Dozen · (12) Breakfast Tacos · (Half Bacon/Half Veggie) · Soft Scrambled Eggs with Breakfast Meat · Vegetarian: Potato &amp; Egg · Each · Gallon(s) - Assortment of Teas - Charge on Consumption Gallon · (22) Black Linen Fee per table" data-es="<strong class='menu-hl'>Diet Coke - Charge on Consumption</strong> — (4) Gallon(s) Little City Decaffeinated Coffee - Charge on Consumption Gallon · (start with 4) · (4) Gallon(s) - Little City Regular Coffee - Charge on Consumption Gallon · (start with 4) · Bottled Water - Charge on Consumption · Assorted Pepsi Soft Drinks - Charge on Consumption · (1) Dozen Mini Assorted Croissants Dozen · (1) Dozen Cream Cheese Glazed Cinnamon Buns Dozen · (12) Breakfast Tacos · (Half Bacon/Half Veggie) · Soft Scrambled Eggs with Breakfast Meat · Vegetarian: Potato &amp; Egg · Each · Gallon(s) - Assortment of Teas - Charge on Consumption Gallon · (22) Black Linen Fee per table"><strong class='menu-hl'>Diet Coke - Charge on Consumption</strong> — (4) Gallon(s) Little City Decaffeinated Coffee - Charge on Consumption Gallon · (start with 4) · (4) Gallon(s) - Little City Regular Coffee - Charge on Consumption Gallon · (start with 4) · Bottled Water - Charge on Consumption · Assorted Pepsi Soft Drinks - Charge on Consumption · (1) Dozen Mini Assorted Croissants Dozen · (1) Dozen Cream Cheese Glazed Cinnamon Buns Dozen · (12) Breakfast Tacos · (Half Bacon/Half Veggie) · Soft Scrambled Eggs with Breakfast Meat · Vegetarian: Potato &amp; Egg · Each · Gallon(s) - Assortment of Teas - Charge on Consumption Gallon · (22) Black Linen Fee per table</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Caroline</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose C" data-es="Primrose C">Primrose C</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet · REVISED 10/10: theater set for 120 (was 112) · mics placed at the U-shape and podium (see diagram 2)" data-es="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet · REVISADO 10/10: teatro para 120 (antes 112) · micrófonos en la U y el podio (ver diagrama 2)">UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet · REVISED 10/10: theater set for 120 (was 112) · mics placed at the U-shape and podium (see diagram 2)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="FOOD" data-es="COMIDA">FOOD</span><span class="foot-val" data-en="Food in back of room behind tables for staff only / 3 Regular and 3 Decaf Coffee set outside Prim C for 125 guests · Tea, Bottled Water, Sodas for 35 staff ; refill as needed" data-es="Food in back of room behind tables for staff only / 3 Regular and 3 Decaf Coffee set outside Prim C for 125 guests · Tea, Bottled Water, Sodas for 35 staff ; refill as needed">Food in back of room behind tables for staff only / 3 Regular and 3 Decaf Coffee set outside Prim C for 125 guests · Tea, Bottled Water, Sodas for 35 staff ; refill as needed</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026 · REVISED 10/10: theater set for 120 (was 112) · mics placed at the U-shape and podium (see diagram 2)" data-es="UIL Legislative Meeting Oct2026 · REVISED 10/10: theater set for 120 (was 112) · mics placed at the U-shape and podium (see diagram 2)">UIL Legislative Meeting Oct2026 · REVISED 10/10: theater set for 120 (was 112) · mics placed at the U-shape and podium (see diagram 2)</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSECfromUILLegislativeMeetingOct2026.pdf', 'Primrose C — hollow square 54 w/ mics + theater 88')"><span>Primrose C — hollow square 54 w/ mics + theater 88</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSECfromUILLegislativeMeetingOct2026_2.pdf', 'Primrose C — U-shape 44 w/ mics, podium, theater 120')"><span>Primrose C — U-shape 44 w/ mics, podium, theater 120</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="University of Texas — Breakout" data-es="University of Texas — Breakout">University of Texas — Breakout</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="University of Texas — UIL Breakout (Camellia)" data-es="University of Texas — UIL Breakout (Camellia)">University of Texas — UIL Breakout (Camellia)</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+        <span class="badge badge-ic" data-en="IC: Caroline" data-es="IC: Caroline">IC: Caroline</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">10:30 AM–<br>3:00 PM</div>
+      <div class="svc-time">9:00 AM–<br>1:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Camellia</span><span class="gtd-pill">EXP 40</span></div>
-        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Breakout" data-es="Breakout">Breakout</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 40</span></div>
+        <div class="svc-menu" data-en="(10) Black Linen Fee per table" data-es="(10) Black Linen Fee per table">(10) Black Linen Fee per table</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Caroline</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia" data-es="Camellia">Camellia</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet" data-es="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet">UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia · Special · hollowed squared for 20, theater for 20 in back, (1) 6' table in back with 2 chairs" data-es="Camellia · Special · hollowed squared for 20, theater for 20 in back, (1) 6' table in back with 2 chairs">Camellia · Special · hollowed squared for 20, theater for 20 in back, (1) 6' table in back with 2 chairs</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026" data-es="UIL Legislative Meeting Oct2026">UIL Legislative Meeting Oct2026</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/CamelliafromUILLegislativeMeetingOct2026.pdf', 'Camellia — layout')"><span>Camellia — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--amber)">
-      <div class="card-group" data-en="University of Texas — Breakout" data-es="University of Texas — Breakout">University of Texas — Breakout</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="University of Texas — UIL Breakout (Primrose AB)" data-es="University of Texas — UIL Breakout (Primrose AB)">University of Texas — UIL Breakout (Primrose AB)</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+        <span class="badge badge-ic" data-en="IC: Caroline" data-es="IC: Caroline">IC: Caroline</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">10:30 AM–<br>3:00 PM</div>
+      <div class="svc-time">9:00 AM–<br>4:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 120</span></div>
-        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Breakout" data-es="Breakout">Breakout</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 128</span></div>
+        <div class="svc-menu" data-en="(10) Black Linen Fee per table" data-es="(10) Black Linen Fee per table">(10) Black Linen Fee per table</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Caroline</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose AB" data-es="Primrose AB">Primrose AB</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet · REVISED 10/10: (1) table near the entrance, no chairs, closer to the door · mics at set spots on the left side of the hollow square" data-es="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet · REVISADO 10/10: (1) mesa cerca de la entrada, sin sillas, más cerca de la puerta · micrófonos en puntos fijos del lado izquierdo del cuadro hueco">UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet · REVISED 10/10: (1) table near the entrance, no chairs, closer to the door · mics at set spots on the left side of the hollow square</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose AB · Special · hollow squared for 20 (black linen) · theater for 108 , (1) 6' table with 2 chairs in back" data-es="Primrose AB · Special · hollow squared for 20 (black linen) · theater for 108 , (1) 6' table with 2 chairs in back">Primrose AB · Special · hollow squared for 20 (black linen) · theater for 108 , (1) 6' table with 2 chairs in back</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026 · REVISED 10/10: (1) table near the entrance, no chairs, closer to the door · mics at set spots on the left side of the hollow square" data-es="UIL Legislative Meeting Oct2026 · REVISED 10/10: (1) table near the entrance, no chairs, closer to the door · mics at set spots on the left side of the hollow square">UIL Legislative Meeting Oct2026 · REVISED 10/10: (1) table near the entrance, no chairs, closer to the door · mics at set spots on the left side of the hollow square</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSEABfromUILLegislativeMeetingOct2026.pdf', 'Primrose AB — hollow square 20 w/ mics, theater 108, table by door')"><span>Primrose AB — hollow square 20 w/ mics, theater 108, table by door</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--orange)">
-      <div class="card-group" data-en="University of Texas — Breakout" data-es="University of Texas — Breakout">University of Texas — Breakout</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="University of Texas — UIL Breakout (Lantana)" data-es="University of Texas — UIL Breakout (Lantana)">University of Texas — UIL Breakout (Lantana)</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+        <span class="badge badge-ic" data-en="IC: Caroline" data-es="IC: Caroline">IC: Caroline</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">10:30 AM–<br>3:00 PM</div>
+      <div class="svc-time">9:00 AM–<br>1:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Lantana</span><span class="gtd-pill">EXP 40</span></div>
-        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Breakout" data-es="Breakout">Breakout</span><span class="room-pill">Lantana</span><span class="gtd-pill">GTD 41</span></div>
+        <div class="svc-menu" data-en="(10) Black Linen Fee per table" data-es="(10) Black Linen Fee per table">(10) Black Linen Fee per table</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Caroline</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Lantana" data-es="Lantana">Lantana</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet" data-es="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet">UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Lantana · Special · hollow squared set for 20 (black linen) · theater for 21 behind square · (1) 6'table with 2 chairs in back" data-es="Lantana · Special · hollow squared set for 20 (black linen) · theater for 21 behind square · (1) 6'table with 2 chairs in back">Lantana · Special · hollow squared set for 20 (black linen) · theater for 21 behind square · (1) 6'table with 2 chairs in back</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026" data-es="UIL Legislative Meeting Oct2026">UIL Legislative Meeting Oct2026</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/LANTANAfromUILLegislativeMeetingOct2026.pdf', 'Lantana — layout')"><span>Lantana — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--red)">
-      <div class="card-group" data-en="Ayn Rand Centre — Meeting #1 - General Session" data-es="Ayn Rand Centre — Meeting #1 - General Session">Ayn Rand Centre — Meeting #1 - General Session</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="Ayn Rand Centre — General Session" data-es="Ayn Rand Centre — General Session">Ayn Rand Centre — General Session</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Mackenzie" data-es="IC: Mackenzie">IC: Mackenzie</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>11:00 PM</div>
+      <div class="svc-time">9:00 AM–<br>11:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 130</span></div>
+        <div class="svc-top"><span class="tag" data-en="Meeting — General Session — No F&amp;B" data-es="Meeting — General Session — No F&amp;B">Meeting — General Session — No F&amp;B</span><span class="room-pill">Primrose D</span><span class="gtd-pill">GTD 60</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
@@ -6537,94 +6625,103 @@ body{font-family:Manrope,Arial,sans-serif}
       <div class="svc-time">7:00 AM–<br>11:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag tag-brk" data-en="Continuous Break" data-es="Continuous Break">Continuous Break</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 130</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">12:00–<br>1:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 130</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
-      </div>
-    </div>
-    <div class="svc-row">
-      <div class="svc-time">6:00–<br>11:00 PM</div>
-      <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 130</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mackenzie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose D · Rounds of 10" data-es="Primrose D · Rounds of 10">Primrose D · Rounds of 10</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet" data-es="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet">The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose D · 8x12 stage · (12) Crescent rounds of 5" data-es="Primrose D · 8x12 stage · (12) Crescent rounds of 5">Primrose D · 8x12 stage · (12) Crescent rounds of 5</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · Agenda on the event order (session times + breaks)" data-es="The Irreplaceable Spark Conference HPN 112613 · Agenda on the event order (session times + breaks)">The Irreplaceable Spark Conference HPN 112613 · Agenda on the event order (session times + breaks)</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/FullMeetingSpacefromTheIrreplaceableSparkConference.pdf', 'Full meeting space')"><span>Full meeting space</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSEDCopyfromTheIrreplaceableSparkConference.pdf', 'Primrose D — alternate layout')"><span>Primrose D — alternate layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSEDfromTheIrreplaceableSparkConference.pdf', 'Primrose D — layout')"><span>Primrose D — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="Ayn Rand Centre — Meeting #2 - VIP Room" data-es="Ayn Rand Centre — Meeting #2 - VIP Room">Ayn Rand Centre — Meeting #2 - VIP Room</div>
-      <div class="card-badges"></div>
+      <div class="card-group" data-en="Ayn Rand Centre — VIP Room" data-es="Ayn Rand Centre — VIP Room">Ayn Rand Centre — VIP Room</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Mackenzie" data-es="IC: Mackenzie">IC: Mackenzie</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">7:00 AM–<br>11:00 PM</div>
+      <div class="svc-time">7:00 AM–<br>6:30 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 50</span></div>
+        <div class="svc-top"><span class="tag" data-en="Meeting — VIP Room — No F&amp;B" data-es="Meeting — VIP Room — No F&amp;B">Meeting — VIP Room — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">GTD 20</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:00–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 20</span></div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">7:00 AM–<br>11:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag tag-brk" data-en="Continuous Break" data-es="Continuous Break">Continuous Break</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 50</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:45–<br>2:15 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 20</span></div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mackenzie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria" data-es="Plumeria">Plumeria</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet" data-es="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet">The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria · (1) Existing Set" data-es="Plumeria · (1) Existing Set">Plumeria · (1) Existing Set</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613" data-es="The Irreplaceable Spark Conference HPN 112613">The Irreplaceable Spark Conference HPN 112613</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PLUMERIAfromTheIrreplaceableSparkConference.pdf', 'Plumeria — layout')"><span>Plumeria — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="Ayn Rand Centre — Meeting #3 - Market" data-es="Ayn Rand Centre — Meeting #3 - Market">Ayn Rand Centre — Meeting #3 - Market</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="Ayn Rand Centre — 1:1 Sessions" data-es="Ayn Rand Centre — 1:1 Sessions">Ayn Rand Centre — 1:1 Sessions</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Mackenzie" data-es="IC: Mackenzie">IC: Mackenzie</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">7:00 AM–<br>11:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 130</span></div>
+        <div class="svc-top"><span class="tag" data-en="Meeting — 1 :1 Session — No F&amp;B" data-es="Meeting — 1 :1 Session — No F&amp;B">Meeting — 1 :1 Session — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 1</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mackenzie</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena" data-es="Verbena">Verbena</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet" data-es="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet">The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena · Existing set" data-es="Verbena · Existing set">Verbena · Existing set</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613" data-es="The Irreplaceable Spark Conference HPN 112613">The Irreplaceable Spark Conference HPN 112613</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/VERBENAfromTheIrreplaceableSparkConference.pdf', 'Verbena — layout')"><span>Verbena — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="Ayn Rand Centre — Meeting #4 - Office" data-es="Ayn Rand Centre — Meeting #4 - Office">Ayn Rand Centre — Meeting #4 - Office</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="Ayn Rand Centre — Office" data-es="Ayn Rand Centre — Office">Ayn Rand Centre — Office</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Mackenzie" data-es="IC: Mackenzie">IC: Mackenzie</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">7:00 AM–<br>11:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 5</span></div>
+        <div class="svc-top"><span class="tag" data-en="Meeting — Office — No F&amp;B" data-es="Meeting — Office — No F&amp;B">Meeting — Office — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 5</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Mackenzie</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell · Conference" data-es="Bluebell · Conference">Bluebell · Conference</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet" data-es="The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet">The Irreplaceable Spark Conference HPN 112613 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="The Irreplaceable Spark Conference HPN 112613" data-es="The Irreplaceable Spark Conference HPN 112613">The Irreplaceable Spark Conference HPN 112613</span></div>
     </div>
   </div>
 
@@ -6641,60 +6738,75 @@ body{font-family:Manrope,Arial,sans-serif}
 <div class="day-body">
   <div class="event-card">
     <div class="card-head" style="border-left:3px solid var(--blue)">
-      <div class="card-group" data-en="University of Texas — Breakfast" data-es="University of Texas — Breakfast">University of Texas — Breakfast</div>
-      <div class="card-badges"></div>
+      <div class="card-group" data-en="University of Texas — UIL Breakfast" data-es="University of Texas — UIL Breakfast">University of Texas — UIL Breakfast</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+        <span class="badge badge-ic" data-en="IC: Caroline" data-es="IC: Caroline">IC: Caroline</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">7:45–<br>8:45 AM</div>
+      <div class="svc-time">7:30–<br>8:45 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 35</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Barton</span><span class="gtd-pill">GTD 35</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Texas Sunrise Breakfast Table</strong> — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · Freshly Baked Kolaches · Individual Chobani Fruit Yogurts · Ranchero Beans · Migas Rancheros with Scrambled Eggs, Salsa Roja, Corn Tortillas, Queso Fresco &amp; Cilantro · Jalapeno Cured Bacon · Texas Hashbrown Caserole · Warm Biscuits &amp; Country Sausage Gravy &amp; Butter · Little City Regular and Decaf Coffee, Assortment of Teas" data-es="<strong class='menu-hl'>Texas Sunrise Breakfast Table</strong> — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · Freshly Baked Kolaches · Individual Chobani Fruit Yogurts · Ranchero Beans · Migas Rancheros with Scrambled Eggs, Salsa Roja, Corn Tortillas, Queso Fresco &amp; Cilantro · Jalapeno Cured Bacon · Texas Hashbrown Caserole · Warm Biscuits &amp; Country Sausage Gravy &amp; Butter · Little City Regular and Decaf Coffee, Assortment of Teas"><strong class='menu-hl'>Texas Sunrise Breakfast Table</strong> — Orange, Cranberry &amp; Apple Juices · Fresh Cut Melons &amp; Berries · Freshly Baked Kolaches · Individual Chobani Fruit Yogurts · Ranchero Beans · Migas Rancheros with Scrambled Eggs, Salsa Roja, Corn Tortillas, Queso Fresco &amp; Cilantro · Jalapeno Cured Bacon · Texas Hashbrown Caserole · Warm Biscuits &amp; Country Sausage Gravy &amp; Butter · Little City Regular and Decaf Coffee, Assortment of Teas</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Caroline</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Barton · Rounds of 10" data-es="Barton · Rounds of 10">Barton · Rounds of 10</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet" data-es="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet">UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Barton · Rounds of 10 · Room set for 35, 4 rounds (black linen)" data-es="Barton · Rounds of 10 · Room set for 35, 4 rounds (black linen)">Barton · Rounds of 10 · Room set for 35, 4 rounds (black linen)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026" data-es="UIL Legislative Meeting Oct2026">UIL Legislative Meeting Oct2026</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/BartonCopyfromUILLegislativeMeetingOct2026.pdf', 'Barton — alternate layout')"><span>Barton — alternate layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/BartonfromUILLegislativeMeetingOct2026.pdf', 'Barton — layout')"><span>Barton — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="University of Texas — General Session" data-es="University of Texas — General Session">University of Texas — General Session</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="University of Texas — UIL General Session" data-es="University of Texas — UIL General Session">University of Texas — UIL General Session</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+        <span class="badge badge-ic" data-en="IC: Caroline" data-es="IC: Caroline">IC: Caroline</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">9:00–<br>11:00 AM</div>
+      <div class="svc-time">7:30–<br>8:14 AM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="General Session — No F&amp;B" data-es="General Session — No F&amp;B">General Session — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 155</span></div>
-        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
+        <div class="svc-top"><span class="tag" data-en="Set Up" data-es="Set Up">Set Up</span><span class="room-pill">Primrose C</span><span class="gtd-pill">GTD 142</span></div>
+        <div class="svc-menu" data-en="(1) Room Flip" data-es="(1) Room Flip">(1) Room Flip</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:15–<br>11:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="General Session" data-es="General Session">General Session</span><span class="room-pill">Primrose C</span><span class="gtd-pill">GTD 142</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Breakfast Tacos</strong> — (12) Breakfast Tacos · (Half Sausage/Half Veggie) · Soft Scrambled Eggs with Breakfast Meat · Vegetarian: Potato &amp; Egg · Each · Assorted Pepsi Soft Drinks - Charge on Consumption · (3) Gallon(s) - Little City Regular Coffee - Charge on Consumption Gallon · (start with 3) · (1) Dozen Cream Cheese Glazed Cinnamon Buns Dozen · Gallon(s) - Assortment of Teas - Charge on Consumption Gallon · (3) Gallon(s) Little City Decaffeinated Coffee - Charge on Consumption Gallon · (start with 3) · (1) Dozen Mini Assorted Croissants Dozen · Diet Coke - Charge on Consumption · Bottled Water - Charge on Consumption · (22) Black Linen Fee per table" data-es="<strong class='menu-hl'>Breakfast Tacos</strong> — (12) Breakfast Tacos · (Half Sausage/Half Veggie) · Soft Scrambled Eggs with Breakfast Meat · Vegetarian: Potato &amp; Egg · Each · Assorted Pepsi Soft Drinks - Charge on Consumption · (3) Gallon(s) - Little City Regular Coffee - Charge on Consumption Gallon · (start with 3) · (1) Dozen Cream Cheese Glazed Cinnamon Buns Dozen · Gallon(s) - Assortment of Teas - Charge on Consumption Gallon · (3) Gallon(s) Little City Decaffeinated Coffee - Charge on Consumption Gallon · (start with 3) · (1) Dozen Mini Assorted Croissants Dozen · Diet Coke - Charge on Consumption · Bottled Water - Charge on Consumption · (22) Black Linen Fee per table"><strong class='menu-hl'>Breakfast Tacos</strong> — (12) Breakfast Tacos · (Half Sausage/Half Veggie) · Soft Scrambled Eggs with Breakfast Meat · Vegetarian: Potato &amp; Egg · Each · Assorted Pepsi Soft Drinks - Charge on Consumption · (3) Gallon(s) - Little City Regular Coffee - Charge on Consumption Gallon · (start with 3) · (1) Dozen Cream Cheese Glazed Cinnamon Buns Dozen · Gallon(s) - Assortment of Teas - Charge on Consumption Gallon · (3) Gallon(s) Little City Decaffeinated Coffee - Charge on Consumption Gallon · (start with 3) · (1) Dozen Mini Assorted Croissants Dozen · Diet Coke - Charge on Consumption · Bottled Water - Charge on Consumption · (22) Black Linen Fee per table</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Caroline</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose C" data-es="Primrose C">Primrose C</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet" data-es="UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet">UIL Legislative Meeting Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="UIL Legislative Meeting Oct2026" data-es="UIL Legislative Meeting Oct2026">UIL Legislative Meeting Oct2026</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSECfromUILLegislativeMeetingOct2026.pdf', 'Primrose C — hollow square 54 w/ mics + theater 88')"><span>Primrose C — hollow square 54 w/ mics + theater 88</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSECfromUILLegislativeMeetingOct2026_2.pdf', 'Primrose C — U-shape 44 w/ mics, podium, theater 120')"><span>Primrose C — U-shape 44 w/ mics, podium, theater 120</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--purple)">
-      <div class="card-group" data-en="Lumenalta — Meeting" data-es="Lumenalta — Meeting">Lumenalta — Meeting</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="Lumenalta — Marketing Team" data-es="Lumenalta — Marketing Team">Lumenalta — Marketing Team</div>
+      <div class="card-badges">
+        <span class="badge badge-ic" data-en="IC: Julie" data-es="IC: Julie">IC: Julie</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">2:00–<br>7:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 4</span></div>
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">GTD 4</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Julie</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell · Conference" data-es="Bluebell · Conference">Bluebell · Conference</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Lumenalta Marketing Team Oct2026 · from events report 10/5 — no event order yet" data-es="Lumenalta Marketing Team Oct2026 · from events report 10/5 — no event order yet">Lumenalta Marketing Team Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Lumenalta Marketing Team Oct2026" data-es="Lumenalta Marketing Team Oct2026">Lumenalta Marketing Team Oct2026</span></div>
     </div>
   </div>
 
@@ -6863,9 +6975,12 @@ body{font-family:Manrope,Arial,sans-serif}
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
+    <div class="card-head" style="border-left:3px solid var(--blue)">
       <div class="card-group" data-en="Herring Bank — Meeting" data-es="Herring Bank — Meeting">Herring Bank — Meeting</div>
-      <div class="card-badges"></div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Brandy" data-es="IC: Brandy">IC: Brandy</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00 AM–<br>5:00 PM</div>
@@ -6877,7 +6992,7 @@ body{font-family:Manrope,Arial,sans-serif}
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Brandy</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Buttercup · Conference" data-es="Buttercup · Conference">Buttercup · Conference</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Herring Bank Meeting Oct2026 · from events report 10/5 — no event order yet" data-es="Herring Bank Meeting Oct2026 · from events report 10/5 — no event order yet">Herring Bank Meeting Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Herring Bank Meeting Oct2026" data-es="Herring Bank Meeting Oct2026">Herring Bank Meeting Oct2026</span></div>
     </div>
   </div>
 
@@ -7069,9 +7184,12 @@ body{font-family:Manrope,Arial,sans-serif}
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
+    <div class="card-head" style="border-left:3px solid var(--blue)">
       <div class="card-group" data-en="Herring Bank — Meeting" data-es="Herring Bank — Meeting">Herring Bank — Meeting</div>
-      <div class="card-badges"></div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Brandy" data-es="IC: Brandy">IC: Brandy</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">8:00 AM–<br>5:00 PM</div>
@@ -7083,7 +7201,7 @@ body{font-family:Manrope,Arial,sans-serif}
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Brandy</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Buttercup · Conference" data-es="Buttercup · Conference">Buttercup · Conference</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Herring Bank Meeting Oct2026 · from events report 10/5 — no event order yet" data-es="Herring Bank Meeting Oct2026 · from events report 10/5 — no event order yet">Herring Bank Meeting Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Herring Bank Meeting Oct2026" data-es="Herring Bank Meeting Oct2026">Herring Bank Meeting Oct2026</span></div>
     </div>
   </div>
 
@@ -7319,21 +7437,24 @@ body{font-family:Manrope,Arial,sans-serif}
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--amber)">
-      <div class="card-group" data-en="Q2 Banking — Breakout" data-es="Q2 Banking — Breakout">Q2 Banking — Breakout</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="Q2 Banking — CAB Breakout (Camellia A)" data-es="Q2 Banking — CAB Breakout (Camellia A)">Q2 Banking — CAB Breakout (Camellia A)</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Brooke" data-es="IC: Brooke">IC: Brooke</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">7:30 AM–<br>3:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Breakout — No F&amp;B" data-es="Breakout — No F&amp;B">Breakout — No F&amp;B</span><span class="room-pill">Camellia A</span><span class="gtd-pill">EXP 1</span></div>
-        <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
+        <div class="svc-top"><span class="tag tag-brk" data-en="Breakout" data-es="Breakout">Breakout</span><span class="room-pill">Camellia A</span><span class="gtd-pill">EXP 1</span></div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Brooke</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia A" data-es="Camellia A">Camellia A</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Q2 Customer Advisory Board (CAB) · from events report 10/5 — no event order yet" data-es="Q2 Customer Advisory Board (CAB) · from events report 10/5 — no event order yet">Q2 Customer Advisory Board (CAB) · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Q2 Customer Advisory Board (CAB)" data-es="Q2 Customer Advisory Board (CAB)">Q2 Customer Advisory Board (CAB)</span></div>
     </div>
   </div>
 
@@ -7579,12 +7700,15 @@ body{font-family:Manrope,Arial,sans-serif}
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="PMADTX -Puppy Mill Awareness Day TX — Set Up" data-es="PMADTX -Puppy Mill Awareness Day TX — Set Up">PMADTX -Puppy Mill Awareness Day TX — Set Up</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="PMADTX (Puppy Mill Awareness Day TX) — Boots &amp; Bling Gala" data-es="PMADTX (Puppy Mill Awareness Day TX) — Boots &amp; Bling Gala">PMADTX (Puppy Mill Awareness Day TX) — Boots &amp; Bling Gala</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+        <span class="badge badge-ic" data-en="IC: Courtney" data-es="IC: Courtney">IC: Courtney</span>
+      </div>
     </div>
     <div class="svc-row">
-      <div class="svc-time">10:00 AM–<br>6:00 PM</div>
+      <div class="svc-time">9:00 AM–<br>6:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 1</span></div>
         <div class="svc-menu" data-en="No F&amp;B" data-es="No F&amp;B">No F&amp;B</div>
@@ -7593,14 +7717,21 @@ body{font-family:Manrope,Arial,sans-serif}
     <div class="svc-row">
       <div class="svc-time">7:00–<br>11:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 150</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 100</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Macaroni &amp; Cheese Display Station</strong> — Traditional Creamy Three Cheese Mac &amp; Cheese · Chicken with Green Chile, Mushroom &amp; Oaxaca Mac &amp; Cheese · Lobster, English Pea, Pecorino, Romano &amp; Roasted Tomato Mac &amp; Cheese · Ansipasto Display Station · Chef's Selection of 4 Charcuterie Meats, Mixed Olives, Artichoke Hearts, Roasted Red Peppers · Grilled Mushrooms, Asparagus, Zucchini, Roasted Tomatoes, EVOO, Herbed Focaccia &amp; Lavosh Crackers · Market Style Vegetable Crudite Display Station · Crisp Raw Vegetables to Include: Cucumber, Carrots, Broccoli, Heirloom Cauliflower, Radish, Celery · Cherry Tomato, Ranch Dip, Kale &amp; Artichoke Yogurt Dip, Hatch Green Chile Hummus · HOSTED FAVORITE BRANDS BAR ON CONSUMPTION* · Hosted Favorite Brands · Jack Daniel's Bourbon, Dewar's White Label Scotch, Tito's Vodka, Tanqueray Gin, Canadian Club Whiskey · Jose Cuervo Gold Tequila, Bacardi Superior Rum · Hosted Wine by the Glass Glass · Vista Point Chardonnay · Vista Point Cabernet Sauvignon · Hosted Imported &amp; Craft Beer · Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock, Austin Eastciders · Hosted Domestic Beer" data-es="<strong class='menu-hl'>Macaroni &amp; Cheese Display Station</strong> — Traditional Creamy Three Cheese Mac &amp; Cheese · Chicken with Green Chile, Mushroom &amp; Oaxaca Mac &amp; Cheese · Lobster, English Pea, Pecorino, Romano &amp; Roasted Tomato Mac &amp; Cheese · Ansipasto Display Station · Chef's Selection of 4 Charcuterie Meats, Mixed Olives, Artichoke Hearts, Roasted Red Peppers · Grilled Mushrooms, Asparagus, Zucchini, Roasted Tomatoes, EVOO, Herbed Focaccia &amp; Lavosh Crackers · Market Style Vegetable Crudite Display Station · Crisp Raw Vegetables to Include: Cucumber, Carrots, Broccoli, Heirloom Cauliflower, Radish, Celery · Cherry Tomato, Ranch Dip, Kale &amp; Artichoke Yogurt Dip, Hatch Green Chile Hummus · HOSTED FAVORITE BRANDS BAR ON CONSUMPTION* · Hosted Favorite Brands · Jack Daniel's Bourbon, Dewar's White Label Scotch, Tito's Vodka, Tanqueray Gin, Canadian Club Whiskey · Jose Cuervo Gold Tequila, Bacardi Superior Rum · Hosted Wine by the Glass Glass · Vista Point Chardonnay · Vista Point Cabernet Sauvignon · Hosted Imported &amp; Craft Beer · Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock, Austin Eastciders · Hosted Domestic Beer"><strong class='menu-hl'>Macaroni &amp; Cheese Display Station</strong> — Traditional Creamy Three Cheese Mac &amp; Cheese · Chicken with Green Chile, Mushroom &amp; Oaxaca Mac &amp; Cheese · Lobster, English Pea, Pecorino, Romano &amp; Roasted Tomato Mac &amp; Cheese · Ansipasto Display Station · Chef's Selection of 4 Charcuterie Meats, Mixed Olives, Artichoke Hearts, Roasted Red Peppers · Grilled Mushrooms, Asparagus, Zucchini, Roasted Tomatoes, EVOO, Herbed Focaccia &amp; Lavosh Crackers · Market Style Vegetable Crudite Display Station · Crisp Raw Vegetables to Include: Cucumber, Carrots, Broccoli, Heirloom Cauliflower, Radish, Celery · Cherry Tomato, Ranch Dip, Kale &amp; Artichoke Yogurt Dip, Hatch Green Chile Hummus · HOSTED FAVORITE BRANDS BAR ON CONSUMPTION* · Hosted Favorite Brands · Jack Daniel's Bourbon, Dewar's White Label Scotch, Tito's Vodka, Tanqueray Gin, Canadian Club Whiskey · Jose Cuervo Gold Tequila, Bacardi Superior Rum · Hosted Wine by the Glass Glass · Vista Point Chardonnay · Vista Point Cabernet Sauvignon · Hosted Imported &amp; Craft Beer · Dos Equis XX, Stella Artois, Fireman's 4, Shiner Bock, Austin Eastciders · Hosted Domestic Beer</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:00–<br>11:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Cocktail Reception" data-es="Cocktail Reception">Cocktail Reception</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 1</span></div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Courtney</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose D" data-es="Primrose D">Primrose D</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Boots &amp; Bling Gala Oct2026 · from events report 10/5 — no event order yet" data-es="Boots &amp; Bling Gala Oct2026 · from events report 10/5 — no event order yet">Boots &amp; Bling Gala Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Boots &amp; Bling Gala Oct2026" data-es="Boots &amp; Bling Gala Oct2026">Boots &amp; Bling Gala Oct2026</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSEDCustomReceptionwithSoftLoungeFurniturefromBootsBling.pdf', 'Primrose D — custom reception, soft lounge')"><span>Primrose D — custom reception, soft lounge</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSEDfromBootsBling.pdf', 'Primrose D — layout')"><span>Primrose D — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
@@ -7637,9 +7768,12 @@ body{font-family:Manrope,Arial,sans-serif}
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--green)">
-      <div class="card-group" data-en="US Oncology — Meeting" data-es="US Oncology — Meeting">US Oncology — Meeting</div>
-      <div class="card-badges"></div>
+    <div class="card-head" style="border-left:3px solid var(--blue)">
+      <div class="card-group" data-en="US Oncology — Texas Oncology Fall Physicians' Meeting" data-es="US Oncology — Texas Oncology Fall Physicians' Meeting">US Oncology — Texas Oncology Fall Physicians' Meeting</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+        <span class="badge badge-ic" data-en="IC: Amy" data-es="IC: Amy">IC: Amy</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">6:30–<br>10:00 PM</div>
@@ -7651,14 +7785,14 @@ body{font-family:Manrope,Arial,sans-serif}
     <div class="svc-row">
       <div class="svc-time">6:00–<br>8:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Dinner Buffet" data-es="Dinner Buffet">Dinner Buffet</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">EXP 110</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner Buffet" data-es="Dinner Buffet">Dinner Buffet</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">EXP 110</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Modified Steakhouse Chopping Block Dinner Table</strong> — *Roasted Cauliflower Dish (added to buffet) · No cheese and no cream · *Herbed Seared Tofu Dish (added to buffett) · Baby Spinach Salad: Strawberries, Dried Apples, Feta, Candied Pecans, Champagne Vinaigrette · Steak House Salad: Iceberg, Romaine, Fresh Parsley, Cherry Tomato, Cucumber &amp; Red Onion with Ranch · Creamy Scalloped Potatoes with Cheddar Cheese · Truffled Cream Corn · Grilled Asparagus · Oven Roasted Free Range Chicken Breast, Mushroom Madeira Sauce &amp; Thyme · Seared Branzino (White Fish),Tomato Olive Broth, Crispy Capers · Slow Roasted Strip Loin, Red Wine Reduction, Sweet Hawaiian Rolls · Carrot Cake · Golden Delicious Apple Crisp, Caramel Sauce · Dinner Tables include Ice Water, Freshly Brewed Little City Coffee &amp; Assorted Tazo Herbal Teas · Iced Tea Available Upon Request. · Based on 90 Minutes of Service" data-es="<strong class='menu-hl'>Modified Steakhouse Chopping Block Dinner Table</strong> — *Roasted Cauliflower Dish (added to buffet) · No cheese and no cream · *Herbed Seared Tofu Dish (added to buffett) · Baby Spinach Salad: Strawberries, Dried Apples, Feta, Candied Pecans, Champagne Vinaigrette · Steak House Salad: Iceberg, Romaine, Fresh Parsley, Cherry Tomato, Cucumber &amp; Red Onion with Ranch · Creamy Scalloped Potatoes with Cheddar Cheese · Truffled Cream Corn · Grilled Asparagus · Oven Roasted Free Range Chicken Breast, Mushroom Madeira Sauce &amp; Thyme · Seared Branzino (White Fish),Tomato Olive Broth, Crispy Capers · Slow Roasted Strip Loin, Red Wine Reduction, Sweet Hawaiian Rolls · Carrot Cake · Golden Delicious Apple Crisp, Caramel Sauce · Dinner Tables include Ice Water, Freshly Brewed Little City Coffee &amp; Assorted Tazo Herbal Teas · Iced Tea Available Upon Request. · Based on 90 Minutes of Service"><strong class='menu-hl'>Modified Steakhouse Chopping Block Dinner Table</strong> — *Roasted Cauliflower Dish (added to buffet) · No cheese and no cream · *Herbed Seared Tofu Dish (added to buffett) · Baby Spinach Salad: Strawberries, Dried Apples, Feta, Candied Pecans, Champagne Vinaigrette · Steak House Salad: Iceberg, Romaine, Fresh Parsley, Cherry Tomato, Cucumber &amp; Red Onion with Ranch · Creamy Scalloped Potatoes with Cheddar Cheese · Truffled Cream Corn · Grilled Asparagus · Oven Roasted Free Range Chicken Breast, Mushroom Madeira Sauce &amp; Thyme · Seared Branzino (White Fish),Tomato Olive Broth, Crispy Capers · Slow Roasted Strip Loin, Red Wine Reduction, Sweet Hawaiian Rolls · Carrot Cake · Golden Delicious Apple Crisp, Caramel Sauce · Dinner Tables include Ice Water, Freshly Brewed Little City Coffee &amp; Assorted Tazo Herbal Teas · Iced Tea Available Upon Request. · Based on 90 Minutes of Service</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Amy</span></div>
       <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose CD · Crescent Rounds" data-es="Primrose CD · Crescent Rounds">Primrose CD · Crescent Rounds</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Texas Oncology Fall physician&#x27;s Meeting Oct2026 · from events report 10/5 — no event order yet" data-es="Texas Oncology Fall physician&#x27;s Meeting Oct2026 · from events report 10/5 — no event order yet">Texas Oncology Fall physician&#x27;s Meeting Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="Texas Oncology Fall physician's Meeting Oct2026" data-es="Texas Oncology Fall physician's Meeting Oct2026">Texas Oncology Fall physician's Meeting Oct2026</span></div>
       <div class="foot-row"><span class="foot-key" data-en="DIAGRAM" data-es="DIAGRAMA">DIAGRAM</span><span class="foot-val"><button type="button" class="diag-link" onclick="event.stopPropagation(); openDiagram('diagrams/PRIMROSECDfromTexasOncologyFallphysiciansMeetingOct2026.pdf', 'Primrose Cd — layout')"><span>Primrose Cd — layout</span><span class="diag-link-open" data-en="OPEN →" data-es="ABRIR →">OPEN →</span></button></span></div>
     </div>
   </div>
@@ -7863,35 +7997,38 @@ body{font-family:Manrope,Arial,sans-serif}
   </div>
 
   <div class="event-card">
-    <div class="card-head" style="border-left:3px solid var(--orange)">
+    <div class="card-head" style="border-left:3px solid var(--blue)">
       <div class="card-group" data-en="ABB — Reception" data-es="ABB — Reception">ABB — Reception</div>
-      <div class="card-badges"></div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+        <span class="badge badge-ic" data-en="IC: Raymond" data-es="IC: Raymond">IC: Raymond</span>
+      </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">7:30–<br>10:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 40</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 40</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Stationed</strong> — (25) Shrimp Cocktail Shooters Piece · (25) Gulf Coast Crab Cake with Tequila Remoulade Piece · Stationed · (25) Mini Beef Tenderloin en Croute, Caramelized Onion Dip Piece · Stationed · (25) BBQ Pork Wonton with Sriracha Aioli Piece · Stationed · (25) Southwestern Chorizo Springroll with Avocado Crema Piece · Stationed" data-es="<strong class='menu-hl'>Stationed</strong> — (25) Shrimp Cocktail Shooters Piece · (25) Gulf Coast Crab Cake with Tequila Remoulade Piece · Stationed · (25) Mini Beef Tenderloin en Croute, Caramelized Onion Dip Piece · Stationed · (25) BBQ Pork Wonton with Sriracha Aioli Piece · Stationed · (25) Southwestern Chorizo Springroll with Avocado Crema Piece · Stationed"><strong class='menu-hl'>Stationed</strong> — (25) Shrimp Cocktail Shooters Piece · (25) Gulf Coast Crab Cake with Tequila Remoulade Piece · Stationed · (25) Mini Beef Tenderloin en Croute, Caramelized Onion Dip Piece · Stationed · (25) BBQ Pork Wonton with Sriracha Aioli Piece · Stationed · (25) Southwestern Chorizo Springroll with Avocado Crema Piece · Stationed</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">7:30–<br>9:45 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 30</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 30</span></div>
+        <div class="svc-menu" data-en="<strong class='menu-hl'>Red Bull Energy Drink (Regular or Sugar Free) - Charged on Consumption</strong> — Bottled Water - Charge on Consumption · Assorted Pepsi Products - Charge on Consumption · Pepsi | Diet Pepsi | Starry | Mountain Dew | Diet Mountain Dew · Charge on Consumption · Bubly Sparkling Water - Charge on Consumption · Little City Nitro Cold Brew Coffee - Charge on Consumption · Hosted Appreciated Brands Glass · Bulleit Bourbon, Glenmorangie 10 Scotch, Belvedere Vodka Bombay Sapphire Gin, Crown Royal Whisky · 1800 Reposado Tequila, Straight Silver Rum · Bollini Pinot Grigio, Italy · Charge per bottle open" data-es="<strong class='menu-hl'>Red Bull Energy Drink (Regular or Sugar Free) - Charged on Consumption</strong> — Bottled Water - Charge on Consumption · Assorted Pepsi Products - Charge on Consumption · Pepsi | Diet Pepsi | Starry | Mountain Dew | Diet Mountain Dew · Charge on Consumption · Bubly Sparkling Water - Charge on Consumption · Little City Nitro Cold Brew Coffee - Charge on Consumption · Hosted Appreciated Brands Glass · Bulleit Bourbon, Glenmorangie 10 Scotch, Belvedere Vodka Bombay Sapphire Gin, Crown Royal Whisky · 1800 Reposado Tequila, Straight Silver Rum · Bollini Pinot Grigio, Italy · Charge per bottle open"><strong class='menu-hl'>Red Bull Energy Drink (Regular or Sugar Free) - Charged on Consumption</strong> — Bottled Water - Charge on Consumption · Assorted Pepsi Products - Charge on Consumption · Pepsi | Diet Pepsi | Starry | Mountain Dew | Diet Mountain Dew · Charge on Consumption · Bubly Sparkling Water - Charge on Consumption · Little City Nitro Cold Brew Coffee - Charge on Consumption · Hosted Appreciated Brands Glass · Bulleit Bourbon, Glenmorangie 10 Scotch, Belvedere Vodka Bombay Sapphire Gin, Crown Royal Whisky · 1800 Reposado Tequila, Straight Silver Rum · Bollini Pinot Grigio, Italy · Charge per bottle open</div>
       </div>
     </div>
     <div class="svc-row">
       <div class="svc-time">7:30–<br>10:00 PM</div>
       <div class="svc-content">
-        <div class="svc-top"><span class="tag" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 30</span></div>
-        <div class="svc-menu" data-en="Menu not on events report — check the event order" data-es="Menu not on events report — check the event order">Menu not on events report — check the event order</div>
+        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 30</span></div>
+        <div class="svc-menu" data-en="Not itemized on the event order" data-es="Not itemized on the event order">Not itemized on the event order</div>
       </div>
     </div>
     <div class="card-foot">
       <div class="foot-row"><span class="foot-key" data-en="CONTACT" data-es="CONTACTO">CONTACT</span><span class="foot-val">Raymond</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Barton · Cocktail Rounds" data-es="Barton · Cocktail Rounds">Barton · Cocktail Rounds</span></div>
-      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="ABB Inc Event Oct2026 · from events report 10/5 — no event order yet" data-es="ABB Inc Event Oct2026 · from events report 10/5 — no event order yet">ABB Inc Event Oct2026 · from events report 10/5 — no event order yet</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Barton" data-es="Barton">Barton</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="ABB Inc Event Oct2026" data-es="ABB Inc Event Oct2026">ABB Inc Event Oct2026</span></div>
     </div>
   </div>
 

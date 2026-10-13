@@ -121,6 +121,9 @@
     ".bbd #tab-dining .menu-item-desc{font:italic 400 12.5px/1.45 Manrope,Arial,sans-serif!important;color:#a9bfd0!important}" +
     ".bbd #tab-dining .menu-item-price{font:700 14px 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:.4px!important;color:var(--mg-color,#8bd1ff)!important}" +
     ".bbd #tab-dining .menu-item{padding:9px 2px!important}" +
+    // Overview (desktop): bigger room names, group names in the Rundown's green glow.
+    ".bbd #bb-app .original-room{font-size:15px!important;letter-spacing:1.2px!important;color:#d6ecff!important;margin-top:16px!important}" +
+    ".bbd #bb-app .original-client{color:#a8f2c7!important;text-shadow:0 0 14px #7fe0a061,0 0 2px #7fe0a080!important;font-size:17px!important}" +
     // No Rundown/Overview tabs on desktop — the sidebar switches views.
     ".bbd #bb-app .tabs{display:none!important}" +
     // Overview + week list: room between days and a date you can read from across the office.
