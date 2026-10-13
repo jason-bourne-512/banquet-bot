@@ -163,7 +163,7 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
 .iadd input{flex:1;min-width:0;border:1px solid var(--line2);background:#0b151e;color:var(--t1);border-radius:9px;padding:8px 10px;font:500 13px Manrope}
 .iadd button{border:1px solid var(--line2);background:var(--card2);border-radius:9px;padding:0 14px;font-weight:700;font-size:12px}
 .irestore{margin-top:6px;border:0;background:none;color:var(--t3);font-size:11px;text-decoration:underline;padding:0}
-.printbtn{margin-top:12px;width:100%;border:1px solid var(--line);background:var(--card);color:inherit;border-radius:12px;padding:11px;font:700 14px 'Barlow Condensed',sans-serif;letter-spacing:.04em}
+.printbtn{display:block;margin:14px auto 0;width:auto;max-width:100%;padding-left:26px!important;padding-right:26px!important;border:1px solid var(--line);background:var(--card);color:inherit;border-radius:12px;padding:11px;font:700 14px 'Barlow Condensed',sans-serif;letter-spacing:.04em}
 
 /* operations (leads): replace diagrams, move builds between nights, desktop week board */
 .ops{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
@@ -220,13 +220,17 @@ body.desk .seg{max-width:420px}
 .gone.cx s{color:var(--red);font-weight:700;text-decoration-thickness:2px}
 
 /* drag to reorder (leads) */
-.grip{flex:none;display:grid;place-items:center;width:24px;align-self:stretch;margin:-11px 0 -11px -6px;color:var(--t4);font-size:18px;line-height:1;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
-.grip:hover{color:var(--accent)}
+/* Drag handle = six drawn dots (no text glyph, so it can't render wide and run into the checkboxes). */
+.grip{flex:none;align-self:stretch;width:22px;margin:-11px 0 -11px -6px;font-size:0;color:transparent;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
+  background:radial-gradient(circle,var(--t4) 1.5px,transparent 1.8px) center/6px 6px no-repeat;background-size:6px 6px;background-repeat:repeat;
+  -webkit-mask:linear-gradient(#000,#000) center/12px 18px no-repeat;mask:linear-gradient(#000,#000) center/12px 18px no-repeat}
+.grip:hover,.sorting .grip{background-image:radial-gradient(circle,var(--accent) 1.5px,transparent 1.8px)}
 .crow .grip{margin:-10px 0 -10px -6px}
-.items li .igrip{width:20px;margin:-8px 0 -8px -26px;font-size:15px}
 .items[data-isort] li{position:relative}
+/* step handles sit in the empty left margin, fully clear of the checkbox */
+.items li .igrip{position:absolute;left:-30px;top:50%;width:22px;height:30px;margin:0;transform:translateY(-50%);align-self:auto}
 .sorting{position:relative;z-index:40;box-shadow:0 14px 34px #000b,0 0 0 2px var(--accent);transition:none!important;cursor:grabbing}
-.sorting .grip{color:var(--accent);cursor:grabbing}
+.sorting .grip{cursor:grabbing}
 
 /* captain theme — only when the captain (Jason) is signed in */
 .capbadge{display:none;align-items:center;gap:5px;margin-left:8px;padding:3px 8px;border:1px solid #f2c87966;border-radius:20px;font:800 9px Manrope;letter-spacing:1.6px;color:#f2c879;background:linear-gradient(135deg,#f2c8791f,#f2c87905);box-shadow:0 0 12px #f2c8791c}
