@@ -457,6 +457,7 @@ body{font-family:Manrope,Arial,sans-serif}
 
 /* Diagram buttons (rundown setup, diagrams tab) */
 #bb-app .diag-link{display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;padding:9px 10px;border:1px solid #466782;border-radius:8px;background:#1d3344;color:var(--ink);font:12px/1.4 Manrope,Arial,sans-serif;text-align:left}
+#bb-app .diag-upd{margin-left:6px;padding:1px 6px;border-radius:10px;background:#ffc085;color:#1a1208;font:800 9px Manrope,Arial,sans-serif;letter-spacing:.8px;vertical-align:1px}
 #bb-app .diag-link-open{flex-shrink:0;font-size:10px;letter-spacing:.5px;color:var(--blue)}
 #bb-app .diag-warn{display:block;margin-top:6px;padding:7px 9px;border:1px solid #ff8f8f40;border-radius:6px;background:#ff8f8f12;color:#ffb4b4;font:10px/1.5 Manrope,Arial,sans-serif}
 
@@ -10197,6 +10198,40 @@ body{font-family:Manrope,Arial,sans-serif}
     }
   }
 
+  // Diagram uploaded in Housemen (a JPEG data URL in Firestore) → draw it into the same zoomable viewer.
+  async function showDiagramImage(id, title){
+    document.getElementById('diagModalTitle').textContent = title;
+    document.getElementById('diagModal').classList.add('open');
+    document.getElementById('diagHint').classList.remove('hidden');
+    const loading = document.getElementById('diagLoading');
+    loading.style.display = 'block'; loading.textContent = 'Loading…';
+    document.getElementById('diagCanvasWrap').style.transform = 'scale(0)';
+    try{
+      const url = await window.BB_HSM.image(id);
+      if(!url) throw new Error('not found');
+      const img = await new Promise((res,rej)=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=rej; im.src=url; });
+      const canvas = document.getElementById('diagCanvas'), ctx = canvas.getContext('2d');
+      canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+      ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.drawImage(img,0,0);
+      diagCanvasW = canvas.width; diagCanvasH = canvas.height;
+      loading.style.display = 'none';
+      diagFitToScreen();
+    }catch(e){ loading.textContent = 'Could not load the updated diagram'; }
+  }
+  // Housemen overrides, keyed by event date + original PDF path (filled in by the module script below).
+  function hsmOverride(date,path){ const H=window.BB_HSM; return H&&date&&path ? H.byFile[date+'|'+String(path).replace(/^.*diagrams\//,'')] : null; }
+  function hsmExtraFor(date,rooms){ const H=window.BB_HSM, L=(H&&H.extra[date])||[]; const rs=(rooms||[]).map(r=>String(r).toLowerCase()); return L.filter(x=>rs.indexOf(x.room.toLowerCase())>=0); }
+  function diagPathOf(btn){ const m=(btn.getAttribute('onclick')||'').match(/openDiagram\('([^']+)'/); return m?m[1]:''; }
+  function markUpdated(btn,o){ const sp=btn.querySelector('span'); if(sp) sp.insertAdjacentHTML('beforeend',' <b class="diag-upd">UPDATED</b>'); }
+  function uploadedButton(date,x){
+    const b=document.createElement('button'); b.type='button'; b.className='diag-link';
+    b.innerHTML='<span>'+x.room.replace(/&/g,'&amp;').replace(/</g,'&lt;')+' — diagram <b class="diag-upd">UPDATED</b></span><span class="diag-link-open">OPEN →</span>';
+    b.addEventListener('click',e=>{ e.stopPropagation(); openDiagramImage(x.id,x.room+' — diagram (uploaded in Housemen)'); });
+    return b;
+  }
+  // Remember which day a diagram button belongs to, so openDiagram can find that day's override.
+  document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('[data-date]'); window.__bbDiagDate=b?b.dataset.date:null; },true);
+
   function closeDiagram(){
     document.getElementById('diagModal').classList.remove('open');
     diagActivePointers.clear();
@@ -10466,8 +10501,11 @@ body{font-family:Manrope,Arial,sans-serif}
   openDiagram=function(path,title){
     history.pushState({bbDiag:1},'');
     diagHistoryPushed=true;
+    const o=hsmOverride(window.__bbDiagDate,path);
+    if(o&&o.id) return showDiagramImage(o.id,title+' · updated in Housemen');
     return _openDiagram(path,title);
   };
+  function openDiagramImage(id,title){ history.pushState({bbDiag:1},''); diagHistoryPushed=true; return showDiagramImage(id,title); }
   const _closeDiagram=closeDiagram;
   closeDiagram=function(){
     if(diagHistoryPushed){ history.back(); return; }
@@ -10714,10 +10752,17 @@ body{font-family:Manrope,Arial,sans-serif}
         if(ev.billing) setup.push(line('BILLING',clean(ev.billing)));
         if(ev.shipping) setup.push(line('SHIPPING',clean(ev.shipping)));
         if(ev.badges.length) setup.push(line('TEAM','',ev.badges.join(' · ')));
-        if(ev.diagram){
+        if(ev.diagram||hsmExtraFor(d,rooms).length){
           const p=line('DIAGRAM');
-          ev.diagram.querySelectorAll('.diag-link,.diag-warn').forEach(b=>p.val.append(b.cloneNode(true)));
-          setup.push(p);
+          if(ev.diagram) ev.diagram.querySelectorAll('.diag-link,.diag-warn').forEach(function(b){
+            const c=b.cloneNode(true), o=hsmOverride(d,diagPathOf(c));
+            if(o&&o.none) return;                       // a lead hid this diagram in Housemen
+            c.dataset.date=d;
+            if(o&&o.id) markUpdated(c,o);
+            p.val.append(c);
+          });
+          hsmExtraFor(d,rooms).forEach(x=>p.val.append(uploadedButton(d,x)));
+          if(p.val.childNodes.length) setup.push(p);
         }
         if(setup.length&&ev.firstRoom){
           const more=node('details','room-more');
@@ -10761,8 +10806,16 @@ body{font-family:Manrope,Arial,sans-serif}
         e.rooms.forEach(function(rows,room){
           const r=node('div','original-room',room);
           ov2DiagramsFor(diagIndex,d,e.company,room).forEach(function(dg){
-            const b=node('button','original-diag','⌗ Diagram'); b.type='button'; b.title=dg.label;
+            const o=hsmOverride(d,dg.path);
+            if(o&&o.none) return;                       // hidden in Housemen
+            const b=node('button','original-diag',o&&o.id?'⌗ Diagram · updated':'⌗ Diagram'); b.type='button'; b.title=dg.label;
+            b.dataset.date=d;
             b.addEventListener('click',()=>openDiagram(dg.path,dg.label));
+            r.append(b);
+          });
+          hsmExtraFor(d,[room]).forEach(function(x){
+            const b=node('button','original-diag','⌗ Diagram · updated'); b.type='button'; b.title=x.room+' — uploaded';
+            b.addEventListener('click',()=>openDiagramImage(x.id,x.room+' — diagram (uploaded in Housemen)'));
             r.append(b);
           });
           card.append(r);
@@ -10842,6 +10895,7 @@ body{font-family:Manrope,Arial,sans-serif}
       if(!document.hidden&&todayISO()!==TODAY) location.reload();
     });
     renderDay(TODAY);
+    window.addEventListener('bb-hsm-diagrams',function(){ if(mode==='day') renderDay(selected); });
     fetch('assignments.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(function(j){
       ASSIGN=j||{};
       if(mode==='day'&&tab==='rundown') renderDay(selected);
@@ -10917,5 +10971,50 @@ body{font-family:Manrope,Arial,sans-serif}
   })();
 </script>
 </div>
+<script type="module">
+// Diagrams replaced or hidden by a lead on the Housemen page show up here too.
+// Housemen saves per night/room: rooms.<slug>.diag = {id} (uploaded image doc "diag-<id>") or {none:true}.
+// A night sets up for the next event day ("target"), so overrides are keyed by that date + the room's PDF.
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+const COL = LOCAL ? "housemen_test" : "housemen";
+const H = window.BB_HSM = {byFile:{}, extra:{}, cache:{}, image:async id=>null};
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const iso = d => new Intl.DateTimeFormat("en-CA",{timeZone:"America/Chicago",year:"numeric",month:"2-digit",day:"2-digit"}).format(d);
+function targetISO(night, target){
+  const m = String(target||"").match(/(\d{1,2})\/(\d{1,2})/);
+  if(!m){ const t=new Date(night+"T12:00:00Z"); t.setUTCDate(t.getUTCDate()+1); return t.toISOString().slice(0,10); }
+  let y = +night.slice(0,4); if(+m[1] < +night.slice(5,7)) y++;
+  return y+"-"+String(m[1]).padStart(2,"0")+"-"+String(m[2]).padStart(2,"0");
+}
+(async function(){
+  try{
+    const text = await (await fetch("housemen.html",{cache:"no-cache"})).text();
+    const a = text.indexOf("const DAYS = ["), b = text.indexOf("\n];", a);
+    if(a<0||b<0) return;
+    const DAYS = Function('"use strict";return '+text.slice(a+13,b+3))();
+    const app = initializeApp({apiKey:"AIzaSyCr9z1e8neChgnRsEeSHX7fM_5h_jhTcxQ",authDomain:"the-wire-587e6.firebaseapp.com",projectId:"the-wire-587e6",
+      storageBucket:"the-wire-587e6.firebasestorage.app",messagingSenderId:"18587866711",appId:"1:18587866711:web:96ca4822f8a73512"}, "rundown-hsm");
+    const db = getFirestore(app);
+    H.image = async id => { if(!(id in H.cache)){ const s=await getDoc(doc(db,COL,"diag-"+id)); H.cache[id]=s.exists()?s.data().data:""; } return H.cache[id]; };
+    const yesterday = iso(new Date(Date.now()-864e5));
+    const nights = DAYS.filter(d => d.iso >= yesterday);
+    const snaps = await Promise.all(nights.map(d => getDoc(doc(db,COL,d.iso)).catch(()=>null)));
+    let found = 0;
+    nights.forEach((d,k) => {
+      const rooms = (snaps[k] && snaps[k].exists() && snaps[k].data().rooms) || {};
+      const date = targetISO(d.iso, d.target);
+      d.rooms.forEach(r => {
+        const st = rooms[slug(r.room)], v = st && st.diag; if(!v) return;
+        const files = [].concat(r.diag||[]);
+        if(files.length) files.forEach(f => { H.byFile[date+"|"+f] = v.none ? {none:true} : {id:v.id, by:v.by, at:v.at}; found++; });
+        else if(v.id){ (H.extra[date] = H.extra[date] || []).push({room:r.room, id:v.id, by:v.by}); found++; }
+      });
+    });
+    if(found) window.dispatchEvent(new Event("bb-hsm-diagrams"));
+  }catch(e){ console.warn("[rundown] Housemen diagrams unavailable", e); }
+})();
+</script>
 </body>
 </html>
