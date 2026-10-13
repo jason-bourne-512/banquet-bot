@@ -158,7 +158,6 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
 .foot a,.linkbtn{color:var(--t3);background:none;border:0;text-decoration:underline;font-size:10.5px}
 .idel{margin-left:auto;flex:none;border:0;background:transparent;color:var(--t4);font-size:13px;padding:2px 6px;border-radius:6px}
 .idel:hover{color:var(--red);background:var(--red-d)}
-.items li.added span:nth-child(2)::after{content:" · added";color:var(--t4);font-size:10px}
 .iadd{display:flex;gap:6px;margin:8px 0 2px}
 .iadd input{flex:1;min-width:0;border:1px solid var(--line2);background:#0b151e;color:var(--t1);border-radius:9px;padding:8px 10px;font:500 13px Manrope}
 .iadd button{border:1px solid var(--line2);background:var(--card2);border-radius:9px;padding:0 14px;font-weight:700;font-size:12px}
@@ -206,7 +205,6 @@ body.desk .seg{max-width:420px}
 .iedbtn{margin-left:auto;flex:none;border:0;background:transparent;color:var(--t4);font-size:13px;padding:2px 6px;border-radius:6px}
 .iedbtn:hover{color:var(--accent);background:var(--accent-d)}
 .iedbtn + .idel{margin-left:0}
-.items li.edited span:nth-child(2)::after{content:" · edited";color:var(--t4);font-size:10px}
 .items li.iedit{cursor:default;gap:6px;align-items:center}
 .iedit input{flex:1;min-width:0;border:1px solid var(--accent);background:#0b151e;color:var(--t1);border-radius:8px;padding:7px 9px;font:500 14px Manrope}
 .iedit [data-edsave]{border:0;background:var(--accent);color:#0c141b;border-radius:8px;padding:7px 12px;font-weight:800;font-size:12px}
@@ -233,6 +231,7 @@ body.desk .seg{max-width:420px}
 .items li .igrip{position:absolute;left:-30px;top:50%;width:22px;height:30px;margin:0;transform:translateY(-50%);align-self:auto}
 .sorting{position:relative;z-index:40;box-shadow:0 14px 34px #000b,0 0 0 2px var(--accent);transition:none!important;cursor:grabbing}
 .sorting .grip{cursor:grabbing}
+.items li.sorting{background:var(--card2);border-radius:8px}
 
 /* captain theme — only when the captain (Jason) is signed in */
 .capbadge{display:none;align-items:center;gap:5px;margin-left:8px;padding:3px 8px;border:1px solid #f2c87966;border-radius:20px;font:800 9px Manrope;letter-spacing:1.6px;color:#f2c879;background:linear-gradient(135deg,#f2c8791f,#f2c87905);box-shadow:0 0 12px #f2c8791c}
@@ -993,33 +992,63 @@ document.addEventListener("click", async e => {
   if (t.dataset.undo) { await save(iso, rsl, {done:null}); toast(`${r.room} reopened`); return; }
   if (t.dataset.resolve) { await save(iso, rsl, {prob:null}); toast(`Resolved ${r.room}`); return; }
 });
-// ── lead operations: drag ⠿ to set the build order for a night (touch + mouse). Numbers follow the order.
+// ── lead operations: drag ⠿ to reorder rooms (build order) or a room's steps (touch + mouse).
+// Smooth, phone-style: rows are measured once when the drag starts, the dragged row follows the finger,
+// the rows it passes slide aside with a short animation, and the DOM is reordered only on release —
+// so nothing jumps under the pointer and the row lands exactly where the gap is.
 document.addEventListener("pointerdown", e => {
   const g = e.target.closest("[data-grip]"); if (!g || !(WHO && LEAD(WHO.role))) return;
   const item = g.closest("[data-sort]"), list = item && item.closest("[data-sortlist],[data-isort]"); if (!list) return;
   e.preventDefault();
   SORTING = true; if (!list.dataset.isort) openId = null;
-  const grab = e.clientY - item.getBoundingClientRect().top;
+  const all = [...list.querySelectorAll(":scope > [data-sort]")], from = all.indexOf(item);
+  const y0 = scrollY, rect = all.map(x => { const b = x.getBoundingClientRect(); return {top: b.top + y0, h: b.height}; });
+  // distance a neighbour moves when the dragged row passes it = dragged row height + the gap between rows
+  const gapAfter = from < all.length - 1 ? rect[from + 1].top - (rect[from].top + rect[from].h) : from > 0 ? rect[from].top - (rect[from - 1].top + rect[from - 1].h) : 0;
+  const step = rect[from].h + Math.max(0, gapAfter);
+  const startDoc = e.clientY + y0;
+  let to = from, lastY = e.clientY, raf = 0, auto = 0;
   item.classList.add("sorting");
+  all.forEach(x => { if (x != item) x.style.transition = "transform .16s ease"; });
   try { g.setPointerCapture(e.pointerId); } catch (err) {}
-  const items = () => [...list.querySelectorAll(":scope > [data-sort]")];
-  const renumber = () => items().forEach((x,k) => { const n = x.querySelector(".num"); if (n && n.textContent != "✓") n.textContent = k + 1; });
-  let lastY = e.clientY, raf = 0;
-  const place = () => {
-    raf = 0; const y = lastY;
-    const before = items().find(s => s != item && y < s.getBoundingClientRect().top + s.offsetHeight / 2) || null;
-    if (before != item.nextElementSibling) { list.insertBefore(item, before); renumber(); }
-    item.style.transform = ""; const nat = item.getBoundingClientRect().top;
-    item.style.transform = `translateY(${y - grab - nat}px)`;
-    if (y < 90) scrollBy(0, -14); else if (y > innerHeight - 90) scrollBy(0, 14);
+  const nums = all.map(x => x.querySelector(".num"));
+  const update = () => {
+    raf = 0;
+    const dy = lastY + scrollY - startDoc, center = rect[from].top + rect[from].h / 2 + dy;
+    to = from;
+    for (let i = 0; i < all.length; i++) {
+      if (i == from) continue;
+      const mid = rect[i].top + rect[i].h / 2;
+      if (i < from && center < mid) { to = Math.min(to, i); }
+      if (i > from && center > mid) { to = Math.max(to, i); }
+    }
+    item.style.transform = `translateY(${dy}px)`;
+    all.forEach((x, i) => {
+      if (i == from) return;
+      const shift = (from < i && i <= to) ? -step : (to <= i && i < from) ? step : 0;
+      x.style.transform = shift ? `translateY(${shift}px)` : "";
+    });
+    // live numbering in the new order (rooms only; ✓ stays ✓)
+    const order = all.map((x, i) => i).filter(i => i != from); order.splice(to, 0, from);
+    order.forEach((i, k) => { const n = nums[i]; if (n && n.textContent != "✓") n.textContent = k + 1; });
   };
-  const move = ev => { lastY = ev.clientY; if (!raf) raf = requestAnimationFrame(place); };
-  const end = async () => {
-    g.removeEventListener("pointermove", move); g.removeEventListener("pointerup", end); g.removeEventListener("pointercancel", end);
-    if (raf) cancelAnimationFrame(raf);
-    item.style.transform = ""; item.classList.remove("sorting");
+  const kick = () => { if (!raf) raf = requestAnimationFrame(update); };
+  // edge auto-scroll while the finger rests near the top/bottom of the screen
+  auto = setInterval(() => {
+    if (lastY < 80) { scrollBy(0, -12); kick(); } else if (lastY > innerHeight - 80) { scrollBy(0, 12); kick(); }
+  }, 16);
+  const move = ev => { if (ev.pointerId != e.pointerId) return; lastY = ev.clientY; kick(); };
+  const finish = async ev => {
+    if (ev && ev.pointerId != null && ev.pointerId != e.pointerId) return;
+    window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", finish); window.removeEventListener("pointercancel", finish);
+    clearInterval(auto); if (raf) cancelAnimationFrame(raf);
+    update();
+    all.forEach(x => { x.style.transition = "none"; x.style.transform = ""; });
+    item.classList.remove("sorting");
+    if (to != from) { const rest = all.filter(x => x != item); list.insertBefore(item, rest[to] || (rest.length ? rest[rest.length - 1].nextSibling : null)); }
+    requestAnimationFrame(() => all.forEach(x => { x.style.transition = ""; }));
     SORTING = false; sortEnded = Date.now();
-    const ids = items().map(x => x.dataset.sort);
+    const ids = [...list.querySelectorAll(":scope > [data-sort]")].map(x => x.dataset.sort);
     if (list.dataset.isort) {
       const {iso: o, r} = parseId(list.dataset.isort);
       if (ids.join() != listOf(o, r).map(x => x.key).join()) { await save(o, slug(r.room), {iorder: ids}); toast(`Steps reordered in ${r.room}`); }
@@ -1032,7 +1061,7 @@ document.addEventListener("pointerdown", e => {
     else if (renderPending) render();
     renderPending = false;
   };
-  g.addEventListener("pointermove", move); g.addEventListener("pointerup", end); g.addEventListener("pointercancel", end);
+  window.addEventListener("pointermove", move); window.addEventListener("pointerup", finish); window.addEventListener("pointercancel", finish);
 });
 
 // ── lead operations: cancel (x out) a room for the night, or restore it. Two taps to cancel, no browser dialogs.
