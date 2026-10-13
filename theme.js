@@ -21,10 +21,14 @@
       img: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
       mark: {src: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png", opacity: .07},
       tint: {color: "#5b2bd6", opacity: .55},
+      // Dragon Ball Z cast (drawn for Banquet Bot, img/dbz/): a different fighter peeks in on each page.
+      cast: {"index.html": "goku", "today.html": "gohan", "rundown.html": "vegeta", "overview.html": "piccolo", "housemen.html": "krillin",
+        "menu.html": "buu", "training.html": "roshi", "rooms.html": "frieza", "room-map.html": "radar", "*": "dragonball"},
       css: palette("#a98bf0", "rgba(169,139,240,.14)", "#0c0816", "#171027", "#231839", "rgba(169,139,240,.14)", "rgba(201,162,39,.35)") +
         "body::before{background:radial-gradient(ellipse at 100% 0,#24177399,transparent 50%),radial-gradient(ellipse at 0 100%,#c9a22722,transparent 55%),#0c0816!important}" +
         "h1,h2{color:#e9dcff}" + BADGE +
-        ".bb-me-badge{color:#f1d27a;background:linear-gradient(135deg,#241773,#120b33);border:1px solid #c9a22788}"
+        ".bb-me-badge{color:#f1d27a;background:linear-gradient(135deg,#241773,#120b33);border:1px solid #c9a22788}" +
+        "@keyframes bbCastIn{from{transform:translateY(110%)}to{transform:none}}@media (prefers-reduced-motion:reduce){.bb-cast{animation:none!important}}"
     },
     // Venezuelan flag: yellow, blue, red + the arc of eight stars
     tomas: {
@@ -63,6 +67,7 @@
     var oldA = document.querySelector(".bb-aurora"); if (oldA) oldA.remove();
     var oldT = document.querySelector(".bb-tint"); if (oldT) oldT.remove();
     var oldM = document.querySelector(".bb-mark"); if (oldM) oldM.remove();
+    var oldC = document.querySelector(".bb-cast"); if (oldC) oldC.remove();
     if (document.body) document.body.className = document.body.className.replace(/\bme-\S+/g, "").trim();
     var t = key && THEMES[key];
     if (!t) return;
@@ -81,6 +86,17 @@
           border:"0", "border-radius":"0", background:"none", margin:"0", padding:"0", "box-shadow":"none"};
         for (var k in ms) m.style.setProperty(k, ms[k], "important");
         document.body.appendChild(m); }
+      if (t.cast) {
+        var page = location.pathname.split("/").pop() || "index.html", who = t.cast[page] || t.cast["*"];
+        var c = document.createElement("img"); c.className = "bb-cast"; c.src = "img/dbz/" + who + ".svg"; c.alt = "";
+        var cs = {position:"fixed", left:"6px", bottom:"calc(env(safe-area-inset-bottom,0px) + 4px)", width:"clamp(74px,9vw,128px)", height:"auto",
+          "z-index":"9996", "pointer-events":"none", opacity:".92", filter:"drop-shadow(0 0 10px #a98bf088) drop-shadow(0 4px 10px #000a)",
+          border:"0", "border-radius":"0", background:"none", margin:"0", padding:"0", "box-shadow":"none", animation:"bbCastIn .7s ease-out both"};
+        for (var ck in cs) c.style.setProperty(ck, cs[ck], "important");
+        // In desktop mode the sidebar owns the left edge, so the fighter steps over it.
+        if (document.documentElement.classList.contains("bbd")) c.style.setProperty("left", "calc(var(--bbd-side) + 10px)", "important");
+        document.body.appendChild(c);
+      }
       if (t.aurora) { var a = document.createElement("div"); a.className = "bb-aurora"; document.body.prepend(a); }
       // Pages with fixed blue colors get a hue overlay: blues shift to the person's color; whites and text stay put.
       // The Housemen page is fully themed through its variables, so it skips this.
