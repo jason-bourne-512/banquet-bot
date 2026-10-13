@@ -200,6 +200,19 @@ body.desk .seg{max-width:420px}
 .bcard .thumb{display:block;width:100%;margin-top:8px;padding:0;border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:#fff}
 .bcard .thumb img{display:block;width:100%;height:120px;object-fit:contain}
 
+/* lead editing: reword a line, switch Set / Refresh / Clear */
+.iedbtn{margin-left:auto;flex:none;border:0;background:transparent;color:var(--t4);font-size:13px;padding:2px 6px;border-radius:6px}
+.iedbtn:hover{color:var(--accent);background:var(--accent-d)}
+.iedbtn + .idel{margin-left:0}
+.items li.edited span:nth-child(2)::after{content:" · edited";color:var(--t4);font-size:10px}
+.items li.iedit{cursor:default;gap:6px;align-items:center}
+.iedit input{flex:1;min-width:0;border:1px solid var(--accent);background:#0b151e;color:var(--t1);border-radius:8px;padding:7px 9px;font:500 14px Manrope}
+.iedit [data-edsave]{border:0;background:var(--accent);color:#0c141b;border-radius:8px;padding:7px 12px;font-weight:800;font-size:12px}
+.tsw{display:flex;align-items:center;gap:4px;margin-top:10px;flex-wrap:wrap}
+.tsw button{border:1px solid var(--line2);background:var(--card2);color:var(--t2);border-radius:8px;padding:6px 12px;font-size:11.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
+.tsw button.on{background:var(--c);border-color:var(--c);color:#0c141b}
+.tsw span{font-size:10.5px;color:var(--t4);margin-left:4px}
+
 /* cancel a room (leads) */
 .ops .xbtn{color:var(--red);border-color:#ff8f8f40;background:var(--red-d)}
 .ops .xbtn.armed{background:var(--red);color:#2a0d0d}
@@ -625,7 +638,7 @@ async function save(iso, rslug, patch) {
   const day = (STATE[iso] ||= {}), cur = (day[rslug] ||= {items:{}, done:null, prob:null});
   const before = JSON.parse(JSON.stringify(cur));
   if (patch.items) Object.assign(cur.items, patch.items);
-  for (const k of ["done","prob","extra","removed","moved","diag","cancelled"]) if (k in patch) cur[k] = patch[k];
+  for (const k of ["done","prob","extra","removed","moved","diag","cancelled","type","edits"]) if (k in patch) cur[k] = patch[k];
   render();
   if (MOCK) { try { localStorage.setItem("bb-hsm-mock", JSON.stringify(STATE)); } catch(e) {} return; }
   try { await setDoc(doc(db, COL, iso), {rooms:{[rslug]:patch}, updated:Date.now()}, {merge:true}); }
@@ -756,14 +769,24 @@ function movedOut(iso) {
 }
 const dayLbl = iso => `${dow(iso).slice(0,1)}${dow(iso).slice(1).toLowerCase()} ${md(iso)}`;
 let desk = false; try { desk = localStorage.getItem("bb-hsm-desk") == "1"; } catch(e) {}
-const baseItems = r => r.items && r.items.length ? r.items : (r.t == "ref" ? REFRESH : CLEAR);
-// Daily checklist = posted items minus any a lead removed, plus any a lead added (saved live per day).
+// A lead can switch a room between Set / Refresh / Clear for the night (rooms.<slug>.type overrides the posted r.t).
+const tOf = (o, r) => rs(o, r).type || r.t;
+// Posted items belong to the posted type; a switched type uses that type's standard steps.
+function baseItems(o, r) {
+  const t = tOf(o, r);
+  if (t == r.t || t == "set") return r.items && r.items.length ? r.items : (t == "ref" ? REFRESH : t == "clr" ? CLEAR : ["Set per diagram / event order"]);
+  return t == "ref" ? REFRESH : CLEAR;
+}
+// Item keys get a type prefix once the type is switched, so checkoffs/edits don't leak between lists.
+const keyOf = (o, r, k) => (tOf(o, r) != r.t ? tOf(o, r) + ":" : "") + k;
+// Daily checklist = posted items (with a lead's wording edits) minus removed ones, plus lead-added ones.
 function listOf(iso, r) {
-  const s = rs(iso, r), gone = new Set(s.removed || []);
-  return baseItems(r).map((text,k)=>({key:String(k), text})).filter(x=>!gone.has(x.text))
+  const s = rs(iso, r), gone = new Set(s.removed || []), ed = s.edits || {};
+  return baseItems(iso, r).map((text,k)=>({key:keyOf(iso, r, k), text, orig:text})).filter(x=>!gone.has(x.orig))
+    .map(x => ed[x.key] ? {...x, text: ed[x.key], edited: true} : x)
     .concat((s.extra || []).map(x=>({key:"x"+x.id, text:x.text, added:true})));
 }
-const itemsOf = r => baseItems(r);
+let EDITING = null;        // "id|key" of the checklist line a lead is rewording
 function roomState(iso, r) {
   const s = rs(iso, r), list = listOf(iso, r), n = list.filter(x=>s.items && s.items[x.key]).length;
   if (s.prob && !s.done) return {cls:"isprob", pill:`<span class="status st-prob">⚠ ${esc(s.prob.what)}</span>`, s, n, list};
@@ -795,14 +818,18 @@ function renderHsm(d) {
   h += `<div class="sortlist" data-sortlist="${d.iso}">`;
   rooms.forEach(({r, i, o, from}, k) => {
     const id = o + "|" + i, R = roomState(o, r), open = openId == id, flags = r.flags || [], ds = diagsOf(r, o);
-    h += `<div class="room ${r.t} ${R.cls} ${open?"open":""}" data-sort="${id}">
+    const T = tOf(o, r);
+    h += `<div class="room ${T} ${R.cls} ${open?"open":""}" data-sort="${id}">
       <button class="rhead" data-open="${id}">${lead?`<span class="grip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="num">${R.s.done?"✓":k+1}</span>
-        <span class="rmain"><span class="type">${TYPE[r.t]}</span>${from?` <span class="type" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ from ${dayLbl(from)}</span>`:""}<div class="rname">${esc(r.room)}</div><div class="rfor">${esc(r.for)}</div>${R.pill}</span>
+        <span class="rmain"><span class="type">${TYPE[T]}</span>${from?` <span class="type" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ from ${dayLbl(from)}</span>`:""}<div class="rname">${esc(r.room)}</div><div class="rfor">${esc(r.for)}</div>${R.pill}</span>
         ${r.end?`<span class="rend">ENDS<b>${esc(r.end)}</b></span>`:""}</button>
-      <div class="rbody"><ul class="items">${R.list.map(x=>`<li data-item="${id}" data-k="${x.key}" class="${R.s.items&&R.s.items[x.key]?"ck":""}${x.added?" added":""}"><span class="box"></span><span>${esc(x.text)}</span>${lead?`<button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove item">✕</button>`:""}</li>`).join("")}</ul>
+      <div class="rbody"><ul class="items">${R.list.map(x=> lead && EDITING == id+"|"+x.key
+            ? `<li class="iedit"><input id="ed-${esc(id+"|"+x.key)}" maxlength="140" value="${esc(x.text)}"><button data-edsave="${id}" data-k="${x.key}">Save</button><button class="idel" data-edcancel="1" aria-label="Cancel edit">✕</button></li>`
+            : `<li data-item="${id}" data-k="${x.key}" class="${R.s.items&&R.s.items[x.key]?"ck":""}${x.added?" added":""}${x.edited?" edited":""}"><span class="box"></span><span>${esc(x.text)}</span>${lead?`<button class="iedbtn" data-edit="${id}" data-k="${x.key}" aria-label="Edit line">✎</button><button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove item">✕</button>`:""}</li>`).join("")}</ul>
         ${lead?`<div class="iadd"><input id="add-${id}" maxlength="120" placeholder="+ Add an item for tonight"><button data-addbtn="${id}">Add</button></div>
           ${(R.s.removed||[]).length?`<button class="irestore" data-restore="${id}">↺ Restore ${R.s.removed.length} removed item${R.s.removed.length>1?"s":""}</button>`:""}`:""}
         ${(flags.length||r.next)?`<div class="tags">${r.next?`<span class="tag next">Next: ${esc(r.next)}</span>`:""}${flags.map(f=>`<span class="tag flag">⚑ ${esc(f)}</span>`).join("")}</div>`:""}
+        ${lead?`<div class="tsw" role="group" aria-label="Room type">${["set","ref","clr"].map(v=>`<button data-type="${id}" data-v="${v}" class="${T==v?"on":""}">${TYPE[v]}</button>`).join("")}${T!=r.t?`<span>posted as ${TYPE[r.t]}</span>`:""}</div>`:""}
         ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move to another night</button><button class="xbtn" data-cancel="${id}">✕ Cancel room</button></div>`:""}
         ${open&&ds.length?`<div class="diags">${ds.map((f,j,a)=>`<button class="diag-prev" data-diag="${esc(f)}" data-room="${esc(r.room)}"><img src="${previewOf(f)}" alt="${esc(r.room)} diagram"><span>${a.length>1?`Diagram ${j+1} of ${a.length}`:"Diagram"}<em style="font-style:normal">Tap to enlarge ↗</em></span></button>`).join("")}</div>`:""}
         ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)} ${esc(R.s.prob.at)}</div>`:""}
@@ -833,7 +860,7 @@ function renderCap(d) {
   const lead = !!(WHO && LEAD(WHO.role));
   h += `<div class="sec">Rooms in setup order${lead?` <span style="text-transform:none;letter-spacing:0;color:var(--t4)">· drag ⠿ to reorder</span>`:""}</div><div class="sortlist" data-sortlist="${d.iso}">` + list.map((x,k)=>{ const id = x.o+"|"+x.i, dv = x.R.s.diag;
     return `<div class="crow" data-sort="${id}">${lead?`<span class="grip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="num" style="${x.R.s.done?"background:var(--done);color:#0e2418;border-color:var(--done)":""}">${x.R.s.done?"✓":k+1}</span>
-      <div><div class="rname">${esc(x.r.room)}</div><div class="meta">${TYPE[x.r.t]}${x.r.end?` · ends ${esc(x.r.end)}`:""}${diagsOf(x.r,x.o).length?(dv&&dv.id?" · new diagram":" · diagram"):(dv&&dv.none?" · diagram hidden":"")}${x.from?` · <span style="color:#c1baff">⇄ from ${dayLbl(x.from)}</span>`:""}</div></div><div class="right">${x.R.pill}</div>
+      <div><div class="rname">${esc(x.r.room)}</div><div class="meta">${TYPE[tOf(x.o,x.r)]}${x.r.end?` · ends ${esc(x.r.end)}`:""}${diagsOf(x.r,x.o).length?(dv&&dv.id?" · new diagram":" · diagram"):(dv&&dv.none?" · diagram hidden":"")}${x.from?` · <span style="color:#c1baff">⇄ from ${dayLbl(x.from)}</span>`:""}</div></div><div class="right">${x.R.pill}</div>
       ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button><button class="xbtn" data-cancel="${id}">✕ Cancel</button></div>`:""}</div>`; }).join("") + `</div>`;
   const cxs = cancelledOn(d.iso);
   if (cxs.length) h += `<div class="sec">Cancelled</div>` + cxs.map(x => cxRow(x, lead)).join("");
@@ -856,8 +883,8 @@ function renderBoard() {
     h += `<section class="col ${d.iso==todayISO()?"today":""}" data-drop="${d.iso}"><header><b>${dayLbl(d.iso)}</b><span>for ${esc(d.target)}</span><span class="cnt">${a}/${b}</span><button class="mini" data-print="${d.iso}" title="Print">🖨</button></header>`;
     h += list.map((x,k) => {
       const id = x.o+"|"+x.i, R = roomState(x.o, x.r), ds = diagsOf(x.r, x.o);
-      return `<div class="bcard ${x.r.t} ${R.cls}" draggable="true" data-drag="${id}"><div class="bh"><span class="num">${R.s.done?"✓":k+1}</span>
-        <div style="min-width:0"><span class="type">${TYPE[x.r.t]}</span>${x.r.end?` <span class="type" style="color:var(--t3);background:#ffffff0a">ends ${esc(x.r.end)}</span>`:""}<div class="rname">${esc(x.r.room)}</div><div class="rfor">${esc(x.r.for)}</div></div></div>
+      return `<div class="bcard ${tOf(x.o,x.r)} ${R.cls}" draggable="true" data-drag="${id}"><div class="bh"><span class="num">${R.s.done?"✓":k+1}</span>
+        <div style="min-width:0"><span class="type">${TYPE[tOf(x.o,x.r)]}</span>${x.r.end?` <span class="type" style="color:var(--t3);background:#ffffff0a">ends ${esc(x.r.end)}</span>`:""}<div class="rname">${esc(x.r.room)}</div><div class="rfor">${esc(x.r.for)}</div></div></div>
         ${R.pill}${x.from?` <span class="status" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ from ${dayLbl(x.from)}</span>`:""}
         ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)}<div><button class="resolve" data-resolve="${id}">Mark resolved</button></div></div>`:""}
         ${ds.length?`<button class="thumb" data-diag="${esc(ds[0])}" data-room="${esc(x.r.room)}"><img src="${previewOf(ds[0])}" alt="${esc(x.r.room)} diagram"></button>`:""}
@@ -890,11 +917,11 @@ function render() {
   if (!d) { document.getElementById("days").innerHTML = ""; document.getElementById("main").innerHTML = `<div class="empty" style="padding-top:30px">No houseman lists posted for this week yet.</div>`; return; }
   renderDays();
   snapDays();
-  const ae = document.activeElement, keep = ae && ae.id && ae.id.startsWith("add-") ? {id:ae.id, v:ae.value} : null;
+  const ae = document.activeElement, keep = ae && ae.id && (ae.id.startsWith("add-") || ae.id.startsWith("ed-")) ? {id:ae.id, v:ae.value} : null;
   const drafts = {}; document.querySelectorAll('.iadd input').forEach(i => { if (i.value) drafts[i.id] = i.value; });
   document.getElementById("main").innerHTML = view=="hsm" ? renderHsm(d) : renderCap(d);
   for (const k in drafts) { const i = document.getElementById(k); if (i) i.value = drafts[k]; }
-  if (keep) { const i = document.getElementById(keep.id); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }
+  if (keep) { const i = document.getElementById(keep.id); if (i) { if (keep.id.startsWith("ed-")) i.value = keep.v; i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }
 }
 let toastT;
 function toast(msg, bad) { const t = document.getElementById("toast"); t.textContent = msg; t.className = "toast on" + (bad ? " bad" : ""); clearTimeout(toastT); toastT = setTimeout(()=>t.className = "toast", 2200); }
@@ -904,7 +931,7 @@ document.getElementById("desk").onclick = () => { desk = !desk; try { localStora
 // ── actions
 document.addEventListener("click", async e => {
   if (e.target.closest("[data-grip]") || Date.now() - sortEnded < 350) { e.preventDefault(); return; }
-  const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back],[data-cancel],[data-uncancel]");
+  const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back],[data-cancel],[data-uncancel],[data-edit],[data-edsave],[data-edcancel],[data-type]");
   if (!t) return;
   if (t.dataset.print) { printDay(t.dataset.print); return; }
   if (t.dataset.dgm || t.dataset.move || t.dataset.back || t.dataset.cancel || t.dataset.uncancel) {
@@ -915,7 +942,7 @@ document.addEventListener("click", async e => {
     else await moveBuild(t.dataset.back, parseId(t.dataset.back).iso);
     return;
   }
-  if (t.dataset.del || t.dataset.addbtn || t.dataset.restore) { await editItems(t); return; }
+  if (t.dataset.del || t.dataset.addbtn || t.dataset.restore || t.dataset.edit || t.dataset.edsave || t.dataset.edcancel || t.dataset.type) { await editItems(t); return; }
   if (t.dataset.diag) { openViewer(t.dataset.diag, t.dataset.room); return; }
   if (t.dataset.day) { dayISO = t.dataset.day; openId = null; render(); return; }
   if (t.dataset.open) { openId = openId == t.dataset.open ? null : t.dataset.open; render(); return; }
@@ -1066,8 +1093,30 @@ document.getElementById("dgFile").addEventListener("change", async e => {
 // ── lead editing: add / remove / restore checklist items for one room on one day
 async function editItems(t) {
   if (!(WHO && LEAD(WHO.role))) { toast("Only the captain or director can edit the list", true); return; }
-  const id = t.dataset.del || t.dataset.addbtn || t.dataset.restore;
+  if (t.dataset.edcancel) { EDITING = null; render(); return; }
+  const id = t.dataset.del || t.dataset.addbtn || t.dataset.restore || t.dataset.edit || t.dataset.edsave || t.dataset.type;
   const {iso, r} = parseId(id), rsl = slug(r.room), cur = rs(iso, r);
+  if (t.dataset.type) {
+    const v = t.dataset.v; if (v == tOf(iso, r)) return;
+    await save(iso, rsl, {type: v == r.t ? null : v}); toast(`${r.room} is now ${TYPE[v]}`); return;
+  }
+  if (t.dataset.edit) {
+    EDITING = id + "|" + t.dataset.k; render();
+    const box = document.getElementById("ed-" + EDITING); if (box) { box.focus(); box.setSelectionRange(box.value.length, box.value.length); }
+    return;
+  }
+  if (t.dataset.edsave) {
+    const k = t.dataset.k, box = document.getElementById("ed-" + id + "|" + k), text = (box && box.value || "").trim().slice(0, 140);
+    if (!text) { toast("Type the line first — or ✕ to remove it", true); return; }
+    EDITING = null;
+    if (k.startsWith("x")) await save(iso, rsl, {extra: (cur.extra || []).map(x => "x" + x.id == k ? {...x, text} : x)});
+    else {
+      const orig = (listOf(iso, r).find(x => x.key == k) || {}).orig, ed = {...(cur.edits || {})};
+      if (text == orig) delete ed[k]; else ed[k] = text;
+      await save(iso, rsl, {edits: ed});
+    }
+    toast(`Line updated in ${r.room}`); return;
+  }
   if (t.dataset.restore) { await save(iso, rsl, {removed:[]}); toast("Items restored"); return; }
   if (t.dataset.addbtn) {
     const box = document.getElementById("add-" + id), text = (box && box.value || "").trim().slice(0, 120);
@@ -1077,10 +1126,16 @@ async function editItems(t) {
   }
   const k = t.dataset.k;
   if (k.startsWith("x")) await save(iso, rsl, {extra:(cur.extra||[]).filter(x=>"x"+x.id != k)});
-  else { const text = baseItems(r)[+k]; await save(iso, rsl, {removed:[...new Set((cur.removed||[]).concat(text))]}); }
+  else { const text = (listOf(iso, r).find(x => x.key == k) || {}).orig; if (text) await save(iso, rsl, {removed:[...new Set((cur.removed||[]).concat(text))]}); }
   toast(`Removed from ${r.room}`);
 }
-document.addEventListener("keydown", e => { if (e.key == "Enter" && e.target.id && e.target.id.startsWith("add-")) { const b = document.querySelector(`[data-addbtn="${e.target.id.slice(4)}"]`); b && b.click(); } });
+document.addEventListener("keydown", e => {
+  if (e.target.id && e.target.id.startsWith("ed-")) {
+    if (e.key == "Enter") { const b = e.target.parentElement.querySelector("[data-edsave]"); b && b.click(); }
+    else if (e.key == "Escape") { EDITING = null; render(); }
+    return;
+  }
+  if (e.key == "Enter" && e.target.id && e.target.id.startsWith("add-")) { const b = document.querySelector(`[data-addbtn="${e.target.id.slice(4)}"]`); b && b.click(); } });
 // ── print: Word-style checklist (room | setup) + one diagram per page. Save as PDF from the print dialog.
 function printDay(iso) {
   const d = dayOf(iso); if (!d) return;
@@ -1091,7 +1146,7 @@ function printDay(iso) {
   const rows = rooms.map(({r, o, from}, i) => {
     const ds = diagsOf(r, o);
     return `<tr><td class="n">${i+1}</td>
-      <td class="room"><b>${esc(r.room)}</b><div class="ty">${TYPE[r.t]}${r.end?` · ends ${esc(r.end)}`:""}${from?` · moved from ${dayLbl(from)}`:""}</div><div class="for">${esc(r.for)}</div></td>
+      <td class="room"><div class="tyb ty-${tOf(o, r)}">${TYPE[tOf(o, r)].toUpperCase()}</div><b>${esc(r.room)}</b><div class="ty">${r.end?`ends ${esc(r.end)}`:""}${from?`${r.end?" · ":""}moved from ${dayLbl(from)}`:""}</div><div class="for">${esc(r.for)}</div></td>
       <td class="set"><ul>${listOf(o, r).map(x=>`<li>☐ ${esc(x.text)}</li>`).join("")}</ul>
         ${r.next?`<div class="nx">Next: ${esc(r.next)}</div>`:""}${(r.flags||[]).map(f=>`<div class="fl">⚑ ${esc(f)}</div>`).join("")}
         ${ds.length?`<div class="sd">See diagram${ds.length>1?"s":""} → page ${ds.map(f=>pageOf(i,f)).join(", ")}</div>`:""}</td></tr>`;
@@ -1106,6 +1161,9 @@ function printDay(iso) {
     table{width:100%;border-collapse:collapse} th,td{border:1px solid #777;padding:6px 8px;vertical-align:top;text-align:left}
     th{background:#e7e6e6;font-weight:700} td.n{width:24px;text-align:center;font-weight:700}
     td.room{width:34%} .ty{font-size:9.5pt;color:#444;text-transform:uppercase;letter-spacing:.03em;margin-top:2px} .for{font-size:10pt;margin-top:3px}
+    td.room b{font-size:12.5pt}
+    .tyb{display:table;margin:0 0 5px;padding:3px 12px;font:900 17pt/1.1 Arial Black,Arial,sans-serif;letter-spacing:.08em;border:3px solid #000;border-radius:4px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .tyb.ty-set{background:#000;color:#fff} .tyb.ty-ref{background:#fff;color:#000} .tyb.ty-clr{background:#fff;color:#000;border-style:dashed}
     ul{margin:0;padding:0;list-style:none} li{margin:1px 0}
     .nx{margin-top:5px;font-style:italic} .fl{margin-top:4px;color:#8a1c1c} .sd{margin-top:5px;font-weight:700}
     .sign{margin-top:18px;font-size:10pt;color:#333} .sign span{display:inline-block;border-bottom:1px solid #555;min-width:2.2in;margin-right:24px}
