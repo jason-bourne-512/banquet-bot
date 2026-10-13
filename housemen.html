@@ -250,18 +250,19 @@ body.cap .room .num{border-color:#f2c87955}
 body.cap .printbtn{border-color:#f2c87966;color:#f2c879}
 /* director theme — Hector (Director of Event Operations): same treatment in his mint, matching desktop mode */
 @media (max-width:480px){.who-ttl{display:none}}
-.dirbadge{display:none;align-items:center;gap:5px;margin-left:8px;padding:3px 8px;border:1px solid #5fe3c066;border-radius:20px;font:800 9px Manrope;letter-spacing:1.6px;color:#5fe3c0;background:linear-gradient(135deg,#5fe3c01f,#5fe3c005);box-shadow:0 0 12px #5fe3c01c;white-space:nowrap}
-body.dir{--accent:#5fe3c0;--accent-d:rgba(95,227,192,.13);--line:rgba(95,227,192,.13);--line2:rgba(95,227,192,.32)}
-body.dir::before{background:radial-gradient(ellipse at 100% 0,#1f6a5a55,transparent 46%),radial-gradient(ellipse at 0 100%,#1a4a5a2e,transparent 52%),
-  repeating-linear-gradient(60deg,transparent 0 33px,#5fe3c00a 33px 34px),repeating-linear-gradient(-60deg,transparent 0 33px,#5fe3c008 33px 34px),var(--bg)}
-body.dir .top{border-bottom:1px solid #5fe3c033;box-shadow:inset 0 2px 0 #5fe3c0}
-body.dir .mark{border-color:#5fe3c099;color:#5fe3c0;box-shadow:0 0 16px #5fe3c030}
+.dirbadge{display:none;align-items:center;gap:5px;margin-left:8px;padding:3px 8px;border:1px solid color-mix(in srgb,var(--acc) 40%,transparent);border-radius:20px;font:800 9px Manrope;letter-spacing:1.6px;color:var(--acc);background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 12%,transparent),color-mix(in srgb,var(--acc) 2%,transparent));box-shadow:0 0 12px color-mix(in srgb,var(--acc) 11%,transparent);white-space:nowrap}
+/* personal accent: Hector mint, Diana violet, Lisa rose — set via --acc */
+body.dir{--acc:#5fe3c0;--accent:var(--acc);--accent-d:color-mix(in srgb,var(--acc) 13%,transparent);--line:color-mix(in srgb,var(--acc) 13%,transparent);--line2:color-mix(in srgb,var(--acc) 32%,transparent)}
+body.dir::before{background:radial-gradient(ellipse at 100% 0,color-mix(in srgb,var(--acc) 26%,transparent),transparent 46%),radial-gradient(ellipse at 0 100%,color-mix(in srgb,var(--acc) 12%,transparent),transparent 52%),
+  repeating-linear-gradient(60deg,transparent 0 33px,color-mix(in srgb,var(--acc) 4%,transparent) 33px 34px),repeating-linear-gradient(-60deg,transparent 0 33px,color-mix(in srgb,var(--acc) 3%,transparent) 33px 34px),var(--bg)}
+body.dir .top{border-bottom:1px solid color-mix(in srgb,var(--acc) 20%,transparent);box-shadow:inset 0 2px 0 var(--acc)}
+body.dir .mark{border-color:color-mix(in srgb,var(--acc) 60%,transparent);color:var(--acc);box-shadow:0 0 16px color-mix(in srgb,var(--acc) 19%,transparent)}
 body.dir .dirbadge{display:inline-flex}
-body.dir .who.in{color:#5fe3c0;border-color:#5fe3c066;background:#5fe3c00f}
-body.dir .eyebrow::before{background:#5fe3c0;box-shadow:0 0 9px #5fe3c0}
-body.dir .seg button.on{box-shadow:0 0 0 1px #5fe3c066;color:#bdf5e6}
-body.dir .room .num{border-color:#5fe3c055}
-body.dir .printbtn{border-color:#5fe3c066;color:#5fe3c0}
+body.dir .who.in{color:var(--acc);border-color:color-mix(in srgb,var(--acc) 40%,transparent);background:color-mix(in srgb,var(--acc) 6%,transparent)}
+body.dir .eyebrow::before{background:var(--acc);box-shadow:0 0 9px var(--acc)}
+body.dir .seg button.on{box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 40%,transparent);color:color-mix(in srgb,var(--acc) 45%,#fff)}
+body.dir .room .num{border-color:color-mix(in srgb,var(--acc) 33%,transparent)}
+body.dir .printbtn{border-color:color-mix(in srgb,var(--acc) 40%,transparent);color:var(--acc)}
 </style><script src="theme.js"></script>
 </head>
 <body>
@@ -616,8 +617,8 @@ const PEOPLE = [
   {name:"Jason", role:"captain", h:"5b18ac1addea60f0f4b383c4ff04b4a226d52b44b7d210945372e6b879e048c4"},
   {name:"Hector", role:"director", h:"6b6f35f81f3b0dd72a36b4d4f0c30321a07d68510dc03090972a49d0f8d321e8"},
   {name:"Dylan", role:"hsm", h:"a9db52d798a53be8bb93c9ed86f2f87119186050a68ee20c0f2361ac4d729925"},
-  {name:"Liza", role:"hsm", h:"6d36e12e6701a1fcae2865c26f09a4a16cd4e510d208bcd03d244549df904a48"},
-  {name:"Diana", role:"hsm", h:"7ee49e9fc29dafb7dd4eb21a537f227a4d749276eaee5b7609e9ec3864120208"},
+  {name:"Lisa", role:"em", h:"6d36e12e6701a1fcae2865c26f09a4a16cd4e510d208bcd03d244549df904a48"},
+  {name:"Diana", role:"sem", h:"7ee49e9fc29dafb7dd4eb21a537f227a4d749276eaee5b7609e9ec3864120208"},
 ];
 // Director = every captain ability, shown with the Director title.
 const LEAD = role => role == "captain" || role == "director";
@@ -625,7 +626,11 @@ const LEAD = role => role == "captain" || role == "director";
 // desktop-only (Jason 2026-10-13: too problematic on phones). Desktop = a screen at least 1000px wide.
 const WIDE = () => window.matchMedia("(min-width: 1000px)").matches;
 const EDIT = () => !!(WHO && LEAD(WHO.role) && WIDE());
-const TITLE = {hsm:"Houseman", captain:"Captain", director:"Director of Event Operations"};
+const TITLE = {hsm:"Houseman", captain:"Captain", director:"Director of Event Operations", sem:"Senior Events Manager", em:"Events Manager"};
+// Event managers see the Status tab (read-only — no editing, no Mark resolved) and their own accent.
+const VIEWER = role => LEAD(role) || role == "sem" || role == "em";
+const SHOWN_TITLE = role => role == "director" || role == "sem" || role == "em" ? TITLE[role] : "";
+const ACCENT = {director:["#5fe3c0","★ DIRECTOR"], sem:["#c1a6ff","★ SENIOR EVENTS"], em:["#ff9ec7","★ EVENTS"]};
 const leadName = () => WHO && WHO.role == "director" ? "Director" : "Captain";
 
 // ── storage: live Firestore (the-wire project). localhost → test collection; ?mock → this device only.
@@ -754,7 +759,7 @@ document.getElementById("pad").addEventListener("click", async e => {
     WHO = {name:p.name, role:p.role};
     try { localStorage.setItem("bb-hsm-who", JSON.stringify(WHO)); } catch(e) {}
     window.bbTheme && window.bbTheme.signIn(p.name);
-    document.getElementById("pinBg").classList.remove("on"); toast(`Signed in as ${p.name}${p.role=="director"?" · Director of Event Operations":""}`); render();
+    document.getElementById("pinBg").classList.remove("on"); toast(`Signed in as ${p.name}${SHOWN_TITLE(p.role)?" · "+SHOWN_TITLE(p.role):""}`); render();
     const r = pinResolve; pinResolve = null; r && r(WHO);
   }
 });
@@ -885,7 +890,7 @@ function renderHsm(d) {
 function renderCap(d) {
   const list = roomsOn(d.iso).map(x=>({...x, R:roomState(x.o,x.r)}));
   const done = list.filter(x=>x.R.s.done).length, prob = list.filter(x=>x.R.s.prob&&!x.R.s.done).length;
-  let h = `<div class="hero"><div class="eyebrow">${WHO&&WHO.role=="director"?"Operations":"Captain view"} · ${longDay(d.iso)} ${md(d.iso)}</div><h1>Setup status</h1>
+  let h = `<div class="hero"><div class="eyebrow">${WHO&&WHO.role=="director"?"Operations":WHO&&!LEAD(WHO.role)?"Events · status":"Captain view"} · ${longDay(d.iso)} ${md(d.iso)}</div><h1>Setup status</h1>
     <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}setting for ${esc(d.target)}</div>
     <div class="stats"><div class="stat"><b style="color:var(--done)">${done}</b><span>Done</span></div><div class="stat"><b>${list.length-done-prob}</b><span>Left</span></div><div class="stat"><b style="color:${prob?"var(--red)":"inherit"}">${prob}</b><span>Problems</span></div></div>
     <div class="progress"><div class="bar"><i style="width:${list.length?done/list.length*100:0}%"></i></div><div class="pct">${list.length?Math.round(done/list.length*100):0}%</div></div>
@@ -938,14 +943,16 @@ function renderBoard() {
 function render() {
   if (SORTING) { renderPending = true; return; }
   const w = document.getElementById("who");
-  w.innerHTML = WHO ? `✓ ${esc(WHO.name)}${WHO.role=="director"?`<span class="who-ttl"> · Director of Event Operations</span>`:""}` : "Sign in"; w.classList.toggle("in", !!WHO);
-  document.getElementById("vCap").textContent = WHO && WHO.role == "director" ? "Operations" : "Captain";
+  w.innerHTML = WHO ? `✓ ${esc(WHO.name)}${SHOWN_TITLE(WHO.role)?`<span class="who-ttl"> · ${esc(SHOWN_TITLE(WHO.role))}</span>`:""}` : "Sign in"; w.classList.toggle("in", !!WHO);
+  document.getElementById("vCap").textContent = WHO && WHO.role == "director" ? "Operations" : WHO && !LEAD(WHO.role) ? "Status" : "Captain";
   document.body.classList.toggle("cap", !!(WHO && WHO.role == "captain"));
-  document.body.classList.toggle("dir", !!(WHO && WHO.role == "director"));
-  // The Captain/Operations tab exists only for leads; everyone else sees the houseman list only.
-  const lead = !!(WHO && LEAD(WHO.role));
-  document.querySelector(".seg").style.display = lead ? "" : "none";
-  if (!lead && view == "cap") view = "hsm";
+  const acc = WHO && ACCENT[WHO.role];
+  document.body.classList.toggle("dir", !!acc);
+  if (acc) { document.body.style.setProperty("--acc", acc[0]); document.querySelector(".dirbadge").textContent = acc[1]; }
+  // The Captain/Operations/Status tab: leads + event managers; everyone else sees the houseman list only.
+  const lead = !!(WHO && LEAD(WHO.role)), viewer = !!(WHO && VIEWER(WHO.role));
+  document.querySelector(".seg").style.display = viewer ? "" : "none";
+  if (!viewer && view == "cap") view = "hsm";
   const board = lead && desk && view == "cap" && WIDE();
   const db_ = document.getElementById("desk");
   db_.style.display = lead && view == "cap" && WIDE() ? "" : "none"; db_.textContent = desk ? "📱 Phone view" : "🖥 Desktop";
@@ -1321,7 +1328,7 @@ document.getElementById("send").onclick = async () => {
 };
 document.getElementById("vHsm").onclick = () => { view = "hsm"; render(); };
 window.matchMedia("(min-width: 1000px)").addEventListener("change", () => { EDITING = null; render(); });
-document.getElementById("vCap").onclick = () => { if (WHO && LEAD(WHO.role)) { view = "cap"; render(); } };
+document.getElementById("vCap").onclick = () => { if (WHO && VIEWER(WHO.role)) { view = "cap"; render(); } };
 document.getElementById("foot").innerHTML = `${MOCK ? "Practice mode — saves on this phone only" : LOCAL ? "Test copy — writes to the test list" : "Live — updates show on every phone"}<br><a href="index.html">← Banquet Bot</a>`;
 if (MOCK) setSync("ok");
 render();
