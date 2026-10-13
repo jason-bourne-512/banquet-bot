@@ -219,6 +219,8 @@ body.desk .seg{max-width:420px}
 .gone.cx{border-color:#ff8f8f40;color:var(--t3)}
 .gone.cx s{color:var(--red);font-weight:700;text-decoration-thickness:2px}
 
+.phone-note{margin:14px 0 2px;padding:10px 12px;border:1px dashed var(--line2);border-radius:11px;font-size:12px;color:var(--t3);line-height:1.45}
+
 /* drag to reorder (leads) */
 /* Drag handle = six drawn dots (no text glyph, so it can't render wide and run into the checkboxes). */
 .grip{flex:none;align-self:stretch;width:22px;margin:-11px 0 -11px -6px;font-size:0;color:transparent;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
@@ -617,6 +619,10 @@ const PEOPLE = [
 ];
 // Director = every captain ability, shown with the Director title.
 const LEAD = role => role == "captain" || role == "director";
+// Editing the list (reorder, reword, add/remove, Set/Refresh/Clear, cancel, move, diagrams, week board) is
+// desktop-only (Jason 2026-10-13: too problematic on phones). Desktop = a screen at least 1000px wide.
+const WIDE = () => window.matchMedia("(min-width: 1000px)").matches;
+const EDIT = () => !!(WHO && LEAD(WHO.role) && WIDE());
 const TITLE = {hsm:"Houseman", captain:"Captain", director:"Director of Event Operations"};
 const leadName = () => WHO && WHO.role == "director" ? "Director" : "Captain";
 
@@ -841,7 +847,7 @@ function renderDays() {
 }
 const cxRow = (x, lead) => `<div class="gone cx"><s>${esc(x.r.room)}</s>&nbsp;· ${esc(x.r.for)} — cancelled by ${esc(rs(x.o,x.r).cancelled.by)} ${esc(rs(x.o,x.r).cancelled.at)}${lead?`<button class="mini" data-uncancel="${x.o}|${x.i}">↺ Restore</button>`:""}</div>`;
 function renderHsm(d) {
-  const [a,b] = dayProgress(d), lead = !!(WHO && LEAD(WHO.role)), rooms = roomsOn(d.iso);
+  const [a,b] = dayProgress(d), lead = EDIT(), rooms = roomsOn(d.iso);
   let h = `<div class="hero"><div class="eyebrow">Tonight · setting for ${esc(d.target)}</div><h1>${longDay(d.iso)} ${md(d.iso)}</h1>
     <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}${rooms.length} rooms in setup order</div>
     <div class="progress"><div class="bar"><i style="width:${b?a/b*100:0}%"></i></div><div class="pct">${a}/${b}</div></div></div>`;
@@ -887,7 +893,8 @@ function renderCap(d) {
       ${WHO&&LEAD(WHO.role)?`<div><button class="resolve" data-resolve="${x.o}|${x.i}">Mark resolved</button></div>`:""}</div>`).join("");
   const flags = list.filter(x=>(x.r.flags||[]).length);
   if (flags.length) h += `<div class="sec">Check before the shift</div>` + flags.map(x=>`<div class="flagrow"><b>⚑ ${esc(x.r.room)}</b> — ${x.r.flags.map(esc).join(" · ")}</div>`).join("");
-  const lead = !!(WHO && LEAD(WHO.role));
+  const lead = EDIT();
+  if (WHO && LEAD(WHO.role) && !lead) h += `<div class="phone-note">🖥 Editing the list is on desktop — open Banquet Bot on a computer to reorder, edit, switch Set/Refresh, cancel or move rooms.</div>`;
   h += `<div class="sec">Rooms in setup order${lead?` <span style="text-transform:none;letter-spacing:0;color:var(--t4)">· drag ⠿ to reorder</span>`:""}</div><div class="sortlist" data-sortlist="${d.iso}">` + list.map((x,k)=>{ const id = x.o+"|"+x.i, dv = x.R.s.diag;
     return `<div class="crow" data-sort="${id}">${lead?`<span class="grip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="num" style="${x.R.s.done?"background:var(--done);color:#0e2418;border-color:var(--done)":""}">${x.R.s.done?"✓":k+1}</span>
       <div><div class="rname">${esc(x.r.room)}</div><div class="meta">${TYPE[tOf(x.o,x.r)]}${x.r.end?` · ends ${esc(x.r.end)}`:""}${diagsOf(x.r,x.o).length?(dv&&dv.id?" · new diagram":" · diagram"):(dv&&dv.none?" · diagram hidden":"")}${x.from?` · <span style="color:#c1baff">⇄ from ${dayLbl(x.from)}</span>`:""}</div></div><div class="right">${x.R.pill}</div>
@@ -937,9 +944,9 @@ function render() {
   const lead = !!(WHO && LEAD(WHO.role));
   document.querySelector(".seg").style.display = lead ? "" : "none";
   if (!lead && view == "cap") view = "hsm";
-  const board = lead && desk && view == "cap";
+  const board = lead && desk && view == "cap" && WIDE();
   const db_ = document.getElementById("desk");
-  db_.style.display = lead && view == "cap" ? "" : "none"; db_.textContent = desk ? "📱 Phone view" : "🖥 Desktop";
+  db_.style.display = lead && view == "cap" && WIDE() ? "" : "none"; db_.textContent = desk ? "📱 Phone view" : "🖥 Desktop";
   document.body.classList.toggle("desk", board);
   if (board) { renderDays(); document.getElementById("main").innerHTML = renderBoard(); document.getElementById("vHsm").classList.remove("on"); document.getElementById("vCap").classList.add("on"); return; }
   document.getElementById("vHsm").classList.toggle("on", view=="hsm");
@@ -966,7 +973,7 @@ document.addEventListener("click", async e => {
   if (!t) return;
   if (t.dataset.print) { openPrintSheet(t.dataset.print); return; }
   if (t.dataset.dgm || t.dataset.move || t.dataset.back || t.dataset.cancel || t.dataset.uncancel) {
-    if (!(WHO && LEAD(WHO.role))) { toast("Only the captain or director can change this", true); return; }
+    if (!EDIT()) { toast(WHO && LEAD(WHO.role) ? "Editing is on desktop only" : "Only the captain or director can change this", true); return; }
     if (t.dataset.cancel || t.dataset.uncancel) { await cancelRoom(t.dataset.cancel || t.dataset.uncancel, !!t.dataset.cancel, t); return; }
     if (t.dataset.dgm) openDiagSheet(t.dataset.dgm);
     else if (t.dataset.move) openMoveSheet(t.dataset.move);
@@ -997,7 +1004,7 @@ document.addEventListener("click", async e => {
 // the rows it passes slide aside with a short animation, and the DOM is reordered only on release —
 // so nothing jumps under the pointer and the row lands exactly where the gap is.
 document.addEventListener("pointerdown", e => {
-  const g = e.target.closest("[data-grip]"); if (!g || !(WHO && LEAD(WHO.role))) return;
+  const g = e.target.closest("[data-grip]"); if (!g || !EDIT()) return;
   const item = g.closest("[data-sort]"), list = item && item.closest("[data-sortlist],[data-isort]"); if (!list) return;
   e.preventDefault();
   SORTING = true; if (!list.dataset.isort) openId = null;
@@ -1106,7 +1113,7 @@ document.addEventListener("dragover", e => { const col = e.target.closest && e.t
 document.addEventListener("drop", async e => {
   const col = e.target.closest && e.target.closest("[data-drop]"); if (!col) return;
   e.preventDefault(); col.classList.remove("over");
-  const id = e.dataTransfer.getData("text/plain"); if (!id || !(WHO && LEAD(WHO.role))) return;
+  const id = e.dataTransfer.getData("text/plain"); if (!id || !EDIT()) return;
   const {iso, r} = parseId(id), at = (rs(iso, r).moved || {}).to || iso, to = col.dataset.drop;
   const cards = [...col.querySelectorAll("[data-drag]")].filter(c => c.dataset.drag != id);
   let idx = cards.findIndex(c => { const b = c.getBoundingClientRect(); return e.clientY < b.top + b.height / 2; });
@@ -1160,7 +1167,7 @@ document.getElementById("dgFile").addEventListener("change", async e => {
 
 // ── lead editing: add / remove / restore checklist items for one room on one day
 async function editItems(t) {
-  if (!(WHO && LEAD(WHO.role))) { toast("Only the captain or director can edit the list", true); return; }
+  if (!EDIT()) { toast(WHO && LEAD(WHO.role) ? "Editing is on desktop only" : "Only the captain or director can edit the list", true); return; }
   if (t.dataset.edcancel) { EDITING = null; render(); return; }
   const id = t.dataset.del || t.dataset.addbtn || t.dataset.restore || t.dataset.edit || t.dataset.edsave || t.dataset.type;
   const {iso, r} = parseId(id), rsl = slug(r.room), cur = rs(iso, r);
@@ -1311,6 +1318,7 @@ document.getElementById("send").onclick = async () => {
   toast("⚠ Sent to captain");
 };
 document.getElementById("vHsm").onclick = () => { view = "hsm"; render(); };
+window.matchMedia("(min-width: 1000px)").addEventListener("change", () => { EDITING = null; render(); });
 document.getElementById("vCap").onclick = () => { if (WHO && LEAD(WHO.role)) { view = "cap"; render(); } };
 document.getElementById("foot").innerHTML = `${MOCK ? "Practice mode — saves on this phone only" : LOCAL ? "Test copy — writes to the test list" : "Live — updates show on every phone"}<br><a href="index.html">← Banquet Bot</a>`;
 if (MOCK) setSync("ok");
