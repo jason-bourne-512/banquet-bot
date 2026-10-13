@@ -67,6 +67,8 @@
       "html.bbd-skin .page-wrap .svc-time{font:600 21px/1 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:.5px!important;color:var(--k)!important}" +
       "html.bbd-skin .page-wrap .svc-tag{font-size:9.5px!important;letter-spacing:.8px!important}" +
       "html.bbd-skin .page-wrap .client-name{margin-bottom:12px!important}" +
+      // group names in the Rundown's green glow
+      "html.bbd-skin .page-wrap .client-name{color:#a8f2c7!important;text-shadow:0 0 14px #7fe0a061,0 0 2px #7fe0a080}" +
       "html.bbd-skin .page-wrap .card-meta{margin-bottom:6px!important}" +
       "html.bbd-skin .page-wrap .tl-item .tl-label{font:600 16px 'Barlow Condensed',Arial,sans-serif!important;color:var(--k)!important}" +
       "html.bbd-skin .page-wrap .tl-item .tl-event{font-size:12px!important;font-weight:700!important;max-width:130px!important}" +
