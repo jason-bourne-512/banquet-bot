@@ -5,13 +5,13 @@
 (function () {
   var DESK = "bb-desk", WHO = "bb-hsm-who", SIDE = 236;
   var PAGES = [
-    ["index.html", "Home", "⌂"], ["today.html", "Today", "☀"], ["rundown.html", "Rundown", "▤"], ["overview.html", "Overview", "▦"],
+    ["index.html", "Home", "⌂"], ["today.html", "Today", "☀"], ["rundown.html#rundown", "Rundown", "▤"], ["rundown.html#overview", "Overview", "▦"],
     ["housemen.html", "Housemen", "⚒"], ["room-map.html", "Room Map", "⌖"], ["rooms.html", "Rooms", "▢"], ["menu.html", "Menu", "◈"],
     ["info.html", "Info", "ℹ"], ["training.html", "Training", "✎"], ["handbook.html", "Handbook", "❏"]
   ];
   var ACCENT = {captain: "#f2c879", director: "#5fe3c0"};
   // Card types that reflow into a multi-column grid when two or more sit side by side in the same parent.
-  var CARDS = ".event-card,.menu-item,.room-card,.tr-card,.hb-card,#bb-app .room,.crow,.menu-list>*,#main>.room";
+  var CARDS = ".event-card,.menu-item,.room-card,.tr-card,.hb-card,#bb-app .room,#bb-app .original-event,#bb-app .week-choice,.crow,.menu-list>*,#main>.room";
 
   // Overview and Today were built with their own palettes (gold on black, mono/serif type). In desktop
   // mode they get the site skin: navy/ice-blue tokens, the lattice background, Barlow Condensed + Manrope.
@@ -55,21 +55,30 @@
       "html.bbd-skin .daynav a{border-radius:20px;padding:5px 11px;font-weight:700}" +
       "html.bbd-skin .day.is-today{border-color:#8bd1ff;box-shadow:0 0 0 1px #8bd1ff55,0 0 24px #8bd1ff1f}" +
       "html.bbd-skin .day-hd.is-today h2,html.bbd-skin .daynav a.is-today{color:#8bd1ff;border-color:#8bd1ff}" +
-      "html.bbd-skin .room-chip{border-radius:20px;font-weight:700}",
+      "html.bbd-skin .room-chip{border-radius:20px;font-weight:700}" +
+      "html.bbd-skin body>.soon-wrap:not(.bbd-side):not(.bbd-top) .soon-title{font-family:'Barlow Condensed',Arial,sans-serif!important}",
     "today.html": SKIN_BASE +
       "html.bbd-skin:root{--bg:#101820;--surface:#162530;--card:#162530;--border:rgba(139,209,255,.14);--border-light:rgba(139,209,255,.26);" +
         "--gold:#8bd1ff;--gold-dim:rgba(139,209,255,.45);--gold-glow:rgba(139,209,255,.10);--cream:#eaf3fa;--muted:#8aa4b8;--muted2:#6f8aa0;--white:#eaf3fa}" +
       "html.bbd-skin .event-card{border-radius:12px!important;border-left:4px solid #8bd1ff!important}" +
       "html.bbd-skin .meta-chip,html.bbd-skin .setup-pill{border-radius:6px!important}" +
       "html.bbd-skin .date-chip{color:#0c141b!important;border-radius:8px!important}" +
-      "html.bbd-skin .ops-note{background:rgba(255,192,133,.08)!important;border-left-color:#ffc085!important}"
+      "html.bbd-skin .ops-note{background:rgba(255,192,133,.08)!important;border-left-color:#ffc085!important}" +
+      "html.bbd-skin .page-wrap .svc-time{font:600 26px/1 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:.5px!important;color:var(--k)!important}" +
+      "html.bbd-skin .page-wrap .svc-tag{font-size:11px!important;letter-spacing:1px!important}" +
+      "html.bbd-skin .page-wrap .tl-item .tl-label{font:600 18px 'Barlow Condensed',Arial,sans-serif!important;color:var(--k)!important}" +
+      "html.bbd-skin .page-wrap .tl-item .tl-event{font-size:12px!important;font-weight:700!important;max-width:130px!important}" +
+      "html.bbd-skin .day-timeline{padding:14px 10px 12px!important;border-radius:12px;background:#16253099;border:1px solid rgba(139,209,255,.12)}"
   };
 
   function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
   function who() { try { return JSON.parse(get(WHO)); } catch (e) { return null; } }
   function isLead(w) { return !!(w && (w.role == "captain" || w.role == "director")); }
-  function here() { var p = location.pathname.split("/").pop() || "index.html"; return p; }
+  function here() {
+    var p = location.pathname.split("/").pop() || "index.html";
+    return p == "rundown.html" ? p + (location.hash == "#overview" ? "#overview" : "#rundown") : p;
+  }
   function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); }
   var wide = function () { return window.innerWidth >= 1000; };
 
@@ -88,6 +97,17 @@
     ".bbd #rdScreen>*{break-inside:avoid}" +
     ".bbd #rdScreen>.bbd-span{break-after:avoid;margin-top:0!important;padding-top:10px}" +
     ".bbd #rdScreen>.room{margin-bottom:14px!important;display:block}" +
+    // No Rundown/Overview tabs on desktop — the sidebar switches views.
+    ".bbd #bb-app .tabs{display:none!important}" +
+    // Overview + week list: room between days and a date you can read from across the office.
+    ".bbd #rdScreen>.week-label{column-span:all;margin:40px 0 16px!important;padding:12px 16px!important;border-radius:12px;" +
+      "font:600 28px/1 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:1px!important;color:#eaf3fa!important;" +
+      "background:linear-gradient(90deg,#1d3344,#16253000 80%);border-left:4px solid var(--bbd-acc);box-shadow:0 0 0 1px rgba(139,209,255,.12)}" +
+    ".bbd #rdScreen>.week-label:first-child{margin-top:6px!important}" +
+    ".bbd #rdScreen>.week-label:before,.bbd #rdScreen>.week-label:after{display:none!important}" +
+    ".bbd #rdScreen>.week-label{display:block!important;text-align:left!important}" +
+    ".bbd #rdScreen>.original-event,.bbd #rdScreen>.week-choice{margin:0 0 16px!important;display:block}" +
+    ".bbd #bb-app .week-choice strong{font:600 22px 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:.6px;color:#eaf3fa!important}" +
     // sidebar
     "html.bbd body>.bbd-side{position:fixed!important;left:0!important;top:0!important;bottom:0!important;width:var(--bbd-side)!important;z-index:2147483000!important;margin:0!important;display:flex;flex-direction:column;" +
       "background:#101820;border-right:1px solid rgba(139,209,255,.14);box-shadow:6px 0 30px #0007;font-family:Manrope,Arial,sans-serif}" +
@@ -251,6 +271,11 @@
       '<div class="bbd-jump"><input id="bbd-q" placeholder="Jump to a page…" autocomplete="off"><kbd>⌘K</kbd><div class="bbd-res" id="bbd-res"></div></div>' +
       '<div class="bbd-tiles"><div class="bbd-tile"><b id="bbd-date"></b><span>Hotel date</span></div><div class="bbd-tile live"><b id="bbd-clock"></b><span><i class="bbd-dot"></i>Austin · CT</span></div></div>';
     document.body.appendChild(side); document.body.appendChild(top);
+    window.addEventListener("hashchange", function () {
+      var now = here(), pg = PAGES.filter(function (p) { return p[0] == now; })[0];
+      side.querySelectorAll(".bbd-nav a").forEach(function (a) { a.classList.toggle("on", a.getAttribute("href") == now); });
+      if (pg) top.querySelector(".bbd-title").firstChild.textContent = pg[1];
+    });
 
     // live clock (hotel time)
     function tick() {

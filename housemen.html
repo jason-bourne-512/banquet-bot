@@ -223,6 +223,8 @@ body.desk .seg{max-width:420px}
 .grip{flex:none;display:grid;place-items:center;width:24px;align-self:stretch;margin:-11px 0 -11px -6px;color:var(--t4);font-size:18px;line-height:1;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
 .grip:hover{color:var(--accent)}
 .crow .grip{margin:-10px 0 -10px -6px}
+.items li .igrip{width:20px;margin:-8px 0 -8px -26px;font-size:15px}
+.items[data-isort] li{position:relative}
 .sorting{position:relative;z-index:40;box-shadow:0 14px 34px #000b,0 0 0 2px var(--accent);transition:none!important;cursor:grabbing}
 .sorting .grip{color:var(--accent);cursor:grabbing}
 
@@ -638,7 +640,7 @@ async function save(iso, rslug, patch) {
   const day = (STATE[iso] ||= {}), cur = (day[rslug] ||= {items:{}, done:null, prob:null});
   const before = JSON.parse(JSON.stringify(cur));
   if (patch.items) Object.assign(cur.items, patch.items);
-  for (const k of ["done","prob","extra","removed","moved","diag","cancelled","type","edits"]) if (k in patch) cur[k] = patch[k];
+  for (const k of ["done","prob","extra","removed","moved","diag","cancelled","type","edits","iorder"]) if (k in patch) cur[k] = patch[k];
   render();
   if (MOCK) { try { localStorage.setItem("bb-hsm-mock", JSON.stringify(STATE)); } catch(e) {} return; }
   try { await setDoc(doc(db, COL, iso), {rooms:{[rslug]:patch}, updated:Date.now()}, {merge:true}); }
@@ -784,7 +786,9 @@ function listOf(iso, r) {
   const s = rs(iso, r), gone = new Set(s.removed || []), ed = s.edits || {};
   return baseItems(iso, r).map((text,k)=>({key:keyOf(iso, r, k), text, orig:text})).filter(x=>!gone.has(x.orig))
     .map(x => ed[x.key] ? {...x, text: ed[x.key], edited: true} : x)
-    .concat((s.extra || []).map(x=>({key:"x"+x.id, text:x.text, added:true})));
+    .concat((s.extra || []).map(x=>({key:"x"+x.id, text:x.text, added:true})))
+    .map((x,k) => [s.iorder && s.iorder.indexOf(x.key) >= 0 ? s.iorder.indexOf(x.key) : 1e3 + k, x])
+    .sort((a,b) => a[0] - b[0]).map(z => z[1]);
 }
 let EDITING = null;        // "id|key" of the checklist line a lead is rewording
 function roomState(iso, r) {
@@ -823,9 +827,9 @@ function renderHsm(d) {
       <button class="rhead" data-open="${id}">${lead?`<span class="grip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="num">${R.s.done?"✓":k+1}</span>
         <span class="rmain"><span class="type">${TYPE[T]}</span>${from?` <span class="type" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ from ${dayLbl(from)}</span>`:""}<div class="rname">${esc(r.room)}</div><div class="rfor">${esc(r.for)}</div>${R.pill}</span>
         ${r.end?`<span class="rend">ENDS<b>${esc(r.end)}</b></span>`:""}</button>
-      <div class="rbody"><ul class="items">${R.list.map(x=> lead && EDITING == id+"|"+x.key
+      <div class="rbody"><ul class="items"${lead?` data-isort="${id}"`:""}>${R.list.map(x=> lead && EDITING == id+"|"+x.key
             ? `<li class="iedit"><input id="ed-${esc(id+"|"+x.key)}" maxlength="140" value="${esc(x.text)}"><button data-edsave="${id}" data-k="${x.key}">Save</button><button class="idel" data-edcancel="1" aria-label="Cancel edit">✕</button></li>`
-            : `<li data-item="${id}" data-k="${x.key}" class="${R.s.items&&R.s.items[x.key]?"ck":""}${x.added?" added":""}${x.edited?" edited":""}"><span class="box"></span><span>${esc(x.text)}</span>${lead?`<button class="iedbtn" data-edit="${id}" data-k="${x.key}" aria-label="Edit line">✎</button><button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove item">✕</button>`:""}</li>`).join("")}</ul>
+            : `<li data-item="${id}" data-k="${x.key}"${lead?` data-sort="${esc(x.key)}"`:""} class="${R.s.items&&R.s.items[x.key]?"ck":""}${x.added?" added":""}${x.edited?" edited":""}">${lead?`<span class="grip igrip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="box"></span><span>${esc(x.text)}</span>${lead?`<button class="iedbtn" data-edit="${id}" data-k="${x.key}" aria-label="Edit line">✎</button><button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove item">✕</button>`:""}</li>`).join("")}</ul>
         ${lead?`<div class="iadd"><input id="add-${id}" maxlength="120" placeholder="+ Add an item for tonight"><button data-addbtn="${id}">Add</button></div>
           ${(R.s.removed||[]).length?`<button class="irestore" data-restore="${id}">↺ Restore ${R.s.removed.length} removed item${R.s.removed.length>1?"s":""}</button>`:""}`:""}
         ${(flags.length||r.next)?`<div class="tags">${r.next?`<span class="tag next">Next: ${esc(r.next)}</span>`:""}${flags.map(f=>`<span class="tag flag">⚑ ${esc(f)}</span>`).join("")}</div>`:""}
@@ -964,12 +968,12 @@ document.addEventListener("click", async e => {
 // ── lead operations: drag ⠿ to set the build order for a night (touch + mouse). Numbers follow the order.
 document.addEventListener("pointerdown", e => {
   const g = e.target.closest("[data-grip]"); if (!g || !(WHO && LEAD(WHO.role))) return;
-  const item = g.closest("[data-sort]"), list = item && item.closest("[data-sortlist]"); if (!list) return;
+  const item = g.closest("[data-sort]"), list = item && item.closest("[data-sortlist],[data-isort]"); if (!list) return;
   e.preventDefault();
-  SORTING = true; openId = null;
+  SORTING = true; if (!list.dataset.isort) openId = null;
   const grab = e.clientY - item.getBoundingClientRect().top;
   item.classList.add("sorting");
-  g.setPointerCapture(e.pointerId);
+  try { g.setPointerCapture(e.pointerId); } catch (err) {}
   const items = () => [...list.querySelectorAll(":scope > [data-sort]")];
   const renumber = () => items().forEach((x,k) => { const n = x.querySelector(".num"); if (n && n.textContent != "✓") n.textContent = k + 1; });
   let lastY = e.clientY, raf = 0;
@@ -987,7 +991,14 @@ document.addEventListener("pointerdown", e => {
     if (raf) cancelAnimationFrame(raf);
     item.style.transform = ""; item.classList.remove("sorting");
     SORTING = false; sortEnded = Date.now();
-    const ids = items().map(x => x.dataset.sort), iso = list.dataset.sortlist;
+    const ids = items().map(x => x.dataset.sort);
+    if (list.dataset.isort) {
+      const {iso: o, r} = parseId(list.dataset.isort);
+      if (ids.join() != listOf(o, r).map(x => x.key).join()) { await save(o, slug(r.room), {iorder: ids}); toast(`Steps reordered in ${r.room}`); }
+      else if (renderPending) render();
+      renderPending = false; return;
+    }
+    const iso = list.dataset.sortlist;
     const was = roomsOn(iso).map(x => x.o + "|" + x.i).join();
     if (ids.join() != was) { await saveOrder(iso, ids); toast("Build order saved"); }
     else if (renderPending) render();

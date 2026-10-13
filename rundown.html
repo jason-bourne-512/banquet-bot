@@ -10831,6 +10831,12 @@ body{font-family:Manrope,Arial,sans-serif}
       tab=b.dataset.screen;
       renderDay(selected);
     }));
+    // Desktop mode hides the tabs and switches views from the sidebar (rundown.html#rundown / #overview).
+    window.addEventListener('hashchange',function(){
+      const t=location.hash==='#overview'?'overview':'rundown';
+      if(t===tab&&mode==='day') return;
+      tab=t; renderDay(t==='overview'?TODAY:selected); window.scrollTo(0,0);
+    });
     // A page left open past midnight reloads so "today" and the past-day purge stay right.
     document.addEventListener('visibilitychange',function(){
       if(!document.hidden&&todayISO()!==TODAY) location.reload();
