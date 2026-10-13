@@ -178,6 +178,8 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
 .dgcur img{display:block;width:100%;max-height:40vh;object-fit:contain;background:#fff;border-radius:8px}
 .dgcur .lbl{font-size:11px;color:var(--t3);font-weight:700}
 .dglink{display:block;margin-top:10px;border:0;background:none;color:var(--t3);text-decoration:underline;font-size:12px;padding:0}
+#prChips button.on{background:var(--accent-d);border-color:var(--accent);color:var(--accent)}
+.prname{width:100%;margin-top:12px;border-radius:10px;border:1px solid var(--line2);background:#0b151e;color:var(--t1);font:16px Manrope;padding:10px}
 #mvDays button.on{background:var(--accent-d);border-color:var(--accent);color:var(--accent)}
 body.desk .wrap{max-width:none;padding:0 22px 60px}
 body.desk .top{margin:0 -22px;padding-left:22px;padding-right:22px}
@@ -291,6 +293,13 @@ body.dir .printbtn{border-color:#5fe3c066;color:#5fe3c0}
   <input type="file" id="dgFile" accept="image/*,application/pdf" hidden>
   <div class="acts" id="dgActs"></div>
   <div id="dgMore"></div>
+</div></div>
+<div class="sheet-bg" id="prBg"><div class="sheet">
+  <h3>Print checklist</h3><p id="prDay"></p>
+  <p style="margin:0 0 8px;color:var(--t2);font-weight:700">Houseman's name for the top of the list</p>
+  <div class="chips" id="prChips"></div>
+  <input id="prName" class="prname" maxlength="40" placeholder="Or type a name (leave blank for a write-in line)">
+  <div class="acts"><button class="btn btn-undo" id="prCancel">Cancel</button><button class="btn btn-done" id="prGo">🖨 Print</button></div>
 </div></div>
 <div class="sheet-bg" id="mvBg"><div class="sheet">
   <h3>Move build</h3><p id="mvRoom"></p>
@@ -956,7 +965,7 @@ document.addEventListener("click", async e => {
   if (e.target.closest("[data-grip]") || Date.now() - sortEnded < 350) { e.preventDefault(); return; }
   const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back],[data-cancel],[data-uncancel],[data-edit],[data-edsave],[data-edcancel],[data-type]");
   if (!t) return;
-  if (t.dataset.print) { printDay(t.dataset.print); return; }
+  if (t.dataset.print) { openPrintSheet(t.dataset.print); return; }
   if (t.dataset.dgm || t.dataset.move || t.dataset.back || t.dataset.cancel || t.dataset.uncancel) {
     if (!(WHO && LEAD(WHO.role))) { toast("Only the captain or director can change this", true); return; }
     if (t.dataset.cancel || t.dataset.uncancel) { await cancelRoom(t.dataset.cancel || t.dataset.uncancel, !!t.dataset.cancel, t); return; }
@@ -1167,27 +1176,52 @@ document.addEventListener("keydown", e => {
   }
   if (e.key == "Enter" && e.target.id && e.target.id.startsWith("add-")) { const b = document.querySelector(`[data-addbtn="${e.target.id.slice(4)}"]`); b && b.click(); } });
 // ── print: Word-style checklist (room | setup) + one diagram per page. Save as PDF from the print dialog.
-function printDay(iso) {
+// Print sheet: whose list is this? The name goes big at the top of the printout.
+let prFor = null;
+function openPrintSheet(iso) {
+  prFor = iso;
+  const d = dayOf(iso), crew = (d && d.crew ? d.crew.split(/[,&/]| and /) : []).map(x => x.trim()).filter(Boolean);
+  const names = [...new Set(crew.concat(PEOPLE.filter(p => p.role == "hsm").map(p => p.name)))];
+  document.getElementById("prDay").textContent = `${longDay(iso)} ${md(iso)} · setting for ${d ? d.target : ""}`;
+  document.getElementById("prChips").innerHTML = names.map(n => `<button data-prname="${esc(n)}" class="${crew.indexOf(n) >= 0 ? "on" : ""}">${esc(n)}</button>`).join("");
+  document.getElementById("prName").value = crew.length == 1 ? crew[0] : "";
+  document.getElementById("prBg").classList.add("on");
+}
+document.getElementById("prChips").addEventListener("click", e => {
+  const b = e.target.closest("[data-prname]"); if (!b) return;
+  document.querySelectorAll("#prChips button").forEach(x => x.classList.toggle("on", x == b));
+  document.getElementById("prName").value = b.dataset.prname;
+});
+document.getElementById("prName").addEventListener("input", () => document.querySelectorAll("#prChips button").forEach(x => x.classList.toggle("on", x.dataset.prname == document.getElementById("prName").value.trim())));
+document.getElementById("prCancel").onclick = () => document.getElementById("prBg").classList.remove("on");
+document.getElementById("prBg").onclick = e => { if (e.target.id == "prBg") document.getElementById("prBg").classList.remove("on"); };
+document.getElementById("prGo").onclick = () => {
+  const name = document.getElementById("prName").value.trim().slice(0, 40);
+  document.getElementById("prBg").classList.remove("on");
+  printDay(prFor, name);
+};
+function printDay(iso, who) {
   const d = dayOf(iso); if (!d) return;
   const abs = f => isUp(f) ? previewOf(f) : new URL(previewOf(f), location.href).href;
   const diags = [], rooms = roomsOn(iso);
   rooms.forEach(({r, o}, i) => diagsOf(r, o).forEach((f,j,a) => diags.push({r, i, f, label: a.length>1 ? `Diagram ${j+1} of ${a.length}` : "Diagram"})));
-  const pageOf = (i, f) => diags.findIndex(x => x.i == i && x.f == f) + 2;
   const rows = rooms.map(({r, o, from}, i) => {
-    const ds = diagsOf(r, o);
     return `<tr><td class="n">${i+1}</td>
       <td class="room"><div class="tyb ty-${tOf(o, r)}">${TYPE[tOf(o, r)].toUpperCase()}</div><b>${esc(r.room)}</b><div class="ty">${r.end?`ends ${esc(r.end)}`:""}${from?`${r.end?" · ":""}moved from ${dayLbl(from)}`:""}</div><div class="for">${esc(r.for)}</div></td>
       <td class="set"><ul>${listOf(o, r).map(x=>`<li>☐ ${esc(x.text)}</li>`).join("")}</ul>
         ${r.next?`<div class="nx">Next: ${esc(r.next)}</div>`:""}${(r.flags||[]).map(f=>`<div class="fl">⚑ ${esc(f)}</div>`).join("")}
-        ${ds.length?`<div class="sd">See diagram${ds.length>1?"s":""} → page ${ds.map(f=>pageOf(i,f)).join(", ")}</div>`:""}</td></tr>`;
+        </td></tr>`;
   }).join("");
-  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Housemen ${md(iso)} — ${esc(d.target)}</title><style>
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Housemen ${md(iso)}${who ? " — " + esc(who) : ""} — ${esc(d.target)}</title><style>
     @page{size:letter;margin:0.6in}
     body{font:11pt Calibri,"Segoe UI",Arial,sans-serif;color:#111;margin:0;background:#fff}
     .bar{position:sticky;top:0;background:#f3f3f3;border-bottom:1px solid #ccc;padding:10px 16px;display:flex;gap:10px;align-items:center;font-size:13px}
     .bar button{font:600 13px Arial;padding:7px 14px;border:1px solid #888;border-radius:6px;background:#fff;cursor:pointer}
     .doc{max-width:7.3in;margin:0 auto;padding:24px 16px}
     h1{font:700 18pt Calibri,Arial;margin:0 0 2px} .meta{color:#444;margin:0 0 14px}
+    .hsm{font:700 15pt Calibri,Arial;margin:0 0 10px;padding:8px 12px;border:2.5px solid #000;border-radius:6px;display:inline-block}
+    .hsm b{font:900 20pt Arial Black,Arial,sans-serif;letter-spacing:.04em;text-transform:uppercase;margin-left:4px}
+    .hsm .blank{display:inline-block;width:2.6in;border-bottom:2px solid #000;margin-left:6px;vertical-align:-4px}
     table{width:100%;border-collapse:collapse} th,td{border:1px solid #777;padding:6px 8px;vertical-align:top;text-align:left}
     th{background:#e7e6e6;font-weight:700} td.n{width:24px;text-align:center;font-weight:700}
     td.room{width:34%} .ty{font-size:9.5pt;color:#444;text-transform:uppercase;letter-spacing:.03em;margin-top:2px} .for{font-size:10pt;margin-top:3px}
@@ -1195,7 +1229,7 @@ function printDay(iso) {
     .tyb{display:table;margin:0 0 5px;padding:3px 12px;font:900 17pt/1.1 Arial Black,Arial,sans-serif;letter-spacing:.08em;border:3px solid #000;border-radius:4px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
     .tyb.ty-set{background:#000;color:#fff} .tyb.ty-ref{background:#fff;color:#000} .tyb.ty-clr{background:#fff;color:#000;border-style:dashed}
     ul{margin:0;padding:0;list-style:none} li{margin:1px 0}
-    .nx{margin-top:5px;font-style:italic} .fl{margin-top:4px;color:#8a1c1c} .sd{margin-top:5px;font-weight:700}
+    .nx{margin-top:5px;font-style:italic} .fl{margin-top:4px;color:#8a1c1c}
     .sign{margin-top:18px;font-size:10pt;color:#333} .sign span{display:inline-block;border-bottom:1px solid #555;min-width:2.2in;margin-right:24px}
     .dpage{page-break-before:always;break-before:page;text-align:center} .dpage h2{font:700 13pt Calibri,Arial;margin:0 0 8px;text-align:left}
     .dpage img{max-width:100%;max-height:9in;border:1px solid #ccc}
@@ -1204,12 +1238,13 @@ function printDay(iso) {
   </style></head><body>
   <div class="bar"><button onclick="print()">Print / Save as PDF</button><span>Tip: choose “Save as PDF” as the printer.</span></div>
   <div class="doc">
+    <div class="hsm">Houseman: ${who ? `<b>${esc(who)}</b>` : `<span class="blank"></span>`}</div>
     <h1>Housemen Checklist — ${longDay(iso)} ${md(iso)}</h1>
     <p class="meta">Setting for <b>${esc(d.target)}</b>${d.crew?` · ${esc(d.crew)} · ${esc(d.shift)}`:""} · ${rooms.length} rooms in setup order</p>
     <table><thead><tr><th>#</th><th>Room</th><th>Setup</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="sign"><span>&nbsp;</span><span>&nbsp;</span><br>Completed by &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checked by</div>
     <div class="foot">Printed from Banquet Bot · ${new Date().toLocaleString("en-US",{timeZone:TZ})}</div>
-    ${diags.map((x,k)=>`<div class="dpage"><h2>Page ${k+2} · ${esc(x.r.room)} — ${esc(x.r.for)} · ${x.label}</h2><img src="${abs(x.f)}" alt="${esc(x.r.room)} diagram"></div>`).join("")}
+    ${diags.map((x,k)=>`<div class="dpage"><h2>${esc(x.r.room)} — ${esc(x.r.for)} · ${x.label}</h2><img src="${abs(x.f)}" alt="${esc(x.r.room)} diagram"></div>`).join("")}
   </div></body></html>`;
   const w = window.open("", "_blank");
   if (!w) { toast("Allow pop-ups to print", true); return; }
