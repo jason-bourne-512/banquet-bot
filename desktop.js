@@ -11,7 +11,43 @@
   ];
   var ACCENT = {captain: "#f2c879", director: "#5fe3c0"};
   // Card types that reflow into a multi-column grid when two or more sit side by side in the same parent.
-  var CARDS = ".event-card,.menu-item,.room-card,.tr-card,.hb-card,.food-item,.time-block,#bb-app .room,.crow,.menu-list>*,#main>.room";
+  var CARDS = ".event-card,.menu-item,.room-card,.tr-card,.hb-card,#bb-app .room,.crow,.menu-list>*,#main>.room";
+
+  // Overview and Today were built with their own palettes (gold on black, mono/serif type). In desktop
+  // mode they get the site skin: navy/ice-blue tokens, the lattice background, Barlow Condensed + Manrope.
+  var LATTICE = "radial-gradient(ellipse at 100% 0,#2a4f6a59,transparent 46%),radial-gradient(ellipse at 0 100%,#5a4f9a24,transparent 52%)," +
+    "repeating-linear-gradient(60deg,transparent 0 33px,#84d3ff0c 33px 34px),repeating-linear-gradient(-60deg,transparent 0 33px,#b7a8ff0a 33px 34px),#101820";
+  var SKIN_BASE =
+    "html.bbd-skin,html.bbd-skin body{background:#101820!important;background-color:#101820!important;background-image:none!important;color:#eaf3fa}" +
+    "html.bbd-skin body::before{content:'';position:fixed!important;inset:0!important;z-index:0;pointer-events:none;transform:none!important;background:" + LATTICE + "!important}" +
+    "html.bbd-skin .page-wrap{position:relative;z-index:1;background:transparent!important}" +
+    "html.bbd-skin .page-wrap,html.bbd-skin .page-wrap *{font-family:Manrope,Arial,sans-serif!important;letter-spacing:normal}" +
+    "html.bbd-skin .page-title,html.bbd-skin .brand-name,html.bbd-skin .client-name,html.bbd-skin .day-dot-num,html.bbd-skin .summary-stat .num,html.bbd-skin .page-wrap h1,html.bbd-skin .page-wrap h2,html.bbd-skin .page-wrap h3{" +
+      "font-family:'Barlow Condensed',Arial,sans-serif!important;font-weight:600!important;text-transform:uppercase;letter-spacing:.5px!important}" +
+    "html.bbd-skin .page-title{font-size:40px!important;line-height:1!important}" +
+    "html.bbd-skin .page-wrap{padding-left:20px!important;padding-right:20px!important}" +
+    "html.bbd-skin .page-wrap [class*=eyebrow],html.bbd-skin .page-wrap [class*=lbl],html.bbd-skin .section-heading,html.bbd-skin .food-header,html.bbd-skin .setup-label{font-weight:800!important;letter-spacing:1.6px!important;text-transform:uppercase}";
+  var SKINS = {
+    "overview.html": SKIN_BASE +
+      "html.bbd-skin:root{--bg:#101820;--bg-card:#162530;--bg-active:#1d3344;--border:rgba(139,209,255,.12);--border-h:rgba(139,209,255,.28);" +
+        "--text-1:#eaf3fa;--text-2:#b1c6d6;--text-3:#8aa4b8;--text-4:#6f8aa0;--accent:#8bd1ff;--accent-dim:rgba(139,209,255,.10);" +
+        "--green:#78d6ca;--green-dim:rgba(120,214,202,.10);--blue:#8bd1ff;--blue-dim:rgba(139,209,255,.10);--header-bg:rgba(16,24,32,.88);" +
+        "--tog-bg:#0b151e;--tog-border:rgba(139,209,255,.14);--tog-act:#1d3344;--divider:rgba(166,216,255,.07);--stripe:rgba(130,207,255,.03);" +
+        "--today-bg:linear-gradient(135deg,#1d3a52 0%,#162530 60%);--today-border:#8bd1ff;--today-top:#8bd1ff}" +
+      "html.bbd-skin .day-btn{background:#162530!important;border-color:rgba(139,209,255,.14)!important;border-left-color:var(--accent)!important}" +
+      "html.bbd-skin .day-btn.is-today{background:var(--today-bg)!important;box-shadow:0 0 0 1px #8bd1ff55,0 0 24px #8bd1ff1f}" +
+      "html.bbd-skin .day-btn.a-dim{border-left-color:rgba(139,209,255,.2)!important}" +
+      "html.bbd-skin .today-chip{color:#0c141b!important}" +
+      "html.bbd-skin .day-dot{border-radius:50%!important}" +
+      "html.bbd-skin .ov-event{border-radius:12px!important}",
+    "today.html": SKIN_BASE +
+      "html.bbd-skin:root{--bg:#101820;--surface:#162530;--card:#162530;--border:rgba(139,209,255,.14);--border-light:rgba(139,209,255,.26);" +
+        "--gold:#8bd1ff;--gold-dim:rgba(139,209,255,.45);--gold-glow:rgba(139,209,255,.10);--cream:#eaf3fa;--muted:#8aa4b8;--muted2:#6f8aa0;--white:#eaf3fa}" +
+      "html.bbd-skin .event-card{border-radius:12px!important;border-left:4px solid #8bd1ff!important}" +
+      "html.bbd-skin .meta-chip,html.bbd-skin .setup-pill{border-radius:6px!important}" +
+      "html.bbd-skin .date-chip{color:#0c141b!important;border-radius:8px!important}" +
+      "html.bbd-skin .ops-note{background:rgba(255,192,133,.08)!important;border-left-color:#ffc085!important}"
+  };
 
   function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
@@ -180,6 +216,7 @@
   function build(w) {
     var root = document.documentElement, acc = ACCENT[w.role] || "#8bd1ff", cur = here();
     root.classList.add("bbd"); root.dataset.bbdRole = w.role;
+    if (SKINS[cur]) { root.classList.add("bbd-skin"); var sk = document.createElement("style"); sk.id = "bbd-skin"; sk.textContent = SKINS[cur]; document.head.appendChild(sk); }
     addStyle(acc);
     var title = (PAGES.filter(function (p) { return p[0] == cur; })[0] || [cur, document.title.split("—")[0].trim()])[1];
     var side = document.createElement("aside");
