@@ -200,6 +200,12 @@ body.desk .seg{max-width:420px}
 .bcard .thumb{display:block;width:100%;margin-top:8px;padding:0;border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:#fff}
 .bcard .thumb img{display:block;width:100%;height:120px;object-fit:contain}
 
+/* cancel a room (leads) */
+.ops .xbtn{color:var(--red);border-color:#ff8f8f40;background:var(--red-d)}
+.ops .xbtn.armed{background:var(--red);color:#2a0d0d}
+.gone.cx{border-color:#ff8f8f40;color:var(--t3)}
+.gone.cx s{color:var(--red);font-weight:700;text-decoration-thickness:2px}
+
 /* drag to reorder (leads) */
 .grip{flex:none;display:grid;place-items:center;width:24px;align-self:stretch;margin:-11px 0 -11px -6px;color:var(--t4);font-size:18px;line-height:1;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
 .grip:hover{color:var(--accent)}
@@ -619,7 +625,7 @@ async function save(iso, rslug, patch) {
   const day = (STATE[iso] ||= {}), cur = (day[rslug] ||= {items:{}, done:null, prob:null});
   const before = JSON.parse(JSON.stringify(cur));
   if (patch.items) Object.assign(cur.items, patch.items);
-  for (const k of ["done","prob","extra","removed","moved","diag"]) if (k in patch) cur[k] = patch[k];
+  for (const k of ["done","prob","extra","removed","moved","diag","cancelled"]) if (k in patch) cur[k] = patch[k];
   render();
   if (MOCK) { try { localStorage.setItem("bb-hsm-mock", JSON.stringify(STATE)); } catch(e) {} return; }
   try { await setDoc(doc(db, COL, iso), {rooms:{[rslug]:patch}, updated:Date.now()}, {merge:true}); }
@@ -729,7 +735,10 @@ const isUp = f => f.startsWith("up:");
 const previewOf = f => isUp(f) ? (UPL[f.slice(3)] || BLANK) : DIAG + "previews/" + f.replace(/\.pdf$/i, ".png");
 // Rooms on a night after lead moves: its own rooms minus any moved away, plus rooms moved in from other nights.
 // Each entry keeps o (the night it was posted on) + i, so checkoffs keep saving to the original night's doc.
-function roomsOn(iso) {
+// Cancelled rooms (a lead x'd them out) drop out of the numbering and progress but stay listed with Restore.
+const roomsOn = iso => allOn(iso).filter(x => !rs(x.o, x.r).cancelled);
+const cancelledOn = iso => allOn(iso).filter(x => rs(x.o, x.r).cancelled);
+function allOn(iso) {
   const out = [], d = dayOf(iso);
   if (d) d.rooms.forEach((r,i) => { const m = rs(iso, r).moved; if (!(m && m.to && m.to != iso)) out.push({r, i, o:iso}); });
   for (const od of VISIBLE) if (od.iso != iso) od.rooms.forEach((r,i) => { const m = rs(od.iso, r).moved; if (m && m.to == iso) out.push({r, i, o:od.iso, from:od.iso}); });
@@ -777,6 +786,7 @@ function renderDays() {
     return `<button data-day="${d.iso}" class="${d.iso==dayISO?"on":""}"><span>${dow(d.iso)}</span><b>${+d.iso.slice(8)}</b><span class="pip"><i style="width:${b?a/b*100:0}%"></i></span></button>`;
   }).join("");
 }
+const cxRow = (x, lead) => `<div class="gone cx"><s>${esc(x.r.room)}</s>&nbsp;· ${esc(x.r.for)} — cancelled by ${esc(rs(x.o,x.r).cancelled.by)} ${esc(rs(x.o,x.r).cancelled.at)}${lead?`<button class="mini" data-uncancel="${x.o}|${x.i}">↺ Restore</button>`:""}</div>`;
 function renderHsm(d) {
   const [a,b] = dayProgress(d), lead = !!(WHO && LEAD(WHO.role)), rooms = roomsOn(d.iso);
   let h = `<div class="hero"><div class="eyebrow">Tonight · setting for ${esc(d.target)}</div><h1>${longDay(d.iso)} ${md(d.iso)}</h1>
@@ -793,7 +803,7 @@ function renderHsm(d) {
         ${lead?`<div class="iadd"><input id="add-${id}" maxlength="120" placeholder="+ Add an item for tonight"><button data-addbtn="${id}">Add</button></div>
           ${(R.s.removed||[]).length?`<button class="irestore" data-restore="${id}">↺ Restore ${R.s.removed.length} removed item${R.s.removed.length>1?"s":""}</button>`:""}`:""}
         ${(flags.length||r.next)?`<div class="tags">${r.next?`<span class="tag next">Next: ${esc(r.next)}</span>`:""}${flags.map(f=>`<span class="tag flag">⚑ ${esc(f)}</span>`).join("")}</div>`:""}
-        ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move to another night</button></div>`:""}
+        ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move to another night</button><button class="xbtn" data-cancel="${id}">✕ Cancel room</button></div>`:""}
         ${open&&ds.length?`<div class="diags">${ds.map((f,j,a)=>`<button class="diag-prev" data-diag="${esc(f)}" data-room="${esc(r.room)}"><img src="${previewOf(f)}" alt="${esc(r.room)} diagram"><span>${a.length>1?`Diagram ${j+1} of ${a.length}`:"Diagram"}<em style="font-style:normal">Tap to enlarge ↗</em></span></button>`).join("")}</div>`:""}
         ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)} ${esc(R.s.prob.at)}</div>`:""}
         ${R.s.done?`<div class="doneline">✓ Marked done by ${esc(R.s.done.by)} at ${esc(R.s.done.at)}</div>
@@ -802,6 +812,8 @@ function renderHsm(d) {
       </div></div>`;
   });
   h += `</div>`;
+  const cxs = cancelledOn(d.iso);
+  if (cxs.length) h += `<div class="sec">Cancelled — don't build</div>` + cxs.map(x => cxRow(x, lead)).join("");
   h += movedOut(d.iso).map(x => `<div class="gone">→ ${esc(x.r.room)} (${esc(x.r.for)}) moved to ${dayLbl(x.to)}${lead?`<button class="mini" data-back="${x.o}|${x.i}">↩ Bring back</button>`:""}</div>`).join("");
   return h;
 }
@@ -822,7 +834,9 @@ function renderCap(d) {
   h += `<div class="sec">Rooms in setup order${lead?` <span style="text-transform:none;letter-spacing:0;color:var(--t4)">· drag ⠿ to reorder</span>`:""}</div><div class="sortlist" data-sortlist="${d.iso}">` + list.map((x,k)=>{ const id = x.o+"|"+x.i, dv = x.R.s.diag;
     return `<div class="crow" data-sort="${id}">${lead?`<span class="grip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="num" style="${x.R.s.done?"background:var(--done);color:#0e2418;border-color:var(--done)":""}">${x.R.s.done?"✓":k+1}</span>
       <div><div class="rname">${esc(x.r.room)}</div><div class="meta">${TYPE[x.r.t]}${x.r.end?` · ends ${esc(x.r.end)}`:""}${diagsOf(x.r,x.o).length?(dv&&dv.id?" · new diagram":" · diagram"):(dv&&dv.none?" · diagram hidden":"")}${x.from?` · <span style="color:#c1baff">⇄ from ${dayLbl(x.from)}</span>`:""}</div></div><div class="right">${x.R.pill}</div>
-      ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button></div>`:""}</div>`; }).join("") + `</div>`;
+      ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button><button class="xbtn" data-cancel="${id}">✕ Cancel</button></div>`:""}</div>`; }).join("") + `</div>`;
+  const cxs = cancelledOn(d.iso);
+  if (cxs.length) h += `<div class="sec">Cancelled</div>` + cxs.map(x => cxRow(x, lead)).join("");
   const out = movedOut(d.iso);
   if (out.length) h += `<div class="sec">Moved to another night</div>` + out.map(x => `<div class="gone">→ ${esc(x.r.room)} · ${dayLbl(x.to)}${lead?`<button class="mini" data-back="${x.o}|${x.i}">↩ Bring back</button>`:""}</div>`).join("");
   const feed = [];
@@ -847,8 +861,9 @@ function renderBoard() {
         ${R.pill}${x.from?` <span class="status" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ from ${dayLbl(x.from)}</span>`:""}
         ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)}<div><button class="resolve" data-resolve="${id}">Mark resolved</button></div></div>`:""}
         ${ds.length?`<button class="thumb" data-diag="${esc(ds[0])}" data-room="${esc(x.r.room)}"><img src="${previewOf(ds[0])}" alt="${esc(x.r.room)} diagram"></button>`:""}
-        <div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button></div></div>`;
+        <div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button><button class="xbtn" data-cancel="${id}" title="Cancel room">✕</button></div></div>`;
     }).join("") || `<div class="empty">No rooms</div>`;
+    h += cancelledOn(d.iso).map(x => `<div class="gone cx"><s>${esc(x.r.room)}</s> cancelled<button class="mini" data-uncancel="${x.o}|${x.i}">↺</button></div>`).join("");
     h += movedOut(d.iso).map(x => `<div class="gone">→ ${esc(x.r.room)} · ${dayLbl(x.to)}<button class="mini" data-back="${x.o}|${x.i}">↩</button></div>`).join("");
     h += `</section>`;
   }
@@ -889,11 +904,12 @@ document.getElementById("desk").onclick = () => { desk = !desk; try { localStora
 // ── actions
 document.addEventListener("click", async e => {
   if (e.target.closest("[data-grip]") || Date.now() - sortEnded < 350) { e.preventDefault(); return; }
-  const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back]");
+  const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back],[data-cancel],[data-uncancel]");
   if (!t) return;
   if (t.dataset.print) { printDay(t.dataset.print); return; }
-  if (t.dataset.dgm || t.dataset.move || t.dataset.back) {
+  if (t.dataset.dgm || t.dataset.move || t.dataset.back || t.dataset.cancel || t.dataset.uncancel) {
     if (!(WHO && LEAD(WHO.role))) { toast("Only the captain or director can change this", true); return; }
+    if (t.dataset.cancel || t.dataset.uncancel) { await cancelRoom(t.dataset.cancel || t.dataset.uncancel, !!t.dataset.cancel, t); return; }
     if (t.dataset.dgm) openDiagSheet(t.dataset.dgm);
     else if (t.dataset.move) openMoveSheet(t.dataset.move);
     else await moveBuild(t.dataset.back, parseId(t.dataset.back).iso);
@@ -952,6 +968,20 @@ document.addEventListener("pointerdown", e => {
   };
   g.addEventListener("pointermove", move); g.addEventListener("pointerup", end); g.addEventListener("pointercancel", end);
 });
+
+// ── lead operations: cancel (x out) a room for the night, or restore it. Two taps to cancel, no browser dialogs.
+let cxArmed = {id: null, t: 0};
+async function cancelRoom(id, on, btn) {
+  const {iso, r} = parseId(id);
+  if (on && !(cxArmed.id == id && Date.now() - cxArmed.t < 3000)) {
+    cxArmed = {id, t: Date.now()}; btn.textContent = "Tap again to cancel"; btn.classList.add("armed");
+    toast(`Tap again to cancel ${r.room}`); return;
+  }
+  cxArmed = {id: null, t: 0};
+  if (on && openId == id) openId = null;
+  await save(iso, slug(r.room), {cancelled: on ? {by: WHO.name, at: nowLabel(), ts: Date.now()} : null});
+  toast(on ? `✕ ${r.room} cancelled — Restore is at the bottom` : `↺ ${r.room} restored`);
+}
 
 // ── lead operations: move a build to another night (state stays on its original night's doc)
 async function moveBuild(id, to) {
