@@ -200,6 +200,13 @@ body.desk .seg{max-width:420px}
 .bcard .thumb{display:block;width:100%;margin-top:8px;padding:0;border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:#fff}
 .bcard .thumb img{display:block;width:100%;height:120px;object-fit:contain}
 
+/* drag to reorder (leads) */
+.grip{flex:none;display:grid;place-items:center;width:24px;align-self:stretch;margin:-11px 0 -11px -6px;color:var(--t4);font-size:18px;line-height:1;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.grip:hover{color:var(--accent)}
+.crow .grip{margin:-10px 0 -10px -6px}
+.sorting{position:relative;z-index:40;box-shadow:0 14px 34px #000b,0 0 0 2px var(--accent);transition:none!important;cursor:grabbing}
+.sorting .grip{color:var(--accent);cursor:grabbing}
+
 /* captain theme — only when the captain (Jason) is signed in */
 .capbadge{display:none;align-items:center;gap:5px;margin-left:8px;padding:3px 8px;border:1px solid #f2c87966;border-radius:20px;font:800 9px Manrope;letter-spacing:1.6px;color:#f2c879;background:linear-gradient(135deg,#f2c8791f,#f2c87905);box-shadow:0 0 12px #f2c8791c}
 body.cap{--accent:#f2c879;--accent-d:rgba(242,200,121,.13);--line:rgba(242,200,121,.13);--line2:rgba(242,200,121,.32)}
@@ -584,12 +591,15 @@ const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").repl
 const isoMinus1 = iso => { const t = dObj(iso); t.setUTCDate(t.getUTCDate() - 1); return t.toISOString().slice(0, 10); };
 const YESTERDAY = isoMinus1(todayISO());
 const VISIBLE = DAYS.filter(d => d.iso >= YESTERDAY);
-const STATE = {};          // iso -> { slug -> {items, done, prob} }
+const STATE = {};
+let SORTING = false, renderPending = false, sortEnded = 0;   // drag-to-reorder in progress → hold renders until drop
+const ORDER = {};          // iso -> ["origIso|index", ...] — a lead's drag-and-drop build order for that night          // iso -> { slug -> {items, done, prob} }
 let db = null;
 const setSync = c => { document.getElementById("sync").className = "sync " + c; };
 
 if (MOCK) {
   try { Object.assign(STATE, JSON.parse(localStorage.getItem("bb-hsm-mock") || "{}")); } catch(e) {}
+  try { Object.assign(ORDER, JSON.parse(localStorage.getItem("bb-hsm-mock-order") || "{}")); } catch(e) {}
   setSync("ok");
 } else {
   const app = initializeApp({
@@ -599,7 +609,7 @@ if (MOCK) {
   db = getFirestore(app);
   for (const d of VISIBLE) {
     onSnapshot(doc(db, COL, d.iso),
-      snap => { STATE[d.iso] = (snap.exists() && snap.data().rooms) || {}; setSync("ok"); render(); },
+      snap => { STATE[d.iso] = (snap.exists() && snap.data().rooms) || {}; ORDER[d.iso] = (snap.exists() && snap.data().order) || null; setSync("ok"); render(); },
       err => { console.error("[housemen]", err); setSync("bad"); toast("Can't reach the live list — showing what's saved", true); });
   }
 }
@@ -614,6 +624,15 @@ async function save(iso, rslug, patch) {
   if (MOCK) { try { localStorage.setItem("bb-hsm-mock", JSON.stringify(STATE)); } catch(e) {} return; }
   try { await setDoc(doc(db, COL, iso), {rooms:{[rslug]:patch}, updated:Date.now()}, {merge:true}); }
   catch (e) { console.error("[housemen] save failed", e); day[rslug] = before; render(); setSync("bad"); toast("Didn't save — check signal and try again", true); }
+}
+
+// Build order for one night (leads drag rooms into it). Saved as the day doc's top-level "order" list.
+async function saveOrder(iso, ids) {
+  const before = ORDER[iso] || null;
+  ORDER[iso] = ids; render();
+  if (MOCK) { try { localStorage.setItem("bb-hsm-mock-order", JSON.stringify(ORDER)); } catch(e) {} return; }
+  try { await setDoc(doc(db, COL, iso), {order: ids, updated: Date.now()}, {merge: true}); }
+  catch (e) { console.error("[housemen] order save failed", e); ORDER[iso] = before; render(); setSync("bad"); toast("Didn't save the new order — try again", true); }
 }
 
 // Uploaded diagrams live as their own docs in the same collection ("diag-<id>": a JPEG data URL under ~900 KB),
@@ -714,6 +733,12 @@ function roomsOn(iso) {
   const out = [], d = dayOf(iso);
   if (d) d.rooms.forEach((r,i) => { const m = rs(iso, r).moved; if (!(m && m.to && m.to != iso)) out.push({r, i, o:iso}); });
   for (const od of VISIBLE) if (od.iso != iso) od.rooms.forEach((r,i) => { const m = rs(od.iso, r).moved; if (m && m.to == iso) out.push({r, i, o:od.iso, from:od.iso}); });
+  const ord = ORDER[iso];
+  if (ord && ord.length) {
+    const pos = new Map(ord.map((id,k) => [id, k])), key = (x,k) => pos.has(x.o+"|"+x.i) ? pos.get(x.o+"|"+x.i) : 1e3 + k;
+    const keyed = out.map((x,k) => [key(x,k), x]); keyed.sort((a,b) => a[0] - b[0]);
+    return keyed.map(z => z[1]);
+  }
   return out;
 }
 function movedOut(iso) {
@@ -757,10 +782,11 @@ function renderHsm(d) {
   let h = `<div class="hero"><div class="eyebrow">Tonight · setting for ${esc(d.target)}</div><h1>${longDay(d.iso)} ${md(d.iso)}</h1>
     <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}${rooms.length} rooms in setup order</div>
     <div class="progress"><div class="bar"><i style="width:${b?a/b*100:0}%"></i></div><div class="pct">${a}/${b}</div></div></div>`;
+  h += `<div class="sortlist" data-sortlist="${d.iso}">`;
   rooms.forEach(({r, i, o, from}, k) => {
     const id = o + "|" + i, R = roomState(o, r), open = openId == id, flags = r.flags || [], ds = diagsOf(r, o);
-    h += `<div class="room ${r.t} ${R.cls} ${open?"open":""}">
-      <button class="rhead" data-open="${id}"><span class="num">${R.s.done?"✓":k+1}</span>
+    h += `<div class="room ${r.t} ${R.cls} ${open?"open":""}" data-sort="${id}">
+      <button class="rhead" data-open="${id}">${lead?`<span class="grip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="num">${R.s.done?"✓":k+1}</span>
         <span class="rmain"><span class="type">${TYPE[r.t]}</span>${from?` <span class="type" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ from ${dayLbl(from)}</span>`:""}<div class="rname">${esc(r.room)}</div><div class="rfor">${esc(r.for)}</div>${R.pill}</span>
         ${r.end?`<span class="rend">ENDS<b>${esc(r.end)}</b></span>`:""}</button>
       <div class="rbody"><ul class="items">${R.list.map(x=>`<li data-item="${id}" data-k="${x.key}" class="${R.s.items&&R.s.items[x.key]?"ck":""}${x.added?" added":""}"><span class="box"></span><span>${esc(x.text)}</span>${lead?`<button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove item">✕</button>`:""}</li>`).join("")}</ul>
@@ -775,6 +801,7 @@ function renderHsm(d) {
         :`<div class="acts"><button class="btn btn-done" data-done="${id}">Mark ${esc(r.room)} done</button><button class="btn btn-prob" data-prob="${id}">⚠ Issue</button></div>`}
       </div></div>`;
   });
+  h += `</div>`;
   h += movedOut(d.iso).map(x => `<div class="gone">→ ${esc(x.r.room)} (${esc(x.r.for)}) moved to ${dayLbl(x.to)}${lead?`<button class="mini" data-back="${x.o}|${x.i}">↩ Bring back</button>`:""}</div>`).join("");
   return h;
 }
@@ -792,10 +819,10 @@ function renderCap(d) {
   const flags = list.filter(x=>(x.r.flags||[]).length);
   if (flags.length) h += `<div class="sec">Check before the shift</div>` + flags.map(x=>`<div class="flagrow"><b>⚑ ${esc(x.r.room)}</b> — ${x.r.flags.map(esc).join(" · ")}</div>`).join("");
   const lead = !!(WHO && LEAD(WHO.role));
-  h += `<div class="sec">Rooms in setup order</div>` + list.map((x,k)=>{ const id = x.o+"|"+x.i, dv = x.R.s.diag;
-    return `<div class="crow"><span class="num" style="${x.R.s.done?"background:var(--done);color:#0e2418;border-color:var(--done)":""}">${x.R.s.done?"✓":k+1}</span>
+  h += `<div class="sec">Rooms in setup order${lead?` <span style="text-transform:none;letter-spacing:0;color:var(--t4)">· drag ⠿ to reorder</span>`:""}</div><div class="sortlist" data-sortlist="${d.iso}">` + list.map((x,k)=>{ const id = x.o+"|"+x.i, dv = x.R.s.diag;
+    return `<div class="crow" data-sort="${id}">${lead?`<span class="grip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="num" style="${x.R.s.done?"background:var(--done);color:#0e2418;border-color:var(--done)":""}">${x.R.s.done?"✓":k+1}</span>
       <div><div class="rname">${esc(x.r.room)}</div><div class="meta">${TYPE[x.r.t]}${x.r.end?` · ends ${esc(x.r.end)}`:""}${diagsOf(x.r,x.o).length?(dv&&dv.id?" · new diagram":" · diagram"):(dv&&dv.none?" · diagram hidden":"")}${x.from?` · <span style="color:#c1baff">⇄ from ${dayLbl(x.from)}</span>`:""}</div></div><div class="right">${x.R.pill}</div>
-      ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button></div>`:""}</div>`; }).join("");
+      ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button></div>`:""}</div>`; }).join("") + `</div>`;
   const out = movedOut(d.iso);
   if (out.length) h += `<div class="sec">Moved to another night</div>` + out.map(x => `<div class="gone">→ ${esc(x.r.room)} · ${dayLbl(x.to)}${lead?`<button class="mini" data-back="${x.o}|${x.i}">↩ Bring back</button>`:""}</div>`).join("");
   const feed = [];
@@ -809,7 +836,7 @@ function renderCap(d) {
 // Desktop week board (leads): one column per night; drag a room card onto another night to move the build.
 function renderBoard() {
   let h = `<div class="hero"><div class="eyebrow">${WHO.role=="director"?"Operations":"Captain view"} · week board</div><h1>Setup board</h1>
-    <div class="sub">Drag a room onto another night to move the build · 🖼 to replace or hide a diagram · ⚠ cards need you</div></div><div class="board">`;
+    <div class="sub">Drag a room up or down to change the build order, or onto another night to move it · 🖼 to replace or hide a diagram · ⚠ cards need you</div></div><div class="board">`;
   for (const d of VISIBLE) {
     const list = roomsOn(d.iso), [a,b] = dayProgress(d);
     h += `<section class="col ${d.iso==todayISO()?"today":""}" data-drop="${d.iso}"><header><b>${dayLbl(d.iso)}</b><span>for ${esc(d.target)}</span><span class="cnt">${a}/${b}</span><button class="mini" data-print="${d.iso}" title="Print">🖨</button></header>`;
@@ -828,6 +855,7 @@ function renderBoard() {
   return h + `</div>`;
 }
 function render() {
+  if (SORTING) { renderPending = true; return; }
   const w = document.getElementById("who");
   w.textContent = WHO ? `✓ ${WHO.name}${WHO.role=="director"?" · Director":""}` : "Sign in"; w.classList.toggle("in", !!WHO);
   document.getElementById("vCap").textContent = WHO && WHO.role == "director" ? "Operations" : "Captain";
@@ -860,6 +888,7 @@ document.getElementById("desk").onclick = () => { desk = !desk; try { localStora
 
 // ── actions
 document.addEventListener("click", async e => {
+  if (e.target.closest("[data-grip]") || Date.now() - sortEnded < 350) { e.preventDefault(); return; }
   const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back]");
   if (!t) return;
   if (t.dataset.print) { printDay(t.dataset.print); return; }
@@ -889,6 +918,41 @@ document.addEventListener("click", async e => {
   if (t.dataset.undo) { await save(iso, rsl, {done:null}); toast(`${r.room} reopened`); return; }
   if (t.dataset.resolve) { await save(iso, rsl, {prob:null}); toast(`Resolved ${r.room}`); return; }
 });
+// ── lead operations: drag ⠿ to set the build order for a night (touch + mouse). Numbers follow the order.
+document.addEventListener("pointerdown", e => {
+  const g = e.target.closest("[data-grip]"); if (!g || !(WHO && LEAD(WHO.role))) return;
+  const item = g.closest("[data-sort]"), list = item && item.closest("[data-sortlist]"); if (!list) return;
+  e.preventDefault();
+  SORTING = true; openId = null;
+  const grab = e.clientY - item.getBoundingClientRect().top;
+  item.classList.add("sorting");
+  g.setPointerCapture(e.pointerId);
+  const items = () => [...list.querySelectorAll(":scope > [data-sort]")];
+  const renumber = () => items().forEach((x,k) => { const n = x.querySelector(".num"); if (n && n.textContent != "✓") n.textContent = k + 1; });
+  let lastY = e.clientY, raf = 0;
+  const place = () => {
+    raf = 0; const y = lastY;
+    const before = items().find(s => s != item && y < s.getBoundingClientRect().top + s.offsetHeight / 2) || null;
+    if (before != item.nextElementSibling) { list.insertBefore(item, before); renumber(); }
+    item.style.transform = ""; const nat = item.getBoundingClientRect().top;
+    item.style.transform = `translateY(${y - grab - nat}px)`;
+    if (y < 90) scrollBy(0, -14); else if (y > innerHeight - 90) scrollBy(0, 14);
+  };
+  const move = ev => { lastY = ev.clientY; if (!raf) raf = requestAnimationFrame(place); };
+  const end = async () => {
+    g.removeEventListener("pointermove", move); g.removeEventListener("pointerup", end); g.removeEventListener("pointercancel", end);
+    if (raf) cancelAnimationFrame(raf);
+    item.style.transform = ""; item.classList.remove("sorting");
+    SORTING = false; sortEnded = Date.now();
+    const ids = items().map(x => x.dataset.sort), iso = list.dataset.sortlist;
+    const was = roomsOn(iso).map(x => x.o + "|" + x.i).join();
+    if (ids.join() != was) { await saveOrder(iso, ids); toast("Build order saved"); }
+    else if (renderPending) render();
+    renderPending = false;
+  };
+  g.addEventListener("pointermove", move); g.addEventListener("pointerup", end); g.addEventListener("pointercancel", end);
+});
+
 // ── lead operations: move a build to another night (state stays on its original night's doc)
 async function moveBuild(id, to) {
   const {iso, r} = parseId(id);
@@ -918,8 +982,13 @@ document.addEventListener("drop", async e => {
   const col = e.target.closest && e.target.closest("[data-drop]"); if (!col) return;
   e.preventDefault(); col.classList.remove("over");
   const id = e.dataTransfer.getData("text/plain"); if (!id || !(WHO && LEAD(WHO.role))) return;
-  const {iso, r} = parseId(id), at = (rs(iso, r).moved || {}).to || iso;
-  if (col.dataset.drop != at) await moveBuild(id, col.dataset.drop);
+  const {iso, r} = parseId(id), at = (rs(iso, r).moved || {}).to || iso, to = col.dataset.drop;
+  const cards = [...col.querySelectorAll("[data-drag]")].filter(c => c.dataset.drag != id);
+  let idx = cards.findIndex(c => { const b = c.getBoundingClientRect(); return e.clientY < b.top + b.height / 2; });
+  if (idx < 0) idx = cards.length;
+  const ids = cards.map(c => c.dataset.drag); ids.splice(idx, 0, id);
+  if (to != at) await moveBuild(id, to);
+  await saveOrder(to, ids);
 });
 
 // ── lead operations: replace a room's diagram (photo / image / PDF), hide it, or go back to the original
