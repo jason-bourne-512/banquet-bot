@@ -67,6 +67,8 @@
       "html.bbd-skin #events .ev-col.ev-below{border-top:none!important;padding-top:0!important}" +
       "html.bbd-skin #events .grp-name{font:600 17px/1.2 'Barlow Condensed',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#a8f2c7;margin:0 0 8px 2px}" +
       "html.bbd-skin #events .client-name{color:#e6eef4!important;font-size:14px!important}" +
+      // slight glow box around meal + break times (not quiet beverage lines, not past)
+      "html.bbd-skin .page-wrap #events .meal-group:not(.quiet):not(.is-past) .svc-time{border:1px solid color-mix(in srgb,var(--k) 50%,transparent);border-radius:5px;padding:1px 6px!important;box-shadow:0 0 8px color-mix(in srgb,var(--k) 28%,transparent)}" +
       "html.bbd-skin #events .ev-col>.event-card{margin:0 0 12px!important}" +
       "html.bbd-skin #events .rm,html.bbd-skin #events .meta-chip.room{display:inline-flex;align-items:center;gap:4px;font-family:inherit!important;font-size:0.72rem!important;font-weight:800!important;letter-spacing:.06em!important;text-transform:uppercase;color:#bfe6ff!important;background:rgba(139,209,255,.14)!important;border:1px solid rgba(139,209,255,.55)!important;border-radius:6px!important;padding:2px 8px!important;line-height:1.3}" +
       "html.bbd-skin #events .rm::before,html.bbd-skin #events .meta-chip.room::before{content:'';width:6px;height:6px;border-radius:50%;background:#8bd1ff;box-shadow:0 0 6px #8bd1ff}" +
