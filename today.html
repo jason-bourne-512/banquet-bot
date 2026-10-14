@@ -291,16 +291,7 @@
             rest.map(function (it) { return "<tr><td>" + esc(it) + "</td></tr>"; }).join("") + "</table></details></div></div>"; }).join("") + "</div>"
           : '<div class="booking nofb">No food or beverage.</div>') +
         (book.length && food.length ? '<div class="booking">' + book.map(function (b) { return esc(b.tag.replace(/\s*—\s*No F&B/i, "")) + " " + esc(b.label) + (b.room ? " · " + esc(b.room) : ""); }).join("<br>") + "</div>" : "") +
-        (notes.length || setup ? '<details class="dd dd-setup"' + (DESK ? "" : " open") + '><summary title="Setup &amp; notes">Setup &amp; notes</summary><table class="dd-t kv">' +
-          (setup ? "<tr><th>Setup</th><td>" + esc(setup) + "</td></tr>" : "") +
-          ["NOTE", "FOOD", "SHIPPING"].filter(function (k) { return e.foot[k]; }).map(function (k) {
-            return "<tr><th>" + (k == "NOTE" ? "Note" : k == "FOOD" ? "Food" : "Shipping") + "</th><td>" + esc(noPrice(e.foot[k])) + "</td></tr>"; }).join("") +
-          "</table></details>" : "") +
-        (e.diags.length ? '<details class="dd dd-diag"><summary title="Diagrams">Diagrams <em>' + e.diags.length + '</em></summary><div class="dg-grid">' +
-          e.diags.map(function (d) {
-            return '<a class="dg" href="diagrams/' + esc(d.file) + '" target="_blank" rel="noopener"><img loading="lazy" alt="" src="diagrams/previews/' +
-              esc(d.file.replace(/\.pdf$/i, ".png")) + '" onerror="this.remove()"><span>' + esc(d.label) + "</span></a>"; }).join("") +
-          "</div></details>" : "") +
+        moreBlock(e, setup, notes) +
         "</div></div>";
     });
     // Same group (name before " — ") stacks in one column. Groups with food or beverage come first
@@ -335,6 +326,19 @@
   }
   window.addEventListener("resize", function () { lanes(false); });
   window.addEventListener("load", function () { lanes(true); });
+  function moreBlock(e, setup, notes) {
+    var table = notes.length || setup ? '<table class="dd-t kv">' +
+      (setup ? "<tr><th>Setup</th><td>" + esc(setup) + "</td></tr>" : "") +
+      ["NOTE", "FOOD", "SHIPPING"].filter(function (k) { return e.foot[k]; }).map(function (k) {
+        return "<tr><th>" + (k == "NOTE" ? "Note" : k == "FOOD" ? "Food" : "Shipping") + "</th><td>" + esc(noPrice(e.foot[k])) + "</td></tr>"; }).join("") +
+      "</table>" : "";
+    var grid = e.diags.length ? '<div class="dg-grid">' + e.diags.map(function (d) {
+      return '<a class="dg" href="diagrams/' + esc(d.file) + '" target="_blank" rel="noopener"><img loading="lazy" alt="" src="diagrams/previews/' +
+        esc(d.file.replace(/\.pdf$/i, ".png")) + '" onerror="this.remove()"><span>' + esc(d.label) + "</span></a>"; }).join("") + "</div>" : "";
+    if (DESK) return table || grid ? '<details class="dd dd-setup"><summary title="Setup, notes &amp; diagrams">Setup</summary>' + table + grid + "</details>" : "";
+    return (table ? '<details class="dd dd-setup" open><summary title="Setup &amp; notes">Setup &amp; notes</summary>' + table + "</details>" : "") +
+      (grid ? '<details class="dd dd-diag"><summary title="Diagrams">Diagrams <em>' + e.diags.length + "</em></summary>" + grid + "</details>" : "");
+  }
   function parseLabel(e) {
     var a = e.svc.slice().sort(function (x, y) { return x.a - y.a; })[0], b = e.svc.slice().sort(function (x, y) { return y.b - x.b; })[0];
     return a && b ? a.start + " – " + b.end : "";
