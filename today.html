@@ -269,7 +269,8 @@
       var showContact = contact && !(f0 && f0.contact == contact), showMgr = e.mgr && !(f0 && f0.mgr == e.mgr);
       var notes = ["NOTE", "FOOD", "SHIPPING"].map(function (k) { return e.foot[k] ? noPrice(e.foot[k]) : ""; }).filter(Boolean);
       var setup = e.foot.ROOM ? noPrice(e.foot.ROOM) : "";
-      var shown = DESK && f0 && e.title.indexOf(" — ") > 0 ? e.title.split(" — ").slice(1).join(" — ") : e.title;
+      // desktop: the group name heads its chunk once, so each card shows only its own event name
+      var shown = DESK && e.title.indexOf(" — ") > 0 ? e.title.split(" — ").slice(1).join(" — ") : e.title;
       // one GTD for the whole card when every food line has the same count (desktop)
       var gtds = food.map(function (s) { return s.gtd; }).filter(Boolean);
       var oneGtd = DESK && gtds.length > 1 && gtds.every(function (g) { return g == gtds[0]; }) ? gtds[0] : "";
@@ -304,7 +305,7 @@
       if (e.svc.some(function (s) { return !s.nofb; })) fb[g] = 1;
     });
     order = order.filter(function (g) { return fb[g]; }).concat(order.filter(function (g) { return !fb[g]; }));
-    E.innerHTML = order.map(function (g) { return '<div class="ev-col' + (fb[g] ? "" : " nofb") + '">' + cols[g].join("") + "</div>"; }).join("");
+    E.innerHTML = order.map(function (g) { return '<div class="ev-col' + (fb[g] ? "" : " nofb") + '">' + (DESK ? '<div class="grp-name">' + esc(g) + "</div>" : "") + cols[g].join("") + "</div>"; }).join("");
     GROUPS = [].slice.call(E.children);
     lanes(true);
   }
