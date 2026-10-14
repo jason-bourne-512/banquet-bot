@@ -62,7 +62,7 @@ function usage(date) {
 // The ROOM text for one room inside a card that may cover several rooms.
 function setupFor(ev, room) {
   const rooms = [...new Set(ev.items.map(i => roomName(i.room)))];
-  const tokens = String(ev.roomDetail || '').split(/\s+·\s+/).map(t => t.trim()).filter(Boolean)
+  const tokens = String(ev.roomDetail || '').split(/\s+[·/]\s+/).map(t => t.trim()).filter(Boolean)
     .filter(t => !/^room rental/i.test(t));
   const buckets = new Map(); let cur = null;
   for (const t of tokens) {

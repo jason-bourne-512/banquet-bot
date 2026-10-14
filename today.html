@@ -259,10 +259,14 @@
     T.innerHTML = fb.map(function (s, i) {
       var k = kindOf(s.tag, s.menu);
       return (i ? '<div class="tl-spacer"></div>' : "") + '<div class="tl-item k-' + k + '" data-a="' + s.a + '" data-b="' + s.b + '"><div class="tl-dot active"><div class="inner"></div></div><div class="tl-label">' + esc(s.start) + '</div><div class="tl-event">' + KIND[k] + " " + esc(s.tag) + "</div></div>"; }).join("");
+    var firstOf = {}; // group -> contact/manager already shown on its first event
     var cardHtml = events.map(function (e) {
       var rs = []; e.svc.forEach(function (s) { if (s.room && rs.indexOf(s.room) < 0) rs.push(s.room); });
       var food = e.svc.filter(function (s) { return !s.nofb; }), book = e.svc.filter(function (s) { return s.nofb; });
       var contact = firstName(e.foot.CONTACT || e.ic || "");
+      var grp = e.title.split(" — ")[0].trim(), f0 = firstOf[grp];
+      if (!f0) firstOf[grp] = {contact: contact, mgr: e.mgr};
+      var showContact = contact && !(f0 && f0.contact == contact), showMgr = e.mgr && !(f0 && f0.mgr == e.mgr);
       var notes = ["NOTE", "FOOD", "SHIPPING"].map(function (k) { return e.foot[k] ? noPrice(e.foot[k]) : ""; }).filter(Boolean);
       var setup = e.foot.ROOM ? noPrice(e.foot.ROOM) : "";
       return '<div class="event-card"><div class="card-header"><div class="card-header-left"><div class="client-name">' + esc(e.title) + '</div><div class="card-meta">' +
@@ -270,8 +274,8 @@
         (book.length ? '<span class="meta-chip type">' + esc(book.map(function (b) { return b.tag.replace(/\s*—\s*No F&B/i, ""); }).filter(function (v, i, a) { return a.indexOf(v) == i; }).join(" · ")) + "</span>" : "") +
         '</div></div><div class="time-block"><div class="time-main">' + esc(parseLabel(e)) + "</div></div></div>" +
         '<div class="card-body"><div class="info-row">' +
-          (contact ? '<div class="info-item"><div class="lbl">Contact</div><div class="val">' + esc(contact) + "</div></div>" : "") +
-          (e.mgr ? '<div class="info-item"><div class="lbl">Manager</div><div class="val">' + esc(e.mgr) + "</div></div>" : "") +
+          (showContact ? '<div class="info-item"><div class="lbl">Contact</div><div class="val">' + esc(contact) + "</div></div>" : "") +
+          (showMgr ? '<div class="info-item"><div class="lbl">Manager</div><div class="val">' + esc(e.mgr) + "</div></div>" : "") +
           '<div class="info-item"><div class="lbl">Rooms</div><div class="val rms">' + rs.map(function (r) { return '<span class="rm">' + esc(r) + "</span>"; }).join(" ") + "</div></div></div>" +
         (food.length ? '<div class="food-section">' + food.map(function (s) {
           var k = kindOf(s.tag, s.menu), cut = s.menu.indexOf(" — "), mhead = cut < 0 ? "" : s.menu.slice(0, cut),
