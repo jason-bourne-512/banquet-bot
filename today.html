@@ -238,7 +238,7 @@
   function render(events, crew) {
     DESK = document.documentElement.classList.contains("bbd");
     document.title = "Daily Brief — " + longDate(ISO);
-    document.getElementById("dateChip").textContent = longDate(ISO).replace(/, (\w+ \d+), /, " · $1, ").toUpperCase() + (ISO == todayISO() ? " · TODAY" : "");
+    document.getElementById("dateChip").textContent = dObj(ISO).toLocaleDateString("en-US", {timeZone: "UTC", weekday: "short", month: "short", day: "numeric"}).toUpperCase() + (ISO == todayISO() ? " · TODAY" : "");
     var C = document.getElementById("crewWrap");
     C.innerHTML = crew.length ? '<div class="section-heading">On the schedule</div><div class="crew">' + crew.map(function (c) {
       return '<span class="crew-chip"><b>' + esc(c.name) + "</b>" + esc(c.shift) + (c.role ? "<i>" + esc(c.role.replace(/Servers$/i, "Server").replace(/Bartenders$/i, "Bartender").replace(/Housemen$/i, "Houseman")) + "</i>" : "") + "</span>"; }).join("") + "</div>" : "";
@@ -269,10 +269,14 @@
       var showContact = contact && !(f0 && f0.contact == contact), showMgr = e.mgr && !(f0 && f0.mgr == e.mgr);
       var notes = ["NOTE", "FOOD", "SHIPPING"].map(function (k) { return e.foot[k] ? noPrice(e.foot[k]) : ""; }).filter(Boolean);
       var setup = e.foot.ROOM ? noPrice(e.foot.ROOM) : "";
-      return '<div class="event-card"><div class="card-header"><div class="card-header-left"><div class="client-name">' + esc(e.title) + '</div><div class="card-meta">' +
+      var shown = DESK && f0 && e.title.indexOf(" — ") > 0 ? e.title.split(" — ").slice(1).join(" — ") : e.title;
+      // one GTD for the whole card when every food line has the same count (desktop)
+      var gtds = food.map(function (s) { return s.gtd; }).filter(Boolean);
+      var oneGtd = DESK && gtds.length > 1 && gtds.every(function (g) { return g == gtds[0]; }) ? gtds[0] : "";
+      return '<div class="event-card"><div class="card-header"><div class="card-header-left"><div class="client-name">' + esc(shown) + '</div><div class="card-meta">' +
         rs.map(function (r) { return '<span class="meta-chip room">' + esc(r) + "</span>"; }).join("") +
         (book.length ? '<span class="meta-chip type">' + esc(book.map(function (b) { return b.tag.replace(/\s*—\s*No F&B/i, ""); }).filter(function (v, i, a) { return a.indexOf(v) == i; }).join(" · ")) + "</span>" : "") +
-        '</div></div><div class="time-block"><div class="time-main">' + esc(parseLabel(e)) + "</div></div></div>" +
+        '</div></div><div class="time-block"><div class="time-main">' + esc(parseLabel(e)) + "</div>" + (oneGtd ? '<div class="gtd-all">' + esc(oneGtd) + "</div>" : "") + "</div></div>" +
         '<div class="card-body"><div class="info-row">' +
           (showContact ? '<div class="info-item"><div class="lbl">Contact</div><div class="val">' + esc(contact) + "</div></div>" : "") +
           (showMgr ? '<div class="info-item"><div class="lbl">Manager</div><div class="val">' + esc(e.mgr) + "</div></div>" : "") +
@@ -282,7 +286,7 @@
             items = (cut < 0 ? s.menu : s.menu.slice(cut + 3)).split(/\s*·\s*|\s+\/\s+/).map(function (x) { return x.trim(); }).filter(Boolean),
             mname = mhead || items[0] || s.tag, rest = mhead ? items : items.slice(1);
           var quiet = /continuous|all[- ]day/i.test(s.tag) || (k == "bev" && !/reception|dinner|lunch|breakfast/i.test(s.tag));
-          return '<div class="meal-group k-' + k + (quiet ? " quiet" : "") + '" data-a="' + s.a + '" data-b="' + s.b + '"><div class="svc-head"><span class="svc-time">' + esc(s.label) + '</span><span class="svc-tag">' + KIND[k] + " " + esc(s.tag) + '</span><span class="svc-where">' + (s.room && rs.length > 1 ? '<span class="rm">' + esc(s.room) + "</span>" : "") + (s.gtd ? (s.room && rs.length > 1 ? " &middot; " : "") + esc(s.gtd) : "") + '</span></div><div class="food-items">' +
+          return '<div class="meal-group k-' + k + (quiet ? " quiet" : "") + '" data-a="' + s.a + '" data-b="' + s.b + '"><div class="svc-head"><span class="svc-time">' + esc(s.label) + '</span><span class="svc-tag">' + KIND[k] + " " + esc(s.tag) + '</span><span class="svc-where">' + (s.room && rs.length > 1 ? '<span class="rm">' + esc(s.room) + "</span>" : "") + (s.gtd && !oneGtd ? (s.room && rs.length > 1 ? " &middot; " : "") + esc(s.gtd) : "") + '</span></div><div class="food-items">' +
             '<details class="dd"' + (DESK ? "" : " open") + '><summary>' + esc(mname) + (rest.length ? ' <em>' + rest.length + (rest.length == 1 ? " item" : " items") + '</em>' : "") + '</summary><table class="dd-t">' +
             rest.map(function (it) { return "<tr><td>" + esc(it) + "</td></tr>"; }).join("") + "</table></details></div></div>"; }).join("") + "</div>"
           : '<div class="booking nofb">No food or beverage.</div>') +

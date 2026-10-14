@@ -109,6 +109,10 @@
       "html.bbd-skin .summary-row{gap:1.25rem!important}" +
       "html.bbd-skin .summary-stat .num{font-size:1.05rem!important}" +
       "html.bbd-skin #events .booking.nofb{display:none!important}" +
+      // less redundancy: type chip repeats the title, room-hold lines repeat header time/room, headings label the obvious
+      "html.bbd-skin #events .meta-chip.type,html.bbd-skin #events .booking{display:none!important}" +
+      "html.bbd-skin .page-wrap>.section-heading,html.bbd-skin #evHead,html.bbd-skin #crew>.section-heading,html.bbd-skin .section-heading{display:none!important}" +
+      "html.bbd-skin #events .gtd-all{font-size:11px;color:#8fa3b3;text-align:right;margin-top:2px}" +
       "html.bbd-skin #events details.dd-setup:not([open]),html.bbd-skin #events details.dd-diag:not([open]){display:inline-block!important;margin-right:6px}" +
       // setup/notes + diagrams: just a small triangle (label kept as a hover title)
       "html.bbd-skin #events .dd-setup,html.bbd-skin #events .dd-diag{margin-top:0.3rem!important}" +
@@ -365,7 +369,7 @@
     // live clock (hotel time)
     function tick() {
       var d = new Date();
-      document.getElementById("bbd-clock").textContent = d.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: "numeric", minute: "2-digit", second: "2-digit"});
+      document.getElementById("bbd-clock").textContent = d.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: "numeric", minute: "2-digit"});
       document.getElementById("bbd-date").textContent = d.toLocaleDateString("en-US", {timeZone: "America/Chicago", weekday: "short", month: "short", day: "numeric"});
     }
     tick(); setInterval(tick, 1000);
