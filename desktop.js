@@ -113,6 +113,15 @@
       "html.bbd-skin #events .meta-chip.type,html.bbd-skin #events .booking{display:none!important}" +
       "html.bbd-skin .page-wrap>.section-heading,html.bbd-skin #evHead,html.bbd-skin #crew>.section-heading,html.bbd-skin .section-heading{display:none!important}" +
       "html.bbd-skin #events .gtd-all{font-size:11px;color:#8fa3b3;text-align:right;margin-top:2px}" +
+      // no highlighting — font color only (Jason 2026-10-14)
+      "html.bbd-skin #events .event-card{border-left:1px solid var(--border)!important}" +
+      "html.bbd-skin #events .meal-group[class*=k-],html.bbd-skin #events .meal-group.is-now,html.bbd-skin #events .meal-group.quiet{border-left:none!important;background:transparent!important;box-shadow:none!important;padding-left:0!important}" +
+      "html.bbd-skin .page-wrap #events .svc-tag{border:none!important;padding:0!important;background:none!important}" +
+      "html.bbd-skin #events .rm,html.bbd-skin #events .meta-chip.room{background:none!important;border:none!important;padding:0!important;color:#8bd1ff!important;margin-right:8px}" +
+      "html.bbd-skin #events .rm::before,html.bbd-skin #events .meta-chip.room::before{display:none!important}" +
+      "html.bbd-skin #events .meal-group.is-now .svc-head::after{background:none!important;color:var(--k)!important;padding:0!important;font-size:9px!important;letter-spacing:.12em}" +
+      "html.bbd-skin #events .meal-group .dd>summary{border:none!important;padding:0.1rem 0!important}" +
+      "html.bbd-skin #events .client-name{text-shadow:none!important}" +
       "html.bbd-skin #events details.dd-setup:not([open]),html.bbd-skin #events details.dd-diag:not([open]){display:inline-block!important;margin-right:6px}" +
       // setup/notes + diagrams: just a small triangle (label kept as a hover title)
       "html.bbd-skin #events .dd-setup,html.bbd-skin #events .dd-diag{margin-top:0.3rem!important}" +
