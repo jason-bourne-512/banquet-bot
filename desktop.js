@@ -87,6 +87,12 @@
       "html.bbd-skin .tl-item[class*=k-] .tl-event{font-size:9.5px!important;color:#8fa3b3!important;max-width:96px!important;margin-top:1px!important}" +
       "html.bbd-skin .tl-spacer{height:1px!important;background:rgba(255,255,255,.08)!important;margin-top:3px!important;min-width:1.25rem!important}" +
       "html.bbd-skin .tl-item.is-past{opacity:.35!important}" +
+      // compact "On the schedule" strip
+      "html.bbd-skin .crew{gap:2px 0!important;margin:-0.9rem 0 1rem!important}" +
+      "html.bbd-skin .crew-chip{border:none!important;background:none!important;border-radius:0!important;padding:0 10px 0 0!important;font-size:11px!important;line-height:1.5;color:#b8c7d3!important}" +
+      "html.bbd-skin .crew-chip+.crew-chip::before{content:'·';color:#4d5f6d;margin-right:10px}" +
+      "html.bbd-skin .crew-chip b{font-weight:600!important;margin-right:3px!important}" +
+      "html.bbd-skin .crew-chip i{font-size:10px!important;color:#6f8291!important;margin-left:3px!important}" +
       // setup/notes + diagrams: just a small triangle (label kept as a hover title)
       "html.bbd-skin #events .dd-setup,html.bbd-skin #events .dd-diag{margin-top:0.3rem!important}" +
       "html.bbd-skin #events .dd-setup>summary,html.bbd-skin #events .dd-diag>summary{font-size:0!important;border:none!important;padding:2px 4px!important;gap:0!important}" +
