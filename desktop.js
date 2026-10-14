@@ -78,6 +78,15 @@
       "html.bbd-skin #events .meal-group.is-now{box-shadow:none!important;border-left-color:var(--k)!important;background:color-mix(in srgb,var(--k) 6%,transparent)!important}" +
       "html.bbd-skin #events .meal-group.is-now .svc-head::after{font-size:8px!important;padding:1px 6px!important}" +
       "html.bbd-skin #events .meal-group.is-past{opacity:.4!important}" +
+      // minimalist timeline
+      "html.bbd-skin .day-timeline{margin-bottom:1.25rem!important;padding:0.25rem 0 0.4rem!important;background:none!important;border:none!important;box-shadow:none!important}" +
+      "html.bbd-skin .tl-dot{width:7px!important;height:7px!important;border:none!important;background:var(--k,#8fa3b3)!important;margin-bottom:0.35rem!important}" +
+      "html.bbd-skin .tl-dot .inner{display:none!important}" +
+      "html.bbd-skin .tl-item.is-now .tl-dot{box-shadow:0 0 0 3px color-mix(in srgb,var(--k) 25%,transparent)!important}" +
+      "html.bbd-skin .tl-item[class*=k-] .tl-label{font:500 11px/1.2 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:.3px!important;color:color-mix(in srgb,var(--k) 80%,#fff)!important}" +
+      "html.bbd-skin .tl-item[class*=k-] .tl-event{font-size:9.5px!important;color:#8fa3b3!important;max-width:96px!important;margin-top:1px!important}" +
+      "html.bbd-skin .tl-spacer{height:1px!important;background:rgba(255,255,255,.08)!important;margin-top:3px!important;min-width:1.25rem!important}" +
+      "html.bbd-skin .tl-item.is-past{opacity:.35!important}" +
       // setup/notes + diagrams: just a small triangle (label kept as a hover title)
       "html.bbd-skin #events .dd-setup,html.bbd-skin #events .dd-diag{margin-top:0.3rem!important}" +
       "html.bbd-skin #events .dd-setup>summary,html.bbd-skin #events .dd-diag>summary{font-size:0!important;border:none!important;padding:2px 4px!important;gap:0!important}" +
