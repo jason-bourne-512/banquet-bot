@@ -124,6 +124,12 @@
   .dd-t.kv th { width:84px; font-size:0.62rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
   .dd-setup { margin-top:0.85rem; }
   .dd-t th.mh { font-size:0.82rem; font-weight:700; color:var(--k, var(--gold)); letter-spacing:0; text-transform:none; }
+  .dd-diag { margin-top:0.5rem; }
+  .dg-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:0.6rem; margin-top:0.6rem; }
+  .dg { display:flex; flex-direction:column; gap:0.35rem; padding:0.45rem; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,.025); color:var(--cream); text-decoration:none; font-size:0.75rem; line-height:1.35; }
+  .dg:hover { border-color:var(--gold); }
+  .dg img { width:100%; aspect-ratio:935/1210; object-fit:contain; background:#fff; border-radius:6px; }
+  .dg span::after { content:' ↗'; color:var(--gold); }
   .booking { font-size:0.75rem; color:var(--muted); margin-top:0.5rem; line-height:1.5; }
   .empty-day { padding:2rem 0; color:var(--muted); text-align:center; }
   .empty-day a { color:var(--gold); }
@@ -186,8 +192,12 @@
         t.nofb = /No F&B/i.test(t.tag) || /^No F&B$/i.test(t.menu);
         return t;
       }).sort(function (x, y) { return x.a - y.a; });
+      var diags = [].map.call(card.querySelectorAll(".diag-link"), function (b) {
+        var m = (b.getAttribute("onclick") || "").match(/openDiagram\('diagrams\/([^']+)'/);
+        return m ? {file: m[1], label: txt(b.querySelector("span"))} : null;
+      }).filter(function (d, i, all) { return d && all.findIndex(function (x) { return x && x.file == d.file; }) == i; });
       var pick = function (re) { var b = badges.filter(function (x) { return re.test(x); })[0]; return b ? firstName(b.replace(/^[A-Z]+:\s*/, "")) : ""; };
-      return {title: txt(card.querySelector(".card-group")), mgr: pick(/^MGR/), ic: pick(/^IC/), foot: foot, svc: svc,
+      return {title: txt(card.querySelector(".card-group")), mgr: pick(/^MGR/), ic: pick(/^IC/), foot: foot, svc: svc, diags: diags,
         a: Math.min.apply(null, svc.map(function (s) { return s.a; }).concat(9e3)), b: Math.max.apply(null, svc.map(function (s) { return s.b; }).concat(0))};
     }).sort(function (x, y) { return x.a - y.a; });
   }
@@ -248,7 +258,7 @@
     T.innerHTML = fb.map(function (s, i) {
       var k = kindOf(s.tag, s.menu);
       return (i ? '<div class="tl-spacer"></div>' : "") + '<div class="tl-item k-' + k + '" data-a="' + s.a + '" data-b="' + s.b + '"><div class="tl-dot active"><div class="inner"></div></div><div class="tl-label">' + esc(s.start) + '</div><div class="tl-event">' + KIND[k] + " " + esc(s.tag) + "</div></div>"; }).join("");
-    E.innerHTML = events.map(function (e) {
+    var cardHtml = events.map(function (e) {
       var rs = []; e.svc.forEach(function (s) { if (s.room && rs.indexOf(s.room) < 0) rs.push(s.room); });
       var food = e.svc.filter(function (s) { return !s.nofb; }), book = e.svc.filter(function (s) { return s.nofb; });
       var contact = firstName(e.foot.CONTACT || e.ic || "");
@@ -276,8 +286,21 @@
           ["NOTE", "FOOD", "SHIPPING"].filter(function (k) { return e.foot[k]; }).map(function (k) {
             return "<tr><th>" + (k == "NOTE" ? "Note" : k == "FOOD" ? "Food" : "Shipping") + "</th><td>" + esc(noPrice(e.foot[k])) + "</td></tr>"; }).join("") +
           "</table></details>" : "") +
+        (e.diags.length ? '<details class="dd dd-diag"><summary>Diagrams <em>' + e.diags.length + '</em></summary><div class="dg-grid">' +
+          e.diags.map(function (d) {
+            return '<a class="dg" href="diagrams/' + esc(d.file) + '" target="_blank" rel="noopener"><img loading="lazy" alt="" src="diagrams/previews/' +
+              esc(d.file.replace(/\.pdf$/i, ".png")) + '" onerror="this.remove()"><span>' + esc(d.label) + "</span></a>"; }).join("") +
+          "</div></details>" : "") +
         "</div></div>";
-    }).join("");
+    });
+    // Same group (name before " — ") stacks in one column; groups stay in start-time order.
+    var order = [], cols = {};
+    events.forEach(function (e, i) {
+      var g = e.title.split(" — ")[0].trim();
+      if (!cols[g]) { cols[g] = []; order.push(g); }
+      cols[g].push(cardHtml[i]);
+    });
+    E.innerHTML = order.map(function (g) { return '<div class="ev-col">' + cols[g].join("") + "</div>"; }).join("");
   }
   function parseLabel(e) {
     var a = e.svc.slice().sort(function (x, y) { return x.a - y.a; })[0], b = e.svc.slice().sort(function (x, y) { return y.b - x.b; })[0];

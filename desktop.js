@@ -61,6 +61,8 @@
       "html.bbd-skin:root{--bg:#101820;--surface:#162530;--card:#162530;--border:rgba(139,209,255,.14);--border-light:rgba(139,209,255,.26);" +
         "--gold:#8bd1ff;--gold-dim:rgba(139,209,255,.45);--gold-glow:rgba(139,209,255,.10);--cream:#eaf3fa;--muted:#8aa4b8;--muted2:#6f8aa0;--white:#eaf3fa}" +
       "html.bbd-skin .event-card{border-radius:12px!important;border-left:4px solid #8bd1ff!important}" +
+      "html.bbd-skin #events{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:12px;align-items:start}" +
+      "html.bbd-skin #events>.ev-col>.event-card{margin:0 0 12px!important}" +
       "html.bbd-skin .meta-chip,html.bbd-skin .setup-pill{border-radius:6px!important}" +
       "html.bbd-skin .date-chip{color:#0c141b!important;border-radius:8px!important}" +
       "html.bbd-skin .ops-note{background:rgba(255,192,133,.08)!important;border-left-color:#ffc085!important}" +
@@ -272,7 +274,7 @@
     unclamp();
     var seen = new Set();
     document.querySelectorAll(CARDS).forEach(function (c) {
-      var p = c.parentElement; if (!p || seen.has(p)) return; seen.add(p);
+      var p = c.parentElement; if (!p || seen.has(p) || p.classList.contains("ev-col")) return; seen.add(p);
       var n = 0; for (var i = 0; i < p.children.length; i++) if (p.children[i].matches(CARDS)) n++;
       if (n < 2) return;
       p.classList.add("bbd-grid");
