@@ -67,6 +67,21 @@
       "html.bbd-skin #events .rm::before,html.bbd-skin #events .meta-chip.room::before{content:'';width:6px;height:6px;border-radius:50%;background:#8bd1ff;box-shadow:0 0 6px #8bd1ff}" +
       "html.bbd-skin #events .rms{display:flex;flex-wrap:wrap;gap:4px}" +
       "html.bbd-skin #events .svc-where{display:inline-flex;align-items:center;gap:4px}" +
+      // minimalist meal / break / beverage blocks (Jason 2026-10-14)
+      "html.bbd-skin #events .meal-group[class*=k-]{background:transparent!important;border-left:2px solid color-mix(in srgb,var(--k) 70%,transparent)!important;border-radius:0!important;padding:0.3rem 0 0.3rem 0.7rem!important;margin-bottom:0.45rem!important}" +
+      "html.bbd-skin #events .svc-head{gap:0.35rem 0.5rem!important;margin-bottom:0.25rem!important}" +
+      "html.bbd-skin .page-wrap #events .svc-time{font:600 15px/1.2 'Barlow Condensed',Arial,sans-serif!important;letter-spacing:.3px!important}" +
+      "html.bbd-skin .page-wrap #events .svc-tag{background:transparent!important;color:var(--k)!important;border:1px solid color-mix(in srgb,var(--k) 45%,transparent);font-size:8.5px!important;font-weight:700!important;padding:1px 6px!important}" +
+      "html.bbd-skin #events .meal-group .dd>summary{font-size:0.74rem!important;font-weight:600!important;padding:0.18rem 0.55rem!important;border-color:rgba(255,255,255,.1)!important;color:#c9d6e0!important}" +
+      "html.bbd-skin #events .meal-group .rm{font-size:0.6rem!important;padding:1px 6px!important}" +
+      "html.bbd-skin #events .meal-group.is-now{box-shadow:none!important;border-left-color:var(--k)!important;background:color-mix(in srgb,var(--k) 6%,transparent)!important}" +
+      "html.bbd-skin #events .meal-group.is-now .svc-head::after{font-size:8px!important;padding:1px 6px!important}" +
+      "html.bbd-skin #events .meal-group.is-past{opacity:.4!important}" +
+      // setup/notes + diagrams: just a small triangle (label kept as a hover title)
+      "html.bbd-skin #events .dd-setup,html.bbd-skin #events .dd-diag{margin-top:0.3rem!important}" +
+      "html.bbd-skin #events .dd-setup>summary,html.bbd-skin #events .dd-diag>summary{font-size:0!important;border:none!important;padding:2px 4px!important;gap:0!important}" +
+      "html.bbd-skin #events .dd-setup>summary::before,html.bbd-skin #events .dd-diag>summary::before{font-size:12px;color:#8fa3b3}" +
+      "html.bbd-skin #events .dd-setup>summary:hover::before,html.bbd-skin #events .dd-diag>summary:hover::before{color:var(--gold)}" +
       "html.bbd-skin .meta-chip,html.bbd-skin .setup-pill{border-radius:6px!important}" +
       "html.bbd-skin .date-chip{color:#0c141b!important;border-radius:8px!important}" +
       "html.bbd-skin .ops-note{background:rgba(255,192,133,.08)!important;border-left-color:#ffc085!important}" +

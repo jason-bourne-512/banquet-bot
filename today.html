@@ -286,12 +286,12 @@
             rest.map(function (it) { return "<tr><td>" + esc(it) + "</td></tr>"; }).join("") + "</table></details></div></div>"; }).join("") + "</div>"
           : '<div class="booking">No food or beverage.</div>') +
         (book.length && food.length ? '<div class="booking">' + book.map(function (b) { return esc(b.tag.replace(/\s*—\s*No F&B/i, "")) + " " + esc(b.label) + (b.room ? " · " + esc(b.room) : ""); }).join("<br>") + "</div>" : "") +
-        (notes.length || setup ? '<details class="dd dd-setup"' + (DESK ? "" : " open") + '><summary>Setup &amp; notes</summary><table class="dd-t kv">' +
+        (notes.length || setup ? '<details class="dd dd-setup"' + (DESK ? "" : " open") + '><summary title="Setup &amp; notes">Setup &amp; notes</summary><table class="dd-t kv">' +
           (setup ? "<tr><th>Setup</th><td>" + esc(setup) + "</td></tr>" : "") +
           ["NOTE", "FOOD", "SHIPPING"].filter(function (k) { return e.foot[k]; }).map(function (k) {
             return "<tr><th>" + (k == "NOTE" ? "Note" : k == "FOOD" ? "Food" : "Shipping") + "</th><td>" + esc(noPrice(e.foot[k])) + "</td></tr>"; }).join("") +
           "</table></details>" : "") +
-        (e.diags.length ? '<details class="dd dd-diag"><summary>Diagrams <em>' + e.diags.length + '</em></summary><div class="dg-grid">' +
+        (e.diags.length ? '<details class="dd dd-diag"><summary title="Diagrams">Diagrams <em>' + e.diags.length + '</em></summary><div class="dg-grid">' +
           e.diags.map(function (d) {
             return '<a class="dg" href="diagrams/' + esc(d.file) + '" target="_blank" rel="noopener"><img loading="lazy" alt="" src="diagrams/previews/' +
               esc(d.file.replace(/\.pdf$/i, ".png")) + '" onerror="this.remove()"><span>' + esc(d.label) + "</span></a>"; }).join("") +
