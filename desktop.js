@@ -93,6 +93,23 @@
       "html.bbd-skin .crew-chip+.crew-chip::before{content:'·';color:#4d5f6d;margin-right:10px}" +
       "html.bbd-skin .crew-chip b{font-weight:600!important;margin-right:3px!important}" +
       "html.bbd-skin .crew-chip i{font-size:10px!important;color:#6f8291!important;margin-left:3px!important}" +
+      // bird's-eye compaction (Jason 2026-10-14): no timeline, quiet beverage lines, tighter cards
+      "html.bbd-skin #timeline{display:none!important}" +
+      "html.bbd-skin #events .meal-group.quiet{--k:#7d8a96;border-left-color:rgba(255,255,255,.12)!important}" +
+      "html.bbd-skin #events .meal-group.quiet .svc-time{color:#9aabb8!important;font-weight:500!important}" +
+      "html.bbd-skin #events .meal-group.quiet .svc-tag{color:#8fa3b3!important;border-color:rgba(255,255,255,.15)!important}" +
+      "html.bbd-skin #events .meal-group.quiet .dd>summary{color:#9aabb8!important}" +
+      "html.bbd-skin #events .info-item:has(.rms){display:none!important}" +
+      "html.bbd-skin #events .card-header{padding:0.6rem 0.85rem!important}" +
+      "html.bbd-skin #events .card-body{padding:0.55rem 0.85rem 0.6rem!important}" +
+      "html.bbd-skin #events .client-name{font-size:15px!important;margin-bottom:0.35rem!important}" +
+      "html.bbd-skin #events .info-row{margin-bottom:0.45rem!important;gap:0.4rem!important}" +
+      "html.bbd-skin #events .info-item .val{font-size:0.8rem!important}" +
+      "html.bbd-skin #events .booking{font-size:0.7rem!important;margin-top:0.3rem!important}" +
+      "html.bbd-skin .summary-row{gap:1.25rem!important}" +
+      "html.bbd-skin .summary-stat .num{font-size:1.05rem!important}" +
+      "html.bbd-skin #events .booking.nofb{display:none!important}" +
+      "html.bbd-skin #events details.dd-setup:not([open]),html.bbd-skin #events details.dd-diag:not([open]){display:inline-block!important;margin-right:6px}" +
       // setup/notes + diagrams: just a small triangle (label kept as a hover title)
       "html.bbd-skin #events .dd-setup,html.bbd-skin #events .dd-diag{margin-top:0.3rem!important}" +
       "html.bbd-skin #events .dd-setup>summary,html.bbd-skin #events .dd-diag>summary{font-size:0!important;border:none!important;padding:2px 4px!important;gap:0!important}" +

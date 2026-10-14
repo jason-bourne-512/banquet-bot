@@ -281,10 +281,11 @@
           var k = kindOf(s.tag, s.menu), cut = s.menu.indexOf(" — "), mhead = cut < 0 ? "" : s.menu.slice(0, cut),
             items = (cut < 0 ? s.menu : s.menu.slice(cut + 3)).split(/\s*·\s*|\s+\/\s+/).map(function (x) { return x.trim(); }).filter(Boolean),
             mname = mhead || items[0] || s.tag, rest = mhead ? items : items.slice(1);
-          return '<div class="meal-group k-' + k + '" data-a="' + s.a + '" data-b="' + s.b + '"><div class="svc-head"><span class="svc-time">' + esc(s.label) + '</span><span class="svc-tag">' + KIND[k] + " " + esc(s.tag) + '</span><span class="svc-where">' + (s.room && rs.length > 1 ? '<span class="rm">' + esc(s.room) + "</span>" : "") + (s.gtd ? (s.room && rs.length > 1 ? " &middot; " : "") + esc(s.gtd) : "") + '</span></div><div class="food-items">' +
+          var quiet = /continuous|all[- ]day/i.test(s.tag) || (k == "bev" && !/reception|dinner|lunch|breakfast/i.test(s.tag));
+          return '<div class="meal-group k-' + k + (quiet ? " quiet" : "") + '" data-a="' + s.a + '" data-b="' + s.b + '"><div class="svc-head"><span class="svc-time">' + esc(s.label) + '</span><span class="svc-tag">' + KIND[k] + " " + esc(s.tag) + '</span><span class="svc-where">' + (s.room && rs.length > 1 ? '<span class="rm">' + esc(s.room) + "</span>" : "") + (s.gtd ? (s.room && rs.length > 1 ? " &middot; " : "") + esc(s.gtd) : "") + '</span></div><div class="food-items">' +
             '<details class="dd"' + (DESK ? "" : " open") + '><summary>' + esc(mname) + (rest.length ? ' <em>' + rest.length + (rest.length == 1 ? " item" : " items") + '</em>' : "") + '</summary><table class="dd-t">' +
             rest.map(function (it) { return "<tr><td>" + esc(it) + "</td></tr>"; }).join("") + "</table></details></div></div>"; }).join("") + "</div>"
-          : '<div class="booking">No food or beverage.</div>') +
+          : '<div class="booking nofb">No food or beverage.</div>') +
         (book.length && food.length ? '<div class="booking">' + book.map(function (b) { return esc(b.tag.replace(/\s*—\s*No F&B/i, "")) + " " + esc(b.label) + (b.room ? " · " + esc(b.room) : ""); }).join("<br>") + "</div>" : "") +
         (notes.length || setup ? '<details class="dd dd-setup"' + (DESK ? "" : " open") + '><summary title="Setup &amp; notes">Setup &amp; notes</summary><table class="dd-t kv">' +
           (setup ? "<tr><th>Setup</th><td>" + esc(setup) + "</td></tr>" : "") +
