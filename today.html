@@ -281,7 +281,7 @@
           var k = kindOf(s.tag, s.menu), cut = s.menu.indexOf(" — "), mhead = cut < 0 ? "" : s.menu.slice(0, cut),
             items = (cut < 0 ? s.menu : s.menu.slice(cut + 3)).split(/\s*·\s*|\s+\/\s+/).map(function (x) { return x.trim(); }).filter(Boolean),
             mname = mhead || items[0] || s.tag, rest = mhead ? items : items.slice(1);
-          return '<div class="meal-group k-' + k + '" data-a="' + s.a + '" data-b="' + s.b + '"><div class="svc-head"><span class="svc-time">' + esc(s.label) + '</span><span class="svc-tag">' + KIND[k] + " " + esc(s.tag) + '</span><span class="svc-where">' + (s.room ? '<span class="rm">' + esc(s.room) + "</span>" : "") + (s.gtd ? (s.room ? " &middot; " : "") + esc(s.gtd) : "") + '</span></div><div class="food-items">' +
+          return '<div class="meal-group k-' + k + '" data-a="' + s.a + '" data-b="' + s.b + '"><div class="svc-head"><span class="svc-time">' + esc(s.label) + '</span><span class="svc-tag">' + KIND[k] + " " + esc(s.tag) + '</span><span class="svc-where">' + (s.room && rs.length > 1 ? '<span class="rm">' + esc(s.room) + "</span>" : "") + (s.gtd ? (s.room && rs.length > 1 ? " &middot; " : "") + esc(s.gtd) : "") + '</span></div><div class="food-items">' +
             '<details class="dd"' + (DESK ? "" : " open") + '><summary>' + esc(mname) + (rest.length ? ' <em>' + rest.length + (rest.length == 1 ? " item" : " items") + '</em>' : "") + '</summary><table class="dd-t">' +
             rest.map(function (it) { return "<tr><td>" + esc(it) + "</td></tr>"; }).join("") + "</table></details></div></div>"; }).join("") + "</div>"
           : '<div class="booking">No food or beverage.</div>') +
@@ -298,13 +298,16 @@
           "</div></details>" : "") +
         "</div></div>";
     });
-    // Same group (name before " — ") stacks in one column; groups stay in start-time order.
-    var order = [], cols = {};
+    // Same group (name before " — ") stacks in one column. Groups with food or beverage come first
+    // (they fill the first columns), groups with no F&B after; each set stays in start-time order.
+    var order = [], cols = {}, fb = {};
     events.forEach(function (e, i) {
       var g = e.title.split(" — ")[0].trim();
       if (!cols[g]) { cols[g] = []; order.push(g); }
       cols[g].push(cardHtml[i]);
+      if (e.svc.some(function (s) { return !s.nofb; })) fb[g] = 1;
     });
+    order = order.filter(function (g) { return fb[g]; }).concat(order.filter(function (g) { return !fb[g]; }));
     E.innerHTML = order.map(function (g) { return '<div class="ev-col">' + cols[g].join("") + "</div>"; }).join("");
     markRows();
   }
