@@ -124,6 +124,7 @@
   .dd-t.kv th { width:84px; font-size:0.62rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
   .dd-setup { margin-top:0.85rem; }
   .dd-t th.mh { font-size:0.82rem; font-weight:700; color:var(--k, var(--gold)); letter-spacing:0; text-transform:none; }
+  .ev-col.ev-below { border-top:2px solid rgba(139,209,255,.5); padding-top:1rem; margin-top:0.25rem; }
   .dd-diag { margin-top:0.5rem; }
   .dg-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:0.6rem; margin-top:0.6rem; }
   .dg { display:flex; flex-direction:column; gap:0.35rem; padding:0.45rem; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,.025); color:var(--cream); text-decoration:none; font-size:0.75rem; line-height:1.35; }
@@ -301,7 +302,16 @@
       cols[g].push(cardHtml[i]);
     });
     E.innerHTML = order.map(function (g) { return '<div class="ev-col">' + cols[g].join("") + "</div>"; }).join("");
+    markRows();
   }
+  // A group that wraps below another group gets a dividing line (phone: every group after the first).
+  function markRows() {
+    var cols = document.querySelectorAll("#events > .ev-col"); if (!cols.length) return;
+    var top0 = cols[0].getBoundingClientRect().top;
+    cols.forEach(function (c) { c.classList.toggle("ev-below", c.getBoundingClientRect().top > top0 + 8); });
+  }
+  if (window.ResizeObserver) new ResizeObserver(function () { markRows(); }).observe(document.getElementById("events"));
+  window.addEventListener("resize", markRows);
   function parseLabel(e) {
     var a = e.svc.slice().sort(function (x, y) { return x.a - y.a; })[0], b = e.svc.slice().sort(function (x, y) { return y.b - x.b; })[0];
     return a && b ? a.start + " – " + b.end : "";
