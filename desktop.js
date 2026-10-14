@@ -61,7 +61,7 @@
       "html.bbd-skin:root{--bg:#101820;--surface:#162530;--card:#162530;--border:rgba(139,209,255,.14);--border-light:rgba(139,209,255,.26);" +
         "--gold:#8bd1ff;--gold-dim:rgba(139,209,255,.45);--gold-glow:rgba(139,209,255,.10);--cream:#eaf3fa;--muted:#8aa4b8;--muted2:#6f8aa0;--white:#eaf3fa}" +
       "html.bbd-skin .event-card{border-radius:12px!important;border-left:4px solid #8bd1ff!important}" +
-      "html.bbd-skin #events{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:12px;align-items:start}" +
+      "html.bbd-skin #events{display:grid;grid-template-columns:minmax(360px,480px);gap:12px;align-items:start}" +
       "html.bbd-skin #events>.ev-col>.event-card{margin:0 0 12px!important}" +
       "html.bbd-skin .meta-chip,html.bbd-skin .setup-pill{border-radius:6px!important}" +
       "html.bbd-skin .date-chip{color:#0c141b!important;border-radius:8px!important}" +
