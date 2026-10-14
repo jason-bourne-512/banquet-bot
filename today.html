@@ -92,6 +92,7 @@
   .crew-chip b { color:var(--gold); font-weight:600; margin-right:4px; }
   .crew-chip i { font-style:normal; color:var(--muted); margin-left:4px; font-size:0.68rem; }
   /* Meal / break / beverage times — the thing the floor needs first. Orange = meal, teal = break, blue = beverage. */
+  .k-bfast { --k:#ffd36b; --kd:rgba(255,211,107,.14); } .k-lunch { --k:#ff9f5a; --kd:rgba(255,159,90,.14); } .k-dinner { --k:#ff7a9a; --kd:rgba(255,122,154,.14); } .k-recep { --k:#c1a6ff; --kd:rgba(193,166,255,.14); }
   .k-meal { --k:#ff9f5a; --kd:rgba(255,159,90,.14); } .k-brk { --k:#4fd6c0; --kd:rgba(79,214,192,.14); } .k-bev { --k:#6fb6ff; --kd:rgba(111,182,255,.14); }
   .meal-group[class*="k-"] { border-left:4px solid var(--k); background:var(--kd); border-radius:0 8px 8px 0; padding:0.6rem 0.75rem !important; border-bottom:none !important; margin-bottom:0.6rem !important; }
   .svc-head { display:flex; align-items:center; flex-wrap:wrap; gap:0.45rem 0.6rem; margin-bottom:0.45rem; }
@@ -159,9 +160,13 @@
     var head = String(menu || "").split(" — ")[0];
     if (/continuous|beverage|\bbar\b|coffee\s*&\s*tea/i.test(tag) || /beverage|package bar|\bbar\b|bartender/i.test(head)) return "bev";
     if (/\bbreak\b/i.test(tag)) return "brk";
+    if (/breakfast/i.test(tag)) return "bfast";
+    if (/lunch/i.test(tag)) return "lunch";
+    if (/dinner/i.test(tag)) return "dinner";
+    if (/reception|cocktail|hors/i.test(tag)) return "recep";
     return "meal";
   };
-  var KIND = {meal: "🍽", brk: "☕", bev: "🥤"};
+  var KIND = {meal: "🍽", bfast: "🍳", lunch: "🍽", dinner: "🍽", recep: "🥂", brk: "☕", bev: "🥤"};
   var firstName = function (s) { return s.replace(/\s+[A-Z]\.?$/, "").trim(); };
 
   // "7:00–8:00 AM" / "11:30 AM–1:00 PM" → minutes for sorting + a clean label
@@ -190,7 +195,7 @@
         t.room = txt(row.querySelector(".room-pill"));
         t.gtd = txt(row.querySelector(".gtd-pill"));
         t.menu = noPrice(txt(row.querySelector(".svc-menu")));
-        t.nofb = /No F&B/i.test(t.tag) || /^No F&B$/i.test(t.menu);
+        t.nofb = /No F&B/i.test(t.tag) || /^No F&B\b/i.test(t.menu);
         return t;
       }).sort(function (x, y) { return x.a - y.a; });
       var diags = [].map.call(card.querySelectorAll(".diag-link"), function (b) {
