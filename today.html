@@ -313,17 +313,28 @@
       if (e.svc.some(function (s) { return !s.nofb; })) fb[g] = 1;
     });
     order = order.filter(function (g) { return fb[g]; }).concat(order.filter(function (g) { return !fb[g]; }));
-    E.innerHTML = order.map(function (g) { return '<div class="ev-col">' + cols[g].join("") + "</div>"; }).join("");
-    markRows();
+    E.innerHTML = order.map(function (g) { return '<div class="ev-col' + (fb[g] ? "" : " nofb") + '">' + cols[g].join("") + "</div>"; }).join("");
+    GROUPS = [].slice.call(E.children);
+    lanes(true);
   }
-  // A group that wraps below another group gets a dividing line (phone: every group after the first).
-  function markRows() {
-    var cols = document.querySelectorAll("#events > .ev-col"); if (!cols.length) return;
-    var top0 = cols[0].getBoundingClientRect().top;
-    cols.forEach(function (c) { c.classList.toggle("ev-below", c.getBoundingClientRect().top > top0 + 8); });
+  // Groups go into side-by-side lanes (desktop) in priority order: each one drops into the currently
+  // shortest lane, so F&B groups take the top of every lane and no-F&B groups land underneath.
+  // A group below another in the same lane gets a dividing line. Phone: one lane.
+  var GROUPS = [], LANES = 0;
+  function lanes(force) {
+    var E = document.getElementById("events"); if (!GROUPS.length) return;
+    var n = DESK ? Math.max(1, Math.floor((E.clientWidth + 18) / (440 + 18))) : 1;
+    if (n == LANES && !force) return; LANES = n;
+    var L = []; for (var i = 0; i < n; i++) { var d = document.createElement("div"); d.className = "ev-lane"; L.push(d); }
+    E.innerHTML = ""; L.forEach(function (d) { E.appendChild(d); });
+    GROUPS.forEach(function (g) {
+      var low = L.reduce(function (a, b) { return b.offsetHeight < a.offsetHeight ? b : a; });
+      g.classList.toggle("ev-below", low.children.length > 0);
+      low.appendChild(g);
+    });
   }
-  if (window.ResizeObserver) new ResizeObserver(function () { markRows(); }).observe(document.getElementById("events"));
-  window.addEventListener("resize", markRows);
+  window.addEventListener("resize", function () { lanes(false); });
+  window.addEventListener("load", function () { lanes(true); });
   function parseLabel(e) {
     var a = e.svc.slice().sort(function (x, y) { return x.a - y.a; })[0], b = e.svc.slice().sort(function (x, y) { return y.b - x.b; })[0];
     return a && b ? a.start + " – " + b.end : "";
