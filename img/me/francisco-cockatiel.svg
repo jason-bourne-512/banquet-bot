@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 160" width="140" height="160">
+  <!-- Francisco's cockatiel (original art for Banquet Bot): grey body, yellow face, orange cheek, tall crest, on a branch. -->
+  <style>
+    .head { transform-origin: 78px 62px; animation: bob 3.2s ease-in-out infinite; }
+    .crest { transform-origin: 74px 40px; animation: crest 2.4s ease-in-out infinite; }
+    .tail { transform-origin: 52px 104px; animation: tail 3.2s ease-in-out infinite; }
+    .eye { animation: blink 5s infinite; transform-origin: 86px 58px; }
+    @keyframes bob { 0%,100% { transform: rotate(0) } 20% { transform: rotate(-7deg) } 45% { transform: rotate(4deg) } 70% { transform: rotate(-3deg) } }
+    @keyframes crest { 0%,100% { transform: rotate(-4deg) } 50% { transform: rotate(9deg) } }
+    @keyframes tail { 0%,100% { transform: rotate(0) } 50% { transform: rotate(3deg) } }
+    @keyframes blink { 0%,92%,100% { transform: scaleY(1) } 95% { transform: scaleY(.1) } }
+    @media (prefers-reduced-motion: reduce) { .head, .crest, .tail, .eye { animation: none } }
+  </style>
+  <!-- branch -->
+  <path d="M6 132 Q70 120 136 128" stroke="#6b4a2b" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M100 126 q10 -10 22 -12" stroke="#6b4a2b" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <ellipse cx="121" cy="112" rx="8" ry="4" fill="#4f8a3a" transform="rotate(-25 121 112)"/>
+  <!-- tail feathers -->
+  <g class="tail">
+    <path d="M58 98 L18 150 L30 152 L64 108 Z" fill="#7d7f86"/>
+    <path d="M60 102 L28 156 L38 156 L68 110 Z" fill="#9a9ca3"/>
+  </g>
+  <!-- body -->
+  <path d="M56 70 Q48 96 60 116 Q78 132 96 116 Q106 100 98 76 Q86 62 70 64 Z" fill="#9ea1a8"/>
+  <!-- wing with white patch -->
+  <path d="M60 78 Q54 102 66 118 Q82 112 88 92 Q84 78 72 74 Z" fill="#7f828a"/>
+  <path d="M66 82 Q64 94 72 100 Q78 92 76 82 Z" fill="#f4f4f2"/>
+  <!-- feet -->
+  <path d="M78 122 l-4 8 M84 122 l2 8" stroke="#e7b9a2" stroke-width="3" stroke-linecap="round"/>
+  <!-- head -->
+  <g class="head">
+    <g class="crest">
+      <path d="M70 46 Q62 20 74 6 Q72 24 80 40 Z" fill="#f2d33a"/>
+      <path d="M74 44 Q72 18 86 8 Q80 26 84 42 Z" fill="#e8c62c"/>
+      <path d="M68 48 Q56 30 62 16 Q66 32 74 44 Z" fill="#f7df5c"/>
+    </g>
+    <circle cx="80" cy="60" r="18" fill="#f4dc55"/>
+    <path d="M62 62 Q64 76 78 78 Q70 70 70 60 Z" fill="#a3a6ad"/>
+    <!-- orange cheek patch -->
+    <circle cx="84" cy="68" r="6.5" fill="#f08a3c"/>
+    <!-- eye -->
+    <g class="eye"><circle cx="86" cy="57" r="3.4" fill="#1d1b20"/><circle cx="87.2" cy="55.8" r="1.1" fill="#fff"/></g>
+    <!-- beak -->
+    <path d="M96 60 Q104 62 99 70 Q96 66 93 66 Z" fill="#8c8a86"/>
+  </g>
+</svg>

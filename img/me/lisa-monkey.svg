@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300" width="200" height="300">
+  <!-- Lisa's monkey (original art for Banquet Bot): hangs from a vine by one arm and swings, tail curling, free arm waving. -->
+  <style>
+    .wave { transform-origin: 126px 150px; animation: wave 2.2s ease-in-out infinite; }
+    .tail { transform-origin: 104px 236px; animation: tail 3s ease-in-out infinite; }
+    .eyes { transform-origin: 100px 168px; animation: blink 4.6s infinite; }
+    @keyframes wave { 0%,100% { transform: rotate(0) } 25% { transform: rotate(-18deg) } 55% { transform: rotate(8deg) } }
+    @keyframes tail { 0%,100% { transform: rotate(0) } 50% { transform: rotate(10deg) } }
+    @keyframes blink { 0%,93%,100% { transform: scaleY(1) } 96% { transform: scaleY(.1) } }
+    @media (prefers-reduced-motion: reduce) { .wave, .tail, .eyes { animation: none } }
+  </style>
+  <!-- vine -->
+  <path d="M84 0 Q78 40 86 78" stroke="#3f7d32" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <ellipse cx="94" cy="30" rx="12" ry="5" fill="#5aa845" transform="rotate(30 94 30)"/>
+  <ellipse cx="72" cy="52" rx="11" ry="5" fill="#4f9a3d" transform="rotate(-35 72 52)"/>
+  <!-- tail -->
+  <g class="tail">
+    <path d="M104 236 Q150 250 150 214 Q150 192 132 196 Q120 200 128 212" stroke="#7a4a26" stroke-width="9" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- hanging arm -->
+  <path d="M86 74 Q80 110 86 140" stroke="#7a4a26" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <circle cx="86" cy="76" r="10" fill="#e9c39a"/>
+  <!-- body -->
+  <ellipse cx="100" cy="206" rx="34" ry="42" fill="#7a4a26"/>
+  <ellipse cx="100" cy="214" rx="21" ry="28" fill="#e9c39a"/>
+  <!-- legs -->
+  <path d="M82 240 Q70 268 82 284" stroke="#7a4a26" stroke-width="15" fill="none" stroke-linecap="round"/>
+  <path d="M118 240 Q132 268 120 284" stroke="#7a4a26" stroke-width="15" fill="none" stroke-linecap="round"/>
+  <ellipse cx="82" cy="287" rx="11" ry="7" fill="#e9c39a"/>
+  <ellipse cx="121" cy="287" rx="11" ry="7" fill="#e9c39a"/>
+  <!-- waving arm -->
+  <g class="wave">
+    <path d="M126 186 Q150 160 158 132" stroke="#7a4a26" stroke-width="15" fill="none" stroke-linecap="round"/>
+    <circle cx="159" cy="128" r="10" fill="#e9c39a"/>
+  </g>
+  <!-- head -->
+  <circle cx="58" cy="164" r="16" fill="#7a4a26"/><circle cx="58" cy="164" r="9" fill="#e9a986"/>
+  <circle cx="142" cy="164" r="16" fill="#7a4a26"/><circle cx="142" cy="164" r="9" fill="#e9a986"/>
+  <circle cx="100" cy="160" r="40" fill="#7a4a26"/>
+  <path d="M68 166 Q70 136 100 140 Q130 136 132 166 Q132 194 100 196 Q68 194 68 166 Z" fill="#e9c39a"/>
+  <path d="M86 132 Q100 118 114 132" stroke="#5c361a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- eyes -->
+  <g class="eyes">
+    <circle cx="88" cy="162" r="6.5" fill="#241712"/><circle cx="90" cy="160" r="2.2" fill="#fff"/>
+    <circle cx="112" cy="162" r="6.5" fill="#241712"/><circle cx="114" cy="160" r="2.2" fill="#fff"/>
+  </g>
+  <!-- nose + smile + blush -->
+  <ellipse cx="96" cy="176" rx="2" ry="1.6" fill="#5c361a"/><ellipse cx="104" cy="176" rx="2" ry="1.6" fill="#5c361a"/>
+  <path d="M86 182 Q100 196 114 182" stroke="#5c361a" stroke-width="3.5" fill="#c7564c" stroke-linecap="round"/>
+  <circle cx="78" cy="178" r="5" fill="#ff9ec7" opacity=".55"/><circle cx="122" cy="178" r="5" fill="#ff9ec7" opacity=".55"/>
+</svg>
