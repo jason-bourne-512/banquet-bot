@@ -148,12 +148,15 @@
   var shift = function (iso, n) { var t = dObj(iso); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };
   var longDate = function (iso) { return dObj(iso).toLocaleDateString("en-US", {timeZone: "UTC", weekday: "long", month: "long", day: "numeric", year: "numeric"}); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); };
+  // foot-row text with each <br> line kept as its own line
+  var lines = function (el) { if (!el) return ""; var c = el.cloneNode(true); c.querySelectorAll("br").forEach(function (b) { b.replaceWith("\n"); });
+    return c.textContent.split("\n").map(function (l) { return l.replace(/\s+/g, " ").trim(); }).filter(Boolean).join("\n"); };
   var txt = function (el) { if (!el) return ""; var c = el.cloneNode(true); c.querySelectorAll("br").forEach(function (b) { b.replaceWith(" "); }); return c.textContent.replace(/\s+/g, " ").trim(); };
   // House rules: no prices anywhere, first names only.
   var noPrice = function (s) {
     return s.replace(/\s*·?\s*Room rental\s*\$[\d,.]+/gi, "")
       .replace(/\s*(?:@\s*)?\$[\d,.]+(?:\s*\/\s*\$[\d,.]+)?(?:\s*(?:\/\s*pp|per\s+\w+|each|\+\+))?/gi, "")
-      .replace(/\s+([,·)])/g, "$1").replace(/\(\s*\)/g, "").replace(/\s{2,}/g, " ").trim();
+      .replace(/\s+([,·)])/g, "$1").replace(/\(\s*\)/g, "").replace(/[ \t]{2,}/g, " ").trim();
   };
   // Meal / break / beverage, for the colored time tags (orange / teal / blue).
   var kindOf = function (tag, menu) {
@@ -187,7 +190,7 @@
     if (!sec) return null;
     return [].map.call(sec.querySelectorAll(".event-card"), function (card) {
       var foot = {};
-      card.querySelectorAll(".foot-row").forEach(function (r) { var k = txt(r.querySelector(".foot-key")).toUpperCase(); if (k) foot[k] = txt(r.querySelector(".foot-val")); });
+      card.querySelectorAll(".foot-row").forEach(function (r) { var k = txt(r.querySelector(".foot-key")).toUpperCase(); if (k) foot[k] = lines(r.querySelector(".foot-val")); });
       var badges = [].map.call(card.querySelectorAll(".card-badges .badge"), txt);
       var svc = [].map.call(card.querySelectorAll(".svc-row"), function (row) {
         var t = parseSpan(txt(row.querySelector(".svc-time")));
@@ -272,7 +275,7 @@
       var grp = e.title.split(" — ")[0].trim(), f0 = firstOf[grp];
       if (!f0) firstOf[grp] = {contact: contact, mgr: e.mgr};
       var showContact = contact && !(f0 && f0.contact == contact), showMgr = e.mgr && !(f0 && f0.mgr == e.mgr);
-      var notes = ["NOTE", "FOOD", "SHIPPING"].map(function (k) { return e.foot[k] ? noPrice(e.foot[k]) : ""; }).filter(Boolean);
+      var notes = ["NOTE", "FOOD", "AV", "BILLING", "SHIPPING"].map(function (k) { return e.foot[k] ? noPrice(e.foot[k]) : ""; }).filter(Boolean);
       var setup = e.foot.ROOM ? noPrice(e.foot.ROOM) : "";
       // desktop: the group name heads its chunk once, so each card shows only its own event name
       var shown = DESK && e.title.indexOf(" — ") > 0 ? e.title.split(" — ").slice(1).join(" — ") : e.title;
@@ -334,9 +337,10 @@
   window.addEventListener("load", function () { lanes(true); });
   function moreBlock(e, setup, notes) {
     var table = notes.length || setup ? '<table class="dd-t kv">' +
-      (setup ? "<tr><th>Setup</th><td>" + esc(setup) + "</td></tr>" : "") +
-      ["NOTE", "FOOD", "SHIPPING"].filter(function (k) { return e.foot[k]; }).map(function (k) {
-        return "<tr><th>" + (k == "NOTE" ? "Note" : k == "FOOD" ? "Food" : "Shipping") + "</th><td>" + esc(noPrice(e.foot[k])) + "</td></tr>"; }).join("") +
+      (setup ? "<tr><th>Setup</th><td>" + esc(setup).replace(/\n/g, "<br>") + "</td></tr>" : "") +
+      ["NOTE", "FOOD", "AV", "BILLING", "SHIPPING"].filter(function (k) { return e.foot[k]; }).map(function (k) {
+        var lbl = {NOTE: "Note", FOOD: "Food", AV: "AV", BILLING: "Billing", SHIPPING: "Shipping"}[k];
+        return "<tr><th>" + lbl + "</th><td>" + esc(noPrice(e.foot[k])).replace(/\n/g, "<br>") + "</td></tr>"; }).join("") +
       "</table>" : "";
     var grid = e.diags.length ? '<div class="dg-grid">' + e.diags.map(function (d) {
       return '<a class="dg" href="diagrams/' + esc(d.file) + '" target="_blank" rel="noopener"><img loading="lazy" alt="" src="diagrams/previews/' +
