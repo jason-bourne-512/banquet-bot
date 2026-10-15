@@ -66,6 +66,10 @@ function setupFor(ev, room) {
     .filter(t => !/^room rental/i.test(t));
   const buckets = new Map(); let cur = null;
   for (const t of tokens) {
+    // "Room (Function): setup…" lines name their room up front
+    const lab = rooms.filter(r => t.toLowerCase().startsWith(r.toLowerCase()) && /^\s*(\([^)]*\))?\s*:/.test(t.slice(r.length)))
+      .sort((a, b) => b.length - a.length)[0];
+    if (lab) { cur = [lab]; buckets.has(lab) || buckets.set(lab, []); buckets.get(lab).push(t.slice(t.indexOf(':') + 1).trim()); continue; }
     const hit = rooms.find(r => t.toLowerCase().startsWith(r.toLowerCase()) || t.toLowerCase().split(/\s*&\s*/).some(p => r.toLowerCase().startsWith(p) && p.length > 3));
     if (hit && (t.length <= hit.length + 2 || /&/.test(t))) {
       cur = t.split(/\s*&\s*/).map(p => rooms.find(r => r.toLowerCase().startsWith(p.toLowerCase())) || p);
