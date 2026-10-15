@@ -67,6 +67,10 @@
       "html.bbd-skin #events .ev-col.ev-below{border-top:none!important;padding-top:0!important}" +
       "html.bbd-skin #events .grp-name{font:600 17px/1.2 'Barlow Condensed',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#a8f2c7;margin:0 0 8px 2px}" +
       "html.bbd-skin #events .client-name{color:#e6eef4!important;font-size:14px!important}" +
+      // Setup / Note / Food / AV panel: larger, brighter, labels in color
+      "html.bbd-skin #events .dd-t.kv td{font-size:13.5px!important;line-height:1.55!important;color:#eef4f8!important;font-weight:500;padding:0.5rem 0.6rem!important}" +
+      "html.bbd-skin #events .dd-t.kv th{font-size:10.5px!important;color:#8bd1ff!important;letter-spacing:.12em!important;padding:0.55rem 0.6rem!important;width:76px!important}" +
+      "html.bbd-skin #events .dd-t.kv tr:nth-child(even) td{background:rgba(255,255,255,.035)!important}" +
       // slight glow box around meal + break times (not quiet beverage lines, not past)
       "html.bbd-skin .page-wrap #events .meal-group:not(.quiet):not(.is-past) .svc-time{border:1px solid color-mix(in srgb,var(--k) 50%,transparent);border-radius:5px;padding:1px 6px!important;box-shadow:0 0 8px color-mix(in srgb,var(--k) 28%,transparent)}" +
       "html.bbd-skin #events .ev-col>.event-card{margin:0 0 12px!important}" +
