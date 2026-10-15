@@ -126,6 +126,8 @@
   .dd-setup { margin-top:0.85rem; }
   .dd-t th.mh { font-size:0.82rem; font-weight:700; color:var(--k, var(--gold)); letter-spacing:0; text-transform:none; }
   .ev-col.ev-below { border-top:2px solid rgba(139,209,255,.5); padding-top:1rem; margin-top:0.25rem; }
+  .dd-t tr.addon td { color:#ffc46b; font-weight:600; }
+  .dd > summary em.addon-n { color:#ffc46b; }
   .dd-diag { margin-top:0.5rem; }
   .dg-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:0.6rem; margin-top:0.6rem; }
   .dg { display:flex; flex-direction:column; gap:0.35rem; padding:0.45rem; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,.025); color:var(--cream); text-decoration:none; font-size:0.75rem; line-height:1.35; }
@@ -232,6 +234,31 @@
   }
 
   var DESK = false;
+  // Add-ons: when a service is a standard package from the banquet menu (menu.html — Healthy Start, Tejas Mexicano,
+  // a named break…), anything the event order lists by count ("(35) Bacon") or calls out ("added to buffet",
+  // "additional", "upgrade", "substitute") is an extra on top of that package. Staffing lines never count.
+  var STOP = {}; ("and with the for of breakfast buffet table break breaks working lunch dinner monday tuesday wednesday thursday friday " +
+    "saturday sunday day package packages morning afternoon individual order orders").split(" ").forEach(function (w) { STOP[w] = 1; });
+  var words = function (t) { return (String(t).toLowerCase().replace(/&/g, " ").match(/[a-z]+/g) || []).map(function (w) { return w.replace(/s$/, ""); })
+    .filter(function (w) { return w.length > 2 && !STOP[w]; }); };
+  var PKG = [];
+  function readMenu(doc) {
+    if (!doc) return;
+    doc.querySelectorAll(".menu-sub").forEach(function (sub) {
+      var t = txt(sub.querySelector(".sub-title"));
+      if (/buffet|healthy|continental|riser|sunrise|grab|monday|tuesday|wednesday|thursday|friday|saturday|sunday|deli|dining|bbq|steakhouse|mediterranean|southwest/i.test(t)) PKG.push(words(t));
+      if (/break packages/i.test(t)) sub.querySelectorAll(".item-name").forEach(function (n) { PKG.push(words(txt(n))); });
+    });
+    PKG = PKG.filter(function (w) { return w.length; });
+  }
+  function isPackage(name) {
+    var mw = words(name);
+    return PKG.some(function (p) { return p.filter(function (w) { return mw.indexOf(w) >= 0; }).length / p.length >= 0.6; });
+  }
+  function isAddon(item) {
+    if (/bartender|butler|attendant|\bfee\b|chef\b.*\bfee/i.test(item)) return false;
+    return /^\(\d+\)/.test(item) || /\b(added|add[- ]?on|additional|upgrade|substitut\w*|in place of|extra)\b/i.test(item);
+  }
   // Today only: services that have ended lose their color; one in progress gets a NOW tag. Re-checked every minute.
   function pastTick() {
     if (ISO != todayISO()) return;
@@ -295,9 +322,10 @@
             items = (cut < 0 ? s.menu : s.menu.slice(cut + 3)).split(/\s*·\s*|\s+\/\s+/).map(function (x) { return x.trim(); }).filter(Boolean),
             mname = mhead || items[0] || s.tag, rest = mhead ? items : items.slice(1);
           var quiet = /continuous|all[- ]day/i.test(s.tag) || (k == "bev" && !/reception|dinner|lunch|breakfast/i.test(s.tag));
+          var pkg = isPackage(mname), adds = pkg ? rest.filter(isAddon).length : 0;
           return '<div class="meal-group k-' + k + (quiet ? " quiet" : "") + '" data-a="' + s.a + '" data-b="' + s.b + '"><div class="svc-head"><span class="svc-time">' + esc(s.label) + '</span><span class="svc-tag">' + KIND[k] + " " + esc(s.tag) + '</span><span class="svc-where">' + (s.room && rs.length > 1 ? '<span class="rm">' + esc(s.room) + "</span>" : "") + (s.gtd && !oneGtd ? (s.room && rs.length > 1 ? " &middot; " : "") + esc(s.gtd) : "") + '</span></div><div class="food-items">' +
-            '<details class="dd"' + (DESK ? "" : " open") + '><summary>' + esc(mname) + (rest.length ? ' <em>' + rest.length + (rest.length == 1 ? " item" : " items") + '</em>' : "") + '</summary><table class="dd-t">' +
-            rest.map(function (it) { return "<tr><td>" + esc(it) + "</td></tr>"; }).join("") + "</table></details></div></div>"; }).join("") + "</div>"
+            '<details class="dd"' + (DESK ? "" : " open") + '><summary>' + esc(mname) + (rest.length ? ' <em>' + rest.length + (rest.length == 1 ? " item" : " items") + '</em>' : "") + (adds ? ' <em class="addon-n">+' + adds + (adds == 1 ? " add-on" : " add-ons") + "</em>" : "") + '</summary><table class="dd-t">' +
+            rest.map(function (it) { var ad = pkg && isAddon(it); return "<tr" + (ad ? ' class="addon" title="Add-on — not part of the standard menu"' : "") + "><td>" + (ad ? "+ " : "") + esc(it) + "</td></tr>"; }).join("") + "</table></details></div></div>"; }).join("") + "</div>"
           : '<div class="booking nofb">No food or beverage.</div>') +
         (book.length && food.length ? '<div class="booking">' + book.map(function (b) { return esc(b.tag.replace(/\s*—\s*No F&B/i, "")) + " " + esc(b.label) + (b.room ? " · " + esc(b.room) : ""); }).join("<br>") + "</div>" : "") +
         moreBlock(e, setup, notes) +
@@ -359,8 +387,10 @@
   var parse = function (t) { return new DOMParser().parseFromString(t, "text/html"); };
   Promise.all([
     fetch("rundown.html", {cache: "no-cache"}).then(function (r) { return r.text(); }).then(parse),
-    fetch("index.html", {cache: "no-cache"}).then(function (r) { return r.text(); }).then(parse).catch(function () { return null; })
+    fetch("index.html", {cache: "no-cache"}).then(function (r) { return r.text(); }).then(parse).catch(function () { return null; }),
+    fetch("menu.html", {cache: "no-cache"}).then(function (r) { return r.text(); }).then(parse).catch(function () { return null; })
   ]).then(function (d) {
+    readMenu(d[2]);
     render(readDay(d[0]), d[1] ? readCrew(d[1]) : []);
     pastTick(); setInterval(pastTick, 60000);
   }).catch(function (err) {
