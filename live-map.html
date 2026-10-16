@@ -22,11 +22,17 @@
   .chips button .t { font-weight:700; opacity:.7; margin-left:4px; }
   .print { margin-left:auto; border:1px solid var(--line); background:transparent; color:var(--sky); border-radius:8px; padding:6px 12px; font:700 12px Manrope, sans-serif; cursor:pointer; }
   .hint { max-width:1500px; margin:0 auto; padding:0 16px 8px; color:var(--muted); font-size:12px; }
-  .scroll { max-width:1500px; margin:0 auto; padding:0 16px 40px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .stage { position:relative; max-width:1500px; margin:0 auto; padding:0 16px 40px; }
+  /* the map scrolls inside its own frame; pinch here zooms the map, not the page */
+  .scroll { overflow:auto; -webkit-overflow-scrolling:touch; touch-action:pan-x pan-y; border-radius:10px; max-height:calc(100vh - 150px); }
+  .zoom { position:absolute; right:26px; bottom:52px; z-index:5; display:flex; gap:4px; background:rgba(16,24,32,.85); border:1px solid var(--line); border-radius:10px; padding:4px; }
+  .zoom button { min-width:38px; height:34px; border:0; border-radius:7px; background:var(--card); color:var(--text); font:800 16px Manrope, sans-serif; cursor:pointer; }
+  .zoom button.fit { font-size:11px; letter-spacing:.06em; padding:0 8px; }
+  .zoom button:active { background:#24394a; }
   .empty { max-width:1500px; margin:40px auto; padding:0 16px; color:var(--muted); }
 
   /* the printable sheet — same look as the paper floor maps */
-  .map { position:relative; width:min(100%, calc((100vh - 150px) * 2000 / 1545)); margin:0 auto; min-width:980px; aspect-ratio:2000/1545; container-type:inline-size; background:#fff; color:var(--ink);
+  .map { position:relative; width:100%; margin:0 auto; aspect-ratio:2000/1545; container-type:inline-size; background:#fff; color:var(--ink);
          border-radius:10px; overflow:hidden; font-family:-apple-system, "Segoe UI", Inter, sans-serif; line-height:1.35;
          -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   .map img.plan { position:absolute; inset:0; width:100%; height:100%; opacity:.55; }
@@ -61,8 +67,9 @@
     body { background:#fff; }
     .top, .hint, #bb-gate, .bbd-side, .bbd-top { display:none !important; }
     html.bbd body { padding:0 !important; }
-    .scroll { padding:0; max-width:none; overflow:visible; }
-    .map { width:10.2in; min-width:0; border-radius:0; }
+    .stage { padding:0; max-width:none; } .zoom { display:none !important; }
+    .scroll { overflow:visible; max-height:none; }
+    .map { width:10.2in !important; border-radius:0; }
   }
 </style>
 <script src="theme.js"></script>
@@ -74,8 +81,9 @@
   <div class="chips" id="chips"></div>
   <button class="print" onclick="window.print()">Print</button>
 </div>
-<div class="hint" id="hint">Group, count and service times on the meeting-level plan, with each room's setup diagram underneath. Scroll sideways on a phone.</div>
-<div class="scroll"><div class="map" id="map"></div></div>
+<div class="hint" id="hint">Group, count and service times on the meeting-level plan, with each room's setup diagram underneath. Pinch or use − / + to zoom; drag to move around.</div>
+<div class="stage" id="stage"><div class="scroll" id="scroll"><div class="map" id="map"></div></div>
+  <div class="zoom"><button data-z="-" aria-label="Zoom out">−</button><button data-z="0" class="fit">FIT</button><button data-z="+" aria-label="Zoom in">+</button></div></div>
 <div class="empty" id="empty" hidden>No floor maps for the coming days yet.</div>
 <script>
 (function () {
@@ -85,7 +93,7 @@
   // past days are removed, never shown
   var dates = Object.keys(DATA.days).sort().filter(function (d) { return d >= today; });
   var map = document.getElementById("map"), chips = document.getElementById("chips");
-  if (!dates.length) { document.getElementById("empty").hidden = false; map.parentNode.hidden = true; document.getElementById("hint").hidden = true; return; }
+  if (!dates.length) { document.getElementById("empty").hidden = false; document.getElementById("stage").hidden = true; document.getElementById("hint").hidden = true; return; }
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
   function label(d, long) { var x = new Date(d + "T12:00:00"); return x.toLocaleDateString("en-US", long ? {weekday: "short", month: "numeric", day: "numeric"} : {weekday: "short"}).toUpperCase().replace(",", ""); }
   function lines(s) { return s.map(function (l) { return '<div class="ln ' + l[2] + (MEAL[l[2]] ? " meal" : "") + '"><b>' + esc(l[0]) + "</b> " + esc(l[1]) + "</div>"; }).join(""); }
@@ -104,10 +112,46 @@
     if (day.off.length) h += '<div class="offmap"><h3>Off the map</h3><div id="off">' + day.off.map(function (e) { return '<div class="card"><div class="nm">' + esc(e.room) + "</div>" + body(e) + "</div>"; }).join("") + "</div></div>";
     if (day.contacts.length) h += '<div class="legend"><h3>Contacts</h3>' + day.contacts.map(function (c) { return '<span class="gc"><b>' + esc(c[0]) + "</b> <span>" + esc(c[1]) + "</span></span>"; }).join("") + "</div>";
     map.innerHTML = h;
+    if (typeof setZ == "function") setZ(1);
     try { history.replaceState(null, "", "#" + d); } catch (e) {}
   }
   chips.innerHTML = dates.map(function (d) { return '<button data-d="' + d + '">' + label(d) + '<span class="t">' + (+d.slice(5, 7)) + "/" + (+d.slice(8)) + "</span></button>"; }).join("");
   chips.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) draw(b.dataset.d); });
+  // ── zoom: z = 1 fits the whole floor in the frame; up to 4×. Text is sized in cqw, so it scales with the map.
+  var scroll = document.getElementById("scroll"), z = 1, ZMAX = 4;
+  function base() {   // width at z = 1: full frame width, but on a wide screen no taller than the frame
+    var w = scroll.clientWidth, h = scroll.clientHeight || window.innerHeight - 150;
+    return Math.min(w, h * 2000 / 1545);
+  }
+  function setZ(nz, cx, cy) {   // cx, cy: point in the frame (px) that should stay put
+    nz = Math.max(1, Math.min(ZMAX, nz));
+    if (cx == null) { cx = scroll.clientWidth / 2; cy = scroll.clientHeight / 2; }
+    var mx = (scroll.scrollLeft + cx) / (map.offsetWidth || 1), my = (scroll.scrollTop + cy) / (map.offsetHeight || 1);
+    z = nz; map.style.width = Math.round(base() * z) + "px";
+    scroll.scrollLeft = mx * map.offsetWidth - cx; scroll.scrollTop = my * map.offsetHeight - cy;
+  }
+  document.querySelector(".zoom").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    var k = b.dataset.z; setZ(k == "0" ? 1 : k == "+" ? z * 1.5 : z / 1.5);
+  });
+  // two-finger pinch on the map
+  var pinch = null;
+  function dist(t) { return Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY); }
+  scroll.addEventListener("touchstart", function (e) {
+    if (e.touches.length == 2) { var r = scroll.getBoundingClientRect(); pinch = {d: dist(e.touches), z: z,
+      cx: (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left, cy: (e.touches[0].clientY + e.touches[1].clientY) / 2 - r.top}; }
+  }, {passive: true});
+  scroll.addEventListener("touchmove", function (e) {
+    if (!pinch || e.touches.length != 2) return;
+    e.preventDefault(); setZ(pinch.z * dist(e.touches) / pinch.d, pinch.cx, pinch.cy);
+  }, {passive: false});
+  scroll.addEventListener("touchend", function (e) { if (e.touches.length < 2) pinch = null; });
+  // ctrl/⌘ + wheel (trackpad pinch on a laptop) zooms the map too
+  scroll.addEventListener("wheel", function (e) {
+    if (!e.ctrlKey) return; e.preventDefault();
+    var r = scroll.getBoundingClientRect(); setZ(z * Math.exp(-e.deltaY / 200), e.clientX - r.left, e.clientY - r.top);
+  }, {passive: false});
+  window.addEventListener("resize", function () { setZ(z); });
   var want = location.hash.slice(1);
   draw(dates.indexOf(want) >= 0 ? want : (dates.indexOf(today) >= 0 ? today : dates[0]));
 })();
