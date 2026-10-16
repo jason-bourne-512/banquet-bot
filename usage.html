@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Usage · Banquet Bot</title>
+<style>
+  :root { --bg:#0b1218; --card:#121c25; --line:#22313d; --text:#e6eef4; --muted:#8fa3b3; --sky:#8bd1ff; --green:#a8f2c7; --amber:#ffc46b; }
+  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 -apple-system, "Segoe UI", Inter, sans-serif; }
+  main { max-width:1100px; margin:0 auto; padding:24px 22px 60px; }
+  h1 { font-size:22px; letter-spacing:.06em; margin:0 0 4px; } h1 span { color:var(--sky); }
+  .sub { color:var(--muted); font-size:12.5px; margin-bottom:20px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-bottom:22px; }
+  .stat { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+  .stat b { display:block; font-size:22px; color:var(--green); } .stat span { color:var(--muted); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; }
+  table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  th, td { padding:9px 12px; border-bottom:1px solid var(--line); text-align:left; font-size:13px; vertical-align:middle; }
+  th { color:var(--muted); font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; }
+  td.n { text-align:right; font-variant-numeric:tabular-nums; } td.name { font-weight:700; color:var(--sky); }
+  .spark { display:flex; gap:2px; align-items:flex-end; height:22px; } .spark i { width:6px; background:var(--green); border-radius:1px; opacity:.85; }
+  .spark i.z { background:var(--line); height:2px !important; }
+  .pages { color:var(--muted); font-size:12px; }
+  h2 { font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:26px 0 10px; }
+  .empty, .deny { color:var(--muted); padding:30px 0; }
+</style>
+<script src="theme.js"></script>
+</head>
+<body>
+<main>
+  <h1>BANQUET BOT <span>USAGE</span></h1>
+  <div class="sub" id="sub">Loading…</div>
+  <div id="app"></div>
+</main>
+<script>
+(function () {
+  var w = null; try { w = JSON.parse(localStorage.getItem("bb-hsm-who")); } catch (e) {}
+  var app = document.getElementById("app"), sub = document.getElementById("sub");
+  if (!w || w.name != "Jason") { sub.textContent = ""; app.innerHTML = '<div class="deny">This page is private.</div>'; return; }
+  var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname), col = local ? "housemen_test" : "housemen";
+  var fmt = new Intl.DateTimeFormat("en-CA", {timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit"});
+  var today = fmt.format(new Date()), months = [today.slice(0, 7)];
+  var pd = new Date(today + "T12:00:00"); pd.setMonth(pd.getMonth() - 1); months.unshift(fmt.format(pd).slice(0, 7));
+  var base = "https://firestore.googleapis.com/v1/projects/the-wire-587e6/databases/(default)/documents/" + col + "/views-";
+  var KEYQ = "?key=AIzaSyCr9z1e8neChgnRsEeSHX7fM_5h_jhTcxQ";
+  var LABEL = {index: "Home", today: "Daily Brief", rundown: "Rundown", overview: "Overview", housemen: "Housemen", menu: "Menu", info: "Info",
+    training: "Training", rooms: "Rooms", "room-map": "Room Map", "room_map": "Room Map", handbook: "Handbook"};
+  Promise.all(months.map(function (m) { return fetch(base + m + KEYQ).then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }); }))
+  .then(function (docs) {
+    var rows = [];   // {date, who, page, n}
+    docs.forEach(function (doc, i) {
+      var f = (doc && doc.fields) || {};
+      Object.keys(f).forEach(function (k) {
+        var m = k.match(/^d(\d\d)__(.+?)__(.+)$/); if (!m) return;
+        rows.push({date: months[i] + "-" + m[1], who: m[2].replace(/_/g, " "), page: m[3], n: +f[k].integerValue || 0});
+      });
+    });
+    if (!rows.length) { sub.textContent = "No views recorded yet — counting started " + today + "."; app.innerHTML = '<div class="empty">Views show up here as people open Banquet Bot.</div>'; return; }
+    var ago = function (n) { var d = new Date(today + "T12:00:00"); d.setDate(d.getDate() - n); return fmt.format(d); };
+    var d7 = ago(6), d30 = ago(29), days = []; for (var i = 13; i >= 0; i--) days.push(ago(i));
+    var people = {};
+    rows.forEach(function (r) {
+      var p = people[r.who] = people[r.who] || {w7: 0, w30: 0, pages: {}, last: "", day: {}};
+      if (r.date >= d7) p.w7 += r.n; if (r.date >= d30) { p.w30 += r.n; p.pages[r.page] = (p.pages[r.page] || 0) + r.n; }
+      if (r.date > p.last) p.last = r.date; p.day[r.date] = (p.day[r.date] || 0) + r.n;
+    });
+    var names = Object.keys(people).sort(function (a, b) { return people[b].w30 - people[a].w30; });
+    var tot7 = names.reduce(function (s, n) { return s + people[n].w7; }, 0), act7 = names.filter(function (n) { return people[n].w7; }).length;
+    var byPage = {}; rows.filter(function (r) { return r.date >= d30; }).forEach(function (r) { byPage[r.page] = (byPage[r.page] || 0) + r.n; });
+    var short = function (d) { return new Date(d + "T12:00:00").toLocaleDateString("en-US", {weekday: "short", month: "short", day: "numeric"}); };
+    sub.textContent = "Views per person (one per page per 20 minutes) · last 30 days · counting started when the PIN lock went live";
+    var html = '<div class="cards"><div class="stat"><b>' + tot7 + '</b><span>Views · 7 days</span></div><div class="stat"><b>' + act7 + '</b><span>People active · 7 days</span></div>' +
+      '<div class="stat"><b>' + names.length + '</b><span>People · 30 days</span></div></div>';
+    html += '<table><tr><th>Person</th><th class="n">7 days</th><th class="n">30 days</th><th>Last 14 days</th><th>Top pages</th><th>Last seen</th></tr>' +
+      names.map(function (n) { var p = people[n], mx = Math.max.apply(null, days.map(function (d) { return p.day[d] || 0; }).concat(1));
+        var top = Object.keys(p.pages).sort(function (a, b) { return p.pages[b] - p.pages[a]; }).slice(0, 3).map(function (k) { return (LABEL[k] || k) + " " + p.pages[k]; }).join(" · ");
+        return '<tr><td class="name">' + n + '</td><td class="n">' + p.w7 + '</td><td class="n">' + p.w30 + '</td><td><div class="spark">' +
+          days.map(function (d) { var v = p.day[d] || 0; return '<i class="' + (v ? "" : "z") + '" style="height:' + Math.max(3, Math.round(22 * v / mx)) + 'px" title="' + short(d) + ': ' + v + '"></i>'; }).join("") +
+          '</div></td><td class="pages">' + top + '</td><td>' + short(p.last) + '</td></tr>'; }).join("") + '</table>';
+    html += '<h2>Pages · 30 days</h2><table><tr><th>Page</th><th class="n">Views</th></tr>' + Object.keys(byPage).sort(function (a, b) { return byPage[b] - byPage[a]; })
+      .map(function (k) { return '<tr><td>' + (LABEL[k] || k) + '</td><td class="n">' + byPage[k] + '</td></tr>'; }).join("") + '</table>';
+    app.innerHTML = html;
+  });
+})();
+</script>
+</body>
+</html>

@@ -370,7 +370,7 @@
       PAGES.map(function (p, i) {
         return (i == 6 ? '<div class="lbl">Reference</div>' : "") +
           '<a href="' + p[0] + '" class="' + (p[0] == cur ? "on" : "") + '"><i>' + p[2] + "</i>" + p[1] + "</a>";
-      }).join("") + "</nav>" +
+      }).join("") + (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' : "") + "</nav>" +
       '<div class="bbd-me"><div class="bbd-user"><em>' + esc(w.name.slice(0, 1)) + "</em><div>" + esc(w.name) + "<small>" + (w.role == "director" ? "Director of Event Operations" : "Captain") + "</small></div></div>" +
       '<div class="row"><button class="bbd-btn" data-bbd="phone">📱 Phone view</button><button class="bbd-btn" data-bbd="out">Sign out</button></div></div>';
     var top = document.createElement("header");

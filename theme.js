@@ -276,5 +276,27 @@
     off: function () { try { localStorage.removeItem("bb-me"); } catch (e) {} apply(null); }
   };
 })();
+// Usage counter (Jason-only stats on usage.html): one view per person, per page, per 20 minutes on this phone,
+// tallied in a monthly doc of the same Firestore collection the Housemen page uses (housemen_test on localhost).
+(function () {
+  try {
+    var w = JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); if (!w || !w.name) return;
+    var file = (location.pathname.split("/").pop() || "index.html").replace(/\.html$/, "");
+    var page = (file == "rundown" && /overview/.test(location.hash)) ? "overview" : (file || "index");
+    if (page == "usage") return;
+    var last = JSON.parse(localStorage.getItem("bb-view-last") || "{}"), now = Date.now();
+    if (last[page] && now - last[page] < 20 * 60 * 1000) return;
+    last[page] = now; localStorage.setItem("bb-view-last", JSON.stringify(last));
+    var d = new Intl.DateTimeFormat("en-CA", {timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date());
+    var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname), col = local ? "housemen_test" : "housemen";
+    var who = String(w.name).replace(/[^A-Za-z0-9]/g, "_"), key = "d" + d.slice(8) + "__" + who + "__" + page.replace(/[^a-z0-9]/gi, "_");
+    var P = "projects/the-wire-587e6/databases/(default)/documents/";
+    fetch("https://firestore.googleapis.com/v1/" + P.replace(/\/$/, "") + ":commit?key=AIzaSyCr9z1e8neChgnRsEeSHX7fM_5h_jhTcxQ", {
+      method: "POST", headers: {"Content-Type": "application/json"}, keepalive: true,
+      body: JSON.stringify({writes: [{transform: {document: P + col + "/views-" + d.slice(0, 7),
+        fieldTransforms: [{fieldPath: key, increment: {integerValue: "1"}}]}}]})
+    }).catch(function () {});
+  } catch (e) {}
+})();
 // Desktop mode for leads (desktop.js) — loaded here so every page that has the personal looks gets it too.
 (function () { var s = document.createElement("script"); s.src = "desktop.js"; s.defer = true; document.head.appendChild(s); })();
