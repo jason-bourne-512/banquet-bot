@@ -1,3 +1,67 @@
+// PIN lock: every page stays covered until someone signs in with their Housemen PIN (one sign-in covers the
+// whole site and this phone remembers it). PIN fingerprints come from housemen.html; PINs are never stored here.
+// This is a door, not a vault: the files themselves are still public on GitHub until the pages are encrypted.
+(function () {
+  var KEY = "bb-hsm-who", root = document.documentElement;
+  function who() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
+  var css = "html.bb-locked body>*:not(#bb-gate){visibility:hidden!important}" +
+    "#bb-gate{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;background:#0b1218;" +
+    "font:500 15px/1.4 -apple-system,'Segoe UI',Inter,sans-serif;color:#e6eef4}" +
+    "#bb-gate .box{width:min(300px,86vw);text-align:center}" +
+    "#bb-gate .mark{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:12px;border:1px solid #2b3a47;" +
+    "color:#8bd1ff;font-weight:800;font-size:20px;margin-bottom:14px}" +
+    "#bb-gate h1{font-size:15px;letter-spacing:.14em;margin:0 0 4px}#bb-gate p{color:#8fa3b3;font-size:12.5px;margin:0 0 18px}" +
+    "#bb-gate .dots{display:flex;gap:12px;justify-content:center;margin-bottom:20px}" +
+    "#bb-gate .dots i{width:13px;height:13px;border-radius:50%;border:1.5px solid #8fa3b3}#bb-gate .dots i.f{background:#8bd1ff;border-color:#8bd1ff}" +
+    "#bb-gate .dots.err i{border-color:#ff7a7a;animation:bbShake .4s}@keyframes bbShake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}" +
+    "#bb-gate .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}" +
+    "#bb-gate .pad button{height:58px;border-radius:14px;border:1px solid #22313d;background:#121c25;color:#e6eef4;font:600 21px/1 inherit;cursor:pointer}" +
+    "#bb-gate .pad button:active{background:#1d2c38}";
+  var st = document.createElement("style"); st.id = "bb-gate-css"; st.textContent = css; document.head.appendChild(st);
+  var people = null, buf = "";
+  function load() {
+    if (people) return Promise.resolve(people);
+    return fetch("housemen.html", {cache: "no-cache"}).then(function (r) { return r.text(); }).then(function (t) {
+      var out = [], re = /\{name:"([^"]+)",\s*role:"([^"]+)",\s*h:"([0-9a-f]{64})"\}/g, m;
+      while ((m = re.exec(t))) out.push({name: m[1], role: m[2], h: m[3]});
+      return (people = out);
+    });
+  }
+  function sha(s) { return crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)).then(function (b) {
+    return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, "0"); }).join(""); }); }
+  function draw(err) { var d = document.querySelector("#bb-gate .dots"); if (!d) return;
+    d.className = "dots" + (err ? " err" : ""); d.innerHTML = [0, 1, 2, 3].map(function (i) { return '<i class="' + (i < buf.length ? "f" : "") + '"></i>'; }).join(""); }
+  function build() {
+    if (document.getElementById("bb-gate")) return;
+    var g = document.createElement("div"); g.id = "bb-gate";
+    g.innerHTML = '<div class="box"><div class="mark">B</div><h1>BANQUET BOT</h1><p>Enter your PIN</p><div class="dots"></div><div class="pad">' +
+      ["1", "2", "3", "4", "5", "6", "7", "8", "9", "", "0", "⌫"].map(function (k) { return k ? '<button type="button" data-k="' + k + '">' + k + "</button>" : "<span></span>"; }).join("") + "</div></div>";
+    document.body.appendChild(g); draw();
+    g.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-k]"); if (!b) return;
+      if (b.dataset.k == "⌫") buf = buf.slice(0, -1); else if (buf.length < 4) buf += b.dataset.k;
+      draw(); if (buf.length < 4) return;
+      var tryPin = buf;
+      Promise.all([load(), sha("bb-hsm-v1:" + tryPin)]).then(function (r) {
+        var p = r[0].filter(function (x) { return x.h == r[1]; })[0];
+        if (!p) { buf = ""; draw(true); setTimeout(draw, 600); return; }
+        localStorage.setItem(KEY, JSON.stringify({name: p.name, role: p.role}));
+        unlock(); if (window.bbTheme) window.bbTheme.signIn(p.name);
+        window.dispatchEvent(new StorageEvent("storage", {key: KEY}));
+      });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (!document.getElementById("bb-gate")) return;
+      var k = /^[0-9]$/.test(e.key) ? e.key : e.key == "Backspace" ? "⌫" : null;
+      if (k) { var b = g.querySelector('[data-k="' + k + '"]'); if (b) b.click(); }
+    });
+  }
+  function lock() { buf = ""; root.classList.add("bb-locked"); if (document.body) build(); else document.addEventListener("DOMContentLoaded", build); }
+  function unlock() { root.classList.remove("bb-locked"); var g = document.getElementById("bb-gate"); if (g) g.remove(); }
+  window.bbGate = {lock: lock, unlock: unlock};
+  if (!who()) lock();
+  window.addEventListener("storage", function (e) { if (e.key == KEY || e.key == null) { if (who()) unlock(); else lock(); } });
+})();
 // Personal looks for Banquet Bot. Open any page once with ?me=<name> and this phone keeps that look
 // (?me=off clears it). The Housemen page also switches it on when that person signs in.
 // Includes team logo (hotlinked from ESPN) and the Venezuelan flag (img/flag-venezuela.svg).

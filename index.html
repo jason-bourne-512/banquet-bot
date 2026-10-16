@@ -506,7 +506,7 @@ const PWS=new Date(2026,9,3), PWE=new Date(2026,9,9);
     if (Date.now() - armed < 3000) {
       localStorage.removeItem(KEY); if (window.bbTheme) window.bbTheme.off();
       try { localStorage.removeItem("bb-desk"); } catch(e) {}
-      armed = 0; show(); return;
+      armed = 0; show(); if (window.bbGate) window.bbGate.lock(); return;
     }
     armed = Date.now(); btn.classList.add("arm"); btn.textContent = "Tap to sign out";
     setTimeout(function(){ if (Date.now() - armed >= 2900) show(); }, 3000);
