@@ -3,7 +3,7 @@
 // Sign-in uses the same Housemen PIN and the same "bb-hsm-who" slot, so one sign-in covers the whole site.
 // PINs are never stored here: the hashes are read from housemen.html (single source of truth).
 (function () {
-  var DESK = "bb-desk", WHO = "bb-hsm-who", SIDE = 236;
+  var DESK = "bb-desk", WHO = "bb-hsm-who", MINI = "bb-desk-mini", SIDE = 236, RAIL = 64;
   var PAGES = [
     ["index.html", "Home", "⌂"], ["today.html", "Today", "☀"], ["rundown.html#rundown", "Rundown", "▤"], ["rundown.html#overview", "Overview", "▦"],
     ["housemen.html", "Housemen", "⚒"], ["room-map.html", "Room Map", "⌖"], ["rooms.html", "Rooms", "▢"], ["menu.html", "Menu", "◈"],
@@ -236,6 +236,15 @@
     ".bbd-me .row{display:grid;grid-template-columns:1fr 1fr;gap:6px}" +
     ".bbd-btn{border:1px solid #ffffff1c;background:#ffffff08;color:#d6e3ee;border-radius:8px;padding:7px 8px;font:700 11px Manrope,Arial;cursor:pointer}" +
     ".bbd-btn:hover{border-color:var(--bbd-acc);color:var(--bbd-acc)}" +
+    // collapsed sidebar: a narrow icon rail (‹ / › button on the sidebar edge; remembered on this computer)
+    ":root.bbd.bbd-mini{--bbd-side:" + RAIL + "px}" +
+    "html.bbd body{transition:padding-left .18s}html.bbd body>.bbd-side{transition:width .18s}html.bbd body>.bbd-top{transition:left .18s}" +
+    ".bbd-fold{position:absolute;top:20px;right:-12px;z-index:3;width:24px;height:24px;padding:0;border-radius:50%;display:grid;place-items:center;cursor:pointer;" +
+      "border:1px solid rgba(139,209,255,.3);background:#101820;color:#8bd1ff;font:700 13px/1 Manrope,Arial;box-shadow:0 2px 10px #0008}" +
+    ".bbd-fold:hover{border-color:var(--bbd-acc);color:var(--bbd-acc)}" +
+    ".bbd-mini .bbd-brand>span:last-child,.bbd-mini .bbd-nav .lbl,.bbd-mini .bbd-user>div,.bbd-mini .bbd-me .row{display:none}" +
+    ".bbd-mini .bbd-brand{justify-content:center;padding:16px 0 14px}.bbd-mini .bbd-user{justify-content:center}.bbd-mini .bbd-nav{padding:10px 8px}" +
+    ".bbd-mini .bbd-nav a{font-size:0;justify-content:center;gap:0;padding:10px 0}.bbd-mini .bbd-nav a i{font-size:16px;width:auto}" +
     // top bar
     "html.bbd body>.bbd-top{position:fixed!important;left:var(--bbd-side)!important;right:0!important;top:0!important;height:58px;z-index:2147482999!important;margin:0!important;width:auto!important;display:flex;align-items:center;gap:16px;padding:0 20px;" +
       "background:rgba(9,15,21,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid #ffffff10;box-shadow:inset 0 -1px 0 color-mix(in srgb,var(--bbd-acc) 25%,transparent);font-family:Manrope,Arial,sans-serif}" +
@@ -363,13 +372,15 @@
     if (SKINS[cur]) { root.classList.add("bbd-skin"); var sk = document.createElement("style"); sk.id = "bbd-skin"; sk.textContent = SKINS[cur]; document.head.appendChild(sk); }
     addStyle(acc);
     var title = (PAGES.filter(function (p) { return p[0] == cur; })[0] || [cur, document.title.split("—")[0].trim()])[1];
-    var side = document.createElement("aside");
+    var side = document.createElement("aside"), mini = get(MINI) == "1";
     side.className = "bbd-side";
-    side.innerHTML = '<a class="bbd-brand" href="index.html"><span class="bbd-mark">B</span><span><b>BANQUET BOT</b><span class="sub">COMMAND CENTER</span></span></a>' +
+    root.classList.toggle("bbd-mini", mini);
+    side.innerHTML = '<button class="bbd-fold" data-bbd="fold" title="Collapse / expand the side panel">' + (mini ? "›" : "‹") + "</button>" +
+      '<a class="bbd-brand" href="index.html"><span class="bbd-mark">B</span><span><b>BANQUET BOT</b><span class="sub">COMMAND CENTER</span></span></a>' +
       '<nav class="bbd-nav"><div class="lbl">Operations</div>' +
       PAGES.map(function (p, i) {
         return (i == 6 ? '<div class="lbl">Reference</div>' : "") +
-          '<a href="' + p[0] + '" class="' + (p[0] == cur ? "on" : "") + '"><i>' + p[2] + "</i>" + p[1] + "</a>";
+          '<a href="' + p[0] + '" title="' + p[1] + '" class="' + (p[0] == cur ? "on" : "") + '"><i>' + p[2] + "</i>" + p[1] + "</a>";
       }).join("") + (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' : "") + "</nav>" +
       '<div class="bbd-me"><div class="bbd-user"><em>' + esc(w.name.slice(0, 1)) + "</em><div>" + esc(w.name) + "<small>" + (w.role == "director" ? "Director of Event Operations" : "Captain") + "</small></div></div>" +
       '<div class="row"><button class="bbd-btn" data-bbd="phone">📱 Phone view</button><button class="bbd-btn" data-bbd="out">Sign out</button></div></div>';
@@ -418,6 +429,10 @@
     });
     side.addEventListener("click", function (e) {
       var b = e.target.closest("[data-bbd]"); if (!b) return;
+      if (b.dataset.bbd == "fold") {
+        mini = !mini; root.classList.toggle("bbd-mini", mini); set(MINI, mini ? "1" : null); b.textContent = mini ? "›" : "‹";
+        return;
+      }
       if (b.dataset.bbd == "phone") set(DESK, "0");
       if (b.dataset.bbd == "out") { set(DESK, "0"); set(WHO, null); window.bbTheme && window.bbTheme.off && window.bbTheme.off(); }
       location.reload();
