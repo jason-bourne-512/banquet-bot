@@ -87,7 +87,7 @@
       tint: {color: "#5b2bd6", opacity: .55},
       // Dragon Ball Z cast (drawn for Banquet Bot, img/dbz/): a different fighter peeks in on each page.
       cast: {"index.html": "goku", "today.html": "gohan", "rundown.html": "vegeta", "overview.html": "piccolo", "housemen.html": "krillin",
-        "menu.html": "buu", "training.html": "roshi", "rooms.html": "frieza", "room-map.html": "radar", "*": "dragonball"},
+        "menu.html": "buu", "training.html": "roshi", "rooms.html": "frieza", "room-map.html": "radar", "live-map.html": "radar", "*": "dragonball"},
       css: palette("#a98bf0", "rgba(169,139,240,.14)", "#0c0816", "#171027", "#231839", "rgba(169,139,240,.14)", "rgba(201,162,39,.35)") +
         "body::before{background:radial-gradient(ellipse at 100% 0,#24177399,transparent 50%),radial-gradient(ellipse at 0 100%,#c9a22722,transparent 55%),#0c0816!important}" +
         "h1,h2{color:#e9dcff}" + BADGE +

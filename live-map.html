@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Map — Banquet Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#101820; --card:#162430; --line:#2a3d4c; --text:#eaf3fa; --muted:#8fa6b8; --sky:#8bd1ff; --amber:#ffc46b;
+          --ink:#1d2a33; --pmuted:#6b7a86; --grp:#1f8a55;
+          --bfast:#b8860b; --lunch:#d2691e; --dinner:#c2416b; --recep:#7b4fc9; --brk:#2b7bb9; --bev:#4f5d68; --nofb:#56636d; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:Manrope, -apple-system, "Segoe UI", sans-serif; }
+  .top { max-width:1500px; margin:0 auto; padding:16px 16px 10px; display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; }
+  .top a.back { color:var(--sky); text-decoration:none; font-weight:700; font-size:13px; }
+  .top h1 { margin:0; font:600 28px/1 'Barlow Condensed', sans-serif; letter-spacing:.06em; }
+  .top h1 span { color:var(--amber); }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .chips button { border:1px solid var(--line); background:var(--card); color:var(--muted); border-radius:20px; padding:6px 13px;
+                  font:800 12px Manrope, sans-serif; letter-spacing:.06em; cursor:pointer; }
+  .chips button.on { color:#0e1a26; background:var(--amber); border-color:var(--amber); }
+  .chips button .t { font-weight:700; opacity:.7; margin-left:4px; }
+  .print { margin-left:auto; border:1px solid var(--line); background:transparent; color:var(--sky); border-radius:8px; padding:6px 12px; font:700 12px Manrope, sans-serif; cursor:pointer; }
+  .hint { max-width:1500px; margin:0 auto; padding:0 16px 8px; color:var(--muted); font-size:12px; }
+  .scroll { max-width:1500px; margin:0 auto; padding:0 16px 40px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .empty { max-width:1500px; margin:40px auto; padding:0 16px; color:var(--muted); }
+
+  /* the printable sheet — same look as the paper floor maps */
+  .map { position:relative; width:min(100%, calc((100vh - 150px) * 2000 / 1545)); margin:0 auto; min-width:980px; aspect-ratio:2000/1545; container-type:inline-size; background:#fff; color:var(--ink);
+         border-radius:10px; overflow:hidden; font-family:-apple-system, "Segoe UI", Inter, sans-serif; line-height:1.35;
+         -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .map img.plan { position:absolute; inset:0; width:100%; height:100%; opacity:.55; }
+  .ghostl { position:absolute; opacity:.6; pointer-events:none; }
+  .title { position:absolute; left:29.5%; top:1.2%; }
+  .title h2 { margin:0; font-size:1.6cqw; letter-spacing:.06em; color:var(--ink); }
+  .rm { position:absolute; padding:2.1cqw .7cqw .45cqw; border-radius:4px; overflow:hidden; }
+  .rm.on { background:rgba(31,138,85,.13); outline:2px solid rgba(31,138,85,.45); outline-offset:-2px; }
+  .rm.on > div { position:relative; opacity:.8; }
+  .nm { font-size:.85cqw; letter-spacing:.1em; text-transform:uppercase; color:var(--pmuted); font-weight:700; }
+  .g { color:var(--grp); font-weight:800; font-size:1.2cqw; margin:.05cqw 0; }
+  .ct { color:#3a4752; font-weight:600; font-size:.92cqw; margin-bottom:.25cqw; }
+  .ln { font-size:.98cqw; white-space:nowrap; }
+  .ln b { font-weight:700; font-variant-numeric:tabular-nums; }
+  .ln.bev, .ln.nofb { font-weight:600; }
+  .bfast { color:var(--bfast); } .lunch { color:var(--lunch); } .dinner { color:var(--dinner); } .recep { color:var(--recep); }
+  .brk { color:var(--brk); } .bev { color:var(--bev); } .nofb { color:var(--nofb); }
+  .meal b { padding:0 .2cqw; border-radius:2px; }
+  .bfast.meal b { background:#fbecb8; } .lunch.meal b { background:#fddcc2; } .brk.meal b { background:#d3e6f6; }
+  .dinner.meal b { background:#f7d2de; } .recep.meal b { background:#e5dbf7; }
+  .flag { color:#b23a3a; font-size:.92cqw; font-weight:600; }
+  .offmap { position:absolute; left:1%; top:72%; width:41%; }
+  .offmap h3, .legend h3 { font-size:.85cqw; letter-spacing:.1em; text-transform:uppercase; color:var(--pmuted); margin:0 0 .6cqw; }
+  #off { column-count:2; column-gap:1cqw; }
+  .card { break-inside:avoid; margin-bottom:1cqw; background:#fff; border:2px solid rgba(31,138,85,.45); border-radius:6px; padding:.7cqw .9cqw; }
+  .legend { position:absolute; left:44%; right:23%; bottom:1.5%; display:flex; flex-wrap:wrap; align-items:baseline; gap:.35cqw 1.6cqw; font-size:1cqw; }
+  .legend h3 { flex-basis:100%; margin:0; }
+  .legend .gc b { color:var(--grp); font-weight:800; } .legend .gc span { color:#3a4752; font-weight:600; }
+
+  @page { size:letter landscape; margin:0.25in; }
+  @media print {
+    body { background:#fff; }
+    .top, .hint, #bb-gate, .bbd-side, .bbd-top { display:none !important; }
+    html.bbd body { padding:0 !important; }
+    .scroll { padding:0; max-width:none; overflow:visible; }
+    .map { width:10.2in; min-width:0; border-radius:0; }
+  }
+</style>
+<script src="theme.js"></script>
+</head>
+<body>
+<div class="top">
+  <a class="back" href="index.html">← Home</a>
+  <h1>LIVE <span>MAP</span></h1>
+  <div class="chips" id="chips"></div>
+  <button class="print" onclick="window.print()">Print</button>
+</div>
+<div class="hint" id="hint">Group, count and service times on the meeting-level plan, with each room's setup diagram underneath. Scroll sideways on a phone.</div>
+<div class="scroll"><div class="map" id="map"></div></div>
+<div class="empty" id="empty" hidden>No floor maps for the coming days yet.</div>
+<script>
+(function () {
+  var DATA = {"days":{"2026-10-17":{"ev":{"Primrose D":{"g":"Ayn Rand Centre","ct":"GTD 46 · classroom · Diana","s":[["9–4:15","General session","nofb"],["9–4","Cont. coffee & tea","bev"],["10–11","Cookies (3 dz)","brk"],["2:45–3:45","Candy, granola bars, fruit","brk"],["4:15–6","Flip to dinner","nofb"],["6–10","Hosted bar","recep"],["7:15","Plated Dinner · GTD 30","dinner"]],"flag":"Flip back to classroom after dinner"},"Plumeria":{"g":"Ayn Rand · VIP Room","ct":"GTD 20 · coffee EXP 50","s":[["7–6:30","VIP room","nofb"],["7–8:30","Early Riser Breakfast","bfast"],["8–6","Cont. coffee & tea","bev"],["12:40–2:10","Game Day Lunch","lunch"]]},"Verbena":{"g":"Ayn Rand · 1:1 Sessions","ct":"(1) round of 4 in A + B","s":[["9–4:15","1:1 sessions","nofb"]]}},"off":[{"room":"Bluebell","g":"Ayn Rand · Office","ct":"EXP 5 · conference","s":[["7–11 PM","Office · No F&B","nofb"]]}],"ghosts":[[1535,155,1915,805,"livemap/g_PRIMROSEDfromTheIrreplaceableSparkConference_3.png"],[135,597,485,1090,"livemap/g_PLUMERIAfromTheIrreplaceableSparkConference.png"],[1449,1095,1915,1355,"livemap/g_VERBENAfromTheIrreplaceableSparkConference.png"]],"contacts":[["Ayn Rand Centre","Mackenzie"]]},"2026-10-18":{"ev":{"Primrose AB":{"g":"UIL (Univ. of Texas)","ct":"GTD 128 · hollow sq. 20 + theater 108","s":[["9–4","Breakout","nofb"]]},"Primrose C":{"g":"UIL (Univ. of Texas)","ct":"GTD 171 · U for 44 + theater 120 · Lisa","s":[["6:30–7:15","Set up","nofb"],["7:15–11","General session","nofb"],["7:15","Staff food (back of room)","bfast"],["7:15–11","Coffee 3+3 outside (125)","bev"]]},"Primrose D":{"g":"Ayn Rand Centre","ct":"GTD 46 · classroom · Diana","s":[["9–11 PM","General session","nofb"],["9–4","Cont. coffee & tea","bev"],["10–11","Cookies (3 dz)","brk"],["3:55–4:55","Cookies + whole fruit","brk"],["5:30–7:30","Reception · hors d'oeuvres","recep"]]},"Plumeria":{"g":"Ayn Rand · VIP Room","ct":"GTD 20 · coffee EXP 50","s":[["7–6:30","VIP room","nofb"],["7–9","Texas Sunrise Breakfast","bfast"],["7–11 PM","Cont. beverages","bev"],["12:50–2:15","Austin BBQ Lunch","lunch"]]},"Verbena":{"g":"Ayn Rand · 1:1 Sessions","ct":"Existing set","s":[["7–11 PM","1:1 sessions","nofb"]]},"Camellia":{"g":"UIL (Univ. of Texas)","ct":"GTD 40 · hollow sq. 20 + theater 20","s":[["9–1","Breakout","nofb"]]},"Lantana":{"g":"UIL (Univ. of Texas)","ct":"GTD 41 · hollow sq. 20 + theater 21","s":[["9–1","Breakout","nofb"]]}},"off":[{"room":"Barton","g":"UIL (Univ. of Texas)","ct":"Rounds of 10 · black linen · Lisa","s":[["6:30–7:45","Early Riser Breakfast · GTD 35","bfast"],["11:30–1","Plated Lunch · GTD 70","lunch"]],"flag":"Flip 4 → 6 rounds by 11:30"},{"room":"Bluebell","g":"Ayn Rand · Office","ct":"EXP 5 · conference","s":[["7–11 PM","Office · No F&B","nofb"]]}],"ghosts":[[585,155,1008,805,"livemap/g_PRIMROSEABfromUILLegislativeMeetingOct2026.png"],[1008,155,1535,805,"livemap/g_PRIMROSECfromUILLegislativeMeetingOct2026_2.png"],[1535,155,1915,805,"livemap/g_PRIMROSEDfromTheIrreplaceableSparkConference_3.png"],[135,597,485,1090,"livemap/g_PLUMERIAfromTheIrreplaceableSparkConference.png"],[1449,1095,1915,1355,"livemap/g_VERBENAfromTheIrreplaceableSparkConference.png"],[988,1095,1449,1355,"livemap/g_CamelliafromUILLegislativeMeetingOct2026.png"],[135,105,485,597,"livemap/g_LANTANAfromUILLegislativeMeetingOct2026.png"]],"contacts":[["UIL (Univ. of Texas)","Caroline"],["Ayn Rand Centre","Mackenzie"]]},"2026-10-19":{"ev":{"Primrose C":{"g":"UIL (Univ. of Texas)","ct":"GTD 142 · hollow sq. 54 + theater 88 · Lisa","s":[["7:30–8:15","Room flip","nofb"],["8:15–11","General session","nofb"],["8:15","Breakfast tacos + pastries","bfast"],["8:15–11","Coffee (reg + decaf)","bev"]]},"Plumeria B":{"g":"Lumenalta","ct":"GTD 4 · clear room, 6' table","s":[["2–7","Marketing team","nofb"]]}},"off":[{"room":"Barton","g":"UIL (Univ. of Texas)","ct":"GTD 35 · rounds of 10 · Lisa","s":[["7:30–8:45","Texas Sunrise Breakfast","bfast"]]},{"room":"Zilker","g":"AUSDW In-House","ct":"EXP 10 · conference","s":[["6–9 PM","Dinner","dinner"]],"flag":"Menu not on events report"}],"ghosts":[[1008,155,1535,805,"livemap/primrose-c-mon.png"],[135,843,485,1090,"livemap/plumeria-b-mon.png"]],"contacts":[["UIL (Univ. of Texas)","Caroline"],["Lumenalta","Julie"],["AUSDW In-House","Mike"]]},"2026-10-20":{"ev":{"Verbena":{"g":"Grainger","ct":"GTD 20 · EXP 15 · Diana","s":[["7:15–8","Mod. Healthy Start Breakfast","bfast"],["8–5","All-day beverages","bev"],["10–11","Dried fruit & nuts","brk"],["12–1","Austin BBQ Lunch","lunch"],["2–3","Artisan Cheese Display","brk"]]},"Camellia A":{"g":"Microsoft","ct":"EXP 12 · Lisa","s":[["8–5","Meeting","nofb"],["8–9:15","Early Riser","bfast"],["12–1","Conf. Dining","lunch"]],"flag":"Chef's choice"},"Camellia B":{"g":"Lumenalta","ct":"GTD 8 · Lisa","s":[["7–6:30","Sodas all day","bev"],["7:30–9","Grab & Go","bfast"],["12:30","Conf. Dining","lunch"],["4–4:30","Pretzel break","brk"]]}},"off":[{"room":"Barton","g":"Triple Crown","ct":"EXP 25 · schoolroom · Lisa","s":[["8–5","Meeting","nofb"],["8–9","Early Riser Breakfast","bfast"],["9–5","Cont. beverages","bev"],["12:30–1:30","Tejas Mexicano Lunch","lunch"]]},{"room":"Buttercup","g":"Herring Bank","ct":"GTD 5 · conference","s":[["8–5","Meeting · No F&B","nofb"]]},{"room":"Zilker","g":"AUSDW In-House","ct":"EXP 10 · conference","s":[["6–8 PM","Dinner","dinner"]],"flag":"Menu not on events report"}],"ghosts":[[988,1078,1221,1355,"livemap/g_CamelliaAfromMicrosoftNagaLTOffSiteOct2026.png"],[1221,1055,1449,1355,"livemap/g_CamelliaBfromLumenaltaLeadershipMeetingOct2026.png"],[1449,1095,1915,1355,"livemap/g_VERBENAfromGrainger.png"]],"contacts":[["Triple Crown","Danielle"],["Grainger","Michelle"],["Herring Bank","Brandy"],["Lumenalta","Diana"],["Microsoft","Amie"],["AUSDW In-House","Mike"]]},"2026-10-21":{"ev":{"Lantana":{"g":"Q2 Banking","ct":"Set U-shape for 36","s":[["12–4","Set up for Thu","nofb"]]},"Plumeria":{"g":"Q2 Banking","ct":"EXP 30 · GTD 35 bev","s":[["10–1","Set up","nofb"],["1–4","Meeting","nofb"],["1–4","Cont. beverages","bev"],["2:30–4","Cookies (2 dz)","brk"]]},"Primrose A":{"g":"Q2 Banking","ct":"Set U-shape for 30","s":[["12–4","Set up for Thu","nofb"]]},"Primrose B":{"g":"Q2 Banking","ct":"Set U-shape for 30","s":[["12–4","Set up for Thu","nofb"],["10–1","6x30 table outside","nofb"]]},"Camellia A":{"g":"Microsoft","ct":"EXP 12 · Lisa","s":[["8–12","Meeting","nofb"],["8–9","Early Riser","bfast"],["12–1","Conf. Dining","lunch"]],"flag":"Chef's choice"},"Camellia B":{"g":"Lumenalta","ct":"GTD 8 · last day","s":[["8–3","Meeting + coffee","bev"],["8–9","Grab & Go","bfast"],["11:30","Conf. Dining","lunch"]]},"Verbena":{"g":"Grainger","ct":"EXP 15 · last day","s":[["7–5","Meeting","nofb"],["7–8","Early Riser Breakfast","bfast"],["10–11","AM break","bev"],["12–1","Game Day Tailgate Lunch","lunch"],["2–3","PM break","bev"]]}},"off":[{"room":"Barton","g":"Triple Crown","ct":"EXP 25 · schoolroom · last day","s":[["8–3","Meeting","nofb"],["8–9","Texas Sunrise Breakfast","bfast"],["9–1","Cont. beverages","bev"],["12–1","Hill Country Spa Day Lunch","lunch"]]},{"room":"Buttercup","g":"Herring Bank","ct":"GTD 5 · conference","s":[["8–5","Meeting · No F&B","nofb"]]}],"ghosts":[[135,105,485,597,"livemap/g_LANTANAfromQ2CustomerAdvisoryBoardCAB.png"],[135,597,485,1090,"livemap/g_PLUMERIAfromQ2CustomerAdvisoryBoardCAB.png"],[585,155,1008,805,"livemap/g_PRIMROSEABfromQ2CustomerAdvisoryBoardCAB.png"],[988,1078,1221,1355,"livemap/g_CamelliaAfromMicrosoftNagaLTOffSiteOct2026.png"],[1221,1055,1449,1355,"livemap/g_CamelliaBfromLumenaltaLeadershipMeetingOct2026.png"],[1449,1095,1915,1355,"livemap/g_VERBENAfromGrainger.png"]],"contacts":[["Triple Crown","Danielle"],["Grainger","Michelle"],["Herring Bank","Brandy"],["Lumenalta","Diana"],["Microsoft","Amie"],["Q2 Banking","Brooke"]]}},"box":{"Lantana":[135,105,485,597],"Plumeria":[135,597,485,1090],"Plumeria B":[135,843,485,1090],"Primrose A":[585,155,1008,475],"Primrose B":[585,475,1008,805],"Primrose AB":[585,155,1008,805],"Primrose C":[1008,155,1535,805],"Primrose D":[1535,155,1915,805],"Camellia":[988,1095,1449,1352],"Camellia A":[988,1095,1221,1352],"Camellia B":[1221,1095,1449,1352],"Verbena":[1449,1095,1915,1352]}};
+  var BOX = DATA.box, MEAL = {bfast: 1, lunch: 1, dinner: 1, recep: 1, brk: 1};
+  var today = new Intl.DateTimeFormat("en-CA", {timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date());
+  // past days are removed, never shown
+  var dates = Object.keys(DATA.days).sort().filter(function (d) { return d >= today; });
+  var map = document.getElementById("map"), chips = document.getElementById("chips");
+  if (!dates.length) { document.getElementById("empty").hidden = false; map.parentNode.hidden = true; document.getElementById("hint").hidden = true; return; }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  function label(d, long) { var x = new Date(d + "T12:00:00"); return x.toLocaleDateString("en-US", long ? {weekday: "short", month: "numeric", day: "numeric"} : {weekday: "short"}).toUpperCase().replace(",", ""); }
+  function lines(s) { return s.map(function (l) { return '<div class="ln ' + l[2] + (MEAL[l[2]] ? " meal" : "") + '"><b>' + esc(l[0]) + "</b> " + esc(l[1]) + "</div>"; }).join(""); }
+  function body(e) { return '<div class="g">' + esc(e.g) + '</div><div class="ct">' + esc(e.ct) + "</div>" + lines(e.s) + (e.flag ? '<div class="flag">⚑ ' + esc(e.flag) + "</div>" : ""); }
+  function pct(b) { return "left:" + b[0] / 20 + "%;top:" + b[1] / 15.45 + "%;width:" + (b[2] - b[0]) / 20 + "%;height:" + (b[3] - b[1]) / 15.45 + "%"; }
+  function draw(d) {
+    var day = DATA.days[d];
+    chips.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.dataset.d == d); });
+    var h = '<img class="plan" src="livemap/floorplan.png" alt="Meeting level floor plan">';
+    day.ghosts.forEach(function (g) { h += '<img class="ghostl" src="' + g[4] + '" alt="" style="' + pct(g) + '">'; });
+    h += '<div class="title"><h2>' + label(d, true) + "</h2></div>";
+    Object.keys(BOX).forEach(function (r) {
+      var e = day.ev[r]; if (!e) return;
+      h += '<div class="rm on" style="' + pct(BOX[r]) + (/^Primrose (A|B|AB)$/.test(r) ? ";padding-left:3.8cqw" : "") + '">' + body(e) + "</div>";
+    });
+    if (day.off.length) h += '<div class="offmap"><h3>Off the map</h3><div id="off">' + day.off.map(function (e) { return '<div class="card"><div class="nm">' + esc(e.room) + "</div>" + body(e) + "</div>"; }).join("") + "</div></div>";
+    if (day.contacts.length) h += '<div class="legend"><h3>Contacts</h3>' + day.contacts.map(function (c) { return '<span class="gc"><b>' + esc(c[0]) + "</b> <span>" + esc(c[1]) + "</span></span>"; }).join("") + "</div>";
+    map.innerHTML = h;
+    try { history.replaceState(null, "", "#" + d); } catch (e) {}
+  }
+  chips.innerHTML = dates.map(function (d) { return '<button data-d="' + d + '">' + label(d) + '<span class="t">' + (+d.slice(5, 7)) + "/" + (+d.slice(8)) + "</span></button>"; }).join("");
+  chips.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) draw(b.dataset.d); });
+  var want = location.hash.slice(1);
+  draw(dates.indexOf(want) >= 0 ? want : (dates.indexOf(today) >= 0 ? today : dates[0]));
+})();
+</script>
+</body>
+</html>
