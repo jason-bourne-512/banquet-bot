@@ -22,6 +22,10 @@
   .pages { color:var(--muted); font-size:12px; }
   h2 { font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:26px 0 10px; }
   .empty, .deny { color:var(--muted); padding:30px 0; }
+  /* site lattice background, full screen on phone and desktop */
+  body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background:radial-gradient(ellipse at 100% 0,#2a4f6a59,transparent 46%),radial-gradient(ellipse at 0 100%,#5a4f9a24,transparent 52%),repeating-linear-gradient(60deg,transparent 0 33px,#84d3ff0c 33px 34px),repeating-linear-gradient(-60deg,transparent 0 33px,#b7a8ff0a 33px 34px),#101820; }
+  body > * { position:relative; z-index:1; }
+  html.bbd main { max-width:none; }
 </style>
 <script src="theme.js"></script>
 </head>
@@ -43,7 +47,7 @@
   var base = "https://firestore.googleapis.com/v1/projects/the-wire-587e6/databases/(default)/documents/" + col + "/views-";
   var KEYQ = "?key=AIzaSyCr9z1e8neChgnRsEeSHX7fM_5h_jhTcxQ";
   var LABEL = {index: "Home", today: "Daily Brief", rundown: "Rundown", overview: "Overview", housemen: "Housemen", menu: "Menu", info: "Info",
-    training: "Training", rooms: "Rooms", "room-map": "Room Map", "room_map": "Room Map", handbook: "Handbook"};
+    training: "Training", rooms: "Rooms", "room-map": "Room Map", "room_map": "Room Map", "live-map": "Live Map", "live_map": "Live Map", handbook: "Handbook"};
   Promise.all(months.map(function (m) { return fetch(base + m + KEYQ).then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; }); }))
   .then(function (docs) {
     var rows = [];   // {date, who, page, n}

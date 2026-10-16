@@ -30,6 +30,10 @@
   .zoom button.fit { font-size:11px; letter-spacing:.06em; padding:0 8px; }
   .zoom button:active { background:#24394a; }
   .empty { max-width:1500px; margin:40px auto; padding:0 16px; color:var(--muted); }
+  /* site lattice background, full screen on phone and desktop */
+  body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background:radial-gradient(ellipse at 100% 0,#2a4f6a59,transparent 46%),radial-gradient(ellipse at 0 100%,#5a4f9a24,transparent 52%),repeating-linear-gradient(60deg,transparent 0 33px,#84d3ff0c 33px 34px),repeating-linear-gradient(-60deg,transparent 0 33px,#b7a8ff0a 33px 34px),#101820; }
+  body > * { position:relative; z-index:1; }
+  html.bbd .top, html.bbd .hint, html.bbd .stage, html.bbd .empty { max-width:none; }
 
   /* the printable sheet — same look as the paper floor maps */
   .map { position:relative; width:100%; margin:0 auto; aspect-ratio:2000/1545; container-type:inline-size; background:#fff; color:var(--ink);
@@ -64,7 +68,7 @@
 
   @page { size:letter landscape; margin:0.25in; }
   @media print {
-    body { background:#fff; }
+    body { background:#fff; } body::before { display:none; }
     .top, .hint, #bb-gate, .bbd-side, .bbd-top { display:none !important; }
     html.bbd body { padding:0 !important; }
     .stage { padding:0; max-width:none; } .zoom { display:none !important; }
