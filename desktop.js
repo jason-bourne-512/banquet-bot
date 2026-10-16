@@ -5,8 +5,8 @@
 (function () {
   var DESK = "bb-desk", WHO = "bb-hsm-who", MINI = "bb-desk-mini", SIDE = 236, RAIL = 64;
   var PAGES = [
-    ["index.html", "Home", "⌂"], ["today.html", "Today", "☀"], ["rundown.html#rundown", "Rundown", "▤"], ["rundown.html#overview", "Overview", "▦"],
-    ["housemen.html", "Housemen", "⚒"], ["live-map.html", "Live Map", "⌖"], ["rooms.html", "Rooms", "▢"], ["menu.html", "Menu", "◈"],
+    ["index.html", "Home", "⌂"], ["today.html", "Today", "☀"], ["live-map.html", "Live Map", "⌖"], ["rundown.html#rundown", "Rundown", "▤"],
+    ["rundown.html#overview", "Overview", "▦"], ["housemen.html", "Housemen", "⚒"], ["rooms.html", "Rooms", "▢"], ["menu.html", "Menu", "◈"],
     ["info.html", "Info", "ℹ"], ["training.html", "Training", "✎"], ["handbook.html", "Handbook", "❏"]
   ];
   var ACCENT = {captain: "#f2c879", director: "#5fe3c0"};
