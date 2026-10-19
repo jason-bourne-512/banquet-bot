@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+<meta name="theme-color" content="#101820">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="icon" href="favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Bar Reference — Banquet Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+:root {
+  --bg:#09090c; --bg-card:#111316; --bg-active:#181c26;
+  --border:rgba(255,255,255,0.06); --border-h:rgba(255,255,255,0.13);
+  --text-1:#edeae2; --text-2:#7e7b74; --text-3:#44423f; --text-4:#2e2c2a;
+  --accent:#c9a84c; --accent-dim:rgba(139,209,255,0.10);
+  --green:#2dbd80; --green-dim:rgba(120,214,202,0.10);
+  --blue:#4f8ef0; --blue-dim:rgba(139,209,255,0.10);
+  --red:#e05555; --red-dim:rgba(255,143,143,0.10);
+  --purple:#a06ee8; --purple-dim:rgba(160,110,232,0.10);
+  --header-bg:rgba(16,24,32,0.94);
+  --tog-bg:#16181e; --tog-border:rgba(255,255,255,0.08); --tog-act:rgba(255,255,255,0.07);
+  --divider:rgba(255,255,255,0.04); --stripe:rgba(255,255,255,0.014);
+}
+[data-theme="light"] {
+  --bg:#f0ece3; --bg-card:#faf7f2; --bg-active:#e8e2d6;
+  --border:rgba(0,0,0,0.07); --border-h:rgba(0,0,0,0.15);
+  --text-1:#18160f; --text-2:#6b6760; --text-3:#9e9a92; --text-4:#c0bbb2;
+  --accent:#9a7422; --accent-dim:rgba(154,116,34,0.09);
+  --green:#1a8f5e; --green-dim:rgba(26,143,94,0.09);
+  --blue:#2558c4; --blue-dim:rgba(37,88,196,0.09);
+  --red:#c03030; --red-dim:rgba(180,50,50,0.08);
+  --purple:#7c45c0; --purple-dim:rgba(124,69,192,0.09);
+  --header-bg:rgba(240,236,227,0.94);
+  --tog-bg:#e4dfd4; --tog-border:rgba(0,0,0,0.08); --tog-act:rgba(0,0,0,0.05);
+  --divider:rgba(0,0,0,0.05); --stripe:rgba(0,0,0,0.010);
+}
+html { background:var(--bg); min-height:100%; overflow-x:hidden; }
+body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif; min-height:100vh; min-height:100dvh; width:100%; overflow-x:hidden; }
+.page-wrap { max-width:480px; min-height:100vh; min-height:100dvh; margin:0 auto; background:var(--bg); }
+@media (orientation:landscape){ .page-wrap { max-width:100%; } }
+
+.header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--header-bg); backdrop-filter:blur(14px); z-index:20; gap:8px; }
+.brand { display:flex; align-items:center; gap:9px; flex-shrink:0; text-decoration:none; }
+.brand-icon { width:32px; height:32px; background:var(--accent-dim); border:1px solid var(--accent); border-radius:7px; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; color:var(--accent); }
+.brand-name { font-family:'Bebas Neue',sans-serif; font-size:19px; letter-spacing:1.5px; color:var(--text-1); line-height:1; }
+.brand-sub { font-family:'DM Mono',monospace; font-size:8px; color:var(--text-3); margin-top:1px; }
+.controls { display:flex; align-items:center; gap:5px; flex-shrink:0; }
+.toggle-group { display:flex; background:var(--tog-bg); border:1px solid var(--tog-border); border-radius:7px; overflow:hidden; }
+.tgl { padding:5px 8px; font-family:'DM Mono',monospace; font-size:10px; font-weight:500; color:var(--text-3); background:none; border:none; cursor:pointer; transition:background .12s,color .12s; line-height:1; }
+.tgl.active { background:var(--tog-act); color:var(--text-1); }
+.tgl+.tgl { border-left:1px solid var(--tog-border); }
+
+.page-hero { padding:20px 16px 16px; border-bottom:1px solid var(--divider); position:relative; overflow:hidden; }
+.page-hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-55deg,var(--stripe) 0px,var(--stripe) 1px,transparent 1px,transparent 18px); pointer-events:none; }
+.page-eyebrow { font-family:'DM Mono',monospace; font-size:9px; color:var(--accent); letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+.page-title { font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:1px; color:var(--text-1); line-height:0.95; margin-bottom:6px; }
+.page-meta { font-family:'DM Mono',monospace; font-size:9px; color:var(--text-3); }
+
+.search-wrap { padding:12px 16px; background:var(--bg-card); border-bottom:1px solid var(--border); position:sticky; top:57px; z-index:15; }
+.search-input { width:100%; background:var(--bg); border:1px solid var(--border-h); border-radius:20px; padding:9px 14px 9px 36px; font-family:'Inter',sans-serif; font-size:13px; color:var(--text-1); outline:none; transition:border-color .15s; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b6259' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>"); background-repeat:no-repeat; background-position:12px center; }
+.search-input:focus { border-color:var(--accent); }
+.search-input::placeholder { color:var(--text-3); }
+.search-status { font-family:'DM Mono',monospace; font-size:9px; color:var(--text-3); text-align:center; padding:8px; display:none; }
+.search-status.show { display:block; }
+
+.sec { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-4); padding:16px 16px 8px; display:flex; align-items:center; gap:10px; }
+.sec::after { content:''; flex:1; height:1px; background:var(--divider); }
+
+.content-list { padding:0 16px 48px; display:flex; flex-direction:column; gap:8px; }
+.tr-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; overflow:hidden; border-left:3px solid var(--c-color,var(--accent)); }
+.tr-card.is-hidden { display:none; }
+.tr-head { padding:13px 14px 11px; display:flex; align-items:center; gap:10px; cursor:pointer; }
+.tr-icon { font-size:16px; flex-shrink:0; }
+.tr-title { font-size:13px; font-weight:600; color:var(--text-1); flex:1; line-height:1.3; }
+.tr-chevron { font-size:11px; color:var(--text-4); transition:transform .2s; flex-shrink:0; }
+.tr-card.open .tr-chevron { transform:rotate(90deg); }
+.tr-body { display:none; padding:0 14px 14px; }
+.tr-card.open .tr-body { display:block; }
+.tr-body p { font-size:12px; color:var(--text-2); line-height:1.65; margin-bottom:10px; }
+.tr-body p:last-child { margin-bottom:0; }
+.tr-body ul { padding-left:16px; margin-bottom:10px; }
+.tr-body li { font-size:12px; color:var(--text-2); line-height:1.65; margin-bottom:4px; }
+.tr-body strong { color:var(--text-1); font-weight:600; }
+.tr-body ol { padding-left:16px; margin-bottom:10px; }
+.tr-body ol li { font-size:12px; color:var(--text-2); line-height:1.65; margin-bottom:4px; }
+
+.tr-sub { margin-bottom:10px; }
+.tr-sub-title { font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--accent); margin-bottom:6px; padding-bottom:5px; border-bottom:1px solid var(--divider); }
+
+.note-box { background:var(--blue-dim); border:1px solid rgba(139,209,255,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.note-box p { color:var(--blue); font-size:11px; margin-bottom:0; }
+.warn-box { background:var(--red-dim); border:1px solid rgba(255,143,143,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.warn-box p { color:var(--red); font-size:11px; margin-bottom:0; }
+.tip-box { background:var(--green-dim); border:1px solid rgba(120,214,202,0.2); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+.tip-box p { color:var(--green); font-size:11px; margin-bottom:0; }
+
+.gloss-table { width:100%; border-collapse:collapse; margin-bottom:4px; }
+.gloss-table tr { border-bottom:1px solid var(--divider); }
+.gloss-table tr:last-child { border-bottom:none; }
+.gloss-table td { padding:6px 4px; font-size:11px; line-height:1.5; vertical-align:top; }
+.gloss-table td:first-child { font-family:'DM Mono',monospace; font-size:10px; color:var(--accent); font-weight:500; width:38%; padding-right:8px; }
+.gloss-table td:last-child { color:var(--text-2); }
+
+.wine-table { width:100%; border-collapse:collapse; margin-bottom:4px; }
+.wine-table tr { border-bottom:1px solid var(--divider); }
+.wine-table tr:last-child { border-bottom:none; }
+.wine-table th { font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--text-3); padding:6px 4px; text-align:left; }
+.wine-table td { padding:5px 4px; font-size:11px; color:var(--text-2); line-height:1.4; vertical-align:top; }
+.wine-table td:first-child { font-weight:500; color:var(--text-1); }
+
+.step-list { list-style:none; padding:0; margin-bottom:10px; counter-reset:steps; }
+.step-list li { display:flex; gap:8px; align-items:flex-start; font-size:12px; color:var(--text-2); line-height:1.6; margin-bottom:6px; counter-increment:steps; }
+.step-list li::before { content:counter(steps); font-family:'DM Mono',monospace; font-size:9px; font-weight:500; color:var(--accent); background:var(--accent-dim); border:1px solid rgba(139,209,255,0.2); border-radius:4px; min-width:18px; height:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+
+.rule-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; padding:2px 7px; border-radius:4px; font-weight:500; margin-right:4px; }
+.rb-left { background:var(--green-dim); color:var(--green); }
+.rb-right { background:var(--blue-dim); color:var(--blue); }
+@media (min-width: 900px) {
+  .header, .page-hero, .sec, .content-list { max-width: 460px; margin-left: auto; margin-right: auto; }
+  .tr-card:hover { transform: translateY(-2px); }
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/bb-reference.css">
+<script src="theme.js"></script>
+</head>
+<body class="bb-ref">
+<div class="page-wrap">
+
+<header class="ref-header">
+  <a class="bb-brand" href="index.html"><span class="bb-mark">bb</span>BANQUET BOT</a>
+  <a class="bb-btn" href="index.html">‹ Home</a>
+</header>
+
+<div class="page-hero">
+  <div class="page-eyebrow">House Bar · AUSDW</div>
+  <div class="page-title">Bar Reference</div>
+  <div class="page-meta">Spirits, cocktails, wine and beer — what we pour and how</div>
+</div>
+
+<div class="search-wrap">
+  <input class="search-input" type="text" id="refSearch" placeholder="Search drinks…" oninput="filterRef(this.value)">
+  <div class="search-status" id="searchStatus"></div>
+</div>
+
+<div class="sec">Quick reference</div>
+<div class="content-list">
+  <div class="tr-card" data-keywords="most ordered pour gluten free bourbon pepsi" style="--c-color:var(--red)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">⚡</span>
+      <div class="tr-title">At a glance</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <ul>
+        <li><strong>Most ordered:</strong> Vodka Soda · Jack &amp; Coke · Margarita · Gin &amp; Tonic · Rum &amp; Coke</li>
+        <li><strong>Pour:</strong> 1.5 oz standard · 2 oz for neat or spirit-forward cocktails</li>
+        <li><strong>Gluten-free:</strong> Austin Eastciders</li>
+        <li><strong>Guest asks for bourbon:</strong> Jack Daniel’s (technically Tennessee whiskey)</li>
+        <li><strong>Not on the list:</strong> “We’re running a hosted bar tonight — can I make you something with one of these?”</li>
+      </ul>
+      <div class="note-box"><p>The hotel pours Pepsi products — “& Coke” drinks are made with Pepsi.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">The bar</div>
+<div class="content-list">
+  <div class="tr-card" data-keywords="spirits brands bourbon scotch vodka gin tequila rum whisky" style="--c-color:var(--accent)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🥃</span>
+      <div class="tr-title">Spirits — house brands</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <table class="wine-table">
+        <tr><th>Spirit</th><th>Brand</th><th>Character</th></tr>
+        <tr><td>Bourbon</td><td>Jack Daniel’s</td><td>Smooth Tennessee whiskey — vanilla, caramel, light smoke</td></tr>
+        <tr><td>Scotch</td><td>Dewar’s White Label</td><td>Blended Scotch — honeyed, mellow, approachable</td></tr>
+        <tr><td>Vodka</td><td>Tito’s</td><td>Austin-made, clean and neutral — the universal spirit</td></tr>
+        <tr><td>Gin</td><td>Tanqueray</td><td>Bold London Dry — juniper-forward, crisp</td></tr>
+        <tr><td>Canadian whisky</td><td>Canadian Club</td><td>Light and smooth — gentle rye spice</td></tr>
+        <tr><td>Tequila</td><td>Jose Cuervo Gold</td><td>Aged blend — warm agave, light oak, slightly sweet</td></tr>
+        <tr><td>Rum</td><td>Bacardi Superior</td><td>White rum — clean, light, subtle vanilla</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="tr-card" data-keywords="cocktails old fashioned margarita mojito daiquiri cosmopolitan sour tonic soda" style="--c-color:var(--accent)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🍸</span>
+      <div class="tr-title">Cocktails</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <div class="tr-sub"><div class="tr-sub-title">Bourbon</div></div>
+      <ul>
+        <li><strong>Jack &amp; Coke</strong> — Jack Daniel’s, cola, lime. Rocks.</li>
+        <li><strong>Old Fashioned</strong> — Jack Daniel’s, simple syrup, Angostura bitters, orange peel. Large cube.</li>
+        <li><strong>Whiskey Sour</strong> — Jack Daniel’s, lemon juice, simple syrup. Shaken, rocks.</li>
+      </ul>
+      <div class="tr-sub"><div class="tr-sub-title">Vodka</div></div>
+      <ul>
+        <li><strong>Vodka Soda</strong> — Tito’s, soda, lime. Highball.</li>
+        <li><strong>Vodka Tonic</strong> — Tito’s, tonic, lime. Highball.</li>
+        <li><strong>Vodka Cranberry</strong> — Tito’s, cranberry, lime. Rocks.</li>
+        <li><strong>Cosmopolitan</strong> — Tito’s, triple sec, lime juice, cranberry. Shaken, martini glass.</li>
+      </ul>
+      <div class="tr-sub"><div class="tr-sub-title">Tequila</div></div>
+      <ul>
+        <li><strong>Margarita</strong> — Cuervo Gold, lime juice, triple sec. Shaken, rocks. Salt rim optional.</li>
+        <li><strong>Tequila Soda</strong> — Cuervo Gold, soda, lime. Highball.</li>
+      </ul>
+      <div class="tr-sub"><div class="tr-sub-title">Gin</div></div>
+      <ul>
+        <li><strong>Gin &amp; Tonic</strong> — Tanqueray, tonic, lime. Highball.</li>
+        <li><strong>Gin Soda</strong> — Tanqueray, soda, lime. Lighter, drier.</li>
+      </ul>
+      <div class="tr-sub"><div class="tr-sub-title">Rum</div></div>
+      <ul>
+        <li><strong>Rum &amp; Coke</strong> — Bacardi, cola, lime. Rocks.</li>
+        <li><strong>Daiquiri</strong> — Bacardi, lime juice, simple syrup. Shaken, coupe.</li>
+        <li><strong>Mojito</strong> — Bacardi, lime juice, simple syrup, fresh mint, soda. Highball.</li>
+      </ul>
+      <div class="tr-sub"><div class="tr-sub-title">Scotch</div></div>
+      <ul>
+        <li><strong>Neat</strong> — Dewar’s, 2 oz, rocks glass, no ice.</li>
+        <li><strong>On the rocks</strong> — Dewar’s, one large cube.</li>
+        <li><strong>Scotch &amp; Soda</strong> — Dewar’s, soda. Highball.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tr-card" data-keywords="wine chardonnay cabernet" style="--c-color:var(--purple)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🍷</span>
+      <div class="tr-title">Wine</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <ul>
+        <li><strong>Vista Point Chardonnay</strong> — Chilled white — crisp apple and citrus, lightly oaked. White wine glass.</li>
+        <li><strong>Vista Point Cabernet Sauvignon</strong> — Full red — dark fruit, soft tannins. Room temperature. Red wine glass.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tr-card" data-keywords="beer cider lager ale shiner stella dos equis" style="--c-color:var(--green)">
+    <div class="tr-head" onclick="toggleCard(this.parentElement)">
+      <span class="tr-icon">🍺</span>
+      <div class="tr-title">Beer &amp; cider</div>
+      <span class="tr-chevron">▶</span>
+    </div>
+    <div class="tr-body">
+      <table class="wine-table">
+        <tr><th>Beer</th><th>Style</th><th>Character</th></tr>
+        <tr><td>Dos Equis XX</td><td>Mexican lager</td><td>Light, crisp — pairs with anything</td></tr>
+        <tr><td>Stella Artois</td><td>Belgian pilsner</td><td>Clean, slightly bitter, upscale</td></tr>
+        <tr><td>Shiner Bock</td><td>Texas dark lager</td><td>Malty and smooth — the Texas classic</td></tr>
+        <tr><td>Fireman’s #4</td><td>Texas blonde ale</td><td>Light local craft, citrus finish</td></tr>
+        <tr><td>Austin Eastciders</td><td>Hard cider</td><td>Not beer — the gluten-free option</td></tr>
+        <tr><td>Budweiser</td><td>American lager</td><td>The standard</td></tr>
+        <tr><td>Bud Light</td><td>Light lager</td><td>Most-ordered domestic</td></tr>
+        <tr><td>Miller Lite</td><td>Light lager</td><td>A touch more bitter than Bud Light</td></tr>
+        <tr><td>Lone Star</td><td>Texas lager</td><td>Hometown retro favorite</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+function toggleCard(card){ card.classList.toggle('open'); }
+function filterRef(q){
+  const term=q.trim().toLowerCase(), cards=document.querySelectorAll('.tr-card'); let visible=0;
+  cards.forEach(c=>{
+    const match=!term||((c.dataset.keywords||'')+' '+c.textContent).toLowerCase().includes(term);
+    c.classList.toggle('is-hidden',!match);
+    if(match){visible++; if(term) c.classList.add('open');} else c.classList.remove('open');
+  });
+  const st=document.getElementById('searchStatus');
+  if(term){st.textContent=visible+' result'+(visible!==1?'s':''); st.classList.add('show');} else st.classList.remove('show');
+}
+</script>
+</div>
+</body>
+</html>

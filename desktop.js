@@ -7,7 +7,8 @@
   var PAGES = [
     ["index.html", "Home", "⌂"], ["today.html", "Today", "☀"], ["live-map.html", "Live Map", "⌖"], ["rundown.html#rundown", "Rundown", "▤"],
     ["rundown.html#overview", "Overview", "▦"], ["housemen.html", "Housemen", "⚒"], ["rooms.html", "Rooms", "▢"], ["menu.html", "Menu", "◈"],
-    ["info.html", "Info", "ℹ"], ["training.html", "Training", "✎"], ["handbook.html", "Handbook", "❏"]
+    ["info.html", "Info", "ℹ"], ["training.html", "Training", "✎"], ["handbook.html", "Handbook", "❏"],
+    ["playbook.html", "Captain Playbook", "☰"], ["bar.html", "Bar Reference", "🍸"]
   ];
   var ACCENT = {captain: "#f2c879", director: "#5fe3c0", sem: "#cbb4ff"};
   var ROLE_TITLE = {captain: "Captain", director: "Director of Event Operations", sem: "Senior Events Manager"};
