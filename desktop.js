@@ -256,17 +256,7 @@
       "background:rgba(9,15,21,.9);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid #ffffff10;box-shadow:inset 0 -1px 0 color-mix(in srgb,var(--bbd-acc) 25%,transparent);font-family:Manrope,Arial,sans-serif}" +
     ".bbd-title{font:600 24px 'Barlow Condensed',Arial;letter-spacing:.8px;text-transform:uppercase;color:#eaf3fa;white-space:nowrap}" +
     ".bbd-title small{font:800 9px Manrope,Arial;letter-spacing:2px;color:var(--bbd-acc);margin-left:10px;vertical-align:middle}" +
-    ".bbd-jump{position:relative;flex:1;max-width:460px;margin-left:auto}" +
-    ".bbd-jump input{width:100%;box-sizing:border-box;border:1px solid #ffffff1c;background:#0b151e;color:#eaf3fa;border-radius:10px;padding:9px 12px 9px 34px;font:600 13px Manrope,Arial;outline:none}" +
-    ".bbd-jump input:focus{border-color:var(--bbd-acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--bbd-acc) 18%,transparent)}" +
-    ".bbd-jump::before{content:'⌕';position:absolute;left:12px;top:50%;transform:translateY(-52%);color:#6f8aa0;font-size:15px}" +
-    ".bbd-jump kbd{position:absolute;right:9px;top:50%;transform:translateY(-50%);font:700 10px Manrope,Arial;color:#6f8aa0;border:1px solid #ffffff1c;border-radius:5px;padding:1px 6px}" +
-    ".bbd-res{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#0e1923;border:1px solid #ffffff1c;border-radius:10px;padding:5px;display:none;box-shadow:0 14px 40px #000a}" +
-    ".bbd-res.on{display:block}" +
-    ".bbd-res a{display:flex;gap:10px;padding:8px 10px;border-radius:7px;color:#d6e3ee;text-decoration:none;font:700 13px Manrope,Arial}" +
-    ".bbd-res a.sel,.bbd-res a:hover{background:color-mix(in srgb,var(--bbd-acc) 16%,transparent);color:#fff}" +
-    ".bbd-res a span{margin-left:auto;color:#6f8aa0;font-size:11px}" +
-    ".bbd-tiles{display:flex;gap:8px}" +
+    ".bbd-tiles{display:flex;gap:8px;margin-left:auto}" +
     ".bbd-tile{border:1px solid #ffffff14;background:#ffffff06;border-radius:10px;padding:5px 11px;text-align:right;line-height:1.1}" +
     ".bbd-tile b{display:block;font:600 19px 'Barlow Condensed',Arial;color:#eaf3fa;letter-spacing:.6px;font-variant-numeric:tabular-nums}" +
     ".bbd-tile span{font:800 8.5px Manrope,Arial;letter-spacing:1.6px;color:#6f8aa0;text-transform:uppercase}" +
@@ -398,7 +388,6 @@
     var top = document.createElement("header");
     top.className = "bbd-top";
     top.innerHTML = '<div class="bbd-title">' + esc(title) + "<small>DESKTOP</small></div>" +
-      '<div class="bbd-jump"><input id="bbd-q" placeholder="Jump to a page…" autocomplete="off"><kbd>⌘K</kbd><div class="bbd-res" id="bbd-res"></div></div>' +
       '<div class="bbd-tiles"><div class="bbd-tile"><b id="bbd-date"></b><span>Hotel date</span></div><div class="bbd-tile live"><b id="bbd-clock"></b><span><i class="bbd-dot"></i>Austin · CT</span></div></div>';
     document.body.appendChild(side); document.body.appendChild(top);
     window.addEventListener("hashchange", function () {
@@ -415,29 +404,6 @@
     }
     tick(); setInterval(tick, 1000);
 
-    // quick jump: ⌘K / Ctrl+K or "/" to focus, arrows + Enter to go; number keys 1–9 jump when not typing
-    var q = document.getElementById("bbd-q"), res = document.getElementById("bbd-res"), sel = 0, hits = [];
-    function draw() {
-      var s = q.value.trim().toLowerCase();
-      hits = PAGES.filter(function (p) { return !s || p[1].toLowerCase().indexOf(s) >= 0 || p[0].indexOf(s) >= 0; });
-      sel = Math.min(sel, Math.max(hits.length - 1, 0));
-      res.innerHTML = hits.map(function (p, i) { return '<a href="' + p[0] + '" class="' + (i == sel ? "sel" : "") + '"><i>' + p[2] + "</i>" + p[1] + "<span>" + p[0] + "</span></a>"; }).join("") || '<a>No match</a>';
-      res.classList.toggle("on", document.activeElement == q);
-    }
-    q.addEventListener("focus", draw); q.addEventListener("input", function () { sel = 0; draw(); });
-    q.addEventListener("blur", function () { setTimeout(function () { res.classList.remove("on"); }, 150); });
-    q.addEventListener("keydown", function (e) {
-      if (e.key == "ArrowDown") { sel = Math.min(sel + 1, hits.length - 1); draw(); e.preventDefault(); }
-      else if (e.key == "ArrowUp") { sel = Math.max(sel - 1, 0); draw(); e.preventDefault(); }
-      else if (e.key == "Enter" && hits[sel]) location.href = hits[sel][0];
-      else if (e.key == "Escape") q.blur();
-    });
-    document.addEventListener("keydown", function (e) {
-      var typing = /^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement || {}).tagName || "") || (document.activeElement || {}).isContentEditable;
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() == "k") { e.preventDefault(); q.focus(); q.select(); return; }
-      if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.key == "/") { e.preventDefault(); q.focus(); return; }
-    });
     side.addEventListener("click", function (e) {
       var b = e.target.closest("[data-bbd]"); if (!b) return;
       if (b.dataset.bbd == "fold") {
