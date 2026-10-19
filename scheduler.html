@@ -86,7 +86,7 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
 <div class="wrap" id="gate" hidden><div class="sub" style="margin-top:30vh;text-align:center">This page is still being tested.<br><a href="index.html" style="color:#8bd1ff">← Home</a></div></div>
 <div class="wrap" id="wrap">
   <a href="index.html" style="color:var(--blue);text-decoration:none;font:600 13px Manrope">← Home</a>
-  <div class="card" style="border-color:#f2c87955;background:#f2c8790f;font-size:12.5px;color:var(--amber)" id="testNote">Practice mode: sample availability and this week's events. Nothing here is sent or saved for anyone else.</div>
+  <div class="card" style="border-color:#f2c87955;background:#f2c8790f;font-size:12.5px;color:var(--amber)">Testing mode: what you send is shared with Jason and Dylan only. The week shown is this week's real events.</div>
   <div class="sub">BANQUET BOT · WESTIN AUSTIN DOMAIN</div>
   <h1>Scheduler <span class="demo" id="stage">BETA</span></h1>
   <div class="sub">Servers send availability → Banquet Bot drafts the week from the events and Hector's own staffing habits → Hector and Jason adjust and post.</div>
@@ -111,11 +111,11 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
       <div class="av" id="avGrid"></div>
       <div style="margin-top:12px"><textarea id="avNote" placeholder="Anything Hector should know? (e.g. class Tuesday until 1pm)"></textarea></div>
       <div class="row" style="margin-top:10px;justify-content:space-between">
-        <span class="sub" id="dueNote">Due Wednesday 5pm for next week</span>
+        <span class="sub" id="dueNote"></span>
         <button class="btn" id="send">Send availability</button>
       </div>
     </div>
-    <p class="note">Sample availability is filled in for everyone so the builder has something to work with. Change anyone's days here and tab 2 updates.</p>
+    <p class="note">Anyone who hasn't sent yet shows sample availability so the builder has something to work with.</p>
   </section>
 
   <!-- 2. LEAD VIEW -->
@@ -202,9 +202,24 @@ const SAMPLE = {
   Hilnery:["off","am","off","am","off","am","am",3], Raibely:["all","off","off","off","am","am","off",2],
   Adrian:["off","off","pm","off","off","am","pm",2], Ozzy:["pm","pm","off","off","off","off","pm",2]
 };
-let AV = {}; try { AV = JSON.parse(localStorage.getItem("bb-sched-av") || "null") || {}; } catch (e) {}
+// Shared storage: one Firestore doc per week (same project + collection as Housemen; localhost uses the test collection).
+// Everyone starts on sample availability; a server's real answer replaces it the moment they send it.
+const WEEK = "sched-" + Object.keys(DATA.week)[0];
+let AV = {}, SENT = {}, DIRTY = {};
 ROSTER.forEach(n => { if (!AV[n]) AV[n] = {days: SAMPLE[n].slice(0, 7), want: SAMPLE[n][7], note: ""}; });
-const save = () => { try { localStorage.setItem("bb-sched-av", JSON.stringify(AV)); } catch (e) {} };
+const save = () => { DIRTY[me] = true; };
+const when = ts => new Date(ts).toLocaleString("en-US", {timeZone: "America/Chicago", weekday: "short", hour: "numeric", minute: "2-digit"});
+// Called by the Firestore listener (module script below) with the week's doc.
+window.schedRemote = data => {
+  const av = (data && data.av) || {};
+  Object.keys(av).forEach(n => {
+    if (!AV[n] || DIRTY[n]) return;
+    AV[n] = {days: av[n].days.slice(0, 7), want: av[n].want, note: av[n].note || ""};
+    SENT[n] = av[n];
+  });
+  renderAvail();
+  if (document.getElementById("v-build").classList.contains("on")) { if (!Object.keys(ASSIGN).length) autoFill(); renderBuild(); }
+};
 let me = ROSTER.includes(WHO.name) ? WHO.name : "Francisco";
 const $ = s => document.querySelector(s);
 const toast = t => { const el = $("#toast"); el.textContent = t; el.classList.add("on"); setTimeout(() => el.classList.remove("on"), 2200); };
@@ -222,6 +237,7 @@ function renderAvail() {
   $("#whoTop").textContent = me;
   $("#whoName").textContent = me;
   $("#want").textContent = AV[me].want;
+  $("#dueNote").textContent = DIRTY[me] ? "Not sent yet — tap Send" : SENT[me] ? "Sent " + when(SENT[me].at) + (SENT[me].by && SENT[me].by !== me ? " (by " + SENT[me].by + ")" : "") : "Not sent yet · sample days shown";
   $("#avNote").value = AV[me].note || "";
   $("#avGrid").innerHTML = DAYS.map((d, i) => {
     const v = AV[me].days[i], x = new Date(d + "T12:00");
@@ -237,7 +253,16 @@ $("#switch").onclick = () => { me = ROSTER[(ROSTER.indexOf(me) + 1) % ROSTER.len
 $("#wMinus").onclick = () => { AV[me].want = Math.max(0, AV[me].want - 1); save(); renderAvail(); };
 $("#wPlus").onclick = () => { AV[me].want = Math.min(7, AV[me].want + 1); save(); renderAvail(); };
 $("#avNote").oninput = e => { AV[me].note = e.target.value; save(); };
-$("#send").onclick = () => toast("Sent to Hector & Jason ✓ (demo — nothing actually sent)");
+$("#send").onclick = async () => {
+  const rec = {days: AV[me].days.slice(), want: AV[me].want, note: AV[me].note || "", at: Date.now(), by: WHO.name};
+  const b = $("#send"); b.disabled = true; b.textContent = "Sending…";
+  try {
+    if (!window.schedSave) throw new Error("not connected");
+    await window.schedSave(me, rec);
+    DIRTY[me] = false; SENT[me] = rec; toast("Sent ✓ Jason & Dylan can see it now");
+  } catch (e) { console.error("[scheduler]", e); toast("Didn't send — check signal and try again"); }
+  b.disabled = false; b.textContent = "Send availability"; renderAvail();
+};
 
 // ---------- the rubric, as code
 const amNeed = p => p === 0 ? 0 : p <= 30 ? 1 : p <= 60 ? 2 : p <= 120 ? 3 : Math.ceil(p / 30);
@@ -286,7 +311,9 @@ function autoFill() {
 }
 function renderBuild() {
   const showA = $("#showActual").checked;
-  $("#inCount").textContent = `Availability in from ${ROSTER.length} of ${ROSTER.length} servers. Covers come from this week's event orders.`;
+  const sent = ROSTER.filter(n => SENT[n]);
+  $("#inCount").innerHTML = (sent.length ? "<b>Sent:</b> " + sent.map(n => `${n} <span class="sub">${when(SENT[n].at)}${SENT[n].note ? " · “" + SENT[n].note.replace(/</g, "&lt;") + "”" : ""}</span>`).join(" · ") : "Nobody has sent availability yet.") +
+    `<br><span class="sub">${ROSTER.length - sent.length} others are sample availability. Covers come from this week's event orders.</span>`;
   $("#days").innerHTML = DAYS.map((d, i) => {
     const w = DATA.week[d], p = plan(d);
     let body = p.length ? p.map(s => {
@@ -297,7 +324,7 @@ function renderBuild() {
           <span class="pill ${st}">${got.length}/${s.need}${st === "short" ? " · need " + (s.need - got.length) : st === "over" ? " · +" + (got.length - s.need) : " ✓"}</span></div>
         <div class="meals">${s.meals.map(m => `${m.tag} ${m.n} · ${m.room}`).join("  ·  ")}</div>
         <div class="why">${s.why}</div>
-        <div class="chips" style="margin-top:8px">${got.map(n => `<span class="slot">${n} <i>${shiftsOf(n)}/${AV[n].want}</i><button data-rm="${d}|${s.k}|${n}">×</button></span>`).join("")}
+        <div class="chips" style="margin-top:8px">${got.map(n => `<span class="slot">${n}${SENT[n] ? " ✓" : ""} <i>${shiftsOf(n)}/${AV[n].want}</i><button data-rm="${d}|${s.k}|${n}">×</button></span>`).join("")}
           <button class="add" data-add="${d}|${s.k}">+ add</button></div>
         <div class="pick chips" id="pick-${d}-${s.k}">${avail.length ? avail.map(n => `<span class="chip" data-put="${d}|${s.k}|${n}">${n}<small>${shiftsOf(n)}/${AV[n].want}</small></span>`).join("") : '<span class="sub">Nobody else marked available</span>'}</div>
       </div>`;
@@ -343,6 +370,20 @@ $("#who-load").innerHTML = WHO_LOAD.map(([n, c]) => `<span>${n}</span><span clas
   $("#fit").innerHTML = `Each dot is one past day. The rubric lands within ±1 server of what Hector actually posted on <b>${within} of ${P.length}</b> days.`;
 })();
 renderAvail(); autoFill();
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+if (window.schedRemote) {
+  const LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname), COL = LOCAL ? "housemen_test" : "housemen";
+  const db = getFirestore(initializeApp({
+    apiKey:"AIzaSyCr9z1e8neChgnRsEeSHX7fM_5h_jhTcxQ", authDomain:"the-wire-587e6.firebaseapp.com", projectId:"the-wire-587e6",
+    storageBucket:"the-wire-587e6.firebasestorage.app", messagingSenderId:"18587866711", appId:"1:18587866711:web:96ca4822f8a73512"
+  }));
+  const ref = doc(db, COL, WEEK);
+  window.schedSave = (name, rec) => setDoc(ref, {av: {[name]: rec}, updated: Date.now()}, {merge: true});
+  onSnapshot(ref, snap => window.schedRemote(snap.exists() ? snap.data() : {}), err => console.error("[scheduler] live sync", err));
+}
 </script>
 </body>
 </html>
