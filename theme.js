@@ -212,11 +212,41 @@
       img: "img/me/diana-houston.svg",
       mark: {src: "img/me/diana-houston.svg", opacity: .08},
       tint: {color: "#9b82d9", opacity: .42},
+      bear: /live-map\.html$/,   // Live Map: a Houston bear in a red jersey drops by now and then (see bearLoop)
       // Lavender (Jason 2026-10-18): soft lavender accents on a dusky violet night.
       css: palette("#cbb4ff", "rgba(203,180,255,.15)", "#110d1c", "#1c1630", "#271f42", "rgba(203,180,255,.16)", "rgba(203,180,255,.40)") +
         "body::before{background:radial-gradient(ellipse at 100% 0,#7d63c466,transparent 52%),radial-gradient(ellipse at 0 100%,#cbb4ff1f,transparent 55%),#110d1c!important}" +
         "h1,h2{color:#efe6ff}" + BADGE +
-        ".bb-me-badge{color:#efe6ff;background:linear-gradient(135deg,#4a3880,#1f1838);border:1px solid #cbb4ff88}"
+        ".bb-me-badge{color:#efe6ff;background:linear-gradient(135deg,#4a3880,#1f1838);border:1px solid #cbb4ff88}" +
+        // Bear moments sit above the hue tint (9998) so the jersey stays red.
+        ".bb-bear{position:fixed;z-index:9999;pointer-events:none;width:clamp(92px,10vw,140px)}" +
+        ".bb-bear img{display:block;width:100%;height:auto;border:0;border-radius:0;background:none;margin:0;padding:0;box-shadow:none;filter:drop-shadow(0 5px 10px #000a)}" +
+        ".bb-ball{position:absolute;width:30%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffb066,#e86a10 60%,#a84400);" +
+        "box-shadow:inset 0 0 0 2px #5a2400}" +
+        ".bb-ball::before,.bb-ball::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid #5a2400;border-width:0 2px}" +
+        ".bb-ball::after{border-width:2px 0 0;inset:48% 0 auto;border-radius:0}" +
+        // 1. Dribble: waddles across the bottom, bouncing a ball out front.
+        "@keyframes bbBearCross{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}" +
+        "@keyframes bbWaddle{0%,100%{rotate:-4deg}50%{rotate:4deg}}" +
+        "@keyframes bbDribble{0%,100%{top:56%}50%{top:88%}}" +
+        ".bb-bear.dribble{left:0;bottom:calc(env(safe-area-inset-bottom,0px) + 4px);animation:bbBearCross 13s linear forwards}" +
+        ".bb-bear.dribble.back{animation-direction:reverse}.bb-bear.dribble.back .bb-flip{transform:scaleX(-1)}" +
+        ".bb-bear.dribble img{animation:bbWaddle .5s ease-in-out infinite}" +
+        ".bb-bear.dribble .bb-ball{left:96%;animation:bbDribble .5s ease-in infinite}" +
+        // 2. Peek: pops up from a bottom corner, waves, ducks back down.
+        "@keyframes bbPeek{0%{transform:translateY(105%)}14%,84%{transform:translateY(38%)}100%{transform:translateY(105%)}}" +
+        ".bb-bear.peek{bottom:0;animation:bbPeek 5.2s cubic-bezier(.3,1.3,.5,1) forwards}" +
+        // 3. Slam dunk: crouch, leap with a spin, the ball rockets off the top, SLAM!
+        "@keyframes bbLeap{0%{transform:translate(-50%,105%)}18%{transform:translate(-50%,8%) scaleY(.88)}" +
+        "45%{transform:translate(-50%,-42vh) rotate(360deg)}62%{transform:translate(-50%,-42vh) rotate(360deg)}100%{transform:translate(-50%,105%) rotate(360deg)}}" +
+        ".bb-bear.dunk{left:50%;bottom:0;animation:bbLeap 3.4s cubic-bezier(.4,0,.4,1) forwards}" +
+        "@keyframes bbShot{0%{opacity:0;transform:none}8%{opacity:1}100%{opacity:0;transform:translate(14vw,-40vh) rotate(720deg) scale(.6)}}" +
+        ".bb-ball.shot{position:fixed;width:clamp(30px,3.4vw,46px);z-index:9999;animation:bbShot 1.3s ease-out forwards}" +
+        "@keyframes bbSlam{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(-8deg)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15) rotate(-8deg)}" +
+        "80%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1) rotate(-8deg)}}" +
+        ".bb-slam{position:fixed;z-index:9999;pointer-events:none;font:900 clamp(34px,6vw,64px)/1 Impact,'Arial Black',sans-serif;color:#fff;" +
+        "-webkit-text-stroke:2px #ce1141;text-shadow:0 0 18px #ce1141,4px 4px 0 #7a0a26;letter-spacing:2px;animation:bbSlam 1.6s ease-out forwards}" +
+        "@media (prefers-reduced-motion:reduce){.bb-bear,.bb-slam,.bb-ball.shot{display:none!important}}"
     }
   };
   // Dylan: one random DBZ moment every ~40–80s (the first one shortly after the page opens).
@@ -275,6 +305,46 @@
     window.bbDbz = run;   // bbDbz("genki") etc. to preview one on demand
     next(9000 + Math.random() * 6000);
   }
+  // Diana's Live Map: one bear moment every ~35–70s (the first a few seconds after the page opens), never the same twice in a row.
+  function bearLoop() {
+    var add = function (cls, src) {
+      var d = document.createElement("div"); d.className = "bb-bear " + cls;
+      var f = document.createElement("div"); f.className = "bb-flip"; f.style.position = "relative";
+      var im = document.createElement("img"); im.src = src; im.alt = ""; f.appendChild(im); d.appendChild(f);
+      document.body.appendChild(d); return d;
+    };
+    var acts = {
+      dribble: function () { var d = add("dribble" + (Math.random() < 0.5 ? " back" : ""), "img/me/diana-bear.svg");
+        var b = document.createElement("i"); b.className = "bb-ball"; d.firstChild.appendChild(b); return [d, 13200]; },
+      peek: function () { var d = add("peek", "img/me/diana-bear-wave.svg");
+        var side = Math.random() < 0.5 ? "left" : "right", spot = (3 + Math.random() * 14).toFixed(1) + "vw";
+        if (side == "left" && document.documentElement.classList.contains("bbd")) spot = "calc(var(--bbd-side) + " + spot + ")";
+        d.style[side] = spot; return [d, 5400]; },
+      dunk: function () { var d = add("dunk", "img/me/diana-bear.svg"), extra = [];
+        setTimeout(function () { if (!d.isConnected) return; var r = d.getBoundingClientRect();
+          var b = document.createElement("i"); b.className = "bb-ball shot"; b.style.left = (r.left + r.width * 0.7) + "px"; b.style.top = r.top + "px";
+          var t = document.createElement("div"); t.className = "bb-slam"; t.textContent = "SLAM!"; t.style.left = "50%"; t.style.top = "30%";
+          document.body.appendChild(b); document.body.appendChild(t); extra.push(b, t);
+        }, 1450);
+        return [d, 3500, extra]; }
+    };
+    var names = Object.keys(acts), last = null;
+    var run = function (name) {
+      if (document.querySelector(".bb-bear")) return;
+      var r = acts[name](); setTimeout(function () { r[0].remove(); (r[2] || []).forEach(function (x) { x.remove(); }); }, r[1] + 200);
+    };
+    window.bbBear = run;   // preview a moment on demand: bbBear("dunk")
+    var next = function (ms) {
+      window.bbBearTimer = setTimeout(function () {
+        if (!document.hidden && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+          var pick; do { pick = names[Math.floor(Math.random() * names.length)]; } while (pick == last);
+          last = pick; run(pick);
+        }
+        next(35000 + Math.random() * 35000);
+      }, ms);
+    };
+    next(4000 + Math.random() * 4000);
+  }
   function apply(key) {
     var old = document.getElementById("bb-me-theme"); if (old) old.remove();
     var oldB = document.querySelector(".bb-me-badge"); if (oldB) oldB.remove();
@@ -287,6 +357,8 @@
     var oldW = document.querySelector(".bb-walker"); if (oldW) oldW.remove();
     var oldX = document.querySelectorAll(".bb-dbz"); for (var xi = 0; xi < oldX.length; xi++) oldX[xi].remove();
     if (window.bbDbzTimer) { clearTimeout(window.bbDbzTimer); window.bbDbzTimer = null; }
+    var oldBr = document.querySelectorAll(".bb-bear,.bb-slam,.bb-ball.shot"); for (var bi = 0; bi < oldBr.length; bi++) oldBr[bi].remove();
+    if (window.bbBearTimer) { clearTimeout(window.bbBearTimer); window.bbBearTimer = null; }
     if (document.body) document.body.className = document.body.className.replace(/\bme-\S+/g, "").trim();
     var t = key && THEMES[key];
     if (!t) return;
@@ -374,6 +446,7 @@
         document.body.appendChild(wk);
       }
       if (t.dbz) dbzLoop();
+      if (t.bear && t.bear.test(location.pathname)) bearLoop();
       if (t.aurora) { var a = document.createElement("div"); a.className = "bb-aurora"; document.body.prepend(a); }
       // Pages with fixed blue colors get a hue overlay: blues shift to the person's color; whites and text stay put.
       // The Housemen page is fully themed through its variables, so it skips this.
