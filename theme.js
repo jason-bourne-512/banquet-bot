@@ -189,8 +189,9 @@
       label: "LISA · PURO SAN ANTONIO",
       img: "img/me/lisa-san-antonio.svg",
       mark: {src: "img/me/lisa-san-antonio.svg", opacity: .08},
-      monkey: "img/me/lisa-monkey.svg",   // home page only: a big monkey swinging on a vine, random side each visit
-      walker: "img/me/lisa-monkey-walk.svg",   // every other page: a monkey strolls back and forth along the bottom; tap it to jump
+      monkey: "img/me/lisa-monkey.svg",   // a big monkey swinging on a vine, random side each visit
+      monkeyPages: /(^|\/)(index\.html|rundown\.html)?$/,   // her most-used pages (usage stats 2026-10-18): Home + Rundown
+      walker: "img/me/lisa-monkey-walk.svg",   // every page: a monkey strolls back and forth along the bottom; tap it to jump
       css: BADGE + ".bb-me-badge{color:#ffd1e4;background:linear-gradient(135deg,#5a1f3a,#2a0f1d);border:1px solid #ff9ec788}" +
         "@keyframes bbVineIn{from{transform:translateY(-110%)}to{transform:none}}" +
         "@keyframes bbSwing{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}" +
@@ -345,7 +346,7 @@
       }
       var onHome = /(^|\/)(index\.html)?$/.test(location.pathname);
       var gone = false; try { gone = sessionStorage.getItem("bb-monkey-off") == "1"; } catch (e) {}
-      if (t.monkey && onHome && !gone) {
+      if (t.monkey && (t.monkeyPages ? t.monkeyPages.test(location.pathname) : onHome) && !gone) {
         var mk = document.createElement("img"); mk.className = "bb-monkey"; mk.src = t.monkey; mk.alt = ""; mk.title = "Tap me";
         var side = Math.random() < 0.5 ? "left" : "right", spot = (4 + Math.random() * 10).toFixed(1) + "vw";
         var mks = {position:"fixed", top:"0", width:"clamp(140px,15vw,210px)", height:"auto", "z-index":"9996", cursor:"pointer",
@@ -360,7 +361,7 @@
         });
         document.body.appendChild(mk);
       }
-      if (t.walker && !onHome) {
+      if (t.walker) {
         var wk = document.createElement("div"); wk.className = "bb-walker"; wk.title = "Tap me";
         var wks = {position:"fixed", left:"0", bottom:"calc(env(safe-area-inset-bottom,0px) + 2px)", width:"clamp(96px,9vw,132px)", "z-index":"9996",
           cursor:"pointer", "pointer-events":"auto", filter:"drop-shadow(0 4px 8px #0009)"};
