@@ -85,6 +85,7 @@
       img: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
       mark: {src: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png", opacity: .07},
       tint: {color: "#5b2bd6", opacity: .55},
+      dbz: true,   // random DBZ moments every minute or so: scouter, Spirit Bomb, Nimbus, Dragon Balls, Super Saiyan, Instant Transmission
       // Dragon Ball Z cast (drawn for Banquet Bot, img/dbz/): a different fighter peeks in on each page.
       cast: {"index.html": "goku", "today.html": "gohan", "rundown.html": "vegeta", "overview.html": "piccolo", "housemen.html": "krillin",
         "menu.html": "buu", "training.html": "roshi", "rooms.html": "frieza", "room-map.html": "radar", "live-map.html": "radar", "*": "dragonball"},
@@ -104,7 +105,33 @@
         "box-shadow:0 0 28px 10px #3aa8ff88;animation:bbBeam 1.6s ease-out forwards}" +
         "@keyframes bbOrb{0%{transform:scale(.2);opacity:0}35%{transform:scale(1.3);opacity:1}55%{transform:scale(1);opacity:1}100%{transform:scale(1.6);opacity:0}}" +
         "@keyframes bbBeam{0%,40%{transform:scaleX(0);opacity:0}55%{transform:scaleX(1);opacity:1}82%{transform:scaleX(1);opacity:.95}100%{transform:scaleX(1);opacity:0}}" +
-        "@media (prefers-reduced-motion:reduce){.bb-cast{animation:none!important}.bb-orb,.bb-beam{display:none!important}}"
+        "@media (prefers-reduced-motion:reduce){.bb-cast{animation:none!important}.bb-orb,.bb-beam{display:none!important}}" +
+        // ── random DBZ moments (drawn in CSS/SVG for Banquet Bot) ──
+        ".bb-dbz{position:fixed;z-index:9999;pointer-events:none}" +
+        ".bb-scouter{top:14%;right:4%;padding:10px 16px 12px;border:2px solid #39ff7a;border-radius:6px 22px 6px 6px;background:#04210fcc;" +
+        "font:800 15px/1.3 'Courier New',monospace;color:#5dff92;text-shadow:0 0 8px #39ff7a;letter-spacing:1px;animation:bbScout 4.2s ease-out forwards}" +
+        ".bb-scouter b{display:block;font-size:30px;color:#eaff5d;text-shadow:0 0 14px #eaff5d}" +
+        "@keyframes bbScout{0%{opacity:0;transform:translateX(40px)}8%{opacity:1;transform:none}20%,30%{filter:brightness(1.8)}25%{filter:none}85%{opacity:1}100%{opacity:0}}" +
+        ".bb-genki{left:50%;top:-6vmin;width:46vmin;height:46vmin;margin-left:-23vmin;border-radius:50%;" +
+        "background:radial-gradient(circle,#ffffff 0 18%,#bff3ff 34%,#4fc8ff 58%,#1a7fff88 70%,transparent 72%);" +
+        "box-shadow:0 0 80px 30px #4fc8ff88,0 0 160px 60px #1a7fff44;animation:bbGenki 5.5s ease-in-out forwards}" +
+        "@keyframes bbGenki{0%{transform:scale(.05);opacity:0}15%{opacity:1}60%{transform:scale(1);opacity:1}80%{transform:scale(1.04) translateY(4vh)}100%{transform:scale(1.4) translateY(30vh);opacity:0}}" +
+        ".bb-nimbus{top:9%;left:0;width:clamp(120px,14vw,190px);animation:bbNimbus 4.8s cubic-bezier(.4,0,.6,1) forwards}" +
+        "@keyframes bbNimbus{0%{transform:translateX(-30vw) translateY(10px)}50%{transform:translateX(45vw) translateY(-8px)}100%{transform:translateX(115vw) translateY(6px)}}" +
+        ".bb-balls{inset:0;background:radial-gradient(circle at 50% 50%,#0000 30%,#0b1a0caa 80%);animation:bbDim 6s ease-in-out forwards}" +
+        ".bb-balls i{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;font-style:normal;display:grid;place-items:center;" +
+        "background:radial-gradient(circle at 35% 30%,#fff7c2 0 8%,#ffb43a 30%,#ff7a00 70%,#c44a00);box-shadow:0 0 22px #ffae3acc;" +
+        "color:#d0181b;font:900 13px/.9 Arial;letter-spacing:-1px;text-align:center;padding:7px;box-sizing:border-box;word-break:break-all;animation:bbBall 6s ease-in-out forwards}" +
+        "@keyframes bbBall{0%{opacity:0;transform:scale(.2)}18%{opacity:1;transform:scale(1)}70%{opacity:1;box-shadow:0 0 40px 10px #ffd04a}100%{opacity:0;transform:scale(.6)}}" +
+        "@keyframes bbDim{0%,100%{opacity:0}20%,75%{opacity:1}}" +
+        ".bb-ssj{inset:0;background:radial-gradient(circle at var(--x) var(--y),#fff6 0,#ffe14a99 6%,#ffb80033 22%,transparent 45%);animation:bbSsj 2.4s ease-out forwards}" +
+        "@keyframes bbSsj{0%{opacity:0}10%{opacity:1}20%{opacity:.4}30%{opacity:1}100%{opacity:0}}" +
+        ".bb-cast.ssj{animation:bbSsjGlow 2.4s ease-out!important}" +
+        "@keyframes bbSsjGlow{0%,100%{filter:drop-shadow(0 0 8px #ffd54a99) drop-shadow(0 4px 10px #000a)}15%,45%{filter:drop-shadow(0 0 34px #ffe14a) drop-shadow(0 0 10px #fff) brightness(1.35) hue-rotate(-10deg)}}" +
+        ".bb-cast.it{animation:bbIT 2.6s steps(1,end)!important}" +
+        "@keyframes bbIT{0%{opacity:1}8%{opacity:0}12%{opacity:1}16%{opacity:0}20%,70%{opacity:0;transform:translateX(calc(100vw - 100% - 30px))}" +
+        "74%{opacity:1;transform:translateX(calc(100vw - 100% - 30px))}82%{opacity:0}86%,100%{opacity:1;transform:none}}" +
+        "@media (prefers-reduced-motion:reduce){.bb-dbz{display:none!important}}"
     },
     // Venezuelan flag: yellow, blue, red + the arc of eight stars
     tomas: {
@@ -149,22 +176,73 @@
       img: "img/me/lisa-san-antonio.svg",
       mark: {src: "img/me/lisa-san-antonio.svg", opacity: .08},
       monkey: "img/me/lisa-monkey.svg",   // home page only: a big monkey swinging on a vine, random side each visit
+      walker: "img/me/lisa-monkey-walk.svg",   // every other page: a monkey strolls back and forth along the bottom; tap it to jump
       css: BADGE + ".bb-me-badge{color:#ffd1e4;background:linear-gradient(135deg,#5a1f3a,#2a0f1d);border:1px solid #ff9ec788}" +
         "@keyframes bbVineIn{from{transform:translateY(-110%)}to{transform:none}}" +
         "@keyframes bbSwing{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}" +
         "@keyframes bbSwingOff{0%{transform:rotate(0)}30%{transform:rotate(-14deg)}100%{transform:translateY(-120%) rotate(10deg)}}" +
         ".bb-monkey{animation:bbVineIn .9s cubic-bezier(.3,1.4,.5,1) both,bbSwing 3.4s ease-in-out .9s infinite}" +
         ".bb-monkey.off{animation:bbSwingOff .9s ease-in forwards!important}" +
-        "@media (prefers-reduced-motion:reduce){.bb-monkey{animation:none!important}}"
+        "@media (prefers-reduced-motion:reduce){.bb-monkey{animation:none!important}}" +
+        "@keyframes bbStroll{0%{transform:translateX(-170px) scaleX(1)}47%{transform:translateX(calc(100vw + 20px)) scaleX(1)}" +
+        "50%{transform:translateX(calc(100vw + 20px)) scaleX(-1)}97%{transform:translateX(-170px) scaleX(-1)}100%{transform:translateX(-170px) scaleX(1)}}" +
+        "@keyframes bbJump{0%,100%{translate:0 0}40%{translate:0 -60px}}" +
+        ".bb-walker{animation:bbStroll 46s linear infinite}" +
+        ".bb-walker.jump img{animation:bbJump .7s ease-out}" +
+        "@media (prefers-reduced-motion:reduce){.bb-walker{display:none!important}}"
     },
     // Diana (Senior Events Manager): H-Town · Space City — Houston skyline with a launch (img/me, original art).
     diana: {
       label: "DIANA · H-TOWN · SPACE CITY",
       img: "img/me/diana-houston.svg",
       mark: {src: "img/me/diana-houston.svg", opacity: .08},
-      css: BADGE + ".bb-me-badge{color:#e3d6ff;background:linear-gradient(135deg,#2e1f5a,#140d2e);border:1px solid #c1a6ff88}"
+      tint: {color: "#9b82d9", opacity: .42},
+      // Lavender (Jason 2026-10-18): soft lavender accents on a dusky violet night.
+      css: palette("#cbb4ff", "rgba(203,180,255,.15)", "#110d1c", "#1c1630", "#271f42", "rgba(203,180,255,.16)", "rgba(203,180,255,.40)") +
+        "body::before{background:radial-gradient(ellipse at 100% 0,#7d63c466,transparent 52%),radial-gradient(ellipse at 0 100%,#cbb4ff1f,transparent 55%),#110d1c!important}" +
+        "h1,h2{color:#efe6ff}" + BADGE +
+        ".bb-me-badge{color:#efe6ff;background:linear-gradient(135deg,#4a3880,#1f1838);border:1px solid #cbb4ff88}"
     }
   };
+  // Dylan: one random DBZ moment every ~40–80s (the first one shortly after the page opens).
+  function dbzLoop() {
+    var acts = {
+      scouter: function () { var d = document.createElement("div"); d.className = "bb-dbz bb-scouter";
+        d.innerHTML = "POWER LEVEL<b>OVER 9000!</b>"; document.body.appendChild(d); return [d, 4300]; },
+      genki: function () { var d = document.createElement("div"); d.className = "bb-dbz bb-genki"; document.body.appendChild(d); return [d, 5600]; },
+      nimbus: function () { var d = document.createElement("div"); d.className = "bb-dbz bb-nimbus";
+        d.innerHTML = '<svg viewBox="0 0 200 80" width="100%"><g fill="#ffd84a" stroke="#e8a400" stroke-width="3">' +
+          '<ellipse cx="100" cy="46" rx="80" ry="22"/><circle cx="70" cy="34" r="20"/><circle cx="104" cy="28" r="24"/><circle cx="138" cy="36" r="18"/></g>' +
+          '<path d="M20 50 Q-10 46 6 30" stroke="#ffd84a" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+          '<path d="M60 40 Q90 30 120 40" stroke="#fff3b0" stroke-width="4" fill="none" stroke-linecap="round"/></svg>';
+        document.body.appendChild(d); return [d, 4900]; },
+      balls: function () { var d = document.createElement("div"); d.className = "bb-dbz bb-balls";
+        for (var i = 0; i < 7; i++) { var b = document.createElement("i"), a = -Math.PI / 2 + i * 2 * Math.PI / 7;
+          b.textContent = "★".repeat(i + 1); b.style.fontSize = (i < 2 ? 14 : i < 4 ? 10 : 8) + "px";
+          b.style.left = "calc(50% + " + (Math.cos(a) * 26).toFixed(1) + "vmin)"; b.style.top = "calc(45% + " + (Math.sin(a) * 26).toFixed(1) + "vmin)";
+          b.style.animationDelay = (i * 0.12) + "s"; d.appendChild(b); }
+        document.body.appendChild(d); return [d, 6800]; },
+      ssj: function () { var c = document.querySelector(".bb-cast"); if (!c) return null; var r = c.getBoundingClientRect();
+        var d = document.createElement("div"); d.className = "bb-dbz bb-ssj";
+        d.style.setProperty("--x", (r.left + r.width / 2) + "px"); d.style.setProperty("--y", (r.top + r.height / 2) + "px");
+        document.body.appendChild(d); c.classList.add("ssj"); setTimeout(function () { c.classList.remove("ssj"); }, 2500); return [d, 2500]; },
+      it: function () { var c = document.querySelector(".bb-cast"); if (!c) return null;
+        c.classList.add("it"); setTimeout(function () { c.classList.remove("it"); }, 2700); return [null, 2700]; }
+    };
+    var names = Object.keys(acts), last = null;
+    function run(name) {
+      if (document.hidden || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+      var r = acts[name](); if (r && r[0]) setTimeout(function () { r[0].remove(); }, r[1]);
+    }
+    function next(delay) {
+      window.bbDbzTimer = setTimeout(function () {
+        var pick; do { pick = names[Math.floor(Math.random() * names.length)]; } while (pick == last && names.length > 1);
+        last = pick; run(pick); next(40000 + Math.random() * 40000);
+      }, delay);
+    }
+    window.bbDbz = run;   // bbDbz("genki") etc. to preview one on demand
+    next(9000 + Math.random() * 6000);
+  }
   function apply(key) {
     var old = document.getElementById("bb-me-theme"); if (old) old.remove();
     var oldB = document.querySelector(".bb-me-badge"); if (oldB) oldB.remove();
@@ -174,6 +252,9 @@
     var oldC = document.querySelector(".bb-cast"); if (oldC) oldC.remove();
     var oldP = document.querySelector(".bb-pet"); if (oldP) oldP.remove();
     var oldK = document.querySelector(".bb-monkey"); if (oldK) oldK.remove();
+    var oldW = document.querySelector(".bb-walker"); if (oldW) oldW.remove();
+    var oldX = document.querySelectorAll(".bb-dbz"); for (var xi = 0; xi < oldX.length; xi++) oldX[xi].remove();
+    if (window.bbDbzTimer) { clearTimeout(window.bbDbzTimer); window.bbDbzTimer = null; }
     if (document.body) document.body.className = document.body.className.replace(/\bme-\S+/g, "").trim();
     var t = key && THEMES[key];
     if (!t) return;
@@ -248,6 +329,19 @@
         });
         document.body.appendChild(mk);
       }
+      if (t.walker && !onHome) {
+        var wk = document.createElement("div"); wk.className = "bb-walker"; wk.title = "Tap me";
+        var wks = {position:"fixed", left:"0", bottom:"calc(env(safe-area-inset-bottom,0px) + 2px)", width:"clamp(96px,9vw,132px)", "z-index":"9996",
+          cursor:"pointer", "pointer-events":"auto", filter:"drop-shadow(0 4px 8px #0009)"};
+        for (var wkk in wks) wk.style.setProperty(wkk, wks[wkk], "important");
+        wk.style.setProperty("animation-delay", "-" + Math.floor(Math.random() * 46) + "s");
+        var wi = document.createElement("img"); wi.src = t.walker; wi.alt = "";
+        wi.style.cssText = "display:block;width:100%;height:auto;border:0;border-radius:0;background:none;margin:0;padding:0;box-shadow:none";
+        wk.appendChild(wi);
+        wk.addEventListener("click", function () { wk.classList.remove("jump"); void wk.offsetWidth; wk.classList.add("jump"); });
+        document.body.appendChild(wk);
+      }
+      if (t.dbz) dbzLoop();
       if (t.aurora) { var a = document.createElement("div"); a.className = "bb-aurora"; document.body.prepend(a); }
       // Pages with fixed blue colors get a hue overlay: blues shift to the person's color; whites and text stay put.
       // The Housemen page is fully themed through its variables, so it skips this.

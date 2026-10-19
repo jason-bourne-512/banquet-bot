@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 180" width="220" height="180">
+  <!-- Lisa's walking monkey (original art for Banquet Bot): side view, facing right, legs and arms swing as it strolls. -->
+  <style>
+    .bob { animation: bob .6s ease-in-out infinite; }
+    .legA { transform-origin: 108px 118px; animation: step .6s ease-in-out infinite; }
+    .legB { transform-origin: 108px 118px; animation: step .6s ease-in-out -.3s infinite; }
+    .armA { transform-origin: 124px 92px; animation: step .6s ease-in-out -.3s infinite; }
+    .armB { transform-origin: 124px 92px; animation: step .6s ease-in-out infinite; }
+    .tail { transform-origin: 82px 104px; animation: tail 1.2s ease-in-out infinite; }
+    .eye { transform-origin: 170px 70px; animation: blink 4.2s infinite; }
+    @keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
+    @keyframes step { 0%,100% { transform: rotate(24deg) } 50% { transform: rotate(-24deg) } }
+    @keyframes tail { 0%,100% { transform: rotate(0) } 50% { transform: rotate(-12deg) } }
+    @keyframes blink { 0%,92%,100% { transform: scaleY(1) } 96% { transform: scaleY(.1) } }
+    @media (prefers-reduced-motion: reduce) { .bob, .legA, .legB, .armA, .armB, .tail, .eye { animation: none } }
+  </style>
+  <ellipse cx="112" cy="172" rx="52" ry="6" fill="#000" opacity=".25"/>
+  <g class="bob">
+    <!-- tail curling up behind -->
+    <g class="tail"><path d="M84 104 Q46 108 42 76 Q40 52 60 54 Q74 56 66 70" stroke="#7a4a26" stroke-width="9" fill="none" stroke-linecap="round"/></g>
+    <!-- far leg + arm (darker) -->
+    <g class="legB"><path d="M108 118 L104 160" stroke="#5c361a" stroke-width="15" stroke-linecap="round"/><ellipse cx="108" cy="164" rx="12" ry="6" fill="#c99c73"/></g>
+    <g class="armB"><path d="M124 92 L132 130" stroke="#5c361a" stroke-width="12" stroke-linecap="round"/><circle cx="133" cy="134" r="7" fill="#c99c73"/></g>
+    <!-- body -->
+    <ellipse cx="112" cy="102" rx="36" ry="28" fill="#7a4a26"/>
+    <ellipse cx="122" cy="108" rx="20" ry="17" fill="#e9c39a"/>
+    <!-- near leg + arm -->
+    <g class="legA"><path d="M108 118 L104 160" stroke="#7a4a26" stroke-width="16" stroke-linecap="round"/><ellipse cx="108" cy="164" rx="13" ry="7" fill="#e9c39a"/></g>
+    <g class="armA"><path d="M124 92 L132 130" stroke="#7a4a26" stroke-width="13" stroke-linecap="round"/><circle cx="133" cy="134" r="8" fill="#e9c39a"/></g>
+    <!-- head -->
+    <circle cx="146" cy="56" r="13" fill="#7a4a26"/><circle cx="146" cy="56" r="7" fill="#e9a986"/>
+    <circle cx="164" cy="70" r="30" fill="#7a4a26"/>
+    <path d="M160 64 Q172 46 192 60 Q200 74 192 86 Q178 96 162 88 Q154 78 160 64 Z" fill="#e9c39a"/>
+    <path d="M156 46 Q166 36 178 44" stroke="#5c361a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <g class="eye"><circle cx="176" cy="66" r="5.5" fill="#241712"/><circle cx="178" cy="64" r="1.9" fill="#fff"/></g>
+    <circle cx="192" cy="76" r="2.2" fill="#5c361a"/>
+    <path d="M178 84 Q186 88 192 83" stroke="#5c361a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <circle cx="170" cy="80" r="4" fill="#f29a9a" opacity=".55"/>
+  </g>
+</svg>

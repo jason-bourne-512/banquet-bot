@@ -635,7 +635,7 @@ const TITLE = {hsm:"Houseman", captain:"Captain", director:"Director of Event Op
 // Event managers see the Status tab (read-only — no editing, no Mark resolved) and their own accent.
 const VIEWER = role => LEAD(role) || role == "sem" || role == "em";
 const SHOWN_TITLE = role => role == "director" || role == "sem" || role == "em" ? TITLE[role] : "";
-const ACCENT = {director:["#5fe3c0","★ DIRECTOR"], sem:["#c1a6ff","★ SENIOR EVENTS"], em:["#ff9ec7","★ EVENTS"]};
+const ACCENT = {director:["#5fe3c0","★ DIRECTOR"], sem:["#cbb4ff","★ SENIOR EVENTS"], em:["#ff9ec7","★ EVENTS"]};
 const leadName = () => WHO && WHO.role == "director" ? "Director" : "Captain";
 
 // ── storage: live Firestore (the-wire project). localhost → test collection; ?mock → this device only.

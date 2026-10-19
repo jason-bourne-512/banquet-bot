@@ -1,4 +1,4 @@
-// Banquet Bot desktop mode — leads only (captain / director). Loaded on every page by theme.js.
+// Banquet Bot desktop mode — leads only (captain / director / senior events manager). Loaded on every page by theme.js.
 // Off by default; a lead turns it on with the 🖥 button (wide screens only) and this computer remembers it.
 // Sign-in uses the same Housemen PIN and the same "bb-hsm-who" slot, so one sign-in covers the whole site.
 // PINs are never stored here: the hashes are read from housemen.html (single source of truth).
@@ -9,7 +9,8 @@
     ["rundown.html#overview", "Overview", "▦"], ["housemen.html", "Housemen", "⚒"], ["rooms.html", "Rooms", "▢"], ["menu.html", "Menu", "◈"],
     ["info.html", "Info", "ℹ"], ["training.html", "Training", "✎"], ["handbook.html", "Handbook", "❏"]
   ];
-  var ACCENT = {captain: "#f2c879", director: "#5fe3c0"};
+  var ACCENT = {captain: "#f2c879", director: "#5fe3c0", sem: "#cbb4ff"};
+  var ROLE_TITLE = {captain: "Captain", director: "Director of Event Operations", sem: "Senior Events Manager"};
   // Card types that reflow into a multi-column grid when two or more sit side by side in the same parent.
   var CARDS = ".event-card,.menu-item,.room-card,.tr-card,.hb-card,#bb-app .room,#bb-app .original-event,#bb-app .week-choice,.crow,.menu-list>*,#main>.room";
 
@@ -155,7 +156,7 @@
   function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
   function who() { try { return JSON.parse(get(WHO)); } catch (e) { return null; } }
-  function isLead(w) { return !!(w && (w.role == "captain" || w.role == "director")); }
+  function isLead(w) { return !!(w && ROLE_TITLE[w.role]); }
   function here() {
     var p = location.pathname.split("/").pop() || "index.html";
     return p == "rundown.html" ? p + (location.hash == "#overview" ? "#overview" : "#rundown") : p;
@@ -317,7 +318,7 @@
     addStyle("#8bd1ff");
     var buf = "", el = document.createElement("div");
     el.className = "bbd-pin";
-    el.innerHTML = '<div><h3>Desktop mode</h3><p>Captain or Director PIN</p><div class="dots"><i></i><i></i><i></i><i></i></div><div class="pad">' +
+    el.innerHTML = '<div><h3>Desktop mode</h3><p>Lead PIN</p><div class="dots"><i></i><i></i><i></i><i></i></div><div class="pad">' +
       ["1","2","3","4","5","6","7","8","9","","0","⌫"].map(function (k) { return k ? '<button data-k="' + k + '">' + k + "</button>" : "<span></span>"; }).join("") +
       '</div><button class="bbd-btn cx">Cancel</button></div>';
     document.body.appendChild(el);
@@ -382,7 +383,7 @@
         return (i == 6 ? '<div class="lbl">Reference</div>' : "") +
           '<a href="' + p[0] + '" title="' + p[1] + '" class="' + (p[0] == cur ? "on" : "") + '"><i>' + p[2] + "</i>" + p[1] + "</a>";
       }).join("") + (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' : "") + "</nav>" +
-      '<div class="bbd-me"><div class="bbd-user"><em>' + esc(w.name.slice(0, 1)) + "</em><div>" + esc(w.name) + "<small>" + (w.role == "director" ? "Director of Event Operations" : "Captain") + "</small></div></div>" +
+      '<div class="bbd-me"><div class="bbd-user"><em>' + esc(w.name.slice(0, 1)) + "</em><div>" + esc(w.name) + "<small>" + ROLE_TITLE[w.role] + "</small></div></div>" +
       '<div class="row"><button class="bbd-btn" data-bbd="phone">📱 Phone view</button><button class="bbd-btn" data-bbd="out">Sign out</button></div></div>';
     var top = document.createElement("header");
     top.className = "bbd-top";
@@ -448,7 +449,7 @@
     addStyle("#8bd1ff");
     var b = document.createElement("button");
     b.className = "bbd-enter"; b.textContent = "🖥 Desktop";
-    b.title = "Desktop mode (captain / director)";
+    b.title = "Desktop mode (captain / director / senior events)";
     b.onclick = function () {
       var w = who();
       if (isLead(w)) { set(DESK, "1"); location.reload(); return; }
