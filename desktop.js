@@ -3,7 +3,7 @@
 // Sign-in uses the same Housemen PIN and the same "bb-hsm-who" slot, so one sign-in covers the whole site.
 // PINs are never stored here: the hashes are read from housemen.html (single source of truth).
 (function () {
-  var DESK = "bb-desk", WHO = "bb-hsm-who", MINI = "bb-desk-mini", SIDE = 236, RAIL = 64;
+  var DESK = "bb-desk", WHO = "bb-hsm-who", MINI = "bb-desk-mini", REF = "bb-desk-ref", SIDE = 236, RAIL = 64;
   var PAGES = [
     ["index.html", "Home", "⌂"], ["today.html", "Today", "☀"], ["live-map.html", "Live Map", "⌖"], ["rundown.html#rundown", "Rundown", "▤"],
     ["rundown.html#overview", "Overview", "▦"], ["housemen.html", "Housemen", "⚒"], ["rooms.html", "Rooms", "▢"], ["menu.html", "Menu", "◈"],
@@ -227,6 +227,11 @@
     ".bbd-nav .lbl{font:700 9.5px Manrope,Arial;letter-spacing:1.6px;color:#89b4cf;text-transform:uppercase;padding:12px 8px 6px}" +
     ".bbd-nav a{display:flex;align-items:center;gap:11px;padding:9px 10px;margin:2px 0;border-radius:11px;color:#b1c6d6;text-decoration:none;font:700 13px Manrope,Arial;border:1px solid transparent}" +
     ".bbd-nav a i{font-style:normal;width:20px;text-align:center;opacity:.8}" +
+    ".bbd-reft{display:flex;align-items:center;gap:6px;width:100%;background:none;border:0;cursor:pointer;text-align:left}" +
+    ".bbd-reft .tri{display:inline-block;font-size:9px;transition:transform .15s}.bbd-reft[aria-expanded=true] .tri{transform:rotate(90deg)}" +
+    ".bbd-reft:hover{color:#eaf3fa}.bbd-ref[hidden]{display:none}" +
+    ".bbd-beta{margin-left:auto;font:700 8.5px Manrope,Arial;letter-spacing:1px;color:#f2c879;border:1px solid #f2c87966;border-radius:9px;padding:1px 5px}" +
+    ".bbd-mini .bbd-ref[hidden]{display:block}.bbd-mini .bbd-beta{display:none}" +
     ".bbd-nav a:hover{background:#162530;border-color:rgba(139,209,255,.12);color:#eaf3fa}" +
     ".bbd-nav a.on{color:#eaf3fa;background:#1d3344;border-color:rgba(139,209,255,.26);box-shadow:inset 3px 0 0 var(--bbd-acc),0 0 18px #8bd1ff14}" +
     ".bbd-nav a.on i{color:var(--bbd-acc);opacity:1}" +
@@ -367,6 +372,9 @@
       for (var j = 0; j < p.children.length; j++) p.children[j].classList.toggle("bbd-span", !p.children[j].matches(CARDS));
     });
   }
+  function navLinks(list, cur) {
+    return list.map(function (p) { return '<a href="' + p[0] + '" title="' + p[1] + '" class="' + (p[0] == cur ? "on" : "") + '"><i>' + p[2] + "</i>" + p[1] + "</a>"; }).join("");
+  }
   function build(w) {
     var root = document.documentElement, acc = ACCENT[w.role] || "#8bd1ff", cur = here();
     root.classList.add("bbd"); root.dataset.bbdRole = w.role;
@@ -374,15 +382,17 @@
     addStyle(acc);
     var title = (PAGES.filter(function (p) { return p[0] == cur; })[0] || [cur, document.title.split("—")[0].trim()])[1];
     var side = document.createElement("aside"), mini = get(MINI) == "1";
+    var refOpen = get(REF) == "1" || PAGES.slice(6).some(function (p) { return p[0] == cur; });
     side.className = "bbd-side";
     root.classList.toggle("bbd-mini", mini);
     side.innerHTML = '<button class="bbd-fold" data-bbd="fold" title="Collapse / expand the side panel">' + (mini ? "›" : "‹") + "</button>" +
       '<a class="bbd-brand" href="index.html"><span class="bbd-mark">B</span><span><b>BANQUET BOT</b><span class="sub">COMMAND CENTER</span></span></a>' +
-      '<nav class="bbd-nav"><div class="lbl">Operations</div>' +
-      PAGES.map(function (p, i) {
-        return (i == 6 ? '<div class="lbl">Reference</div>' : "") +
-          '<a href="' + p[0] + '" title="' + p[1] + '" class="' + (p[0] == cur ? "on" : "") + '"><i>' + p[2] + "</i>" + p[1] + "</a>";
-      }).join("") + (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' : "") + "</nav>" +
+      '<nav class="bbd-nav"><div class="lbl">Operations</div>' + navLinks(PAGES.slice(0, 6), cur) +
+      (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' +
+        '<a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' : "") +
+      // Reference starts folded; the triangle opens it (remembered), and it opens itself on a reference page.
+      '<button class="lbl bbd-reft" data-bbd="ref" aria-expanded="' + refOpen + '"><span class="tri">▸</span>Reference</button>' +
+      '<div class="bbd-ref"' + (refOpen ? "" : " hidden") + ">" + navLinks(PAGES.slice(6), cur) + "</div></nav>" +
       '<div class="bbd-me"><div class="bbd-user"><em>' + esc(w.name.slice(0, 1)) + "</em><div>" + esc(w.name) + "<small>" + ROLE_TITLE[w.role] + "</small></div></div>" +
       '<div class="row"><button class="bbd-btn" data-bbd="phone">📱 Phone view</button><button class="bbd-btn" data-bbd="out">Sign out</button></div></div>';
     var top = document.createElement("header");
@@ -432,6 +442,11 @@
       var b = e.target.closest("[data-bbd]"); if (!b) return;
       if (b.dataset.bbd == "fold") {
         mini = !mini; root.classList.toggle("bbd-mini", mini); set(MINI, mini ? "1" : null); b.textContent = mini ? "›" : "‹";
+        return;
+      }
+      if (b.dataset.bbd == "ref") {
+        var open = b.getAttribute("aria-expanded") != "true", box = side.querySelector(".bbd-ref");
+        b.setAttribute("aria-expanded", open); box.hidden = !open; set(REF, open ? "1" : null);
         return;
       }
       if (b.dataset.bbd == "phone") set(DESK, "0");

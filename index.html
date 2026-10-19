@@ -63,7 +63,9 @@
 .destination.housemen{min-height:64px;--accent:#7fe0a0;--glow:#7fe0a018;background:radial-gradient(ellipse at 100% 0,#4f9b7a38,transparent 75%),linear-gradient(135deg,#21433b,#16282a);border-color:#4f8a73;border-top-color:#7fe0a099}
 .destination.housemen:after{animation-delay:-3s}
 .destination.livemap{min-height:64px;--accent:#ffc46b;--glow:#ffc46b18;background:radial-gradient(ellipse at 100% 0,#9b7a4f38,transparent 75%),linear-gradient(135deg,#43392a,#28221a);border-color:#8a7350;border-top-color:#ffc46b99}
-.destination.livemap:after{animation-delay:-9s}.destination.livemap small{color:#e2d3bb}
+.destination.livemap:after{animation-delay:-9s}
+.destination.sched{min-height:64px;--accent:#cbb4ff;--glow:#cbb4ff18;background:radial-gradient(ellipse at 100% 0,#7d63c438,transparent 75%),linear-gradient(135deg,#2f2843,#1c1828);border-color:#6f5d9a;border-top-color:#cbb4ff99}
+.destination.sched[hidden]{display:none}.destination.sched em{font:700 9px Manrope,sans-serif;letter-spacing:.12em;color:#f2c879;border:1px solid #f2c87966;border-radius:10px;padding:2px 6px;margin-left:6px;vertical-align:middle;font-style:normal}.destination.livemap small{color:#e2d3bb}
 .destination.overview small{color:#c6d5ef}
 
 /* ── MENU SEARCH ── */
@@ -186,7 +188,13 @@
     <a class="destination overview" href="rundown.html#overview"><span class="arrow" aria-hidden="true">↗</span><strong>OVERVIEW</strong><small>Quick summary</small></a>
     <a class="destination housemen" href="housemen.html"><span class="arrow" aria-hidden="true">↗</span><strong>HOUSEMEN</strong><small>Tonight’s set &amp; clear list</small></a>
     <a class="destination livemap" href="live-map.html"><span class="arrow" aria-hidden="true">↗</span><strong>LIVE MAP</strong><small>Floor plan by day</small></a>
+    <a class="destination sched" href="scheduler.html" id="schedBtn" hidden><span class="arrow" aria-hidden="true">↗</span><strong>SCHEDULER <em id="schedTag">BETA</em></strong><small>Availability &amp; the week</small></a>
   </div>
+  <script>
+  // Scheduler is in testing: Jason sees it as a beta, Dylan as a prototype. Everyone else never sees the button.
+  (function () { try { var w = JSON.parse(localStorage.getItem("bb-hsm-who") || "null"), tag = {Jason: "BETA", Dylan: "PROTOTYPE"}[w && w.name];
+    if (tag) { document.getElementById("schedBtn").hidden = false; document.getElementById("schedTag").textContent = tag; } } catch (e) {} })();
+  </script>
 
   <section class="menu-search">
     <label for="menuSearch">MENU SEARCH</label>

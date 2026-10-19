@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Scheduler — Banquet Bot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b141b;--card:#14212b;--card2:#1a2a36;--line:#8bd1ff26;--line2:#8bd1ff40;--ink:#e7f1f8;--mute:#8aa3b5;--blue:#8bd1ff;--blue-d:#8bd1ff22;
+  --green:#5fe3a0;--green-d:#5fe3a022;--amber:#f2c879;--amber-d:#f2c87922;--red:#ff8a8a;--red-d:#ff8a8a22;--mint:#5fe3c0}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Manrope,system-ui,sans-serif;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse at 100% 0,#1f4a6a55,transparent 55%),radial-gradient(ellipse at 0 100%,#5fe3c014,transparent 55%),var(--bg)}
+.wrap{max-width:980px;margin:0 auto;padding:16px 16px 90px}
+h1{font:600 30px/1 'Barlow Condensed',sans-serif;letter-spacing:.06em;margin:6px 0 2px;text-transform:uppercase}
+h2{font:600 20px/1.1 'Barlow Condensed',sans-serif;letter-spacing:.05em;text-transform:uppercase;margin:22px 0 8px;color:var(--blue)}
+.sub{color:var(--mute);font-size:13px}
+.demo{display:inline-block;font:700 10px/1 Manrope;letter-spacing:.12em;color:var(--amber);background:var(--amber-d);border:1px solid #f2c87955;padding:4px 8px;border-radius:20px;margin-left:6px;vertical-align:middle}
+.tabs{position:sticky;top:0;z-index:5;display:flex;gap:6px;padding:10px 0;background:linear-gradient(var(--bg) 75%,transparent);overflow-x:auto}
+.tab{flex:0 0 auto;border:1px solid var(--line2);background:var(--card);color:var(--mute);border-radius:22px;padding:8px 14px;font:600 13px Manrope;cursor:pointer}
+.tab.on{background:var(--blue);color:#06121b;border-color:var(--blue)}
+.view{display:none}.view.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line2);background:var(--card2);color:var(--ink);border-radius:20px;padding:6px 11px;font:600 12.5px Manrope;cursor:pointer;user-select:none}
+.chip.on{background:var(--blue-d);border-color:var(--blue);color:var(--blue)}
+.chip small{color:var(--mute);font-weight:500;margin-left:4px}
+.btn{border:0;border-radius:10px;padding:10px 14px;font:700 13px Manrope;cursor:pointer;background:var(--blue);color:#06121b}
+.btn.ghost{background:transparent;color:var(--blue);border:1px solid var(--line2)}
+.av{display:grid;grid-template-columns:78px 1fr;gap:8px 10px;align-items:center}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line2);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--mute);padding:9px 0;font:600 12px Manrope;cursor:pointer;border-left:1px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button.on[data-v=all]{background:var(--green-d);color:var(--green)}
+.seg button.on[data-v=am],.seg button.on[data-v=pm]{background:var(--blue-d);color:var(--blue)}
+.seg button.on[data-v=off]{background:var(--red-d);color:var(--red)}
+.dl{font:600 15px 'Barlow Condensed';letter-spacing:.05em}.dl small{display:block;color:var(--mute);font:500 11px Manrope}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:10px;overflow:hidden}
+.step button{border:0;background:var(--card2);color:var(--blue);width:36px;height:34px;font:700 18px Manrope;cursor:pointer}
+.step b{min-width:34px;text-align:center}
+textarea{width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:10px;color:var(--ink);font:13px Manrope;padding:9px;min-height:54px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--green);color:#04170e;font:700 13px Manrope;padding:10px 16px;border-radius:24px;opacity:0;transition:.3s;pointer-events:none;z-index:20}
+.toast.on{opacity:1}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ratio{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:12.5px}
+.ratio input{width:120px;accent-color:var(--blue)}
+.day{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:10px 0;overflow:hidden}
+.dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.dname{font:600 20px/1 'Barlow Condensed';letter-spacing:.05em}
+.clients{color:var(--mute);font-size:12px;margin-top:3px}
+.need{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.pill{font:700 11px Manrope;padding:4px 8px;border-radius:20px;white-space:nowrap}
+.pill.ok{background:var(--green-d);color:var(--green)}.pill.short{background:var(--red-d);color:var(--red)}.pill.over{background:var(--amber-d);color:var(--amber)}
+.shiftb{padding:10px 14px;border-bottom:1px solid var(--line)}
+.shiftb:last-child{border-bottom:0}
+.sh{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:6px}
+.sh b{font:600 14px 'Barlow Condensed';letter-spacing:.08em;color:var(--blue)}
+.why{color:var(--mute);font-size:12px}
+.meals{color:var(--mute);font-size:12px;margin:2px 0 8px}
+.slot{display:inline-flex;align-items:center;gap:6px;background:var(--blue-d);border:1px solid #8bd1ff55;color:var(--ink);border-radius:20px;padding:5px 6px 5px 11px;font:600 12.5px Manrope}
+.slot i{font-style:normal;color:var(--mute);font-weight:500;font-size:11.5px}
+.slot button{border:0;background:#0006;color:var(--mute);width:20px;height:20px;border-radius:50%;cursor:pointer;font:700 12px Manrope;line-height:1}
+.add{border:1px dashed var(--line2);background:transparent;color:var(--blue);border-radius:20px;padding:5px 11px;font:600 12.5px Manrope;cursor:pointer}
+.pick{display:none;margin-top:8px}.pick.on{display:flex}
+.actual{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:12px;color:var(--mute)}
+.actual b{color:var(--mint);font-weight:600}
+.empty{color:var(--mute);padding:12px 14px;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+th{color:var(--mute);font-weight:600;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase}
+td.n{text-align:center;font-weight:700}
+.match{color:var(--green)}.near{color:var(--amber)}.far{color:var(--red)}
+.rub td:first-child{font-weight:700;color:var(--blue);white-space:nowrap}
+.load{display:grid;grid-template-columns:90px 1fr 46px;gap:6px 10px;align-items:center;font-size:12.5px}
+.bar{height:10px;background:var(--card2);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--blue);border-radius:6px}
+.bar i.max{background:var(--amber)}
+.note{font-size:12.5px;color:var(--mute)}
+.chart{width:100%;height:auto;display:block}
+ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
+@media (max-width:560px){.dhead{flex-direction:column}.need{justify-content:flex-start}.av{grid-template-columns:64px 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap" id="gate" hidden><div class="sub" style="margin-top:30vh;text-align:center">This page is still being tested.<br><a href="index.html" style="color:#8bd1ff">← Home</a></div></div>
+<div class="wrap" id="wrap">
+  <a href="index.html" style="color:var(--blue);text-decoration:none;font:600 13px Manrope">← Home</a>
+  <div class="card" style="border-color:#f2c87955;background:#f2c8790f;font-size:12.5px;color:var(--amber)" id="testNote">Practice mode: sample availability and this week's events. Nothing here is sent or saved for anyone else.</div>
+  <div class="sub">BANQUET BOT · WESTIN AUSTIN DOMAIN</div>
+  <h1>Scheduler <span class="demo" id="stage">BETA</span></h1>
+  <div class="sub">Servers send availability → Banquet Bot drafts the week from the events and Hector's own staffing habits → Hector and Jason adjust and post.</div>
+
+  <div class="tabs">
+    <button class="tab on" data-v="avail">1 · Server availability</button>
+    <button class="tab" data-v="build">2 · Build the week</button>
+  </div>
+
+  <!-- 1. SERVER VIEW -->
+  <section class="view on" id="v-avail">
+    <div class="card row" style="justify-content:space-between">
+      <div class="row" style="gap:10px"><span style="font-size:20px">🔓</span><div><b id="whoTop"></b><div class="sub">Signed in with your PIN</div></div></div>
+      <button class="btn ghost" id="switch" title="Demo only: preview another server">Demo: switch server</button>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px">
+        <div><b id="whoName"></b> <span class="sub">· week of Sat Oct 17 – Fri Oct 23</span></div>
+        <div class="row" style="gap:6px"><span class="sub">Shifts I want</span>
+          <span class="step"><button id="wMinus">−</button><b id="want">4</b><button id="wPlus">+</button></span></div>
+      </div>
+      <div class="av" id="avGrid"></div>
+      <div style="margin-top:12px"><textarea id="avNote" placeholder="Anything Hector should know? (e.g. class Tuesday until 1pm)"></textarea></div>
+      <div class="row" style="margin-top:10px;justify-content:space-between">
+        <span class="sub" id="dueNote">Due Wednesday 5pm for next week</span>
+        <button class="btn" id="send">Send availability</button>
+      </div>
+    </div>
+    <p class="note">Sample availability is filled in for everyone so the builder has something to work with. Change anyone's days here and tab 2 updates.</p>
+  </section>
+
+  <!-- 2. LEAD VIEW -->
+  <section class="view" id="v-build">
+    <div class="card">
+      <div class="tools">
+        <button class="btn" id="auto">✦ Auto-fill week</button>
+        <button class="btn ghost" id="clear">Clear</button>
+        <label class="row" style="gap:6px;font-size:12.5px;color:var(--mute)"><input type="checkbox" id="showActual" checked style="accent-color:var(--mint)"> Compare to Hector's real schedule</label>
+      </div>
+      <div class="note" style="margin-top:8px" id="inCount"></div>
+    </div>
+    <div id="days"></div>
+    <h2>Hours check</h2>
+    <div class="card"><div class="load" id="load"></div>
+      <div class="note" style="margin-top:8px">Amber = at or over the shifts they asked for.</div></div>
+  </section>
+
+  <!-- 3. RUBRIC -->
+  <section class="view" id="v-rubric" hidden>
+    <div class="card">
+      <div class="note">Built from <b id="nDays"></b> past days (Jun–Oct 2026): every staff schedule posted to Banquet Bot, matched against that day's event orders. Counts servers only (not bartenders or housemen).</div>
+    </div>
+    <h2>How many servers</h2>
+    <div class="card">
+      <table class="rub">
+        <tr><th>Biggest meal of the day</th><th>Hector schedules</th><th>Ratio</th></tr>
+        <tr><td>No food, meetings only</td><td>0–1 server</td><td>—</td></tr>
+        <tr><td>Up to 30 guests</td><td>1 server</td><td>~1 : 16</td></tr>
+        <tr><td>31–60</td><td>2 servers</td><td>~1 : 20</td></tr>
+        <tr><td>61–120</td><td>3 servers</td><td>~1 : 20</td></tr>
+        <tr><td>121–200</td><td>5–6 servers</td><td>~1 : 30</td></tr>
+        <tr><td>200+</td><td>1 per 30 guests (9–11 for ~280)</td><td>~1 : 30</td></tr>
+      </table>
+      <ul class="flat note">
+        <li><b>"Biggest meal"</b> = add up every breakfast across all rooms, then every lunch; the bigger of the two sets the crew. Breakfast and lunch staff the same way.</li>
+        <li><b>Small days run richer</b> (1 per 16–20), because someone has to cover the room no matter what. Big days get leaner, around 1 per 30. Your 1-per-35 guess is close for the big days.</li>
+        <li><b>Receptions run very lean</b>: 1 server up to ~150 guests, about 3 for 200, 3–5 for 300.</li>
+        <li><b>Dinners</b>: only 3 in the data. A 30-person plated dinner got 2.</li>
+        <li><b>Number of rooms barely matters.</b> Meals spread over 3+ rooms ran about 1:21 vs 1:23 in one room.</li>
+        <li><b>Day of the week doesn't matter</b>; only the events do.</li>
+      </ul>
+    </div>
+    <h2>Shift times</h2>
+    <div class="card">
+      <ul class="flat note">
+        <li><b>Morning crew starts 2 hours before the first meal</b> (7:30 breakfast → 5:30A). This held on 191 shifts.</li>
+        <li><b>Morning crew leaves ~1½ hours after the last lunch ends</b> (lunch done 1:00 → out ~2:30P).</li>
+        <li><b>Evening crew starts ~2 hours before</b> a reception or dinner (5:30 reception → 3:30P) and stays about an hour after it ends.</li>
+      </ul>
+    </div>
+    <h2>Who</h2>
+    <div class="card"><div class="load" id="who-load"></div>
+      <div class="note" style="margin-top:8px">Days on the schedule, Jun–Oct. Francisco is the anchor: he's on almost every busy day.</div></div>
+    <h2>How well the rubric fits</h2>
+    <div class="card">
+      <svg class="chart" id="chart" viewBox="0 0 640 300"></svg>
+      <div class="note" id="fit"></div>
+      <ul class="flat note">
+        <li><b>Dots far below the line</b> (250–425 guests with only 2–7 servers) are big receptions, which he staffs lean on purpose.</li>
+        <li><b>When Hector goes above the rubric</b>, it's usually for something the meal count doesn't show: a big setup for the next day, a reception that evening the morning crew sets up for, or heavy coffee breaks in many rooms.</li>
+        <li>That's the part a person still decides. The bot drafts and Hector adjusts.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+// Testing access: Jason (beta) and Dylan (prototype) only, by their Banquet Bot sign-in.
+const WHO = (() => { try { return JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); } catch (e) { return null; } })();
+const TESTERS = {Jason: "BETA", Dylan: "PROTOTYPE"};
+if (!WHO || !TESTERS[WHO.name]) { document.getElementById("gate").hidden = false; document.getElementById("wrap").remove(); throw new Error("not a tester"); }
+document.getElementById("stage").textContent = TESTERS[WHO.name];
+const DATA = {"week":{"2026-10-17":{"meals":[{"s":1155,"e":1320,"tag":"Dinner","n":30,"room":"Primrose D"},{"s":420,"e":510,"tag":"Breakfast","n":20,"room":"Plumeria"},{"s":760,"e":850,"tag":"Lunch","n":20,"room":"Plumeria"}],"clients":["Ayn Rand Centre"],"actual":[["Francisco","4P\u201311P"],["Tomas","4P\u201311P"],["Gema","5A\u20133P"]]},"2026-10-18":{"meals":[{"s":390,"e":465,"tag":"Breakfast","n":35,"room":"Barton"},{"s":690,"e":780,"tag":"Lunch","n":70,"room":"Barton"},{"s":1050,"e":1170,"tag":"Reception","n":40,"room":"Primrose D"},{"s":420,"e":540,"tag":"Breakfast","n":20,"room":"Plumeria"},{"s":770,"e":855,"tag":"Lunch","n":20,"room":"Plumeria"}],"clients":["University of Texas","Ayn Rand Centre"],"actual":[["Dylan","515A\u2013330P/BAR"],["Francisco","5A\u20132P"],["Tomas","7A\u20132P/HSMN"],["Carlos","715A\u20131P"],["Hilnery","5A\u20133P"],["Maricruz (DT)","330P\u2013830P"]]},"2026-10-19":{"meals":[{"s":450,"e":525,"tag":"Breakfast","n":35,"room":"Barton"}],"clients":["University of Texas","Lumenalta"],"actual":[["Tomas","615A\u201312P/HSMN"],["Carlos","530A\u2013930A"],["Odaly","615A\u201312P"]]},"2026-10-20":{"meals":[{"s":480,"e":540,"tag":"Breakfast","n":25,"room":"Barton"},{"s":750,"e":810,"tag":"Lunch Buffet","n":25,"room":"Barton"},{"s":435,"e":480,"tag":"Breakfast","n":15,"room":"Verbena"},{"s":720,"e":780,"tag":"Lunch","n":15,"room":"Verbena"},{"s":450,"e":540,"tag":"Breakfast","n":8,"room":"Camellia B"},{"s":750,"e":810,"tag":"Lunch","n":8,"room":"Camellia B"},{"s":480,"e":555,"tag":"Breakfast","n":12,"room":"Camellia A"},{"s":720,"e":780,"tag":"Lunch","n":12,"room":"Camellia A"}],"clients":["Triple Crown Consulting","Grainger","Herring Bank","Lumenalta","Microsoft"],"actual":[["Dylan","6A\u2013230P"],["Francisco","5A\u2013330P"],["Hilnery","5A\u20132P"]]},"2026-10-21":{"meals":[{"s":480,"e":540,"tag":"Breakfast","n":25,"room":"Barton"},{"s":720,"e":780,"tag":"Lunch","n":25,"room":"Barton"},{"s":420,"e":480,"tag":"Breakfast","n":15,"room":"Verbena"},{"s":720,"e":780,"tag":"Lunch","n":15,"room":"Verbena"},{"s":480,"e":540,"tag":"Breakfast","n":8,"room":"Camellia B"},{"s":690,"e":750,"tag":"Lunch","n":8,"room":"Camellia B"},{"s":480,"e":540,"tag":"Breakfast","n":12,"room":"Camellia A"},{"s":720,"e":780,"tag":"Lunch","n":12,"room":"Camellia A"}],"clients":["Triple Crown Consulting","Grainger","Herring Bank","Lumenalta","Microsoft","Q2 Banking"],"actual":[["Dylan","6A\u20133P"],["Francisco","5A\u20133P"],["Tomas","630A\u20136P"]]},"2026-10-22":{"meals":[{"s":450,"e":510,"tag":"Breakfast","n":115,"room":"PDR Foyer"},{"s":720,"e":780,"tag":"Lunch","n":138,"room":"PDR Foyer"}],"clients":["Q2 Banking"],"actual":[["Dylan","530A\u20132P"],["Francisco","530A\u20132P"],["Carlos","7A\u20135P"],["Gema","530A\u20132P"],["Odaly","7A\u20133P"],["Hilnery","530A\u20132P"]]},"2026-10-23":{"meals":[],"clients":[],"actual":[]}},"pts":[[3,1],[18,2],[400,7],[60,3],[175,6],[150,5],[88,3],[147,5],[32,2],[59,3],[6,1],[100,3],[134,7],[100,7],[18,2],[30,2],[30,1],[100,4],[120,2],[300,6],[300,9],[200,8],[6,2],[30,2],[29,2],[100,3],[100,4],[21,1],[51,3],[30,2],[20,3],[40,2],[34,2],[187,5],[23,1],[25,1],[20,2],[59,3],[50,3],[45,1],[250,2],[170,7],[70,5],[50,2],[50,2],[120,5],[160,5],[170,4],[115,3],[55,2],[424,3],[278,10],[291,11],[200,5],[15,1],[60,3],[40,2],[22,2],[278,9],[277,9],[32,2],[30,1],[44,4],[104,5],[149,6],[15,1],[31,3],[90,6],[35,3],[60,3],[60,3],[138,6]]};
+const ROSTER = ["Francisco","Dylan","Tomas","Carlos","Gema","Odaly","Hilnery","Raibely","Adrian","Ozzy"];
+const DAYS = Object.keys(DATA.week);
+const DOW = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+const dLabel = d => { const x = new Date(d + "T12:00"); return DOW[x.getDay()] + " " + (x.getMonth() + 1) + "/" + x.getDate(); };
+// Sample availability (made up for the demo): all / am / pm / off for Sat..Fri, plus shifts wanted.
+const SAMPLE = {
+  Francisco:["pm","all","off","all","all","all","all",5], Dylan:["all","all","off","all","all","all","off",5],
+  Tomas:["pm","am","am","off","all","off","all",4], Carlos:["off","am","am","off","off","all","am",3],
+  Gema:["am","off","off","am","off","am","am",3], Odaly:["off","off","am","off","am","am","off",2],
+  Hilnery:["off","am","off","am","off","am","am",3], Raibely:["all","off","off","off","am","am","off",2],
+  Adrian:["off","off","pm","off","off","am","pm",2], Ozzy:["pm","pm","off","off","off","off","pm",2]
+};
+let AV = {}; try { AV = JSON.parse(localStorage.getItem("bb-sched-av") || "null") || {}; } catch (e) {}
+ROSTER.forEach(n => { if (!AV[n]) AV[n] = {days: SAMPLE[n].slice(0, 7), want: SAMPLE[n][7], note: ""}; });
+const save = () => { try { localStorage.setItem("bb-sched-av", JSON.stringify(AV)); } catch (e) {} };
+let me = ROSTER.includes(WHO.name) ? WHO.name : "Francisco";
+const $ = s => document.querySelector(s);
+const toast = t => { const el = $("#toast"); el.textContent = t; el.classList.add("on"); setTimeout(() => el.classList.remove("on"), 2200); };
+
+// ---------- tabs
+document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x === b));
+  document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id === "v-" + b.dataset.v));
+  if (b.dataset.v === "build") renderBuild();
+  scrollTo({top: 0});
+});
+
+// ---------- 1. availability
+function renderAvail() {
+  $("#whoTop").textContent = me;
+  $("#whoName").textContent = me;
+  $("#want").textContent = AV[me].want;
+  $("#avNote").value = AV[me].note || "";
+  $("#avGrid").innerHTML = DAYS.map((d, i) => {
+    const v = AV[me].days[i], x = new Date(d + "T12:00");
+    return `<div class="dl">${DOW[x.getDay()]}<small>${x.toLocaleDateString("en-US",{month:"short",day:"numeric"})}</small></div>
+      <div class="seg" data-i="${i}">${[["all","All day"],["am","AM"],["pm","PM"],["off","Off"]].map(([k, l]) =>
+        `<button data-v="${k}" class="${v === k ? "on" : ""}">${l}</button>`).join("")}</div>`;
+  }).join("");
+  $("#avGrid").querySelectorAll(".seg button").forEach(b => b.onclick = () => {
+    AV[me].days[+b.parentNode.dataset.i] = b.dataset.v; save(); renderAvail();
+  });
+}
+$("#switch").onclick = () => { me = ROSTER[(ROSTER.indexOf(me) + 1) % ROSTER.length]; renderAvail(); };
+$("#wMinus").onclick = () => { AV[me].want = Math.max(0, AV[me].want - 1); save(); renderAvail(); };
+$("#wPlus").onclick = () => { AV[me].want = Math.min(7, AV[me].want + 1); save(); renderAvail(); };
+$("#avNote").oninput = e => { AV[me].note = e.target.value; save(); };
+$("#send").onclick = () => toast("Sent to Hector & Jason ✓ (demo — nothing actually sent)");
+
+// ---------- the rubric, as code
+const amNeed = p => p === 0 ? 0 : p <= 30 ? 1 : p <= 60 ? 2 : p <= 120 ? 3 : Math.ceil(p / 30);
+const pmNeed = meals => {
+  let n = 0;
+  meals.forEach(m => { n += /dinner/i.test(m.tag) ? Math.max(1, Math.ceil(m.n / 20)) : (m.n <= 150 ? 1 : Math.ceil(m.n / 75)); });
+  return n;
+};
+const fmt = m => { m = Math.round(m / 15) * 15; let h = Math.floor(m / 60), mm = m % 60, ap = h >= 12 ? "P" : "A"; h = h % 12 || 12;
+  return h + (mm ? String(mm).padStart(2, "0") : "") + ap; };
+function plan(d) {
+  const meals = DATA.week[d].meals, am = meals.filter(m => m.s < 900), pm = meals.filter(m => m.s >= 900);
+  const bkf = am.filter(m => /fast|bkf|brunch/i.test(m.tag)).reduce((a, m) => a + m.n, 0);
+  const lun = am.filter(m => /lunch/i.test(m.tag)).reduce((a, m) => a + m.n, 0);
+  const peak = Math.max(bkf, lun), out = [];
+  if (am.length) {
+    const s = Math.min(...am.map(m => m.s)) - 120, e = Math.max(...am.map(m => m.e)) + 90;
+    out.push({k: "am", label: "AM crew", need: amNeed(peak), time: fmt(s) + "–" + fmt(e),
+      why: `Biggest meal: ${peak === lun && lun ? "lunch" : "breakfast"} ${peak} guests → ${amNeed(peak)} server${amNeed(peak) > 1 ? "s" : ""}`,
+      meals: am});
+  }
+  if (pm.length) {
+    const s = Math.min(...pm.map(m => m.s)) - 120, e = Math.max(...pm.map(m => m.e)) + 60, n = pmNeed(pm);
+    out.push({k: "pm", label: "PM crew", need: n, time: fmt(s) + "–" + fmt(e),
+      why: pm.map(m => `${m.tag} ${m.n}`).join(" + ") + ` → ${n} server${n > 1 ? "s" : ""}`, meals: pm});
+  }
+  return out;
+}
+
+// ---------- 2. builder
+let ASSIGN = {};   // "date|am" -> [names]
+const free = (n, i, k) => { const v = AV[n].days[i]; return v === "all" || v === k; };
+const shiftsOf = n => Object.values(ASSIGN).filter(a => a.includes(n)).length;
+function autoFill() {
+  ASSIGN = {};
+  const slots = [];
+  DAYS.forEach((d, i) => plan(d).forEach(s => slots.push({d, i, s})));
+  // Biggest days first so the anchors land where they matter most.
+  slots.sort((a, b) => b.s.need - a.s.need);
+  slots.forEach(({d, i, s}) => {
+    const key = d + "|" + s.k, sameDay = n => ASSIGN[d + "|am"]?.includes(n) || ASSIGN[d + "|pm"]?.includes(n);
+    const pool = ROSTER.filter(n => free(n, i, s.k) && !sameDay(n))
+      .sort((a, b) => (shiftsOf(a) >= AV[a].want) - (shiftsOf(b) >= AV[b].want) || shiftsOf(a) / (AV[a].want || 1) - shiftsOf(b) / (AV[b].want || 1) || ROSTER.indexOf(a) - ROSTER.indexOf(b));
+    ASSIGN[key] = pool.slice(0, s.need);
+  });
+}
+function renderBuild() {
+  const showA = $("#showActual").checked;
+  $("#inCount").textContent = `Availability in from ${ROSTER.length} of ${ROSTER.length} servers. Covers come from this week's event orders.`;
+  $("#days").innerHTML = DAYS.map((d, i) => {
+    const w = DATA.week[d], p = plan(d);
+    let body = p.length ? p.map(s => {
+      const got = ASSIGN[d + "|" + s.k] || [], st = got.length === s.need ? "ok" : got.length < s.need ? "short" : "over";
+      const avail = ROSTER.filter(n => free(n, i, s.k) && !got.includes(n));
+      return `<div class="shiftb">
+        <div class="sh"><span><b>${s.label}</b> <span class="sub">${s.time}</span></span>
+          <span class="pill ${st}">${got.length}/${s.need}${st === "short" ? " · need " + (s.need - got.length) : st === "over" ? " · +" + (got.length - s.need) : " ✓"}</span></div>
+        <div class="meals">${s.meals.map(m => `${m.tag} ${m.n} · ${m.room}`).join("  ·  ")}</div>
+        <div class="why">${s.why}</div>
+        <div class="chips" style="margin-top:8px">${got.map(n => `<span class="slot">${n} <i>${shiftsOf(n)}/${AV[n].want}</i><button data-rm="${d}|${s.k}|${n}">×</button></span>`).join("")}
+          <button class="add" data-add="${d}|${s.k}">+ add</button></div>
+        <div class="pick chips" id="pick-${d}-${s.k}">${avail.length ? avail.map(n => `<span class="chip" data-put="${d}|${s.k}|${n}">${n}<small>${shiftsOf(n)}/${AV[n].want}</small></span>`).join("") : '<span class="sub">Nobody else marked available</span>'}</div>
+      </div>`;
+    }).join("") : `<div class="empty">No meals on the books${w.clients.length ? " (meetings only)" : ""} → 0 servers.</div>`;
+    const totalNeed = p.reduce((a, s) => a + s.need, 0);
+    const act = w.actual.length ? w.actual.map(([n, sh]) => `${n} ${sh}`).join(" · ") : "nobody";
+    return `<div class="day"><div class="dhead"><div><div class="dname">${dLabel(d)}</div>
+      <div class="clients">${w.clients.join(" · ") || "No events posted yet"}</div></div>
+      <div class="need"><span class="pill ok" style="background:var(--blue-d);color:var(--blue)">Rubric: ${totalNeed} server${totalNeed === 1 ? "" : "s"}</span>${showA ? `<span class="pill" style="background:#5fe3c01c;color:var(--mint)">Hector: ${w.actual.length}</span>` : ""}</div></div>
+      ${body}${showA ? `<div class="actual empty" style="padding-top:0"><b>Hector actually posted:</b> ${act}</div>` : ""}</div>`;
+  }).join("");
+  $("#days").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.rm.split("|"); ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k].filter(x => x !== n); renderBuild(); });
+  $("#days").querySelectorAll("[data-add]").forEach(b => b.onclick = () => { const [d, k] = b.dataset.add.split("|"); document.getElementById("pick-" + d + "-" + k).classList.toggle("on"); });
+  $("#days").querySelectorAll("[data-put]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.put.split("|"); (ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k] || []).push(n); renderBuild(); });
+  const mx = Math.max(...ROSTER.map(n => Math.max(shiftsOf(n), AV[n].want)), 1);
+  $("#load").innerHTML = ROSTER.map(n => { const s = shiftsOf(n), w = AV[n].want;
+    return `<span>${n}</span><span class="bar"><i class="${s >= w && s ? "max" : ""}" style="width:${s / mx * 100}%"></i></span><span class="sub">${s} / ${w}</span>`; }).join("");
+}
+$("#auto").onclick = () => { autoFill(); renderBuild(); toast("Draft built from the rubric — adjust anything"); };
+$("#clear").onclick = () => { ASSIGN = {}; renderBuild(); };
+$("#showActual").onchange = renderBuild;
+
+// ---------- 3. rubric extras
+$("#nDays").textContent = DATA.pts.length;
+const WHO_LOAD = [["Francisco", 68], ["Dylan", 55], ["Tomas", 44], ["Carlos", 31], ["Odaly", 15], ["Raibely", 10], ["Adrian", 9], ["Gema", 9], ["Maricruz", 7], ["Ozzy", 6]];
+const wmx = Math.max(...WHO_LOAD.map(x => x[1]));
+$("#who-load").innerHTML = WHO_LOAD.map(([n, c]) => `<span>${n}</span><span class="bar"><i style="width:${c / wmx * 100}%"></i></span><span class="sub">${c}</span>`).join("");
+(function chart() {
+  const P = DATA.pts, W = 640, H = 300, L = 44, B = 36, xm = 450, ym = 12;
+  const X = v => L + Math.min(v, xm) / xm * (W - L - 12), Y = v => H - B - v / ym * (H - B - 14);
+  let s = "";
+  for (let g = 0; g <= ym; g += 2) s += `<line x1="${L}" x2="${W - 12}" y1="${Y(g)}" y2="${Y(g)}" stroke="#8bd1ff1a"/><text x="${L - 8}" y="${Y(g) + 4}" fill="#8aa3b5" font-size="11" text-anchor="end">${g}</text>`;
+  for (let g = 0; g <= xm; g += 50) s += `<text x="${X(g)}" y="${H - B + 16}" fill="#8aa3b5" font-size="11" text-anchor="middle">${g}</text>`;
+  s += `<text x="${(W + L) / 2}" y="${H - 4}" fill="#8aa3b5" font-size="11.5" text-anchor="middle">guests at the biggest meal</text>`;
+  s += `<text transform="translate(12 ${(H - B) / 2}) rotate(-90)" fill="#8aa3b5" font-size="11.5" text-anchor="middle">servers scheduled</text>`;
+  let path = "";
+  for (let v = 1; v <= xm; v += 2) path += (path ? "L" : "M") + X(v).toFixed(1) + " " + Y(amNeed(v)).toFixed(1);
+  s += `<path d="${path}" stroke="#f2c879" stroke-width="2.5" fill="none"/>`;
+  P.forEach(([c, n]) => s += `<circle cx="${X(c)}" cy="${Y(n)}" r="5" fill="#8bd1ff" fill-opacity=".55" stroke="#8bd1ff"/>`);
+  s += `<text x="${W - 16}" y="${Y(amNeed(xm)) - 8}" fill="#f2c879" font-size="12" text-anchor="end" font-weight="700">rubric</text>`;
+  $("#chart").innerHTML = s;
+  const within = P.filter(([c, n]) => Math.abs(amNeed(c) - n) <= 1).length;
+  $("#fit").innerHTML = `Each dot is one past day. The rubric lands within ±1 server of what Hector actually posted on <b>${within} of ${P.length}</b> days.`;
+})();
+renderAvail(); autoFill();
+</script>
+</body>
+</html>
