@@ -192,6 +192,7 @@
       monkey: "img/me/lisa-monkey.svg",   // a big monkey swinging on a vine, random side each visit
       monkeyPages: /(^|\/)(index\.html|rundown\.html)?$/,   // her most-used pages (usage stats 2026-10-18): Home + Rundown
       walker: "img/me/lisa-monkey-walk.svg",   // every page: a monkey strolls back and forth along the bottom; tap it to jump
+      monkeyMoments: true,   // every page: a random monkey moment every ~30–60s (see monkeyLoop)
       css: BADGE + ".bb-me-badge{color:#ffd1e4;background:linear-gradient(135deg,#5a1f3a,#2a0f1d);border:1px solid #ff9ec788}" +
         "@keyframes bbVineIn{from{transform:translateY(-110%)}to{transform:none}}" +
         "@keyframes bbSwing{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}" +
@@ -204,7 +205,25 @@
         "@keyframes bbJump{0%,100%{translate:0 0}40%{translate:0 -60px}}" +
         ".bb-walker{animation:bbStroll 46s linear infinite}" +
         ".bb-walker.jump img{animation:bbJump .7s ease-out}" +
-        "@media (prefers-reduced-motion:reduce){.bb-walker{display:none!important}}"
+        "@media (prefers-reduced-motion:reduce){.bb-walker{display:none!important}}" +
+        // Monkey moments: the walker flips, spins or tosses a banana; a second monkey drops in on a vine or peeks from the side.
+        "@keyframes bbFlip{0%{transform:none}35%{transform:translateY(-90px) rotate(-180deg)}70%{transform:translateY(-20px) rotate(-360deg)}100%{transform:rotate(-360deg)}}" +
+        ".bb-walker.flip img{animation:bbFlip 1.1s ease-out}" +
+        "@keyframes bbSpin{0%{transform:none}100%{transform:rotate(720deg)}}" +
+        ".bb-walker.spin img{animation:bbSpin 1.4s cubic-bezier(.5,0,.5,1)}" +
+        "@keyframes bbToss{0%{opacity:1;transform:translate(0,0) rotate(0)}45%{transform:translate(var(--dx),-38vh) rotate(400deg)}" +
+        "90%{opacity:1}100%{opacity:0;transform:translate(calc(var(--dx) * 2),10vh) rotate(900deg)}}" +
+        ".bb-banana{position:fixed!important;z-index:9996;width:clamp(30px,3vw,42px);pointer-events:none;animation:bbToss 2.2s cubic-bezier(.3,.6,.6,1) forwards}" +
+        "@keyframes bbDrop{0%{transform:translateY(-105%)}22%{transform:translateY(0)}30%{transform:translateY(-6%)}36%,78%{transform:translateY(0)}100%{transform:translateY(-105%)}}" +
+        "@keyframes bbDangle{0%,100%{rotate:-9deg}50%{rotate:9deg}}" +
+        ".bb-drop{position:fixed!important;top:0;z-index:9996;width:clamp(110px,12vw,170px);pointer-events:none;animation:bbDrop 6s ease-in-out forwards}" +
+        ".bb-drop img{display:block;width:100%;height:auto;border:0;background:none;margin:0;padding:0;box-shadow:none;transform-origin:40% 0;" +
+        "animation:bbDangle 1.6s ease-in-out infinite;filter:drop-shadow(0 6px 14px #000a)}" +
+        "@keyframes bbSidePeek{0%,100%{transform:translateX(var(--off)) rotate(var(--rot))}20%,75%{transform:translateX(0) rotate(var(--rot))}" +
+        "45%{transform:translateX(0) rotate(calc(var(--rot) * 1.25))}}" +
+        ".bb-peek{position:fixed!important;z-index:9996;width:clamp(100px,10vw,150px);pointer-events:none;animation:bbSidePeek 4.6s ease-in-out forwards}" +
+        ".bb-peek img{display:block;width:100%;height:auto;border:0;background:none;margin:0;padding:0;box-shadow:none}" +
+        "@media (prefers-reduced-motion:reduce){.bb-banana,.bb-drop,.bb-peek{display:none!important}}"
     },
     // Diana (Senior Events Manager): H-Town · Space City — Houston skyline with a launch (img/me, original art).
     diana: {
@@ -305,6 +324,52 @@
     window.bbDbz = run;   // bbDbz("genki") etc. to preview one on demand
     next(9000 + Math.random() * 6000);
   }
+  // Lisa: one random monkey moment every ~30–60s (the first shortly after the page opens), never the same twice in a row.
+  function monkeyLoop() {
+    var BANANA = '<svg viewBox="0 0 60 60" width="100%"><path d="M8 14 Q12 48 50 50 Q30 40 22 12 Z" fill="#ffd93b" stroke="#c99a00" stroke-width="2.5" stroke-linejoin="round"/>' +
+      '<path d="M8 14 L4 8" stroke="#6b4a1a" stroke-width="5" stroke-linecap="round"/><path d="M14 20 Q20 40 40 46" stroke="#fff3a0" stroke-width="3" fill="none" stroke-linecap="round"/></svg>';
+    var walker = function () { return document.querySelector(".bb-walker"); };
+    var pulse = function (cls, ms) { var w = walker(); if (!w) return null;
+      w.classList.remove(cls); void w.offsetWidth; w.classList.add(cls); setTimeout(function () { w.classList.remove(cls); }, ms); return [null, ms]; };
+    var acts = {
+      flip: function () { return pulse("flip", 1200); },
+      spin: function () { return pulse("spin", 1500); },
+      banana: function () { var w = walker(); if (!w) return null; var r = w.getBoundingClientRect();
+        var b = document.createElement("div"); b.className = "bb-banana"; b.innerHTML = BANANA;
+        var right = r.left + r.width / 2 < innerWidth / 2;
+        b.style.left = (r.left + r.width * 0.6) + "px"; b.style.top = (r.top + r.height * 0.2) + "px";
+        b.style.setProperty("--dx", (right ? 1 : -1) * (12 + Math.random() * 10) + "vw");
+        document.body.appendChild(b); pulse("jump", 800); return [b, 2300]; },
+      vine: function () { if (document.querySelector(".bb-monkey")) return null;
+        var d = document.createElement("div"); d.className = "bb-drop";
+        var x = (12 + Math.random() * 64).toFixed(1) + "vw";
+        d.style.left = document.documentElement.classList.contains("bbd") ? "calc(var(--bbd-side) + " + x + ")" : x;
+        var im = document.createElement("img"); im.src = "img/me/lisa-monkey.svg"; im.alt = ""; d.appendChild(im);
+        document.body.appendChild(d); return [d, 6100]; },
+      peek: function () { var left = Math.random() < 0.5 && !document.documentElement.classList.contains("bbd");
+        var d = document.createElement("div"); d.className = "bb-peek";
+        d.style.top = (25 + Math.random() * 40).toFixed(1) + "vh"; d.style[left ? "left" : "right"] = "-28px";
+        d.style.setProperty("--off", left ? "-110%" : "110%"); d.style.setProperty("--rot", left ? "62deg" : "-62deg");
+        var im = document.createElement("img"); im.src = "img/me/lisa-monkey-walk.svg"; im.alt = "";
+        if (!left) im.style.transform = "scaleX(-1)";
+        d.appendChild(im); document.body.appendChild(d); return [d, 4700]; }
+    };
+    var names = Object.keys(acts), last = null;
+    var run = function (name) { var r = acts[name](); if (r && r[0]) setTimeout(function () { r[0].remove(); }, r[1] + 200); return !!r; };
+    window.bbMonkey = run;   // preview a moment on demand: bbMonkey("banana")
+    var next = function (ms) {
+      window.bbMonkeyTimer = setTimeout(function () {
+        if (!document.hidden && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+          for (var tries = 0; tries < 6; tries++) {
+            var pick = names[Math.floor(Math.random() * names.length)];
+            if (pick != last && run(pick)) { last = pick; break; }
+          }
+        }
+        next(30000 + Math.random() * 30000);
+      }, ms);
+    };
+    next(6000 + Math.random() * 5000);
+  }
   // Diana's Live Map: one bear moment every ~35–70s (the first a few seconds after the page opens), never the same twice in a row.
   function bearLoop() {
     var add = function (cls, src) {
@@ -359,6 +424,8 @@
     if (window.bbDbzTimer) { clearTimeout(window.bbDbzTimer); window.bbDbzTimer = null; }
     var oldBr = document.querySelectorAll(".bb-bear,.bb-slam,.bb-ball.shot"); for (var bi = 0; bi < oldBr.length; bi++) oldBr[bi].remove();
     if (window.bbBearTimer) { clearTimeout(window.bbBearTimer); window.bbBearTimer = null; }
+    var oldMm = document.querySelectorAll(".bb-banana,.bb-drop,.bb-peek"); for (var mi = 0; mi < oldMm.length; mi++) oldMm[mi].remove();
+    if (window.bbMonkeyTimer) { clearTimeout(window.bbMonkeyTimer); window.bbMonkeyTimer = null; }
     if (document.body) document.body.className = document.body.className.replace(/\bme-\S+/g, "").trim();
     var t = key && THEMES[key];
     if (!t) return;
@@ -447,6 +514,7 @@
       }
       if (t.dbz) dbzLoop();
       if (t.bear && t.bear.test(location.pathname)) bearLoop();
+      if (t.monkeyMoments) monkeyLoop();
       if (t.aurora) { var a = document.createElement("div"); a.className = "bb-aurora"; document.body.prepend(a); }
       // Pages with fixed blue colors get a hue overlay: blues shift to the person's color; whites and text stay put.
       // The Housemen page is fully themed through its variables, so it skips this.
