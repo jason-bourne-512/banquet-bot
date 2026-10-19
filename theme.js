@@ -85,7 +85,7 @@
       img: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
       mark: {src: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png", opacity: .07},
       tint: {color: "#5b2bd6", opacity: .55},
-      dbz: true,   // random DBZ moments every minute or so: scouter, Spirit Bomb, Nimbus, Dragon Balls, Super Saiyan, Instant Transmission
+      dbz: true,   // random DBZ moments every minute or so; the mix changes with the time of day (see POOL in dbzLoop)
       // Dragon Ball Z cast (drawn for Banquet Bot, img/dbz/): a different fighter peeks in on each page.
       cast: {"index.html": "goku", "today.html": "gohan", "rundown.html": "vegeta", "overview.html": "piccolo", "housemen.html": "krillin",
         "menu.html": "buu", "training.html": "roshi", "rooms.html": "frieza", "room-map.html": "radar", "live-map.html": "radar", "*": "dragonball"},
@@ -131,6 +131,20 @@
         ".bb-cast.it{animation:bbIT 2.6s steps(1,end)!important}" +
         "@keyframes bbIT{0%{opacity:1}8%{opacity:0}12%{opacity:1}16%{opacity:0}20%,70%{opacity:0;transform:translateX(calc(100vw - 100% - 30px))}" +
         "74%{opacity:1;transform:translateX(calc(100vw - 100% - 30px))}82%{opacity:0}86%,100%{opacity:1;transform:none}}" +
+        // destructo disc (morning), senzu bean (midday), Shenron (evening), full moon (night)
+        ".bb-disc{top:22%;left:0;width:90px;height:22px;border-radius:50%;background:radial-gradient(ellipse,#fff 0 18%,#fff59a 38%,#ffd21f 62%,#ffd21f00 72%);" +
+        "box-shadow:0 0 22px 6px #ffe45a99;animation:bbDisc 2.2s cubic-bezier(.5,0,.5,1) forwards}" +
+        "@keyframes bbDisc{0%{transform:translateX(-120px) rotate(-8deg)}100%{transform:translateX(110vw) rotate(6deg)}}" +
+        ".bb-senzu{left:0;top:0;width:22px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#d8ff9a,#5fbf2a 60%,#2f7a14);" +
+        "box-shadow:0 0 14px #9cff5a;animation:bbSenzu 2.6s ease-in-out forwards}" +
+        "@keyframes bbSenzu{0%{transform:translate(8vw,80vh) rotate(0)}50%{transform:translate(50vw,22vh) rotate(540deg)}100%{transform:translate(92vw,82vh) rotate(1080deg);opacity:.2}}" +
+        ".bb-shenron{inset:0;background:linear-gradient(180deg,#05140bdd,#0a1f1299 45%,transparent 75%);animation:bbDim 7s ease-in-out forwards}" +
+        ".bb-shenron svg{position:absolute;top:4%;left:0;width:150%;animation:bbSnake 7s ease-in-out forwards}" +
+        "@keyframes bbSnake{0%{transform:translateX(-100%)}100%{transform:translateX(70%)}}" +
+        ".bb-moon{top:6%;right:8%;width:28vmin;height:28vmin;border-radius:50%;" +
+        "background:radial-gradient(circle at 38% 36%,#fffef2,#f4f0d0 45%,#d9d2a6 75%,#b9b184);box-shadow:0 0 70px 24px #fff8c855,0 0 160px 60px #fff3a822;" +
+        "animation:bbMoon 8s ease-in-out forwards}" +
+        "@keyframes bbMoon{0%{transform:translateY(40vh) scale(.6);opacity:0}25%{transform:none;opacity:1}75%{opacity:1;box-shadow:0 0 90px 34px #ffd27a88,0 0 200px 80px #ff8a3a33}100%{opacity:0}}" +
         "@media (prefers-reduced-motion:reduce){.bb-dbz{display:none!important}}"
     },
     // Venezuelan flag: yellow, blue, red + the arc of eight stars
@@ -227,16 +241,33 @@
         d.style.setProperty("--x", (r.left + r.width / 2) + "px"); d.style.setProperty("--y", (r.top + r.height / 2) + "px");
         document.body.appendChild(d); c.classList.add("ssj"); setTimeout(function () { c.classList.remove("ssj"); }, 2500); return [d, 2500]; },
       it: function () { var c = document.querySelector(".bb-cast"); if (!c) return null;
-        c.classList.add("it"); setTimeout(function () { c.classList.remove("it"); }, 2700); return [null, 2700]; }
+        c.classList.add("it"); setTimeout(function () { c.classList.remove("it"); }, 2700); return [null, 2700]; },
+      disc: function () { var d = document.createElement("div"); d.className = "bb-dbz bb-disc"; document.body.appendChild(d); return [d, 2300]; },
+      senzu: function () { var d = document.createElement("div"); d.className = "bb-dbz bb-senzu"; document.body.appendChild(d); return [d, 2700]; },
+      shenron: function () { var d = document.createElement("div"); d.className = "bb-dbz bb-shenron";
+        d.innerHTML = '<svg viewBox="0 0 900 160"><path d="M0 90 C80 20 160 150 240 80 S400 10 480 80 S640 150 720 70" stroke="#2fae4f" stroke-width="34" fill="none" stroke-linecap="round"/>' +
+          '<path d="M0 90 C80 20 160 150 240 80 S400 10 480 80 S640 150 720 70" stroke="#9ff0a8" stroke-width="6" fill="none" stroke-dasharray="14 18" opacity=".7"/>' +
+          '<g transform="translate(720 70)"><ellipse cx="34" cy="0" rx="46" ry="30" fill="#2fae4f"/><path d="M60 -6 L104 -2 L62 12 Z" fill="#2fae4f"/>' +
+          '<path d="M20 -26 Q10 -60 -10 -70" stroke="#d9b45a" stroke-width="6" fill="none"/><path d="M40 -26 Q46 -62 66 -72" stroke="#d9b45a" stroke-width="6" fill="none"/>' +
+          '<circle cx="46" cy="-8" r="7" fill="#ff2a2a"/><path d="M70 10 Q110 30 130 70" stroke="#e8e0b8" stroke-width="3" fill="none"/></g></svg>';
+        document.body.appendChild(d); return [d, 7100]; },
+      moon: function () { var d = document.createElement("div"); d.className = "bb-dbz bb-moon"; document.body.appendChild(d); return [d, 8100]; }
     };
-    var names = Object.keys(acts), last = null;
+    // what can happen depends on the time of day (hotel time, Central)
+    var POOL = {morning: ["disc", "nimbus", "scouter", "senzu", "it"], midday: ["genki", "ssj", "senzu", "it", "balls", "disc"],
+      evening: ["balls", "shenron", "ssj", "scouter", "nimbus"], night: ["moon", "it", "genki", "shenron", "scouter"]};
+    function period() {
+      var h = +new Intl.DateTimeFormat("en-US", {timeZone: "America/Chicago", hour: "numeric", hour12: false}).format(new Date()) % 24;
+      return h >= 5 && h < 11 ? "morning" : h >= 11 && h < 17 ? "midday" : h >= 17 && h < 21 ? "evening" : "night";
+    }
+    var last = null;
     function run(name) {
       if (document.hidden || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
       var r = acts[name](); if (r && r[0]) setTimeout(function () { r[0].remove(); }, r[1]);
     }
     function next(delay) {
       window.bbDbzTimer = setTimeout(function () {
-        var pick; do { pick = names[Math.floor(Math.random() * names.length)]; } while (pick == last && names.length > 1);
+        var names = POOL[period()], pick; do { pick = names[Math.floor(Math.random() * names.length)]; } while (pick == last && names.length > 1);
         last = pick; run(pick); next(40000 + Math.random() * 40000);
       }, delay);
     }
