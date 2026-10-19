@@ -86,7 +86,7 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
 <div class="wrap" id="gate" hidden><div class="sub" style="margin-top:30vh;text-align:center">This page is still being tested.<br><a href="index.html" style="color:#8bd1ff">← Home</a></div></div>
 <div class="wrap" id="wrap">
   <a href="index.html" style="color:var(--blue);text-decoration:none;font:600 13px Manrope">← Home</a>
-  <div class="card" style="border-color:#f2c87955;background:#f2c8790f;font-size:12.5px;color:var(--amber)">Testing mode: what you send is shared with Jason and Dylan only. The week shown is this week's real events.</div>
+  <div class="card" style="border-color:#f2c87955;background:#f2c8790f;font-size:12.5px;color:var(--amber)">Testing mode: what you send is shared with Jason and Dylan only. The week shown is next week's real events.</div>
   <div class="sub">BANQUET BOT · WESTIN AUSTIN DOMAIN</div>
   <h1>Scheduler <span class="demo" id="stage">BETA</span></h1>
   <div class="sub">Servers send availability → Banquet Bot drafts the week from the events and Hector's own staffing habits → Hector and Jason adjust and post.</div>
@@ -104,7 +104,7 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
     </div>
     <div class="card">
       <div class="row" style="justify-content:space-between;margin-bottom:10px">
-        <div><b id="whoName"></b> <span class="sub">· week of Sat Oct 17 – Fri Oct 23</span></div>
+        <div><b id="whoName"></b> <span class="sub" id="weekLbl"></span></div>
         <div class="row" style="gap:6px"><span class="sub">Shifts I want</span>
           <span class="step"><button id="wMinus">−</button><b id="want">4</b><button id="wPlus">+</button></span></div>
       </div>
@@ -124,7 +124,7 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
       <div class="tools">
         <button class="btn" id="auto">✦ Auto-fill week</button>
         <button class="btn ghost" id="clear">Clear</button>
-        <label class="row" style="gap:6px;font-size:12.5px;color:var(--mute)"><input type="checkbox" id="showActual" checked style="accent-color:var(--mint)"> Compare to Hector's real schedule</label>
+        <label class="row" id="actualWrap" style="gap:6px;font-size:12.5px;color:var(--mute)"><input type="checkbox" id="showActual" checked style="accent-color:var(--mint)"> Compare to Hector's real schedule</label>
       </div>
       <div class="note" style="margin-top:8px" id="inCount"></div>
     </div>
@@ -189,7 +189,7 @@ const WHO = (() => { try { return JSON.parse(localStorage.getItem("bb-hsm-who") 
 const TESTERS = {Jason: "BETA", Dylan: "PROTOTYPE"};
 if (!WHO || !TESTERS[WHO.name]) { document.getElementById("gate").hidden = false; document.getElementById("wrap").remove(); throw new Error("not a tester"); }
 document.getElementById("stage").textContent = TESTERS[WHO.name];
-const DATA = {"week":{"2026-10-17":{"meals":[{"s":1155,"e":1320,"tag":"Dinner","n":30,"room":"Primrose D"},{"s":420,"e":510,"tag":"Breakfast","n":20,"room":"Plumeria"},{"s":760,"e":850,"tag":"Lunch","n":20,"room":"Plumeria"}],"clients":["Ayn Rand Centre"],"actual":[["Francisco","4P\u201311P"],["Tomas","4P\u201311P"],["Gema","5A\u20133P"]]},"2026-10-18":{"meals":[{"s":390,"e":465,"tag":"Breakfast","n":35,"room":"Barton"},{"s":690,"e":780,"tag":"Lunch","n":70,"room":"Barton"},{"s":1050,"e":1170,"tag":"Reception","n":40,"room":"Primrose D"},{"s":420,"e":540,"tag":"Breakfast","n":20,"room":"Plumeria"},{"s":770,"e":855,"tag":"Lunch","n":20,"room":"Plumeria"}],"clients":["University of Texas","Ayn Rand Centre"],"actual":[["Dylan","515A\u2013330P/BAR"],["Francisco","5A\u20132P"],["Tomas","7A\u20132P/HSMN"],["Carlos","715A\u20131P"],["Hilnery","5A\u20133P"],["Maricruz (DT)","330P\u2013830P"]]},"2026-10-19":{"meals":[{"s":450,"e":525,"tag":"Breakfast","n":35,"room":"Barton"}],"clients":["University of Texas","Lumenalta"],"actual":[["Tomas","615A\u201312P/HSMN"],["Carlos","530A\u2013930A"],["Odaly","615A\u201312P"]]},"2026-10-20":{"meals":[{"s":480,"e":540,"tag":"Breakfast","n":25,"room":"Barton"},{"s":750,"e":810,"tag":"Lunch Buffet","n":25,"room":"Barton"},{"s":435,"e":480,"tag":"Breakfast","n":15,"room":"Verbena"},{"s":720,"e":780,"tag":"Lunch","n":15,"room":"Verbena"},{"s":450,"e":540,"tag":"Breakfast","n":8,"room":"Camellia B"},{"s":750,"e":810,"tag":"Lunch","n":8,"room":"Camellia B"},{"s":480,"e":555,"tag":"Breakfast","n":12,"room":"Camellia A"},{"s":720,"e":780,"tag":"Lunch","n":12,"room":"Camellia A"}],"clients":["Triple Crown Consulting","Grainger","Herring Bank","Lumenalta","Microsoft"],"actual":[["Dylan","6A\u2013230P"],["Francisco","5A\u2013330P"],["Hilnery","5A\u20132P"]]},"2026-10-21":{"meals":[{"s":480,"e":540,"tag":"Breakfast","n":25,"room":"Barton"},{"s":720,"e":780,"tag":"Lunch","n":25,"room":"Barton"},{"s":420,"e":480,"tag":"Breakfast","n":15,"room":"Verbena"},{"s":720,"e":780,"tag":"Lunch","n":15,"room":"Verbena"},{"s":480,"e":540,"tag":"Breakfast","n":8,"room":"Camellia B"},{"s":690,"e":750,"tag":"Lunch","n":8,"room":"Camellia B"},{"s":480,"e":540,"tag":"Breakfast","n":12,"room":"Camellia A"},{"s":720,"e":780,"tag":"Lunch","n":12,"room":"Camellia A"}],"clients":["Triple Crown Consulting","Grainger","Herring Bank","Lumenalta","Microsoft","Q2 Banking"],"actual":[["Dylan","6A\u20133P"],["Francisco","5A\u20133P"],["Tomas","630A\u20136P"]]},"2026-10-22":{"meals":[{"s":450,"e":510,"tag":"Breakfast","n":115,"room":"PDR Foyer"},{"s":720,"e":780,"tag":"Lunch","n":138,"room":"PDR Foyer"}],"clients":["Q2 Banking"],"actual":[["Dylan","530A\u20132P"],["Francisco","530A\u20132P"],["Carlos","7A\u20135P"],["Gema","530A\u20132P"],["Odaly","7A\u20133P"],["Hilnery","530A\u20132P"]]},"2026-10-23":{"meals":[],"clients":[],"actual":[]}},"pts":[[3,1],[18,2],[400,7],[60,3],[175,6],[150,5],[88,3],[147,5],[32,2],[59,3],[6,1],[100,3],[134,7],[100,7],[18,2],[30,2],[30,1],[100,4],[120,2],[300,6],[300,9],[200,8],[6,2],[30,2],[29,2],[100,3],[100,4],[21,1],[51,3],[30,2],[20,3],[40,2],[34,2],[187,5],[23,1],[25,1],[20,2],[59,3],[50,3],[45,1],[250,2],[170,7],[70,5],[50,2],[50,2],[120,5],[160,5],[170,4],[115,3],[55,2],[424,3],[278,10],[291,11],[200,5],[15,1],[60,3],[40,2],[22,2],[278,9],[277,9],[32,2],[30,1],[44,4],[104,5],[149,6],[15,1],[31,3],[90,6],[35,3],[60,3],[60,3],[138,6]]};
+const DATA = {"week":{"2026-10-24":{"meals":[{"s":1140,"e":1380,"tag":"Reception","n":100,"room":"Primrose D"}],"clients":["Robe Lighting","PMADTX (Puppy Mill Awareness Day TX)"],"actual":[]},"2026-10-25":{"meals":[],"clients":[],"actual":[]},"2026-10-26":{"meals":[{"s":1020,"e":1080,"tag":"Reception","n":100,"room":"Primrose Foyer CD"},{"s":1080,"e":1200,"tag":"Dinner Buffet","n":110,"room":"Primrose CD"}],"clients":["US Oncology"],"actual":[]},"2026-10-27":{"meals":[{"s":540,"e":600,"tag":"Breakfast","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"}],"clients":["Reliant Life Sciences","Galderma Laboratories, LP"],"actual":[]},"2026-10-28":{"meals":[{"s":450,"e":540,"tag":"Breakfast","n":38,"room":"Verbena"},{"s":540,"e":600,"tag":"Breakfast","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch Buffet","n":38,"room":"Verbena"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"},{"s":1080,"e":1200,"tag":"Dinner","n":17,"room":"Bonnell"},{"s":1170,"e":1320,"tag":"Reception","n":40,"room":"Barton"}],"clients":["Momentum Skilled Services","Reliant Life Sciences","Galderma Laboratories, LP","ABB"],"actual":[]},"2026-10-29":{"meals":[{"s":720,"e":780,"tag":"Lunch Buffet","n":22,"room":"Camellia"},{"s":1080,"e":1200,"tag":"Dinner","n":16,"room":"Bonnell"}],"clients":["Upbring"],"actual":[]},"2026-10-30":{"meals":[],"clients":[],"actual":[]}},"pts":[[3,1],[18,2],[400,7],[60,3],[175,6],[150,5],[88,3],[147,5],[32,2],[59,3],[6,1],[100,3],[134,7],[100,7],[18,2],[30,2],[30,1],[100,4],[120,2],[300,6],[300,9],[200,8],[6,2],[30,2],[29,2],[100,3],[100,4],[21,1],[51,3],[30,2],[20,3],[40,2],[34,2],[187,5],[23,1],[25,1],[20,2],[59,3],[50,3],[45,1],[250,2],[170,7],[70,5],[50,2],[50,2],[120,5],[160,5],[170,4],[115,3],[55,2],[424,3],[278,10],[291,11],[200,5],[15,1],[60,3],[40,2],[22,2],[278,9],[277,9],[32,2],[30,1],[44,4],[104,5],[149,6],[15,1],[31,3],[90,6],[35,3],[60,3],[60,3],[138,6]]};
 const ROSTER = ["Francisco","Dylan","Tomas","Carlos","Gema","Odaly","Hilnery","Raibely","Adrian","Ozzy"];
 const DAYS = Object.keys(DATA.week);
 const DOW = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
@@ -268,7 +268,7 @@ $("#send").onclick = async () => {
 const amNeed = p => p === 0 ? 0 : p <= 30 ? 1 : p <= 60 ? 2 : p <= 120 ? 3 : Math.ceil(p / 30);
 const pmNeed = meals => {
   let n = 0;
-  meals.forEach(m => { n += /dinner/i.test(m.tag) ? Math.max(1, Math.ceil(m.n / 20)) : (m.n <= 150 ? 1 : Math.ceil(m.n / 75)); });
+  meals.forEach(m => { n += /dinner/i.test(m.tag) ? Math.max(1, Math.ceil(m.n / (/buffet/i.test(m.tag) ? 30 : 20))) : (m.n <= 150 ? 1 : Math.ceil(m.n / 75)); });
   return n;
 };
 const fmt = m => { m = Math.round(m / 15) * 15; let h = Math.floor(m / 60), mm = m % 60, ap = h >= 12 ? "P" : "A"; h = h % 12 || 12;
@@ -310,10 +310,12 @@ function autoFill() {
   });
 }
 function renderBuild() {
-  const showA = $("#showActual").checked;
+  const posted = DAYS.some(d => DATA.week[d].actual.length);
+  $("#actualWrap").hidden = !posted;
+  const showA = posted && $("#showActual").checked;
   const sent = ROSTER.filter(n => SENT[n]);
   $("#inCount").innerHTML = (sent.length ? "<b>Sent:</b> " + sent.map(n => `${n} <span class="sub">${when(SENT[n].at)}${SENT[n].note ? " · “" + SENT[n].note.replace(/</g, "&lt;") + "”" : ""}</span>`).join(" · ") : "Nobody has sent availability yet.") +
-    `<br><span class="sub">${ROSTER.length - sent.length} others are sample availability. Covers come from this week's event orders.</span>`;
+    `<br><span class="sub">${ROSTER.length - sent.length} others are sample availability. Covers come from that week's event orders.</span>`;
   $("#days").innerHTML = DAYS.map((d, i) => {
     const w = DATA.week[d], p = plan(d);
     let body = p.length ? p.map(s => {
@@ -346,6 +348,8 @@ function renderBuild() {
 $("#auto").onclick = () => { autoFill(); renderBuild(); toast("Draft built from the rubric — adjust anything"); };
 $("#clear").onclick = () => { ASSIGN = {}; renderBuild(); };
 $("#showActual").onchange = renderBuild;
+{ const f = d => new Date(d + "T12:00").toLocaleDateString("en-US", {weekday: "short", month: "short", day: "numeric"});
+  $("#weekLbl").textContent = "· week of " + f(DAYS[0]) + " – " + f(DAYS[6]); }
 
 // ---------- 3. rubric extras
 $("#nDays").textContent = DATA.pts.length;
