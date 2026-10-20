@@ -142,6 +142,16 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
 .chips{display:flex;flex-wrap:wrap;gap:7px}
 .chips button{border:1px solid var(--line2);background:var(--card);border-radius:20px;padding:9px 13px;font-size:13px;font-weight:600}
 .chips button.on{background:var(--red-d);border-color:var(--red);color:var(--red)}
+.sheet.nr{max-height:92vh;overflow:auto}
+.sheet.nr label{display:block;margin:12px 0 5px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.sheet.nr .prname{margin:0}
+.sheet.nr textarea{margin-top:0;min-height:110px}
+.sheet.nr .chips button.on{background:#123a2c;border-color:var(--done);color:var(--done)}
+.nrhint{font-size:11px;color:var(--t4);margin-top:4px}
+.nrdg{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.nrdg img{height:64px;border-radius:6px;background:#fff;display:block}
+.addroom{display:block;width:100%;margin:10px 0 4px;padding:10px;border:1px dashed var(--line2);border-radius:12px;background:none;color:var(--t2);font-weight:700;font-size:13px;cursor:pointer}
+.addroom:hover{border-color:var(--done);color:var(--done)}
 .sheet textarea{width:100%;margin-top:12px;min-height:70px;border-radius:10px;border:1px solid var(--line2);background:#0b151e;color:var(--t1);font:16px Manrope;padding:10px}
 .sheet .acts{grid-template-columns:auto 1fr}
 .dots{display:flex;justify-content:center;gap:14px;margin:6px 0 14px}
@@ -302,6 +312,20 @@ body.dir .printbtn{border-color:color-mix(in srgb,var(--acc) 40%,transparent);co
   <div class="chips" id="prChips"></div>
   <input id="prName" class="prname" maxlength="40" placeholder="Or type a name (leave blank for a write-in line)">
   <div class="acts"><button class="btn btn-undo" id="prCancel">Cancel</button><button class="btn btn-done" id="prGo">🖨 Print</button></div>
+</div></div>
+<div class="sheet-bg" id="nrBg"><div class="sheet nr">
+  <h3>Create a room</h3><p id="nrDay"></p>
+  <label for="nrRoom">Room</label><input id="nrRoom" class="prname" list="nrRooms" maxlength="40" placeholder="e.g. Primrose C"><datalist id="nrRooms"></datalist>
+  <label for="nrFor">For (group · function)</label><input id="nrFor" class="prname" maxlength="80" placeholder="e.g. Q2 Banking · Breakout">
+  <label>Type</label><div class="chips" id="nrType"><button data-nrt="set" class="on">Set</button><button data-nrt="ref">Refresh</button><button data-nrt="clr">Clear</button></div>
+  <label for="nrEnd">Room free by (optional)</label><input id="nrEnd" class="prname" maxlength="12" placeholder="e.g. 5:00 PM">
+  <label for="nrSteps">Setup steps · one per line</label>
+  <textarea id="nrSteps" placeholder="(10) rounds of 8, chairs per diagram&#10;Podium + wired mic at the front&#10;Pads, pens &amp; water at every seat"></textarea>
+  <div class="nrhint" id="nrHint">Leave blank to use the standard steps for this type.</div>
+  <label>Diagram (optional)</label>
+  <div class="nrdg"><button type="button" class="btn btn-undo" id="nrPick">⬆ Add a photo, image or PDF</button><div id="nrPrev"></div></div>
+  <input type="file" id="nrFile" accept="image/*,application/pdf" hidden>
+  <div class="acts"><button class="btn btn-undo" id="nrCancel">Cancel</button><button class="btn btn-done" id="nrSave">＋ Create room</button></div>
 </div></div>
 <div class="sheet-bg" id="mvBg"><div class="sheet">
   <h3>Move build</h3><p id="mvRoom"></p>
@@ -684,7 +708,7 @@ async function save(iso, rslug, patch) {
   const day = (STATE[iso] ||= {}), cur = (day[rslug] ||= {items:{}, done:null, prob:null});
   const before = JSON.parse(JSON.stringify(cur));
   if (patch.items) Object.assign(cur.items, patch.items);
-  for (const k of ["done","prob","extra","removed","moved","diag","cancelled","type","edits","iorder"]) if (k in patch) cur[k] = patch[k];
+  for (const k of ["done","prob","extra","removed","moved","diag","cancelled","type","edits","iorder","def"]) if (k in patch) cur[k] = patch[k];
   render();
   if (MOCK) { try { localStorage.setItem("bb-hsm-mock", JSON.stringify(STATE)); } catch(e) {} return; }
   try { await setDoc(doc(db, COL, iso), {rooms:{[rslug]:patch}, updated:Date.now()}, {merge:true}); }
@@ -780,7 +804,17 @@ function confirmSignOut() { if (Date.now() - soArmed < 3000) return true; soArme
 // ── state helpers
 let view = "hsm", dayISO = ((VISIBLE.find(d => d.iso >= todayISO()) || VISIBLE[VISIBLE.length - 1]) || {}).iso, openId = null, sheetFor = null, sheetPick = new Set();
 const dayOf = iso => DAYS.find(d => d.iso == iso);
-const rs = (iso, r) => ((STATE[iso] || {})[slug(r.room)]) || {items:{}, done:null, prob:null};
+// A room's key in the night doc: posted rooms use slug(room); rooms a lead creates use their own "nr-<id>" key.
+const rk = r => r.key || slug(r.room);
+const rs = (iso, r) => ((STATE[iso] || {})[rk(r)]) || {items:{}, done:null, prob:null};
+// Posted rooms for a night plus rooms a lead created on desktop (stored as rooms["nr-<id>"].def in the same doc),
+// oldest first so their positions (o|i ids) stay put.
+function roomsOfDay(iso) {
+  const d = dayOf(iso), base = d ? d.rooms : [];
+  const made = Object.entries(STATE[iso] || {}).filter(([k, v]) => k.startsWith("nr-") && v && v.def)
+    .map(([k, v]) => ({...v.def, key: k, made: true})).sort((a, b) => a.ts - b.ts);
+  return base.concat(made);
+}
 const origDiags = r => r.diag ? [].concat(r.diag) : [];
 // A lead's override wins: an uploaded diagram ("up:<id>") or none at all. o = the room's own night (where its state lives).
 function diagsOf(r, o) {
@@ -798,8 +832,8 @@ const roomsOn = iso => allOn(iso).filter(x => !rs(x.o, x.r).cancelled);
 const cancelledOn = iso => allOn(iso).filter(x => rs(x.o, x.r).cancelled);
 function allOn(iso) {
   const out = [], d = dayOf(iso);
-  if (d) d.rooms.forEach((r,i) => { const m = rs(iso, r).moved; if (!(m && m.to && m.to != iso)) out.push({r, i, o:iso}); });
-  for (const od of VISIBLE) if (od.iso != iso) od.rooms.forEach((r,i) => { const m = rs(od.iso, r).moved; if (m && m.to == iso) out.push({r, i, o:od.iso, from:od.iso}); });
+  if (d) roomsOfDay(iso).forEach((r,i) => { const m = rs(iso, r).moved; if (!(m && m.to && m.to != iso)) out.push({r, i, o:iso}); });
+  for (const od of VISIBLE) if (od.iso != iso) roomsOfDay(od.iso).forEach((r,i) => { const m = rs(od.iso, r).moved; if (m && m.to == iso) out.push({r, i, o:od.iso, from:od.iso}); });
   const ord = ORDER[iso];
   if (ord && ord.length) {
     const pos = new Map(ord.map((id,k) => [id, k])), key = (x,k) => pos.has(x.o+"|"+x.i) ? pos.get(x.o+"|"+x.i) : 1e3 + k;
@@ -810,7 +844,7 @@ function allOn(iso) {
 }
 function movedOut(iso) {
   const d = dayOf(iso); if (!d) return [];
-  return d.rooms.map((r,i) => ({r, i, o:iso, to:(rs(iso, r).moved || {}).to})).filter(x => x.to && x.to != iso);
+  return roomsOfDay(iso).map((r,i) => ({r, i, o:iso, to:(rs(iso, r).moved || {}).to})).filter(x => x.to && x.to != iso);
 }
 const dayLbl = iso => `${dow(iso).slice(0,1)}${dow(iso).slice(1).toLowerCase()} ${md(iso)}`;
 let desk = false; try { desk = localStorage.getItem("bb-hsm-desk") == "1"; } catch(e) {}
@@ -910,6 +944,7 @@ function renderCap(d) {
     return `<div class="crow" data-sort="${id}">${lead?`<span class="grip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="num" style="${x.R.s.done?"background:var(--done);color:#0e2418;border-color:var(--done)":""}">${x.R.s.done?"✓":k+1}</span>
       <div><div class="rname">${esc(x.r.room)}</div><div class="meta">${TYPE[tOf(x.o,x.r)]}${x.r.end?` · ends ${esc(x.r.end)}`:""}${diagsOf(x.r,x.o).length?(dv&&dv.id?" · new diagram":" · diagram"):(dv&&dv.none?" · diagram hidden":"")}${x.from?` · <span style="color:#c1baff">⇄ from ${dayLbl(x.from)}</span>`:""}</div></div><div class="right">${x.R.pill}</div>
       ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button><button class="xbtn" data-cancel="${id}">✕ Cancel</button></div>`:""}</div>`; }).join("") + `</div>`;
+  if (lead) h += `<button class="addroom" data-newroom="${d.iso}">＋ Create a room</button>`;
   const cxs = cancelledOn(d.iso);
   if (cxs.length) h += `<div class="sec">Cancelled</div>` + cxs.map(x => cxRow(x, lead)).join("");
   const out = movedOut(d.iso);
@@ -928,7 +963,7 @@ function renderBoard() {
     <div class="sub">Drag a room up or down to change the build order, or onto another night to move it · 🖼 to replace or hide a diagram · ⚠ cards need you</div></div><div class="board">`;
   for (const d of VISIBLE) {
     const list = roomsOn(d.iso), [a,b] = dayProgress(d);
-    h += `<section class="col ${d.iso==todayISO()?"today":""}" data-drop="${d.iso}"><header><b>${dayLbl(d.iso)}</b><span>for ${esc(d.target)}</span><span class="cnt">${a}/${b}</span><button class="mini" data-print="${d.iso}" title="Print">🖨</button></header>`;
+    h += `<section class="col ${d.iso==todayISO()?"today":""}" data-drop="${d.iso}"><header><b>${dayLbl(d.iso)}</b><span>for ${esc(d.target)}</span><span class="cnt">${a}/${b}</span><button class="mini" data-newroom="${d.iso}" title="Create a room">＋</button><button class="mini" data-print="${d.iso}" title="Print">🖨</button></header>`;
     h += list.map((x,k) => {
       const id = x.o+"|"+x.i, R = roomState(x.o, x.r), ds = diagsOf(x.r, x.o);
       return `<div class="bcard ${tOf(x.o,x.r)} ${R.cls}" draggable="true" data-drag="${id}"><div class="bh"><span class="num">${R.s.done?"✓":k+1}</span>
@@ -938,6 +973,7 @@ function renderBoard() {
         ${ds.length?`<button class="thumb" data-diag="${esc(ds[0])}" data-room="${esc(x.r.room)}"><img src="${previewOf(ds[0])}" alt="${esc(x.r.room)} diagram"></button>`:""}
         <div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button><button class="xbtn" data-cancel="${id}" title="Cancel room">✕</button></div></div>`;
     }).join("") || `<div class="empty">No rooms</div>`;
+    h += `<button class="addroom" data-newroom="${d.iso}">＋ Create a room</button>`;
     h += cancelledOn(d.iso).map(x => `<div class="gone cx"><s>${esc(x.r.room)}</s> cancelled<button class="mini" data-uncancel="${x.o}|${x.i}">↺</button></div>`).join("");
     h += movedOut(d.iso).map(x => `<div class="gone">→ ${esc(x.r.room)} · ${dayLbl(x.to)}<button class="mini" data-back="${x.o}|${x.i}">↩</button></div>`).join("");
     h += `</section>`;
@@ -977,15 +1013,16 @@ function render() {
 }
 let toastT;
 function toast(msg, bad) { const t = document.getElementById("toast"); t.textContent = msg; t.className = "toast on" + (bad ? " bad" : ""); clearTimeout(toastT); toastT = setTimeout(()=>t.className = "toast", 2200); }
-const parseId = id => { const [iso, i] = id.split("|"); return {iso, r: dayOf(iso).rooms[+i], i:+i}; };
+const parseId = id => { const [iso, i] = id.split("|"); return {iso, r: roomsOfDay(iso)[+i], i:+i}; };
 document.getElementById("desk").onclick = () => { desk = !desk; try { localStorage.setItem("bb-hsm-desk", desk ? "1" : "0"); } catch(e) {} render(); };
 
 // ── actions
 document.addEventListener("click", async e => {
   if (e.target.closest("[data-grip]") || Date.now() - sortEnded < 350) { e.preventDefault(); return; }
-  const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back],[data-cancel],[data-uncancel],[data-edit],[data-edsave],[data-edcancel],[data-type]");
+  const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back],[data-cancel],[data-uncancel],[data-edit],[data-edsave],[data-edcancel],[data-type],[data-newroom]");
   if (!t) return;
   if (t.dataset.print) { openPrintSheet(t.dataset.print); return; }
+  if (t.dataset.newroom) { if (!EDIT()) { toast(WHO && LEAD(WHO.role) ? "Editing is on desktop only" : "Only the captain or director can add rooms", true); return; } openNewRoom(t.dataset.newroom); return; }
   if (t.dataset.dgm || t.dataset.move || t.dataset.back || t.dataset.cancel || t.dataset.uncancel) {
     if (!EDIT()) { toast(WHO && LEAD(WHO.role) ? "Editing is on desktop only" : "Only the captain or director can change this", true); return; }
     if (t.dataset.cancel || t.dataset.uncancel) { await cancelRoom(t.dataset.cancel || t.dataset.uncancel, !!t.dataset.cancel, t); return; }
@@ -1001,7 +1038,7 @@ document.addEventListener("click", async e => {
   if (t.dataset.prob) { if (await needWho("Sign in to report a problem.")) openSheet(t.dataset.prob); return; }
   const id = t.dataset.item || t.dataset.done || t.dataset.undo || t.dataset.resolve;
   const who = await needWho("Sign in to check things off."); if (!who) return;
-  const {iso, r, i} = parseId(id), rsl = slug(r.room), cur = rs(iso, r);
+  const {iso, r, i} = parseId(id), rsl = rk(r), cur = rs(iso, r);
   if (t.dataset.item) { const k = t.dataset.k; await save(iso, rsl, {items:{[k]: !(cur.items && cur.items[k])}}); return; }
   if (t.dataset.done) {
     const all = {}; listOf(iso, r).forEach(x=>all[x.key]=true);
@@ -1072,7 +1109,7 @@ document.addEventListener("pointerdown", e => {
     const ids = [...list.querySelectorAll(":scope > [data-sort]")].map(x => x.dataset.sort);
     if (list.dataset.isort) {
       const {iso: o, r} = parseId(list.dataset.isort);
-      if (ids.join() != listOf(o, r).map(x => x.key).join()) { await save(o, slug(r.room), {iorder: ids}); toast(`Steps reordered in ${r.room}`); }
+      if (ids.join() != listOf(o, r).map(x => x.key).join()) { await save(o, rk(r), {iorder: ids}); toast(`Steps reordered in ${r.room}`); }
       else if (renderPending) render();
       renderPending = false; return;
     }
@@ -1095,14 +1132,61 @@ async function cancelRoom(id, on, btn) {
   }
   cxArmed = {id: null, t: 0};
   if (on && openId == id) openId = null;
-  await save(iso, slug(r.room), {cancelled: on ? {by: WHO.name, at: nowLabel(), ts: Date.now()} : null});
+  await save(iso, rk(r), {cancelled: on ? {by: WHO.name, at: nowLabel(), ts: Date.now()} : null});
   toast(on ? `✕ ${r.room} cancelled — Restore is at the bottom` : `↺ ${r.room} restored`);
 }
+
+// ── lead operations: create a room for a night (desktop leads). Its definition lives in the night doc as
+// rooms["nr-<id>"].def = {room, for, t, items, end, by, at, ts}; checkoffs, edits, moves and cancel work like any room.
+let nrFor = null, nrType = "set", nrData = null;
+function openNewRoom(iso) {
+  nrFor = iso; nrType = "set"; nrData = null;
+  const d = dayOf(iso);
+  document.getElementById("nrDay").textContent = `${dayLbl(iso)}${d && d.target ? " · setting for " + d.target : ""}`;
+  ["nrRoom","nrFor","nrEnd","nrSteps"].forEach(k => document.getElementById(k).value = "");
+  document.getElementById("nrPrev").innerHTML = "";
+  document.querySelectorAll("#nrType button").forEach(b => b.classList.toggle("on", b.dataset.nrt == "set"));
+  const known = [...new Set(DAYS.flatMap(x => x.rooms.map(r => r.room)))].sort();
+  document.getElementById("nrRooms").innerHTML = known.map(r => `<option value="${esc(r)}">`).join("");
+  nrHint();
+  document.getElementById("nrBg").classList.add("on");
+  setTimeout(() => document.getElementById("nrRoom").focus(), 50);
+}
+function nrHint() { document.getElementById("nrHint").textContent = nrType == "set" ? "Leave blank to say “Set per diagram / event order.”" : `Leave blank to use the standard ${TYPE[nrType]} steps.`; }
+document.getElementById("nrType").addEventListener("click", e => { const b = e.target.closest("[data-nrt]"); if (!b) return; nrType = b.dataset.nrt;
+  document.querySelectorAll("#nrType button").forEach(x => x.classList.toggle("on", x == b)); nrHint(); });
+document.getElementById("nrPick").onclick = () => document.getElementById("nrFile").click();
+document.getElementById("nrFile").onchange = async e => {
+  const f = e.target.files && e.target.files[0]; e.target.value = ""; if (!f) return;
+  toast("Reading diagram…");
+  try { nrData = await fileToJpeg(f); document.getElementById("nrPrev").innerHTML = `<img src="${nrData}" alt="New diagram">`; }
+  catch (err) { console.error("[housemen] diagram read", err); nrData = null; toast(err.message == "Diagram too large" ? "That file is too large — try a smaller photo" : "Couldn't read that file", true); }
+};
+const nrClose = () => document.getElementById("nrBg").classList.remove("on");
+document.getElementById("nrCancel").onclick = nrClose;
+document.getElementById("nrBg").onclick = e => { if (e.target.id == "nrBg") nrClose(); };
+document.getElementById("nrSave").onclick = async () => {
+  if (!EDIT()) { toast("Editing is on desktop only", true); return; }
+  const room = document.getElementById("nrRoom").value.trim();
+  if (!room) { toast("Give the room a name", true); document.getElementById("nrRoom").focus(); return; }
+  const items = document.getElementById("nrSteps").value.split("\n").map(x => x.trim().replace(/^[-•*]\s*/, "")).filter(Boolean).slice(0, 40);
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 5), key = "nr-" + id, iso = nrFor;
+  const def = {room, for: document.getElementById("nrFor").value.trim() || "Added by " + WHO.name, t: nrType, items,
+    end: document.getElementById("nrEnd").value.trim(), by: WHO.name, at: nowLabel(), ts: Date.now()};
+  const btn = document.getElementById("nrSave"); btn.disabled = true; btn.textContent = "Saving…";
+  try {
+    const patch = {def};
+    if (nrData) { const did = key + "-" + Date.now().toString(36); await putDiag(did, nrData, room); patch.diag = {id: did, by: WHO.name, at: nowLabel(), ts: Date.now()}; }
+    await save(iso, key, patch);
+    nrClose(); toast(`${room} added to ${dayLbl(iso)}`);
+  } catch (err) { console.error("[housemen] create room", err); toast("Couldn't save the room — try again", true); }
+  finally { btn.disabled = false; btn.textContent = "＋ Create room"; }
+};
 
 // ── lead operations: move a build to another night (state stays on its original night's doc)
 async function moveBuild(id, to) {
   const {iso, r} = parseId(id);
-  await save(iso, slug(r.room), {moved: to == iso ? null : {to, by: WHO.name, at: nowLabel(), ts: Date.now()}});
+  await save(iso, rk(r), {moved: to == iso ? null : {to, by: WHO.name, at: nowLabel(), ts: Date.now()}});
   toast(to == iso ? `${r.room} back on ${dayLbl(iso)}` : `${r.room} moved to ${dayLbl(to)}`);
 }
 let mvFor = null;
@@ -1157,7 +1241,7 @@ function drawDiagSheet() {
 document.getElementById("dgBg").addEventListener("click", async e => {
   if (e.target.id == "dgBg") { document.getElementById("dgBg").classList.remove("on"); return; }
   const b = e.target.closest("[data-dg]"); if (!b) return;
-  const act = b.dataset.dg, {iso, r} = parseId(dgFor), rsl = slug(r.room);
+  const act = b.dataset.dg, {iso, r} = parseId(dgFor), rsl = rk(r);
   if (act == "close") { document.getElementById("dgBg").classList.remove("on"); return; }
   if (act == "cancel") { dgNew = null; drawDiagSheet(); return; }
   if (act == "pick") { document.getElementById("dgFile").click(); return; }
@@ -1184,7 +1268,7 @@ async function editItems(t) {
   if (!EDIT()) { toast(WHO && LEAD(WHO.role) ? "Editing is on desktop only" : "Only the captain or director can edit the list", true); return; }
   if (t.dataset.edcancel) { EDITING = null; render(); return; }
   const id = t.dataset.del || t.dataset.addbtn || t.dataset.restore || t.dataset.edit || t.dataset.edsave || t.dataset.type;
-  const {iso, r} = parseId(id), rsl = slug(r.room), cur = rs(iso, r);
+  const {iso, r} = parseId(id), rsl = rk(r), cur = rs(iso, r);
   if (t.dataset.type) {
     const v = t.dataset.v; if (v == tOf(iso, r)) return;
     await save(iso, rsl, {type: v == r.t ? null : v}); toast(`${r.room} is now ${TYPE[v]}`); return;
@@ -1328,7 +1412,7 @@ document.getElementById("send").onclick = async () => {
   if (!sheetPick.size && !note) { toast("Pick a problem or add a note", true); return; }
   const {iso, r} = parseId(sheetFor);
   document.getElementById("sheetBg").classList.remove("on");
-  await save(iso, slug(r.room), {prob:{what:[...sheetPick].join(", ") || "Problem", note, by:WHO.name, at:nowLabel(), ts:Date.now()}});
+  await save(iso, rk(r), {prob:{what:[...sheetPick].join(", ") || "Problem", note, by:WHO.name, at:nowLabel(), ts:Date.now()}});
   toast("⚠ Sent to captain");
 };
 document.getElementById("vHsm").onclick = () => { view = "hsm"; render(); };

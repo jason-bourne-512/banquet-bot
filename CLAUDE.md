@@ -41,6 +41,7 @@ Open slot — add new headers here as you go through packets and hit more cases.
 ## Locked rules (already settled, don't relitigate)
 
 - No last names or phone numbers anywhere on the site — first names only for CONTACT/MGR/IC fields.
+- **CONTACT = the in-house contact** (Jason 2026-10-20): fill CONTACT (and the IC chip) from the event order's "IN-HOUSE CONTACT" line, not the CUSTOMER line. Only when it says "SAME" does the customer become the contact. First name only.
 - Every `data-en`/`data-es`/visible-text trio stays identical (site doesn't actually translate, just duplicates English three times).
 - Match existing markup conventions exactly: `.event-card` → `.card-head`/`.card-badges` → `.svc-row` (`.svc-time`/`.svc-top` with tag/room-pill/gtd-pill/`.svc-menu`) → `.card-foot` (CONTACT/ROOM/NOTE/DIAGRAM).
 - Day-button color rotation (`a1`-`a5`) must stay unbroken when inserting/removing days.
