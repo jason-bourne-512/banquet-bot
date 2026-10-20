@@ -223,6 +223,28 @@
         "45%{transform:translateX(0) rotate(calc(var(--rot) * 1.25))}}" +
         ".bb-peek{position:fixed!important;z-index:9996;width:clamp(100px,10vw,150px);cursor:pointer;animation:bbSidePeek 4.6s ease-in-out forwards}" +
         ".bb-peek img{display:block;width:100%;height:auto;border:0;background:none;margin:0;padding:0;box-shadow:none}" +
+        // More moves: the walker dances, moonwalks or trips; the vine monkey loops or chatters; a bungee drop; a pop-up from the bottom.
+        "@keyframes bbDance{0%,100%{transform:none}15%{transform:translateY(-22px) rotate(-14deg)}30%{transform:rotate(12deg)}" +
+        "45%{transform:translateY(-22px) rotate(-12deg)}60%{transform:rotate(14deg)}75%{transform:translateY(-14px) rotate(-8deg)}}" +
+        ".bb-walker.dance img{animation:bbDance 1.8s ease-in-out}" +
+        "@keyframes bbMoon{0%,100%{translate:0 0}50%{translate:0 -3px}}" +
+        ".bb-walker.moon img{transform:scaleX(-1);animation:bbMoon .45s ease-in-out infinite}" +
+        "@keyframes bbTrip{0%{transform:none}15%{transform:rotate(-20deg)}35%,70%{transform:translate(18px,22px) rotate(88deg)}" +
+        "85%{transform:translateY(-16px) rotate(-6deg)}100%{transform:none}}" +
+        ".bb-walker.trip img{transform-origin:70% 95%;animation:bbTrip 2.2s ease-in-out}" +
+        "@keyframes bbLoop{0%{transform:rotate(0)}25%{transform:rotate(-38deg)}100%{transform:rotate(360deg)}}" +
+        ".bb-monkey.loop{animation:bbLoop 1.7s cubic-bezier(.45,0,.3,1)!important}" +
+        "@keyframes bbChatter{0%,100%{transform:rotate(0)}10%,30%,50%,70%,90%{transform:rotate(-5deg) translateY(2px)}20%,40%,60%,80%{transform:rotate(5deg)}}" +
+        ".bb-monkey.chatter{animation:bbChatter 1.2s linear!important}" +
+        "@keyframes bbBungee{0%{transform:translateY(-105%)}25%{transform:translateY(38vh)}38%{transform:translateY(8vh)}50%{transform:translateY(26vh)}" +
+        "60%{transform:translateY(14vh)}70%,82%{transform:translateY(20vh)}100%{transform:translateY(-105%)}}" +
+        "@keyframes bbBSpin{0%,20%{transform:rotate(0)}40%,100%{transform:rotate(360deg)}}" +
+        ".bb-drop.bungee{animation:bbBungee 6.5s ease-in-out forwards}" +
+        ".bb-drop.bungee img{animation:bbBSpin 6.5s ease-in-out,bbDangle 1.2s ease-in-out infinite}" +
+        "@keyframes bbPop{0%,100%{transform:translateY(105%)}18%,78%{transform:translateY(12%)}30%{transform:translateY(16%) rotate(-8deg)}" +
+        "42%{transform:translateY(10%) rotate(8deg)}54%{transform:translateY(14%) rotate(-6deg)}66%{transform:translateY(12%) rotate(4deg)}}" +
+        ".bb-pop{position:fixed!important;bottom:0;z-index:9996;width:clamp(110px,11vw,160px);cursor:pointer;animation:bbPop 4.4s ease-in-out forwards}" +
+        ".bb-pop img{display:block;width:100%;height:auto;border:0;background:none;margin:0;padding:0;box-shadow:none;transform:rotate(-90deg)}" +
         // The big loud one: stomps up from the bottom, beats its chest, yells and throws bananas until tapped or it leaves.
         "@keyframes bbKongIn{0%{transform:translateY(105%)}70%{transform:translateY(-6%)}100%{transform:translateY(0)}}" +
         "@keyframes bbKongOut{to{transform:translateY(110%)}}" +
@@ -239,7 +261,7 @@
         "100%{transform:scale(.15) rotate(-20deg);opacity:0;filter:blur(6px)}}" +
         ".bb-poof{animation:bbPoof .45s ease-in forwards!important;pointer-events:none!important}" +
         ".bb-poof img,.bb-poof .bb-kong-say{animation:none!important}" +
-        "@media (prefers-reduced-motion:reduce){.bb-banana,.bb-drop,.bb-peek,.bb-kong{display:none!important}}"
+        "@media (prefers-reduced-motion:reduce){.bb-banana,.bb-drop,.bb-peek,.bb-kong,.bb-pop{display:none!important}}"
     },
     // Diana (Senior Events Manager): H-Town · Space City — Houston skyline with a launch (img/me, original art).
     diana: {
@@ -356,6 +378,26 @@
       w.classList.remove(cls); void w.offsetWidth; w.classList.add(cls); setTimeout(function () { w.classList.remove(cls); }, ms); return [null, ms]; };
     var acts = {
       flip: function () { return pulse("flip", 1200); },
+      dance: function () { return pulse("dance", 1900); },
+      moon: function () { return pulse("moon", 4000); },
+      trip: function () { return pulse("trip", 2300); },
+      loop: function () { var m = document.querySelector(".bb-monkey:not(.off)"); if (!m) return null;
+        m.classList.remove("loop"); void m.offsetWidth; m.classList.add("loop"); setTimeout(function () { m.classList.remove("loop"); }, 1750); return [null, 1750]; },
+      chatter: function () { var m = document.querySelector(".bb-monkey:not(.off)"); if (!m) return null;
+        m.classList.remove("chatter"); void m.offsetWidth; m.classList.add("chatter"); setTimeout(function () { m.classList.remove("chatter"); }, 1250); return [null, 1250]; },
+      bungee: function () { if (document.querySelector(".bb-monkey")) return null;
+        var d = document.createElement("div"); d.className = "bb-drop bungee";
+        var x = (12 + Math.random() * 64).toFixed(1) + "vw";
+        d.style.left = document.documentElement.classList.contains("bbd") ? "calc(var(--bbd-side) + " + x + ")" : x;
+        var im = document.createElement("img"); im.src = "img/me/lisa-monkey.svg"; im.alt = ""; d.appendChild(im);
+        d.addEventListener("click", function () { bbPoof(d); });
+        document.body.appendChild(d); return [d, 6600]; },
+      pop: function () { var d = document.createElement("div"); d.className = "bb-pop";
+        var x = (8 + Math.random() * 70).toFixed(1) + "vw";
+        d.style.left = document.documentElement.classList.contains("bbd") ? "calc(var(--bbd-side) + " + x + ")" : x;
+        var im = document.createElement("img"); im.src = "img/me/lisa-monkey-walk.svg"; im.alt = ""; d.appendChild(im);
+        d.addEventListener("click", function () { bbPoof(d); });
+        document.body.appendChild(d); return [d, 4500]; },
       spin: function () { return pulse("spin", 1500); },
       banana: function () { var w = walker(); if (!w) return null; var r = w.getBoundingClientRect();
         var b = document.createElement("div"); b.className = "bb-banana"; b.innerHTML = BANANA;
@@ -470,7 +512,7 @@
     if (window.bbDbzTimer) { clearTimeout(window.bbDbzTimer); window.bbDbzTimer = null; }
     var oldBr = document.querySelectorAll(".bb-bear,.bb-slam,.bb-ball.shot"); for (var bi = 0; bi < oldBr.length; bi++) oldBr[bi].remove();
     if (window.bbBearTimer) { clearTimeout(window.bbBearTimer); window.bbBearTimer = null; }
-    var oldMm = document.querySelectorAll(".bb-banana,.bb-drop,.bb-peek,.bb-kong"); for (var mi = 0; mi < oldMm.length; mi++) oldMm[mi].remove();
+    var oldMm = document.querySelectorAll(".bb-banana,.bb-drop,.bb-peek,.bb-kong,.bb-pop"); for (var mi = 0; mi < oldMm.length; mi++) oldMm[mi].remove();
     if (window.bbMonkeyTimer) { clearTimeout(window.bbMonkeyTimer); window.bbMonkeyTimer = null; }
     if (document.body) document.body.className = document.body.className.replace(/\bme-\S+/g, "").trim();
     var t = key && THEMES[key];
