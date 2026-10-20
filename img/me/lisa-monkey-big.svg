@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 260" width="240" height="260">
+  <!-- Lisa's big loud monkey (original art for Banquet Bot): front view, stomping, beating its chest and yelling. -->
+  <style>
+    .stomp { animation: stomp .5s ease-in-out infinite; }
+    .armL { transform-origin: 62px 142px; animation: thumpL .5s ease-in-out infinite; }
+    .armR { transform-origin: 178px 142px; animation: thumpR .5s ease-in-out infinite; }
+    .mouth { transform-origin: 120px 112px; animation: yell .25s ease-in-out infinite alternate; }
+    .brow { transform-origin: 120px 62px; animation: brow .5s ease-in-out infinite; }
+    @keyframes stomp { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
+    @keyframes thumpL { 0%,100% { transform: rotate(0) } 50% { transform: rotate(48deg) } }
+    @keyframes thumpR { 0%,100% { transform: rotate(-48deg) } 50% { transform: rotate(0) } }
+    @keyframes yell { from { transform: scaleY(.65) } to { transform: scaleY(1.1) } }
+    @keyframes brow { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-5px) } }
+    @media (prefers-reduced-motion: reduce) { .stomp, .armL, .armR, .mouth, .brow { animation: none } }
+  </style>
+  <ellipse cx="120" cy="252" rx="86" ry="8" fill="#000" opacity=".28"/>
+  <g class="stomp">
+    <!-- legs -->
+    <ellipse cx="86" cy="236" rx="28" ry="16" fill="#5c361a"/><ellipse cx="154" cy="236" rx="28" ry="16" fill="#5c361a"/>
+    <ellipse cx="80" cy="244" rx="22" ry="8" fill="#c99c73"/><ellipse cx="160" cy="244" rx="22" ry="8" fill="#c99c73"/>
+    <!-- body -->
+    <ellipse cx="120" cy="178" rx="82" ry="70" fill="#7a4a26"/>
+    <ellipse cx="120" cy="190" rx="52" ry="46" fill="#e9c39a"/>
+    <!-- arms beating the chest -->
+    <g class="armL"><path d="M62 142 Q34 172 70 196 L96 184" stroke="#6a3f20" stroke-width="24" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="100" cy="182" r="15" fill="#c99c73"/></g>
+    <g class="armR"><path d="M178 142 Q206 172 170 196 L144 184" stroke="#6a3f20" stroke-width="24" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="140" cy="182" r="15" fill="#c99c73"/></g>
+    <!-- head -->
+    <circle cx="64" cy="82" r="20" fill="#7a4a26"/><circle cx="64" cy="82" r="11" fill="#e9a986"/>
+    <circle cx="176" cy="82" r="20" fill="#7a4a26"/><circle cx="176" cy="82" r="11" fill="#e9a986"/>
+    <circle cx="120" cy="80" r="56" fill="#7a4a26"/>
+    <path d="M78 84 Q78 48 104 52 Q120 58 136 52 Q162 48 162 84 Q166 128 120 136 Q74 128 78 84 Z" fill="#e9c39a"/>
+    <!-- brows, eyes, nose -->
+    <g class="brow"><path d="M84 60 Q100 48 114 62" stroke="#3b2414" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M126 62 Q140 48 156 60" stroke="#3b2414" stroke-width="7" fill="none" stroke-linecap="round"/></g>
+    <circle cx="101" cy="76" r="11" fill="#fff"/><circle cx="139" cy="76" r="11" fill="#fff"/>
+    <circle cx="103" cy="78" r="6" fill="#241712"/><circle cx="137" cy="78" r="6" fill="#241712"/>
+    <circle cx="105" cy="76" r="2" fill="#fff"/><circle cx="139" cy="76" r="2" fill="#fff"/>
+    <ellipse cx="114" cy="96" rx="3.4" ry="2.6" fill="#5c361a"/><ellipse cx="126" cy="96" rx="3.4" ry="2.6" fill="#5c361a"/>
+    <!-- big yelling mouth -->
+    <g class="mouth"><ellipse cx="120" cy="114" rx="22" ry="16" fill="#5a1414"/>
+      <path d="M102 106 L138 106 L136 110 L104 110 Z" fill="#fff"/>
+      <ellipse cx="120" cy="122" rx="12" ry="6" fill="#e86a7a"/></g>
+    <circle cx="88" cy="104" r="6" fill="#f29a9a" opacity=".55"/><circle cx="152" cy="104" r="6" fill="#f29a9a" opacity=".55"/>
+  </g>
+</svg>

@@ -191,7 +191,7 @@
       mark: {src: "img/me/lisa-san-antonio.svg", opacity: .08},
       monkey: "img/me/lisa-monkey.svg",   // a big monkey swinging on a vine, random side each visit
       monkeyPages: /(^|\/)(index\.html|rundown\.html)?$/,   // her most-used pages (usage stats 2026-10-18): Home + Rundown
-      walker: "img/me/lisa-monkey-walk.svg",   // every page: a monkey strolls back and forth along the bottom; tap it to jump
+      walker: "img/me/lisa-monkey-walk.svg",   // every page: a monkey strolls back and forth along the bottom; tap it and it vanishes
       monkeyMoments: true,   // every page: a random monkey moment every ~30–60s (see monkeyLoop)
       css: BADGE + ".bb-me-badge{color:#ffd1e4;background:linear-gradient(135deg,#5a1f3a,#2a0f1d);border:1px solid #ff9ec788}" +
         "@keyframes bbVineIn{from{transform:translateY(-110%)}to{transform:none}}" +
@@ -213,17 +213,33 @@
         ".bb-walker.spin img{animation:bbSpin 1.4s cubic-bezier(.5,0,.5,1)}" +
         "@keyframes bbToss{0%{opacity:1;transform:translate(0,0) rotate(0)}45%{transform:translate(var(--dx),-38vh) rotate(400deg)}" +
         "90%{opacity:1}100%{opacity:0;transform:translate(calc(var(--dx) * 2),10vh) rotate(900deg)}}" +
-        ".bb-banana{position:fixed!important;z-index:9996;width:clamp(30px,3vw,42px);pointer-events:none;animation:bbToss 2.2s cubic-bezier(.3,.6,.6,1) forwards}" +
+        ".bb-banana{position:fixed!important;z-index:9996;width:clamp(30px,3vw,42px);cursor:pointer;animation:bbToss 2.2s cubic-bezier(.3,.6,.6,1) forwards}" +
         "@keyframes bbDrop{0%{transform:translateY(-105%)}22%{transform:translateY(0)}30%{transform:translateY(-6%)}36%,78%{transform:translateY(0)}100%{transform:translateY(-105%)}}" +
         "@keyframes bbDangle{0%,100%{rotate:-9deg}50%{rotate:9deg}}" +
-        ".bb-drop{position:fixed!important;top:0;z-index:9996;width:clamp(110px,12vw,170px);pointer-events:none;animation:bbDrop 6s ease-in-out forwards}" +
+        ".bb-drop{position:fixed!important;top:0;z-index:9996;width:clamp(110px,12vw,170px);cursor:pointer;animation:bbDrop 6s ease-in-out forwards}" +
         ".bb-drop img{display:block;width:100%;height:auto;border:0;background:none;margin:0;padding:0;box-shadow:none;transform-origin:40% 0;" +
         "animation:bbDangle 1.6s ease-in-out infinite;filter:drop-shadow(0 6px 14px #000a)}" +
         "@keyframes bbSidePeek{0%,100%{transform:translateX(var(--off)) rotate(var(--rot))}20%,75%{transform:translateX(0) rotate(var(--rot))}" +
         "45%{transform:translateX(0) rotate(calc(var(--rot) * 1.25))}}" +
-        ".bb-peek{position:fixed!important;z-index:9996;width:clamp(100px,10vw,150px);pointer-events:none;animation:bbSidePeek 4.6s ease-in-out forwards}" +
+        ".bb-peek{position:fixed!important;z-index:9996;width:clamp(100px,10vw,150px);cursor:pointer;animation:bbSidePeek 4.6s ease-in-out forwards}" +
         ".bb-peek img{display:block;width:100%;height:auto;border:0;background:none;margin:0;padding:0;box-shadow:none}" +
-        "@media (prefers-reduced-motion:reduce){.bb-banana,.bb-drop,.bb-peek{display:none!important}}"
+        // The big loud one: stomps up from the bottom, beats its chest, yells and throws bananas until tapped or it leaves.
+        "@keyframes bbKongIn{0%{transform:translateY(105%)}70%{transform:translateY(-6%)}100%{transform:translateY(0)}}" +
+        "@keyframes bbKongOut{to{transform:translateY(110%)}}" +
+        ".bb-kong{position:fixed!important;bottom:0;z-index:9997;width:clamp(230px,34vw,440px);translate:-50% 0;cursor:pointer;" +
+        "animation:bbKongIn .7s cubic-bezier(.3,1.4,.5,1) both;filter:drop-shadow(0 10px 24px #000b)}" +
+        ".bb-kong.out{animation:bbKongOut .7s ease-in forwards}" +
+        ".bb-kong img{display:block;width:100%;height:auto;border:0;background:none;margin:0;padding:0;box-shadow:none}" +
+        "@keyframes bbYell{from{transform:rotate(-4deg) scale(1)}to{transform:rotate(4deg) scale(1.08)}}" +
+        ".bb-kong-say{position:absolute;left:50%;bottom:94%;translate:-50% 0;white-space:nowrap;background:#fff;color:#c2185b;" +
+        "font:900 clamp(16px,2.2vw,28px)/1 system-ui,sans-serif;padding:10px 16px;border-radius:18px;border:3px solid #c2185b;" +
+        "box-shadow:0 6px 18px #0007;animation:bbYell .3s ease-in-out infinite alternate}" +
+        // Tap any monkey (or banana) and it vanishes in a puff.
+        "@keyframes bbPoof{0%{transform:scale(1);opacity:1;filter:none}55%{transform:scale(1.35) rotate(8deg);opacity:.7;filter:blur(2px)}" +
+        "100%{transform:scale(.15) rotate(-20deg);opacity:0;filter:blur(6px)}}" +
+        ".bb-poof{animation:bbPoof .45s ease-in forwards!important;pointer-events:none!important}" +
+        ".bb-poof img,.bb-poof .bb-kong-say{animation:none!important}" +
+        "@media (prefers-reduced-motion:reduce){.bb-banana,.bb-drop,.bb-peek,.bb-kong{display:none!important}}"
     },
     // Diana (Senior Events Manager): H-Town · Space City — Houston skyline with a launch (img/me, original art).
     diana: {
@@ -324,6 +340,13 @@
     window.bbDbz = run;   // bbDbz("genki") etc. to preview one on demand
     next(9000 + Math.random() * 6000);
   }
+  // Lisa: a tapped monkey or banana vanishes in a puff where it stands.
+  function bbPoof(el) {
+    var r = el.getBoundingClientRect(), st = el.style;
+    var put = { left: r.left + "px", top: r.top + "px", right: "auto", bottom: "auto", width: r.width + "px", translate: "none", "transform-origin": "50% 50%" };
+    for (var k in put) st.setProperty(k, put[k], "important");
+    el.classList.add("bb-poof"); setTimeout(function () { el.remove(); }, 480);
+  }
   // Lisa: one random monkey moment every ~30–60s (the first shortly after the page opens), never the same twice in a row.
   function monkeyLoop() {
     var BANANA = '<svg viewBox="0 0 60 60" width="100%"><path d="M8 14 Q12 48 50 50 Q30 40 22 12 Z" fill="#ffd93b" stroke="#c99a00" stroke-width="2.5" stroke-linejoin="round"/>' +
@@ -339,12 +362,14 @@
         var right = r.left + r.width / 2 < innerWidth / 2;
         b.style.left = (r.left + r.width * 0.6) + "px"; b.style.top = (r.top + r.height * 0.2) + "px";
         b.style.setProperty("--dx", (right ? 1 : -1) * (12 + Math.random() * 10) + "vw");
+        b.addEventListener("click", function () { bbPoof(b); });
         document.body.appendChild(b); pulse("jump", 800); return [b, 2300]; },
       vine: function () { if (document.querySelector(".bb-monkey")) return null;
         var d = document.createElement("div"); d.className = "bb-drop";
         var x = (12 + Math.random() * 64).toFixed(1) + "vw";
         d.style.left = document.documentElement.classList.contains("bbd") ? "calc(var(--bbd-side) + " + x + ")" : x;
         var im = document.createElement("img"); im.src = "img/me/lisa-monkey.svg"; im.alt = ""; d.appendChild(im);
+        d.addEventListener("click", function () { bbPoof(d); });
         document.body.appendChild(d); return [d, 6100]; },
       peek: function () { var left = Math.random() < 0.5 && !document.documentElement.classList.contains("bbd");
         var d = document.createElement("div"); d.className = "bb-peek";
@@ -352,9 +377,30 @@
         d.style.setProperty("--off", left ? "-110%" : "110%"); d.style.setProperty("--rot", left ? "62deg" : "-62deg");
         var im = document.createElement("img"); im.src = "img/me/lisa-monkey-walk.svg"; im.alt = "";
         if (!left) im.style.transform = "scaleX(-1)";
-        d.appendChild(im); document.body.appendChild(d); return [d, 4700]; }
+        d.addEventListener("click", function () { bbPoof(d); });
+        d.appendChild(im); document.body.appendChild(d); return [d, 4700]; },
+      kong: function () { if (document.querySelector(".bb-kong")) return null;
+        var k = document.createElement("div"); k.className = "bb-kong";
+        k.style.left = document.documentElement.classList.contains("bbd") ? "calc(var(--bbd-side) + (100vw - var(--bbd-side)) / 2)" : "50%";
+        var say = document.createElement("div"); say.className = "bb-kong-say";
+        var lines = ["OOH OOH AH AH!!", "HEY LISA!!!", "BANANAS!!!", "OOH OOH OOH!!", "WHO BOOKED THIS ROOM?!"];
+        say.textContent = lines[Math.floor(Math.random() * lines.length)];
+        var im = document.createElement("img"); im.src = "img/me/lisa-monkey-big.svg"; im.alt = "";
+        k.appendChild(say); k.appendChild(im);
+        var timers = [];
+        k.addEventListener("click", function () { for (var i = 0; i < timers.length; i++) clearTimeout(timers[i]); bbPoof(k); });
+        document.body.appendChild(k);
+        var toss = function () { if (!k.isConnected || k.classList.contains("bb-poof")) return; var r = k.getBoundingClientRect();
+          var b = document.createElement("div"); b.className = "bb-banana"; b.innerHTML = BANANA;
+          b.style.left = (r.left + r.width * (0.2 + Math.random() * 0.6)) + "px"; b.style.top = (r.top + r.height * 0.45) + "px";
+          b.style.setProperty("--dx", (Math.random() < 0.5 ? -1 : 1) * (10 + Math.random() * 16) + "vw");
+          b.addEventListener("click", function () { bbPoof(b); });
+          document.body.appendChild(b); setTimeout(function () { b.remove(); }, 2400); };
+        for (var i = 0; i < 5; i++) timers.push(setTimeout(toss, 900 + i * 650));
+        timers.push(setTimeout(function () { k.classList.add("out"); }, 13000));
+        return [k, 13800]; }
     };
-    var names = Object.keys(acts), last = null;
+    var names = Object.keys(acts).concat("kong"), last = null;   // the big one comes up twice as often
     var run = function (name) { var r = acts[name](); if (r && r[0]) setTimeout(function () { r[0].remove(); }, r[1] + 200); return !!r; };
     window.bbMonkey = run;   // preview a moment on demand: bbMonkey("banana")
     var next = function (ms) {
@@ -424,7 +470,7 @@
     if (window.bbDbzTimer) { clearTimeout(window.bbDbzTimer); window.bbDbzTimer = null; }
     var oldBr = document.querySelectorAll(".bb-bear,.bb-slam,.bb-ball.shot"); for (var bi = 0; bi < oldBr.length; bi++) oldBr[bi].remove();
     if (window.bbBearTimer) { clearTimeout(window.bbBearTimer); window.bbBearTimer = null; }
-    var oldMm = document.querySelectorAll(".bb-banana,.bb-drop,.bb-peek"); for (var mi = 0; mi < oldMm.length; mi++) oldMm[mi].remove();
+    var oldMm = document.querySelectorAll(".bb-banana,.bb-drop,.bb-peek,.bb-kong"); for (var mi = 0; mi < oldMm.length; mi++) oldMm[mi].remove();
     if (window.bbMonkeyTimer) { clearTimeout(window.bbMonkeyTimer); window.bbMonkeyTimer = null; }
     if (document.body) document.body.className = document.body.className.replace(/\bme-\S+/g, "").trim();
     var t = key && THEMES[key];
@@ -509,7 +555,7 @@
         var wi = document.createElement("img"); wi.src = t.walker; wi.alt = "";
         wi.style.cssText = "display:block;width:100%;height:auto;border:0;border-radius:0;background:none;margin:0;padding:0;box-shadow:none";
         wk.appendChild(wi);
-        wk.addEventListener("click", function () { wk.classList.remove("jump"); void wk.offsetWidth; wk.classList.add("jump"); });
+        wk.addEventListener("click", function () { bbPoof(wk); });   // tap: it vanishes until the next page
         document.body.appendChild(wk);
       }
       if (t.dbz) dbzLoop();
