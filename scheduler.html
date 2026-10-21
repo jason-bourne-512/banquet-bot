@@ -73,7 +73,7 @@ th{color:var(--mute);font-weight:600;font-size:11.5px;letter-spacing:.06em;text-
 td.n{text-align:center;font-weight:700}
 .match{color:var(--green)}.near{color:var(--amber)}.far{color:var(--red)}
 .rub td:first-child{font-weight:700;color:var(--blue);white-space:nowrap}
-.load{display:grid;grid-template-columns:90px 1fr 46px;gap:6px 10px;align-items:center;font-size:12.5px}
+.load{display:grid;grid-template-columns:90px 1fr 92px;gap:6px 10px;align-items:center;font-size:12.5px}
 .bar{height:10px;background:var(--card2);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--blue);border-radius:6px}
 .bar i.max{background:var(--amber)}
 .note{font-size:12.5px;color:var(--mute)}
@@ -131,7 +131,7 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
     <div id="days"></div>
     <h2>Hours check</h2>
     <div class="card"><div class="load" id="load"></div>
-      <div class="note" style="margin-top:8px">Amber = at or over the shifts they asked for.</div></div>
+      <div class="note" style="margin-top:8px">Hours = 2 hours before each event starts (setup) to 1 hour after it ends. Shifts shown as scheduled / asked for; amber = at or over what they asked for.</div></div>
   </section>
 
   <!-- 3. RUBRIC -->
@@ -163,7 +163,7 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
     <div class="card">
       <ul class="flat note">
         <li><b>Morning crew starts 2 hours before the first meal</b> (7:30 breakfast → 5:30A). This held on 191 shifts.</li>
-        <li><b>Morning crew leaves ~1½ hours after the last lunch ends</b> (lunch done 1:00 → out ~2:30P).</li>
+        <li><b>Morning crew leaves ~1 hour after the last meal ends</b> (lunch done 1:00 → out 2:00P).</li>
         <li><b>Evening crew starts ~2 hours before</b> a reception or dinner (5:30 reception → 3:30P) and stays about an hour after it ends.</li>
       </ul>
     </div>
@@ -290,14 +290,15 @@ function plan(d) {
   const lun = am.filter(m => /lunch/i.test(m.tag)).reduce((a, m) => a + m.n, 0);
   const peak = Math.max(bkf, lun), out = [];
   if (am.length) {
-    const s = Math.min(...am.map(m => m.s)) - 120, e = Math.max(...am.map(m => m.e)) + 90;
-    out.push({k: "am", label: "AM crew", need: amNeed(peak), time: fmt(s) + "–" + fmt(e),
+    // Shift = 2 hours before the first event starts (setup) to 1 hour after the last one ends (Jason 2026-10-20).
+    const s = Math.min(...am.map(m => m.s)) - 120, e = Math.max(...am.map(m => m.e)) + 60;
+    out.push({k: "am", label: "AM crew", need: amNeed(peak), time: fmt(s) + "–" + fmt(e), hrs: (e - s) / 60,
       why: `Biggest meal: ${peak === lun && lun ? "lunch" : "breakfast"} ${peak} guests → ${amNeed(peak)} server${amNeed(peak) > 1 ? "s" : ""}`,
       meals: am});
   }
   if (pm.length) {
     const s = Math.min(...pm.map(m => m.s)) - 120, e = Math.max(...pm.map(m => m.e)) + 60, n = pmNeed(pm);
-    out.push({k: "pm", label: "PM crew", need: n, time: fmt(s) + "–" + fmt(e),
+    out.push({k: "pm", label: "PM crew", need: n, time: fmt(s) + "–" + fmt(e), hrs: (e - s) / 60,
       why: pm.map(m => `${m.tag} ${m.n}`).join(" + ") + ` → ${n} server${n > 1 ? "s" : ""}`, meals: pm});
   }
   return out;
@@ -307,6 +308,10 @@ function plan(d) {
 let ASSIGN = {};   // "date|am" -> [names]
 const free = (n, i, k) => { const v = AV[n].days[i]; return v === "all" || v === k; };
 const shiftsOf = n => Object.values(ASSIGN).filter(a => a.includes(n)).length;
+// Scheduled hours: each assigned shift runs 2h before its first event to 1h after its last.
+const hoursOf = n => Object.entries(ASSIGN).reduce((t, [key, who]) => { if (!who.includes(n)) return t;
+  const [d, k] = key.split("|"), sh = DATA.week[d] && plan(d).find(x => x.k === k); return t + (sh ? sh.hrs : 0); }, 0);
+const hfmt = h => (Math.round(h * 4) / 4).toString().replace(/\.25$/, "¼").replace(/\.5$/, "½").replace(/\.75$/, "¾");
 function autoFill() {
   ASSIGN = {};
   const slots = [];
@@ -352,9 +357,9 @@ function renderBuild() {
   $("#days").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.rm.split("|"); ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k].filter(x => x !== n); renderBuild(); });
   $("#days").querySelectorAll("[data-add]").forEach(b => b.onclick = () => { const [d, k] = b.dataset.add.split("|"); document.getElementById("pick-" + d + "-" + k).classList.toggle("on"); });
   $("#days").querySelectorAll("[data-put]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.put.split("|"); (ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k] || []).push(n); renderBuild(); });
-  const mx = Math.max(...ROSTER.map(n => Math.max(shiftsOf(n), AV[n].want)), 1);
-  $("#load").innerHTML = ROSTER.map(n => { const s = shiftsOf(n), w = AV[n].want;
-    return `<span>${n}</span><span class="bar"><i class="${s >= w && s ? "max" : ""}" style="width:${s / mx * 100}%"></i></span><span class="sub">${s} / ${w}</span>`; }).join("");
+  const mx = Math.max(...ROSTER.map(hoursOf), 8);
+  $("#load").innerHTML = ROSTER.map(n => { const s = shiftsOf(n), w = AV[n].want, h = hoursOf(n);
+    return `<span>${n}</span><span class="bar"><i class="${s >= w && s ? "max" : ""}" style="width:${h / mx * 100}%"></i></span><span class="sub">${hfmt(h)}h · ${s}/${w}</span>`; }).join("");
 }
 $("#auto").onclick = () => { autoFill(); renderBuild(); toast("Draft built from the rubric — adjust anything"); };
 $("#clear").onclick = () => { ASSIGN = {}; renderBuild(); };
