@@ -373,6 +373,8 @@
     addStyle(acc);
     var title = (PAGES.filter(function (p) { return p[0] == cur; })[0] || [cur, document.title.split("—")[0].trim()])[1];
     var side = document.createElement("aside"), mini = get(MINI) == "1";
+    // Captain Playbook + Bar Reference are captain-side notes; Hector's panel leaves them out (Jason 2026-10-21).
+    var refPages = PAGES.slice(6).filter(function (p) { return !(w.name == "Hector" && (p[0] == "playbook.html" || p[0] == "bar.html")); });
     var refOpen = get(REF) == "1" || PAGES.slice(6).some(function (p) { return p[0] == cur; });
     side.className = "bbd-side";
     root.classList.toggle("bbd-mini", mini);
@@ -383,7 +385,7 @@
         '<a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' : "") +
       // Reference starts folded; the triangle opens it (remembered), and it opens itself on a reference page.
       '<button class="lbl bbd-reft" data-bbd="ref" aria-expanded="' + refOpen + '"><span class="tri">▸</span>Reference</button>' +
-      '<div class="bbd-ref"' + (refOpen ? "" : " hidden") + ">" + navLinks(PAGES.slice(6), cur) + "</div></nav>" +
+      '<div class="bbd-ref"' + (refOpen ? "" : " hidden") + ">" + navLinks(refPages, cur) + "</div></nav>" +
       '<div class="bbd-me"><div class="bbd-user"><em>' + esc(w.name.slice(0, 1)) + "</em><div>" + esc(w.name) + "<small>" + ROLE_TITLE[w.role] + "</small></div></div>" +
       '<div class="row"><button class="bbd-btn" data-bbd="phone">📱 Phone view</button><button class="bbd-btn" data-bbd="out">Sign out</button></div></div>';
     var top = document.createElement("header");
