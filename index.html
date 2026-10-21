@@ -191,9 +191,9 @@
     <a class="destination sched" href="scheduler.html" id="schedBtn" hidden><span class="arrow" aria-hidden="true">↗</span><strong>SCHEDULER <em id="schedTag">BETA</em></strong><small>Availability &amp; the week</small></a>
   </div>
   <script>
-  // Scheduler is in testing: Dylan gets this Home button (prototype). Jason opens it from the desktop side panel only.
-  (function () { try { var w = JSON.parse(localStorage.getItem("bb-hsm-who") || "null"), tag = {Dylan: "PROTOTYPE"}[w && w.name];
-    if (tag) { document.getElementById("schedBtn").hidden = false; document.getElementById("schedTag").textContent = tag; } } catch (e) {} })();
+  // Scheduler is in testing: Dylan and Francisco get this Home button to send availability. Jason opens it from the desktop side panel only.
+  (function () { try { var w = JSON.parse(localStorage.getItem("bb-hsm-who") || "null");
+    if (w && (w.name == "Dylan" || w.name == "Francisco")) { document.getElementById("schedBtn").hidden = false; document.getElementById("schedTag").remove(); } } catch (e) {} })();
   </script>
 
   <section class="menu-search">
