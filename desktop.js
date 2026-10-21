@@ -375,7 +375,8 @@
     var side = document.createElement("aside"), mini = get(MINI) == "1";
     // Captain Playbook + Bar Reference are captain-side notes; Hector's panel leaves them out (Jason 2026-10-21).
     var refPages = PAGES.slice(6).filter(function (p) { return !(w.name == "Hector" && (p[0] == "playbook.html" || p[0] == "bar.html")); });
-    var refOpen = get(REF) == "1" || PAGES.slice(6).some(function (p) { return p[0] == cur; });
+    // Reference folds under its triangle. Hector's always starts closed (Jason 2026-10-21); others remember it. A reference page opens it.
+    var refOpen = (w.name != "Hector" && get(REF) == "1") || PAGES.slice(6).some(function (p) { return p[0] == cur; });
     side.className = "bbd-side";
     root.classList.toggle("bbd-mini", mini);
     side.innerHTML = '<button class="bbd-fold" data-bbd="fold" title="Collapse / expand the side panel">' + (mini ? "›" : "‹") + "</button>" +
