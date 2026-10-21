@@ -397,7 +397,12 @@ if (window.schedRemote) {
   }));
   const ref = doc(db, COL, WEEK);
   window.schedSave = (name, rec) => setDoc(ref, {av: {[name]: rec}, updated: Date.now()}, {merge: true});
-  onSnapshot(ref, snap => window.schedRemote(snap.exists() ? snap.data() : {}), err => console.error("[scheduler] live sync", err));
+  // Answers sent before the 10/20 reset live in the old record; read them too (read-only). A newer answer in the new record wins.
+  const old = doc(db, COL, WEEK.replace("sched-r2-", "sched-"));
+  let cur = {}, prev = {};
+  const push = () => window.schedRemote({av: Object.assign({}, prev.av || {}, cur.av || {})});
+  onSnapshot(ref, snap => { cur = snap.exists() ? snap.data() : {}; push(); }, err => console.error("[scheduler] live sync", err));
+  onSnapshot(old, snap => { prev = snap.exists() ? snap.data() : {}; push(); }, err => console.error("[scheduler] old week", err));
 }
 </script>
 </body>
