@@ -115,7 +115,7 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
         <button class="btn" id="send">Send availability</button>
       </div>
     </div>
-    <p class="note">Anyone who hasn't sent yet shows sample availability so the builder has something to work with.</p>
+    
   </section>
 
   <!-- 2. LEAD VIEW -->
@@ -212,10 +212,11 @@ const SAMPLE = {
   Adrian:["off","off","pm","off","off","am","pm",2], Ozzy:["pm","pm","off","off","off","off","pm",2]
 };
 // Shared storage: one Firestore doc per week (same project + collection as Housemen; localhost uses the test collection).
-// Everyone starts on sample availability; a server's real answer replaces it the moment they send it.
+// A server's real answer shows the moment they send it; anyone who hasn't sent is left off the draft.
 const WEEK = "sched-r2-" + Object.keys(DATA.week)[0];   // r2: fresh start for the Dylan + Francisco test (2026-10-20)
 let AV = {}, SENT = {}, DIRTY = {};
-ROSTER.forEach(n => { if (!AV[n]) AV[n] = {days: SAMPLE[n].slice(0, 7), want: SAMPLE[n][7], note: ""}; });
+// No more sample days (Jason 2026-10-20): until a server sends, they're Off every day and asked for 0 shifts.
+ROSTER.forEach(n => { if (!AV[n]) AV[n] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; });
 const save = () => { DIRTY[me] = true; };
 const when = ts => new Date(ts).toLocaleString("en-US", {timeZone: "America/Chicago", weekday: "short", hour: "numeric", minute: "2-digit"});
 // Called by the Firestore listener (module script below) with the week's doc.
@@ -227,11 +228,12 @@ window.schedRemote = data => {
     SENT[n] = av[n];
   });
   renderAvail();
-  if (document.getElementById("v-build").classList.contains("on")) { if (!Object.keys(ASSIGN).length) autoFill(); renderBuild(); }
+  // New answers redraft the week, unless Jason has already hand-edited the draft.
+  if (document.getElementById("v-build").classList.contains("on")) { if (!MANUAL) autoFill(); renderBuild(); }
 };
 let me = ROSTER.includes(WHO.name) ? WHO.name : "Francisco";
 // A real server starts from a blank week (every day Off) until they pick days or their sent answer loads.
-if (!LEADV && AV[me] && !SENT[me]) AV[me] = {days: ["off","off","off","off","off","off","off"], want: AV[me].want, note: ""};
+if (!LEADV && AV[me] && !SENT[me]) AV[me] = {days: ["off","off","off","off","off","off","off"], want: AV[me].want || 4, note: ""};
 const $ = s => document.querySelector(s);
 const toast = t => { const el = $("#toast"); el.textContent = t; el.classList.add("on"); setTimeout(() => el.classList.remove("on"), 2200); };
 
@@ -248,7 +250,7 @@ function renderAvail() {
   $("#whoTop").textContent = me;
   $("#whoName").textContent = me;
   $("#want").textContent = AV[me].want;
-  $("#dueNote").textContent = DIRTY[me] ? "Not sent yet — tap Send" : SENT[me] ? "Sent " + when(SENT[me].at) + (SENT[me].by && SENT[me].by !== me ? " (by " + SENT[me].by + ")" : "") : LEADV ? "Not sent yet · sample days shown" : "Not sent yet";
+  $("#dueNote").textContent = DIRTY[me] ? "Not sent yet — tap Send" : SENT[me] ? "Sent " + when(SENT[me].at) + (SENT[me].by && SENT[me].by !== me ? " (by " + SENT[me].by + ")" : "") : "Not sent yet";
   $("#avNote").value = AV[me].note || "";
   $("#avGrid").innerHTML = DAYS.map((d, i) => {
     const v = AV[me].days[i], x = new Date(d + "T12:00");
@@ -306,6 +308,7 @@ function plan(d) {
 
 // ---------- 2. builder
 let ASSIGN = {};   // "date|am" -> [names]
+let MANUAL = false;   // true once Jason adds/removes someone by hand (then incoming answers don't redraft)
 const free = (n, i, k) => { const v = AV[n].days[i]; return v === "all" || v === k; };
 const shiftsOf = n => Object.values(ASSIGN).filter(a => a.includes(n)).length;
 // Scheduled hours: each assigned shift runs 2h before its first event to 1h after its last.
@@ -331,7 +334,7 @@ function renderBuild() {
   const showA = posted && $("#showActual").checked;
   const sent = ROSTER.filter(n => SENT[n]);
   $("#inCount").innerHTML = (sent.length ? "<b>Sent:</b> " + sent.map(n => `${n} <span class="sub">${when(SENT[n].at)}${SENT[n].note ? " · “" + SENT[n].note.replace(/</g, "&lt;") + "”" : ""}</span>`).join(" · ") : "Nobody has sent availability yet.") +
-    `<br><span class="sub">${ROSTER.length - sent.length} others are sample availability. Covers come from that week's event orders.</span>`;
+    `<br><span class="sub">${ROSTER.length - sent.length} haven't sent yet, so they're left off the draft. Covers come from that week's event orders.</span>`;
   $("#days").innerHTML = DAYS.map((d, i) => {
     const w = DATA.week[d], p = plan(d);
     let body = p.length ? p.map(s => {
@@ -354,15 +357,15 @@ function renderBuild() {
       <div class="need"><span class="pill ok" style="background:var(--blue-d);color:var(--blue)">Rubric: ${totalNeed} server${totalNeed === 1 ? "" : "s"}</span>${showA ? `<span class="pill" style="background:#5fe3c01c;color:var(--mint)">Hector: ${w.actual.length}</span>` : ""}</div></div>
       ${body}${showA ? `<div class="actual empty" style="padding-top:0"><b>Hector actually posted:</b> ${act}</div>` : ""}</div>`;
   }).join("");
-  $("#days").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.rm.split("|"); ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k].filter(x => x !== n); renderBuild(); });
+  $("#days").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.rm.split("|"); ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k].filter(x => x !== n); MANUAL = true; renderBuild(); });
   $("#days").querySelectorAll("[data-add]").forEach(b => b.onclick = () => { const [d, k] = b.dataset.add.split("|"); document.getElementById("pick-" + d + "-" + k).classList.toggle("on"); });
-  $("#days").querySelectorAll("[data-put]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.put.split("|"); (ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k] || []).push(n); renderBuild(); });
+  $("#days").querySelectorAll("[data-put]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.put.split("|"); (ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k] || []).push(n); MANUAL = true; renderBuild(); });
   const mx = Math.max(...ROSTER.map(hoursOf), 8);
   $("#load").innerHTML = ROSTER.map(n => { const s = shiftsOf(n), w = AV[n].want, h = hoursOf(n);
     return `<span>${n}</span><span class="bar"><i class="${s >= w && s ? "max" : ""}" style="width:${h / mx * 100}%"></i></span><span class="sub">${hfmt(h)}h · ${s}/${w}</span>`; }).join("");
 }
-$("#auto").onclick = () => { autoFill(); renderBuild(); toast("Draft built from the rubric — adjust anything"); };
-$("#clear").onclick = () => { ASSIGN = {}; renderBuild(); };
+$("#auto").onclick = () => { MANUAL = false; autoFill(); renderBuild(); toast("Draft built from the rubric — adjust anything"); };
+$("#clear").onclick = () => { ASSIGN = {}; MANUAL = true; renderBuild(); };
 $("#showActual").onchange = renderBuild;
 { const f = d => new Date(d + "T12:00").toLocaleDateString("en-US", {weekday: "short", month: "short", day: "numeric"});
   $("#weekLbl").textContent = "· week of " + f(DAYS[0]) + " – " + f(DAYS[6]); }
