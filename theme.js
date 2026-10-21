@@ -79,6 +79,26 @@
   var BADGE = ".bb-me-badge{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 10px);z-index:9999;" +
     "padding:6px 14px;border-radius:30px;font:800 10px/1.2 Manrope,Arial,sans-serif;letter-spacing:1.8px;pointer-events:none;white-space:nowrap;box-shadow:0 4px 18px #0008}";
   var THEMES = {
+    // Hector (Director of Event Operations): the panther canvas from his wall — "Te estás distrayendo otra vez, enfócate".
+    // Live look: a faint wallpaper behind every page. Sidebar card + "focus" moment exist behind ?lion=card|focus|all.
+    hector: {
+      label: "HECTOR · ENFÓCATE",
+      img: "img/me/hector-lion-sm.jpg",
+      lion: true,
+      css: BADGE + ".bb-me-badge{color:#f6b13a;border:1px solid #f6b13a88;background:linear-gradient(135deg,#1b1410,#0b0a09)}" +
+        ".bb-me-badge img{border-radius:50%!important;width:18px!important;object-fit:cover}" +
+        ".bb-lion-wall{position:fixed!important;inset:0;z-index:9990;pointer-events:none;background:url(img/me/hector-lion.jpg) center 38%/cover no-repeat;opacity:.11;filter:saturate(.9)}" +
+        "html.bbd .bb-lion-wall{left:var(--bbd-side)!important;top:58px!important}" +
+        ".bb-lion-card{margin:10px 12px 0;border-radius:12px;overflow:hidden;border:1px solid #f6b13a55;box-shadow:0 6px 22px #0009;position:relative;cursor:pointer}" +
+        ".bb-lion-card img{display:block;width:100%;height:auto;filter:saturate(1.05)}" +
+        ".bb-lion-card::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 0 1px #ffffff10,inset 0 -30px 40px -20px #000c}" +
+        ".bbd-mini .bb-lion-card{display:none}" +
+        "@keyframes bbLionIn{0%{opacity:0;transform:scale(1.08)}12%,82%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.98)}}" +
+        "@keyframes bbLionBg{0%,100%{opacity:0}12%,82%{opacity:1}}" +
+        ".bb-lion-focus{position:fixed!important;inset:0;z-index:2147483600;display:grid;place-items:center;background:#000d;cursor:pointer;animation:bbLionBg 6s ease-in-out forwards}" +
+        ".bb-lion-focus img{width:min(82vw,1100px);height:auto;border-radius:14px;box-shadow:0 0 0 1px #f6b13a55,0 30px 80px #000;animation:bbLionIn 6s ease-in-out forwards}" +
+        "@media (prefers-reduced-motion:reduce){.bb-lion-focus,.bb-lion-focus img{animation:none}}"
+    },
     // Baltimore Ravens: purple, black, gold
     dylan: {
       label: "DYLAN · RAVENS FLOCK",
@@ -362,6 +382,39 @@
     window.bbDbz = run;   // bbDbz("genki") etc. to preview one on demand
     next(9000 + Math.random() * 6000);
   }
+  // Hector: the panther canvas. Default is the faint wallpaper (Jason picked it 2026-10-21); ?lion=card|focus|all previews the others.
+  function lionLooks() {
+    var q = (location.search.match(/[?&]lion=(\w+)/) || [])[1], look;
+    try { if (q) localStorage.setItem("bb-lion-look", q); look = localStorage.getItem("bb-lion-look") || "wall"; } catch (e) { look = q || "wall"; }
+    var has = function (k) { return look == "all" || look == k; };
+    if (has("wall")) { var w = document.createElement("div"); w.className = "bb-lion-wall"; document.body.appendChild(w); }
+    var focus = function () {
+      if (document.querySelector(".bb-lion-focus")) return;
+      var f = document.createElement("div"); f.className = "bb-lion-focus"; f.title = "Tap to close";
+      var im = document.createElement("img"); im.src = "img/me/hector-lion.jpg"; im.alt = "Te estás distrayendo otra vez, enfócate"; f.appendChild(im);
+      f.addEventListener("click", function () { f.remove(); });
+      document.body.appendChild(f); setTimeout(function () { f.remove(); }, 6100);
+    };
+    window.bbLion = focus;   // preview on demand
+    if (has("card")) {
+      var tries = 0, put = function () {
+        var me = document.querySelector(".bbd-side .bbd-me");
+        if (!me) { if (++tries < 40) setTimeout(put, 150); return; }
+        var c = document.createElement("div"); c.className = "bb-lion-card"; c.title = "Enfócate";
+        var im = document.createElement("img"); im.src = "img/me/hector-lion-sm.jpg"; im.alt = "Te estás distrayendo otra vez, enfócate"; c.appendChild(im);
+        c.addEventListener("click", focus);
+        me.parentNode.insertBefore(c, me);
+      };
+      put();
+    }
+    if (has("focus")) {
+      // At most once every 90 minutes per computer, a few minutes after a page opens.
+      var last = 0; try { last = +localStorage.getItem("bb-lion-last") || 0; } catch (e) {}
+      if (Date.now() - last > 90 * 60000) window.bbLionTimer = setTimeout(function () {
+        if (document.hidden) return; try { localStorage.setItem("bb-lion-last", String(Date.now())); } catch (e) {} focus();
+      }, 4 * 60000);
+    }
+  }
   // Lisa: a tapped monkey or banana vanishes in a puff where it stands.
   function bbPoof(el) {
     var r = el.getBoundingClientRect(), st = el.style;
@@ -512,6 +565,8 @@
     if (window.bbDbzTimer) { clearTimeout(window.bbDbzTimer); window.bbDbzTimer = null; }
     var oldBr = document.querySelectorAll(".bb-bear,.bb-slam,.bb-ball.shot"); for (var bi = 0; bi < oldBr.length; bi++) oldBr[bi].remove();
     if (window.bbBearTimer) { clearTimeout(window.bbBearTimer); window.bbBearTimer = null; }
+    var oldL = document.querySelectorAll(".bb-lion-wall,.bb-lion-card,.bb-lion-focus"); for (var li = 0; li < oldL.length; li++) oldL[li].remove();
+    if (window.bbLionTimer) { clearTimeout(window.bbLionTimer); window.bbLionTimer = null; }
     var oldMm = document.querySelectorAll(".bb-banana,.bb-drop,.bb-peek,.bb-kong,.bb-pop"); for (var mi = 0; mi < oldMm.length; mi++) oldMm[mi].remove();
     if (window.bbMonkeyTimer) { clearTimeout(window.bbMonkeyTimer); window.bbMonkeyTimer = null; }
     if (document.body) document.body.className = document.body.className.replace(/\bme-\S+/g, "").trim();
@@ -603,6 +658,7 @@
       if (t.dbz) dbzLoop();
       if (t.bear && t.bear.test(location.pathname)) bearLoop();
       if (t.monkeyMoments) monkeyLoop();
+      if (t.lion) lionLooks();
       if (t.aurora) { var a = document.createElement("div"); a.className = "bb-aurora"; document.body.prepend(a); }
       // Pages with fixed blue colors get a hue overlay: blues shift to the person's color; whites and text stay put.
       // The Housemen page is fully themed through its variables, so it skips this.
