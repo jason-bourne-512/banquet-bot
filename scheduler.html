@@ -30,12 +30,15 @@ h2{font:600 20px/1.1 'Barlow Condensed',sans-serif;letter-spacing:.05em;text-tra
 .btn{border:0;border-radius:10px;padding:10px 14px;font:700 13px Manrope;cursor:pointer;background:var(--blue);color:#06121b}
 .btn.ghost{background:transparent;color:var(--blue);border:1px solid var(--line2)}
 .av{display:grid;grid-template-columns:78px 1fr;gap:8px 10px;align-items:center}
-.seg{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line2);border-radius:10px;overflow:hidden}
+.seg{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line2);border-radius:10px;overflow:hidden}
 .seg button{border:0;background:transparent;color:var(--mute);padding:9px 0;font:600 12px Manrope;cursor:pointer;border-left:1px solid var(--line)}
 .seg button:first-child{border-left:0}
 .seg button.on[data-v=all]{background:var(--green-d);color:var(--green)}
 .seg button.on[data-v=am],.seg button.on[data-v=pm]{background:var(--blue-d);color:var(--blue)}
 .seg button.on[data-v=off]{background:var(--red-d);color:var(--red)}
+.seg button.on[data-v=t]{background:#f2c8791f;color:var(--amber)}
+.twin{grid-column:2;display:flex;align-items:center;gap:6px;margin:-2px 0 4px;font-size:12px;color:var(--mute)}
+.twin input{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:5px 6px;font:600 13px Manrope;color-scheme:dark}
 .dl{font:600 15px 'Barlow Condensed';letter-spacing:.05em}.dl small{display:block;color:var(--mute);font:500 11px Manrope}
 .step{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:10px;overflow:hidden}
 .step button{border:0;background:var(--card2);color:var(--blue);width:36px;height:34px;font:700 18px Manrope;cursor:pointer}
@@ -64,6 +67,24 @@ textarea{width:100%;background:var(--card2);border:1px solid var(--line2);border
 .slot button{border:0;background:#0006;color:var(--mute);width:20px;height:20px;border-radius:50%;cursor:pointer;font:700 12px Manrope;line-height:1}
 .add{border:1px dashed var(--line2);background:transparent;color:var(--blue);border-radius:20px;padding:5px 11px;font:600 12.5px Manrope;cursor:pointer}
 .pick{display:none;margin-top:8px}.pick.on{display:flex}
+.slot .tm{border:0;background:#ffffff14;color:var(--blue);border-radius:12px;padding:2px 7px;font:600 11.5px Manrope;cursor:pointer}
+.slot .tm.ed{color:var(--amber)}
+.tedit{display:none;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}.tedit.on{display:flex}
+.tedit input[type=time]{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:4px 6px;font:600 12.5px Manrope;color-scheme:dark}
+.pick .grp{width:100%;font-size:11px;color:var(--mute);margin:4px 0 2px}
+.chip.na{opacity:.55;border-style:dashed}
+.pick input.nm{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:16px;padding:5px 10px;font:600 12px Manrope;width:140px}
+.addshift{margin:8px 14px 12px;border:1px dashed var(--line2);background:none;color:var(--mute);border-radius:10px;padding:6px 10px;font:600 12px Manrope;cursor:pointer}
+.shlabel{background:transparent;border:0;border-bottom:1px dashed var(--line2);color:var(--ink);font:700 13px Manrope;width:150px}
+.fin{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.fin th{background:#000;color:#fff;font:700 11.5px Manrope;padding:6px 4px;border:1px solid #333}
+.fin th small{display:block;color:#bcd3ea;font-weight:600}
+.fin td{border:1px solid var(--line2);padding:5px 6px;text-align:center;min-width:74px;white-space:nowrap}
+.fin td.nm{text-align:left;font-weight:700;min-width:110px}
+.fin td[contenteditable]{cursor:text}.fin td[contenteditable]:focus{outline:2px solid var(--blue);background:#8bd1ff14}
+.fin td.edited{color:var(--amber)}
+.fin tr.band td{font:800 12px Georgia,serif;text-align:left;color:#0b1520}
+.finwrap{overflow-x:auto}
 .actual{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:12px;color:var(--mute)}
 .actual b{color:var(--mint);font-weight:600}
 .empty{color:var(--mute);padding:12px 14px;font-size:13px}
@@ -122,7 +143,7 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
   <section class="view" id="v-build">
     <div class="card">
       <div class="tools">
-        <button class="btn" id="auto">✦ Auto-fill week</button>
+        <button class="btn" id="auto">✦ Construct schedule</button>
         <button class="btn ghost" id="clear">Clear</button>
         <label class="row" id="actualWrap" style="gap:6px;font-size:12.5px;color:var(--mute)"><input type="checkbox" id="showActual" checked style="accent-color:var(--mint)"> Compare to Hector's real schedule</label>
       </div>
@@ -131,7 +152,16 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
     <div id="days"></div>
     <h2>Hours check</h2>
     <div class="card"><div class="load" id="load"></div>
-      <div class="note" style="margin-top:8px">Hours = 2 hours before each event starts (setup) to 1 hour after it ends. Shifts shown as scheduled / asked for; amber = at or over what they asked for.</div></div>
+      <div class="note" style="margin-top:8px">Hours = 2 hours before each event starts (setup) to 1 hour after it ends, unless you changed someone's time. Shifts shown as scheduled / asked for; amber = at or over what they asked for.</div></div>
+    <h2>Final schedule</h2>
+    <div class="card">
+      <div class="note" style="margin-bottom:6px">Servers fill in from the week above. Tap any cell to type or fix it (OFF, BAR, 2PM-9PM…). Hector, you, bartenders and housemen are typed here.</div>
+      <div class="finwrap"><table class="fin" id="fin"></table></div>
+      <div class="tools" style="margin-top:10px">
+        <button class="btn" id="mkxls">⬇ Create schedule (Excel)</button>
+        <button class="btn ghost" id="finReset">Reset typed changes</button>
+      </div>
+    </div>
   </section>
 
   <!-- 3. RUBRIC -->
@@ -198,7 +228,7 @@ if (LEADV) {
   document.getElementById("v-avail").classList.remove("on"); document.getElementById("v-build").classList.add("on");
 }
 else { ["#wrap .tabs", "#v-build", "#switch", "#v-avail > .note"].forEach(q => document.querySelectorAll(q).forEach(el => el.style.setProperty("display", "none", "important"))); }
-const DATA = {"week":{"2026-10-24":{"meals":[{"s":1140,"e":1380,"tag":"Reception","n":100,"room":"Primrose D"}],"clients":["Robe Lighting","PMADTX (Puppy Mill Awareness Day TX)"],"actual":[]},"2026-10-25":{"meals":[],"clients":[],"actual":[]},"2026-10-26":{"meals":[{"s":1020,"e":1080,"tag":"Reception","n":100,"room":"Primrose Foyer CD"},{"s":1080,"e":1200,"tag":"Dinner Buffet","n":110,"room":"Primrose CD"}],"clients":["US Oncology"],"actual":[]},"2026-10-27":{"meals":[{"s":540,"e":600,"tag":"Breakfast","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"}],"clients":["Reliant Life Sciences","Galderma Laboratories, LP"],"actual":[]},"2026-10-28":{"meals":[{"s":450,"e":540,"tag":"Breakfast","n":38,"room":"Verbena"},{"s":540,"e":600,"tag":"Breakfast","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch Buffet","n":38,"room":"Verbena"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"},{"s":1080,"e":1200,"tag":"Dinner","n":17,"room":"Bonnell"},{"s":1170,"e":1320,"tag":"Reception","n":40,"room":"Barton"}],"clients":["Momentum Skilled Services","Reliant Life Sciences","Galderma Laboratories, LP","ABB"],"actual":[]},"2026-10-29":{"meals":[{"s":720,"e":780,"tag":"Lunch Buffet","n":22,"room":"Camellia"},{"s":1080,"e":1200,"tag":"Dinner","n":16,"room":"Bonnell"}],"clients":["Upbring"],"actual":[]},"2026-10-30":{"meals":[],"clients":[],"actual":[]}},"pts":[[3,1],[18,2],[400,7],[60,3],[175,6],[150,5],[88,3],[147,5],[32,2],[59,3],[6,1],[100,3],[134,7],[100,7],[18,2],[30,2],[30,1],[100,4],[120,2],[300,6],[300,9],[200,8],[6,2],[30,2],[29,2],[100,3],[100,4],[21,1],[51,3],[30,2],[20,3],[40,2],[34,2],[187,5],[23,1],[25,1],[20,2],[59,3],[50,3],[45,1],[250,2],[170,7],[70,5],[50,2],[50,2],[120,5],[160,5],[170,4],[115,3],[55,2],[424,3],[278,10],[291,11],[200,5],[15,1],[60,3],[40,2],[22,2],[278,9],[277,9],[32,2],[30,1],[44,4],[104,5],[149,6],[15,1],[31,3],[90,6],[35,3],[60,3],[60,3],[138,6]]};
+const DATA = {"week":{"2026-10-24":{"meals":[{"s":1140,"e":1380,"tag":"Reception","n":80,"room":"Primrose D"}],"clients":["Robe Lighting","PMADTX (Puppy Mill Awareness Day TX)"],"actual":[]},"2026-10-25":{"meals":[],"clients":[],"actual":[]},"2026-10-26":{"meals":[{"s":1020,"e":1080,"tag":"Reception \u2014 Cocktail Social","n":95,"room":"Primrose Foyer CD"},{"s":1080,"e":1200,"tag":"Dinner Buffet","n":95,"room":"Primrose CD"}],"clients":["US Oncology"],"actual":[]},"2026-10-27":{"meals":[{"s":420,"e":480,"tag":"Breakfast","n":20,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"}],"clients":["Reliant Life Sciences","Galderma","Bobcat","Werfen"],"actual":[]},"2026-10-28":{"meals":[{"s":420,"e":480,"tag":"Breakfast","n":20,"room":"Camellia"},{"s":450,"e":540,"tag":"Breakfast","n":38,"room":"Verbena"},{"s":465,"e":510,"tag":"Breakfast","n":70,"room":"Primrose AB"},{"s":720,"e":780,"tag":"Lunch Buffet","n":38,"room":"Verbena"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"},{"s":735,"e":780,"tag":"Lunch Buffet","n":70,"room":"Primrose AB"},{"s":1080,"e":1200,"tag":"Dinner","n":17,"room":"Bonnell"},{"s":1170,"e":1320,"tag":"Reception","n":40,"room":"Barton"}],"clients":["Momentum Skilled Services","Reliant Life Sciences","Galderma","ABB","Bobcat","Werfen"],"actual":[]},"2026-10-29":{"meals":[{"s":720,"e":780,"tag":"Lunch Buffet","n":22,"room":"Camellia"},{"s":1080,"e":1200,"tag":"Dinner","n":16,"room":"Bonnell"}],"clients":["Upbring"],"actual":[]},"2026-10-30":{"meals":[],"clients":[],"actual":[]}},"pts":[[3,1],[18,2],[400,7],[60,3],[175,6],[150,5],[88,3],[147,5],[32,2],[59,3],[6,1],[100,3],[134,7],[100,7],[18,2],[30,2],[30,1],[100,4],[120,2],[300,6],[300,9],[200,8],[6,2],[30,2],[29,2],[100,3],[100,4],[21,1],[51,3],[30,2],[20,3],[40,2],[34,2],[187,5],[23,1],[25,1],[20,2],[59,3],[50,3],[45,1],[250,2],[170,7],[70,5],[50,2],[50,2],[120,5],[160,5],[170,4],[115,3],[55,2],[424,3],[278,10],[291,11],[200,5],[15,1],[60,3],[40,2],[22,2],[278,9],[277,9],[32,2],[30,1],[44,4],[104,5],[149,6],[15,1],[31,3],[90,6],[35,3],[60,3],[60,3],[138,6]]};
 const ROSTER = ["Francisco","Dylan","Tomas","Carlos","Gema","Odaly","Hilnery","Raibely","Adrian","Ozzy"];
 const DAYS = Object.keys(DATA.week);
 const DOW = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
@@ -218,6 +248,10 @@ let AV = {}, SENT = {}, DIRTY = {};
 // No more sample days (Jason 2026-10-20): until a server sends, they're Off every day and asked for 0 shifts.
 ROSTER.forEach(n => { if (!AV[n]) AV[n] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; });
 const save = () => { DIRTY[me] = true; };
+// A day's availability: "all" | "am" | "pm" | "off" | "t:HH:MM-HH:MM" (the server typed their own hours)
+const hhmm = m => String(Math.floor(m / 60) % 24).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
+const unhhmm = v => { const [h, m] = v.split(":").map(Number); return h * 60 + m; };
+const win = v => { const m = /^t:(\d\d:\d\d)-(\d\d:\d\d)$/.exec(v || ""); if (!m) return null; let s = unhhmm(m[1]), e = unhhmm(m[2]); if (e <= s) e += 1440; return {s, e}; };
 const when = ts => new Date(ts).toLocaleString("en-US", {timeZone: "America/Chicago", weekday: "short", hour: "numeric", minute: "2-digit"});
 // Called by the Firestore listener (module script below) with the week's doc.
 window.schedRemote = data => {
@@ -253,13 +287,19 @@ function renderAvail() {
   $("#dueNote").textContent = DIRTY[me] ? "Not sent yet — tap Send" : SENT[me] ? "Sent " + when(SENT[me].at) + (SENT[me].by && SENT[me].by !== me ? " (by " + SENT[me].by + ")" : "") : "Not sent yet";
   $("#avNote").value = AV[me].note || "";
   $("#avGrid").innerHTML = DAYS.map((d, i) => {
-    const v = AV[me].days[i], x = new Date(d + "T12:00");
+    const v = AV[me].days[i], x = new Date(d + "T12:00"), w = win(v);
     return `<div class="dl">${DOW[x.getDay()]}<small>${x.toLocaleDateString("en-US",{month:"short",day:"numeric"})}</small></div>
-      <div class="seg" data-i="${i}">${[["all","All day"],["am","AM"],["pm","PM"],["off","Off"]].map(([k, l]) =>
-        `<button data-v="${k}" class="${v === k ? "on" : ""}">${l}</button>`).join("")}</div>`;
+      <div class="seg" data-i="${i}">${[["all","All day"],["am","AM"],["pm","PM"],["t","Times"],["off","Off"]].map(([k, l]) =>
+        `<button data-v="${k}" class="${(k === "t" ? !!w : v === k) ? "on" : ""}">${l}</button>`).join("")}</div>
+      ${w ? `<div class="twin" data-i="${i}">From <input type="time" step="900" data-w="s" value="${hhmm(w.s)}"> to <input type="time" step="900" data-w="e" value="${hhmm(w.e % 1440)}"></div>` : ""}`;
   }).join("");
   $("#avGrid").querySelectorAll(".seg button").forEach(b => b.onclick = () => {
-    AV[me].days[+b.parentNode.dataset.i] = b.dataset.v; save(); renderAvail();
+    const i = +b.parentNode.dataset.i;
+    AV[me].days[i] = b.dataset.v === "t" ? (win(AV[me].days[i]) ? AV[me].days[i] : "t:06:00-14:00") : b.dataset.v; save(); renderAvail();
+  });
+  $("#avGrid").querySelectorAll(".twin input").forEach(inp => inp.onchange = () => {
+    const box = inp.parentNode, i = +box.dataset.i, a = box.querySelector('[data-w="s"]').value, z = box.querySelector('[data-w="e"]').value;
+    if (a && z) { AV[me].days[i] = "t:" + a + "-" + z; save(); }
   });
 }
 $("#switch").onclick = () => { me = ROSTER[(ROSTER.indexOf(me) + 1) % ROSTER.length]; renderAvail(); };
@@ -272,7 +312,7 @@ $("#send").onclick = async () => {
   try {
     if (!window.schedSave) throw new Error("not connected");
     await window.schedSave(me, rec);
-    DIRTY[me] = false; SENT[me] = rec; toast("Sent ✓ Jason & Dylan can see it now");
+    DIRTY[me] = false; SENT[me] = rec; toast("Sent ✓ Jason can see it now");
   } catch (e) { console.error("[scheduler]", e); toast("Didn't send — check signal and try again"); }
   b.disabled = false; b.textContent = "Send availability"; renderAvail();
 };
@@ -294,26 +334,47 @@ function plan(d) {
   if (am.length) {
     // Shift = 2 hours before the first event starts (setup) to 1 hour after the last one ends (Jason 2026-10-20).
     const s = Math.min(...am.map(m => m.s)) - 120, e = Math.max(...am.map(m => m.e)) + 60;
-    out.push({k: "am", label: "AM crew", need: amNeed(peak), time: fmt(s) + "–" + fmt(e), hrs: (e - s) / 60,
+    out.push({k: "am", label: "AM crew", need: amNeed(peak), s, e, time: fmt(s) + "–" + fmt(e), hrs: (e - s) / 60,
       why: `Biggest meal: ${peak === lun && lun ? "lunch" : "breakfast"} ${peak} guests → ${amNeed(peak)} server${amNeed(peak) > 1 ? "s" : ""}`,
       meals: am});
   }
   if (pm.length) {
     const s = Math.min(...pm.map(m => m.s)) - 120, e = Math.max(...pm.map(m => m.e)) + 60, n = pmNeed(pm);
-    out.push({k: "pm", label: "PM crew", need: n, time: fmt(s) + "–" + fmt(e), hrs: (e - s) / 60,
+    out.push({k: "pm", label: "PM crew", need: n, s, e, time: fmt(s) + "–" + fmt(e), hrs: (e - s) / 60,
       why: pm.map(m => `${m.tag} ${m.n}`).join(" + ") + ` → ${n} server${n > 1 ? "s" : ""}`, meals: pm});
   }
+  // Shifts Jason adds by hand (a bar shift, a setup crew, an extra event…)
+  (CUSTOM[d] || []).forEach(c => out.push({k: c.k, label: c.label, need: c.need || 0, s: c.s, e: c.e, time: fmt(c.s) + "–" + fmt(c.e), hrs: (c.e - c.s) / 60, why: "Added by hand", meals: [], custom: true}));
   return out;
 }
 
 // ---------- 2. builder
 let ASSIGN = {};   // "date|am" -> [names]
 let MANUAL = false;   // true once Jason adds/removes someone by hand (then incoming answers don't redraft)
-const free = (n, i, k) => { const v = AV[n].days[i]; return v === "all" || v === k; };
+let TIMES = {};       // "date|shift|name" -> {s, e} minutes: one person's own hours on that shift
+let CUSTOM = {};      // date -> [{k, label, s, e, need}] shifts added by hand
+let FINAL = {};       // "row|date" -> text typed into the final schedule grid
+let EXTRA = [];       // people added by name who aren't on the server roster
+const BKEY = "bb-sched-build-" + WEEK;
+const saveBuild = () => { try { localStorage.setItem(BKEY, JSON.stringify({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA, MANUAL})); } catch (e) {} };
+const loadBuild = () => { try { const b = JSON.parse(localStorage.getItem(BKEY) || "null"); if (!b) return false;
+  ({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA} = Object.assign({ASSIGN: {}, TIMES: {}, CUSTOM: {}, FINAL: {}, EXTRA: []}, b)); MANUAL = !!b.MANUAL;
+  EXTRA.forEach(n => { if (!AV[n]) AV[n] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; }); return true; } catch (e) { return false; } };
+const PEOPLE = () => ROSTER.concat(EXTRA.filter(n => !ROSTER.includes(n)));
+const shiftOf = (d, k) => DATA.week[d] && plan(d).find(x => x.k === k);
+const timesOf = (d, k, n) => { const t = TIMES[d + "|" + k + "|" + n], sh = shiftOf(d, k); return t || (sh ? {s: sh.s, e: sh.e} : {s: 0, e: 0}); };
+// "530AM-2PM" style used on the posted schedule
+const xt = m => { m = ((m % 1440) + 1440) % 1440; let h = Math.floor(m / 60), mm = m % 60, ap = h >= 12 ? "PM" : "AM"; h = h % 12 || 12; return h + (mm ? String(mm).padStart(2, "0") : "") + ap; };
+// Free for a shift: All day, the matching AM/PM, or typed hours that cover most of the shift.
+const free = (n, i, k, sh) => { const v = AV[n].days[i], w = win(v);
+  if (w && sh) { const o = Math.min(w.e, sh.e) - Math.max(w.s, sh.s); return o >= Math.min(180, (sh.e - sh.s) * 0.6); }
+  return v === "all" || v === k; };
+const winLabel = (n, i) => { const w = win(AV[n].days[i]); return w ? ` ${fmt(w.s)}–${fmt(w.e)}` : ""; };
 const shiftsOf = n => Object.values(ASSIGN).filter(a => a.includes(n)).length;
+const changed = () => { MANUAL = true; saveBuild(); };
 // Scheduled hours: each assigned shift runs 2h before its first event to 1h after its last.
 const hoursOf = n => Object.entries(ASSIGN).reduce((t, [key, who]) => { if (!who.includes(n)) return t;
-  const [d, k] = key.split("|"), sh = DATA.week[d] && plan(d).find(x => x.k === k); return t + (sh ? sh.hrs : 0); }, 0);
+  const [d, k] = key.split("|"); if (!shiftOf(d, k)) return t; const x = timesOf(d, k, n); return t + Math.max(0, x.e - x.s) / 60; }, 0);
 const hfmt = h => (Math.round(h * 4) / 4).toString().replace(/\.25$/, "¼").replace(/\.5$/, "½").replace(/\.75$/, "¾");
 function autoFill() {
   ASSIGN = {};
@@ -323,9 +384,12 @@ function autoFill() {
   slots.sort((a, b) => b.s.need - a.s.need);
   slots.forEach(({d, i, s}) => {
     const key = d + "|" + s.k, sameDay = n => ASSIGN[d + "|am"]?.includes(n) || ASSIGN[d + "|pm"]?.includes(n);
-    const pool = ROSTER.filter(n => free(n, i, s.k) && !sameDay(n))
+    const pool = ROSTER.filter(n => free(n, i, s.k, s) && !sameDay(n))
       .sort((a, b) => (shiftsOf(a) >= AV[a].want) - (shiftsOf(b) >= AV[b].want) || shiftsOf(a) / (AV[a].want || 1) - shiftsOf(b) / (AV[b].want || 1) || ROSTER.indexOf(a) - ROSTER.indexOf(b));
     ASSIGN[key] = pool.slice(0, s.need);
+    // Someone who typed their own hours works the part of the shift inside them.
+    ASSIGN[key].forEach(n => { const w = win(AV[n].days[i]); if (!w) return;
+      const t = {s: Math.max(w.s, s.s), e: Math.min(w.e, s.e)}; if (t.s !== s.s || t.e !== s.e) TIMES[key + "|" + n] = t; });
   });
 }
 function renderBuild() {
@@ -339,15 +403,22 @@ function renderBuild() {
     const w = DATA.week[d], p = plan(d);
     let body = p.length ? p.map(s => {
       const got = ASSIGN[d + "|" + s.k] || [], st = got.length === s.need ? "ok" : got.length < s.need ? "short" : "over";
-      const avail = ROSTER.filter(n => free(n, i, s.k) && !got.includes(n));
+      const avail = PEOPLE().filter(n => (s.custom ? AV[n].days[i] !== "off" : free(n, i, s.k, s)) && !got.includes(n));
+      const others = PEOPLE().filter(n => !avail.includes(n) && !got.includes(n));
       return `<div class="shiftb">
-        <div class="sh"><span><b>${s.label}</b> <span class="sub">${s.time}</span></span>
+        <div class="sh"><span>${s.custom ? `<input class="shlabel" data-shl="${d}|${s.k}" value="${s.label.replace(/"/g, "&quot;")}">` : `<b>${s.label}</b>`} <span class="sub">${s.time}</span></span>
           <span class="pill ${st}">${got.length}/${s.need}${st === "short" ? " · need " + (s.need - got.length) : st === "over" ? " · +" + (got.length - s.need) : " ✓"}</span></div>
         <div class="meals">${s.meals.map(m => `${m.tag} ${m.n} · ${m.room}`).join("  ·  ")}</div>
         <div class="why">${s.why}</div>
-        <div class="chips" style="margin-top:8px">${got.map(n => `<span class="slot">${n}${SENT[n] ? " ✓" : ""} <i>${shiftsOf(n)}/${AV[n].want}</i><button data-rm="${d}|${s.k}|${n}">×</button></span>`).join("")}
+        <div class="chips" style="margin-top:8px">${got.map(n => { const t = timesOf(d, s.k, n), ed = !!TIMES[d + "|" + s.k + "|" + n];
+            return `<span class="slot">${n}${SENT[n] ? " ✓" : ""} <button class="tm${ed ? " ed" : ""}" data-tm="${d}|${s.k}|${n}" title="Change ${n}'s hours">${fmt(t.s)}–${fmt(t.e)}</button><i>${shiftsOf(n)}/${AV[n].want}</i><button data-rm="${d}|${s.k}|${n}">×</button></span>`; }).join("")}
           <button class="add" data-add="${d}|${s.k}">+ add</button></div>
-        <div class="pick chips" id="pick-${d}-${s.k}">${avail.length ? avail.map(n => `<span class="chip" data-put="${d}|${s.k}|${n}">${n}<small>${shiftsOf(n)}/${AV[n].want}</small></span>`).join("") : '<span class="sub">Nobody else marked available</span>'}</div>
+        <div class="tedit" id="te-${d}-${s.k}"></div>
+        <div class="pick chips" id="pick-${d}-${s.k}">
+          <div class="grp">Available</div>${avail.length ? avail.map(n => `<span class="chip" data-put="${d}|${s.k}|${n}">${n}${winLabel(n, i)}<small>${shiftsOf(n)}/${AV[n].want}</small></span>`).join("") : '<span class="sub">Nobody else marked available</span>'}
+          ${others.length ? `<div class="grp">Not marked available (add anyway)</div>${others.map(n => `<span class="chip na" data-put="${d}|${s.k}|${n}">${n}<small>${shiftsOf(n)}/${AV[n].want}</small></span>`).join("")}` : ""}
+          <div class="grp">Someone else</div><input class="nm" id="nm-${d}-${s.k}" placeholder="Type a name" maxlength="24"><button class="add" data-newname="${d}|${s.k}">Add</button>
+          ${s.custom ? `<div class="grp">This shift</div><button class="add" data-delshift="${d}|${s.k}">Remove this shift</button>` : ""}</div>
       </div>`;
     }).join("") : `<div class="empty">No meals on the books${w.clients.length ? " (meetings only)" : ""} → 0 servers.</div>`;
     const totalNeed = p.reduce((a, s) => a + s.need, 0);
@@ -355,17 +426,99 @@ function renderBuild() {
     return `<div class="day"><div class="dhead"><div><div class="dname">${dLabel(d)}</div>
       <div class="clients">${w.clients.join(" · ") || "No events posted yet"}</div></div>
       <div class="need"><span class="pill ok" style="background:var(--blue-d);color:var(--blue)">Rubric: ${totalNeed} server${totalNeed === 1 ? "" : "s"}</span>${showA ? `<span class="pill" style="background:#5fe3c01c;color:var(--mint)">Hector: ${w.actual.length}</span>` : ""}</div></div>
-      ${body}${showA ? `<div class="actual empty" style="padding-top:0"><b>Hector actually posted:</b> ${act}</div>` : ""}</div>`;
+      ${body}<button class="addshift" data-addshift="${d}">+ Add a shift</button>${showA ? `<div class="actual empty" style="padding-top:0"><b>Hector actually posted:</b> ${act}</div>` : ""}</div>`;
   }).join("");
-  $("#days").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.rm.split("|"); ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k].filter(x => x !== n); MANUAL = true; renderBuild(); });
+  $("#days").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.rm.split("|"); ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k].filter(x => x !== n); delete TIMES[d + "|" + k + "|" + n]; changed(); renderBuild(); });
+  $("#days").querySelectorAll("[data-tm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.tm.split("|"), t = timesOf(d, k, n), box = document.getElementById("te-" + d + "-" + k);
+    box.innerHTML = `<b style="font-size:12.5px">${n}</b> <input type="time" step="900" id="ts" value="${hhmm(t.s)}"> to <input type="time" step="900" id="tt" value="${hhmm(t.e)}"> <button class="add" id="tok">Save</button> <button class="add" id="tdef">Reset to shift</button>`;
+    box.classList.add("on");
+    box.querySelector("#tok").onclick = () => { let s1 = unhhmm(box.querySelector("#ts").value), e1 = unhhmm(box.querySelector("#tt").value); if (e1 <= s1) e1 += 1440;
+      TIMES[d + "|" + k + "|" + n] = {s: s1, e: e1}; changed(); renderBuild(); };
+    box.querySelector("#tdef").onclick = () => { delete TIMES[d + "|" + k + "|" + n]; changed(); renderBuild(); }; });
+  $("#days").querySelectorAll("[data-newname]").forEach(b => b.onclick = () => { const [d, k] = b.dataset.newname.split("|"), inp = document.getElementById("nm-" + d + "-" + k);
+    const n = inp.value.trim().replace(/[|<>"]/g, "").split(/\s+/)[0]; if (!n) return;
+    const nm = n.charAt(0).toUpperCase() + n.slice(1);
+    if (!PEOPLE().includes(nm)) { EXTRA.push(nm); AV[nm] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; }
+    (ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k] || []).includes(nm) || ASSIGN[d + "|" + k].push(nm); changed(); renderBuild(); });
+  $("#days").querySelectorAll("[data-addshift]").forEach(b => b.onclick = () => { const d = b.dataset.addshift, k = "x" + Date.now().toString(36);
+    (CUSTOM[d] = CUSTOM[d] || []).push({k, label: "Extra shift", s: 16 * 60, e: 23 * 60, need: 1}); changed(); renderBuild(); });
+  $("#days").querySelectorAll("[data-delshift]").forEach(b => b.onclick = () => { const [d, k] = b.dataset.delshift.split("|");
+    CUSTOM[d] = (CUSTOM[d] || []).filter(c => c.k !== k); delete ASSIGN[d + "|" + k]; changed(); renderBuild(); });
+  $("#days").querySelectorAll("[data-shl]").forEach(inp => inp.onchange = () => { const [d, k] = inp.dataset.shl.split("|"), c = (CUSTOM[d] || []).find(x => x.k === k);
+    if (c) { c.label = inp.value.trim() || "Extra shift"; changed(); renderBuild(); } });
   $("#days").querySelectorAll("[data-add]").forEach(b => b.onclick = () => { const [d, k] = b.dataset.add.split("|"); document.getElementById("pick-" + d + "-" + k).classList.toggle("on"); });
-  $("#days").querySelectorAll("[data-put]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.put.split("|"); (ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k] || []).push(n); MANUAL = true; renderBuild(); });
-  const mx = Math.max(...ROSTER.map(hoursOf), 8);
-  $("#load").innerHTML = ROSTER.map(n => { const s = shiftsOf(n), w = AV[n].want, h = hoursOf(n);
+  $("#days").querySelectorAll("[data-put]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.put.split("|"); (ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k] || []).push(n);
+    const w = win(AV[n].days[DAYS.indexOf(d)]), sh = shiftOf(d, k);
+    if (w && sh) { const t = {s: Math.max(w.s, sh.s), e: Math.min(w.e, sh.e)}; if (t.e > t.s && (t.s !== sh.s || t.e !== sh.e)) TIMES[d + "|" + k + "|" + n] = t; }
+    changed(); renderBuild(); });
+  const mx = Math.max(...PEOPLE().map(hoursOf), 8);
+  $("#load").innerHTML = PEOPLE().map(n => { const s = shiftsOf(n), w = AV[n].want, h = hoursOf(n);
     return `<span>${n}</span><span class="bar"><i class="${s >= w && s ? "max" : ""}" style="width:${h / mx * 100}%"></i></span><span class="sub">${hfmt(h)}h · ${s}/${w}</span>`; }).join("");
+  renderFinal();
 }
-$("#auto").onclick = () => { MANUAL = false; autoFill(); renderBuild(); toast("Draft built from the rubric — adjust anything"); };
-$("#clear").onclick = () => { ASSIGN = {}; MANUAL = true; renderBuild(); };
+
+// ---------- final schedule (the posted WhatsApp layout) + Excel download
+const BANDS = [
+  {label: "Director of Event Operations", fill: "FF8EA9DB", rows: ["Hector"]},
+  {label: "Banquet Captain", fill: "FF9BC2E6", rows: ["Jason"]},
+  {label: "SERVER", fill: "FFB4C6E7", servers: true},
+  {label: "Bartenders", fill: "FFB4C6E7", rows: ["Dylan"]},
+  {label: "HOUSEMEN", fill: "FFF8CBAD", rows: ["Jamshid", "Tomas"]}];
+const serverCell = (n, d) => plan(d).filter(s => (ASSIGN[d + "|" + s.k] || []).includes(n))
+  .map(s => { const t = timesOf(d, s.k, n); return xt(t.s) + "-" + xt(t.e) + (s.custom && !/extra shift/i.test(s.label) ? "/" + s.label.toUpperCase() : ""); }).join(" / ");
+function finalRows() {
+  const out = [];
+  BANDS.forEach((b, bi) => {
+    out.push({band: b});
+    const names = b.servers ? PEOPLE().filter(n => SENT[n] || shiftsOf(n) || EXTRA.includes(n)) : b.rows;
+    names.forEach(n => out.push({id: bi + ":" + n, name: n, auto: b.servers ? d => serverCell(n, d) : () => ""}));
+    if (b.servers) out.push({id: bi + ":_blank", name: "", auto: () => ""});
+  });
+  return out;
+}
+const cellText = (r, d) => { const k = r.id + "|" + d; return k in FINAL ? FINAL[k] : r.auto(d); };
+function renderFinal() {
+  const DOWS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], mon = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const head = `<tr><th></th>${DAYS.map(d => { const x = new Date(d + "T12:00"); return `<th>${DOWS[x.getDay()]}<small>${x.getDate()}-${mon[x.getMonth()]}</small></th>`; }).join("")}</tr>`;
+  const rows = finalRows().map(r => r.band
+    ? `<tr class="band"><td colspan="${DAYS.length + 1}" style="background:#${r.band.fill.slice(2)}">${r.band.label}</td></tr>`
+    : `<tr><td class="nm">${r.name}</td>${DAYS.map(d => `<td contenteditable="true" data-fc="${r.id}|${d}" class="${(r.id + "|" + d) in FINAL ? "edited" : ""}">${cellText(r, d)}</td>`).join("")}</tr>`).join("");
+  const t = $("#fin"); t.innerHTML = head + rows;
+  t.querySelectorAll("[data-fc]").forEach(td => td.onblur = () => { const k = td.dataset.fc, v = td.textContent.trim(), [id, d] = k.split("|");
+    const r = finalRows().find(x => x.id === id); if (!r) return;
+    if (v === r.auto(d)) delete FINAL[k]; else FINAL[k] = v; saveBuild(); td.classList.toggle("edited", k in FINAL); });
+}
+$("#finReset").onclick = () => { FINAL = {}; saveBuild(); renderFinal(); toast("Typed changes cleared"); };
+$("#mkxls").onclick = async () => {
+  const btn = $("#mkxls"); btn.disabled = true; btn.textContent = "Building…";
+  try {
+    if (!window.ExcelJS) await new Promise((ok, no) => { const sc = document.createElement("script"); sc.src = "https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); });
+    const wb = new ExcelJS.Workbook(), ws = wb.addWorksheet("Schedule", {views: [{showGridLines: false}]});
+    const DOWS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], mon = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    ws.columns = [{width: 32}].concat(DAYS.map(() => ({width: 20})));
+    const thin = {style: "thin", color: {argb: "FF000000"}}, box = {top: thin, left: thin, bottom: thin, right: thin};
+    const r1 = ws.addRow([""].concat(DAYS.map(d => DOWS[new Date(d + "T12:00").getDay()])));
+    r1.eachCell({includeEmpty: true}, c => { c.fill = {type: "pattern", pattern: "solid", fgColor: {argb: "FF000000"}}; c.font = {bold: true, color: {argb: "FFFFFFFF"}, name: "Calibri", size: 12}; c.alignment = {horizontal: "center"}; });
+    const r2 = ws.addRow([""].concat(DAYS.map(d => { const x = new Date(d + "T12:00"); return x.getDate() + "-" + mon[x.getMonth()]; })));
+    r2.eachCell({includeEmpty: true}, (c, i) => { c.fill = {type: "pattern", pattern: "solid", fgColor: {argb: i === 1 ? "FF000000" : "FFDDEBF7"}}; c.font = {name: "Times New Roman", size: 14}; c.alignment = {horizontal: "center"}; c.border = box; });
+    finalRows().forEach(r => {
+      if (r.band) {
+        const row = ws.addRow([r.band.label]); ws.mergeCells(row.number, 1, row.number, DAYS.length + 1);
+        const c = row.getCell(1); c.fill = {type: "pattern", pattern: "solid", fgColor: {argb: r.band.fill}}; c.font = {bold: true, name: "Times New Roman", size: 12}; c.border = box; return;
+      }
+      const row = ws.addRow([r.name].concat(DAYS.map(d => cellText(r, d))));
+      row.eachCell({includeEmpty: true}, (c, i) => { c.border = box; c.font = {name: "Calibri", size: 11}; c.alignment = {horizontal: i === 1 ? "left" : "center", vertical: "middle"}; });
+    });
+    const buf = await wb.xlsx.writeBuffer(), a = document.createElement("a");
+    const f = d => { const x = new Date(d + "T12:00"); return (x.getMonth() + 1) + "-" + x.getDate(); };
+    a.href = URL.createObjectURL(new Blob([buf], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+    a.download = "Banquet Schedule " + f(DAYS[0]) + " to " + f(DAYS[DAYS.length - 1]) + ".xlsx"; document.body.appendChild(a); a.click(); a.remove();
+    toast("Schedule downloaded");
+  } catch (e) { console.error("[scheduler] excel", e); toast("Couldn't build the Excel file — try again"); }
+  finally { btn.disabled = false; btn.textContent = "⬇ Create schedule (Excel)"; }
+};
+$("#auto").onclick = () => { MANUAL = false; TIMES = {}; autoFill(); saveBuild(); renderBuild(); toast("Schedule built from everyone's availability — adjust anything, then Create schedule (Excel) at the bottom"); };
+$("#clear").onclick = () => { ASSIGN = {}; TIMES = {}; MANUAL = true; saveBuild(); renderBuild(); };
 $("#showActual").onchange = renderBuild;
 { const f = d => new Date(d + "T12:00").toLocaleDateString("en-US", {weekday: "short", month: "short", day: "numeric"});
   $("#weekLbl").textContent = "· week of " + f(DAYS[0]) + " – " + f(DAYS[6]); }
@@ -392,7 +545,7 @@ $("#who-load").innerHTML = WHO_LOAD.map(([n, c]) => `<span>${n}</span><span clas
   const within = P.filter(([c, n]) => Math.abs(amNeed(c) - n) <= 1).length;
   $("#fit").innerHTML = `Each dot is one past day. The rubric lands within ±1 server of what Hector actually posted on <b>${within} of ${P.length}</b> days.`;
 })();
-renderAvail(); autoFill(); if (LEADV) renderBuild();
+renderAvail(); if (!(LEADV && loadBuild())) autoFill(); if (LEADV) renderBuild();
 </script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
