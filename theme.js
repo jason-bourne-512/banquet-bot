@@ -752,6 +752,9 @@
     var q = new URLSearchParams(location.search).get("me");
     if (q) { q = q.toLowerCase(); if (q === "off") localStorage.removeItem("bb-me"); else if (THEMES[q]) localStorage.setItem("bb-me", q); }
     me = localStorage.getItem("bb-me");
+    // Nothing saved yet (signed in before their look existed): use the signed-in person's look if they have one.
+    if (!me && q !== "off") { var sw = JSON.parse(localStorage.getItem("bb-hsm-who") || "null"), sk = sw && sw.name && String(sw.name).toLowerCase();
+      if (sk && THEMES[sk]) { me = sk; localStorage.setItem("bb-me", sk); } }
   } catch (e) {}
   apply(me);
   // Housemen sign-in hook: switch to that person's look (or back to default for people without one).
