@@ -234,8 +234,10 @@ if (LEADV) {
   document.getElementById("v-avail").classList.remove("on"); document.getElementById("v-build").classList.add("on");
 }
 else { ["#wrap .tabs", "#v-build", "#switch", "#v-avail > .note"].forEach(q => document.querySelectorAll(q).forEach(el => el.style.setProperty("display", "none", "important"))); }
-const DATA = {"week":{"2026-10-24":{"meals":[{"s":1140,"e":1380,"tag":"Reception","n":80,"room":"Primrose D"}],"clients":["Robe Lighting","PMADTX (Puppy Mill Awareness Day TX)"],"actual":[]},"2026-10-25":{"meals":[],"clients":[],"actual":[]},"2026-10-26":{"meals":[{"s":1020,"e":1080,"tag":"Reception \u2014 Cocktail Social","n":95,"room":"Primrose Foyer CD"},{"s":1080,"e":1200,"tag":"Dinner Buffet","n":95,"room":"Primrose CD"}],"clients":["US Oncology"],"actual":[]},"2026-10-27":{"meals":[{"s":420,"e":480,"tag":"Breakfast","n":20,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"}],"clients":["Reliant Life Sciences","Galderma","Bobcat","Werfen"],"actual":[]},"2026-10-28":{"meals":[{"s":420,"e":480,"tag":"Breakfast","n":20,"room":"Camellia"},{"s":450,"e":540,"tag":"Breakfast","n":38,"room":"Verbena"},{"s":465,"e":510,"tag":"Breakfast","n":70,"room":"Primrose AB"},{"s":720,"e":780,"tag":"Lunch Buffet","n":38,"room":"Verbena"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"},{"s":735,"e":780,"tag":"Lunch Buffet","n":70,"room":"Primrose AB"},{"s":1080,"e":1200,"tag":"Dinner","n":17,"room":"Bonnell"},{"s":1170,"e":1320,"tag":"Reception","n":40,"room":"Barton"}],"clients":["Momentum Skilled Services","Reliant Life Sciences","Galderma","ABB","Bobcat","Werfen"],"actual":[]},"2026-10-29":{"meals":[{"s":720,"e":780,"tag":"Lunch Buffet","n":22,"room":"Camellia"},{"s":1080,"e":1200,"tag":"Dinner","n":16,"room":"Bonnell"}],"clients":["Upbring"],"actual":[]},"2026-10-30":{"meals":[],"clients":[],"actual":[]}},"pts":[[3,1],[18,2],[400,7],[60,3],[175,6],[150,5],[88,3],[147,5],[32,2],[59,3],[6,1],[100,3],[134,7],[100,7],[18,2],[30,2],[30,1],[100,4],[120,2],[300,6],[300,9],[200,8],[6,2],[30,2],[29,2],[100,3],[100,4],[21,1],[51,3],[30,2],[20,3],[40,2],[34,2],[187,5],[23,1],[25,1],[20,2],[59,3],[50,3],[45,1],[250,2],[170,7],[70,5],[50,2],[50,2],[120,5],[160,5],[170,4],[115,3],[55,2],[424,3],[278,10],[291,11],[200,5],[15,1],[60,3],[40,2],[22,2],[278,9],[277,9],[32,2],[30,1],[44,4],[104,5],[149,6],[15,1],[31,3],[90,6],[35,3],[60,3],[60,3],[138,6]]};
+const DATA = {"week":{"2026-10-24":{"meals":[{"s":1140,"e":1380,"tag":"Reception","n":80,"room":"Primrose D"}],"clients":["Robe Lighting","PMADTX (Puppy Mill Awareness Day TX)"],"actual":[],"bars":[{"s":1140,"e":1380,"room":"Primrose D","label":"PMADTX (Puppy Mill Awareness Day TX)","n":1}]},"2026-10-25":{"meals":[],"clients":[],"actual":[],"bars":[]},"2026-10-26":{"meals":[{"s":1020,"e":1080,"tag":"Reception \u2014 Cocktail Social","n":95,"room":"Primrose Foyer CD"},{"s":1080,"e":1200,"tag":"Dinner Buffet","n":95,"room":"Primrose CD"}],"clients":["US Oncology"],"actual":[],"bars":[{"s":1020,"e":1140,"room":"Primrose Foyer CD","label":"US Oncology","n":2}]},"2026-10-27":{"meals":[{"s":420,"e":480,"tag":"Breakfast","n":20,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"}],"clients":["Reliant Life Sciences","Galderma","Bobcat","Werfen"],"actual":[],"bars":[]},"2026-10-28":{"meals":[{"s":420,"e":480,"tag":"Breakfast","n":20,"room":"Camellia"},{"s":450,"e":540,"tag":"Breakfast","n":38,"room":"Verbena"},{"s":465,"e":510,"tag":"Breakfast","n":70,"room":"Primrose AB"},{"s":720,"e":780,"tag":"Lunch Buffet","n":38,"room":"Verbena"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"},{"s":735,"e":780,"tag":"Lunch Buffet","n":70,"room":"Primrose AB"},{"s":1080,"e":1200,"tag":"Dinner","n":17,"room":"Bonnell"},{"s":1170,"e":1320,"tag":"Reception","n":40,"room":"Barton"}],"clients":["Momentum Skilled Services","Reliant Life Sciences","Galderma","ABB","Bobcat","Werfen"],"actual":[],"bars":[{"s":1170,"e":1305,"room":"Barton","label":"ABB","n":1}]},"2026-10-29":{"meals":[{"s":720,"e":780,"tag":"Lunch Buffet","n":22,"room":"Camellia"},{"s":1080,"e":1200,"tag":"Dinner","n":16,"room":"Bonnell"}],"clients":["Upbring"],"actual":[],"bars":[]},"2026-10-30":{"meals":[],"clients":[],"actual":[],"bars":[]}},"pts":[[3,1],[18,2],[400,7],[60,3],[175,6],[150,5],[88,3],[147,5],[32,2],[59,3],[6,1],[100,3],[134,7],[100,7],[18,2],[30,2],[30,1],[100,4],[120,2],[300,6],[300,9],[200,8],[6,2],[30,2],[29,2],[100,3],[100,4],[21,1],[51,3],[30,2],[20,3],[40,2],[34,2],[187,5],[23,1],[25,1],[20,2],[59,3],[50,3],[45,1],[250,2],[170,7],[70,5],[50,2],[50,2],[120,5],[160,5],[170,4],[115,3],[55,2],[424,3],[278,10],[291,11],[200,5],[15,1],[60,3],[40,2],[22,2],[278,9],[277,9],[32,2],[30,1],[44,4],[104,5],[149,6],[15,1],[31,3],[90,6],[35,3],[60,3],[60,3],[138,6]]};
 const ROSTER = ["Francisco","Dylan","Tomas","Carlos","Gema","Odaly","Hilnery","Raibely","Adrian","Ozzy"];
+// Any event with a bar gets a bartender shift filled from these three (Jason 2026-10-22).
+const BARTENDERS = ["Dylan", "Carlos", "Leo"];
 const DAYS = Object.keys(DATA.week);
 const DOW = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 const dLabel = d => { const x = new Date(d + "T12:00"); return DOW[x.getDay()] + " " + (x.getMonth() + 1) + "/" + x.getDate(); };
@@ -252,7 +254,7 @@ const SAMPLE = {
 const WEEK = "sched-r2-" + Object.keys(DATA.week)[0];   // r2: fresh start for the Dylan + Francisco test (2026-10-20)
 let AV = {}, SENT = {}, DIRTY = {};
 // No more sample days (Jason 2026-10-20): until a server sends, they're Off every day and asked for 0 shifts.
-ROSTER.forEach(n => { if (!AV[n]) AV[n] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; });
+ROSTER.concat(BARTENDERS).forEach(n => { if (!AV[n]) AV[n] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; });
 const save = () => { DIRTY[me] = true; };
 // A day's availability: "all" | "am" | "pm" | "off" | "t:HH:MM-HH:MM" (the server typed their own hours)
 const hhmm = m => String(Math.floor(m / 60) % 24).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
@@ -349,6 +351,10 @@ function plan(d) {
     out.push({k: "pm", label: "PM crew", need: n, s, e, time: fmt(s) + "–" + fmt(e), hrs: (e - s) / 60,
       why: pm.map(m => `${m.tag} ${m.n}`).join(" + ") + ` → ${n} server${n > 1 ? "s" : ""}`, meals: pm});
   }
+  // Bars (from the event orders, plus events added here with a bar): a bartender shift, 1 hour before to 1 hour after.
+  (DATA.week[d].bars || []).concat((XEV[d] || []).filter(x => x.bar).map(x => ({s: x.s, e: x.e, room: x.room, label: x.name, n: x.bt || 1})))
+    .forEach((b, bi) => out.push({k: "bar" + bi, label: "BAR · " + b.label, need: b.n, s: b.s - 60, e: b.e + 60, time: fmt(b.s - 60) + "–" + fmt(b.e + 60), hrs: (b.e - b.s + 120) / 60,
+      why: `Bar ${fmt(b.s)}–${fmt(b.e)}${b.room ? " · " + b.room : ""} → ${b.n} bartender${b.n > 1 ? "s" : ""} (Dylan, Carlos or Leo)`, meals: [], bar: true}));
   // Shifts Jason adds by hand (a bar shift, a setup crew, an extra event…)
   (CUSTOM[d] || []).forEach(c => out.push({k: c.k, label: c.label, need: c.need || 0, s: c.s, e: c.e, time: fmt(c.s) + "–" + fmt(c.e), hrs: (c.e - c.s) / 60, why: "Added by hand", meals: [], custom: true}));
   return out;
@@ -367,7 +373,7 @@ const saveBuild = () => { try { localStorage.setItem(BKEY, JSON.stringify({ASSIG
 const loadBuild = () => { try { const b = JSON.parse(localStorage.getItem(BKEY) || "null"); if (!b) return false;
   ({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA, XEV} = Object.assign({ASSIGN: {}, TIMES: {}, CUSTOM: {}, FINAL: {}, EXTRA: [], XEV: {}}, b)); MANUAL = !!b.MANUAL;
   EXTRA.forEach(n => { if (!AV[n]) AV[n] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; }); return true; } catch (e) { return false; } };
-const PEOPLE = () => ROSTER.concat(EXTRA.filter(n => !ROSTER.includes(n)));
+const PEOPLE = () => ROSTER.concat(BARTENDERS.filter(n => !ROSTER.includes(n)), EXTRA.filter(n => !ROSTER.includes(n) && !BARTENDERS.includes(n)));
 const shiftOf = (d, k) => DATA.week[d] && plan(d).find(x => x.k === k);
 const timesOf = (d, k, n) => { const t = TIMES[d + "|" + k + "|" + n], sh = shiftOf(d, k); return t || (sh ? {s: sh.s, e: sh.e} : {s: 0, e: 0}); };
 // "530AM-2PM" style used on the posted schedule
@@ -390,7 +396,14 @@ function autoFill() {
   // Biggest days first so the anchors land where they matter most.
   slots.sort((a, b) => b.s.need - a.s.need);
   slots.forEach(({d, i, s}) => {
-    const key = d + "|" + s.k, sameDay = n => ASSIGN[d + "|am"]?.includes(n) || ASSIGN[d + "|pm"]?.includes(n);
+    const key = d + "|" + s.k, sameDay = n => Object.keys(ASSIGN).some(k2 => k2.startsWith(d + "|") && ASSIGN[k2].includes(n));
+    if (s.bar) {
+      const busy = n => plan(d).some(o => o.k !== s.k && (ASSIGN[d + "|" + o.k] || []).includes(n) && timesOf(d, o.k, n).s < s.e && timesOf(d, o.k, n).e > s.s);
+      const half = s.s >= 900 ? "pm" : "am";
+      const ok = BARTENDERS.filter(n => !busy(n)), avail = ok.filter(n => free(n, i, half, s));
+      ASSIGN[key] = avail.concat(ok.filter(n => !avail.includes(n))).slice(0, s.need);   // available first; otherwise still put a bartender on it
+      return;
+    }
     const pool = ROSTER.filter(n => free(n, i, s.k, s) && !sameDay(n))
       .sort((a, b) => (shiftsOf(a) >= AV[a].want) - (shiftsOf(b) >= AV[b].want) || shiftsOf(a) / (AV[a].want || 1) - shiftsOf(b) / (AV[b].want || 1) || ROSTER.indexOf(a) - ROSTER.indexOf(b));
     ASSIGN[key] = pool.slice(0, s.need);
@@ -410,7 +423,7 @@ function renderBuild() {
     const w = DATA.week[d], p = plan(d);
     let body = p.length ? p.map(s => {
       const got = ASSIGN[d + "|" + s.k] || [], st = got.length === s.need ? "ok" : got.length < s.need ? "short" : "over";
-      const avail = PEOPLE().filter(n => (s.custom ? AV[n].days[i] !== "off" : free(n, i, s.k, s)) && !got.includes(n));
+      const avail = s.bar ? BARTENDERS.filter(n => !got.includes(n)) : PEOPLE().filter(n => (s.custom ? AV[n].days[i] !== "off" : free(n, i, s.k, s)) && !got.includes(n));
       const others = PEOPLE().filter(n => !avail.includes(n) && !got.includes(n));
       return `<div class="shiftb">
         <div class="sh"><span>${s.custom ? `<input class="shlabel" data-shl="${d}|${s.k}" value="${s.label.replace(/"/g, "&quot;")}"> <input type="time" step="900" class="shtime" data-sht="${d}|${s.k}|s" value="${hhmm(s.s)}"> – <input type="time" step="900" class="shtime" data-sht="${d}|${s.k}|e" value="${hhmm(s.e % 1440)}"> <button class="xs" data-delshift="${d}|${s.k}" title="Remove this shift">✕ Remove</button>` : `<b>${s.label}</b> <span class="sub">${s.time}</span>`}</span>
@@ -432,13 +445,14 @@ function renderBuild() {
     const act = w.actual.length ? w.actual.map(([n, sh]) => `${n} ${sh}`).join(" · ") : "nobody";
     return `<div class="day"><div class="dhead"><div><div class="dname">${dLabel(d)}</div>
       <div class="clients">${w.clients.join(" · ") || ((XEV[d] || []).length ? "" : "No events posted yet")}</div>
-      ${(XEV[d] || []).map(x => `<div class="xev">＋ ${x.name} · ${x.tag} ${x.n} · ${fmt(x.s)}–${fmt(x.e)}${x.room ? " · " + x.room : ""} <button class="xs" data-delev="${d}|${x.id}">✕</button></div>`).join("")}</div>
+      ${(XEV[d] || []).map(x => `<div class="xev">＋ ${x.name} · ${x.tag} ${x.n} · ${fmt(x.s)}–${fmt(x.e)}${x.room ? " · " + x.room : ""}${x.bar ? " · 🍸 bar" : ""} <button class="xs" data-delev="${d}|${x.id}">✕</button></div>`).join("")}</div>
       <div class="need"><span class="pill ok" style="background:var(--blue-d);color:var(--blue)">Rubric: ${totalNeed} server${totalNeed === 1 ? "" : "s"}</span>${showA ? `<span class="pill" style="background:#5fe3c01c;color:var(--mint)">Hector: ${w.actual.length}</span>` : ""}</div></div>
       ${body}<button class="addshift" data-addshift="${d}">+ Add a shift</button><button class="addshift" data-addev="${d}">+ Add an event</button>
       <div class="evform" id="ef-${d}"><input data-f="name" placeholder="Group / event name" maxlength="40">
         <select data-f="tag"><option>Breakfast</option><option selected>Lunch</option><option>Dinner</option><option>Dinner Buffet</option><option>Reception</option><option>Break</option></select>
         <input type="time" step="900" data-f="s" value="11:00"> – <input type="time" step="900" data-f="e" value="13:00">
         <input type="number" data-f="n" min="1" max="999" placeholder="Guests" style="width:80px"> <input data-f="room" placeholder="Room" maxlength="24" style="width:110px">
+        <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" data-f="bar"> Bar</label>
         <button class="add" data-saveev="${d}">Add event</button></div>${showA ? `<div class="actual empty" style="padding-top:0"><b>Hector actually posted:</b> ${act}</div>` : ""}</div>`;
   }).join("");
   $("#days").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.rm.split("|"); ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k].filter(x => x !== n); delete TIMES[d + "|" + k + "|" + n]; changed(); renderBuild(); });
@@ -460,7 +474,8 @@ function renderBuild() {
     const n = parseInt(v("n"), 10), name = v("name").replace(/[<>"|]/g, "");
     if (!name || !n || !v("s") || !v("e")) { toast("Add a name, guest count and times"); return; }
     let s1 = unhhmm(v("s")), e1 = unhhmm(v("e")); if (e1 <= s1) e1 += 1440;
-    (XEV[d] = XEV[d] || []).push({id: Date.now().toString(36), name, tag: v("tag"), room: v("room").replace(/[<>"|]/g, ""), s: s1, e: e1, n});
+    const bar = f.querySelector('[data-f="bar"]').checked;
+    (XEV[d] = XEV[d] || []).push({id: Date.now().toString(36), name, tag: v("tag"), room: v("room").replace(/[<>"|]/g, ""), s: s1, e: e1, n, bar, bt: Math.max(1, Math.ceil(n / 100))});
     MANUAL = false; autoFill(); saveBuild(); renderBuild(); toast(name + " added — the week was rebuilt with it"); });
   $("#days").querySelectorAll("[data-delev]").forEach(b => b.onclick = () => { const [d, id] = b.dataset.delev.split("|");
     XEV[d] = (XEV[d] || []).filter(x => x.id !== id); MANUAL = false; autoFill(); saveBuild(); renderBuild(); toast("Event removed — the week was rebuilt"); });
@@ -486,16 +501,17 @@ const BANDS = [
   {label: "Director of Event Operations", fill: "FF8EA9DB", rows: ["Hector"]},
   {label: "Banquet Captain", fill: "FF9BC2E6", rows: ["Jason"]},
   {label: "SERVER", fill: "FFB4C6E7", servers: true},
-  {label: "Bartenders", fill: "FFB4C6E7", rows: ["Dylan"]},
+  {label: "Bartenders", fill: "FFB4C6E7", bar: true},
   {label: "HOUSEMEN", fill: "FFF8CBAD", rows: ["Jamshid", "Tomas"]}];
-const serverCell = (n, d) => plan(d).filter(s => (ASSIGN[d + "|" + s.k] || []).includes(n))
+const cellFor = bar => (n, d) => plan(d).filter(s => !!s.bar === bar && (ASSIGN[d + "|" + s.k] || []).includes(n))
   .map(s => { const t = timesOf(d, s.k, n); return xt(t.s) + "-" + xt(t.e) + (s.custom && !/extra shift/i.test(s.label) ? "/" + s.label.toUpperCase() : ""); }).join(" / ");
+const serverCell = cellFor(false), barCell = cellFor(true);
 function finalRows() {
   const out = [];
   BANDS.forEach((b, bi) => {
     out.push({band: b});
-    const names = b.servers ? PEOPLE().filter(n => SENT[n] || shiftsOf(n) || EXTRA.includes(n)) : b.rows;
-    names.forEach(n => out.push({id: bi + ":" + n, name: n, auto: b.servers ? d => serverCell(n, d) : () => ""}));
+    const names = b.servers ? PEOPLE().filter(n => !BARTENDERS.includes(n) || ROSTER.includes(n)).filter(n => SENT[n] || DAYS.some(d => serverCell(n, d)) || EXTRA.includes(n)) : b.bar ? BARTENDERS : b.rows;
+    names.forEach(n => out.push({id: bi + ":" + n, name: n, auto: b.servers ? d => serverCell(n, d) : b.bar ? d => barCell(n, d) : () => ""}));
     if (b.servers) out.push({id: bi + ":_blank", name: "", auto: () => ""});
   });
   return out;
