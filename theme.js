@@ -79,6 +79,37 @@
   var BADGE = ".bb-me-badge{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 10px);z-index:9999;" +
     "padding:6px 14px;border-radius:30px;font:800 10px/1.2 Manrope,Arial,sans-serif;letter-spacing:1.8px;pointer-events:none;white-space:nowrap;box-shadow:0 4px 18px #0008}";
   var THEMES = {
+    // Gema: anime night — sakura petals drifting over a pink/lavender sky, and a chibi fox spirit (original art) that cheers her on.
+    gema: {
+      label: "GEMA · がんばって",
+      img: "img/me/gema-kitsune.svg",
+      pet: "img/me/gema-kitsune.svg",
+      sakura: true,
+      tint: {color: "#a24fc2", opacity: .38},
+      petZ: 9999,   // fox + its bubble sit above the tint so they keep their own colors
+      cheer: ["がんばって! Ganbatte, Gema!", "Sugoi! ✨", "You got this! 💮", "Yatta! ⭐", "Fighto! 🌸", "Nice work, Gema-chan! 🦊"],
+      css: palette("#ff7eb6", "rgba(255,126,182,.15)", "#120c2a", "#1d1542", "#291d58", "rgba(255,126,182,.16)", "rgba(178,140,255,.38)") +
+        "body::before{background:radial-gradient(ellipse at 85% 0,#ff7eb655,transparent 50%),radial-gradient(ellipse at 0 100%,#7a4fd655,transparent 55%)," +
+        "radial-gradient(1.5px 1.5px at 20% 30%,#fff9,transparent),radial-gradient(1px 1px at 70% 18%,#fff8,transparent),radial-gradient(1.5px 1.5px at 42% 64%,#fff7,transparent)," +
+        "radial-gradient(1px 1px at 88% 52%,#fff8,transparent),radial-gradient(1px 1px at 12% 80%,#fff7,transparent),#120c2a!important}" +
+        "h1,h2{color:#ffd6ea}" + BADGE +
+        ".bb-me-badge{color:#ffd6ea;background:linear-gradient(135deg,#ff5fa2,#7a4fd6);border:1px solid #ffd6ea88}" +
+        "@keyframes bbPetIn{from{transform:translateY(110%)}to{transform:none}}" +
+        "@keyframes bbHop{0%,100%{transform:translateY(0) rotate(0)}20%{transform:translateY(-26px) rotate(-6deg)}35%{transform:translateY(-30px) rotate(5deg)}" +
+        "50%{transform:translateY(-12px) rotate(-4deg)}65%{transform:translateY(-18px) rotate(3deg)}85%{transform:translateY(0) rotate(0)}}" +
+        ".bb-pet.hop{animation:bbHop 1.1s ease-in-out!important}" +
+        // sakura petals
+        ".bb-sakura{position:fixed;inset:0;z-index:9990;pointer-events:none;overflow:hidden}" +
+        ".bb-sakura i{position:absolute;top:-6vh;width:var(--w);height:calc(var(--w) * .8);background:radial-gradient(ellipse at 30% 30%,#ffe3ef,#ff9ecb 60%,#ff7eb6);" +
+        "border-radius:80% 0 80% 0;opacity:.75;animation:bbFall var(--d) linear var(--dl) infinite,bbSway calc(var(--d) / 3) ease-in-out var(--dl) infinite alternate}" +
+        "@keyframes bbFall{to{top:106vh;transform:rotate(540deg)}}" +
+        "@keyframes bbSway{from{margin-left:-30px}to{margin-left:30px}}" +
+        // the fox's cheer
+        ".bb-cheer{position:fixed!important;z-index:10000;padding:8px 13px;border-radius:16px;background:#fff;color:#7a2c5a;font:800 13px/1.2 Manrope,Arial,sans-serif;" +
+        "box-shadow:0 6px 18px #0008;border:2px solid #ff7eb6;pointer-events:none;white-space:nowrap;animation:bbCheer 2.2s ease-out forwards}" +
+        "@keyframes bbCheer{0%{opacity:0;transform:translateY(10px) scale(.8)}12%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0;transform:translateY(-14px)}}" +
+        "@media (prefers-reduced-motion:reduce){.bb-sakura,.bb-pet,.bb-pet.hop{display:none!important;animation:none!important}}"
+    },
     // Hector (Director of Event Operations): the panther canvas from his wall — "Te estás distrayendo otra vez, enfócate".
     // Live look: a faint wallpaper behind every page. Sidebar card + "focus" moment exist behind ?lion=card|focus|all.
     hector: {
@@ -559,6 +590,7 @@
     var oldM = document.querySelector(".bb-mark"); if (oldM) oldM.remove();
     var oldC = document.querySelector(".bb-cast"); if (oldC) oldC.remove();
     var oldP = document.querySelector(".bb-pet"); if (oldP) oldP.remove();
+    var oldS = document.querySelectorAll(".bb-sakura,.bb-cheer"); for (var si = 0; si < oldS.length; si++) oldS[si].remove();
     var oldK = document.querySelector(".bb-monkey"); if (oldK) oldK.remove();
     var oldW = document.querySelector(".bb-walker"); if (oldW) oldW.remove();
     var oldX = document.querySelectorAll(".bb-dbz"); for (var xi = 0; xi < oldX.length; xi++) oldX[xi].remove();
@@ -616,12 +648,19 @@
       if (t.pet) {
         var pt = document.createElement("img"); pt.className = "bb-pet"; pt.src = t.pet; pt.alt = ""; pt.title = "Tap me";
         var ps = {position:"fixed", left:"6px", bottom:"calc(env(safe-area-inset-bottom,0px) + 4px)", width:"clamp(70px,8vw,116px)", height:"auto",
-          "z-index":"9996", cursor:"pointer", filter:"drop-shadow(0 4px 10px #000a)", border:"0", "border-radius":"0", background:"none",
+          "z-index":String(t.petZ || 9996), cursor:"pointer", filter:"drop-shadow(0 4px 10px #000a)", border:"0", "border-radius":"0", background:"none",
           margin:"0", padding:"0", "box-shadow":"none", animation:"bbPetIn .7s ease-out both"};
         for (var pk in ps) pt.style.setProperty(pk, ps[pk], "important");
         if (document.documentElement.classList.contains("bbd")) pt.style.setProperty("left", "calc(var(--bbd-side) + 10px)", "important");
         var hop = function () { pt.classList.remove("hop"); void pt.offsetWidth; pt.classList.add("hop"); };
         pt.addEventListener("click", hop);
+        if (t.cheer) pt.addEventListener("click", function () {
+          var old = document.querySelector(".bb-cheer"); if (old) old.remove();
+          var r = pt.getBoundingClientRect(), c = document.createElement("div"); c.className = "bb-cheer";
+          c.textContent = t.cheer[Math.floor(Math.random() * t.cheer.length)];
+          c.style.left = (r.left + r.width * 0.55) + "px"; c.style.bottom = (innerHeight - r.top + 6) + "px";
+          document.body.appendChild(c); setTimeout(function () { c.remove(); }, 2300);
+        });
         pt.addEventListener("animationend", function (e) { if (e.animationName == "bbHop") pt.classList.remove("hop"); });
         setInterval(function () { if (!document.hidden) hop(); }, 25000);
         document.body.appendChild(pt);
@@ -659,6 +698,18 @@
       if (t.bear && t.bear.test(location.pathname)) bearLoop();
       if (t.monkeyMoments) monkeyLoop();
       if (t.lion) lionLooks();
+      if (t.sakura) {
+        var sk = document.createElement("div"); sk.className = "bb-sakura";
+        for (var pi = 0; pi < 16; pi++) {
+          var pe = document.createElement("i");
+          pe.style.left = (Math.random() * 100).toFixed(1) + "vw";
+          pe.style.setProperty("--w", (8 + Math.random() * 9).toFixed(1) + "px");
+          pe.style.setProperty("--d", (11 + Math.random() * 10).toFixed(1) + "s");
+          pe.style.setProperty("--dl", "-" + (Math.random() * 20).toFixed(1) + "s");
+          sk.appendChild(pe);
+        }
+        document.body.appendChild(sk);
+      }
       if (t.aurora) { var a = document.createElement("div"); a.className = "bb-aurora"; document.body.prepend(a); }
       // Pages with fixed blue colors get a hue overlay: blues shift to the person's color; whites and text stay put.
       // The Housemen page is fully themed through its variables, so it skips this.

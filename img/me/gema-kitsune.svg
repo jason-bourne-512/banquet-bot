@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 210" width="200" height="210">
+  <!-- Gema's chibi fox spirit (original art for Banquet Bot): big sparkly anime eyes, swishing tail, blinks. -->
+  <style>
+    .tail { transform-origin: 140px 170px; animation: swish 2.4s ease-in-out infinite; }
+    .bob { animation: bob 2.8s ease-in-out infinite; }
+    .lid { transform-origin: 100px 104px; animation: blink 5s infinite; }
+    .spark { animation: tw 1.6s ease-in-out infinite; }
+    .spark.b { animation-delay: .8s; }
+    @keyframes swish { 0%,100% { transform: rotate(-8deg) } 50% { transform: rotate(10deg) } }
+    @keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
+    @keyframes blink { 0%,94%,100% { transform: scaleY(0) } 97% { transform: scaleY(1) } }
+    @keyframes tw { 0%,100% { opacity: .2; transform: scale(.7) } 50% { opacity: 1; transform: scale(1) } }
+    @media (prefers-reduced-motion: reduce) { .tail, .bob, .lid, .spark { animation: none } }
+  </style>
+  <ellipse cx="100" cy="202" rx="52" ry="6" fill="#000" opacity=".25"/>
+  <!-- tail -->
+  <g class="tail">
+    <path d="M132 176 Q186 170 188 118 Q190 88 168 92 Q176 120 150 140 Q132 152 120 160 Z" fill="#ff9a3c"/>
+    <path d="M168 92 Q190 88 188 118 Q182 104 170 104 Z" fill="#fff4ea"/>
+  </g>
+  <g class="bob">
+    <!-- body -->
+    <path d="M62 196 Q58 150 100 146 Q142 150 138 196 Z" fill="#ff9a3c"/>
+    <path d="M82 196 Q82 164 100 160 Q118 164 118 196 Z" fill="#fff4ea"/>
+    <!-- scarf -->
+    <path d="M70 152 Q100 166 130 152 L128 162 Q100 176 72 162 Z" fill="#ff5fa2"/>
+    <path d="M118 160 L128 186 L116 182 Z" fill="#ff5fa2"/>
+    <!-- head -->
+    <path d="M40 46 L66 64 L52 88 Z" fill="#ff9a3c"/><path d="M47 54 L62 66 L55 79 Z" fill="#ffd0e4"/>
+    <path d="M160 46 L134 64 L148 88 Z" fill="#ff9a3c"/><path d="M153 54 L138 66 L145 79 Z" fill="#ffd0e4"/>
+    <ellipse cx="100" cy="100" rx="58" ry="52" fill="#ff9a3c"/>
+    <path d="M48 112 Q60 150 100 150 Q140 150 152 112 Q132 126 100 126 Q68 126 48 112 Z" fill="#fff4ea"/>
+    <!-- eyes -->
+    <ellipse cx="76" cy="104" rx="13" ry="16" fill="#3a1a4f"/><ellipse cx="124" cy="104" rx="13" ry="16" fill="#3a1a4f"/>
+    <ellipse cx="76" cy="109" rx="10" ry="9" fill="#7a4fd6"/><ellipse cx="124" cy="109" rx="10" ry="9" fill="#7a4fd6"/>
+    <circle cx="71" cy="97" r="5" fill="#fff"/><circle cx="119" cy="97" r="5" fill="#fff"/>
+    <circle cx="81" cy="112" r="2.4" fill="#fff"/><circle cx="129" cy="112" r="2.4" fill="#fff"/>
+    <g class="lid"><ellipse cx="76" cy="104" rx="14" ry="17" fill="#ff9a3c"/><ellipse cx="124" cy="104" rx="14" ry="17" fill="#ff9a3c"/></g>
+    <!-- blush, nose, mouth -->
+    <ellipse cx="58" cy="124" rx="9" ry="5" fill="#ff7eb6" opacity=".6"/><ellipse cx="142" cy="124" rx="9" ry="5" fill="#ff7eb6" opacity=".6"/>
+    <path d="M96 122 L104 122 L100 127 Z" fill="#3a1a4f"/>
+    <path d="M92 130 Q96 135 100 130 Q104 135 108 130" stroke="#3a1a4f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <!-- forehead mark -->
+    <path d="M100 66 Q95 76 100 84 Q105 76 100 66 Z" fill="#ff5fa2"/>
+  </g>
+  <!-- sparkles -->
+  <path class="spark" d="M24 30 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z" fill="#ffd166"/>
+  <path class="spark b" d="M176 20 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2z" fill="#ff9ecb"/>
+</svg>
