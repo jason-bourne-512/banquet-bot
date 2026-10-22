@@ -79,6 +79,23 @@
   var BADGE = ".bb-me-badge{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 10px);z-index:9999;" +
     "padding:6px 14px;border-radius:30px;font:800 10px/1.2 Manrope,Arial,sans-serif;letter-spacing:1.8px;pointer-events:none;white-space:nowrap;box-shadow:0 4px 18px #0008}";
   var THEMES = {
+    // Carlos: Venezuela — a diagonal flag sweep and the flag's arc of 8 stars twinkling across the top of every page.
+    carlos: {
+      label: "CARLOS · VENEZUELA",
+      img: "img/flag-venezuela.svg",
+      stars: true,
+      tint: {color: "#1d3fa8", opacity: .32},
+      css: palette("#ffcc00", "rgba(255,204,0,.14)", "#071330", "#0e1f4d", "#152a66", "rgba(255,204,0,.15)", "rgba(207,20,43,.42)") +
+        "body::before{background:linear-gradient(160deg,#ffcc0030 0,#ffcc0020 30%,#00247d40 30%,#00247d40 64%,#cf142b30 64%),#071330!important}" +
+        "h1,h2{color:#fff3c4}" + BADGE +
+        ".bb-me-badge{color:#ffcc00;border:1px solid #ffcc0099;background:linear-gradient(90deg,#cf142b,#00247d 45%,#00247d 55%,#cf142b)}" +
+        ".bb-stars{position:fixed;left:50%;top:78px;width:min(320px,62vw);height:48px;opacity:.85;transform:translateX(-50%);z-index:9997;pointer-events:none}" +
+        "html.bbd .bb-stars{left:calc(var(--bbd-side) + (100vw - var(--bbd-side)) / 2);top:66px}" +
+        ".bb-stars i{position:absolute;width:14px;height:14px;margin:-7px;background:#fff;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);" +
+        "filter:drop-shadow(0 0 4px #fff8);animation:bbStar 2.6s ease-in-out infinite}" +
+        "@keyframes bbStar{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}" +
+        "@media (prefers-reduced-motion:reduce){.bb-stars i{animation:none;opacity:.8}}"
+    },
     // Gema: anime night — sakura petals drifting over a pink/lavender sky, and a chibi fox spirit (original art) that cheers her on.
     gema: {
       label: "GEMA · がんばって",
@@ -590,7 +607,7 @@
     var oldM = document.querySelector(".bb-mark"); if (oldM) oldM.remove();
     var oldC = document.querySelector(".bb-cast"); if (oldC) oldC.remove();
     var oldP = document.querySelector(".bb-pet"); if (oldP) oldP.remove();
-    var oldS = document.querySelectorAll(".bb-sakura,.bb-cheer"); for (var si = 0; si < oldS.length; si++) oldS[si].remove();
+    var oldS = document.querySelectorAll(".bb-sakura,.bb-cheer,.bb-stars"); for (var si = 0; si < oldS.length; si++) oldS[si].remove();
     var oldK = document.querySelector(".bb-monkey"); if (oldK) oldK.remove();
     var oldW = document.querySelector(".bb-walker"); if (oldW) oldW.remove();
     var oldX = document.querySelectorAll(".bb-dbz"); for (var xi = 0; xi < oldX.length; xi++) oldX[xi].remove();
@@ -698,6 +715,15 @@
       if (t.bear && t.bear.test(location.pathname)) bearLoop();
       if (t.monkeyMoments) monkeyLoop();
       if (t.lion) lionLooks();
+      if (t.stars) {   // 8 stars on an arc, like the flag
+        var st8 = document.createElement("div"); st8.className = "bb-stars";
+        for (var zi = 0; zi < 8; zi++) {
+          var a = Math.PI * (0.15 + 0.7 * zi / 7), z = document.createElement("i");
+          z.style.left = (50 - 46 * Math.cos(a)).toFixed(1) + "%"; z.style.top = (88 - 74 * Math.sin(a)).toFixed(1) + "%";
+          z.style.animationDelay = (zi * 0.3).toFixed(1) + "s"; st8.appendChild(z);
+        }
+        document.body.appendChild(st8);
+      }
       if (t.sakura) {
         var sk = document.createElement("div"); sk.className = "bb-sakura";
         for (var pi = 0; pi < 16; pi++) {
