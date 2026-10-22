@@ -75,7 +75,12 @@ textarea{width:100%;background:var(--card2);border:1px solid var(--line2);border
 .pick .grp{width:100%;font-size:11px;color:var(--mute);margin:4px 0 2px}
 .chip.na{opacity:.55;border-style:dashed}
 .pick input.nm{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:16px;padding:5px 10px;font:600 12px Manrope;width:140px}
-.addshift{margin:8px 14px 12px;border:1px dashed var(--line2);background:none;color:var(--mute);border-radius:10px;padding:6px 10px;font:600 12px Manrope;cursor:pointer}
+.xs{border:1px solid #ff8a8a55;background:#ff8a8a14;color:#ff9b9b;border-radius:10px;padding:2px 8px;font:700 11px Manrope;cursor:pointer;margin-left:4px}
+.shtime{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:2px 4px;font:600 12px Manrope;color-scheme:dark}
+.xev{font-size:12px;color:var(--mint);margin-top:4px}
+.evform{display:none;flex-wrap:wrap;gap:6px;align-items:center;margin:0 14px 12px;padding:10px;border:1px dashed var(--line2);border-radius:10px;font-size:12px;color:var(--mute)}.evform.on{display:flex}
+.evform input,.evform select{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:5px 7px;font:600 12.5px Manrope;color-scheme:dark}
+.addshift{margin:8px 0 12px 14px;border:1px dashed var(--line2);background:none;color:var(--mute);border-radius:10px;padding:6px 10px;font:600 12px Manrope;cursor:pointer}
 .shlabel{background:transparent;border:0;border-bottom:1px dashed var(--line2);color:var(--ink);font:700 13px Manrope;width:150px}
 .fin{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
 .fin th{background:#000;color:#fff;font:700 11.5px Manrope;padding:6px 4px;border:1px solid #333}
@@ -328,7 +333,7 @@ const pmNeed = meals => {
 const fmt = m => { m = Math.round(m / 15) * 15; let h = Math.floor(m / 60), mm = m % 60, ap = h >= 12 ? "P" : "A"; h = h % 12 || 12;
   return h + (mm ? String(mm).padStart(2, "0") : "") + ap; };
 function plan(d) {
-  const meals = DATA.week[d].meals, am = meals.filter(m => m.s < 900), pm = meals.filter(m => m.s >= 900);
+  const meals = DATA.week[d].meals.concat((XEV[d] || []).filter(x => x.n > 0)), am = meals.filter(m => m.s < 900), pm = meals.filter(m => m.s >= 900);
   const bkf = am.filter(m => /fast|bkf|brunch/i.test(m.tag)).reduce((a, m) => a + m.n, 0);
   const lun = am.filter(m => /lunch/i.test(m.tag)).reduce((a, m) => a + m.n, 0);
   const peak = Math.max(bkf, lun), out = [];
@@ -356,10 +361,11 @@ let TIMES = {};       // "date|shift|name" -> {s, e} minutes: one person's own h
 let CUSTOM = {};      // date -> [{k, label, s, e, need}] shifts added by hand
 let FINAL = {};       // "row|date" -> text typed into the final schedule grid
 let EXTRA = [];       // people added by name who aren't on the server roster
+let XEV = {};         // date -> [{id, name, tag, room, s, e, n}] events added by hand (they count toward the rubric)
 const BKEY = "bb-sched-build-" + WEEK;
-const saveBuild = () => { try { localStorage.setItem(BKEY, JSON.stringify({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA, MANUAL})); } catch (e) {} };
+const saveBuild = () => { try { localStorage.setItem(BKEY, JSON.stringify({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA, XEV, MANUAL})); } catch (e) {} };
 const loadBuild = () => { try { const b = JSON.parse(localStorage.getItem(BKEY) || "null"); if (!b) return false;
-  ({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA} = Object.assign({ASSIGN: {}, TIMES: {}, CUSTOM: {}, FINAL: {}, EXTRA: []}, b)); MANUAL = !!b.MANUAL;
+  ({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA, XEV} = Object.assign({ASSIGN: {}, TIMES: {}, CUSTOM: {}, FINAL: {}, EXTRA: [], XEV: {}}, b)); MANUAL = !!b.MANUAL;
   EXTRA.forEach(n => { if (!AV[n]) AV[n] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; }); return true; } catch (e) { return false; } };
 const PEOPLE = () => ROSTER.concat(EXTRA.filter(n => !ROSTER.includes(n)));
 const shiftOf = (d, k) => DATA.week[d] && plan(d).find(x => x.k === k);
@@ -407,7 +413,7 @@ function renderBuild() {
       const avail = PEOPLE().filter(n => (s.custom ? AV[n].days[i] !== "off" : free(n, i, s.k, s)) && !got.includes(n));
       const others = PEOPLE().filter(n => !avail.includes(n) && !got.includes(n));
       return `<div class="shiftb">
-        <div class="sh"><span>${s.custom ? `<input class="shlabel" data-shl="${d}|${s.k}" value="${s.label.replace(/"/g, "&quot;")}">` : `<b>${s.label}</b>`} <span class="sub">${s.time}</span></span>
+        <div class="sh"><span>${s.custom ? `<input class="shlabel" data-shl="${d}|${s.k}" value="${s.label.replace(/"/g, "&quot;")}"> <input type="time" step="900" class="shtime" data-sht="${d}|${s.k}|s" value="${hhmm(s.s)}"> – <input type="time" step="900" class="shtime" data-sht="${d}|${s.k}|e" value="${hhmm(s.e % 1440)}"> <button class="xs" data-delshift="${d}|${s.k}" title="Remove this shift">✕ Remove</button>` : `<b>${s.label}</b> <span class="sub">${s.time}</span>`}</span>
           <span class="pill ${st}">${got.length}/${s.need}${st === "short" ? " · need " + (s.need - got.length) : st === "over" ? " · +" + (got.length - s.need) : " ✓"}</span></div>
         <div class="meals">${s.meals.map(m => `${m.tag} ${m.n} · ${m.room}`).join("  ·  ")}</div>
         <div class="why">${s.why}</div>
@@ -419,15 +425,21 @@ function renderBuild() {
           <div class="grp">Available</div>${avail.length ? avail.map(n => `<span class="chip" data-put="${d}|${s.k}|${n}">${n}${winLabel(n, i)}<small>${shiftsOf(n)}/${AV[n].want}</small></span>`).join("") : '<span class="sub">Nobody else marked available</span>'}
           ${others.length ? `<div class="grp">Not marked available (add anyway)</div>${others.map(n => `<span class="chip na" data-put="${d}|${s.k}|${n}">${n}<small>${shiftsOf(n)}/${AV[n].want}</small></span>`).join("")}` : ""}
           <div class="grp">Someone else</div><input class="nm" id="nm-${d}-${s.k}" placeholder="Type a name" maxlength="24"><button class="add" data-newname="${d}|${s.k}">Add</button>
-          ${s.custom ? `<div class="grp">This shift</div><button class="add" data-delshift="${d}|${s.k}">Remove this shift</button>` : ""}</div>
+</div>
       </div>`;
     }).join("") : `<div class="empty">No meals on the books${w.clients.length ? " (meetings only)" : ""} → 0 servers.</div>`;
     const totalNeed = p.reduce((a, s) => a + s.need, 0);
     const act = w.actual.length ? w.actual.map(([n, sh]) => `${n} ${sh}`).join(" · ") : "nobody";
     return `<div class="day"><div class="dhead"><div><div class="dname">${dLabel(d)}</div>
-      <div class="clients">${w.clients.join(" · ") || "No events posted yet"}</div></div>
+      <div class="clients">${w.clients.join(" · ") || ((XEV[d] || []).length ? "" : "No events posted yet")}</div>
+      ${(XEV[d] || []).map(x => `<div class="xev">＋ ${x.name} · ${x.tag} ${x.n} · ${fmt(x.s)}–${fmt(x.e)}${x.room ? " · " + x.room : ""} <button class="xs" data-delev="${d}|${x.id}">✕</button></div>`).join("")}</div>
       <div class="need"><span class="pill ok" style="background:var(--blue-d);color:var(--blue)">Rubric: ${totalNeed} server${totalNeed === 1 ? "" : "s"}</span>${showA ? `<span class="pill" style="background:#5fe3c01c;color:var(--mint)">Hector: ${w.actual.length}</span>` : ""}</div></div>
-      ${body}<button class="addshift" data-addshift="${d}">+ Add a shift</button>${showA ? `<div class="actual empty" style="padding-top:0"><b>Hector actually posted:</b> ${act}</div>` : ""}</div>`;
+      ${body}<button class="addshift" data-addshift="${d}">+ Add a shift</button><button class="addshift" data-addev="${d}">+ Add an event</button>
+      <div class="evform" id="ef-${d}"><input data-f="name" placeholder="Group / event name" maxlength="40">
+        <select data-f="tag"><option>Breakfast</option><option selected>Lunch</option><option>Dinner</option><option>Dinner Buffet</option><option>Reception</option><option>Break</option></select>
+        <input type="time" step="900" data-f="s" value="11:00"> – <input type="time" step="900" data-f="e" value="13:00">
+        <input type="number" data-f="n" min="1" max="999" placeholder="Guests" style="width:80px"> <input data-f="room" placeholder="Room" maxlength="24" style="width:110px">
+        <button class="add" data-saveev="${d}">Add event</button></div>${showA ? `<div class="actual empty" style="padding-top:0"><b>Hector actually posted:</b> ${act}</div>` : ""}</div>`;
   }).join("");
   $("#days").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.rm.split("|"); ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k].filter(x => x !== n); delete TIMES[d + "|" + k + "|" + n]; changed(); renderBuild(); });
   $("#days").querySelectorAll("[data-tm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.tm.split("|"), t = timesOf(d, k, n), box = document.getElementById("te-" + d + "-" + k);
@@ -441,6 +453,17 @@ function renderBuild() {
     const nm = n.charAt(0).toUpperCase() + n.slice(1);
     if (!PEOPLE().includes(nm)) { EXTRA.push(nm); AV[nm] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; }
     (ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k] || []).includes(nm) || ASSIGN[d + "|" + k].push(nm); changed(); renderBuild(); });
+  $("#days").querySelectorAll("[data-sht]").forEach(inp => inp.onchange = () => { const [d, k, w] = inp.dataset.sht.split("|"), c = (CUSTOM[d] || []).find(x => x.k === k);
+    if (!c || !inp.value) return; c[w] = unhhmm(inp.value); if (c.e <= c.s) c.e += 1440; changed(); renderBuild(); });
+  $("#days").querySelectorAll("[data-addev]").forEach(b => b.onclick = () => document.getElementById("ef-" + b.dataset.addev).classList.toggle("on"));
+  $("#days").querySelectorAll("[data-saveev]").forEach(b => b.onclick = () => { const d = b.dataset.saveev, f = document.getElementById("ef-" + d), v = k => f.querySelector(`[data-f="${k}"]`).value.trim();
+    const n = parseInt(v("n"), 10), name = v("name").replace(/[<>"|]/g, "");
+    if (!name || !n || !v("s") || !v("e")) { toast("Add a name, guest count and times"); return; }
+    let s1 = unhhmm(v("s")), e1 = unhhmm(v("e")); if (e1 <= s1) e1 += 1440;
+    (XEV[d] = XEV[d] || []).push({id: Date.now().toString(36), name, tag: v("tag"), room: v("room").replace(/[<>"|]/g, ""), s: s1, e: e1, n});
+    MANUAL = false; autoFill(); saveBuild(); renderBuild(); toast(name + " added — the week was rebuilt with it"); });
+  $("#days").querySelectorAll("[data-delev]").forEach(b => b.onclick = () => { const [d, id] = b.dataset.delev.split("|");
+    XEV[d] = (XEV[d] || []).filter(x => x.id !== id); MANUAL = false; autoFill(); saveBuild(); renderBuild(); toast("Event removed — the week was rebuilt"); });
   $("#days").querySelectorAll("[data-addshift]").forEach(b => b.onclick = () => { const d = b.dataset.addshift, k = "x" + Date.now().toString(36);
     (CUSTOM[d] = CUSTOM[d] || []).push({k, label: "Extra shift", s: 16 * 60, e: 23 * 60, need: 1}); changed(); renderBuild(); });
   $("#days").querySelectorAll("[data-delshift]").forEach(b => b.onclick = () => { const [d, k] = b.dataset.delshift.split("|");
