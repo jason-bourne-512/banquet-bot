@@ -383,7 +383,8 @@
       '<a class="bbd-brand" href="index.html"><span class="bbd-mark">B</span><span><b>BANQUET BOT</b><span class="sub">COMMAND CENTER</span></span></a>' +
       '<nav class="bbd-nav"><div class="lbl">Operations</div>' + navLinks(PAGES.slice(0, 6), cur) +
       (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' +
-        '<a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' : "") +
+        '<a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' :
+       w.name == "Hector" ? '<div class="lbl">Tools</div><a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' : "") +
       // Reference starts folded; the triangle opens it (remembered), and it opens itself on a reference page.
       '<button class="lbl bbd-reft" data-bbd="ref" aria-expanded="' + refOpen + '"><span class="tri">▸</span>Reference</button>' +
       '<div class="bbd-ref"' + (refOpen ? "" : " hidden") + ">" + navLinks(refPages, cur) + "</div></nav>" +

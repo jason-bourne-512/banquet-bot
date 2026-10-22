@@ -107,7 +107,7 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
 <div class="wrap" id="gate" hidden><div class="sub" style="margin-top:30vh;text-align:center">This page is still being tested.<br><a href="index.html" style="color:#8bd1ff">← Home</a></div></div>
 <div class="wrap" id="wrap">
   <a href="index.html" style="color:var(--blue);text-decoration:none;font:600 13px Manrope">← Home</a>
-  <div class="card" id="testNote" style="border-color:#f2c87955;background:#f2c8790f;font-size:12.5px;color:var(--amber)">Pick the days you can work next week and tap Send. Jason sees what you send.</div>
+  <div class="card" id="testNote" style="border-color:#f2c87955;background:#f2c8790f;font-size:12.5px;color:var(--amber)">Pick the days you can work next week and tap Send. Jason and Hector see what you send.</div>
   <div class="sub">BANQUET BOT · WESTIN AUSTIN DOMAIN</div>
   <h1>Scheduler <span class="demo" id="stage">BETA</span></h1>
   <div class="sub">Servers send availability → Banquet Bot drafts the week from the events and Hector's own staffing habits → Hector and Jason adjust and post.</div>
@@ -216,14 +216,14 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
 <script>
 // Testing access by Banquet Bot sign-in: Jason (beta, builds the week) plus Dylan and Francisco (send availability).
 const WHO = (() => { try { return JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); } catch (e) { return null; } })();
-const TESTERS = {Jason: "BETA", Dylan: "", Francisco: ""};
+const TESTERS = {Jason: "BETA", Hector: "BETA", Dylan: "", Francisco: "", Gema: ""};
 if (!WHO || !(WHO.name in TESTERS)) { document.getElementById("gate").hidden = false; document.getElementById("wrap").remove(); throw new Error("not a tester"); }
-const LEADV = WHO.name === "Jason";   // only Jason gets Build the week (and the server preview)
+const LEADV = WHO.name === "Jason" || WHO.name === "Hector";   // Jason + Hector build the week; servers only send availability
 document.getElementById("stage").textContent = TESTERS[WHO.name];
 if (!TESTERS[WHO.name]) document.getElementById("stage").style.display = "none";
 if (LEADV) {
   // Jason has no availability tab at all (no way to overwrite a server's answer): he goes straight to Build the week.
-  document.getElementById("testNote").textContent = "Testing: Dylan and Francisco send their days from their own sign-in, and what they send shows here (✓ Sent). The week shown is next week's real events.";
+  document.getElementById("testNote").textContent = "Testing: Dylan, Francisco and Gema send their days from their own sign-in, and what they send shows here (✓ Sent). The week shown is next week's real events.";
   ["#wrap .tabs", "#v-avail"].forEach(q => document.querySelectorAll(q).forEach(el => el.style.setProperty("display", "none", "important")));
   document.getElementById("v-avail").classList.remove("on"); document.getElementById("v-build").classList.add("on");
 }
@@ -312,7 +312,7 @@ $("#send").onclick = async () => {
   try {
     if (!window.schedSave) throw new Error("not connected");
     await window.schedSave(me, rec);
-    DIRTY[me] = false; SENT[me] = rec; toast("Sent ✓ Jason can see it now");
+    DIRTY[me] = false; SENT[me] = rec; toast("Sent ✓ Jason and Hector can see it now");
   } catch (e) { console.error("[scheduler]", e); toast("Didn't send — check signal and try again"); }
   b.disabled = false; b.textContent = "Send availability"; renderAvail();
 };
