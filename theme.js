@@ -274,62 +274,56 @@
         ".bb-walker{animation:bbStroll 46s linear infinite}" +
         ".bb-walker.jump img{animation:bbJump .7s ease-out}" +
         "@media (prefers-reduced-motion:reduce){.bb-walker{display:none!important}}" +
-        // Monkey moments: the walker flips, spins or tosses a banana; a second monkey drops in on a vine or peeks from the side.
-        "@keyframes bbFlip{0%{transform:none}35%{transform:translateY(-90px) rotate(-180deg)}70%{transform:translateY(-20px) rotate(-360deg)}100%{transform:rotate(-360deg)}}" +
-        ".bb-walker.flip img{animation:bbFlip 1.1s ease-out}" +
-        "@keyframes bbSpin{0%{transform:none}100%{transform:rotate(720deg)}}" +
-        ".bb-walker.spin img{animation:bbSpin 1.4s cubic-bezier(.5,0,.5,1)}" +
-        "@keyframes bbToss{0%{opacity:1;transform:translate(0,0) rotate(0)}45%{transform:translate(var(--dx),-38vh) rotate(400deg)}" +
-        "90%{opacity:1}100%{opacity:0;transform:translate(calc(var(--dx) * 2),10vh) rotate(900deg)}}" +
-        ".bb-banana{position:fixed!important;z-index:9996;width:clamp(30px,3vw,42px);cursor:pointer;animation:bbToss 2.2s cubic-bezier(.3,.6,.6,1) forwards}" +
-        "@keyframes bbDrop{0%{transform:translateY(-105%)}22%{transform:translateY(0)}30%{transform:translateY(-6%)}36%,78%{transform:translateY(0)}100%{transform:translateY(-105%)}}" +
-        "@keyframes bbDangle{0%,100%{rotate:-9deg}50%{rotate:9deg}}" +
-        ".bb-drop{position:fixed!important;top:0;z-index:9996;width:clamp(110px,12vw,170px);cursor:pointer;animation:bbDrop 6s ease-in-out forwards}" +
-        ".bb-drop img{display:block;width:100%;height:auto;border:0;background:none;margin:0;padding:0;box-shadow:none;transform-origin:40% 0;" +
-        "animation:bbDangle 1.6s ease-in-out infinite;filter:drop-shadow(0 6px 14px #000a)}" +
-        "@keyframes bbSidePeek{0%,100%{transform:translateX(var(--off)) rotate(var(--rot))}20%,75%{transform:translateX(0) rotate(var(--rot))}" +
-        "45%{transform:translateX(0) rotate(calc(var(--rot) * 1.25))}}" +
-        ".bb-peek{position:fixed!important;z-index:9996;width:clamp(100px,10vw,150px);cursor:pointer;animation:bbSidePeek 4.6s ease-in-out forwards}" +
-        ".bb-peek img{display:block;width:100%;height:auto;border:0;background:none;margin:0;padding:0;box-shadow:none}" +
-        // More moves: the walker dances, moonwalks or trips; the vine monkey loops or chatters; a bungee drop; a pop-up from the bottom.
-        "@keyframes bbDance{0%,100%{transform:none}15%{transform:translateY(-22px) rotate(-14deg)}30%{transform:rotate(12deg)}" +
-        "45%{transform:translateY(-22px) rotate(-12deg)}60%{transform:rotate(14deg)}75%{transform:translateY(-14px) rotate(-8deg)}}" +
-        ".bb-walker.dance img{animation:bbDance 1.8s ease-in-out}" +
-        "@keyframes bbMoon{0%,100%{translate:0 0}50%{translate:0 -3px}}" +
-        ".bb-walker.moon img{transform:scaleX(-1);animation:bbMoon .45s ease-in-out infinite}" +
-        "@keyframes bbTrip{0%{transform:none}15%{transform:rotate(-20deg)}35%,70%{transform:translate(18px,22px) rotate(88deg)}" +
-        "85%{transform:translateY(-16px) rotate(-6deg)}100%{transform:none}}" +
-        ".bb-walker.trip img{transform-origin:70% 95%;animation:bbTrip 2.2s ease-in-out}" +
-        "@keyframes bbLoop{0%{transform:rotate(0)}25%{transform:rotate(-38deg)}100%{transform:rotate(360deg)}}" +
-        ".bb-monkey.loop{animation:bbLoop 1.7s cubic-bezier(.45,0,.3,1)!important}" +
-        "@keyframes bbChatter{0%,100%{transform:rotate(0)}10%,30%,50%,70%,90%{transform:rotate(-5deg) translateY(2px)}20%,40%,60%,80%{transform:rotate(5deg)}}" +
-        ".bb-monkey.chatter{animation:bbChatter 1.2s linear!important}" +
-        "@keyframes bbBungee{0%{transform:translateY(-105%)}25%{transform:translateY(38vh)}38%{transform:translateY(8vh)}50%{transform:translateY(26vh)}" +
-        "60%{transform:translateY(14vh)}70%,82%{transform:translateY(20vh)}100%{transform:translateY(-105%)}}" +
-        "@keyframes bbBSpin{0%,20%{transform:rotate(0)}40%,100%{transform:rotate(360deg)}}" +
-        ".bb-drop.bungee{animation:bbBungee 6.5s ease-in-out forwards}" +
-        ".bb-drop.bungee img{animation:bbBSpin 6.5s ease-in-out,bbDangle 1.2s ease-in-out infinite}" +
-        "@keyframes bbPop{0%,100%{transform:translateY(105%)}18%,78%{transform:translateY(12%)}30%{transform:translateY(16%) rotate(-8deg)}" +
-        "42%{transform:translateY(10%) rotate(8deg)}54%{transform:translateY(14%) rotate(-6deg)}66%{transform:translateY(12%) rotate(4deg)}}" +
-        ".bb-pop{position:fixed!important;bottom:0;z-index:9996;width:clamp(110px,11vw,160px);cursor:pointer;animation:bbPop 4.4s ease-in-out forwards}" +
-        ".bb-pop img{display:block;width:100%;height:auto;border:0;background:none;margin:0;padding:0;box-shadow:none;transform:rotate(-90deg)}" +
-        // The big loud one: stomps up from the bottom, beats its chest, yells and throws bananas until tapped or it leaves.
-        "@keyframes bbKongIn{0%{transform:translateY(105%)}70%{transform:translateY(-6%)}100%{transform:translateY(0)}}" +
-        "@keyframes bbKongOut{to{transform:translateY(110%)}}" +
-        ".bb-kong{position:fixed!important;bottom:0;z-index:9997;width:clamp(230px,34vw,440px);translate:-50% 0;cursor:pointer;" +
-        "animation:bbKongIn .7s cubic-bezier(.3,1.4,.5,1) both;filter:drop-shadow(0 10px 24px #000b)}" +
-        ".bb-kong.out{animation:bbKongOut .7s ease-in forwards}" +
-        ".bb-kong img{display:block;width:100%;height:auto;border:0;background:none;margin:0;padding:0;box-shadow:none}" +
-        "@keyframes bbYell{from{transform:rotate(-4deg) scale(1)}to{transform:rotate(4deg) scale(1.08)}}" +
-        ".bb-kong-say{position:absolute;left:50%;bottom:94%;translate:-50% 0;white-space:nowrap;background:#fff;color:#c2185b;" +
-        "font:900 clamp(16px,2.2vw,28px)/1 system-ui,sans-serif;padding:10px 16px;border-radius:18px;border:3px solid #c2185b;" +
-        "box-shadow:0 6px 18px #0007;animation:bbYell .3s ease-in-out infinite alternate}" +
+        // Monkey moments (new set 2026-10-23): the walker naps, juggles bananas or says hola; a monkey parachutes in, floats up in a bubble,
+        // hangs upside down from the top, rockets across or walks a tightrope; a conga line of monkeys runs through.
+        ".bb-walker.hold{animation-play-state:paused!important}" +
+        "@keyframes bbNap{0%{transform:none}18%,84%{transform:translateY(20%) rotate(-90deg)}100%{transform:none}}" +
+        ".bb-walker.nap img{transform-origin:50% 90%;animation:bbNap 4.4s ease-in-out}" +
+        "@keyframes bbZ{0%{opacity:0;transform:translate(0,0) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translate(26px,-70px) scale(1.4)}}" +
+        ".bb-z{position:fixed!important;z-index:9997;pointer-events:none;font:900 22px/1 system-ui,sans-serif;color:#ffd1e4;text-shadow:0 2px 6px #000a;animation:bbZ 1.7s ease-out forwards}" +
+        "@keyframes bbJuggle{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(var(--jx),-95px) rotate(200deg)}100%{transform:translate(calc(var(--jx) * 2),0) rotate(400deg)}}" +
+        ".bb-jug{position:fixed!important;z-index:9997;width:26px;pointer-events:none;animation:bbJuggle .8s ease-in-out infinite alternate}" +
+        "@keyframes bbHola{0%{opacity:0;transform:translate(-50%,12px) scale(.5)}14%,86%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-10px) scale(.9)}}" +
+        ".bb-hola{position:fixed!important;z-index:9997;pointer-events:none;white-space:nowrap;background:#fff;color:#c2185b;font:900 15px/1 system-ui,sans-serif;" +
+        "padding:8px 12px;border-radius:14px;border:2px solid #c2185b;box-shadow:0 4px 12px #0007;animation:bbHola 2.8s ease-in-out forwards}" +
+        ".bb-mm img{display:block;width:100%;height:auto;border:0;border-radius:0;background:none;margin:0;padding:0;box-shadow:none}" +
+        "@keyframes bbSway{0%,100%{rotate:-12deg}50%{rotate:12deg}}" +
+        "@keyframes bbChute{0%{transform:translateY(-110%)}100%{transform:translateY(calc(100vh + 20px))}}" +
+        ".bb-chute{position:fixed!important;top:0;z-index:9996;width:clamp(90px,9vw,130px);cursor:pointer;animation:bbChute 9s linear forwards}" +
+        ".bb-chute>div{transform-origin:50% 0;animation:bbSway 2.4s ease-in-out infinite;filter:drop-shadow(0 6px 12px #0009)}" +
+        "@keyframes bbRise{0%{transform:translateY(0)}100%{transform:translateY(calc(-100vh - 200px))}}" +
+        "@keyframes bbWob{0%,100%{scale:1 1}50%{scale:1.06 .94}}" +
+        ".bb-bubble{position:fixed!important;top:100vh;z-index:9996;width:clamp(110px,10vw,150px);aspect-ratio:1;border-radius:50%;cursor:pointer;" +
+        "background:radial-gradient(circle at 30% 28%,#ffffffd0 0 7%,#ffffff1c 9% 62%,#ff9ec74d 100%);border:2px solid #ffffff99;" +
+        "box-shadow:inset 0 0 18px #ffd1e488,0 0 14px #ff9ec755;animation:bbRise 8s ease-in forwards,bbWob 1.4s ease-in-out infinite}" +
+        ".bb-bubble img{position:absolute;left:12%;top:20%;width:76%!important;animation:bbSway 3s ease-in-out infinite}" +
+        "@keyframes bbHang{0%{transform:translateY(-105%)}18%,80%{transform:translateY(0)}100%{transform:translateY(-105%)}}" +
+        ".bb-hang{position:fixed!important;top:0;z-index:9996;width:clamp(100px,10vw,145px);cursor:pointer;animation:bbHang 5.5s ease-in-out forwards}" +
+        ".bb-hang>div{transform-origin:50% 0;animation:bbSway 1.8s ease-in-out infinite;filter:drop-shadow(0 6px 12px #0009)}" +
+        ".bb-hang img{transform:rotate(180deg)}" +
+        "@keyframes bbRocket{0%{transform:translate(0,0) rotate(-18deg)}100%{transform:translate(calc(100vw + 320px),-55vh) rotate(-18deg)}}" +
+        "@keyframes bbFlame{from{opacity:.7;height:11px}to{opacity:1;height:19px}}" +
+        ".bb-rocket{position:fixed!important;left:-200px;z-index:9996;width:clamp(100px,10vw,140px);cursor:pointer;animation:bbRocket 3.2s cubic-bezier(.5,0,.8,.6) forwards}" +
+        ".bb-rocket:before{content:'';position:absolute;right:86%;top:50%;width:120%;height:16px;translate:0 -50%;border-radius:10px;" +
+        "background:linear-gradient(90deg,transparent,#ffb347,#ff5e3a);animation:bbFlame .12s linear infinite alternate}" +
+        ".bb-rope{position:fixed!important;left:0;right:0;height:3px;z-index:9995;background:#8b5a2b;box-shadow:0 1px 3px #0008;pointer-events:none;animation:bbRopeIn 9s ease forwards}" +
+        "@keyframes bbRopeIn{0%{opacity:0}6%,92%{opacity:1}100%{opacity:0}}" +
+        "@keyframes bbAcross{0%{transform:translateX(-160px)}100%{transform:translateX(calc(100vw + 20px))}}" +
+        "@keyframes bbTeeter{0%,100%{rotate:-11deg}50%{rotate:11deg}}" +
+        ".bb-tight{position:fixed!important;left:0;z-index:9996;width:clamp(90px,8vw,120px);cursor:pointer;animation:bbAcross 9s linear .4s both}" +
+        ".bb-tight img{transform-origin:50% 100%;animation:bbTeeter 1.3s ease-in-out infinite}" +
+        "@keyframes bbConga{0%{transform:translateX(calc(100vw + 20px))}100%{transform:translateX(-100%)}}" +
+        "@keyframes bbHop{0%,100%{translate:0 0}50%{translate:0 -16px}}" +
+        ".bb-conga{position:fixed!important;left:0;bottom:calc(env(safe-area-inset-bottom,0px) + 2px);z-index:9997;display:flex;gap:2px;cursor:pointer;" +
+        "animation:bbConga 6.5s linear forwards;filter:drop-shadow(0 4px 8px #0009)}" +
+        ".bb-conga img{width:clamp(64px,6vw,90px)!important;transform:scaleX(-1);animation:bbHop .5s ease-in-out infinite}" +
+        ".bb-conga img:nth-child(2){animation-delay:-.12s}.bb-conga img:nth-child(3){animation-delay:-.25s}.bb-conga img:nth-child(4){animation-delay:-.37s}" +
         // Tap any monkey (or banana) and it vanishes in a puff.
         "@keyframes bbPoof{0%{transform:scale(1);opacity:1;filter:none}55%{transform:scale(1.35) rotate(8deg);opacity:.7;filter:blur(2px)}" +
         "100%{transform:scale(.15) rotate(-20deg);opacity:0;filter:blur(6px)}}" +
         ".bb-poof{animation:bbPoof .45s ease-in forwards!important;pointer-events:none!important}" +
-        ".bb-poof img,.bb-poof .bb-kong-say{animation:none!important}" +
-        "@media (prefers-reduced-motion:reduce){.bb-banana,.bb-drop,.bb-peek,.bb-kong,.bb-pop{display:none!important}}"
+        ".bb-poof img{animation:none!important}" +
+        "@media (prefers-reduced-motion:reduce){.bb-z,.bb-jug,.bb-hola,.bb-chute,.bb-bubble,.bb-hang,.bb-rocket,.bb-rope,.bb-tight,.bb-conga{display:none!important}}"
     },
     // Diana (Senior Events Manager): H-Town · Space City — Houston skyline with a launch (img/me, original art).
     diana: {
@@ -474,76 +468,60 @@
   function monkeyLoop() {
     var BANANA = '<svg viewBox="0 0 60 60" width="100%"><path d="M8 14 Q12 48 50 50 Q30 40 22 12 Z" fill="#ffd93b" stroke="#c99a00" stroke-width="2.5" stroke-linejoin="round"/>' +
       '<path d="M8 14 L4 8" stroke="#6b4a1a" stroke-width="5" stroke-linecap="round"/><path d="M14 20 Q20 40 40 46" stroke="#fff3a0" stroke-width="3" fill="none" stroke-linecap="round"/></svg>';
-    var walker = function () { return document.querySelector(".bb-walker"); };
+    var CHUTE = '<svg viewBox="0 0 120 72" width="100%" style="display:block"><path d="M6 40 Q60 -14 114 40 Q100 32 87 40 Q73 32 60 40 Q47 32 33 40 Q20 32 6 40Z" fill="#ff7eb3" stroke="#c2185b" stroke-width="3" stroke-linejoin="round"/>' +
+      '<path d="M33 38 Q60 4 87 38" fill="#ffd1e4" opacity=".75"/><path d="M8 41 L50 72 M60 41 L60 72 M112 41 L70 72" stroke="#fff" stroke-width="1.6"/></svg>';
+    var WALK = "img/me/lisa-monkey-walk.svg";
+    var walker = function () { var w = document.querySelector(".bb-walker"); return w && !w.classList.contains("bb-poof") ? w : null; };
     var pulse = function (cls, ms) { var w = walker(); if (!w) return null;
       w.classList.remove(cls); void w.offsetWidth; w.classList.add(cls); setTimeout(function () { w.classList.remove(cls); }, ms); return [null, ms]; };
+    // left position as a vw number, shifted past the sidebar in desktop mode
+    var X = function (vw) { var x = vw.toFixed(1) + "vw"; return document.documentElement.classList.contains("bbd") ? "calc(var(--bbd-side) + " + x + ")" : x; };
+    var monkeyImg = function (src) { var im = document.createElement("img"); im.src = src || WALK; im.alt = ""; return im; };
+    var add = function (cls, kids) { var d = document.createElement("div"); d.className = "bb-mm " + cls;
+      (kids || []).forEach(function (k) { d.appendChild(k); }); d.addEventListener("click", function () { bbPoof(d); });
+      document.body.appendChild(d); return d; };
+    var temp = function (el, ms) { document.body.appendChild(el); setTimeout(function () { el.remove(); }, ms); return el; };
     var acts = {
-      flip: function () { return pulse("flip", 1200); },
-      dance: function () { return pulse("dance", 1900); },
-      moon: function () { return pulse("moon", 4000); },
-      trip: function () { return pulse("trip", 2300); },
-      loop: function () { var m = document.querySelector(".bb-monkey:not(.off)"); if (!m) return null;
-        m.classList.remove("loop"); void m.offsetWidth; m.classList.add("loop"); setTimeout(function () { m.classList.remove("loop"); }, 1750); return [null, 1750]; },
-      chatter: function () { var m = document.querySelector(".bb-monkey:not(.off)"); if (!m) return null;
-        m.classList.remove("chatter"); void m.offsetWidth; m.classList.add("chatter"); setTimeout(function () { m.classList.remove("chatter"); }, 1250); return [null, 1250]; },
-      bungee: function () { if (document.querySelector(".bb-monkey")) return null;
-        var d = document.createElement("div"); d.className = "bb-drop bungee";
-        var x = (12 + Math.random() * 64).toFixed(1) + "vw";
-        d.style.left = document.documentElement.classList.contains("bbd") ? "calc(var(--bbd-side) + " + x + ")" : x;
-        var im = document.createElement("img"); im.src = "img/me/lisa-monkey.svg"; im.alt = ""; d.appendChild(im);
-        d.addEventListener("click", function () { bbPoof(d); });
-        document.body.appendChild(d); return [d, 6600]; },
-      pop: function () { var d = document.createElement("div"); d.className = "bb-pop";
-        var x = (8 + Math.random() * 70).toFixed(1) + "vw";
-        d.style.left = document.documentElement.classList.contains("bbd") ? "calc(var(--bbd-side) + " + x + ")" : x;
-        var im = document.createElement("img"); im.src = "img/me/lisa-monkey-walk.svg"; im.alt = ""; d.appendChild(im);
-        d.addEventListener("click", function () { bbPoof(d); });
-        document.body.appendChild(d); return [d, 4500]; },
-      spin: function () { return pulse("spin", 1500); },
-      banana: function () { var w = walker(); if (!w) return null; var r = w.getBoundingClientRect();
-        var b = document.createElement("div"); b.className = "bb-banana"; b.innerHTML = BANANA;
-        var right = r.left + r.width / 2 < innerWidth / 2;
-        b.style.left = (r.left + r.width * 0.6) + "px"; b.style.top = (r.top + r.height * 0.2) + "px";
-        b.style.setProperty("--dx", (right ? 1 : -1) * (12 + Math.random() * 10) + "vw");
-        b.addEventListener("click", function () { bbPoof(b); });
-        document.body.appendChild(b); pulse("jump", 800); return [b, 2300]; },
-      vine: function () { if (document.querySelector(".bb-monkey")) return null;
-        var d = document.createElement("div"); d.className = "bb-drop";
-        var x = (12 + Math.random() * 64).toFixed(1) + "vw";
-        d.style.left = document.documentElement.classList.contains("bbd") ? "calc(var(--bbd-side) + " + x + ")" : x;
-        var im = document.createElement("img"); im.src = "img/me/lisa-monkey.svg"; im.alt = ""; d.appendChild(im);
-        d.addEventListener("click", function () { bbPoof(d); });
-        document.body.appendChild(d); return [d, 6100]; },
-      peek: function () { var left = Math.random() < 0.5 && !document.documentElement.classList.contains("bbd");
-        var d = document.createElement("div"); d.className = "bb-peek";
-        d.style.top = (25 + Math.random() * 40).toFixed(1) + "vh"; d.style[left ? "left" : "right"] = "-28px";
-        d.style.setProperty("--off", left ? "-110%" : "110%"); d.style.setProperty("--rot", left ? "62deg" : "-62deg");
-        var im = document.createElement("img"); im.src = "img/me/lisa-monkey-walk.svg"; im.alt = "";
-        if (!left) im.style.transform = "scaleX(-1)";
-        d.addEventListener("click", function () { bbPoof(d); });
-        d.appendChild(im); document.body.appendChild(d); return [d, 4700]; },
-      kong: function () { if (document.querySelector(".bb-kong")) return null;
-        var k = document.createElement("div"); k.className = "bb-kong";
-        k.style.left = document.documentElement.classList.contains("bbd") ? "calc(var(--bbd-side) + (100vw - var(--bbd-side)) / 2)" : "50%";
-        var say = document.createElement("div"); say.className = "bb-kong-say";
-        var lines = ["OOH OOH AH AH!!", "HEY LISA!!!", "BANANAS!!!", "OOH OOH OOH!!", "WHO BOOKED THIS ROOM?!"];
-        say.textContent = lines[Math.floor(Math.random() * lines.length)];
-        var im = document.createElement("img"); im.src = "img/me/lisa-monkey-big.svg"; im.alt = "";
-        k.appendChild(say); k.appendChild(im);
-        var timers = [];
-        k.addEventListener("click", function () { for (var i = 0; i < timers.length; i++) clearTimeout(timers[i]); bbPoof(k); });
-        document.body.appendChild(k);
-        var toss = function () { if (!k.isConnected || k.classList.contains("bb-poof")) return; var r = k.getBoundingClientRect();
-          var b = document.createElement("div"); b.className = "bb-banana"; b.innerHTML = BANANA;
-          b.style.left = (r.left + r.width * (0.2 + Math.random() * 0.6)) + "px"; b.style.top = (r.top + r.height * 0.45) + "px";
-          b.style.setProperty("--dx", (Math.random() < 0.5 ? -1 : 1) * (10 + Math.random() * 16) + "vw");
-          b.addEventListener("click", function () { bbPoof(b); });
-          document.body.appendChild(b); setTimeout(function () { b.remove(); }, 2400); };
-        for (var i = 0; i < 5; i++) timers.push(setTimeout(toss, 900 + i * 650));
-        timers.push(setTimeout(function () { k.classList.add("out"); }, 13000));
-        return [k, 13800]; }
+      // the walker stops, lies down and snores
+      nap: function () { var w = walker(); if (!w) return null; var r = w.getBoundingClientRect();
+        pulse("hold", 4400); pulse("nap", 4400);
+        for (var i = 0; i < 3; i++) setTimeout(function () { var z = document.createElement("div"); z.className = "bb-z"; z.textContent = "z";
+          z.style.left = (r.left + r.width * 0.55) + "px"; z.style.top = (r.top + r.height * 0.15) + "px"; temp(z, 1800); }, 800 + i * 900);
+        return [null, 4400]; },
+      // the walker stops and juggles three bananas
+      juggle: function () { var w = walker(); if (!w) return null; var r = w.getBoundingClientRect(); pulse("hold", 3400);
+        for (var i = 0; i < 3; i++) { var b = document.createElement("div"); b.className = "bb-jug"; b.innerHTML = BANANA;
+          b.style.left = (r.left + r.width / 2 - 45) + "px"; b.style.top = (r.top + r.height * 0.15) + "px";
+          b.style.setProperty("--jx", "32px"); b.style.animationDelay = (-0.27 * i) + "s"; temp(b, 3300); }
+        return [null, 3400]; },
+      // the walker stops, hops and says something
+      hola: function () { var w = walker(); if (!w) return null; var r = w.getBoundingClientRect(); pulse("hold", 2900); pulse("jump", 800);
+        var lines = ["¡Hola, Lisa!", "¿Qué onda?", "¡Órale!", "¡Puro San Antonio!", "¡Ándale, ándale!"];
+        var t = document.createElement("div"); t.className = "bb-hola"; t.textContent = lines[Math.floor(Math.random() * lines.length)];
+        t.style.left = Math.max(70, Math.min(innerWidth - 70, r.left + r.width / 2)) + "px"; t.style.top = (r.top - 34) + "px"; temp(t, 2900);
+        return [null, 2900]; },
+      // a monkey drifts down under a pink parachute
+      parachute: function () { var sw = document.createElement("div"); sw.innerHTML = CHUTE; sw.appendChild(monkeyImg());
+        var d = add("bb-chute", [sw]); d.style.left = X(8 + Math.random() * 70); return [d, 9100]; },
+      // a monkey floats up the screen inside a bubble (tap to pop)
+      bubble: function () { var d = add("bb-bubble", [monkeyImg()]); d.style.left = X(8 + Math.random() * 70); return [d, 8100]; },
+      // a monkey hangs upside down from the top and sways
+      hang: function () { var sw = document.createElement("div"); sw.appendChild(monkeyImg());
+        var d = add("bb-hang", [sw]); d.style.left = X(10 + Math.random() * 68); return [d, 5600]; },
+      // a monkey rockets across the screen
+      rocket: function () { var d = add("bb-rocket", [monkeyImg()]); d.style.top = (55 + Math.random() * 30).toFixed(1) + "vh"; return [d, 3300]; },
+      // a rope stretches across and a monkey teeters along it
+      tightrope: function () { var y = 30 + Math.random() * 35;
+        var rope = document.createElement("div"); rope.className = "bb-rope"; rope.style.top = y.toFixed(1) + "vh";
+        if (document.documentElement.classList.contains("bbd")) rope.style.left = "var(--bbd-side)";
+        temp(rope, 9100);
+        var d = add("bb-tight", [monkeyImg()]); d.style.bottom = (100 - y).toFixed(1) + "vh";
+        d.addEventListener("click", function () { rope.remove(); }); return [d, 9500]; },
+      // the big one: a conga line of four monkeys hops across the bottom
+      conga: function () { if (document.querySelector(".bb-conga")) return null;
+        return [add("bb-conga", [monkeyImg(), monkeyImg(), monkeyImg(), monkeyImg()]), 6600]; }
     };
-    var names = Object.keys(acts).concat("kong"), last = null;   // the big one comes up twice as often
+    var names = Object.keys(acts).concat("conga"), last = null;   // the conga line comes up twice as often
     var run = function (name) { var r = acts[name](); if (r && r[0]) setTimeout(function () { r[0].remove(); }, r[1] + 200); return !!r; };
     window.bbMonkey = run;   // preview a moment on demand: bbMonkey("banana")
     var next = function (ms) {
@@ -616,7 +594,7 @@
     if (window.bbBearTimer) { clearTimeout(window.bbBearTimer); window.bbBearTimer = null; }
     var oldL = document.querySelectorAll(".bb-lion-wall,.bb-lion-card,.bb-lion-focus"); for (var li = 0; li < oldL.length; li++) oldL[li].remove();
     if (window.bbLionTimer) { clearTimeout(window.bbLionTimer); window.bbLionTimer = null; }
-    var oldMm = document.querySelectorAll(".bb-banana,.bb-drop,.bb-peek,.bb-kong,.bb-pop"); for (var mi = 0; mi < oldMm.length; mi++) oldMm[mi].remove();
+    var oldMm = document.querySelectorAll(".bb-mm,.bb-z,.bb-jug,.bb-hola,.bb-rope"); for (var mi = 0; mi < oldMm.length; mi++) oldMm[mi].remove();
     if (window.bbMonkeyTimer) { clearTimeout(window.bbMonkeyTimer); window.bbMonkeyTimer = null; }
     if (document.body) document.body.className = document.body.className.replace(/\bme-\S+/g, "").trim();
     var t = key && THEMES[key];
