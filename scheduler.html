@@ -220,16 +220,16 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
 </div>
 <div class="toast" id="toast"></div>
 <script>
-// Testing access by Banquet Bot sign-in: Jason (beta, builds the week) plus Dylan and Francisco (send availability).
+// Testing access by Banquet Bot sign-in: Jason (beta, builds the week) plus every server with a PIN (send availability).
 const WHO = (() => { try { return JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); } catch (e) { return null; } })();
-const TESTERS = {Jason: "BETA", Hector: "BETA", Dylan: "", Francisco: "", Gema: ""};
+const TESTERS = {Jason: "BETA", Hector: "BETA", Dylan: "", Francisco: "", Gema: "", Tomas: "", Carlos: ""};
 if (!WHO || !(WHO.name in TESTERS)) { document.getElementById("gate").hidden = false; document.getElementById("wrap").remove(); throw new Error("not a tester"); }
 const LEADV = WHO.name === "Jason" || WHO.name === "Hector";   // Jason + Hector build the week; servers only send availability
 document.getElementById("stage").textContent = TESTERS[WHO.name];
 if (!TESTERS[WHO.name]) document.getElementById("stage").style.display = "none";
 if (LEADV) {
   // Jason has no availability tab at all (no way to overwrite a server's answer): he goes straight to Build the week.
-  document.getElementById("testNote").textContent = "Testing: Dylan, Francisco and Gema send their days from their own sign-in, and what they send shows here (✓ Sent). The week shown is next week's real events.";
+  document.getElementById("testNote").textContent = "Testing: Dylan, Francisco, Gema, Tomas and Carlos send their days from their own sign-in, and what they send shows here (✓ Sent). The week shown is next week's real events.";
   ["#wrap .tabs", "#v-avail"].forEach(q => document.querySelectorAll(q).forEach(el => el.style.setProperty("display", "none", "important")));
   document.getElementById("v-avail").classList.remove("on"); document.getElementById("v-build").classList.add("on");
 }
