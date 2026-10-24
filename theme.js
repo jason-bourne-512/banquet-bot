@@ -246,6 +246,7 @@
       img: "img/flag-venezuela.svg",
       aurora: true,
       pet: "img/me/francisco-cockatiel.svg",   // his cockatiel (original art): bobs and sways
+      petFly: "img/me/francisco-cockatiel-fly.svg",   // the same bird in flight, wings flapping (used for the fly lap)
       birdMoments: true,   // every ~20–40s (and on tap) one random moment: fly a lap, dance, whistle, spin, peek or hop (see birdLoop)
       tint: {color: "#9e1f45", opacity: .45},
       css: palette("#f2c14e", "rgba(242,193,78,.14)", "#1a070d", "#2a0d17", "#3a1220", "rgba(242,193,78,.14)", "rgba(242,193,78,.38)") +
@@ -276,7 +277,7 @@
         "@keyframes bbWhistle{0%,100%{transform:none}15%,45%,75%{transform:rotate(-6deg) translateY(-3px)}30%,60%,90%{transform:rotate(3deg)}}" +
         ".bb-pet.away{visibility:hidden!important}" +
         ".bb-fly{position:fixed!important;z-index:9996;pointer-events:none;width:clamp(70px,8vw,116px);animation:bbFly 4.6s ease-in-out forwards}" +
-        ".bb-fly img{display:block!important;width:100%!important;height:auto!important;border:0!important;margin:0!important;animation:bbFlap .22s ease-in-out infinite alternate}" +
+        ".bb-fly img{display:block!important;width:100%!important;height:auto!important;border:0!important;margin:0!important;animation:bbFlap .32s ease-in-out infinite alternate}" +
         "@keyframes bbFly{0%{left:var(--x0);top:var(--y0);transform:none}12%{transform:rotate(-18deg)}30%{left:42vw;top:8vh;transform:rotate(-6deg)}" +
         "48%{left:calc(100vw - 140px);top:24vh;transform:rotate(4deg)}52%{left:calc(100vw - 140px);top:24vh;transform:scaleX(-1)}" +
         "75%{left:34vw;top:6vh;transform:scaleX(-1) rotate(8deg)}95%{transform:scaleX(-1)}100%{left:var(--x0);top:var(--y0);transform:none}}" +
@@ -500,7 +501,7 @@
       fly: function () {   // a copy flies a lap around the screen while the perch sits empty
         var r = pt.getBoundingClientRect(), f = document.createElement("div"), im = document.createElement("img");
         f.className = "bb-fly"; f.style.setProperty("--x0", r.left + "px"); f.style.setProperty("--y0", r.top + "px");
-        im.src = pt.src; im.alt = ""; f.appendChild(im); document.body.appendChild(f); pt.classList.add("away");
+        im.src = pt.getAttribute("data-fly") || pt.src; im.alt = ""; f.appendChild(im); document.body.appendChild(f); pt.classList.add("away");
         setTimeout(function () { f.remove(); pt.classList.remove("away"); busy = false; }, 4600);
       }
     };
@@ -754,6 +755,7 @@
           document.body.appendChild(c); setTimeout(function () { c.remove(); }, 2300);
         });
         pt.addEventListener("animationend", function (e) { if (e.animationName == "bbHop") pt.classList.remove("hop"); });
+        if (t.petFly) { pt.setAttribute("data-fly", t.petFly); new Image().src = t.petFly; }   // preload so the wings are there on take-off
         if (t.birdMoments) birdLoop(pt); else setInterval(function () { if (!document.hidden) hop(); }, 25000);
         document.body.appendChild(pt);
       }

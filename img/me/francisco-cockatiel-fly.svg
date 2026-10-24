@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 160" width="140" height="160">
+  <!-- Francisco's cockatiel in flight (original art for Banquet Bot): same bird, feet tucked, both wings flapping. -->
+  <style>
+    .wing { transform-origin: 74px 84px; animation: flap .32s ease-in-out infinite alternate; }
+    .wing.back { animation-delay: -.04s; }
+    .crest { transform-origin: 74px 40px; transform: rotate(-14deg); }
+    .tail { transform-origin: 52px 104px; animation: tail .32s ease-in-out infinite alternate; }
+    @keyframes flap { from { transform: rotate(8deg) } to { transform: rotate(-84deg) scaleY(.85) } }
+    @keyframes tail { from { transform: rotate(-3deg) } to { transform: rotate(4deg) } }
+    @media (prefers-reduced-motion: reduce) { .wing, .tail { animation: none } }
+  </style>
+  <!-- far wing (behind the body) -->
+  <g class="wing back">
+    <path d="M74 84 Q58 44 26 26 Q30 40 22 46 Q36 52 32 62 Q48 64 52 76 Q62 88 74 92 Z" fill="#6c6f77"/>
+  </g>
+  <!-- tail feathers -->
+  <g class="tail">
+    <path d="M58 98 L18 150 L30 152 L64 108 Z" fill="#7d7f86"/>
+    <path d="M60 102 L28 156 L38 156 L68 110 Z" fill="#9a9ca3"/>
+  </g>
+  <!-- body -->
+  <path d="M56 70 Q48 96 60 116 Q78 132 96 116 Q106 100 98 76 Q86 62 70 64 Z" fill="#9ea1a8"/>
+  <!-- feet tucked -->
+  <path d="M74 120 q4 3 9 1 M80 121 q4 2 8 0" stroke="#e7b9a2" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- head -->
+  <g class="head">
+    <g class="crest">
+      <path d="M70 46 Q62 20 74 6 Q72 24 80 40 Z" fill="#f2d33a"/>
+      <path d="M74 44 Q72 18 86 8 Q80 26 84 42 Z" fill="#e8c62c"/>
+      <path d="M68 48 Q56 30 62 16 Q66 32 74 44 Z" fill="#f7df5c"/>
+    </g>
+    <circle cx="80" cy="60" r="18" fill="#f4dc55"/>
+    <path d="M62 62 Q64 76 78 78 Q70 70 70 60 Z" fill="#a3a6ad"/>
+    <circle cx="84" cy="68" r="6.5" fill="#f08a3c"/>
+    <circle cx="86" cy="57" r="3.4" fill="#1d1b20"/><circle cx="87.2" cy="55.8" r="1.1" fill="#fff"/>
+    <path d="M96 60 Q104 62 99 70 Q96 66 93 66 Z" fill="#8c8a86"/>
+  </g>
+  <!-- near wing (in front), with the white patch -->
+  <g class="wing">
+    <path d="M74 84 Q60 40 30 18 Q34 34 26 40 Q40 48 36 58 Q50 62 54 74 Q62 90 76 94 Z" fill="#7f828a"/>
+    <path d="M60 66 Q52 52 44 46 Q48 58 46 64 Q54 66 58 72 Z" fill="#f4f4f2"/>
+    <path d="M36 30 Q44 40 50 54 M30 44 Q40 50 46 60" stroke="#6a6d75" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
