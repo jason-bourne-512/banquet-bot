@@ -58,9 +58,18 @@
   }
   function lock() { buf = ""; root.classList.add("bb-locked"); if (document.body) build(); else document.addEventListener("DOMContentLoaded", build); }
   function unlock() { root.classList.remove("bb-locked"); var g = document.getElementById("bb-gate"); if (g) g.remove(); }
+  // The Housemen link only shows for housemen and leads (Jason 2026-10-24); everyone else never needs the set/clear list.
+  var HSMN = ["jamshid", "tomas"];
+  function hsmNav() {
+    var w = who(), n = w && String(w.name || "").toLowerCase();
+    root.classList.toggle("bb-nohsm", !(w && (HSMN.indexOf(n) > -1 || w.role == "captain" || w.role == "director")));
+  }
+  var navCss = document.createElement("style"); navCss.textContent = 'html.bb-nohsm a[href^="housemen.html"]{display:none!important}';
+  document.head.appendChild(navCss); hsmNav();
+  window.bbHsmNav = hsmNav;
   window.bbGate = {lock: lock, unlock: unlock};
   if (!who()) lock();
-  window.addEventListener("storage", function (e) { if (e.key == KEY || e.key == null) { if (who()) unlock(); else lock(); } });
+  window.addEventListener("storage", function (e) { if (e.key == KEY || e.key == null) { if (who()) unlock(); else lock(); hsmNav(); } });
 })();
 // Personal looks for Banquet Bot. Open any page once with ?me=<name> and this phone keeps that look
 // (?me=off clears it). The Housemen page also switches it on when that person signs in.
@@ -154,9 +163,8 @@
       mark: {src: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png", opacity: .07},
       tint: {color: "#5b2bd6", opacity: .55},
       dbz: true,   // random DBZ moments every minute or so; the mix changes with the time of day (see POOL in dbzLoop)
-      // Dragon Ball Z cast (drawn for Banquet Bot, img/dbz/): a different fighter peeks in on each page.
-      cast: {"index.html": "goku", "today.html": "gohan", "rundown.html": "vegeta", "overview.html": "piccolo", "housemen.html": "krillin",
-        "menu.html": "buu", "training.html": "roshi", "rooms.html": "frieza", "room-map.html": "radar", "live-map.html": "radar", "*": "dragonball"},
+      // Dragon Ball Z cast (img/dbz/, Jason's picks 2026-10-24): Goku on Home, Super Saiyan Blue Vegeta on Rundown, Super Saiyan Goku everywhere else.
+      cast: {"index.html": "goku.jpg", "rundown.html": "vegeta-blue.jpg", "*": "goku-ssj.jpg"},
       css: palette("#a98bf0", "rgba(169,139,240,.14)", "#0c0816", "#171027", "#231839", "rgba(169,139,240,.14)", "rgba(201,162,39,.35)") +
         "body::before{background:radial-gradient(ellipse at 100% 0,#24177399,transparent 50%),radial-gradient(ellipse at 0 100%,#c9a22722,transparent 55%),#0c0816!important}" +
         "h1,h2{color:#e9dcff}" + BADGE +
@@ -213,6 +221,13 @@
         "background:radial-gradient(circle at 38% 36%,#fffef2,#f4f0d0 45%,#d9d2a6 75%,#b9b184);box-shadow:0 0 70px 24px #fff8c855,0 0 160px 60px #fff3a822;" +
         "animation:bbMoon 8s ease-in-out forwards}" +
         "@keyframes bbMoon{0%{transform:translateY(40vh) scale(.6);opacity:0}25%{transform:none;opacity:1}75%{opacity:1;box-shadow:0 0 90px 34px #ffd27a88,0 0 200px 80px #ff8a3a33}100%{opacity:0}}" +
+        // anime clips (img/dbz/*.gif, Jason's picks 2026-10-24): a framed card pops up mid-screen for two loops
+        ".bb-gifwrap{inset:0;background:radial-gradient(circle,#0000 30%,#0c0816cc 85%);animation:bbDim var(--d) ease-in-out forwards}" +
+        ".bb-gifcard{position:absolute;left:50%;top:46%;width:min(80vw,460px);border-radius:14px;overflow:hidden;" +
+        "box-shadow:0 0 0 2px #c9a227aa,0 0 46px 12px var(--glow),0 22px 50px #000c;animation:bbGifIn var(--d) ease-in-out forwards}" +
+        ".bb-gifcard img{display:block!important;width:100%!important;height:auto!important;margin:0!important;border:0!important;border-radius:0!important}" +
+        "@keyframes bbGifIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.85)}12%{opacity:1;transform:translate(-50%,-50%) scale(1)}" +
+        "88%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.05)}}" +
         "@media (prefers-reduced-motion:reduce){.bb-dbz{display:none!important}}"
     },
     // Venezuelan flag: yellow, blue, red + the arc of eight stars
@@ -401,11 +416,26 @@
           '<path d="M20 -26 Q10 -60 -10 -70" stroke="#d9b45a" stroke-width="6" fill="none"/><path d="M40 -26 Q46 -62 66 -72" stroke="#d9b45a" stroke-width="6" fill="none"/>' +
           '<circle cx="46" cy="-8" r="7" fill="#ff2a2a"/><path d="M70 10 Q110 30 130 70" stroke="#e8e0b8" stroke-width="3" fill="none"/></g></svg>';
         document.body.appendChild(d); return [d, 7100]; },
-      moon: function () { var d = document.createElement("div"); d.className = "bb-dbz bb-moon"; document.body.appendChild(d); return [d, 8100]; }
+      moon: function () { var d = document.createElement("div"); d.className = "bb-dbz bb-moon"; document.body.appendChild(d); return [d, 8100]; },
+      powerup: function () { return gif("powerup", 2900, "#ff3d8b99"); },   // pink pillar of ki over red rocks (1.4s clip)
+      ssjblue: function () { return gif("ssjblue", 3500, "#3aa8ffaa"); }    // gold to blue, then the beam (1.7s clip)
     };
+    // The clip is fetched once, then each showing gets a fresh blob URL so it plays from frame 1.
+    var clips = {};
+    function gif(name, ms, glow) {
+      function show(blob) {
+        var url = URL.createObjectURL(blob), d = document.createElement("div"), c = document.createElement("div"), im = new Image();
+        d.className = "bb-dbz bb-gifwrap"; c.className = "bb-gifcard"; d.style.setProperty("--d", ms + "ms"); c.style.setProperty("--glow", glow);
+        im.alt = ""; im.onload = function () { document.body.appendChild(d); setTimeout(function () { d.remove(); URL.revokeObjectURL(url); }, ms + 100); };
+        im.src = url; c.appendChild(im); d.appendChild(c);
+      }
+      if (clips[name]) show(clips[name]);
+      else fetch("img/dbz/" + name + ".gif").then(function (r) { return r.blob(); }).then(function (b) { clips[name] = b; show(b); }).catch(function () {});
+      return [null, ms];
+    }
     // what can happen depends on the time of day (hotel time, Central)
-    var POOL = {morning: ["disc", "nimbus", "scouter", "senzu", "it"], midday: ["genki", "ssj", "senzu", "it", "balls", "disc"],
-      evening: ["balls", "shenron", "ssj", "scouter", "nimbus"], night: ["moon", "it", "genki", "shenron", "scouter"]};
+    var POOL = {morning: ["disc", "nimbus", "scouter", "senzu", "it", "ssjblue"], midday: ["genki", "ssj", "senzu", "it", "balls", "disc", "ssjblue"],
+      evening: ["balls", "shenron", "ssj", "scouter", "nimbus", "powerup"], night: ["moon", "it", "genki", "shenron", "scouter", "powerup"]};
     function period() {
       var h = +new Intl.DateTimeFormat("en-US", {timeZone: "America/Chicago", hour: "numeric", hour12: false}).format(new Date()) % 24;
       return h >= 5 && h < 11 ? "morning" : h >= 11 && h < 17 ? "midday" : h >= 17 && h < 21 ? "evening" : "night";
@@ -422,6 +452,8 @@
       }, delay);
     }
     window.bbDbz = run;   // bbDbz("genki") etc. to preview one on demand
+    var q = (location.search.match(/[?&]dbz=(\w+)/) || [])[1];   // ?dbz=powerup plays that one right away
+    if (q && acts[q]) setTimeout(function () { run(q); }, 1200);
     next(9000 + Math.random() * 6000);
   }
   // Hector: the panther canvas. Default is the faint wallpaper (Jason picked it 2026-10-21); ?lion=card|focus|all previews the others.
@@ -616,11 +648,16 @@
         document.body.appendChild(m); }
       if (t.cast) {
         var page = location.pathname.split("/").pop() || "index.html", who = t.cast[page] || t.cast["*"];
-        var c = document.createElement("img"); c.className = "bb-cast"; c.src = "img/dbz/" + who + ".svg"; c.alt = "";
+        var c = document.createElement("img"); c.className = "bb-cast"; c.src = "img/dbz/" + (who.indexOf(".") > -1 ? who : who + ".svg"); c.alt = "";
         var cs = {position:"fixed", left:"6px", bottom:"calc(env(safe-area-inset-bottom,0px) + 4px)", width:"clamp(74px,9vw,128px)", height:"auto",
           "z-index":"9996", "pointer-events":"none", opacity:".92", filter:"drop-shadow(0 0 10px #a98bf088) drop-shadow(0 4px 10px #000a)",
           border:"0", "border-radius":"0", background:"none", margin:"0", padding:"0", "box-shadow":"none", animation:"bbCastIn .7s ease-out both"};
         for (var ck in cs) c.style.setProperty(ck, cs[ck], "important");
+        if (/\.(jpe?g|png|webp)$/.test(c.src)) {   // a picture, not a cut-out: frame it as a small portrait card
+          // z-index above the colour tint, or the tint turns a gold Super Saiyan pink
+          var pc = {"aspect-ratio":"3/4", "object-fit":"cover", "border-radius":"12px", border:"2px solid #c9a227aa", opacity:"1", "z-index":"9999"};
+          for (var pk in pc) c.style.setProperty(pk, pc[pk], "important");
+        }
         // In desktop mode the sidebar owns the left edge, so the fighter steps over it.
         if (document.documentElement.classList.contains("bbd")) c.style.setProperty("left", "calc(var(--bbd-side) + 10px)", "important");
         c.style.setProperty("animation", "bbCastIn .7s ease-out both, bbKi 2.6s ease-in-out .7s infinite", "important");
@@ -738,6 +775,7 @@
   // Housemen sign-in hook: switch to that person's look (or back to default for people without one).
   window.bbTheme = {
     signIn: function (name) {
+      if (window.bbHsmNav) window.bbHsmNav();
       var key = name && THEMES[String(name).toLowerCase()] ? String(name).toLowerCase() : null;
       try { if (key) localStorage.setItem("bb-me", key); } catch (e) {}
       if (key) apply(key); else this.off();
