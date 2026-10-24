@@ -245,7 +245,8 @@
       label: "FRANCISCO · LA VINOTINTO",
       img: "img/flag-venezuela.svg",
       aurora: true,
-      pet: "img/me/francisco-cockatiel.svg",   // his cockatiel (original art): bobs and sways; tap it and it hops + flaps
+      pet: "img/me/francisco-cockatiel.svg",   // his cockatiel (original art): bobs and sways
+      birdMoments: true,   // every ~20–40s (and on tap) one random moment: fly a lap, dance, whistle, spin, peek or hop (see birdLoop)
       tint: {color: "#9e1f45", opacity: .45},
       css: palette("#f2c14e", "rgba(242,193,78,.14)", "#1a070d", "#2a0d17", "#3a1220", "rgba(242,193,78,.14)", "rgba(242,193,78,.38)") +
         "body::before{background:radial-gradient(ellipse at 100% 0,#7b1e3a99,transparent 52%),radial-gradient(ellipse at 0 100%,#f2c14e1f,transparent 55%),#1a070d!important}" +
@@ -264,7 +265,26 @@
         "@keyframes bbHop{0%,100%{transform:translateY(0) rotate(0)}20%{transform:translateY(-26px) rotate(-6deg)}35%{transform:translateY(-30px) rotate(5deg)}" +
         "50%{transform:translateY(-12px) rotate(-4deg)}65%{transform:translateY(-18px) rotate(3deg)}85%{transform:translateY(0) rotate(0)}}" +
         ".bb-pet.hop{animation:bbHop 1.1s ease-in-out!important}" +
-        "@media (prefers-reduced-motion:reduce){.bb-pet,.bb-pet.hop{animation:none!important}}"
+        // cockatiel moments
+        ".bb-pet.dance{animation:bbDance 1.7s ease-in-out!important}" +
+        "@keyframes bbDance{0%,100%{transform:none}10%,30%,50%,70%{transform:translateX(-7px) rotate(-9deg)}20%,40%,60%,80%{transform:translateX(7px) rotate(9deg) translateY(-6px)}}" +
+        ".bb-pet.spin{animation:bbSpin 1.1s ease-in-out!important}" +
+        "@keyframes bbSpin{0%{transform:none}35%{transform:translateY(-26px) rotate(0)}75%{transform:translateY(-26px) rotate(360deg)}100%{transform:rotate(360deg)}}" +
+        ".bb-pet.peek{animation:bbPeek 2.4s ease-in-out!important}" +
+        "@keyframes bbPeek{0%{transform:none}22%,58%{transform:translateY(108%)}72%{transform:translateY(-12px)}82%{transform:none}91%{transform:translateY(-5px)}100%{transform:none}}" +
+        ".bb-pet.whistle{animation:bbWhistle 1.9s ease-in-out!important}" +
+        "@keyframes bbWhistle{0%,100%{transform:none}15%,45%,75%{transform:rotate(-6deg) translateY(-3px)}30%,60%,90%{transform:rotate(3deg)}}" +
+        ".bb-pet.away{visibility:hidden!important}" +
+        ".bb-fly{position:fixed!important;z-index:9996;pointer-events:none;width:clamp(70px,8vw,116px);animation:bbFly 4.6s ease-in-out forwards}" +
+        ".bb-fly img{display:block!important;width:100%!important;height:auto!important;border:0!important;margin:0!important;animation:bbFlap .22s ease-in-out infinite alternate}" +
+        "@keyframes bbFly{0%{left:var(--x0);top:var(--y0);transform:none}12%{transform:rotate(-18deg)}30%{left:42vw;top:8vh;transform:rotate(-6deg)}" +
+        "48%{left:calc(100vw - 140px);top:24vh;transform:rotate(4deg)}52%{left:calc(100vw - 140px);top:24vh;transform:scaleX(-1)}" +
+        "75%{left:34vw;top:6vh;transform:scaleX(-1) rotate(8deg)}95%{transform:scaleX(-1)}100%{left:var(--x0);top:var(--y0);transform:none}}" +
+        "@keyframes bbFlap{from{transform:translateY(-6px) scaleY(1.04)}to{transform:translateY(6px) scaleY(.94)}}" +
+        // whistle notes stay gold above the tint
+        ".bb-note{position:fixed!important;z-index:9999;pointer-events:none;color:#f2c14e;font:700 22px/1 Georgia,serif;text-shadow:0 0 8px #000c;animation:bbNote 1.9s ease-out forwards}" +
+        "@keyframes bbNote{0%{opacity:0;transform:translate(0,0) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),-80px) rotate(var(--r)) scale(1.15)}}" +
+        "@media (prefers-reduced-motion:reduce){.bb-pet,.bb-pet.hop,.bb-pet.dance,.bb-pet.spin,.bb-pet.peek,.bb-pet.whistle{animation:none!important}.bb-fly,.bb-note{display:none!important}}"
     },
     // Lisa (Events Manager): Puro San Antonio — the Alamo under Fiesta papel picado (img/me, original art).
     // No palette change: her rose accent comes from the Housemen page.
@@ -418,7 +438,8 @@
         document.body.appendChild(d); return [d, 7100]; },
       moon: function () { var d = document.createElement("div"); d.className = "bb-dbz bb-moon"; document.body.appendChild(d); return [d, 8100]; },
       powerup: function () { return gif("powerup", 2900, "#ff3d8b99"); },   // pink pillar of ki over red rocks (1.4s clip)
-      ssjblue: function () { return gif("ssjblue", 3500, "#3aa8ffaa"); }    // gold to blue, then the beam (1.7s clip)
+      ssjblue: function () { return gif("ssjblue", 3500, "#3aa8ffaa"); },   // gold to blue, then the beam (1.7s clip)
+      vegeta: function () { return gif("vegeta-ssj", 4300, "#ffd54aaa"); }  // Super Saiyan Vegeta powers up and cracks the ground (4.1s clip, plays once)
     };
     // The clip is fetched once, then each showing gets a fresh blob URL so it plays from frame 1.
     var clips = {};
@@ -434,8 +455,8 @@
       return [null, ms];
     }
     // what can happen depends on the time of day (hotel time, Central)
-    var POOL = {morning: ["disc", "nimbus", "scouter", "senzu", "it", "ssjblue"], midday: ["genki", "ssj", "senzu", "it", "balls", "disc", "ssjblue"],
-      evening: ["balls", "shenron", "ssj", "scouter", "nimbus", "powerup"], night: ["moon", "it", "genki", "shenron", "scouter", "powerup"]};
+    var POOL = {morning: ["disc", "nimbus", "scouter", "senzu", "it", "ssjblue"], midday: ["genki", "ssj", "senzu", "it", "balls", "disc", "ssjblue", "vegeta"],
+      evening: ["balls", "shenron", "ssj", "scouter", "nimbus", "powerup", "vegeta"], night: ["moon", "it", "genki", "shenron", "scouter", "powerup"]};
     function period() {
       var h = +new Intl.DateTimeFormat("en-US", {timeZone: "America/Chicago", hour: "numeric", hour12: false}).format(new Date()) % 24;
       return h >= 5 && h < 11 ? "morning" : h >= 11 && h < 17 ? "midday" : h >= 17 && h < 21 ? "evening" : "night";
@@ -455,6 +476,44 @@
     var q = (location.search.match(/[?&]dbz=(\w+)/) || [])[1];   // ?dbz=powerup plays that one right away
     if (q && acts[q]) setTimeout(function () { run(q); }, 1200);
     next(9000 + Math.random() * 6000);
+  }
+  // Francisco: the cockatiel does one random moment every ~20–40s, and another each time it's tapped.
+  function birdLoop(pt) {
+    var MOVES = ["fly", "dance", "whistle", "spin", "peek", "hop"], busy = false, last = null;
+    function cls(name, ms) { pt.classList.remove("hop"); pt.classList.add(name); setTimeout(function () { pt.classList.remove(name); busy = false; }, ms); }
+    var acts = {
+      hop: function () { cls("hop", 1150); },
+      dance: function () { cls("dance", 1750); },
+      spin: function () { cls("spin", 1150); },
+      peek: function () { cls("peek", 2450); },
+      whistle: function () {
+        cls("whistle", 1950);
+        var r = pt.getBoundingClientRect(), notes = ["♪", "♫", "♪", "♬"];
+        notes.forEach(function (n, i) {
+          var d = document.createElement("span"); d.className = "bb-note"; d.textContent = n;
+          d.style.left = (r.left + r.width * 0.62) + "px"; d.style.top = (r.top + r.height * 0.18) + "px";
+          d.style.setProperty("--dx", (i % 2 ? 28 : 10) + i * 8 + "px"); d.style.setProperty("--r", (i % 2 ? 14 : -10) + "deg");
+          d.style.animationDelay = (i * 0.32) + "s"; document.body.appendChild(d);
+          setTimeout(function () { d.remove(); }, 2000 + i * 320);
+        });
+      },
+      fly: function () {   // a copy flies a lap around the screen while the perch sits empty
+        var r = pt.getBoundingClientRect(), f = document.createElement("div"), im = document.createElement("img");
+        f.className = "bb-fly"; f.style.setProperty("--x0", r.left + "px"); f.style.setProperty("--y0", r.top + "px");
+        im.src = pt.src; im.alt = ""; f.appendChild(im); document.body.appendChild(f); pt.classList.add("away");
+        setTimeout(function () { f.remove(); pt.classList.remove("away"); busy = false; }, 4600);
+      }
+    };
+    function run(name) {
+      if (busy || !pt.isConnected || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+      busy = true; acts[name]();
+    }
+    function pick() { var m; do { m = MOVES[Math.floor(Math.random() * MOVES.length)]; } while (m == last); last = m; return m; }
+    pt.addEventListener("click", function () { run(pick()); });
+    (function next(ms) { setTimeout(function () { if (!document.hidden) run(pick()); next(20000 + Math.random() * 20000); }, ms); })(6000 + Math.random() * 4000);
+    var q = (location.search.match(/[?&]bird=(\w+)/) || [])[1];   // ?bird=fly plays that one right away
+    if (q && acts[q]) setTimeout(function () { run(q); }, 1500);
+    window.bbBird = run;   // bbBird("whistle") etc. to preview one
   }
   // Hector: the panther canvas. Default is the faint wallpaper (Jason picked it 2026-10-21); ?lion=card|focus|all previews the others.
   function lionLooks() {
@@ -681,11 +740,12 @@
         var pt = document.createElement("img"); pt.className = "bb-pet"; pt.src = t.pet; pt.alt = ""; pt.title = "Tap me";
         var ps = {position:"fixed", left:"6px", bottom:"calc(env(safe-area-inset-bottom,0px) + 4px)", width:"clamp(70px,8vw,116px)", height:"auto",
           "z-index":String(t.petZ || 9996), cursor:"pointer", filter:"drop-shadow(0 4px 10px #000a)", border:"0", "border-radius":"0", background:"none",
-          margin:"0", padding:"0", "box-shadow":"none", animation:"bbPetIn .7s ease-out both"};
+          margin:"0", padding:"0", "box-shadow":"none"};
         for (var pk in ps) pt.style.setProperty(pk, ps[pk], "important");
+        pt.style.animation = "bbPetIn .7s ease-out both";   // not !important, so the .hop/.dance/... moments can take over
         if (document.documentElement.classList.contains("bbd")) pt.style.setProperty("left", "calc(var(--bbd-side) + 10px)", "important");
         var hop = function () { pt.classList.remove("hop"); void pt.offsetWidth; pt.classList.add("hop"); };
-        pt.addEventListener("click", hop);
+        if (!t.birdMoments) pt.addEventListener("click", hop);
         if (t.cheer) pt.addEventListener("click", function () {
           var old = document.querySelector(".bb-cheer"); if (old) old.remove();
           var r = pt.getBoundingClientRect(), c = document.createElement("div"); c.className = "bb-cheer";
@@ -694,7 +754,7 @@
           document.body.appendChild(c); setTimeout(function () { c.remove(); }, 2300);
         });
         pt.addEventListener("animationend", function (e) { if (e.animationName == "bbHop") pt.classList.remove("hop"); });
-        setInterval(function () { if (!document.hidden) hop(); }, 25000);
+        if (t.birdMoments) birdLoop(pt); else setInterval(function () { if (!document.hidden) hop(); }, 25000);
         document.body.appendChild(pt);
       }
       var onHome = /(^|\/)(index\.html)?$/.test(location.pathname);
