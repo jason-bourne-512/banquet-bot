@@ -872,6 +872,6 @@
   } catch (e) {}
 })();
 // Desktop mode for leads (desktop.js) — loaded here so every page that has the personal looks gets it too.
-(function () { var s = document.createElement("script"); s.src = "desktop.js?v=1025e"; s.defer = true; document.head.appendChild(s); })();
+(function () { var s = document.createElement("script"); s.src = "desktop.js?v=1025f"; s.defer = true; document.head.appendChild(s); })();
 // Site search (events, menus, docs) + ?find= landing highlight — on every page.
 (function () { var s = document.createElement("script"); s.src = "search.js?v=1025d"; s.defer = true; document.head.appendChild(s); })();

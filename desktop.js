@@ -444,6 +444,8 @@
       }
       if (b.dataset.bbd == "phone") set(DESK, "0");
       if (b.dataset.bbd == "out") { set(DESK, "0"); set(WHO, null); window.bbTheme && window.bbTheme.off && window.bbTheme.off(); }
+      // Pages the phone home page doesn't link to (for leads) go back to Home in phone view (Jason 2026-10-25).
+      if (b.dataset.bbd == "phone" && ["today.html", "usage.html", "playbook.html", "bar.html", "scheduler.html"].indexOf(here()) > -1) { location.href = "index.html"; return; }
       location.reload();
     });
 
