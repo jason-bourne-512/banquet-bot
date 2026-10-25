@@ -228,7 +228,7 @@
         ".bb-gifcard img{display:block!important;width:100%!important;height:auto!important;margin:0!important;border:0!important;border-radius:0!important}" +
         "@keyframes bbGifIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.85)}12%{opacity:1;transform:translate(-50%,-50%) scale(1)}" +
         "88%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.05)}}" +
-        "@media (prefers-reduced-motion:reduce){.bb-dbz{display:none!important}}"
+        "@media (prefers-reduced-motion:reduce){.bb-dbz:not(.bb-gifwrap){display:none!important}}"
     },
     // Venezuelan flag: yellow, blue, red + the arc of eight stars
     tomas: {
@@ -462,18 +462,19 @@
       var h = +new Intl.DateTimeFormat("en-US", {timeZone: "America/Chicago", hour: "numeric", hour12: false}).format(new Date()) % 24;
       return h >= 5 && h < 11 ? "morning" : h >= 11 && h < 17 ? "midday" : h >= 17 && h < 21 ? "evening" : "night";
     }
+    function calm() { return !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); }
     var last = null, turn = 0, GIFS = {powerup: 1, ssjblue: 1, vegeta: 1};
     // Dylan's clips are the main event: preload this period's clips, open with one, then alternate clip / other moment.
     setTimeout(function () { POOL[period()].forEach(function (n) { if (GIFS[n] && !clips[n]) { var f = n == "vegeta" ? "vegeta-ssj" : n;
       fetch("img/dbz/" + f + ".gif").then(function (r) { return r.blob(); }).then(function (b) { clips[f] = b; }).catch(function () {}); } }); }, 2000);
     function run(name) {
-      if (document.hidden || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+      if (document.hidden || (calm() && !GIFS[name])) return;   // Reduce Motion: only the framed clips play
       var r = acts[name](); if (r && r[0]) setTimeout(function () { r[0].remove(); }, r[1]);
     }
     function next(delay) {
       window.bbDbzTimer = setTimeout(function () {
         var all = POOL[period()], clipsNow = all.filter(function (n) { return GIFS[n]; }), rest = all.filter(function (n) { return !GIFS[n]; });
-        var names = turn++ % 2 == 0 && clipsNow.length ? clipsNow : rest, pick;
+        var names = (calm() || turn++ % 2 == 0) && clipsNow.length ? clipsNow : rest, pick;
         do { pick = names[Math.floor(Math.random() * names.length)]; } while (pick == last && names.length > 1);
         last = pick; run(pick); next(40000 + Math.random() * 40000);
       }, delay);
