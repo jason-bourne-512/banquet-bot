@@ -466,10 +466,23 @@
     document.body.appendChild(b);
   }
 
+  // Phone view on a laptop still gets the site's navy look on these pages (colors and fonts only; the wide layout stays desktop-only).
+  var PHONE_SKINS = {
+    "today.html": SKIN_BASE +
+      "html.bbd-skin:root{--bg:#101820;--surface:#162530;--card:#162530;--border:rgba(139,209,255,.14);--border-light:rgba(139,209,255,.26);" +
+        "--gold:#8bd1ff;--gold-dim:rgba(139,209,255,.45);--gold-glow:rgba(139,209,255,.10);--cream:#eaf3fa;--muted:#8aa4b8;--muted2:#6f8aa0;--white:#eaf3fa}" +
+      "html.bbd-skin .event-card{border-radius:12px!important;border-left:4px solid #8bd1ff!important}" + ""
+  };
+  function phoneSkin() {
+    var cur = here();
+    if (!PHONE_SKINS[cur] || document.getElementById("bbd-skin")) return;
+    document.documentElement.classList.add("bbd-skin");
+    var sk = document.createElement("style"); sk.id = "bbd-skin"; sk.textContent = PHONE_SKINS[cur]; document.head.appendChild(sk);
+  }
   function start() {
     var w = who();
     if (get(DESK) == "1" && isLead(w) && wide()) build(w);
-    else entry();
+    else { phoneSkin(); entry(); }
   }
   if (document.readyState == "loading") document.addEventListener("DOMContentLoaded", start); else start();
 })();
