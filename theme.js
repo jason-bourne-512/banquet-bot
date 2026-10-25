@@ -181,7 +181,6 @@
         "box-shadow:0 0 28px 10px #3aa8ff88;animation:bbBeam 1.6s ease-out forwards}" +
         "@keyframes bbOrb{0%{transform:scale(.2);opacity:0}35%{transform:scale(1.3);opacity:1}55%{transform:scale(1);opacity:1}100%{transform:scale(1.6);opacity:0}}" +
         "@keyframes bbBeam{0%,40%{transform:scaleX(0);opacity:0}55%{transform:scaleX(1);opacity:1}82%{transform:scaleX(1);opacity:.95}100%{transform:scaleX(1);opacity:0}}" +
-        "@media (prefers-reduced-motion:reduce){.bb-cast{animation:none!important}.bb-orb,.bb-beam{display:none!important}}" +
         // ── random DBZ moments (drawn in CSS/SVG for Banquet Bot) ──
         ".bb-dbz{position:fixed;z-index:9999;pointer-events:none}" +
         ".bb-scouter{top:14%;right:4%;padding:10px 16px 12px;border:2px solid #39ff7a;border-radius:6px 22px 6px 6px;background:#04210fcc;" +
@@ -228,7 +227,7 @@
         ".bb-gifcard img{display:block!important;width:100%!important;height:auto!important;margin:0!important;border:0!important;border-radius:0!important}" +
         "@keyframes bbGifIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.85)}12%{opacity:1;transform:translate(-50%,-50%) scale(1)}" +
         "88%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.05)}}" +
-        "@media (prefers-reduced-motion:reduce){.bb-dbz:not(.bb-gifwrap){display:none!important}}"
+        ""   // Dylan gets the full show: his moments ignore the phone's Reduce Motion setting (Jason, 2026-10-24)
     },
     // Venezuelan flag: yellow, blue, red + the arc of eight stars
     tomas: {
@@ -462,19 +461,18 @@
       var h = +new Intl.DateTimeFormat("en-US", {timeZone: "America/Chicago", hour: "numeric", hour12: false}).format(new Date()) % 24;
       return h >= 5 && h < 11 ? "morning" : h >= 11 && h < 17 ? "midday" : h >= 17 && h < 21 ? "evening" : "night";
     }
-    function calm() { return !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); }
     var last = null, turn = 0, GIFS = {powerup: 1, ssjblue: 1, vegeta: 1};
     // Dylan's clips are the main event: preload this period's clips, open with one, then alternate clip / other moment.
     setTimeout(function () { POOL[period()].forEach(function (n) { if (GIFS[n] && !clips[n]) { var f = n == "vegeta" ? "vegeta-ssj" : n;
       fetch("img/dbz/" + f + ".gif").then(function (r) { return r.blob(); }).then(function (b) { clips[f] = b; }).catch(function () {}); } }); }, 2000);
     function run(name) {
-      if (document.hidden || (calm() && !GIFS[name])) return;   // Reduce Motion: only the framed clips play
+      if (document.hidden) return;
       var r = acts[name](); if (r && r[0]) setTimeout(function () { r[0].remove(); }, r[1]);
     }
     function next(delay) {
       window.bbDbzTimer = setTimeout(function () {
         var all = POOL[period()], clipsNow = all.filter(function (n) { return GIFS[n]; }), rest = all.filter(function (n) { return !GIFS[n]; });
-        var names = (calm() || turn++ % 2 == 0) && clipsNow.length ? clipsNow : rest, pick;
+        var names = turn++ % 2 == 0 && clipsNow.length ? clipsNow : rest, pick;
         do { pick = names[Math.floor(Math.random() * names.length)]; } while (pick == last && names.length > 1);
         last = pick; run(pick); next(40000 + Math.random() * 40000);
       }, delay);
@@ -732,7 +730,7 @@
         document.body.appendChild(c);
         // Power blast: charge an orb at the fighter's hands, then fire a beam across the bottom of the screen.
         var blast = function () {
-          if (!c.isConnected || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+          if (!c.isConnected) return;
           var r = c.getBoundingClientRect(), x = r.right - r.width * 0.12, y = r.top + r.height * 0.42;
           var o = document.createElement("div"); o.className = "bb-orb"; o.style.left = (x - 13) + "px"; o.style.top = (y - 13) + "px";
           var bm = document.createElement("div"); bm.className = "bb-beam"; bm.style.left = x + "px"; bm.style.top = (y - 11) + "px";
