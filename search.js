@@ -28,6 +28,8 @@
     while (it.nextNode()) out.push(it.currentNode.nodeValue);
     return clean(out.join(" "));
   }
+  // lower case, accents dropped: "crudite" finds "Crudité" (same length for precomposed letters)
+  function fold(s) { return String(s).normalize("NFC").replace(/[\u00C0-\u024F]/g, function (c) { return c.normalize("NFD")[0]; }).toLowerCase(); }
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;"); }
   function page(url) {
     return fetch(url).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
@@ -90,17 +92,17 @@
     return built;
   }
 
-  function words(q) { return q.toLowerCase().split(/\s+/).filter(Boolean); }
+  function words(q) { return fold(q).split(/\s+/).filter(Boolean); }
   function hits(index, q) {
     var w = words(q);
     if (!w.length) return [];
     // short words (like the "d" in "primrose d") must be whole words; longer ones can match inside a word
     var tests = w.map(function (k) { var e = k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); return k.length < 3 ? new RegExp("(^|[^a-z0-9])" + e + "($|[^a-z0-9])") : null; });
     return index.filter(function (x) {
-      var hay = (x.title + " " + x.text).toLowerCase();
+      var hay = fold(x.title + " " + x.text);
       return w.every(function (k, i) { return tests[i] ? tests[i].test(hay) : hay.indexOf(k) > -1; });
     }).map(function (x) {
-      var t = x.title.toLowerCase();
+      var t = fold(x.title);
       return {x: x, s: w.filter(function (k) { return t.indexOf(k) > -1; }).length};
     }).sort(function (a, b) {
       if (a.x.type == "event" && b.x.type == "event") return a.x.date < b.x.date ? -1 : a.x.date > b.x.date ? 1 : b.s - a.s;
@@ -109,12 +111,21 @@
   }
   // A short piece of text around the first match, with the search words marked.
   function snippet(text, q) {
-    var w = words(q), low = text.toLowerCase(), at = low.indexOf(w[0]);
+    var w = words(q), low = fold(text), at = low.indexOf(w[0]);
     if (at < 0) at = 0;
     var a = Math.max(0, at - 50), b = Math.min(text.length, at + 110);
     var s = (a ? "…" : "") + text.slice(a, b) + (b < text.length ? "…" : ""), h = esc(s);
-    w.forEach(function (k) { h = h.replace(new RegExp("(" + k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig"), "<mark>$1</mark>"); });
+    w.forEach(function (k) { h = markFold(h, k); });
     return h;
+  }
+  function markFold(h, k) {
+    var f = fold(h), out = "", i = 0, at;
+    while ((at = f.indexOf(k, i)) > -1) {
+      var amp = h.lastIndexOf("&", at);
+      if (h.lastIndexOf("<", at) > h.lastIndexOf(">", at) || (amp > -1 && amp > h.lastIndexOf(";", at) && at - amp < 8)) { out += h.slice(i, at + 1); i = at + 1; continue; }   // inside a tag or an &entity;
+      out += h.slice(i, at) + "<mark>" + h.slice(at, at + k.length) + "</mark>"; i = at + k.length;
+    }
+    return out + h.slice(i);
   }
   function link(x, q) {
     return x.url + (x.url.indexOf("?") > -1 ? "&" : "?") + "find=" + encodeURIComponent(q) +
@@ -196,7 +207,7 @@
       }
       var node = null;
       [scope, root].some(function (r) {
-        node = textNodes(r).filter(function (n) { return n.nodeValue.toLowerCase().indexOf(w[0]) > -1; })[0] || null;
+        node = textNodes(r).filter(function (n) { return fold(n.nodeValue).indexOf(w[0]) > -1; })[0] || null;
         return node;
       });
       if (!node) { if (++tries < 16) setTimeout(attempt, 250); return; }
@@ -207,7 +218,7 @@
           if (typeof window.toggleCard == "function") window.toggleCard(e); else e.classList.add("open");
         }
       }
-      var at = node.nodeValue.toLowerCase().indexOf(w[0]), r = document.createRange(), m = document.createElement("mark");
+      var at = fold(node.nodeValue).indexOf(w[0]), r = document.createRange(), m = document.createElement("mark");
       m.className = "bb-find";
       r.setStart(node, at); r.setEnd(node, at + w[0].length);
       try { r.surroundContents(m); } catch (err) { m = node.parentElement; }
