@@ -10,9 +10,9 @@
   var DOCS = [
     {url: "handbook.html", name: "Associate Handbook", card: ".hb-card", title: ".hb-title", sub: ".hb-sub", subTitle: ".hb-sub-title"},
     {url: "training.html", name: "Server Training", card: ".tr-card", title: ".tr-title", sub: ".tr-sub", subTitle: ".tr-sub-title"},
-    {url: "playbook.html", name: "Captain Playbook", card: ".tr-card", title: ".tr-title", sub: ".tr-sub", subTitle: ".tr-sub-title"},
+    {url: "playbook.html", name: "Captain Playbook", only: "Jason", card: ".tr-card", title: ".tr-title", sub: ".tr-sub", subTitle: ".tr-sub-title"},
     {url: "plated.html", name: "Plated Service", card: ".tr-card", title: ".tr-title", sub: ".tr-sub", subTitle: ".tr-sub-title"},
-    {url: "bar.html", name: "Bar Reference", card: ".tr-card", title: ".tr-title", sub: ".tr-sub", subTitle: ".tr-sub-title"},
+    {url: "bar.html", name: "Bar Reference", only: "Jason", card: ".tr-card", title: ".tr-title", sub: ".tr-sub", subTitle: ".tr-sub-title"},
     {url: "rooms.html", name: "Room Specs", card: ".room-card", title: ".room-name"},
     {url: "info.html", name: "Property Info", card: ".card", title: ".card-title, .card-label, .section-label"}
   ];
@@ -73,7 +73,8 @@
         return {type: "menu", title: title, items: items, text: title + " " + items.join(" "), url: "menu.html", anchor: title};
       }).filter(function (m) { return m.title; });
     });
-    var docs = DOCS.map(function (p) {
+    var me = null; try { me = (JSON.parse(localStorage.getItem("bb-hsm-who") || "null") || {}).name; } catch (e) {}
+    var docs = DOCS.filter(function (p) { return !p.only || p.only == me; }).map(function (p) {
       return page(p.url).then(function (doc) {
         var out = [];
         doc.querySelectorAll(p.card).forEach(function (card) {
@@ -186,7 +187,8 @@
         if (dq) { showDay(index, dq); return; }
         var all = hits(index, q);
         box.replaceChildren();
-        var qf = fold(q), named = DOCS.filter(function (d) { var n = fold(d.name); return n.indexOf(qf) > -1 || qf.indexOf(n) > -1; });
+        var me = null; try { me = (JSON.parse(localStorage.getItem("bb-hsm-who") || "null") || {}).name; } catch (e) {}
+        var qf = fold(q), named = DOCS.filter(function (d) { if (d.only && d.only != me) return false; var n = fold(d.name); return n.indexOf(qf) > -1 || qf.indexOf(n) > -1; });
         if (named.length) {
           var hd = document.createElement("div"); hd.className = "bbs-group"; hd.textContent = "⭐ Best match"; box.append(hd);
           named.forEach(function (d) {
