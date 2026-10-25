@@ -100,7 +100,7 @@
     // short words (like the "d" in "primrose d") must be whole words; longer ones can match inside a word
     var tests = w.map(function (k) { var e = k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); return k.length < 3 ? new RegExp("(^|[^a-z0-9])" + e + "($|[^a-z0-9])") : null; });
     return index.filter(function (x) {
-      var hay = fold(x.title + " " + x.text);
+      var hay = fold(x.title + " " + x.text + " " + (x.page || ""));
       return w.every(function (k, i) { return tests[i] ? tests[i].test(hay) : hay.indexOf(k) > -1; });
     }).map(function (x) {
       var t = fold(x.title);
@@ -186,6 +186,14 @@
         if (dq) { showDay(index, dq); return; }
         var all = hits(index, q);
         box.replaceChildren();
+        var qf = fold(q), named = DOCS.filter(function (d) { var n = fold(d.name); return n.indexOf(qf) > -1 || qf.indexOf(n) > -1; });
+        if (named.length) {
+          var hd = document.createElement("div"); hd.className = "bbs-group"; hd.textContent = "⭐ Best match"; box.append(hd);
+          named.forEach(function (d) {
+            var a = document.createElement("a"); a.className = "bbs-hit bbs-day"; a.href = d.url;
+            a.innerHTML = "<b>Open " + esc(d.name) + " →</b><span>The whole document</span>"; box.append(a);
+          });
+        }
         if (!all.length) { say("Nothing found for “" + q + "”."); box.dispatchEvent(new Event("bbs-results")); return; }
         say(all.length + (all.length == 1 ? " result" : " results"));
         GROUPS.forEach(function (g) {
