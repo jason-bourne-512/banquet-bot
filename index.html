@@ -191,9 +191,10 @@
     <a class="destination sched" href="scheduler.html" id="schedBtn" hidden><span class="arrow" aria-hidden="true">↗</span><strong>SCHEDULER <em id="schedTag">BETA</em></strong><small>Availability &amp; the week</small></a>
   </div>
   <script>
-  // Scheduler: everyone gets this Home button to send availability, except Jason and Hector, who open it from the desktop side panel (Jason, 2026-10-24).
+  // Scheduler: everyone gets this Home button to send availability, except Jason and Hector (they open it from the desktop side panel)
+  // and the event managers, who don't schedule (Jason, 2026-10-24).
   (function () { var w = null; try { w = JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); } catch (e) {}
-    if (!(w && ["Jason", "Hector"].indexOf(w.name) > -1)) { document.getElementById("schedBtn").hidden = false; document.getElementById("schedTag").remove(); } })();
+    if (!(w && (["Jason", "Hector"].indexOf(w.name) > -1 || w.role == "em" || w.role == "sem"))) { document.getElementById("schedBtn").hidden = false; document.getElementById("schedTag").remove(); } })();
   </script>
 
   <section class="menu-search">
