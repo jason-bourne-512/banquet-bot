@@ -11,6 +11,7 @@
     {url: "handbook.html", name: "Associate Handbook", card: ".hb-card", title: ".hb-title", sub: ".hb-sub", subTitle: ".hb-sub-title"},
     {url: "training.html", name: "Server Training", card: ".tr-card", title: ".tr-title", sub: ".tr-sub", subTitle: ".tr-sub-title"},
     {url: "playbook.html", name: "Captain Playbook", card: ".tr-card", title: ".tr-title", sub: ".tr-sub", subTitle: ".tr-sub-title"},
+    {url: "plated.html", name: "Plated Service", card: ".tr-card", title: ".tr-title", sub: ".tr-sub", subTitle: ".tr-sub-title"},
     {url: "bar.html", name: "Bar Reference", card: ".tr-card", title: ".tr-title", sub: ".tr-sub", subTitle: ".tr-sub-title"},
     {url: "rooms.html", name: "Room Specs", card: ".room-card", title: ".room-name"},
     {url: "info.html", name: "Property Info", card: ".card", title: ".card-title, .card-label, .section-label"}
@@ -127,6 +128,29 @@
     }
     return out + h.slice(i);
   }
+  // ── dates: "11/3", "11/3/26", "nov 3", "november 3rd", "tuesday", "today", "tomorrow" (+ other words to narrow the day)
+  var MON = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"],
+      MONTHS = "january february march april may june july august september sept october november december".split(" "),
+      DOW = {sun: 0, sunday: 0, mon: 1, monday: 1, tue: 2, tues: 2, tuesday: 2, wed: 3, weds: 3, wednesday: 3, thu: 4, thur: 4, thurs: 4, thursday: 4, fri: 5, friday: 5, sat: 6, saturday: 6};
+  function addDays(iso, n) { var d = new Date(iso + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+  function dateOf(q) {
+    var T = today(), ty = +T.slice(0, 4), w = fold(q).replace(/,/g, " ").split(/\s+/).filter(Boolean), rest = [], date = null, m;
+    function iso(y, mo, d) { return y + "-" + (mo < 10 ? "0" : "") + mo + "-" + (d < 10 ? "0" : "") + d; }
+    function md(mo, d, y) { if (mo < 1 || mo > 12 || d < 1 || d > 31) return null; var x = iso(y || ty, mo, d); return !y && x < addDays(T, -60) ? iso(ty + 1, mo, d) : x; }
+    for (var i = 0; i < w.length; i++) {
+      var k = w[i], got = null;
+      if (!date) {
+        if (k == "today") got = T;
+        else if (k == "tomorrow" || k == "tmrw") got = addDays(T, 1);
+        else if ((m = k.match(/^(\d{4})-(\d\d)-(\d\d)$/))) got = k;
+        else if ((m = k.match(/^(\d{1,2})[\/.-](\d{1,2})(?:[\/.-](\d{2}|\d{4}))?$/))) got = md(+m[1], +m[2], m[3] ? (m[3].length == 2 ? 2000 + +m[3] : +m[3]) : 0);
+        else if ((MON.indexOf(k) > -1 || MONTHS.indexOf(k) > -1) && /^\d{1,2}(st|nd|rd|th)?$/.test(w[i + 1] || "")) { got = md(MON.indexOf(k.slice(0, 3)) + 1, parseInt(w[i + 1], 10)); if (got) i++; }
+        else if (k in DOW) got = addDays(T, (DOW[k] - new Date(T + "T12:00:00Z").getUTCDay() + 7) % 7);
+      }
+      if (got) date = got; else rest.push(k);
+    }
+    return date ? {date: date, rest: rest.join(" ")} : null;
+  }
   function link(x, q) {
     return x.url + (x.url.indexOf("?") > -1 ? "&" : "?") + "find=" + encodeURIComponent(q) +
       (x.anchor ? "&in=" + encodeURIComponent(x.anchor) : "") + (x.type == "event" ? "#rundown" : "");
@@ -143,6 +167,7 @@
     ".bbs-hit mark,mark.bb-find{background:#ffd76a55;color:inherit;border-radius:3px;padding:0 1px}" +
     "mark.bb-find{background:#ffd76a;color:#1b1406;box-shadow:0 0 0 3px #ffd76a66;animation:bbFind 2.6s ease-out 1}" +
     "@keyframes bbFind{0%,40%{box-shadow:0 0 0 6px #ffd76aaa}100%{box-shadow:0 0 0 3px #ffd76a33}}" +
+    ".bbs-day{border-color:#89cdff88;background:#1d3a50}.bbs-day b{color:#bfe6ff}" +
     ".bbs-more{font:11px Manrope,Arial,sans-serif;color:#9fbdd1;margin:4px 2px 0}";
   document.head.appendChild(css);
 
@@ -157,6 +182,8 @@
       if (!q) { box.dispatchEvent(new Event("bbs-empty")); return; }
       build().then(function (index) {
         if (input.value.trim() !== q) return;   // a newer keystroke owns the results
+        var dq = dateOf(q);
+        if (dq) { showDay(index, dq); return; }
         var all = hits(index, q);
         box.replaceChildren();
         if (!all.length) { say("Nothing found for “" + q + "”."); box.dispatchEvent(new Event("bbs-results")); return; }
@@ -176,6 +203,23 @@
         });
         box.dispatchEvent(new Event("bbs-results"));
       }).catch(function () { say("Search couldn't load. Check your signal and try again."); });
+    }
+    function showDay(index, dq) {
+      var label = dayLabel(dq.date), T = today();
+      if (dq.date < T) { say(label + " has passed. The Rundown only keeps today and later."); box.dispatchEvent(new Event("bbs-results")); return; }
+      var day = index.filter(function (x) { return x.type == "event" && x.date == dq.date; });
+      if (dq.rest) day = hits(day, dq.rest);
+      var h = document.createElement("div"); h.className = "bbs-group"; h.textContent = "📅 " + label; box.append(h);
+      var open = document.createElement("a"); open.className = "bbs-hit bbs-day"; open.href = "rundown.html?date=" + dq.date + "#rundown";
+      open.innerHTML = "<b>Open the Rundown for " + esc(label) + " →</b><span>" + (day.length ? day.length + (day.length == 1 ? " event" : " events") + (dq.rest ? " matching “" + esc(dq.rest) + "”" : "") : (dq.rest ? "Nothing matching “" + esc(dq.rest) + "” that day" : "No events listed that day")) + "</span>";
+      box.append(open);
+      day.slice(0, 20).forEach(function (x) {
+        var a = document.createElement("a"); a.className = "bbs-hit"; a.href = link(x, dq.rest || x.title);
+        a.innerHTML = "<small>" + esc(x.time || label) + "</small><b>" + esc(x.title) + "</b>" + (x.meta ? "<span>" + esc(x.meta) + "</span>" : "");
+        box.append(a);
+      });
+      say(day.length ? label + " · " + day.length + (day.length == 1 ? " event" : " events") : label);
+      box.dispatchEvent(new Event("bbs-results"));
     }
     input.addEventListener("focus", function () { build(); }, {once: true});
     input.addEventListener("input", function () { clearTimeout(timer); timer = setTimeout(run, 120); });
