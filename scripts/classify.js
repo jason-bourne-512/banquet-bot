@@ -21,7 +21,7 @@
  */
 
 const CONTINUOUS_RE = /continuous|all[\s-]?day|half[\s-]?day|hospitality/i;
-const MEAL_RE = /breakfast|lunch|dinner|buffet|plated|conference dining|reception/i;
+const MEAL_RE = /breakfast|brunch|lunch|dinner|buffet|plated|conference dining|reception/i;
 const BREAK_RE = /\bbreak\b/i;
 const BEVERAGE_RE = /beverage|\bbar\b/i;
 const NO_FNB_RE = /no f&b/i;
