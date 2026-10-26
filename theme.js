@@ -162,7 +162,7 @@
       img: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png",
       mark: {src: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png", opacity: .07},
       tint: {color: "#5b2bd6", opacity: .55},
-      dbz: true,   // random DBZ moments every minute or so; the mix changes with the time of day (see POOL in dbzLoop)
+      dbz: true,   // random DBZ moments every minute or so: a random GIF clip every other time, the rest change with the time of day (see POOL in dbzLoop)
       // Dragon Ball Z cast (img/dbz/, Jason's picks 2026-10-24): Goku on Home, Super Saiyan Blue Vegeta on Rundown, Super Saiyan Goku everywhere else.
       cast: {"index.html": "goku.jpg", "rundown.html": "vegeta-blue.jpg", "*": "goku-ssj.jpg"},
       css: palette("#a98bf0", "rgba(169,139,240,.14)", "#0c0816", "#171027", "#231839", "rgba(169,139,240,.14)", "rgba(201,162,39,.35)") +
@@ -461,18 +461,19 @@
       var h = +new Intl.DateTimeFormat("en-US", {timeZone: "America/Chicago", hour: "numeric", hour12: false}).format(new Date()) % 24;
       return h >= 5 && h < 11 ? "morning" : h >= 11 && h < 17 ? "midday" : h >= 17 && h < 21 ? "evening" : "night";
     }
-    var last = null, turn = 0, GIFS = {powerup: 1, ssjblue: 1, vegeta: 1};
-    // Dylan's clips are the main event: preload this period's clips, open with one, then alternate clip / other moment.
-    setTimeout(function () { POOL[period()].forEach(function (n) { if (GIFS[n] && !clips[n]) { var f = n == "vegeta" ? "vegeta-ssj" : n;
-      fetch("img/dbz/" + f + ".gif").then(function (r) { return r.blob(); }).then(function (b) { clips[f] = b; }).catch(function () {}); } }); }, 2000);
+    var last = null, turn = 0, GIFS = ["powerup", "ssjblue", "vegeta"];
+    // Dylan's clips are the main event on every page, any time of day (Jason, 2026-10-26): preload all three,
+    // open with a random one, then alternate random clip / other moment.
+    setTimeout(function () { GIFS.forEach(function (n) { var f = n == "vegeta" ? "vegeta-ssj" : n; if (clips[f]) return;
+      fetch("img/dbz/" + f + ".gif").then(function (r) { return r.blob(); }).then(function (b) { clips[f] = b; }).catch(function () {}); }); }, 2000);
     function run(name) {
       if (document.hidden) return;
       var r = acts[name](); if (r && r[0]) setTimeout(function () { r[0].remove(); }, r[1]);
     }
     function next(delay) {
       window.bbDbzTimer = setTimeout(function () {
-        var all = POOL[period()], clipsNow = all.filter(function (n) { return GIFS[n]; }), rest = all.filter(function (n) { return !GIFS[n]; });
-        var names = turn++ % 2 == 0 && clipsNow.length ? clipsNow : rest, pick;
+        var rest = POOL[period()].filter(function (n) { return GIFS.indexOf(n) < 0; });
+        var names = turn++ % 2 == 0 ? GIFS : rest, pick;
         do { pick = names[Math.floor(Math.random() * names.length)]; } while (pick == last && names.length > 1);
         last = pick; run(pick); next(40000 + Math.random() * 40000);
       }, delay);

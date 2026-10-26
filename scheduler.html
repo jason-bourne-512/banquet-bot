@@ -606,5 +606,33 @@ if (window.schedRemote) {
   onSnapshot(old, snap => { prev = snap.exists() ? snap.data() : {}; push(); }, err => console.error("[scheduler] old week", err));
 }
 </script>
+<script>
+// Dylan's DBZ clips play here too (Jason, 2026-10-26). This page doesn't load theme.js, so it's the clip part of dbzLoop on its own:
+// a random clip about every 40–80s, same card and timing as the other pages.
+(function () {
+  var me = ""; try { me = localStorage.getItem("bb-me") || (JSON.parse(localStorage.getItem("bb-hsm-who") || "null") || {}).name || ""; } catch (e) {}
+  if (String(me).toLowerCase() != "dylan") return;
+  var CLIPS = [["powerup", 2900, "#ff3d8b99"], ["ssjblue", 3500, "#3aa8ffaa"], ["vegeta-ssj", 4300, "#ffd54aaa"]], blobs = {}, last = null;
+  var st = document.createElement("style");
+  st.textContent = ".bb-gifwrap{position:fixed;inset:0;z-index:9999;pointer-events:none;background:radial-gradient(circle,#0000 30%,#0c0816cc 85%);animation:bbDim var(--d) ease-in-out forwards}" +
+    ".bb-gifcard{position:absolute;left:50%;top:46%;width:min(80vw,460px);border-radius:14px;overflow:hidden;" +
+    "box-shadow:0 0 0 2px #c9a227aa,0 0 46px 12px var(--glow),0 22px 50px #000c;animation:bbGifIn var(--d) ease-in-out forwards}" +
+    ".bb-gifcard img{display:block;width:100%;height:auto}" +
+    "@keyframes bbDim{0%,100%{opacity:0}12%,88%{opacity:1}}" +
+    "@keyframes bbGifIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.85)}12%{opacity:1;transform:translate(-50%,-50%) scale(1)}" +
+    "88%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.05)}}";
+  document.head.appendChild(st);
+  CLIPS.forEach(function (c) { fetch("img/dbz/" + c[0] + ".gif").then(function (r) { return r.blob(); }).then(function (b) { blobs[c[0]] = b; }).catch(function () {}); });
+  function play() {
+    var c; do { c = CLIPS[Math.floor(Math.random() * CLIPS.length)]; } while (c[0] == last);
+    last = c[0]; if (document.hidden || !blobs[c[0]]) return;
+    var url = URL.createObjectURL(blobs[c[0]]), d = document.createElement("div"), k = document.createElement("div"), im = new Image();
+    d.className = "bb-gifwrap"; k.className = "bb-gifcard"; d.style.setProperty("--d", c[1] + "ms"); k.style.setProperty("--glow", c[2]);
+    im.alt = ""; im.onload = function () { document.body.appendChild(d); setTimeout(function () { d.remove(); URL.revokeObjectURL(url); }, c[1] + 100); };
+    im.src = url; k.appendChild(im); d.appendChild(k);
+  }
+  (function next(delay) { setTimeout(function () { play(); next(40000 + Math.random() * 40000); }, delay); })(9000 + Math.random() * 6000);
+})();
+</script>
 </body>
 </html>
