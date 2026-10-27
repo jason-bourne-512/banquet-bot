@@ -129,9 +129,9 @@
     // Alex (AV Manager): his portrait (img/me, original art) big on Home, small in the badge everywhere else. No palette change.
     alex: {
       label: "ALEX · AV",
-      img: "img/me/alex.svg?v=5",
+      img: "img/me/alex.svg?v=6",
       // Home only: a big avatar card under the header; now and then it flips to the beer-and-hangover version for a few seconds.
-      hero: {src: "img/me/alex.svg?v=5", alt: "img/me/alex-drunk.svg?v=2", caption: "ALEX · AV MANAGER"},
+      hero: {src: "img/me/alex.svg?v=6", alt: "img/me/alex-drunk.svg?v=2", caption: "ALEX · AV MANAGER"},
       css: BADGE + ".bb-me-badge{color:#dcecff;background:linear-gradient(135deg,#1f4f8f,#0f2442);border:1px solid #8bd1ff88}" +
         ".bb-hero{display:flex;flex-direction:column;align-items:center;margin:10px auto 18px;padding:14px 14px 12px;max-width:320px;" +
         "border-radius:20px;background:radial-gradient(ellipse at 50% 30%,#3d7fd055,transparent 70%),#0f1c2899;border:1px solid #8bd1ff44;box-shadow:0 8px 26px #0008}" +
