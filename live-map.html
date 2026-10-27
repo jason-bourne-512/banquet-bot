@@ -46,10 +46,11 @@
   .rm { position:absolute; padding:2.1cqw .7cqw .45cqw; border-radius:4px; overflow:hidden; }
   .rm.on { background:rgba(31,138,85,.13); outline:2px solid rgba(31,138,85,.45); outline-offset:-2px; }
   .rm.on > div { position:relative; opacity:.8; }
-  .nm { font-size:.85cqw; letter-spacing:.1em; text-transform:uppercase; color:var(--pmuted); font-weight:700; }
-  .g { color:var(--grp); font-weight:800; font-size:1.2cqw; margin:.05cqw 0; }
-  .ct { color:#3a4752; font-weight:600; font-size:.92cqw; margin-bottom:.25cqw; }
-  .ln { font-size:.98cqw; white-space:nowrap; }
+  /* --k shrinks one room box's text when it would run past the box (see fitRooms) */
+  .nm { font-size:calc(.85cqw * var(--k, 1)); letter-spacing:.1em; text-transform:uppercase; color:var(--pmuted); font-weight:700; overflow-wrap:anywhere; }
+  .g { color:var(--grp); font-weight:800; font-size:calc(1.2cqw * var(--k, 1)); margin:.05cqw 0; overflow-wrap:anywhere; }
+  .ct { color:#3a4752; font-weight:600; font-size:calc(.92cqw * var(--k, 1)); margin-bottom:.25cqw; overflow-wrap:anywhere; }
+  .ln { font-size:calc(.98cqw * var(--k, 1)); padding-left:1em; text-indent:-1em; overflow-wrap:anywhere; }   /* long lines wrap with a hanging indent */
   .ln b { font-weight:700; font-variant-numeric:tabular-nums; }
   .ln.bev, .ln.nofb { font-weight:600; }
   .bfast { color:var(--bfast); } .lunch { color:var(--lunch); } .dinner { color:var(--dinner); } .recep { color:var(--recep); }
@@ -57,7 +58,7 @@
   .meal b { padding:0 .2cqw; border-radius:2px; }
   .bfast.meal b { background:#fbecb8; } .lunch.meal b { background:#fddcc2; } .brk.meal b { background:#d3e6f6; }
   .dinner.meal b { background:#f7d2de; } .recep.meal b { background:#e5dbf7; }
-  .flag { color:#b23a3a; font-size:.92cqw; font-weight:600; }
+  .flag { color:#b23a3a; font-size:calc(.92cqw * var(--k, 1)); font-weight:600; overflow-wrap:anywhere; }
   .offmap { position:absolute; left:1%; top:72%; width:41%; transform-origin:0 0; }
   .offmap h3, .legend h3 { font-size:.85cqw; letter-spacing:.1em; text-transform:uppercase; color:var(--pmuted); margin:0 0 .6cqw; }
   #off { column-count:2; column-gap:1cqw; }
@@ -112,6 +113,13 @@
       k = Math.round((k - 0.04) * 100) / 100;
     }
   }
+  // a room box is a fixed size on the plan: if its wrapped text runs past the bottom, shrink that box's text until it fits
+  function fitRooms() {
+    map.querySelectorAll(".rm").forEach(function (b) {
+      b.style.removeProperty("--k");
+      for (var k = 1; k > 0.5 && b.scrollHeight > b.clientHeight + 1; ) { k = Math.round((k - 0.04) * 100) / 100; b.style.setProperty("--k", k); }
+    });
+  }
   function draw(d) {
     var day = DATA.days[d];
     chips.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.dataset.d == d); });
@@ -120,13 +128,13 @@
     h += '<div class="title"><h2>' + label(d, true) + "</h2></div>";
     Object.keys(BOX).forEach(function (r) {
       var e = day.ev[r]; if (!e) return;
-      h += '<div class="rm on" style="' + pct(BOX[r]) + (/^Primrose (A|B|AB)$/.test(r) ? ";padding-left:3.8cqw" : "") + '">' + body(e) + "</div>";
+      h += '<div class="rm on" data-room="' + esc(r) + '" style="' + pct(BOX[r]) + (/^Primrose (A|B|AB)$/.test(r) ? ";padding-left:3.8cqw" : "") + '">' + body(e) + "</div>";
     });
     if (day.off.length) h += '<div class="offmap"><h3>Off the map</h3><div id="off">' + day.off.map(function (e) { return '<div class="card"><div class="nm">' + esc(e.room) + "</div>" + body(e) + "</div>"; }).join("") + "</div></div>";
     if (day.contacts.length) h += '<div class="legend"><h3>Contacts</h3>' + day.contacts.map(function (c) { return '<span class="gc"><b>' + esc(c[0]) + "</b> <span>" + esc(c[1]) + "</span></span>"; }).join("") + "</div>";
     map.innerHTML = h;
     if (typeof setZ == "function") setZ(1);
-    fitOff();
+    fitRooms(); fitOff();
     try { history.replaceState(null, "", "#" + d); } catch (e) {}
   }
   chips.innerHTML = dates.map(function (d) { return '<button data-d="' + d + '">' + label(d) + '<span class="t">' + (+d.slice(5, 7)) + "/" + (+d.slice(8)) + "</span></button>"; }).join("");
@@ -161,7 +169,7 @@
     if (!e.ctrlKey) return; e.preventDefault();
     var r = scroll.getBoundingClientRect(); setZ(z * Math.exp(-e.deltaY / 200), e.clientX - r.left, e.clientY - r.top);
   }, {passive: false});
-  window.addEventListener("resize", function () { setZ(z); fitOff(); });
+  window.addEventListener("resize", function () { setZ(z); fitRooms(); fitOff(); });
   var want = location.hash.slice(1);
   draw(dates.indexOf(want) >= 0 ? want : (dates.indexOf(today) >= 0 ? today : dates[0]));
 })();

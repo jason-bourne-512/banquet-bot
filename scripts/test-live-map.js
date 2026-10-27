@@ -32,13 +32,23 @@ const CHROME = ['/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', 
 if (!CHROME) { console.log('SKIP: off-map fit check needs Chrome'); process.exit(0); }
 const probe = `<script>(function(){var R=Date;window.Date=class extends R{constructor(...a){a.length?super(...a):super('2026-01-01T12:00:00Z')}};Date.now=()=>new Date().getTime();})();</script>`;
 const measure = `<script>
-var out = [], m = document.getElementById('map');
+var out = [], over = [], m = document.getElementById('map');
 document.querySelectorAll('#chips button').forEach(function (b) {
   b.click(); var r = m.getBoundingClientRect();
   m.querySelectorAll('.offmap .card').forEach(function (c) { var x = c.getBoundingClientRect();
     out.push([b.dataset.d, c.querySelector('.nm').textContent, +(x.bottom - r.bottom).toFixed(1), +(x.right - r.right).toFixed(1)]); });
+  // every piece of text (room name, group, count line, service lines, flag) must sit inside its box's borders
+  m.querySelectorAll('.rm, .offmap .card').forEach(function (box) {
+    var x = box.getBoundingClientRect(), name = box.dataset.room || box.querySelector('.nm').textContent;
+    box.querySelectorAll('.nm, .g, .ct, .ln, .flag').forEach(function (el) {
+      var g = document.createRange(); g.selectNodeContents(el); var t = g.getBoundingClientRect();
+      var worst = Math.max(x.left - t.left, t.right - x.right, x.top - t.top, t.bottom - x.bottom);
+      if (worst > 0.5) over.push([b.dataset.d, name, el.textContent, +worst.toFixed(1)]);
+    });
+  });
 });
 document.body.setAttribute('data-fit', JSON.stringify(out));
+document.body.setAttribute('data-over', JSON.stringify(over));
 </script>`;
 const page = html
   .replace(/<link href="https:\/\/fonts[^>]*>/, '')
@@ -47,10 +57,13 @@ const page = html
   .replace('</body>', measure + '</body>');
 const tmp = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'livemap-')), 'fit.html');
 fs.writeFileSync(tmp, page);
+const attr = (dom, k) => JSON.parse(dom.match(new RegExp(`data-${k}="([^"]*)"`))[1].replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'));
+const overflow = [];
 const allOff = Object.values(DATA.days).reduce((n, d) => n + d.off.length, 0);
 for (const size of ['1400,1000', '390,844']) {
   const dom = execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--allow-file-access-from-files', `--window-size=${size}`, '--dump-dom', 'file://' + tmp], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
-  const fit = JSON.parse(dom.match(/data-fit="([^"]*)"/)[1].replace(/&quot;/g, '"').replace(/&amp;/g, '&'));
+  const fit = attr(dom, 'fit');
+  for (const [d, box, text, px] of attr(dom, 'over')) overflow.push(`${size} ${d} ${box}: "${text}" runs ${px}px outside its box`);
   assert.equal(fit.length, allOff, `${size}: measured ${fit.length} off-map boxes, expected ${allOff}`);
   for (const [d, room, below, right] of fit) {
     assert(below <= 0, `${size} ${d} ${room}: off-map box runs ${below}px past the map's bottom edge`);
@@ -59,3 +72,5 @@ for (const size of ['1400,1000', '390,844']) {
 }
 fs.rmSync(path.dirname(tmp), { recursive: true });
 console.log(`PASS: all ${allOff} off-map boxes fit inside the map on every date (desktop and phone width).`);
+assert(!overflow.length, `text runs outside its box:\n${overflow.join('\n')}`);
+console.log('PASS: every title and line stays inside its box on every date (desktop and phone width).');
