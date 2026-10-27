@@ -65,8 +65,10 @@
   .card { break-inside:avoid; margin-bottom:1cqw; background:#fff; border:2px solid rgba(31,138,85,.45); border-radius:6px; padding:.7cqw .9cqw; }
   /* faint floor plan behind an off-map card (e.g. Barton): the diagram preview, cropped to the room and centered */
   .card.plan { position:relative; overflow:hidden; }
-  .card.plan > div { position:relative; }
-  .card.plan > .obg { position:absolute; top:0; bottom:0; left:50%; transform:translateX(-50%); overflow:hidden; opacity:.3; pointer-events:none; }
+  /* same look as a room on the map: plan at .55, the green room hue over it, text at .8 */
+  .card.plan::after { content:""; position:absolute; inset:0; z-index:1; background:rgba(31,138,85,.13); pointer-events:none; }
+  .card.plan > div { position:relative; z-index:2; opacity:.8; }
+  .card.plan > .obg { position:absolute; z-index:0; top:0; bottom:0; left:50%; transform:translateX(-50%); overflow:hidden; opacity:.55; pointer-events:none; }
   .obg img { position:absolute; height:auto; }
   .legend { position:absolute; left:44%; right:23%; bottom:1.5%; display:flex; flex-wrap:wrap; align-items:baseline; gap:.35cqw 1.6cqw; font-size:1cqw; }
   .legend h3 { flex-basis:100%; margin:0; }
