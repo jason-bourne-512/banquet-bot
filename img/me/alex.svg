@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250">
+  <!-- Alex, AV manager (Banquet Bot original art): wavy middle-part hair, big mustache, blue dress shirt + patterned tie, name badge, pen, and a little AV headset. -->
+  <defs>
+    <clipPath id="tieClip"><path d="M95 150 L105 150 L111 190 L100 202 L89 190 Z"/></clipPath>
+  </defs>
+  <style>
+    .legA{animation:st .5s ease-in-out infinite alternate} .legB{animation:st .5s ease-in-out -.5s infinite alternate}
+    @keyframes st{from{transform:translateY(0)}to{transform:translateY(-7px)}}
+    .eye{transform-origin:100px 78px;animation:bl 4.2s infinite} @keyframes bl{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+    .armL{transform-origin:60px 146px;animation:sw .5s ease-in-out infinite alternate}.armR{transform-origin:140px 146px;animation:sw .5s ease-in-out -.5s infinite alternate}@keyframes sw{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
+    @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+  </style>
+  <ellipse cx="100" cy="244" rx="56" ry="6" fill="#000" opacity=".25"/>
+  <!-- slacks + shoes -->
+  <g class="legA"><rect x="66" y="196" width="28" height="40" rx="10" fill="#3d4552"/><ellipse cx="78" cy="236" rx="18" ry="8" fill="#2a2420"/></g>
+  <g class="legB"><rect x="106" y="196" width="28" height="40" rx="10" fill="#3d4552"/><ellipse cx="122" cy="236" rx="18" ry="8" fill="#2a2420"/></g>
+  <rect x="58" y="196" width="84" height="10" rx="3" fill="#2b2f36"/><rect x="95" y="197" width="10" height="8" rx="1.5" fill="none" stroke="#c9ced4" stroke-width="2"/>
+  <!-- sleeves + hands -->
+  <g class="armL"><path d="M60 146 L44 186" stroke="#a9cdea" stroke-width="20" stroke-linecap="round"/><path d="M38 184 L52 190" stroke="#8fb8dc" stroke-width="4" stroke-linecap="round"/><circle cx="43" cy="194" r="10" fill="#f6d6bd"/></g>
+  <g class="armR"><path d="M140 146 L156 186" stroke="#a9cdea" stroke-width="20" stroke-linecap="round"/><path d="M148 190 L162 184" stroke="#8fb8dc" stroke-width="4" stroke-linecap="round"/><circle cx="157" cy="194" r="10" fill="#f6d6bd"/></g>
+  <!-- light blue button-down -->
+  <path d="M56 140 Q100 124 144 140 L146 202 Q100 210 54 202 Z" fill="#a9cdea"/>
+  <path d="M60 150 Q62 176 58 196 M140 150 Q138 176 142 196" stroke="#8fb8dc" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- back hair: shoulder-length waves -->
+  <path d="M100 26 C60 26 48 56 53 86 C55 104 49 116 55 128 Q61 137 69 129 Q76 138 83 127 L83 92 L117 92 L117 127 Q124 138 131 129 Q139 137 145 128 C151 116 145 104 147 86 C152 56 140 26 100 26 Z" fill="#7a5232"/>
+  <path d="M58 98 Q62 110 58 122 M142 98 Q138 110 142 122 M70 104 Q74 116 70 126 M130 104 Q126 116 130 126" stroke="#5c3b22" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- neck -->
+  <rect x="89" y="114" width="22" height="24" rx="6" fill="#ebc4a6"/>
+  <!-- collar -->
+  <path d="M87 128 L100 142 L92 154 L80 134 Z" fill="#c6def2" stroke="#7fa9cc" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M113 128 L100 142 L108 154 L120 134 Z" fill="#c6def2" stroke="#7fa9cc" stroke-width="1.5" stroke-linejoin="round"/>
+  <circle cx="90" cy="150" r="1.4" fill="#7fa9cc"/><circle cx="110" cy="150" r="1.4" fill="#7fa9cc"/>
+  <!-- blue / teal / gold patterned tie -->
+  <g clip-path="url(#tieClip)">
+    <rect x="86" y="148" width="28" height="56" fill="#1f5fa8"/>
+    <path d="M80 160 L120 146 M80 172 L120 158 M80 184 L120 170 M80 196 L120 182 M80 208 L120 194" stroke="#2bb3a3" stroke-width="4"/>
+    <path d="M80 166 L120 152 M80 178 L120 164 M80 190 L120 176 M80 202 L120 188" stroke="#e8b631" stroke-width="1.8"/>
+  </g>
+  <path d="M94 140 L106 140 L104 151 L96 151 Z" fill="#1f5fa8" stroke="#16477e" stroke-width="1.2" stroke-linejoin="round"/>
+  <!-- shirt pocket with blue pen -->
+  <rect x="70" y="148" width="4.5" height="16" rx="2" fill="#2a63c9"/><rect x="73.2" y="148" width="1.6" height="10" rx=".8" fill="#c9ced4"/>
+  <path d="M64 160 L84 160 L84 174 Q74 178 64 174 Z" fill="#a9cdea" stroke="#7fa9cc" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- silver name badge -->
+  <rect x="115" y="158" width="23" height="10" rx="2.5" fill="#dfe3e8" stroke="#9aa3ad" stroke-width="1.2"/>
+  <path d="M119 163 L134 163" stroke="#5a6470" stroke-width="1.6" stroke-linecap="round"/>
+  <!-- face -->
+  <ellipse cx="100" cy="80" rx="39" ry="45" fill="#f6d6bd"/>
+  <!-- front hair: middle part sweeping out -->
+  <path d="M100 32 Q72 32 61 52 Q54 70 59 94 Q63 72 72 62 Q86 48 100 44 Z" fill="#7a5232"/>
+  <path d="M100 32 Q128 32 139 52 Q146 70 141 94 Q137 72 128 62 Q114 48 100 44 Z" fill="#7a5232"/>
+  <path d="M98 36 Q82 40 72 54 M102 36 Q118 40 128 54 M66 62 Q62 72 63 84 M134 62 Q138 72 137 84" stroke="#5c3b22" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <!-- brows + eyes -->
+  <path d="M74 64 Q84 58 93 64 M107 64 Q116 58 126 64" stroke="#5c3b22" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <g class="eye"><ellipse cx="84" cy="77" rx="8" ry="9.5" fill="#fff"/><ellipse cx="116" cy="77" rx="8" ry="9.5" fill="#fff"/>
+    <circle cx="86" cy="79" r="4.5" fill="#3b2a1e"/><circle cx="114" cy="79" r="4.5" fill="#3b2a1e"/>
+    <circle cx="87.5" cy="77.5" r="1.5" fill="#fff"/><circle cx="115.5" cy="77.5" r="1.5" fill="#fff"/></g>
+  <!-- nose -->
+  <path d="M100 82 Q95 94 99 97 Q103 98 106 95" stroke="#d9a888" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <!-- big smile under a full mustache -->
+  <path d="M86 108 Q100 124 114 108 Q100 114 86 108 Z" fill="#7a2e2e"/>
+  <path d="M77 104 Q84 92 100 99 Q116 92 123 104 Q119 112 110 108 Q104 105 100 106 Q96 105 90 108 Q81 112 77 104 Z" fill="#6b4428"/>
+  <path d="M86 101 Q90 104 92 103 M108 103 Q110 104 114 101" stroke="#4e311c" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <circle cx="72" cy="96" r="6" fill="#f29a9a" opacity=".4"/><circle cx="128" cy="96" r="6" fill="#f29a9a" opacity=".4"/>
+  <!-- tiny AV headset -->
+  <path d="M59 78 Q57 22 100 21 Q143 22 141 78" stroke="#2f3338" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <rect x="53" y="72" width="10" height="18" rx="5" fill="#2f3338"/>
+  <path d="M58 88 Q60 106 76 112" stroke="#2f3338" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="78" cy="112.5" rx="3.5" ry="3" fill="#1d2024"/>
+</svg>

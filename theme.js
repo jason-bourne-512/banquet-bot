@@ -126,6 +126,19 @@
       walker: "img/me/hilnery-pup.svg",
       bark: ["Woof! 🐾", "Arf arf! 💕", "Woof woof!", "Yip! 🎀", "Bork! 🐶"]   // tap the pup (or wait ~15–30s): it stops, hops and barks
     },
+    // Alex (AV Manager): his portrait (img/me, original art) big on Home, small in the badge everywhere else. No palette change.
+    alex: {
+      label: "ALEX · AV",
+      img: "img/me/alex.svg",
+      hero: {src: "img/me/alex.svg", caption: "ALEX · AV MANAGER"},   // Home only: a big avatar card under the header
+      css: BADGE + ".bb-me-badge{color:#dcecff;background:linear-gradient(135deg,#1f4f8f,#0f2442);border:1px solid #8bd1ff88}" +
+        ".bb-hero{display:flex;flex-direction:column;align-items:center;margin:4px auto 16px;padding:12px 12px 10px;max-width:260px;" +
+        "border-radius:20px;background:radial-gradient(ellipse at 50% 30%,#3d7fd055,transparent 70%),#0f1c2899;border:1px solid #8bd1ff44;box-shadow:0 8px 26px #0008}" +
+        ".bb-hero img{display:block;width:clamp(150px,44vw,200px);height:auto;border:0;border-radius:0;background:none;margin:0;padding:0;box-shadow:none;" +
+        "filter:drop-shadow(0 6px 14px #000a);animation:bbHeroIn .7s cubic-bezier(.3,1.4,.5,1) both}" +
+        ".bb-hero b{margin-top:6px;font:800 12px/1.2 Manrope,Arial,sans-serif;letter-spacing:2px;color:#cfe6ff}" +
+        "@keyframes bbHeroIn{from{opacity:0;transform:translateY(14px) scale(.9)}to{opacity:1;transform:none}}"
+    },
     // Gema: anime night — sakura petals drifting over a pink/lavender sky, and a chibi fox spirit (original art) that cheers her on.
     gema: {
       label: "GEMA · がんばって",
@@ -745,6 +758,7 @@
     var oldS = document.querySelectorAll(".bb-sakura,.bb-cheer,.bb-stars"); for (var si = 0; si < oldS.length; si++) oldS[si].remove();
     var oldK = document.querySelector(".bb-monkey"); if (oldK) oldK.remove();
     var oldW = document.querySelector(".bb-walker"); if (oldW) oldW.remove();
+    var oldH = document.querySelector(".bb-hero"); if (oldH) oldH.remove();
     var oldX = document.querySelectorAll(".bb-dbz"); for (var xi = 0; xi < oldX.length; xi++) oldX[xi].remove();
     if (window.bbDbzTimer) { clearTimeout(window.bbDbzTimer); window.bbDbzTimer = null; }
     var oldBr = document.querySelectorAll(".bb-bear,.bb-slam,.bb-ball.shot"); for (var bi = 0; bi < oldBr.length; bi++) oldBr[bi].remove();
@@ -825,6 +839,13 @@
         document.body.appendChild(pt);
       }
       var onHome = /(^|\/)(index\.html)?$/.test(location.pathname);
+      var heroAt = t.hero && onHome && document.querySelector("main .eyebrow");
+      if (heroAt) {   // Home: a big avatar card right under the header
+        var hr = document.createElement("div"); hr.className = "bb-hero";
+        var hi = document.createElement("img"); hi.src = t.hero.src; hi.alt = t.hero.caption; hr.appendChild(hi);
+        var hc = document.createElement("b"); hc.textContent = t.hero.caption; hr.appendChild(hc);
+        heroAt.after(hr);
+      }
       var gone = false; try { gone = sessionStorage.getItem("bb-monkey-off") == "1"; } catch (e) {}
       if (t.monkey && (t.monkeyPages ? t.monkeyPages.test(location.pathname) : onHome) && !gone) {
         var mk = document.createElement("img"); mk.className = "bb-monkey"; mk.src = t.monkey; mk.alt = ""; mk.title = "Tap me";
