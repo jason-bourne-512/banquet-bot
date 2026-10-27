@@ -113,11 +113,12 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
 <div class="wrap" id="gate" hidden><div class="sub" style="margin-top:30vh;text-align:center">This page is still being tested.<br><a href="index.html" style="color:#8bd1ff">← Home</a></div></div>
 <div class="wrap" id="wrap">
   <a href="index.html" style="color:var(--blue);text-decoration:none;font:600 13px Manrope">← Home</a>
-  <div class="card" id="testNote" style="border-color:#f2c87955;background:#f2c8790f;font-size:12.5px;color:var(--amber)">Pick the days you can work next week and tap Send. Jason and Hector see what you send.</div>
+  <div class="card" id="testNote" style="border-color:#f2c87955;background:#f2c8790f;font-size:12.5px;color:var(--amber)">Pick the week, then the days you can work, and tap Send. Do it for both weeks. Jason and Hector see what you send.</div>
   <div class="sub">BANQUET BOT · WESTIN AUSTIN DOMAIN</div>
   <h1>Scheduler <span class="demo" id="stage">BETA</span></h1>
   <div class="sub">Servers send availability → Banquet Bot drafts the week from the events and Hector's own staffing habits → Hector and Jason adjust and post.</div>
 
+  <div class="tabs" id="wkTabs"></div>
   <div class="tabs">
     <button class="tab on" data-v="avail">1 · Server availability</button>
     <button class="tab" data-v="build">2 · Build the week</button>
@@ -151,8 +152,10 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
       <div class="tools">
         <button class="btn" id="auto">✦ Construct schedule</button>
         <button class="btn ghost" id="clear">Clear</button>
+        <button class="btn ghost" id="addEvTop">+ Add an event</button>
         <label class="row" id="actualWrap" style="gap:6px;font-size:12.5px;color:var(--mute)"><input type="checkbox" id="showActual" checked style="accent-color:var(--mint)"> Compare to Hector's real schedule</label>
       </div>
+      <div class="row" id="evDays" hidden style="margin-top:8px;gap:6px;flex-wrap:wrap"><span class="sub">Which day?</span></div>
       <div class="note" style="margin-top:8px" id="inCount"></div>
     </div>
     <div id="days"></div>
@@ -222,23 +225,37 @@ ul.flat{margin:6px 0;padding-left:18px}ul.flat li{margin:4px 0}
 <script>
 // Testing access by Banquet Bot sign-in: Jason (beta, builds the week) plus every server with a PIN (send availability).
 const WHO = (() => { try { return JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); } catch (e) { return null; } })();
-const TESTERS = {Jason: "BETA", Hector: "BETA", Dylan: "", Francisco: "", Gema: "", Tomas: "", Carlos: ""};
+const TESTERS = {Jason: "BETA", Hector: "BETA", Dylan: "", Francisco: "", Gema: "", Tomas: "", Carlos: "", Hilnery: ""};
 if (!WHO || !(WHO.name in TESTERS)) { document.getElementById("gate").hidden = false; document.getElementById("wrap").remove(); throw new Error("not a tester"); }
 const LEADV = WHO.name === "Jason" || WHO.name === "Hector";   // Jason + Hector build the week; servers only send availability
 document.getElementById("stage").textContent = TESTERS[WHO.name];
 if (!TESTERS[WHO.name]) document.getElementById("stage").style.display = "none";
 if (LEADV) {
   // Jason has no availability tab at all (no way to overwrite a server's answer): he goes straight to Build the week.
-  document.getElementById("testNote").textContent = "Testing: Dylan, Francisco, Gema, Tomas and Carlos send their days from their own sign-in, and what they send shows here (✓ Sent). The week shown is next week's real events.";
+  document.getElementById("testNote").textContent = "Dylan, Francisco, Gema, Tomas, Carlos and Hilnery send their days from their own sign-in, and what they send shows here (✓ Sent). Pick the week above; each week is built from its real events.";
   ["#wrap .tabs", "#v-avail"].forEach(q => document.querySelectorAll(q).forEach(el => el.style.setProperty("display", "none", "important")));
   document.getElementById("v-avail").classList.remove("on"); document.getElementById("v-build").classList.add("on");
 }
 else { ["#wrap .tabs", "#v-build", "#switch", "#v-avail > .note"].forEach(q => document.querySelectorAll(q).forEach(el => el.style.setProperty("display", "none", "important"))); }
-const DATA = {"week":{"2026-10-24":{"meals":[{"s":1140,"e":1380,"tag":"Reception","n":80,"room":"Primrose D"}],"clients":["Robe Lighting","PMADTX (Puppy Mill Awareness Day TX)"],"actual":[],"bars":[{"s":1140,"e":1380,"room":"Primrose D","label":"PMADTX (Puppy Mill Awareness Day TX)","n":1}]},"2026-10-25":{"meals":[],"clients":[],"actual":[],"bars":[]},"2026-10-26":{"meals":[{"s":1020,"e":1080,"tag":"Reception \u2014 Cocktail Social","n":103,"room":"Primrose Foyer CD"},{"s":1080,"e":1200,"tag":"Dinner Buffet","n":103,"room":"Primrose CD"}],"clients":["US Oncology"],"actual":[],"bars":[{"s":1020,"e":1140,"room":"Primrose Foyer CD","label":"US Oncology","n":2}]},"2026-10-27":{"meals":[{"s":420,"e":480,"tag":"Breakfast","n":20,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"}],"clients":["Reliant Life Sciences","Galderma","Bobcat","Werfen"],"actual":[],"bars":[]},"2026-10-28":{"meals":[{"s":420,"e":480,"tag":"Breakfast","n":20,"room":"Camellia"},{"s":450,"e":540,"tag":"Breakfast","n":38,"room":"Verbena"},{"s":465,"e":510,"tag":"Breakfast","n":70,"room":"Primrose AB"},{"s":720,"e":780,"tag":"Lunch Buffet","n":38,"room":"Verbena"},{"s":720,"e":780,"tag":"Lunch","n":22,"room":"Camellia"},{"s":720,"e":780,"tag":"Lunch","n":13,"room":"Plumeria A"},{"s":735,"e":780,"tag":"Lunch Buffet","n":70,"room":"Primrose AB"},{"s":1080,"e":1200,"tag":"Dinner","n":17,"room":"Bonnell"},{"s":1170,"e":1320,"tag":"Reception","n":40,"room":"Barton"}],"clients":["Momentum Skilled Services","Reliant Life Sciences","Galderma","ABB","Bobcat","Werfen"],"actual":[],"bars":[{"s":1170,"e":1305,"room":"Barton","label":"ABB","n":1}]},"2026-10-29":{"meals":[{"s":720,"e":780,"tag":"Lunch Buffet","n":22,"room":"Camellia"},{"s":1080,"e":1200,"tag":"Dinner","n":16,"room":"Bonnell"}],"clients":["Upbring"],"actual":[],"bars":[]},"2026-10-30":{"meals":[],"clients":[],"actual":[],"bars":[]}},"pts":[[3,1],[18,2],[400,7],[60,3],[175,6],[150,5],[88,3],[147,5],[32,2],[59,3],[6,1],[100,3],[134,7],[100,7],[18,2],[30,2],[30,1],[100,4],[120,2],[300,6],[300,9],[200,8],[6,2],[30,2],[29,2],[100,3],[100,4],[21,1],[51,3],[30,2],[20,3],[40,2],[34,2],[187,5],[23,1],[25,1],[20,2],[59,3],[50,3],[45,1],[250,2],[170,7],[70,5],[50,2],[50,2],[120,5],[160,5],[170,4],[115,3],[55,2],[424,3],[278,10],[291,11],[200,5],[15,1],[60,3],[40,2],[22,2],[278,9],[277,9],[32,2],[30,1],[44,4],[104,5],[149,6],[15,1],[31,3],[90,6],[35,3],[60,3],[60,3],[138,6]]};
+// Two weeks open at once (Jason 2026-10-27): next week and the week after, built from the Rundown's event orders.
+const WEEKS = {"2026-10-31":{"2026-10-31":{"meals":[{"s":660,"e":780,"tag":"Brunch","n":13,"room":"Bonnell"}],"clients":["Corinne"],"actual":[],"bars":[{"s":660,"e":780,"room":"Bonnell","label":"Corinne","n":1}]},"2026-11-01":{"meals":[],"clients":[],"actual":[],"bars":[]},"2026-11-02":{"meals":[{"s":465,"e":540,"tag":"Breakfast","n":8,"room":"Camellia B"},{"s":510,"e":570,"tag":"Breakfast","n":14,"room":"Camellia A"},{"s":690,"e":780,"tag":"Lunch","n":8,"room":"Camellia B"},{"s":720,"e":780,"tag":"Lunch","n":14,"room":"Camellia A"},{"s":960,"e":1020,"tag":"Lunch","n":70,"room":"Primrose D"}],"clients":["Texas Association of School Boards (TASB)","Altasciences","Legrand"],"actual":[],"bars":[]},"2026-11-03":{"meals":[{"s":450,"e":540,"tag":"Breakfast","n":8,"room":"Camellia B"},{"s":480,"e":540,"tag":"Breakfast Buffet","n":70,"room":"Primrose B"},{"s":720,"e":780,"tag":"Lunch","n":6,"room":"Buttercup"},{"s":720,"e":780,"tag":"Lunch Buffet","n":20,"room":"Lantana"},{"s":720,"e":780,"tag":"Lunch Buffet","n":70,"room":"Primrose B"},{"s":720,"e":780,"tag":"Lunch","n":70,"room":"Primrose D"},{"s":750,"e":810,"tag":"Lunch","n":8,"room":"Camellia B"},{"s":1050,"e":1200,"tag":"Dinner","n":30,"room":"Bonnell"}],"clients":["Legrand","Altasciences","Lenovo","Colt","Bayer","AUSDW In-House"],"actual":[],"bars":[]},"2026-11-04":{"meals":[{"s":480,"e":540,"tag":"Breakfast Buffet","n":80,"room":"Primrose B"},{"s":480,"e":540,"tag":"Breakfast Buffet","n":70,"room":"Primrose D"},{"s":720,"e":780,"tag":"Lunch Buffet","n":80,"room":"Primrose B"},{"s":720,"e":780,"tag":"Lunch Buffet","n":70,"room":"Primrose D"},{"s":1080,"e":1200,"tag":"Cocktail Reception","n":30,"room":"Barton"},{"s":1080,"e":1200,"tag":"Reception","n":90,"room":"Pre-Function"}],"clients":["Legrand","Lenovo","FirstService Residential"],"actual":[],"bars":[{"s":1080,"e":1320,"room":"Pre-Function","label":"Lenovo","n":1}]},"2026-11-05":{"meals":[{"s":465,"e":525,"tag":"Breakfast Buffet","n":75,"room":"Primrose D"},{"s":510,"e":540,"tag":"Breakfast","n":15,"room":"Verbena B"},{"s":720,"e":765,"tag":"Lunch Buffet","n":90,"room":"Primrose D"},{"s":720,"e":780,"tag":"Lunch","n":15,"room":"Verbena B"},{"s":1080,"e":1170,"tag":"Dinner","n":15,"room":"Verbena B"}],"clients":["Lenovo","FCM"],"actual":[],"bars":[]},"2026-11-06":{"meals":[{"s":450,"e":510,"tag":"Breakfast Buffet","n":75,"room":"Primrose D"},{"s":510,"e":540,"tag":"Breakfast","n":15,"room":"Verbena B"},{"s":720,"e":780,"tag":"Lunch Buffet","n":90,"room":"Primrose D"},{"s":720,"e":780,"tag":"Lunch","n":15,"room":"Verbena B"}],"clients":["Lenovo","FCM"],"actual":[],"bars":[]}},"2026-11-07":{"2026-11-07":{"meals":[],"clients":[],"actual":[],"bars":[]},"2026-11-08":{"meals":[],"clients":["Dell"],"actual":[],"bars":[]},"2026-11-09":{"meals":[],"clients":["Dell"],"actual":[],"bars":[]},"2026-11-10":{"meals":[],"clients":["Dell"],"actual":[],"bars":[]},"2026-11-11":{"meals":[],"clients":[],"actual":[],"bars":[]},"2026-11-12":{"meals":[],"clients":[],"actual":[],"bars":[]},"2026-11-13":{"meals":[],"clients":[],"actual":[],"bars":[]}}};
+const DATA = {"week":null,"pts":[[3,1],[18,2],[400,7],[60,3],[175,6],[150,5],[88,3],[147,5],[32,2],[59,3],[6,1],[100,3],[134,7],[100,7],[18,2],[30,2],[30,1],[100,4],[120,2],[300,6],[300,9],[200,8],[6,2],[30,2],[29,2],[100,3],[100,4],[21,1],[51,3],[30,2],[20,3],[40,2],[34,2],[187,5],[23,1],[25,1],[20,2],[59,3],[50,3],[45,1],[250,2],[170,7],[70,5],[50,2],[50,2],[120,5],[160,5],[170,4],[115,3],[55,2],[424,3],[278,10],[291,11],[200,5],[15,1],[60,3],[40,2],[22,2],[278,9],[277,9],[32,2],[30,1],[44,4],[104,5],[149,6],[15,1],[31,3],[90,6],[35,3],[60,3],[60,3],[138,6]]};
+const WKEYS = Object.keys(WEEKS);
+let SELW = (() => { try { return localStorage.getItem("bb-sched-week"); } catch (e) { return null; } })();
+if (!WEEKS[SELW]) SELW = WKEYS[0];
+DATA.week = WEEKS[SELW];
 const ROSTER = ["Francisco","Dylan","Tomas","Carlos","Gema","Odaly","Hilnery","Raibely","Adrian","Ozzy"];
 // Any event with a bar gets a bartender shift filled from these three (Jason 2026-10-22).
 const BARTENDERS = ["Dylan", "Carlos", "Leo"];
 const DAYS = Object.keys(DATA.week);
+// Week switcher: everything (answers, draft, final grid) is kept per week, so switching just reloads with the other week.
+(() => { const f = d => { const x = new Date(d + "T12:00"); return (x.getMonth() + 1) + "/" + x.getDate(); };
+  const box = document.getElementById("wkTabs");
+  box.innerHTML = WKEYS.map((w, i) => { const ds = Object.keys(WEEKS[w]);
+    return `<button class="tab${w === SELW ? " on" : ""}" data-wk="${w}">${i ? "Week after" : "Next week"} · ${f(ds[0])}–${f(ds[6])}</button>`; }).join("");
+  box.querySelectorAll("[data-wk]").forEach(b => b.onclick = () => { if (b.dataset.wk === SELW) return;
+    try { localStorage.setItem("bb-sched-week", b.dataset.wk); } catch (e) {} location.reload(); });
+})();
 const DOW = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 const dLabel = d => { const x = new Date(d + "T12:00"); return DOW[x.getDay()] + " " + (x.getMonth() + 1) + "/" + x.getDate(); };
 // Sample availability (made up for the demo): all / am / pm / off for Sat..Fri, plus shifts wanted.
@@ -557,6 +574,14 @@ $("#mkxls").onclick = async () => {
   } catch (e) { console.error("[scheduler] excel", e); toast("Couldn't build the Excel file — try again"); }
   finally { btn.disabled = false; btn.textContent = "⬇ Create schedule (Excel)"; }
 };
+// "+ Add an event" at the top: choose the day, then that day's event form opens (same form as the button under each day).
+$("#addEvTop").onclick = () => { const box = $("#evDays");
+  if (!box.hidden) { box.hidden = true; return; }
+  box.innerHTML = '<span class="sub">Which day?</span>' + DAYS.map(d => `<button class="add" data-evday="${d}">${dLabel(d)}</button>`).join("");
+  box.hidden = false;
+  box.querySelectorAll("[data-evday]").forEach(b => b.onclick = () => { const ef = document.getElementById("ef-" + b.dataset.evday); box.hidden = true;
+    if (!ef) return; ef.classList.add("on"); ef.scrollIntoView({behavior: "smooth", block: "center"});
+    const nm = ef.querySelector('[data-f="name"]'); if (nm) setTimeout(() => nm.focus(), 300); }); };
 $("#auto").onclick = () => { MANUAL = false; TIMES = {}; autoFill(); saveBuild(); renderBuild(); toast("Schedule built from everyone's availability — adjust anything, then Create schedule (Excel) at the bottom"); };
 $("#clear").onclick = () => { ASSIGN = {}; TIMES = {}; MANUAL = true; saveBuild(); renderBuild(); };
 $("#showActual").onchange = renderBuild;
