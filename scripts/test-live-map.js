@@ -12,7 +12,7 @@ const rooms = d => [...Object.values(DATA.days[d].ev), ...DATA.days[d].off];
 for (const d of ['2026-10-27', '2026-10-28']) {
   const bobcat = DATA.days[d].off.find(e => /Bobcat/.test(e.g));
   assert(!bobcat.s.some(l => l[2] === 'nofb'), `${d} Bobcat still shows No F&B`);
-  assert(bobcat.s.some(l => l[2] === 'bev') && bobcat.s.some(l => l[2] === 'brk'), `${d} Bobcat needs beverage + snack break`);
+  assert.deepEqual(bobcat.s, [['8–5', 'Continuous Break', 'bev']], `${d} Bobcat should show its one break name only`);
   const galderma = DATA.days[d].ev.Camellia;
   assert(/Galderma/.test(galderma.g));
   assert(!galderma.s.some(l => l[2] === 'nofb'), `${d} Galderma booking row crowds the box`);
@@ -22,4 +22,4 @@ for (const d of Object.keys(DATA.days)) for (const e of rooms(d)) for (const l o
   assert.equal(l.length, 3, `${d} ${e.g}: bad line`);
   assert(!/\$\d/.test(l[1]), `${d} ${e.g}: price on the map`);
 }
-console.log('PASS: live map script parses, no rundown fetch, Bobcat beverage + snack breaks, Galderma fits, no prices.');
+console.log('PASS: live map script parses, no rundown fetch, Bobcat Continuous Break, Galderma fits, no prices.');

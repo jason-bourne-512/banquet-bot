@@ -4,7 +4,7 @@ Source: `~/Downloads/BEO Packet 10.22.26-11.10.26.pdf`, 84 pages, 61 unique even
 
 The desktop live map previously rendered a separate abbreviated `DATA.days` object. Its Bobcat Bluebell entries for October 27 and 28 contained a `Meeting · No F&B` booking line and a generic `Continuous Break` line, without the menu. The Daily Brief uses the detailed rows in `rundown.html`, which already had chips, granola bars, regular coffee, teas and Pepsi products on consumption. The packet does not describe Bobcat as having no F&B. That text was added to the room-booking row during transcription, then displayed alongside actual service by the independent map renderer.
 
-The map now fetches the same source as the Daily Brief. Source rows determine service titles, times, counts and menus. Booking times remain present, with the misleading No F&B suffix removed in rooms with service. Footer notes appear in the readable full-details section and the room dialog. All source rooms and dates are added automatically; use Include past dates for October 22 and 24. Existing map diagrams and later revision flags remain. A failed source fetch displays an error instead of presenting incomplete summaries as current information.
+The map keeps its own `DATA.days` object and shows only buffet and break names per room (Jason's rule); menus, counts and notes stay on the Rundown. An interim version that fetched and rendered the full rundown was reverted in f0e8e96. Bobcat October 27 and 28 now show the event order's one function, `Continuous Break`, with the No F&B booking line removed. Galderma's Camellia box drops its booking line and uses the shorter title `Galderma · Team Building` so it fits.
 
 ## Packet reconciliation findings
 
@@ -18,9 +18,9 @@ The map now fetches the same source as the Daily Brief. Source rows determine se
 
 ## Validation and limits
 
-`node scripts/extract-rundown.js` completed without warnings. `node scripts/test-live-map.js` checks the actual map parser and HTML renderer against 88 room/day records and 180 service/booking rows across the packet window, including every source menu, count, time and footer note. It checks Bobcat's room dialog and Lenovo's corrected guarantees. Inline JavaScript and the check script pass Node syntax checks; `git diff --check` passes.
+`node scripts/extract-rundown.js` completed without warnings. `node scripts/test-live-map.js` syntax-checks the map script, confirms it does not fetch the rundown, checks Bobcat shows only `Continuous Break` and Galderma has no booking line and at most 5 lines, and checks no map line carries a price.
 
-Browser layout verification could not run: the sandbox rejects binding a throwaway local HTTP server (`PermissionError: Operation not permitted`). These checks emulate the DOM and do not establish pixel layout, mobile behavior or browser interaction. No production site, bot, notification sender or publishing tool was used.
+Browser layout verification could not run: the sandbox rejects binding a throwaway local HTTP server. The Galderma fit in Camellia has not been checked in a browser. No production site, bot, notification sender or publishing tool was used.
 
 ## Event-order coverage
 
