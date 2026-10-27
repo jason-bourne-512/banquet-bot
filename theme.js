@@ -336,15 +336,23 @@
       monkeyMoments: true,   // every page: a random monkey moment every ~12–25s (see monkeyLoop)
       css: BADGE + ".bb-me-badge{color:#ffd1e4;background:linear-gradient(135deg,#5a1f3a,#2a0f1d);border:1px solid #ff9ec788}" +
         "@keyframes bbVineIn{from{transform:translateY(-110%)}to{transform:none}}" +
-        "@keyframes bbSwing{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}" +
+        // Swing (2026-10-27): big Tarzan swings, then a full loop-the-loop over the top of the vine.
+        "@keyframes bbSwing{0%{transform:rotate(-22deg)}15%{transform:rotate(22deg)}30%{transform:rotate(-22deg)}45%{transform:rotate(22deg)}" +
+        "60%{transform:rotate(-30deg)}80%{transform:rotate(330deg)}100%{transform:rotate(338deg)}}" +
         "@keyframes bbSwingOff{0%{transform:rotate(0)}30%{transform:rotate(-14deg)}100%{transform:translateY(-120%) rotate(10deg)}}" +
-        ".bb-monkey{animation:bbVineIn .9s cubic-bezier(.3,1.4,.5,1) both,bbSwing 3.4s ease-in-out .9s infinite}" +
+        ".bb-monkey{animation:bbVineIn .9s cubic-bezier(.3,1.4,.5,1) both,bbSwing 9s ease-in-out .9s infinite}" +
         ".bb-monkey.off{animation:bbSwingOff .9s ease-in forwards!important}" +
         "@media (prefers-reduced-motion:reduce){.bb-monkey{animation:none!important}}" +
-        "@keyframes bbStroll{0%{transform:translateX(-170px) scaleX(1)}47%{transform:translateX(calc(100vw + 20px)) scaleX(1)}" +
-        "50%{transform:translateX(calc(100vw + 20px)) scaleX(-1)}97%{transform:translateX(-170px) scaleX(-1)}100%{transform:translateX(-170px) scaleX(1)}}" +
+        // Walk (2026-10-27): skips along, stops to look around, and throws a cartwheel each way.
+        "@keyframes bbStroll{0%{transform:translateX(-170px) scaleX(1) rotate(0)}14%,19%{transform:translateX(26vw) scaleX(1) rotate(0)}" +
+        "27%{transform:translateX(48vw) scaleX(1) rotate(0)}32%{transform:translateX(64vw) scaleX(1) rotate(360deg)}" +
+        "47%{transform:translateX(calc(100vw + 20px)) scaleX(1) rotate(360deg)}50%{transform:translateX(calc(100vw + 20px)) scaleX(-1) rotate(360deg)}" +
+        "64%,69%{transform:translateX(62vw) scaleX(-1) rotate(360deg)}77%{transform:translateX(42vw) scaleX(-1) rotate(360deg)}" +
+        "82%{transform:translateX(24vw) scaleX(-1) rotate(720deg)}97%{transform:translateX(-170px) scaleX(-1) rotate(720deg)}100%{transform:translateX(-170px) scaleX(1) rotate(720deg)}}" +
+        "@keyframes bbSkip{0%,100%{translate:0 0;rotate:-3deg}50%{translate:0 -14px;rotate:4deg}}" +
         "@keyframes bbJump{0%,100%{translate:0 0}40%{translate:0 -60px}}" +
         ".bb-walker{animation:bbStroll 30s linear infinite}" +
+        ".bb-walker img{animation:bbSkip .45s ease-in-out infinite}.bb-walker.hold img{animation:none}" +
         ".bb-walker.jump img{animation:bbJump .7s ease-out}" +
         "@media (prefers-reduced-motion:reduce){.bb-walker{display:none!important}}" +
         // Monkey moments (new set 2026-10-23): the walker naps, juggles bananas or says hola; a monkey parachutes in, floats up in a bubble,
