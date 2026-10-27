@@ -27,16 +27,35 @@
 .sg-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .sg-head input[type=text]{flex:1;min-width:220px;background:#0b151e;border:1px solid #527b995e;border-radius:8px;color:#edf5ff;font:600 15px Manrope,Arial,sans-serif;padding:8px 10px}
 .sg-head label{font-size:11px;color:#b1c8d9;display:flex;gap:6px;align-items:center}
-.sg-rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:6px 14px;margin-top:9px}
-.sg-room{display:flex;gap:8px;align-items:center;font-size:12px;color:#d6e8f6}
+.sg-rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:6px 14px;margin-top:9px}
+.sg-room{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:12px;color:#d6e8f6}
 .sg-room b{font-weight:700;min-width:84px}
 .sg-room .arr{color:#8bd1ff;font-size:17px;width:22px;text-align:center}
 .sg-room input[type=number]{width:46px;background:#0b151e;border:1px solid #527b995e;border-radius:6px;color:#edf5ff;font:13px Manrope,Arial,sans-serif;padding:5px}
+.sg select,.sg-new input[type=text],.sg-new input[type=number]{background:#0b151e;border:1px solid #527b995e;border-radius:6px;color:#edf5ff;font:12px Manrope,Arial,sans-serif;padding:5px 6px;color-scheme:dark}
+.sg-room select{max-width:110px}
+.sg-lab{display:inline-flex;align-items:center;gap:4px}
+.sg-lab em{font-style:normal;font-size:9px;letter-spacing:.08em;color:#8aa4b8;text-transform:uppercase}
+.sg-room input.lt{width:110px;background:#0b151e;border:1px solid #527b995e;border-radius:6px;color:#edf5ff;font:12px Manrope,Arial,sans-serif;padding:5px 6px}
+.sg-new{display:none;margin:0 0 14px}
+.sg-new.on{display:block}
+.sg-new .row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end}
+.sg-new label{display:flex;flex-direction:column;gap:4px;font-size:10px;letter-spacing:.08em;color:#9eb8cb;text-transform:uppercase}
+.sg-new input[type=text]{min-width:240px}
+.sg-new input[type=number]{width:60px}
+.sg-new .chk{flex-direction:row;align-items:center;gap:6px;letter-spacing:0;text-transform:none;font-size:11px;color:#b1c8d9}
+.sg-x{margin-left:auto;background:transparent;border:1px solid #ff8f8f88;color:#ff8f8f;border-radius:7px;font:11px Manrope,Arial,sans-serif;padding:4px 9px;cursor:pointer}
 .sg-tag{font-size:9px;letter-spacing:.1em;color:#f2c879;border:1px solid #f2c87966;border-radius:9px;padding:1px 6px;font-style:normal}
 .sg-tag.red{color:#ff8f8f;border-color:#ff8f8f88}
 .sg-note{font-size:11px;color:#9fbdd1;margin:6px 0}
 .sg h2{font:500 22px 'Barlow Condensed',sans-serif;letter-spacing:.4px;margin:22px 0 8px;color:#edf5ff}
 .pv{display:flex;flex-wrap:wrap;gap:14px}
+/* collapsed = zero height but still laid out, so the sheets can be measured and printed */
+.pv.collapsed{height:0;overflow:hidden;gap:0}
+.sg-tog{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.sg-tog .tri{display:inline-block;color:#8bd1ff;font-size:16px;transition:transform .15s}
+.sg-tog[aria-expanded=true] .tri{transform:rotate(90deg)}
+.sg-tog:focus-visible{outline:1px solid #8bd1ff;outline-offset:3px}
 .pv .sheet{zoom:.36;box-shadow:0 6px 18px #0008}
 /* ── SHEETS (screen preview + print) ── */
 .sheet{position:relative;overflow:hidden;background:#595959;color:#fff;font-family:"Liberation Serif","Times New Roman",Times,serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;flex:none;--k:1}
@@ -73,6 +92,7 @@
   body[data-print=dir] #pv-door,body[data-print=door] #pv-dir{display:none!important}
   .sg{max-width:none;padding:0}
   .pv{display:block}
+  .pv.collapsed{height:auto!important;overflow:visible!important}
   .pv .sheet{zoom:1;box-shadow:none;page-break-after:always;break-after:page;margin:0}
   .pv .sheet:last-child{page-break-after:auto;break-after:auto}
 }
@@ -89,12 +109,28 @@
     <div class="eyebrow">WESTIN AUSTIN · THE DOMAIN</div>
     <h1>PRINT SIGNS</h1>
     <p class="sub">Directionals and door signs built from the Rundown for the date you pick. Check the names and counts, then print.</p>
-    <div id="sg-gate" class="sg-note" hidden>Print Signs is for Jason only for now.</div>
+    <div id="sg-gate" class="sg-note" hidden>Print Signs is for Jason and Hector only.</div>
     <div id="sg-main">
       <div class="sg-bar">
         <input type="date" id="sg-date" aria-label="Date">
         <button class="sg-btn" id="sg-pd" type="button">Print Directionals<small id="sg-pd-n"></small></button>
         <button class="sg-btn b2" id="sg-pr" type="button">Print Door Signs<small id="sg-pr-n"></small></button>
+        <button class="sg-btn" id="sg-newbtn" type="button">New sign<small>Create one from scratch</small></button>
+      </div>
+      <div class="sg-card sg-new" id="sg-new">
+        <div class="row">
+          <label>Group name<input type="text" id="nw-name" placeholder="e.g. Momentum Skilled Services"></label>
+          <label>Room<select id="nw-room"></select></label>
+          <label>Arrow<select id="nw-dir"><option value="L">Left</option><option value="R">Right</option></select></label>
+          <label>Arrow label<select id="nw-lab"><option>Meeting</option><option>Breakout</option><option value="custom">Custom</option><option value="none">None</option></select></label>
+          <label id="nw-labt-w" hidden>Custom label<input type="text" id="nw-labt" placeholder="e.g. Demo Room" style="min-width:140px"></label>
+          <label>Door label<select id="nw-dlab"><option value="same">Same as arrow label</option><option>Meeting</option><option>Breakout</option><option value="custom">Custom</option><option value="none">None</option></select></label>
+          <label id="nw-dlabt-w" hidden>Custom door label<input type="text" id="nw-dlabt" placeholder="e.g. Demo Room" style="min-width:140px"></label>
+          <label>Door signs<input type="number" id="nw-doors" min="0" max="9" value="2"></label>
+          <label class="chk"><input type="checkbox" id="nw-dirsign" checked> Directional</label>
+          <button class="sg-btn" id="nw-add" type="button">Add sign</button>
+        </div>
+        <div class="sg-note" id="nw-msg"></div>
       </div>
       <div id="sg-events"></div>
       <div id="sg-skip" class="sg-note"></div>
@@ -102,15 +138,17 @@
     </div>
   </div>
   <div id="sg-pv" hidden>
-    <div id="pv-dir"><h2 class="sg-ui">Directionals</h2><div class="pv" id="pv-dir-list"></div></div>
-    <div id="pv-door"><h2 class="sg-ui">Door signs</h2><div class="pv" id="pv-door-list"></div></div>
+    <div id="pv-dir"><h2 class="sg-ui"><button type="button" class="sg-tog" aria-expanded="false" data-tog="pv-dir-list"><span class="tri">▸</span>Directionals</button></h2><div class="pv collapsed" id="pv-dir-list"></div></div>
+    <div id="pv-door"><h2 class="sg-ui"><button type="button" class="sg-tog" aria-expanded="false" data-tog="pv-door-list"><span class="tri">▸</span>Door signs</button></h2><div class="pv collapsed" id="pv-door-list"></div></div>
   </div>
 </div>
 <style id="sg-page"></style>
 <script>
 (function () {
   var who = null; try { who = JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); } catch (e) {}
-  if (!who || who.name !== "Jason") { document.getElementById("sg-gate").hidden = false; document.getElementById("sg-main").hidden = true; return; }
+  if (!who || ["Jason", "Hector"].indexOf(who.name) < 0 || window.innerWidth < 1000) {
+    if (who && ["Jason", "Hector"].indexOf(who.name) > -1 && window.innerWidth < 1000) document.getElementById("sg-gate").textContent = "Print Signs is on desktop only.";
+    document.getElementById("sg-gate").hidden = false; document.getElementById("sg-main").hidden = true; return; }
   document.getElementById("sg-pv").hidden = false;
 
   var $ = function (id) { return document.getElementById(id); };
@@ -137,6 +175,16 @@
     else if (name == "Bluebell") { out.doors = 1; out.guess = true; }
     else out.doors = letters ? letters.length : 2;
     return out;
+  }
+  var modeOf = function (l) { return l == "Meeting" ? "Meeting" : l == "Breakout" ? "Breakout" : l ? "custom" : "none"; };
+  // label = line on the directional, dlabel = line on the door sign; both start from the same value and can then differ
+  function initMode(r) { if (r.dlabel == null) r.dlabel = r.label; r.mode = modeOf(r.label); r.dmode = modeOf(r.dlabel); }
+  function setMode(r, mode, door) {
+    var lk = door ? "dlabel" : "label", mk = door ? "dmode" : "mode";
+    r[mk] = mode;
+    if (mode == "Meeting" || mode == "Breakout") r[lk] = mode;
+    else if (mode == "none") r[lk] = "";
+    else if (r[lk] == "Meeting" || r[lk] == "Breakout") r[lk] = "";
   }
   function roomLabel(card, room) {
     var rows = [].slice.call(card.querySelectorAll(".svc-row")), lab = "Meeting";
@@ -165,7 +213,7 @@
       [].forEach.call(card.querySelectorAll(".svc-row .room-pill"), function (p) {
         var raw = txt(p); if (seen[raw]) return; seen[raw] = 1;
         var pr = parseRoom(raw);
-        if (pr) { pr.label = roomLabel(card, raw); rooms.push(pr); } else if (raw) skipped.push(group + " (" + raw + ")");
+        if (pr) { pr.label = roomLabel(card, raw); initMode(pr); rooms.push(pr); } else if (raw) skipped.push(group + " (" + raw + ")");
       });
       var noteTxt = [].map.call(card.querySelectorAll(".foot-val"), txt).join(" ");
       if (!rooms.length) return;
@@ -195,7 +243,7 @@
     var left = [], right = [], blue = [];
     events.forEach(function (e) {
       if (!e.dirOn) return;
-      var multi = e.rooms.length > 1, ln = function (r) { return r.room + (multi ? "-" + r.label : ""); };
+      var multi = e.rooms.length > 1, ln = function (r) { return r.room + (r.label && (multi || r.label != "Meeting") ? "-" + r.label : ""); };
       var L = e.rooms.filter(function (r) { return r.name != "Bluebell" && /L/.test(r.dir); }).map(ln);
       var R = e.rooms.filter(function (r) { return r.name != "Bluebell" && /R/.test(r.dir); }).map(ln);
       var B = e.rooms.filter(function (r) { return r.name == "Bluebell"; }).map(ln);
@@ -210,7 +258,7 @@
     var door = [];
     events.forEach(function (e) {
       e.rooms.forEach(function (r) {
-        var sub = r.label && r.label != "Meeting" ? r.label : "";
+        var sub = r.dlabel && r.dlabel != "Meeting" ? r.dlabel : "";
         for (var n = 0; n < r.doors; n++) door.push(doorSheet(e.name, sub, r.room));
       });
     });
@@ -222,15 +270,22 @@
   }
 
   // ── list UI ──
+  function labelUI(r, ei, ri, door) {
+    var mode = door ? r.dmode : r.mode, val = door ? r.dlabel : r.label, w = door ? "1" : "0";
+    return '<span class="sg-lab"><em>' + (door ? "Door" : "Arrow") + '</em><select data-lm="' + ei + '" data-ri="' + ri + '" data-w="' + w + '" aria-label="' + (door ? "Door sign label" : "Directional label") + '">' +
+      ["Meeting", "Breakout", "custom", "none"].map(function (m) { return '<option value="' + m + '"' + (mode == m ? " selected" : "") + ">" + (m == "custom" ? "Custom" : m == "none" ? "None" : m) + "</option>"; }).join("") + "</select>" +
+      (mode == "custom" ? '<input class="lt" type="text" data-lt="' + ei + '" data-ri="' + ri + '" data-w="' + w + '" value="' + esc(val) + '" placeholder="label" aria-label="Custom label">' : "") + "</span>";
+  }
   function renderList() {
     var h = "";
     events.forEach(function (e, ei) {
       h += '<div class="sg-card' + (e.dirOn ? "" : " off") + '"><div class="sg-head"><input type="text" data-ei="' + ei + '" value="' + esc(e.name) + '" aria-label="Sign name">' +
         '<label><input type="checkbox" data-dir="' + ei + '"' + (e.dirOn ? " checked" : "") + '> Directional</label>' +
-        (e.noBeo ? '<span class="sg-tag red">NO EVENT ORDER YET</span>' : "") + "</div><div class=\"sg-rooms\">";
+        (e.noBeo ? '<span class="sg-tag red">NO EVENT ORDER YET</span>' : "") + (e.custom ? '<i class="sg-tag">NEW</i><button type="button" class="sg-x" data-rm="' + ei + '">Remove</button>' : "") + "</div><div class=\"sg-rooms\">";
       e.rooms.forEach(function (r, ri) {
         var arrow = r.dir == "L" ? "\u2190" : r.dir == "R" ? "\u2192" : "\u2190\u2192";
-        h += '<div class="sg-room"><span class="arr">' + arrow + "</span><b>" + esc(r.room) + '</b><span>' + esc(r.label) + '</span><input type="number" min="0" max="9" value="' + r.doors + '" data-ei="' + ei + '" data-ri="' + ri + '" aria-label="Door signs"> door' +
+        h += '<div class="sg-room"><span class="arr">' + arrow + "</span><b>" + esc(r.room) + '</b>' + labelUI(r, ei, ri, false) + labelUI(r, ei, ri, true) +
+          '<input type="number" min="0" max="9" value="' + r.doors + '" data-ei="' + ei + '" data-ri="' + ri + '" aria-label="Door signs"> door' +
           (r.guess ? ' <i class="sg-tag">GUESS</i>' : "") + (r.dir == "LR" ? ' <i class="sg-tag red">CHECK SIDE</i>' : "") + "</div>";
       });
       h += "</div></div>";
@@ -239,13 +294,21 @@
     $("sg-skip").textContent = skipped.length ? "No sign rule for: " + skipped.join(", ") : "";
   }
   $("sg-events").addEventListener("input", function (ev) {
-    var t = ev.target;
-    if (t.dataset.ri != null) events[+t.dataset.ei].rooms[+t.dataset.ri].doors = Math.max(0, parseInt(t.value || "0", 10) || 0);
+    var t = ev.target; if (t.dataset.lm != null) return;   // label selects are handled on "change"
+    if (t.dataset.lt != null) events[+t.dataset.lt].rooms[+t.dataset.ri][t.dataset.w == "1" ? "dlabel" : "label"] = t.value.trim();
+    else if (t.dataset.ri != null) events[+t.dataset.ei].rooms[+t.dataset.ri].doors = Math.max(0, parseInt(t.value || "0", 10) || 0);
     else if (t.dataset.ei != null && t.type == "text") events[+t.dataset.ei].name = t.value;
     build();
   });
+  $("sg-events").addEventListener("click", function (ev) {
+    var t = ev.target; if (t.dataset.rm == null) return;
+    var e = events[+t.dataset.rm], list = customs[curISO] || [], i = list.indexOf(e);
+    if (i > -1) { list.splice(i, 1); events.splice(+t.dataset.rm, 1); renderList(); build(); }
+  });
   $("sg-events").addEventListener("change", function (ev) {
-    var t = ev.target; if (t.dataset.dir == null) return;
+    var t = ev.target;
+    if (t.dataset.lm != null) { setMode(events[+t.dataset.lm].rooms[+t.dataset.ri], t.value, t.dataset.w == "1"); renderList(); build(); return; }
+    if (t.dataset.dir == null) return;
     events[+t.dataset.dir].dirOn = t.checked; renderList(); build();
   });
   function printSet(kind) {
@@ -254,10 +317,37 @@
     var done = function () { document.body.removeAttribute("data-print"); window.removeEventListener("afterprint", done); };
     window.addEventListener("afterprint", done); setTimeout(function () { window.print(); }, 50);
   }
+  [].forEach.call(document.querySelectorAll(".sg-tog"), function (b) {
+    b.onclick = function () { var open = b.getAttribute("aria-expanded") != "true"; b.setAttribute("aria-expanded", open); $(b.dataset.tog).classList.toggle("collapsed", !open); };
+  });
   $("sg-pd").onclick = function () { printSet("dir"); };
   $("sg-pr").onclick = function () { printSet("door"); };
 
-  function show(iso) { readEvents(iso); renderList(); build(); }
+  var customs = {}, curISO = "";
+  function show(iso) { curISO = iso; readEvents(iso); events = events.concat(customs[iso] || []); renderList(); build(); }
+
+  // New sign from scratch: room list, arrow and door count come from the same rules (parseRoom), all editable.
+  var NEW_ROOMS = ["Lantana", "Lantana A", "Lantana B", "Plumeria", "Plumeria A", "Plumeria B", "Primrose A", "Primrose B", "Primrose AB", "Primrose C", "Primrose D", "Primrose CD",
+    "Camellia", "Camellia A", "Camellia B", "Verbena", "Verbena A", "Verbena B", "Bluebell"];
+  $("nw-room").innerHTML = NEW_ROOMS.map(function (r) { return "<option>" + r + "</option>"; }).join("");
+  function nwFill() { var p = parseRoom($("nw-room").value); if (!p) return; $("nw-dir").value = p.dir == "L" ? "L" : "R"; $("nw-doors").value = p.doors; }
+  $("nw-room").onchange = nwFill; nwFill();
+  $("nw-lab").onchange = function () { $("nw-labt-w").hidden = $("nw-lab").value != "custom"; };
+  $("nw-dlab").onchange = function () { $("nw-dlabt-w").hidden = $("nw-dlab").value != "custom"; };
+  $("sg-newbtn").onclick = function () { $("sg-new").classList.toggle("on"); if ($("sg-new").classList.contains("on")) $("nw-name").focus(); };
+  $("nw-add").onclick = function () {
+    var name = $("nw-name").value.trim(), msg = $("nw-msg");
+    if (!curISO) { msg.textContent = "Still loading the Rundown, try again in a moment."; return; }
+    if (!name) { msg.textContent = "Enter a group name."; return; }
+    var r = parseRoom($("nw-room").value); if (!r) { msg.textContent = "Pick a room."; return; }
+    r.dir = $("nw-dir").value; r.guess = false;
+    r.doors = Math.max(0, parseInt($("nw-doors").value || "0", 10) || 0);
+    var m = $("nw-lab").value; r.label = m == "custom" ? $("nw-labt").value.trim() : m == "none" ? "" : m; var dm = $("nw-dlab").value; r.dlabel = dm == "same" ? r.label : dm == "custom" ? $("nw-dlabt").value.trim() : dm == "none" ? "" : dm; initMode(r);
+    var ne = {group: name, name: name, rooms: [r], dirOn: $("nw-dirsign").checked, noBeo: false, custom: true};
+    (customs[curISO] = customs[curISO] || []).push(ne); events.push(ne);
+    msg.textContent = "Added " + name + ", " + r.room + ".";
+    $("nw-name").value = ""; renderList(); build();
+  };
   var todayISO = function () { return new Date().toLocaleDateString("en-CA", {timeZone: "America/Chicago"}); };
   var addDays = function (iso, n) { var d = new Date(iso + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 

@@ -391,8 +391,9 @@
       '<nav class="bbd-nav"><div class="lbl">Operations</div>' + navLinks(PAGES.slice(0, 6), cur) +
       (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' +
         '<a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' +
-        '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' :   // Print Signs: Jason only for now (Hector later)
-       w.name == "Hector" ? '<div class="lbl">Tools</div><a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' : "") +
+        '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' :   // Print Signs: Jason and Hector only
+       w.name == "Hector" ? '<div class="lbl">Tools</div><a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' +
+        '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' : "") +
       // Reference starts folded; the triangle opens it (remembered), and it opens itself on a reference page.
       '<button class="lbl bbd-reft" data-bbd="ref" aria-expanded="' + refOpen + '"><span class="tri">▸</span>Reference</button>' +
       '<div class="bbd-ref"' + (refOpen ? "" : " hidden") + ">" + navLinks(refPages, cur) + "</div></nav>" +
