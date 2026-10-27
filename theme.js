@@ -105,6 +105,15 @@
         "@keyframes bbStar{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}" +
         "@media (prefers-reduced-motion:reduce){.bb-stars i{animation:none;opacity:.8}}"
     },
+    // Hilnery: pink (Jason 2026-10-26) — warm rose accents on a deep berry night.
+    hilnery: {
+      label: "HILNERY",
+      tint: {color: "#e0569a", opacity: .42},
+      css: palette("#ff8fc4", "rgba(255,143,196,.15)", "#1a0b16", "#2a1224", "#3a1932", "rgba(255,143,196,.16)", "rgba(255,143,196,.40)") +
+        "body::before{background:radial-gradient(ellipse at 100% 0,#ff6fb266,transparent 52%),radial-gradient(ellipse at 0 100%,#ffb3d633,transparent 55%),#1a0b16!important}" +
+        "h1,h2{color:#ffe0ef}" + BADGE +
+        ".bb-me-badge{color:#fff;background:linear-gradient(135deg,#ff5fa2,#c2367a);border:1px solid #ffd6ea99}"
+    },
     // Gema: anime night — sakura petals drifting over a pink/lavender sky, and a chibi fox spirit (original art) that cheers her on.
     gema: {
       label: "GEMA · がんばって",

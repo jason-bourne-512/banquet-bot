@@ -273,7 +273,7 @@ body.dir .eyebrow::before{background:var(--acc);box-shadow:0 0 9px var(--acc)}
 body.dir .seg button.on{box-shadow:0 0 0 1px color-mix(in srgb,var(--acc) 40%,transparent);color:color-mix(in srgb,var(--acc) 45%,#fff)}
 body.dir .room .num{border-color:color-mix(in srgb,var(--acc) 33%,transparent)}
 body.dir .printbtn{border-color:color-mix(in srgb,var(--acc) 40%,transparent);color:var(--acc)}
-</style><script src="theme.js?v=1026a"></script>
+</style><script src="theme.js?v=1026b"></script>
 </head>
 <body>
 <div class="wrap">
@@ -706,15 +706,15 @@ const TYPE = {set:"Set", ref:"Refresh", clr:"Clear"};
 const PEOPLE = [
   {name:"Jamshid", role:"hsm", h:"2027b2be27174637d95513f3b8f638018a4db18e01960bfa882f5f2f41a2d107"},
   {name:"Tomas", role:"hsm", h:"4db88e701804cface93717b74523d79e31860c8da902719f357f8cdbb32e0e50"},
-  {name:"Francisco", role:"hsm", h:"44ebaaa5e671c84395dae9a1a6937bfe64f182e417811dbcc74d5790eb4ebe71"},
+  {name:"Francisco", role:"svr", h:"44ebaaa5e671c84395dae9a1a6937bfe64f182e417811dbcc74d5790eb4ebe71"},
   {name:"Jason", role:"captain", h:"5b18ac1addea60f0f4b383c4ff04b4a226d52b44b7d210945372e6b879e048c4"},
   {name:"Hector", role:"director", h:"6b6f35f81f3b0dd72a36b4d4f0c30321a07d68510dc03090972a49d0f8d321e8"},
-  {name:"Dylan", role:"hsm", h:"a9db52d798a53be8bb93c9ed86f2f87119186050a68ee20c0f2361ac4d729925"},
+  {name:"Dylan", role:"svr", h:"a9db52d798a53be8bb93c9ed86f2f87119186050a68ee20c0f2361ac4d729925"},
   {name:"Lisa", role:"em", h:"6d36e12e6701a1fcae2865c26f09a4a16cd4e510d208bcd03d244549df904a48"},
   {name:"Diana", role:"sem", h:"7ee49e9fc29dafb7dd4eb21a537f227a4d749276eaee5b7609e9ec3864120208"},
-  {name:"Gema", role:"hsm", h:"c0bab2bc2b07ceb5298ec6f7943950bf1fb34b01e680fdd9a3913cc4503ffb42"},
-  {name:"Carlos", role:"hsm", h:"7c4bf6db54e09b07be5d3968dd66c5802e8a0cd90e9af4eb5a6618bc50449682"},
-  {name:"Hilnery", role:"hsm", h:"c598865f2e3f1dbfe722cafb219ed2d380ffc957ac3f17d24f33702600001cea"},
+  {name:"Gema", role:"svr", h:"c0bab2bc2b07ceb5298ec6f7943950bf1fb34b01e680fdd9a3913cc4503ffb42"},
+  {name:"Carlos", role:"svr", h:"7c4bf6db54e09b07be5d3968dd66c5802e8a0cd90e9af4eb5a6618bc50449682"},
+  {name:"Hilnery", role:"svr", h:"c598865f2e3f1dbfe722cafb219ed2d380ffc957ac3f17d24f33702600001cea"},
 ];
 // Director = every captain ability, shown with the Director title.
 const LEAD = role => role == "captain" || role == "director";
@@ -722,7 +722,7 @@ const LEAD = role => role == "captain" || role == "director";
 // desktop-only (Jason 2026-10-13: too problematic on phones). Desktop = a screen at least 1000px wide.
 const WIDE = () => window.matchMedia("(min-width: 1000px)").matches;
 const EDIT = () => !!(WHO && LEAD(WHO.role) && WIDE());
-const TITLE = {hsm:"Houseman", captain:"Captain", director:"Director of Event Operations", sem:"Senior Events Manager", em:"Events Manager"};
+const TITLE = {hsm:"Houseman", svr:"Server", captain:"Captain", director:"Director of Event Operations", sem:"Senior Events Manager", em:"Events Manager"};
 // Event managers see the Status tab (read-only — no editing, no Mark resolved) and their own accent.
 const VIEWER = role => LEAD(role) || role == "sem" || role == "em";
 const SHOWN_TITLE = role => role == "director" || role == "sem" || role == "em" ? TITLE[role] : "";
@@ -860,7 +860,14 @@ document.getElementById("pad").addEventListener("click", async e => {
   }
 });
 document.getElementById("pinCancel").onclick = () => { document.getElementById("pinBg").classList.remove("on"); const r = pinResolve; pinResolve = null; r && r(null); };
-const needWho = async why => WHO || await askPin(why);
+// Only housemen (and leads) work the set/clear list — servers sign in for the rest of the site (Jason 2026-10-26).
+// Role comes from PEOPLE by name, so phones that saved the old "hsm" role for a server are caught too.
+const roleNow = w => ((PEOPLE.find(p => p.name == w.name) || w).role);
+const needWho = async why => {
+  const w = WHO || await askPin(why);
+  if (w && roleNow(w) == "svr") { toast("The set/clear list is for housemen only", true); return null; }
+  return w;
+};
 document.getElementById("who").onclick = () => toast("Sign in or out from the Banquet Bot home page");
 // Pick up a sign-in / sign-out made on the home page (or another tab).
 window.addEventListener("storage", e => { if (e.key == "bb-hsm-who") { try { WHO = JSON.parse(e.newValue); } catch(err) { WHO = null; } render(); } });
