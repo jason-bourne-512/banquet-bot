@@ -7,7 +7,6 @@
     .tail { transform-origin: 52px 104px; animation: tail .32s ease-in-out infinite alternate; }
     @keyframes flap { from { transform: rotate(8deg) } to { transform: rotate(-84deg) scaleY(.85) } }
     @keyframes tail { from { transform: rotate(-3deg) } to { transform: rotate(4deg) } }
-    @media (prefers-reduced-motion: reduce) { .wing, .tail { animation: none } }
   </style>
   <!-- far wing (behind the body) -->
   <g class="wing back">

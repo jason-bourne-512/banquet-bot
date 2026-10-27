@@ -112,7 +112,19 @@
       css: palette("#ff8fc4", "rgba(255,143,196,.15)", "#1a0b16", "#2a1224", "#3a1932", "rgba(255,143,196,.16)", "rgba(255,143,196,.40)") +
         "body::before{background:radial-gradient(ellipse at 100% 0,#ff6fb266,transparent 52%),radial-gradient(ellipse at 0 100%,#ffb3d633,transparent 55%),#1a0b16!important}" +
         "h1,h2{color:#ffe0ef}" + BADGE +
-        ".bb-me-badge{color:#fff;background:linear-gradient(135deg,#ff5fa2,#c2367a);border:1px solid #ffd6ea99}"
+        ".bb-me-badge{color:#fff;background:linear-gradient(135deg,#ff5fa2,#c2367a);border:1px solid #ffd6ea99}" +
+        // the pup trots back and forth along the bottom; no Reduce Motion opt-out (Android "Remove animations" would hide it)
+        "@keyframes bbStroll{0%{transform:translateX(-170px) scaleX(1)}47%{transform:translateX(calc(100vw + 20px)) scaleX(1)}" +
+        "50%{transform:translateX(calc(100vw + 20px)) scaleX(-1)}97%{transform:translateX(-170px) scaleX(-1)}100%{transform:translateX(-170px) scaleX(1)}}" +
+        "@keyframes bbJump{0%,100%{translate:0 0}40%{translate:0 -34px}}" +
+        ".bb-walker{animation:bbStroll 40s linear infinite!important}" +
+        ".bb-walker.hold{animation-play-state:paused!important}" +
+        ".bb-walker.jump img{animation:bbJump .5s ease-out 2!important}" +
+        ".bb-woof{position:fixed!important;z-index:10000;padding:7px 12px;border-radius:16px;background:#fff;color:#c2367a;font:900 15px/1.1 Manrope,Arial,sans-serif;" +
+        "box-shadow:0 6px 18px #0008;border:2px solid #ff8fc4;pointer-events:none;white-space:nowrap;transform:translateX(-50%);animation:bbWoof 1.6s ease-out forwards!important}" +
+        "@keyframes bbWoof{0%{opacity:0;scale:.5}15%{opacity:1;scale:1.12}25%{scale:1}80%{opacity:1}100%{opacity:0;translate:0 -14px}}",
+      walker: "img/me/hilnery-pup.svg",
+      bark: ["Woof! 🐾", "Arf arf! 💕", "Woof woof!", "Yip! 🎀", "Bork! 🐶"]   // tap the pup (or wait ~15–30s): it stops, hops and barks
     },
     // Gema: anime night — sakura petals drifting over a pink/lavender sky, and a chibi fox spirit (original art) that cheers her on.
     gema: {
@@ -284,16 +296,17 @@
         ".bb-pet.whistle{animation:bbWhistle 1.9s ease-in-out!important}" +
         "@keyframes bbWhistle{0%,100%{transform:none}15%,45%,75%{transform:rotate(-6deg) translateY(-3px)}30%,60%,90%{transform:rotate(3deg)}}" +
         ".bb-pet.away{visibility:hidden!important}" +
-        ".bb-fly{position:fixed!important;z-index:9996;pointer-events:none;width:clamp(70px,8vw,116px);animation:bbFly 4.6s ease-in-out forwards}" +
-        ".bb-fly img{display:block!important;width:100%!important;height:auto!important;border:0!important;margin:0!important;animation:bbFlap .32s ease-in-out infinite alternate}" +
+        ".bb-fly{position:fixed!important;z-index:9996;pointer-events:none;width:clamp(70px,8vw,116px);animation:bbFly 4.6s ease-in-out forwards!important}" +
+        ".bb-fly img{display:block!important;width:100%!important;height:auto!important;border:0!important;margin:0!important;animation:bbFlap .32s ease-in-out infinite alternate!important}" +
         "@keyframes bbFly{0%{left:var(--x0);top:var(--y0);transform:none}12%{transform:rotate(-18deg)}30%{left:42vw;top:8vh;transform:rotate(-6deg)}" +
         "48%{left:calc(100vw - 140px);top:24vh;transform:rotate(4deg)}52%{left:calc(100vw - 140px);top:24vh;transform:scaleX(-1)}" +
         "75%{left:34vw;top:6vh;transform:scaleX(-1) rotate(8deg)}95%{transform:scaleX(-1)}100%{left:var(--x0);top:var(--y0);transform:none}}" +
         "@keyframes bbFlap{from{transform:translateY(-6px) scaleY(1.04)}to{transform:translateY(6px) scaleY(.94)}}" +
+        // Bird animations are !important so the site-wide Reduce Motion kill switch (bb-shell.css, bb-reference.css) can't freeze them (Jason 2026-10-26)
         // whistle notes stay gold above the tint
-        ".bb-note{position:fixed!important;z-index:9999;pointer-events:none;color:#f2c14e;font:700 22px/1 Georgia,serif;text-shadow:0 0 8px #000c;animation:bbNote 1.9s ease-out forwards}" +
+        ".bb-note{position:fixed!important;z-index:9999;pointer-events:none;color:#f2c14e;font:700 22px/1 Georgia,serif;text-shadow:0 0 8px #000c;animation:bbNote 1.9s ease-out forwards!important}" +
         "@keyframes bbNote{0%{opacity:0;transform:translate(0,0) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),-80px) rotate(var(--r)) scale(1.15)}}" +
-        "@media (prefers-reduced-motion:reduce){.bb-pet,.bb-pet.hop,.bb-pet.dance,.bb-pet.spin,.bb-pet.peek,.bb-pet.whistle{animation:none!important}.bb-fly,.bb-note{display:none!important}}"
+        ""
     },
     // Lisa (Events Manager): Puro San Antonio — the Alamo under Fiesta papel picado (img/me, original art).
     // No palette change: her rose accent comes from the Housemen page.
@@ -520,10 +533,13 @@
       }
     };
     function run(name) {
-      if (busy || !pt.isConnected || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+      // No Reduce Motion check: Android's "Remove animations" (and Battery Saver) froze the bird on Francisco's phone (Jason 2026-10-26).
+      if (busy || !pt.isConnected) return;
       busy = true; acts[name]();
     }
-    function pick() { var m; do { m = MOVES[Math.floor(Math.random() * MOVES.length)]; } while (m == last); last = m; return m; }
+    // The fly lap is the headline: it opens the show, then every other moment is a flight.
+    var turn = 0;
+    function pick() { if (turn++ % 2 == 0) return (last = "fly"); var m; do { m = MOVES[Math.floor(Math.random() * MOVES.length)]; } while (m == last || m == "fly"); last = m; return m; }
     pt.addEventListener("click", function () { run(pick()); });
     (function next(ms) { setTimeout(function () { if (!document.hidden) run(pick()); next(20000 + Math.random() * 20000); }, ms); })(6000 + Math.random() * 4000);
     var q = (location.search.match(/[?&]bird=(\w+)/) || [])[1];   // ?bird=fly plays that one right away
@@ -799,7 +815,20 @@
         var wi = document.createElement("img"); wi.src = t.walker; wi.alt = "";
         wi.style.cssText = "display:block;width:100%;height:auto;border:0;border-radius:0;background:none;margin:0;padding:0;box-shadow:none";
         wk.appendChild(wi);
-        wk.addEventListener("click", function () { bbPoof(wk); });   // tap: it vanishes until the next page
+        if (t.bark) {   // Hilnery's pup: tap (or every ~15–30s) it pauses, hops and barks
+          var bark = function () {
+            if (!wk.isConnected || wk.classList.contains("hold")) return;
+            wk.classList.add("hold", "jump");
+            var r = wk.getBoundingClientRect(), b = document.createElement("div"); b.className = "bb-woof";
+            b.textContent = t.bark[Math.floor(Math.random() * t.bark.length)];
+            b.style.left = Math.min(innerWidth - 60, Math.max(60, r.left + r.width / 2)) + "px"; b.style.bottom = (innerHeight - r.top + 4) + "px";
+            document.body.appendChild(b);
+            setTimeout(function () { b.remove(); wk.classList.remove("hold", "jump"); }, 1700);
+          };
+          wk.addEventListener("click", bark);
+          (function next(ms) { setTimeout(function () { if (!document.hidden) bark(); next(15000 + Math.random() * 15000); }, ms); })(4000 + Math.random() * 3000);
+          window.bbBark = bark;
+        } else wk.addEventListener("click", function () { bbPoof(wk); });   // tap: it vanishes until the next page
         document.body.appendChild(wk);
       }
       if (t.dbz) dbzLoop();

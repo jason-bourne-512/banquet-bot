@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 180" width="220" height="180">
+  <!-- Hilnery's pup (original art for Banquet Bot): a fluffy cream puppy with a pink bow, side view facing right; legs trot, tail wags, ear bounces. -->
+  <style>
+    .bob { animation: bob .5s ease-in-out infinite; }
+    .legA g, .legB g { transform-box: fill-box; transform-origin: 50% 0; }
+    .tail { transform-origin: 66px 96px; animation: wag .35s ease-in-out infinite; }
+    .ear { transform-origin: 150px 56px; animation: ear .5s ease-in-out infinite; }
+    .eye { transform-origin: 176px 70px; animation: blink 4s infinite; }
+    @keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-3px) } }
+    @keyframes wag { 0%,100% { transform: rotate(-14deg) } 50% { transform: rotate(16deg) } }
+    @keyframes ear { 0%,100% { transform: rotate(0) } 50% { transform: rotate(-9deg) } }
+    @keyframes blink { 0%,92%,100% { transform: scaleY(1) } 96% { transform: scaleY(.1) } }
+    .legA g { animation: swing .5s ease-in-out infinite; }
+    .legB g { animation: swing .5s ease-in-out -.25s infinite; }
+    @keyframes swing { 0%,100% { transform: rotate(22deg) } 50% { transform: rotate(-22deg) } }
+  </style>
+  <ellipse cx="112" cy="168" rx="56" ry="6" fill="#000" opacity=".25"/>
+  <!-- far legs (a touch darker, behind the body) -->
+  <g class="legB" fill="#ead9c6">
+    <g><rect x="80" y="118" width="16" height="40" rx="8"/><ellipse cx="88" cy="158" rx="11" ry="7"/></g>
+    <g><rect x="134" y="118" width="16" height="40" rx="8"/><ellipse cx="142" cy="158" rx="11" ry="7"/></g>
+  </g>
+  <g class="bob">
+    <!-- fluffy tail curling up -->
+    <g class="tail" fill="#fff6ea">
+      <circle cx="58" cy="84" r="15"/><circle cx="48" cy="70" r="14"/><circle cx="52" cy="54" r="13"/><circle cx="64" cy="46" r="11"/>
+      <circle cx="62" cy="98" r="12"/>
+    </g>
+    <!-- fluffy body: a cloud of fur -->
+    <g fill="#fff6ea">
+      <ellipse cx="112" cy="104" rx="52" ry="30"/>
+      <circle cx="72" cy="100" r="20"/><circle cx="84" cy="82" r="19"/><circle cx="106" cy="76" r="20"/><circle cx="130" cy="78" r="19"/>
+      <circle cx="150" cy="90" r="20"/><circle cx="152" cy="112" r="18"/><circle cx="128" cy="126" r="16"/><circle cx="100" cy="128" r="16"/>
+      <circle cx="78" cy="120" r="16"/>
+    </g>
+    <!-- soft fur tufts -->
+    <g fill="#f3e3d0">
+      <circle cx="96" cy="112" r="7"/><circle cx="118" cy="104" r="6"/><circle cx="84" cy="102" r="5"/><circle cx="134" cy="116" r="5"/>
+    </g>
+    <!-- head -->
+    <g fill="#fff6ea">
+      <circle cx="166" cy="70" r="28"/>
+      <circle cx="148" cy="56" r="12"/><circle cx="164" cy="44" r="13"/><circle cx="182" cy="50" r="12"/><circle cx="150" cy="84" r="12"/>
+      <circle cx="174" cy="94" r="11"/>
+    </g>
+    <!-- snout -->
+    <ellipse cx="190" cy="82" rx="18" ry="13" fill="#fffaf2"/>
+    <ellipse cx="204" cy="76" rx="7" ry="5.5" fill="#3a2a2e"/>
+    <ellipse cx="202" cy="74" rx="2.2" ry="1.4" fill="#fff" opacity=".7"/>
+    <path d="M190 88 Q196 93 203 88" fill="none" stroke="#3a2a2e" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- little pink tongue -->
+    <path d="M194 90 Q197 101 202 91 Z" fill="#ff7eb6"/>
+    <!-- big shiny eye -->
+    <g class="eye"><ellipse cx="176" cy="68" rx="6.5" ry="7.5" fill="#2a1d22"/><circle cx="178.5" cy="65" r="2.4" fill="#fff"/><circle cx="174" cy="71" r="1.1" fill="#fff"/></g>
+    <!-- blush -->
+    <ellipse cx="180" cy="84" rx="6" ry="3.5" fill="#ff8fc4" opacity=".55"/>
+    <!-- floppy fluffy ear -->
+    <g class="ear" fill="#f0dcc4">
+      <ellipse cx="150" cy="72" rx="12" ry="20"/><circle cx="146" cy="88" r="9"/><circle cx="155" cy="90" r="8"/>
+    </g>
+    <!-- pink bow on top of the head -->
+    <g transform="translate(166 38) rotate(-12)">
+      <path d="M0 0 L-16 -9 Q-20 0 -16 9 Z" fill="#ff5fa2"/>
+      <path d="M0 0 L16 -9 Q20 0 16 9 Z" fill="#ff5fa2"/>
+      <circle r="5" fill="#ff8fc4"/>
+      <path d="M-13 -5 L-6 -1 M13 -5 L6 -1" stroke="#ffd6ea" stroke-width="1.6" stroke-linecap="round"/>
+    </g>
+    <!-- pink collar + heart tag -->
+    <path d="M146 92 Q160 104 178 100" fill="none" stroke="#ff5fa2" stroke-width="6" stroke-linecap="round"/>
+    <path d="M164 104 c-3 -4 -9 -1 -6 4 l6 6 l6 -6 c3 -5 -3 -8 -6 -4z" fill="#ffd166" stroke="#e0a82e" stroke-width="1"/>
+  </g>
+  <!-- near legs -->
+  <g class="legA" fill="#fff6ea">
+    <g><rect x="90" y="118" width="17" height="40" rx="8.5"/><ellipse cx="99" cy="158" rx="12" ry="7"/></g>
+    <g><rect x="144" y="118" width="17" height="40" rx="8.5"/><ellipse cx="153" cy="158" rx="12" ry="7"/></g>
+  </g>
+</svg>
