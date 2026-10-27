@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -6 200 256" width="200" height="250">
-  <!-- Alex, AV manager (Banquet Bot original art): big wild curly hair, big mustache, blue dress shirt + patterned tie, name badge, pen, a little AV headset, a mug of beer, and a rough-morning hangover face. -->
+  <!-- Alex, AV manager (Banquet Bot original art): big wild curly hair, big mustache, blue dress shirt + patterned tie, name badge, pen, a little AV headset, a folding Android phone, a mug of beer, and a rough-morning hangover face. -->
   <defs>
     <clipPath id="tieClip"><path d="M95 150 L105 150 L111 190 L100 202 L89 190 Z"/></clipPath>
   </defs>
@@ -18,7 +18,13 @@
   <g class="legB"><rect x="106" y="196" width="28" height="40" rx="10" fill="#3d4552"/><ellipse cx="122" cy="236" rx="18" ry="8" fill="#2a2420"/></g>
   <rect x="58" y="196" width="84" height="10" rx="3" fill="#2b2f36"/><rect x="95" y="197" width="10" height="8" rx="1.5" fill="none" stroke="#c9ced4" stroke-width="2"/>
   <!-- sleeves + hands -->
-  <g class="armL"><path d="M60 146 L44 186" stroke="#a9cdea" stroke-width="20" stroke-linecap="round"/><path d="M38 184 L52 190" stroke="#8fb8dc" stroke-width="4" stroke-linecap="round"/><circle cx="43" cy="194" r="10" fill="#f6d6bd"/></g>
+  <g class="armL"><path d="M60 146 L44 186" stroke="#a9cdea" stroke-width="20" stroke-linecap="round"/><path d="M38 184 L52 190" stroke="#8fb8dc" stroke-width="4" stroke-linecap="round"/><!-- open flip-style folding Android phone -->
+    <g transform="rotate(-8 34 190)"><rect x="22" y="164" width="24" height="50" rx="5" fill="#2b2f36"/>
+    <rect x="24.5" y="167" width="19" height="44" rx="3" fill="#2a6fd6"/><path d="M24.5 167 L43.5 167 L43.5 178 Q34 186 24.5 180 Z" fill="#5aa7ff" opacity=".55"/>
+    <circle cx="34" cy="170.5" r="1.3" fill="#111"/>
+    <rect x="21" y="187.5" width="26" height="3" rx="1.5" fill="#8d96a3"/><path d="M24.5 189 L43.5 189" stroke="#1f4fa0" stroke-width=".8"/>
+    <rect x="27" y="195" width="6" height="6" rx="1.5" fill="#ffffff" opacity=".7"/><rect x="35" y="195" width="6" height="6" rx="1.5" fill="#ffffff" opacity=".7"/></g>
+    <circle cx="43" cy="194" r="10" fill="#f6d6bd"/></g>
   <g class="armR"><path d="M140 146 L156 186" stroke="#a9cdea" stroke-width="20" stroke-linecap="round"/><path d="M148 190 L162 184" stroke="#8fb8dc" stroke-width="4" stroke-linecap="round"/><!-- frosty mug of beer -->
     <g class="beer"><path d="M176 180 Q188 180 188 192 Q188 204 176 204" stroke="#d8e6ee" stroke-width="5" fill="none" stroke-linecap="round"/>
     <rect x="152" y="172" width="26" height="40" rx="4" fill="#f2a516" stroke="#d8e6ee" stroke-width="3"/>
