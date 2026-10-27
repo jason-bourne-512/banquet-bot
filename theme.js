@@ -129,15 +129,18 @@
     // Alex (AV Manager): his portrait (img/me, original art) big on Home, small in the badge everywhere else. No palette change.
     alex: {
       label: "ALEX · AV",
-      img: "img/me/alex.svg?v=3",
-      hero: {src: "img/me/alex.svg?v=3", caption: "ALEX · AV MANAGER"},   // Home only: a big avatar card under the header
+      img: "img/me/alex.svg?v=4",
+      // Home only: a big avatar card under the header; now and then it flips to the beer-and-hangover version for a few seconds.
+      hero: {src: "img/me/alex.svg?v=4", alt: "img/me/alex-drunk.svg?v=1", caption: "ALEX · AV MANAGER"},
       css: BADGE + ".bb-me-badge{color:#dcecff;background:linear-gradient(135deg,#1f4f8f,#0f2442);border:1px solid #8bd1ff88}" +
         ".bb-hero{display:flex;flex-direction:column;align-items:center;margin:10px auto 18px;padding:14px 14px 12px;max-width:320px;" +
         "border-radius:20px;background:radial-gradient(ellipse at 50% 30%,#3d7fd055,transparent 70%),#0f1c2899;border:1px solid #8bd1ff44;box-shadow:0 8px 26px #0008}" +
         ".bb-hero img{display:block;width:clamp(190px,58vw,250px);height:auto;border:0;border-radius:0;background:none;margin:0;padding:0;box-shadow:none;" +
         "filter:drop-shadow(0 6px 14px #000a);animation:bbHeroIn .7s cubic-bezier(.3,1.4,.5,1) both}" +
         ".bb-hero b{margin-top:6px;font:800 12px/1.2 Manrope,Arial,sans-serif;letter-spacing:2px;color:#cfe6ff}" +
-        "@keyframes bbHeroIn{from{opacity:0;transform:translateY(14px) scale(.9)}to{opacity:1;transform:none}}"
+        "@keyframes bbHeroIn{from{opacity:0;transform:translateY(14px) scale(.9)}to{opacity:1;transform:none}}" +
+        ".bb-hero img.bb-swap{animation:bbHeroSwap .5s ease-out!important}" +
+        "@keyframes bbHeroSwap{0%{transform:scale(1)}30%{transform:scale(.92) rotate(-4deg)}65%{transform:scale(1.04) rotate(3deg)}100%{transform:none}}"
     },
     // Gema: anime night — sakura petals drifting over a pink/lavender sky, and a chibi fox spirit (original art) that cheers her on.
     gema: {
@@ -780,6 +783,7 @@
     if (window.bbDbzTimer) { clearTimeout(window.bbDbzTimer); window.bbDbzTimer = null; }
     var oldBr = document.querySelectorAll(".bb-bear,.bb-slam,.bb-ball.shot"); for (var bi = 0; bi < oldBr.length; bi++) oldBr[bi].remove();
     if (window.bbBearTimer) { clearTimeout(window.bbBearTimer); window.bbBearTimer = null; }
+    if (window.bbHeroTimer) { clearTimeout(window.bbHeroTimer); window.bbHeroTimer = null; }
     var oldL = document.querySelectorAll(".bb-lion-wall,.bb-lion-card,.bb-lion-focus"); for (var li = 0; li < oldL.length; li++) oldL[li].remove();
     if (window.bbLionTimer) { clearTimeout(window.bbLionTimer); window.bbLionTimer = null; }
     var oldMm = document.querySelectorAll(".bb-mm,.bb-z,.bb-jug,.bb-hola,.bb-rope"); for (var mi = 0; mi < oldMm.length; mi++) oldMm[mi].remove();
@@ -862,6 +866,20 @@
         var hi = document.createElement("img"); hi.src = t.hero.src; hi.alt = t.hero.caption; hr.appendChild(hi);
         var hc = document.createElement("b"); hc.textContent = t.hero.caption; hr.appendChild(hc);
         if (heroAt.tagName == "MAIN") heroAt.prepend(hr); else heroAt.after(hr);
+        if (t.hero.alt) {   // random swaps: every ~15–35s, a 40% chance to show the alt look for 6–10s
+          new Image().src = t.hero.alt;
+          var swap = function (src) { hi.classList.remove("bb-swap"); void hi.offsetWidth; hi.src = src; hi.classList.add("bb-swap"); };
+          var heroNext = function (ms) {
+            window.bbHeroTimer = setTimeout(function () {
+              if (!document.hidden && hi.isConnected && Math.random() < 0.4) {
+                swap(t.hero.alt);
+                window.bbHeroTimer = setTimeout(function () { swap(t.hero.src); heroNext(15000 + Math.random() * 20000); }, 6000 + Math.random() * 4000);
+              } else heroNext(15000 + Math.random() * 20000);
+            }, ms);
+          };
+          heroNext(6000 + Math.random() * 8000);
+          window.bbHeroSwap = function () { swap(hi.src.indexOf(t.hero.alt.split("?")[0]) < 0 ? t.hero.alt : t.hero.src); };   // preview: bbHeroSwap()
+        }
       }
       var gone = false; try { gone = sessionStorage.getItem("bb-monkey-off") == "1"; } catch (e) {}
       if (t.monkey && (t.monkeyPages ? t.monkeyPages.test(location.pathname) : onHome) && !gone) {

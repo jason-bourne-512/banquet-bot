@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -6 200 256" width="200" height="250">
-  <!-- Alex, AV manager (Banquet Bot original art): big wild curly hair, big mustache, blue dress shirt + patterned tie, name badge, pen, a little AV headset, a mug of beer, and a rough-morning hangover face. -->
+  <!-- Alex, AV manager (Banquet Bot original art): big wild curly hair, big mustache, blue dress shirt + patterned tie, name badge, pen, and a little AV headset. -->
   <defs>
     <clipPath id="tieClip"><path d="M95 150 L105 150 L111 190 L100 202 L89 190 Z"/></clipPath>
   </defs>
@@ -19,14 +19,7 @@
   <rect x="58" y="196" width="84" height="10" rx="3" fill="#2b2f36"/><rect x="95" y="197" width="10" height="8" rx="1.5" fill="none" stroke="#c9ced4" stroke-width="2"/>
   <!-- sleeves + hands -->
   <g class="armL"><path d="M60 146 L44 186" stroke="#a9cdea" stroke-width="20" stroke-linecap="round"/><path d="M38 184 L52 190" stroke="#8fb8dc" stroke-width="4" stroke-linecap="round"/><circle cx="43" cy="194" r="10" fill="#f6d6bd"/></g>
-  <g class="armR"><path d="M140 146 L156 186" stroke="#a9cdea" stroke-width="20" stroke-linecap="round"/><path d="M148 190 L162 184" stroke="#8fb8dc" stroke-width="4" stroke-linecap="round"/><!-- frosty mug of beer -->
-    <g class="beer"><path d="M176 180 Q188 180 188 192 Q188 204 176 204" stroke="#d8e6ee" stroke-width="5" fill="none" stroke-linecap="round"/>
-    <rect x="152" y="172" width="26" height="40" rx="4" fill="#f2a516" stroke="#d8e6ee" stroke-width="3"/>
-    <rect x="157" y="178" width="4" height="28" rx="2" fill="#ffd36b" opacity=".8"/>
-    <circle cx="168" cy="190" r="1.6" fill="#ffe7a0"/><circle cx="164" cy="199" r="1.2" fill="#ffe7a0"/><circle cx="171" cy="203" r="1" fill="#ffe7a0"/>
-    <path d="M149 175 Q148 164 156 165 Q158 158 165 161 Q171 156 176 163 Q183 163 181 172 Q180 177 174 175 Q172 180 168 176 Q163 180 160 175 Q153 180 149 175 Z" fill="#fffaf0"/>
-    <path d="M176 172 Q178 180 175 184" stroke="#fffaf0" stroke-width="3" fill="none" stroke-linecap="round"/></g>
-    <circle cx="157" cy="194" r="10" fill="#f6d6bd"/></g>
+  <g class="armR"><path d="M140 146 L156 186" stroke="#a9cdea" stroke-width="20" stroke-linecap="round"/><path d="M148 190 L162 184" stroke="#8fb8dc" stroke-width="4" stroke-linecap="round"/><circle cx="157" cy="194" r="10" fill="#f6d6bd"/></g>
   <!-- light blue button-down -->
   <path d="M56 140 Q100 124 144 140 L146 202 Q100 210 54 202 Z" fill="#a9cdea"/>
   <path d="M60 150 Q62 176 58 196 M140 150 Q138 176 142 196" stroke="#8fb8dc" stroke-width="2.5" fill="none" stroke-linecap="round"/>
@@ -61,22 +54,17 @@
   <path d="M100 32 Q94 14 80 12 Q92 22 92 32 Z M104 32 Q114 10 130 14 Q114 20 110 34 Z M98 34 Q100 18 108 6 Q104 22 104 34 Z" fill="#7a5232"/>
   <path d="M96 38 Q82 42 72 56 M104 38 Q118 42 128 56 M66 64 Q62 74 63 86 M134 64 Q138 74 137 86 M100 30 Q102 18 106 10" stroke="#5c3b22" stroke-width="2.2" fill="none" stroke-linecap="round"/></g>
   <!-- brows + eyes -->
-  <path d="M75 67 Q84 63 93 60 M107 60 Q116 63 125 67" stroke="#5c3b22" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-  <g class="eye"><ellipse cx="84" cy="77" rx="8" ry="9.5" fill="#fff1ee"/><ellipse cx="116" cy="77" rx="8" ry="9.5" fill="#fff1ee"/>
-    <path d="M77 80 L81 78 M78 74 L81 76 M123 80 L119 78 M122 74 L119 76" stroke="#e05a5a" stroke-width="1" stroke-linecap="round"/>
+  <path d="M74 64 Q84 58 93 64 M107 64 Q116 58 126 64" stroke="#5c3b22" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <g class="eye"><ellipse cx="84" cy="77" rx="8" ry="9.5" fill="#fff"/><ellipse cx="116" cy="77" rx="8" ry="9.5" fill="#fff"/>
     <circle cx="86" cy="79" r="4.5" fill="#3b2a1e"/><circle cx="114" cy="79" r="4.5" fill="#3b2a1e"/>
-    <circle cx="87.5" cy="77.5" r="1.5" fill="#fff"/><circle cx="115.5" cy="77.5" r="1.5" fill="#fff"/>
-    <path d="M75 78 Q84 64 93 78 Q84 74 75 78 Z M107 78 Q116 64 125 78 Q116 74 107 78 Z" fill="#efc9ad"/><path d="M75 66 L93 66 L93 77 Q84 73 75 77 Z M107 66 L125 66 L125 77 Q116 73 107 77 Z" fill="#efc9ad"/>
-    <path d="M75.5 77 Q84 73 92.5 77 M107.5 77 Q116 73 124.5 77" stroke="#8a5a40" stroke-width="2" fill="none" stroke-linecap="round"/></g>
-  <path d="M76 89 Q84 93 92 89 M108 89 Q116 93 124 89" stroke="#a77f95" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".8"/>
+    <circle cx="87.5" cy="77.5" r="1.5" fill="#fff"/><circle cx="115.5" cy="77.5" r="1.5" fill="#fff"/></g>
   <!-- nose -->
   <path d="M100 82 Q95 94 99 97 Q103 98 106 95" stroke="#d9a888" stroke-width="2.4" fill="none" stroke-linecap="round"/>
   <!-- big smile under a full mustache -->
-  <path d="M89 116 Q94 112 99 116 Q104 120 111 114" stroke="#7a2e2e" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M86 108 Q100 124 114 108 Q100 114 86 108 Z" fill="#7a2e2e"/>
   <path d="M77 104 Q84 92 100 99 Q116 92 123 104 Q119 112 110 108 Q104 105 100 106 Q96 105 90 108 Q81 112 77 104 Z" fill="#6b4428"/>
   <path d="M86 101 Q90 104 92 103 M108 103 Q110 104 114 101" stroke="#4e311c" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-  <circle cx="72" cy="96" r="7" fill="#9cc48a" opacity=".35"/><circle cx="128" cy="96" r="7" fill="#9cc48a" opacity=".35"/>
-  <path d="M121 50 Q126 58 126 61 A5 5 0 0 1 116 61 Q116 58 121 50 Z" fill="#a8dcff" stroke="#6fb3e0" stroke-width="1"/>
+  <circle cx="72" cy="96" r="6" fill="#f29a9a" opacity=".4"/><circle cx="128" cy="96" r="6" fill="#f29a9a" opacity=".4"/>
   <!-- tiny AV headset -->
   <path d="M59 78 Q57 22 100 21 Q143 22 141 78" stroke="#2f3338" stroke-width="3.5" fill="none" stroke-linecap="round"/>
   <rect x="53" y="72" width="10" height="18" rx="5" fill="#2f3338"/>
