@@ -58,7 +58,7 @@
   .bfast.meal b { background:#fbecb8; } .lunch.meal b { background:#fddcc2; } .brk.meal b { background:#d3e6f6; }
   .dinner.meal b { background:#f7d2de; } .recep.meal b { background:#e5dbf7; }
   .flag { color:#b23a3a; font-size:.92cqw; font-weight:600; }
-  .offmap { position:absolute; left:1%; top:72%; width:41%; }
+  .offmap { position:absolute; left:1%; top:72%; width:41%; transform-origin:0 0; }
   .offmap h3, .legend h3 { font-size:.85cqw; letter-spacing:.1em; text-transform:uppercase; color:var(--pmuted); margin:0 0 .6cqw; }
   #off { column-count:2; column-gap:1cqw; }
   .card { break-inside:avoid; margin-bottom:1cqw; background:#fff; border:2px solid rgba(31,138,85,.45); border-radius:6px; padding:.7cqw .9cqw; }
@@ -102,6 +102,16 @@
   function lines(s) { return s.map(function (l) { return '<div class="ln ' + l[2] + (MEAL[l[2]] ? " meal" : "") + '"><b>' + esc(l[0]) + "</b> " + esc(l[1]) + "</div>"; }).join(""); }
   function body(e) { return '<div class="g">' + esc(e.g) + '</div><div class="ct">' + esc(e.ct) + "</div>" + lines(e.s) + (e.flag ? '<div class="flag">⚑ ' + esc(e.flag) + "</div>" : ""); }
   function pct(b) { return "left:" + b[0] / 20 + "%;top:" + b[1] / 15.45 + "%;width:" + (b[2] - b[0]) / 20 + "%;height:" + (b[3] - b[1]) / 15.45 + "%"; }
+  // off-the-map cards sit in the lower left; on busy days shrink them (wider, then scaled down) until the last border clears the map's bottom edge
+  function fitOff() {
+    var off = map.querySelector(".offmap"); if (!off) return;
+    var limit = map.clientHeight * 0.985, k = 1;
+    for (;;) {
+      off.style.width = 41 / k + "%"; off.style.transform = k < 1 ? "scale(" + k + ")" : "";
+      if (off.offsetTop + off.offsetHeight * k <= limit || k <= 0.4) break;
+      k = Math.round((k - 0.04) * 100) / 100;
+    }
+  }
   function draw(d) {
     var day = DATA.days[d];
     chips.querySelectorAll("button").forEach(function (b) { b.classList.toggle("on", b.dataset.d == d); });
@@ -116,6 +126,7 @@
     if (day.contacts.length) h += '<div class="legend"><h3>Contacts</h3>' + day.contacts.map(function (c) { return '<span class="gc"><b>' + esc(c[0]) + "</b> <span>" + esc(c[1]) + "</span></span>"; }).join("") + "</div>";
     map.innerHTML = h;
     if (typeof setZ == "function") setZ(1);
+    fitOff();
     try { history.replaceState(null, "", "#" + d); } catch (e) {}
   }
   chips.innerHTML = dates.map(function (d) { return '<button data-d="' + d + '">' + label(d) + '<span class="t">' + (+d.slice(5, 7)) + "/" + (+d.slice(8)) + "</span></button>"; }).join("");
@@ -150,7 +161,7 @@
     if (!e.ctrlKey) return; e.preventDefault();
     var r = scroll.getBoundingClientRect(); setZ(z * Math.exp(-e.deltaY / 200), e.clientX - r.left, e.clientY - r.top);
   }, {passive: false});
-  window.addEventListener("resize", function () { setZ(z); });
+  window.addEventListener("resize", function () { setZ(z); fitOff(); });
   var want = location.hash.slice(1);
   draw(dates.indexOf(want) >= 0 ? want : (dates.indexOf(today) >= 0 ? today : dates[0]));
 })();
