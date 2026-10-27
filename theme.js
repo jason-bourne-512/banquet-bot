@@ -442,6 +442,15 @@
         "80%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1) rotate(-8deg)}}" +
         ".bb-slam{position:fixed;z-index:9999;pointer-events:none;font:900 clamp(34px,6vw,64px)/1 Impact,'Arial Black',sans-serif;color:#fff;" +
         "-webkit-text-stroke:2px #ce1141;text-shadow:0 0 18px #ce1141,4px 4px 0 #7a0a26;letter-spacing:2px;animation:bbSlam 1.6s ease-out forwards}" +
+        // 4. Ball spin: stands up from a bottom corner, spinning the ball on one paw with a little hop.
+        "@keyframes bbStand{0%{transform:translateY(105%)}12%,86%{transform:translateY(2%)}100%{transform:translateY(105%)}}" +
+        ".bb-bear.spin{bottom:0;animation:bbStand 6s cubic-bezier(.3,1.3,.5,1) forwards}" +
+        // 5. Space City: rides a rocket up and across the screen, legs kicking.
+        "@keyframes bbRocket{0%{transform:translate(-45vw,0) rotate(-8deg)}100%{transform:translate(135vw,-62vh) rotate(-20deg)}}" +
+        "@keyframes bbBob{from{translate:0 -4px}to{translate:0 4px}}" +
+        ".bb-bear.rocket{left:0;bottom:10vh;width:clamp(150px,17vw,230px);animation:bbRocket 7s cubic-bezier(.35,0,.65,1) forwards}" +
+        ".bb-bear.rocket .bb-flip{animation:bbBob .35s ease-in-out infinite alternate}" +
+        ".bb-bear.rocket img.bb-rider{position:absolute;width:42%;left:34%;bottom:55%;rotate:-6deg;filter:none}" +
         "@media (prefers-reduced-motion:reduce){.bb-bear,.bb-slam,.bb-ball.shot{display:none!important}}"
     }
   };
@@ -728,7 +737,15 @@
           var t = document.createElement("div"); t.className = "bb-slam"; t.textContent = "SLAM!"; t.style.left = "50%"; t.style.top = "30%";
           document.body.appendChild(b); document.body.appendChild(t); extra.push(b, t);
         }, 1450);
-        return [d, 3500, extra]; }
+        return [d, 3500, extra]; },
+      spin: function () { var d = add("spin", "img/me/diana-bear-spin.svg");
+        var side = Math.random() < 0.5 ? "left" : "right", spot = (3 + Math.random() * 14).toFixed(1) + "vw";
+        if (side == "left" && document.documentElement.classList.contains("bbd")) spot = "calc(var(--bbd-side) + " + spot + ")";
+        d.style[side] = spot; return [d, 6000]; },
+      rocket: function () { var d = add("rocket", "img/me/diana-bear.svg");
+        d.querySelector("img").className = "bb-rider";
+        var rk = document.createElement("img"); rk.src = "img/me/diana-rocket.svg"; rk.alt = ""; d.firstChild.appendChild(rk);
+        return [d, 7000]; }
     };
     var names = Object.keys(acts), last = null;
     var run = function (name) {

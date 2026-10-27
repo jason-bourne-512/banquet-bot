@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 250" width="200" height="250" overflow="visible">
+  <!-- Diana's Live Map buddy, spinning a ball on one paw (Banquet Bot original art). -->
+  <style>
+    .legA{animation:st .5s ease-in-out infinite alternate} .legB{animation:st .5s ease-in-out -.5s infinite alternate}
+    @keyframes st{from{transform:translateY(0)}to{transform:translateY(-7px)}}
+    .eye{transform-origin:100px 72px;animation:bl 3.8s infinite} @keyframes bl{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+    .armL{transform-origin:60px 146px;animation:sw .5s ease-in-out infinite alternate}.armR{transform-origin:140px 146px;animation:sw .5s ease-in-out -.5s infinite alternate}@keyframes sw{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
+    .spin{transform-origin:45px 54px;animation:sp .45s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+    .hop{animation:hp .9s ease-in-out infinite}@keyframes hp{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+    @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+  </style>
+  <ellipse cx="100" cy="244" rx="56" ry="6" fill="#000" opacity=".25"/>
+  <g class="legA"><rect x="64" y="196" width="28" height="40" rx="13" fill="#8a5a2b"/><ellipse cx="78" cy="236" rx="19" ry="9" fill="#e8c79a"/></g>
+  <g class="legB"><rect x="108" y="196" width="28" height="40" rx="13" fill="#8a5a2b"/><ellipse cx="122" cy="236" rx="19" ry="9" fill="#e8c79a"/></g>
+  <path d="M62 204 Q100 214 138 204 L136 186 L64 186 Z" fill="#c4ced4"/>
+  <g><path d="M60 146 L46 96" stroke="#8a5a2b" stroke-width="20" stroke-linecap="round"/><circle cx="45" cy="90" r="13" fill="#e8c79a"/></g>
+  <g class="armR"><path d="M140 146 L156 188" stroke="#8a5a2b" stroke-width="20" stroke-linecap="round"/><circle cx="158" cy="194" r="12" fill="#e8c79a"/></g>
+  <path d="M58 136 Q100 120 142 136 L146 200 Q100 210 54 200 Z" fill="#ce1141"/>
+  <path d="M80 126 L100 148 L120 126" stroke="#fff" stroke-width="5" fill="none" stroke-linejoin="round"/>
+  <path d="M58 140 Q66 160 62 178 M142 140 Q134 160 138 178" stroke="#fff" stroke-width="4" fill="none"/>
+  <text x="100" y="172" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="15" fill="#fff" letter-spacing=".5">CLUTCH</text>
+  <text x="100" y="196" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="20" fill="#fff" stroke="#111" stroke-width=".8">1</text>
+  <circle cx="58" cy="40" r="20" fill="#8a5a2b"/><circle cx="58" cy="40" r="10" fill="#d9a86c"/>
+  <circle cx="142" cy="40" r="20" fill="#8a5a2b"/><circle cx="142" cy="40" r="10" fill="#d9a86c"/>
+  <circle cx="100" cy="80" r="54" fill="#8a5a2b"/>
+  <ellipse cx="100" cy="102" rx="30" ry="22" fill="#e8c79a"/>
+  <g class="eye"><ellipse cx="80" cy="72" rx="10" ry="12" fill="#fff"/><ellipse cx="120" cy="72" rx="10" ry="12" fill="#fff"/>
+    <circle cx="83" cy="74" r="5.5" fill="#1d120a"/><circle cx="117" cy="74" r="5.5" fill="#1d120a"/>
+    <circle cx="85" cy="72" r="1.8" fill="#fff"/><circle cx="119" cy="72" r="1.8" fill="#fff"/></g>
+  <path d="M68 56 Q80 48 90 56 M110 56 Q120 48 132 56" stroke="#4a2e14" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <ellipse cx="100" cy="92" rx="11" ry="8" fill="#2a1a10"/><ellipse cx="97" cy="89" rx="3.5" ry="2" fill="#fff" opacity=".6"/>
+  <path d="M82 106 Q100 126 118 106 Q100 114 82 106 Z" fill="#5a1a1a"/><path d="M92 114 Q100 122 108 114 Q100 112 92 114 Z" fill="#f28b8b"/>
+  <circle cx="70" cy="100" r="6" fill="#f29a9a" opacity=".45"/><circle cx="130" cy="100" r="6" fill="#f29a9a" opacity=".45"/>
+<g class="hop"><g class="spin"><circle cx="45" cy="54" r="24" fill="#e86a10"/><circle cx="45" cy="54" r="24" fill="none" stroke="#5a2400" stroke-width="2.5"/>
+    <path d="M21 54 H69 M45 30 V78 M28 37 Q45 54 28 71 M62 37 Q45 54 62 71" stroke="#5a2400" stroke-width="2.5" fill="none"/></g>
+    <circle cx="37" cy="45" r="6" fill="#ffb066" opacity=".55"/></g>
+</svg>
