@@ -90,16 +90,46 @@
       var foot = {};
       [].forEach.call(card.querySelectorAll(".card-foot .foot-row"), function (f) { foot[txt(f.querySelector(".foot-key")).toUpperCase()] = lines(f.querySelector(".foot-val")); });
       var mgr = txt(card.querySelector(".badge-mgr")).replace(/^MGR:\s*/i, "");
-      events.push({name: txt(card.querySelector(".card-group")), mgr: mgr, rows: rows, setup: foot.ROOM || "", note: foot.NOTE || ""});
+      var ev = {name: txt(card.querySelector(".card-group")), mgr: mgr, rows: rows, setup: foot.ROOM || "", contact: (foot.CONTACT || "").split(/[\n,·/]/)[0].trim(), eoNote: foot.NOTE || ""};
+      ev.note = recap(ev);
+      events.push(ev);
     });
     // saved edits for today (counts and notes) win over the Rundown values; matched by event name and by row time, service and room
     (saved.edits || []).forEach(function (ed) {
       var e = events.filter(function (x) { return x.name == ed.name; })[0]; if (!e) return;
-      if (ed.note != null) e.note = ed.note;
+      if (ed.note != null && ed.note != e.eoNote) e.note = ed.note;   // an old pre-fill of the event-order NOTE is replaced by the recap
       (ed.counts || []).forEach(function (c) { e.rows.forEach(function (r) { if (rowKey(r) == c.k) r.count = c.v; }); });
     });
   }
   function rowKey(r) { return r.time + "|" + r.svc + "|" + r.room; }
+  // Default Notes: a short, plain end-of-shift recap in Jason's words that names the contact (2026-10-28).
+  // Built from the services on the card; Jason edits it if anything actually happened.
+  function recap(e) {
+    var svcs = e.rows.map(function (r) { return r.svc.toLowerCase(); });
+    var has = function (re) { return svcs.some(function (x) { return re.test(x); }); };
+    var n = function (re) { return svcs.filter(function (x) { return re.test(x); }).length; };
+    var meals = [];
+    if (has(/breakfast/)) meals.push("breakfast");
+    if (has(/brunch/)) meals.push("brunch");
+    if (has(/lunch/)) meals.push(/box lunch/.test(svcs.join(" ")) ? "the box lunch" : "lunch");
+    var brk = n(/coffee break|am break|pm break|snack/);
+    if (brk) meals.push(brk > 1 ? "both breaks" : "the break");
+    if (has(/reception|hors/)) meals.push("the reception");
+    if (has(/dinner/)) meals.push("dinner");
+    var list = meals.length > 1 ? meals.slice(0, -1).join(", ") + " and " + meals[meals.length - 1] : meals[0] || "";
+    list = list.charAt(0).toUpperCase() + list.slice(1);
+    var last = /final day/i.test(e.name);
+    var openers = last ? ["Smooth final day.", "Final day went well."] : ["Event went well.", "Smooth day.", "Everything ran smoothly."];
+    var h = 0; for (var i = 0; i < e.name.length; i++) h = (h * 31 + e.name.charCodeAt(i)) >>> 0;
+    var out = [openers[h % openers.length]];
+    if (list) out.push(list + " went out on time" + (has(/continuous|all day|beverage/) ? ", and the beverages stayed stocked." : "."));
+    else if (has(/continuous|all day|beverage/)) out.push("The room was set on time and the break stayed stocked.");
+    else out.push("The room was set and ready on arrival.");
+    if (has(/bar/)) out.push("The bar ran smoothly.");
+    out.push((e.contact || "The group") + " was happy with the room and the service.");
+    out.push("No issues.");
+    return out.join(" ");
+  }
   function locked() { return !!saved.finalizedAt; }
   function render() {
     var dis = locked() ? " disabled" : "", h = "";
