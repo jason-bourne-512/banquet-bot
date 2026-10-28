@@ -462,6 +462,10 @@
         ".bb-bear.rocket{left:0;bottom:10vh;width:clamp(150px,17vw,230px);animation:bbRocket 7s cubic-bezier(.35,0,.65,1) forwards}" +
         ".bb-bear.rocket .bb-flip{animation:bbBob .35s ease-in-out infinite alternate}" +
         ".bb-bear.rocket img.bb-rider{position:absolute;width:42%;left:34%;bottom:55%;rotate:-6deg;filter:none}" +
+        // 6. Talk: pops up like the peek and says one of the team's lines in a speech bubble.
+        "@keyframes bbSay{0%,14%{opacity:0;transform:translateX(-50%) scale(.5)}22%,80%{opacity:1;transform:translateX(-50%) scale(1)}90%,100%{opacity:0;transform:translateX(-50%) scale(.9)}}" +
+        ".bb-say{position:absolute;left:50%;bottom:102%;white-space:nowrap;background:#fff;color:#ce1141;font:900 15px/1 system-ui,sans-serif;" +
+        "padding:8px 12px;border-radius:14px;border:2px solid #ce1141;box-shadow:0 4px 12px #0007;animation:bbSay 5.2s ease-in-out forwards}" +
         "@media (prefers-reduced-motion:reduce){.bb-bear,.bb-slam,.bb-ball.shot{display:none!important}}"
     }
   };
@@ -662,6 +666,11 @@
         var t = document.createElement("div"); t.className = "bb-hola"; t.textContent = lines[Math.floor(Math.random() * lines.length)];
         t.style.left = Math.max(70, Math.min(innerWidth - 70, r.left + r.width / 2)) + "px"; t.style.top = (r.top - 34) + "px"; temp(t, 2900);
         return [null, 2900]; },
+      // the walker stops, hops and cheers one of the team's lines (Jason 2026-10-28)
+      ess: function () { var w = walker(); if (!w) return null; var r = w.getBoundingClientRect(); pulse("hold", 2900); pulse("jump", 800);
+        var t = document.createElement("div"); t.className = "bb-hola"; t.textContent = Math.random() < 0.5 ? "My pleasure!" : "Yay! New ESS!";
+        t.style.left = Math.max(70, Math.min(innerWidth - 70, r.left + r.width / 2)) + "px"; t.style.top = (r.top - 34) + "px"; temp(t, 2900);
+        return [null, 2900]; },
       // the walker waits until it reaches the middle of the screen, then stops to beat its chest or wave
       showoff: function () { var w = walker(); if (!w || w.classList.contains("hold")) return null;
         var tries = 0, poll = setInterval(function () {
@@ -711,7 +720,7 @@
     };
     // bigger walker (inline !important set when it was built, so override it here)
     var w0 = walker(); if (w0) w0.style.setProperty("width", "clamp(120px,12vw,165px)", "important");
-    var names = Object.keys(acts).concat("conga", "showoff", "peek"), last = null;   // conga, show-off and peek come up twice as often
+    var names = Object.keys(acts).concat("conga", "showoff", "peek", "ess"), last = null;   // conga, show-off, peek and the team lines come up twice as often
     var run = function (name) { var r = acts[name](); if (r && r[0]) setTimeout(function () { r[0].remove(); }, r[1] + 200); return !!r; };
     window.bbMonkey = run;   // preview a moment on demand: bbMonkey("banana")
     var next = function (ms) {
@@ -742,6 +751,12 @@
         var side = Math.random() < 0.5 ? "left" : "right", spot = (3 + Math.random() * 14).toFixed(1) + "vw";
         if (side == "left" && document.documentElement.classList.contains("bbd")) spot = "calc(var(--bbd-side) + " + spot + ")";
         d.style[side] = spot; return [d, 5400]; },
+      talk: function () { var d = add("peek", "img/me/diana-bear-wave.svg");
+        var side = Math.random() < 0.5 ? "left" : "right", spot = (3 + Math.random() * 14).toFixed(1) + "vw";
+        if (side == "left" && document.documentElement.classList.contains("bbd")) spot = "calc(var(--bbd-side) + " + spot + ")";
+        d.style[side] = spot;
+        var t = document.createElement("div"); t.className = "bb-say"; t.textContent = Math.random() < 0.5 ? "My pleasure!" : "Yay! New ESS!";
+        d.firstChild.appendChild(t); return [d, 5400]; },
       dunk: function () { var d = add("dunk", "img/me/diana-bear.svg"), extra = [];
         setTimeout(function () { if (!d.isConnected) return; var r = d.getBoundingClientRect();
           var b = document.createElement("i"); b.className = "bb-ball shot"; b.style.left = (r.left + r.width * 0.7) + "px"; b.style.top = r.top + "px";
@@ -758,7 +773,7 @@
         var rk = document.createElement("img"); rk.src = "img/me/diana-rocket.svg"; rk.alt = ""; d.firstChild.appendChild(rk);
         return [d, 7000]; }
     };
-    var names = Object.keys(acts), last = null;
+    var names = Object.keys(acts).concat("talk"), last = null;   // the talking peek comes up twice as often
     var run = function (name) {
       if (document.querySelector(".bb-bear")) return;
       var r = acts[name](); setTimeout(function () { r[0].remove(); (r[2] || []).forEach(function (x) { x.remove(); }); }, r[1] + 200);
