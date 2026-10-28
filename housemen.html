@@ -166,6 +166,11 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
 .toast.bad{background:#2a0d0d;color:var(--red);border-color:var(--red)}
 .foot{margin-top:24px;font-size:10.5px;color:var(--t4);text-align:center;line-height:1.6}
 .foot a,.linkbtn{color:var(--t3);background:none;border:0;text-decoration:underline;font-size:10.5px}
+.ipin{margin-left:auto;flex:none;border:0;background:transparent;font-size:12px;padding:2px 6px;border-radius:6px;filter:grayscale(1);opacity:.45}
+.ipin:hover{opacity:1;filter:none;background:rgba(255,200,80,.12)}
+.ipin.on{filter:none;opacity:1}
+.ipin + .iedbtn,.ipin + .idel{margin-left:0}
+li.pinned .pinmark{font-size:11px}
 .idel{margin-left:auto;flex:none;border:0;background:transparent;color:var(--t4);font-size:13px;padding:2px 6px;border-radius:6px}
 .idel:hover{color:var(--red);background:var(--red-d)}
 .iadd{display:flex;gap:6px;margin:8px 0 2px}
@@ -599,11 +604,12 @@ const DAYS = [
  ]},
  { iso:"2026-10-29", target:"Friday 10/30", crew:"", shift:"", rooms:[
    {t:"clr", room:"Bluebell", for:"AUSDW In-House finished", end:"12:00 PM", next:"Tue 11/3 → Lenovo"},
-   {t:"clr", room:"Camellia", for:"Upbring finished", end:"3:00 PM", next:"No event on file through 11/10"},
+   {t:"clr", room:"Buttercup", for:"AUSDW In-House finished", end:"1:00 PM", next:"Tue 11/3 → Colt"},
+   {t:"clr", room:"Camellia", for:"Upbring finished", end:"3:00 PM", next:"Fri 11/6 → Casey Family Programs"},
    {t:"clr", room:"Bonnell", for:"Upbring finished", end:"8:00 PM", next:"Sat 10/31 → Corinne"},
  ]},
  { iso:"2026-10-30", target:"Saturday 10/31", crew:"", shift:"", rooms:[
-   {t:"set", room:"Bonnell", for:"Corinne · Liz's Baby Shower Brunch", diag:"BonnellfromLizBabyShowerBrunch_1021.pdf", items:["One long table set for 13","2 side tables along the wall","Setup at 10 AM (event order)","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Bonnell", for:"Corinne · Liz's Baby Shower Brunch", diag:"BonnellfromDefiniteLizsBabyShowerBrunch_1026.pdf", items:["one long table set for 13 + 2 side tables along the wall (diagram)","Setup at 10 AM","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
  ]},
  { iso:"2026-10-31", target:"Sunday 11/1", crew:"", shift:"", rooms:[
    {t:"clr", room:"Bonnell", for:"Corinne finished", end:"1:00 PM", next:"Tue 11/3 → AUSDW In-House"},
@@ -611,91 +617,150 @@ const DAYS = [
  { iso:"2026-11-01", target:"Monday 11/2", crew:"", shift:"", rooms:[
    {t:"set", room:"Camellia B", for:"Altasciences · BD Leadership Summit", diag:"CamelliaBfromAltasciencesBDLeadership_1020.pdf", items:["U-Shape","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"set", room:"Camellia A", for:"Texas Association of School Boards (TASB) · Legal Retreat", items:["U-Shape 2 per 6","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
-   {t:"set", room:"Primrose D", for:"Legrand · General Session", diag:"PRIMROSEDfromLegrandCSRSummit_1027.pdf", items:["Rounds of 8 (9 rounds, set 72)","(1) 6' table + 2 chairs inside the doors","(2) 6' tables + 4 chairs outside the doors","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["From events report — no event order yet","10/27 diagram adds a red wavy line along the stage wall (drape?), confirm"]},
+   {t:"set", room:"Primrose D", for:"Legrand · General Session Set Up", diag:"PRIMROSEDfromLegrandCSRSummit_1027.pdf", items:["Rounds of 8 (9 rounds, set 72)","(1) 6' table + 2 chairs inside the doors","(2) 6' tables + 4 chairs outside the doors","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
  ]},
  { iso:"2026-11-02", target:"Tuesday 11/3", crew:"", shift:"", rooms:[
-   {t:"set", room:"Primrose B", for:"Legrand · Hospitality Room", diag:"PRIMROSEBfromLegrandCSRSummit.pdf", items:["Rounds of 12 (6 rounds, set 72)","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["From events report — no event order yet"]},
-   {t:"set", room:"Bluebell", for:"Lenovo · Office (Bluebell)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
-   {t:"set", room:"Buttercup", for:"Colt · Meeting", items:["Conference","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["From events report — no event order yet"]},
+   {t:"set", room:"Primrose B", for:"Legrand · Hospitality + Meal Room (Primrose B)", diag:"PRIMROSEBfromLegrandCSRSummit.pdf", items:["Rounds of 12","set with mirror and succulent plants","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Bluebell", for:"Lenovo · Office (Bluebell)", items:["Conference","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Buttercup", for:"Colt · Meeting", items:["Conference","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"set", room:"Lantana", for:"Bayer · Southwest Area Meeting", items:["U-Shape 2 per 6","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
-   {t:"set", room:"Verbena A", for:"Legrand · SET UP Breakout", diag:"VERBENAAfromLegrandCSRSummit.pdf", items:["Rounds (4 rounds, set 23)","Screen + projector","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["From events report — no event order yet"]},
-   {t:"set", room:"Verbena B", for:"Legrand · SET UP Breakout", diag:"VERBENABfromLegrandCSRSummit.pdf", items:["Rounds of 5 (4 rounds, set 20)","Screen + projector","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["From events report — no event order yet"]},
-   {t:"set", room:"Primrose C", for:"Lenovo · General Session Set Up (Primrose C)", diag:"PRIMROSECfromEDUPartnerConference2026.pdf", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
+   {t:"set", room:"Verbena A", for:"Legrand · Breakout Set Up (Verbena A)", diag:"VERBENAAfromLegrandCSRSummit.pdf", items:["Rounds (4 rounds, set 23)","Screen + projector","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Verbena B", for:"Legrand · Breakout Set Up (Verbena B)", diag:"VERBENABfromLegrandCSRSummit.pdf", items:["Rounds of 5 (4 rounds, set 20)","Screen + projector","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Primrose C", for:"Lenovo · General Session Set Up (Primrose C)", diag:"PRIMROSECfromEDUPartnerConference2026.pdf", items:["13 crescent rounds of 8","linen-less tables; 8x18 stage with steps and podium; (5) chairs on stage; (6) 6x30 tables in back for demos","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"set", room:"Bonnell", for:"AUSDW In-House · Dinner", items:["Rounds of 6","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["From events report — no event order yet"]},
+   {t:"set", room:"Primrose AB", for:"Make Liberty Win · Election Night Party", items:["Cocktail Rounds","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"ref", room:"Camellia B", for:"Altasciences · BD Leadership Summit", end:"5:00 PM", diag:"CamelliaBfromAltasciencesBDLeadership_1020.pdf"},
    {t:"ref", room:"Primrose D", for:"Legrand · General Session", end:"11:00 PM", diag:"PRIMROSEDfromLegrandCSRSummit_1027.pdf"},
-   {t:"clr", room:"Camellia A", for:"Texas Association of School Boards (TASB) finished", end:"5:00 PM", next:"No event on file through 11/10"},
+   {t:"clr", room:"Camellia A", for:"Texas Association of School Boards (TASB) finished", end:"5:00 PM", next:"No event on file through 11/19"},
  ]},
  { iso:"2026-11-03", target:"Wednesday 11/4", crew:"", shift:"", rooms:[
    {t:"set", room:"Lantana A", for:"Lenovo · Trafera Meeting (Lantana A)", diag:["LANTANAACopyfromEDUPartnerConference2026.pdf","LANTANAAfromEDUPartnerConference2026.pdf"], items:["U-Shape","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"set", room:"Pre-Function", for:"Lenovo · Reception + Keynote", diag:"PREFUNCTIONfromEDUPartnerConference2026.pdf", items:[], flags:["No setup on file — check the event order"]},
    {t:"set", room:"Barton", for:"FirstService Residential · Meeting", items:["Schoolroom","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["From events report — no event order yet"]},
-   {t:"ref", room:"Primrose B", for:"Legrand · Hospitality Room", end:"2:00 PM", diag:"PRIMROSEBfromLegrandCSRSummit.pdf"},
+   {t:"ref", room:"Primrose B", for:"Legrand · Hospitality + Meal Room (Primrose B)", end:"5:00 PM", diag:"PRIMROSEBfromLegrandCSRSummit.pdf"},
    {t:"ref", room:"Primrose D", for:"Legrand · General Session", end:"5:00 PM", diag:"PRIMROSEDfromLegrandCSRSummit_1027.pdf"},
-   {t:"set", room:"Camellia B", for:"Legrand · Breakout", end:"11:00 PM", diag:"CamelliaBfromLegrandCSRSummit.pdf", items:["Flip from Altasciences","Rounds of 5 (4 rounds, set 20)","Screen + projector","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["From events report — no event order yet"]},
-   {t:"ref", room:"Verbena A", for:"Legrand · Breakout", end:"11:00 PM", diag:"VERBENAAfromLegrandCSRSummit.pdf"},
-   {t:"ref", room:"Verbena B", for:"Legrand · Breakout", end:"11:00 PM", diag:"VERBENABfromLegrandCSRSummit.pdf"},
+   {t:"set", room:"Camellia B", for:"Legrand · Breakout (Camellia B)", end:"11:00 PM", diag:"CamelliaBfromLegrandCSRSummit.pdf", items:["Flip from Altasciences","Rounds of 5 (4 rounds, set 20)","Screen + projector","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"ref", room:"Verbena A", for:"Legrand · Breakout (Verbena A)", end:"11:00 PM", diag:"VERBENAAfromLegrandCSRSummit.pdf"},
+   {t:"ref", room:"Verbena B", for:"Legrand · Breakout (Verbena B)", end:"11:00 PM", diag:"VERBENABfromLegrandCSRSummit.pdf"},
    {t:"ref", room:"Primrose C", for:"Lenovo · General Session Set Up + Rehearsal (Primrose C)", end:"11:30 PM", diag:"PRIMROSECfromEDUPartnerConference2026.pdf"},
    {t:"ref", room:"Bluebell", for:"Lenovo · Office (Bluebell)", end:"11:59 PM"},
    {t:"clr", room:"Buttercup", for:"Colt finished", end:"5:00 PM", next:"Fri 11/6 → Lenovo"},
-   {t:"clr", room:"Lantana", for:"Bayer finished", end:"6:00 PM", next:"No event on file through 11/10"},
-   {t:"clr", room:"Bonnell", for:"AUSDW In-House finished", end:"8:00 PM", next:"No event on file through 11/10"},
+   {t:"clr", room:"Lantana", for:"Bayer finished", end:"6:00 PM", next:"Sat 11/14 → TMF Health Quality Institute"},
+   {t:"clr", room:"Bonnell", for:"AUSDW In-House finished", end:"8:00 PM", next:"Fri 11/6 → Texas Mutual Insurance"},
+   {t:"clr", room:"Primrose AB", for:"Make Liberty Win finished", end:"11:00 PM", next:"Fri 11/6 → Lenovo"},
  ]},
  { iso:"2026-11-04", target:"Thursday 11/5", crew:"", shift:"", rooms:[
-   {t:"set", room:"Primrose A", for:"Lenovo · Breakout (Primrose A)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
-   {t:"set", room:"Lantana B", for:"Lenovo · Breakout (Lantana B)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
-   {t:"set", room:"Plumeria A", for:"Lenovo · Holding (Plumeria A)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
-   {t:"set", room:"Plumeria B", for:"Lenovo · Holding (Plumeria B)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
-   {t:"set", room:"Primrose B", for:"Lenovo · Breakout (Primrose B)", end:"2:00 PM", items:["Flip from Legrand","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
-   {t:"ref", room:"Lantana A", for:"Lenovo · Breakout (Lantana A)", end:"4:00 PM"},
-   {t:"set", room:"Primrose D", for:"Lenovo · Meal Room (Primrose D)", end:"5:00 PM", items:["Flip from Legrand","Rounds of 10","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
-   {t:"set", room:"Verbena B", for:"FCM · National Assembly", end:"5:00 PM", items:["Flip from Legrand","U-Shape","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Primrose A", for:"Lenovo · Breakout (Primrose A)", items:["Schoolroom 2 per 6; podium","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Lantana B", for:"Lenovo · Breakout (Lantana B)", items:["Schoolroom; podium","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Plumeria A", for:"Lenovo · Holding (Plumeria A)", items:["Schoolroom","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Plumeria B", for:"Lenovo · Holding (Plumeria B)", items:["Schoolroom","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Lantana A", for:"Lenovo · Breakout (Lantana A)", end:"4:00 PM", items:["Setup changes from today","Schoolroom; podium","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Primrose B", for:"Lenovo · Breakout (Primrose B)", end:"5:00 PM", items:["Flip from Legrand","Schoolroom 2 per 6; podium","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Verbena B", for:"FCM · National Assembly", end:"5:00 PM", diag:"VERBENABfromFCMNationalAssembly2026.pdf", items:["Flip from Legrand","U-Shape","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Primrose D", for:"Lenovo · Meal Room (Primrose D)", end:"8:00 PM", items:["Flip from Legrand","Rounds of 10","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"ref", room:"Primrose C", for:"Lenovo · General Session (Primrose C)", end:"11:30 PM"},
    {t:"ref", room:"Bluebell", for:"Lenovo · Office (Bluebell)", end:"11:59 PM"},
-   {t:"clr", room:"Camellia B", for:"Legrand finished", end:"5:00 PM", next:"No event on file through 11/10"},
+   {t:"clr", room:"Camellia B", for:"Legrand finished", end:"5:00 PM", next:"No event on file through 11/19"},
    {t:"clr", room:"Verbena A", for:"Legrand finished", end:"5:00 PM", next:"Fri 11/6 → FCM"},
    {t:"clr", room:"Pre-Function", for:"Lenovo finished", end:"8:00 PM", next:"Fri 11/6 → FCM"},
-   {t:"clr", room:"Barton", for:"FirstService Residential finished", end:"8:00 PM", next:"No event on file through 11/10"},
+   {t:"clr", room:"Barton", for:"FirstService Residential finished", end:"8:00 PM", next:"Fri 11/6 → Texas Mutual Insurance"},
  ]},
-{ iso:"2026-11-05", target:"Friday 11/6", crew:"", shift:"", rooms:[
-   {t:"set", room:"Primrose AB", for:"Lenovo · Holding (Primrose AB)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
-   {t:"set", room:"Buttercup", for:"Lenovo · Office (Buttercup)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
-   {t:"set", room:"Verbena A", for:"FCM · Expo (Verbena A)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
-   {t:"set", room:"Pre-Function", for:"FCM · Registration", items:[], flags:["No setup on file — check the event order"]},
+ { iso:"2026-11-05", target:"Friday 11/6", crew:"", shift:"", rooms:[
+   {t:"set", room:"Barton", for:"Texas Mutual Insurance · Employers Liability Conference", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
+   {t:"set", room:"Bonnell", for:"Texas Mutual Insurance · Employers Liability Conference", items:["Rounds of 10","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Camellia", for:"Casey Family Programs · CFP Hotline Leaders Convening", items:["U-Shape","U-Shape for 21","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Primrose AB", for:"Lenovo · Holding (Primrose AB)", items:["Rounds of 8","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Buttercup", for:"Lenovo · Office (Buttercup)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Verbena A", for:"FCM · Expo (Verbena A)", diag:"VERBENAAfromFCMNationalAssembly2026.pdf", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
+   {t:"set", room:"Pre-Function", for:"FCM · Registration", diag:"PREFUNCTIONfromFCMNationalAssembly2026.pdf", items:[], flags:["No setup on file — check the event order"]},
    {t:"ref", room:"Lantana A", for:"Lenovo · Holding (Lantana A)", end:"11:45 AM"},
    {t:"ref", room:"Primrose D", for:"Lenovo · Meal Room (Primrose D)", end:"5:00 PM"},
    {t:"ref", room:"Primrose C", for:"Lenovo · General Session (Primrose C)", end:"5:00 PM"},
-   {t:"ref", room:"Verbena B", for:"FCM · National Assembly", end:"7:30 PM"},
+   {t:"ref", room:"Verbena B", for:"FCM · National Assembly", end:"7:30 PM", diag:"VERBENABfromFCMNationalAssembly2026.pdf"},
    {t:"ref", room:"Lantana B", for:"Lenovo · Holding (Lantana B)", end:"11:59 PM"},
-   {t:"clr", room:"Primrose B", for:"Lenovo finished", end:"11:45 AM", next:"No event on file through 11/10"},
-   {t:"clr", room:"Primrose A", for:"Lenovo finished", end:"11:59 PM", next:"No event on file through 11/10"},
-   {t:"clr", room:"Plumeria A", for:"Lenovo finished", end:"11:59 PM", next:"No event on file through 11/10"},
-   {t:"clr", room:"Plumeria B", for:"Lenovo finished", end:"11:59 PM", next:"No event on file through 11/10"},
-   {t:"clr", room:"Bluebell", for:"Lenovo finished", end:"11:59 PM", next:"No event on file through 11/10"},
+   {t:"clr", room:"Primrose B", for:"Lenovo finished", end:"11:45 AM", next:"Sat 11/7 → FCM"},
+   {t:"clr", room:"Primrose A", for:"Lenovo finished", end:"11:59 PM", next:"Sat 11/7 → FCM"},
+   {t:"clr", room:"Plumeria A", for:"Lenovo finished", end:"11:59 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"Plumeria B", for:"Lenovo finished", end:"11:59 PM", next:"Mon 11/9 → MAREK"},
+   {t:"clr", room:"Bluebell", for:"Lenovo finished", end:"11:59 PM", next:"No event on file through 11/19"},
  ]},
-{ iso:"2026-11-06", target:"Saturday 11/7", crew:"", shift:"", rooms:[
-   {t:"clr", room:"Primrose C", for:"Lenovo finished", end:"12:00 PM", next:"No event on file through 11/10"},
-   {t:"clr", room:"Primrose D", for:"Lenovo finished", end:"1:30 PM", next:"No event on file through 11/10"},
+ { iso:"2026-11-06", target:"Saturday 11/7", crew:"", shift:"", rooms:[
+   {t:"set", room:"Primrose A", for:"FCM · Breakout (Primrose A)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
+   {t:"set", room:"Primrose B", for:"FCM · Breakout (Primrose B)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
+   {t:"ref", room:"Verbena A", for:"FCM · Expo (Verbena A)", end:"6:00 PM"},
+   {t:"ref", room:"Pre-Function", for:"FCM · Registration", end:"6:00 PM"},
+   {t:"set", room:"Primrose C", for:"FCM · General Session + Meals (Primrose C)", end:"9:00 PM", items:["Flip from Lenovo","Crescent Rounds","REFRESH","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"clr", room:"Camellia", for:"Casey Family Programs finished", end:"12:30 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"Primrose D", for:"Lenovo finished", end:"1:30 PM", next:"No event on file through 11/19"},
    {t:"clr", room:"Primrose AB", for:"Lenovo finished", end:"4:00 PM", next:"Mon 11/9 → Dell"},
-   {t:"clr", room:"Lantana A", for:"Lenovo finished", end:"4:00 PM", next:"No event on file through 11/10"},
-   {t:"clr", room:"Lantana B", for:"Lenovo finished", end:"4:00 PM", next:"No event on file through 11/10"},
+   {t:"clr", room:"Lantana A", for:"Lenovo finished", end:"4:00 PM", next:"Fri 11/13 → TMF Health Quality Institute"},
+   {t:"clr", room:"Lantana B", for:"Lenovo finished", end:"4:00 PM", next:"Fri 11/13 → TMF Health Quality Institute"},
    {t:"clr", room:"Buttercup", for:"Lenovo finished", end:"5:00 PM", next:"Sun 11/8 → Dell"},
-   {t:"clr", room:"Verbena B", for:"FCM finished", end:"6:00 PM", next:"No event on file through 11/10"},
-   {t:"clr", room:"Verbena A", for:"FCM finished", end:"6:00 PM", next:"No event on file through 11/10"},
-   {t:"clr", room:"Pre-Function", for:"FCM finished", end:"6:00 PM", next:"No event on file through 11/10"},
+   {t:"clr", room:"Barton", for:"Texas Mutual Insurance finished", end:"5:00 PM", next:"Tue 11/10 → Dell"},
+   {t:"clr", room:"Bonnell", for:"Texas Mutual Insurance finished", end:"5:00 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"Verbena B", for:"FCM finished", end:"6:00 PM", next:"No event on file through 11/19"},
  ]},
-{ iso:"2026-11-07", target:"Sunday 11/8", crew:"", shift:"", rooms:[
-   {t:"set", room:"Buttercup", for:"Dell · Office (Buttercup)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
+ { iso:"2026-11-07", target:"Sunday 11/8", crew:"", shift:"", rooms:[
+   {t:"set", room:"Buttercup", for:"Dell · Office (Buttercup)", items:["Conference","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"ref", room:"Verbena A", for:"FCM · Expo (Verbena A)", end:"4:00 PM"},
+   {t:"ref", room:"Primrose A", for:"FCM · Breakout (Primrose A)", end:"4:00 PM"},
+   {t:"ref", room:"Primrose B", for:"FCM · Breakout (Primrose B)", end:"4:00 PM"},
+   {t:"ref", room:"Primrose C", for:"FCM · General Session + Brunch (Primrose C)", end:"9:00 PM"},
+   {t:"clr", room:"Pre-Function", for:"FCM finished", end:"7:00 PM", next:"No event on file through 11/19"},
  ]},
-{ iso:"2026-11-08", target:"Monday 11/9", crew:"", shift:"", rooms:[
-   {t:"set", room:"Primrose AB", for:"Dell · Global Alliances Meeting", items:["Schoolroom","Water station back of room with glass cups placed at each seat for the guests","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+ { iso:"2026-11-08", target:"Monday 11/9", crew:"", shift:"", rooms:[
+   {t:"set", room:"Primrose AB", for:"Dell · Global Alliances Meeting", diag:"PRIMROSEABfromDellTechnologiesGlobalAlliancesPABCTO_1026.pdf", items:["Schoolroom","Water station back of room with glass cups placed at each seat for the guests","Set classroom for 64","2 per table","2 tables in back with 2 chairs","refer to diagram","8'x18' stage with podium","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Plumeria B", for:"MAREK · C2C Fall Peer Offsite", items:["U-Shape","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"ref", room:"Buttercup", for:"Dell · Office (Buttercup)", end:"11:59 PM"},
+   {t:"clr", room:"Primrose A", for:"FCM finished", end:"12:30 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"Primrose B", for:"FCM finished", end:"12:30 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"Primrose C", for:"FCM finished", end:"1:30 PM", next:"Tue 11/17 → Ferguson"},
+   {t:"clr", room:"Verbena A", for:"FCM finished", end:"1:30 PM", next:"No event on file through 11/19"},
  ]},
-{ iso:"2026-11-09", target:"Tuesday 11/10", crew:"", shift:"", rooms:[
-   {t:"set", room:"PRE-FUNCTION A", for:"Dell · Global Alliances Meeting", items:[], flags:["No setup on file — check the event order"]},
+ { iso:"2026-11-09", target:"Tuesday 11/10", crew:"", shift:"", rooms:[
+   {t:"set", room:"Verbena", for:"Dell · OEM CAC (Verbena, lunch in Barton)", items:["U-Shape","(2) Tables in the back for staff","(1) AV table","(1) 6x30 table set outside of room for badges","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"PRE-FUNCTION A", for:"Dell · Global Alliances Meeting", items:["Off Site"]},
+   {t:"set", room:"Plumeria", for:"MAREK · C2C Fall Peer Offsite", items:["U-Shape","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Barton", for:"Dell · OEM CAC (Verbena, lunch in Barton)", items:["Rounds of 10","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"ref", room:"Buttercup", for:"Dell · Office (Buttercup)", end:"11:59 PM"},
-   {t:"clr", room:"Primrose AB", for:"Dell finished", end:"6:00 PM", next:"No event on file through 11/10"},
- ]}
+   {t:"clr", room:"Primrose AB", for:"Dell finished", end:"5:00 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"Plumeria B", for:"MAREK finished", end:"5:00 PM", next:"Wed 11/11 → MAREK"},
+ ]},
+ { iso:"2026-11-10", target:"Wednesday 11/11", crew:"", shift:"", rooms:[
+   {t:"set", room:"Plumeria B", for:"MAREK · C2C Fall Peer Offsite", items:["U-Shape","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"clr", room:"Barton", for:"Dell finished", end:"1:00 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"Verbena", for:"Dell finished", end:"3:00 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"PRE-FUNCTION A", for:"Dell finished", end:"5:00 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"Buttercup", for:"Dell finished", end:"5:00 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"Plumeria", for:"MAREK finished", end:"9:00 PM", next:"No event on file through 11/19"},
+ ]},
+ { iso:"2026-11-11", target:"Thursday 11/12", crew:"", shift:"", rooms:[
+   {t:"set", room:"Zilker", for:"Hart InterCivic · Meeting", items:["Conference","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"clr", room:"Plumeria B", for:"MAREK finished", end:"12:00 PM", next:"No event on file through 11/19"},
+ ]},
+ { iso:"2026-11-12", target:"Friday 11/13", crew:"", shift:"", rooms:[
+   {t:"set", room:"Lantana B", for:"TMF Health Quality Institute · Board of Directors (Lantana A + B)", items:["Hollow Square","1 Reg table with 2 chairs outside room","Beverages set inside","snacks set outside between Lantana A and B","Hollow Square","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Lantana A", for:"TMF Health Quality Institute · Board of Directors (Lantana A + B)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
+   {t:"clr", room:"Zilker", for:"Hart InterCivic finished", end:"6:00 PM", next:"Wed 11/18 → Motiva"},
+ ]},
+ { iso:"2026-11-13", target:"Saturday 11/14", crew:"", shift:"", rooms:[
+   {t:"set", room:"Lantana", for:"TMF Health Quality Institute · Board of Directors", items:["Hollow Square","Hollow Square","Set breakfast buffet outside of the room","Beverages inside of room","Have a small table set up inside conference rooms for agendas","Entree Cards with Names","Hollow Square","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"clr", room:"Lantana B", for:"TMF Health Quality Institute finished", end:"6:00 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"Lantana A", for:"TMF Health Quality Institute finished", end:"6:00 PM", next:"No event on file through 11/19"},
+ ]},
+ { iso:"2026-11-14", target:"Sunday 11/15", crew:"", shift:"", rooms:[
+   {t:"clr", room:"Lantana", for:"TMF Health Quality Institute finished", end:"2:00 PM", next:"No event on file through 11/19"},
+ ]},
+ { iso:"2026-11-16", target:"Tuesday 11/17", crew:"", shift:"", rooms:[
+   {t:"set", room:"Primrose C", for:"Ferguson · Rheem Meeting", items:["Schoolroom","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+ ]},
+ { iso:"2026-11-17", target:"Wednesday 11/18", crew:"", shift:"", rooms:[
+   {t:"set", room:"Zilker", for:"Motiva · New Sales Hire Training", items:["Conference","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"clr", room:"Primrose C", for:"Ferguson finished", end:"5:00 PM", next:"No event on file through 11/19"},
+ ]},
+ { iso:"2026-11-18", target:"Thursday 11/19", crew:"", shift:"", rooms:[
+   {t:"ref", room:"Zilker", for:"Motiva · New Sales Hire Training", end:"5:00 PM"},
+ ]},
 ];
 
 const REFRESH = ["Vacuum","Tray jack + clean tray in the room","Tray with pens, pads & candy on the credenza"];
@@ -753,10 +818,14 @@ let SORTING = false, renderPending = false, sortEnded = 0;   // drag-to-reorder 
 const ORDER = {};          // iso -> ["origIso|index", ...] — a lead's drag-and-drop build order for that night          // iso -> { slug -> {items, done, prob} }
 let db = null;
 const setSync = c => { document.getElementById("sync").className = "sync " + c; };
+// Pinned items (Hector 2026-10-28): lines a lead keeps under a room every night it's on the list, so they aren't retyped daily.
+const STANDING = {};       // room name -> [{id, text, by, ts}]
+const MOCK_STAND = "bb-hsm-mock-standing";
 
 if (MOCK) {
   try { Object.assign(STATE, JSON.parse(localStorage.getItem("bb-hsm-mock") || "{}")); } catch(e) {}
   try { Object.assign(ORDER, JSON.parse(localStorage.getItem("bb-hsm-mock-order") || "{}")); } catch(e) {}
+  try { Object.assign(STANDING, JSON.parse(localStorage.getItem(MOCK_STAND) || "{}")); } catch(e) {}
   setSync("ok");
 } else {
   const app = initializeApp({
@@ -769,6 +838,17 @@ if (MOCK) {
       snap => { STATE[d.iso] = (snap.exists() && snap.data().rooms) || {}; ORDER[d.iso] = (snap.exists() && snap.data().order) || null; setSync("ok"); render(); },
       err => { console.error("[housemen]", err); setSync("bad"); toast("Can't reach the live list — showing what's saved", true); });
   }
+  onSnapshot(doc(db, COL, "standing"),
+    snap => { for (const k in STANDING) delete STANDING[k]; Object.assign(STANDING, (snap.exists() && snap.data().rooms) || {}); render(); },
+    err => console.error("[housemen] pinned items", err));
+}
+// Save one room's pinned list (merge keeps the other rooms).
+async function saveStanding(room, list) {
+  const before = STANDING[room] ? STANDING[room].slice() : [];
+  STANDING[room] = list; render();
+  if (MOCK) { try { localStorage.setItem(MOCK_STAND, JSON.stringify(STANDING)); } catch(e) {} return; }
+  try { await setDoc(doc(db, COL, "standing"), {rooms: {[room]: list}, updated: Date.now()}, {merge: true}); }
+  catch (e) { console.error("[housemen] pin save failed", e); STANDING[room] = before; render(); setSync("bad"); toast("Didn't save — check signal and try again", true); }
 }
 
 // Write a patch for one room. Merge keeps everything else in the day's doc.
@@ -939,6 +1019,7 @@ function listOf(iso, r) {
   return baseItems(iso, r).map((text,k)=>({key:keyOf(iso, r, k), text, orig:text})).filter(x=>!gone.has(x.orig))
     .map(x => ed[x.key] ? {...x, text: ed[x.key], edited: true} : x)
     .concat((s.extra || []).map(x=>({key:"x"+x.id, text:x.text, added:true})))
+    .concat(tOf(iso, r) == "clr" ? [] : (STANDING[r.room] || []).filter(x => !gone.has(x.text)).map(x=>({key:"p"+x.id, text:x.text, orig:x.text, pinned:true, pid:x.id})))
     .map((x,k) => [s.iorder && s.iorder.indexOf(x.key) >= 0 ? s.iorder.indexOf(x.key) : 1e3 + k, x])
     .sort((a,b) => a[0] - b[0]).map(z => z[1]);
 }
@@ -981,8 +1062,10 @@ function renderHsm(d) {
         ${r.end?`<span class="rend">ENDS<b>${esc(r.end)}</b></span>`:""}</button>
       <div class="rbody"><ul class="items"${lead?` data-isort="${id}"`:""}>${R.list.map(x=> lead && EDITING == id+"|"+x.key
             ? `<li class="iedit"><input id="ed-${esc(id+"|"+x.key)}" maxlength="140" value="${esc(x.text)}"><button data-edsave="${id}" data-k="${x.key}">Save</button><button class="idel" data-edcancel="1" aria-label="Cancel edit">✕</button></li>`
-            : `<li data-item="${id}" data-k="${x.key}"${lead?` data-sort="${esc(x.key)}"`:""} class="${R.s.items&&R.s.items[x.key]?"ck":""}${x.added?" added":""}${x.edited?" edited":""}">${lead?`<span class="grip igrip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="box"></span><span>${esc(x.text)}</span>${lead?`<button class="iedbtn" data-edit="${id}" data-k="${x.key}" aria-label="Edit line">✎</button><button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove item">✕</button>`:""}</li>`).join("")}</ul>
-        ${lead?`<div class="iadd"><input id="add-${id}" maxlength="120" placeholder="+ Add an item for tonight"><button data-addbtn="${id}">Add</button></div>
+            : `<li data-item="${id}" data-k="${x.key}"${lead?` data-sort="${esc(x.key)}"`:""} class="${R.s.items&&R.s.items[x.key]?"ck":""}${x.added?" added":""}${x.edited?" edited":""}${x.pinned?" pinned":""}">${lead?`<span class="grip igrip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="box"></span><span>${x.pinned?`<span class="pinmark" title="Kept every night">📌</span> `:""}${esc(x.text)}</span>${lead?(x.pinned
+              ? `<button class="ipin on" data-unpin="${id}" data-k="${x.key}" aria-label="Stop keeping this every night" title="Unpin: stop adding this to ${esc(r.room)} every night">📌</button><button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove for tonight only" title="Remove for tonight only">✕</button>`
+              : `${x.added?`<button class="ipin" data-pin="${id}" data-k="${x.key}" aria-label="Keep every night" title="Pin: add this to ${esc(r.room)} every night">📌</button>`:""}<button class="iedbtn" data-edit="${id}" data-k="${x.key}" aria-label="Edit line">✎</button><button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove item">✕</button>`):""}</li>`).join("")}</ul>
+        ${lead?`<div class="iadd"><input id="add-${id}" maxlength="120" placeholder="+ Add an item for tonight (📌 it to keep it every night)"><button data-addbtn="${id}">Add</button></div>
           ${(R.s.removed||[]).length?`<button class="irestore" data-restore="${id}">↺ Restore ${R.s.removed.length} removed item${R.s.removed.length>1?"s":""}</button>`:""}`:""}
         ${(flags.length||r.next)?`<div class="tags">${r.next?`<span class="tag next">Next: ${esc(r.next)}</span>`:""}${flags.map(f=>`<span class="tag flag">⚑ ${esc(f)}</span>`).join("")}</div>`:""}
         ${lead?`<div class="tsw" role="group" aria-label="Room type">${["set","ref","clr"].map(v=>`<button data-type="${id}" data-v="${v}" class="${T==v?"on":""}">${TYPE[v]}</button>`).join("")}${T!=r.t?`<span>posted as ${TYPE[r.t]}</span>`:""}</div>`:""}
@@ -1094,7 +1177,7 @@ document.getElementById("desk").onclick = () => { desk = !desk; try { localStora
 // ── actions
 document.addEventListener("click", async e => {
   if (e.target.closest("[data-grip]") || Date.now() - sortEnded < 350) { e.preventDefault(); return; }
-  const t = e.target.closest("[data-del],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back],[data-cancel],[data-uncancel],[data-edit],[data-edsave],[data-edcancel],[data-type],[data-newroom]");
+  const t = e.target.closest("[data-del],[data-pin],[data-unpin],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back],[data-cancel],[data-uncancel],[data-edit],[data-edsave],[data-edcancel],[data-type],[data-newroom]");
   if (!t) return;
   if (t.dataset.print) { openPrintSheet(t.dataset.print); return; }
   if (t.dataset.newroom) { if (!EDIT()) { toast(WHO && LEAD(WHO.role) ? "Editing is on desktop only" : "Only the captain or director can add rooms", true); return; } openNewRoom(t.dataset.newroom); return; }
@@ -1106,7 +1189,7 @@ document.addEventListener("click", async e => {
     else await moveBuild(t.dataset.back, parseId(t.dataset.back).iso);
     return;
   }
-  if (t.dataset.del || t.dataset.addbtn || t.dataset.restore || t.dataset.edit || t.dataset.edsave || t.dataset.edcancel || t.dataset.type) { await editItems(t); return; }
+  if (t.dataset.del || t.dataset.addbtn || t.dataset.restore || t.dataset.edit || t.dataset.edsave || t.dataset.edcancel || t.dataset.type || t.dataset.pin || t.dataset.unpin) { await editItems(t); return; }
   if (t.dataset.diag) { openViewer(t.dataset.diag, t.dataset.room); return; }
   if (t.dataset.day) { dayISO = t.dataset.day; openId = null; render(); return; }
   if (t.dataset.open) { openId = openId == t.dataset.open ? null : t.dataset.open; render(); return; }
@@ -1342,8 +1425,21 @@ document.getElementById("dgFile").addEventListener("change", async e => {
 async function editItems(t) {
   if (!EDIT()) { toast(WHO && LEAD(WHO.role) ? "Editing is on desktop only" : "Only the captain or director can edit the list", true); return; }
   if (t.dataset.edcancel) { EDITING = null; render(); return; }
-  const id = t.dataset.del || t.dataset.addbtn || t.dataset.restore || t.dataset.edit || t.dataset.edsave || t.dataset.type;
+  const id = t.dataset.del || t.dataset.addbtn || t.dataset.restore || t.dataset.edit || t.dataset.edsave || t.dataset.type || t.dataset.pin || t.dataset.unpin;
   const {iso, r} = parseId(id), rsl = rk(r), cur = rs(iso, r);
+  if (t.dataset.pin) {   // a line added tonight → kept under this room every night (and taken off tonight's extras so it isn't listed twice)
+    const x = (cur.extra || []).find(x => "x" + x.id == t.dataset.k); if (!x) return;
+    const list = (STANDING[r.room] || []).filter(p => p.text != x.text).concat({id: x.id, text: x.text, by: WHO.name, ts: Date.now()});
+    await saveStanding(r.room, list);
+    await save(iso, rsl, {extra: (cur.extra || []).filter(e => e.id != x.id)});
+    toast(`📌 Kept for ${r.room} every night`); return;
+  }
+  if (t.dataset.unpin) {
+    const pid = t.dataset.k.slice(1), p = (STANDING[r.room] || []).find(p => p.id == pid);
+    if (!confirm(`Stop adding "${p ? p.text : "this"}" to ${r.room} every night?`)) return;
+    await saveStanding(r.room, (STANDING[r.room] || []).filter(p => p.id != pid));
+    toast(`Unpinned from ${r.room}`); return;
+  }
   if (t.dataset.type) {
     const v = t.dataset.v; if (v == tOf(iso, r)) return;
     await save(iso, rsl, {type: v == r.t ? null : v}); toast(`${r.room} is now ${TYPE[v]}`); return;
@@ -1375,7 +1471,7 @@ async function editItems(t) {
   const k = t.dataset.k;
   if (k.startsWith("x")) await save(iso, rsl, {extra:(cur.extra||[]).filter(x=>"x"+x.id != k)});
   else { const text = (listOf(iso, r).find(x => x.key == k) || {}).orig; if (text) await save(iso, rsl, {removed:[...new Set((cur.removed||[]).concat(text))]}); }
-  toast(`Removed from ${r.room}`);
+  toast(k.startsWith("p") ? `Removed from ${r.room} for tonight — still pinned` : `Removed from ${r.room}`);
 }
 document.addEventListener("keydown", e => {
   if (e.target.id && e.target.id.startsWith("ed-")) {
