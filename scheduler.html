@@ -306,8 +306,9 @@ const $ = s => document.querySelector(s);
 const toast = t => { const el = $("#toast"); el.textContent = t; el.classList.add("on"); setTimeout(() => el.classList.remove("on"), 2200); };
 
 // ---------- tabs
-document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
-  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x === b));
+// View tabs only (they carry data-v). The week buttons are .tab too and keep their own click (2026-10-28 fix).
+document.querySelectorAll(".tab[data-v]").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tab[data-v]").forEach(x => x.classList.toggle("on", x === b));
   document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id === "v-" + b.dataset.v));
   if (b.dataset.v === "build") renderBuild();
   scrollTo({top: 0});
