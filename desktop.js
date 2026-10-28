@@ -391,7 +391,8 @@
       '<nav class="bbd-nav"><div class="lbl">Operations</div>' + navLinks(PAGES.slice(0, 6), cur) +
       (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' +
         '<a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' +
-        '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' :   // Print Signs: Jason and Hector only
+        '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' +   // Print Signs: Jason and Hector only
+        '<a href="captain-report.html" class="' + (cur == "captain-report.html" ? "on" : "") + '"><i>✓</i>Captain Report</a>' :   // Captain Report: Jason only
        w.name == "Hector" ? '<div class="lbl">Tools</div><a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' +
         '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' : "") +
       // Reference starts folded; the triangle opens it (remembered), and it opens itself on a reference page.
@@ -447,7 +448,7 @@
       if (b.dataset.bbd == "phone") set(DESK, "0");
       if (b.dataset.bbd == "out") { set(DESK, "0"); set(WHO, null); window.bbTheme && window.bbTheme.off && window.bbTheme.off(); }
       // Pages the phone home page doesn't link to (for leads) go back to Home in phone view (Jason 2026-10-25).
-      if (b.dataset.bbd == "phone" && ["today.html", "scheduler.html", "signs.html"].indexOf(here()) > -1) { location.href = "index.html"; return; }
+      if (b.dataset.bbd == "phone" && ["today.html", "scheduler.html", "signs.html", "captain-report.html"].indexOf(here()) > -1) { location.href = "index.html"; return; }
       location.reload();
     });
 

@@ -1,3 +1,4 @@
 .client-aliases.json
 node_modules/
 data/
+reports/
