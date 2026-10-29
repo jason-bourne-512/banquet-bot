@@ -36,6 +36,8 @@ Follow `CLAUDE.md` for exact markup and BEO conventions. Preserve first-name-onl
 
 Favor vertical room organization with clear times and service details. Keep dietary information near the relevant meal and setup information last. Avoid needless repetition of unchanged guest counts. Preserve EXP/GTD/SET distinctions where required; explain proposed convention changes before applying them.
 
+Captain reports: vary wording so each sounds human, never templated. Each event note in `captain-report.html` gets its own openers and sentence order with no stock line repeated across a night; run `node scripts/test-captain-report.js` after touching it.
+
 Preserve the hand-written day summaries. An automatic day-summary rebuild was tried and reverted at Jason's request; do not reintroduce it without being asked. Future staging, changeover, conflict detection, or decision-support ideas are not authorization to implement them.
 
 ## Local testing and completion

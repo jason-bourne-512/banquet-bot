@@ -77,7 +77,7 @@
 
   // ── read today's cards from the Rundown (the BEO transcription the other pages use) ──
   function readEvents(sec) {
-    events = [];
+    events = []; USED = {};
     [].forEach.call(sec.querySelectorAll(".event-card"), function (card) {
       var rows = [].map.call(card.querySelectorAll(".svc-row"), function (r) {
         var tag = r.querySelector(".svc-top .tag");
@@ -91,20 +91,87 @@
       [].forEach.call(card.querySelectorAll(".card-foot .foot-row"), function (f) { foot[txt(f.querySelector(".foot-key")).toUpperCase()] = lines(f.querySelector(".foot-val")); });
       var mgr = txt(card.querySelector(".badge-mgr")).replace(/^MGR:\s*/i, "");
       var ev = {name: txt(card.querySelector(".card-group")), mgr: mgr, rows: rows, setup: foot.ROOM || "", contact: (foot.CONTACT || "").split(/[\n,·/]/)[0].trim(), eoNote: foot.NOTE || ""};
-      ev.note = recap(ev);
+      ev.note = ev.auto = recap(ev, events.length);
       events.push(ev);
     });
     // saved edits for today (counts and notes) win over the Rundown values; matched by event name and by row time, service and room
     (saved.edits || []).forEach(function (ed) {
       var e = events.filter(function (x) { return x.name == ed.name; })[0]; if (!e) return;
-      if (ed.note != null && ed.note != e.eoNote) e.note = ed.note;   // an old pre-fill of the event-order NOTE is replaced by the recap
+      // an old pre-fill of the event-order NOTE, or an untouched note from the old one-template recap, is replaced by the new recap
+      if (ed.note != null && ed.note != e.eoNote && !OLD.test(ed.note)) e.note = ed.note;
       (ed.counts || []).forEach(function (c) { e.rows.forEach(function (r) { if (rowKey(r) == c.k) r.count = c.v; }); });
     });
   }
+  var OLD = /^(Event went well|Smooth day|Everything ran smoothly|Smooth final day|Final day went well)\. .* was happy with the room and the service\. No issues\.$/;
   function rowKey(r) { return r.time + "|" + r.svc + "|" + r.room; }
   // Default Notes: a short, plain end-of-shift recap in Jason's words that names the contact (2026-10-28).
   // Built from the services on the card; Jason edits it if anything actually happened.
-  function recap(e) {
+  // Each event of the night gets its own wording and sentence order so the report reads like a captain wrote it,
+  // never templated (Jason 2026-10-28). Every phrase used tonight is remembered, and the next event starts further
+  // down each list and skips anything already said, so no line repeats from event to event. Same facts as before.
+  var CAP = function (s) { return s.charAt(0).toUpperCase() + s.slice(1); };
+  var DAY = 0; for (var d = 0; d < ISO.length; d++) DAY = (DAY * 31 + ISO.charCodeAt(d)) >>> 0;
+  var SAY = {
+    open: ["Event went well.", "Everything ran smoothly.", "Good one today.", "Solid event start to finish.", "Went right to plan.", "Easy, smooth event.",
+      "This one ran well.", "Nice clean event.", "Good event overall.", "Ran well from setup to finish.", "Steady, easy event.", "Happy with how this one went.",
+      "Went off without a hitch.", "Nice smooth one."],
+    last: ["Smooth final day.", "Final day went well.", "Good way to close out their program.", "They finished strong on the last day.", "Last day ran smoothly.", "Clean finish for the group."],
+    food: [function (l, p) { return CAP(l) + " went out on time."; },
+      function (l, p) { return "We got " + l + " out on time."; },
+      function (l, p) { return CAP(l) + (p ? " all hit their times." : " hit its time."); },
+      function (l, p) { return "Timing was good on " + l + "."; },
+      function (l, p) { return CAP(l) + (p ? " were" : " was") + " up right on time."; },
+      function (l, p) { return "Stayed on schedule with " + l + "."; },
+      function (l, p) { return CAP(l) + (p ? " were" : " was") + " ready when they needed " + (p ? "them." : "it."); },
+      function (l, p) { return "Kept " + l + " on schedule."; },
+      function (l, p) { return "Had " + l + " out right on time."; },
+      function (l, p) { return CAP(l) + (p ? " each" : "") + " landed on time."; },
+      function (l, p) { return "No delays on " + l + "."; },
+      function (l, p) { return CAP(l) + (p ? " all" : "") + " went out when planned."; },
+      function (l, p) { return "Right on time with " + l + "."; },
+      function (l, p) { return "The team had " + l + " out on schedule."; }],
+    bev: ["the beverages stayed stocked", "we kept the beverages stocked", "beverages never ran low", "the drinks never ran out",
+      "drinks stayed stocked throughout", "the beverage station stayed full", "we kept the drinks topped off", "the beverages held up the whole time"],
+    set: [function (r, b) { return "The room was set on time" + (b ? " and the break stayed stocked." : " and ready on arrival."); },
+      function (r, b) { return r + " was ready on time" + (b ? ", and we kept the break stocked." : " for their arrival."); },
+      function (r, b) { return "Had " + r + " set on time" + (b ? " and the break never ran low." : " and ready before they walked in."); },
+      function (r, b) { return "Room set on time" + (b ? ", break stocked the whole way." : ", ready when they arrived."); },
+      function (r, b) { return r + " was set and ready on time" + (b ? ", with the break kept full." : "."); },
+      function (r, b) { return "Set " + r + " on time" + (b ? " and kept the break stocked." : " and had it ready for them."); },
+      function (r, b) { return "Room was ready on time" + (b ? ", and the break held up all session." : " when the group got there."); },
+      function (r, b) { return r + " was set before they arrived" + (b ? ", and the break stayed full." : "."); }],
+    bar: ["The bar ran smoothly.", "Bar service went smoothly.", "No trouble at the bar.", "Bar ran clean.", "The bar was steady.", "Bar went fine."],
+    happy: [function (c) { return c + " was happy with the room and the service."; },
+      function (c) { return c + " was pleased with the room and the service."; },
+      function (c) { return c + " liked the room and the service."; },
+      function (c) { return c + " had no complaints about the room or the service."; },
+      function (c) { return c + " was happy with how the room and service came together."; },
+      function (c) { return c + " left happy with the room and the service."; },
+      function (c) { return c + " was happy with the room and how service went."; },
+      function (c) { return c + " was satisfied with the room and the service."; },
+      function (c) { return c + " was good with the room and the service."; },
+      function (c) { return c + " was happy with the setup and the service."; },
+      function (c) { return c + " liked how the room and service turned out."; },
+      function (c) { return c + " came away happy with the room and the service."; },
+      function (c) { return "the room and the service both worked for " + c + "."; },
+      function (c) { return c + " was all good with the room and the service."; }],
+    ok: ["No issues.", "Nothing to report.", "No problems to note.", "No issues to report.", "Nothing came up.", "No issues at all.",
+      "All clear, nothing to flag.", "Nothing went wrong.", "Nothing to flag.", "No problems.", "Clean, no issues.", "Nothing needed follow up.",
+      "No complaints.", "Zero issues."]
+  };
+  var USED = {};
+  // first phrase from the list (rotated by event and date) not said yet tonight; phrase functions get args
+  function pick(list, i, k, args) {
+    var first;
+    for (var j = 0; j < list.length; j++) {
+      var p = list[(i + DAY + k + j) % list.length], s = typeof p == "function" ? p.apply(null, args) : p;
+      if (first == null) first = s;
+      if (!USED[s]) { USED[s] = 1; return s; }
+    }
+    return first;
+  }
+  function recap(e, i) {
+    i = i || 0;
     var svcs = e.rows.map(function (r) { return r.svc.toLowerCase(); });
     var has = function (re) { return svcs.some(function (x) { return re.test(x); }); };
     var n = function (re) { return svcs.filter(function (x) { return re.test(x); }).length; };
@@ -117,18 +184,21 @@
     if (has(/reception|hors/)) meals.push("the reception");
     if (has(/dinner/)) meals.push("dinner");
     var list = meals.length > 1 ? meals.slice(0, -1).join(", ") + " and " + meals[meals.length - 1] : meals[0] || "";
-    list = list.charAt(0).toUpperCase() + list.slice(1);
-    var last = /final day/i.test(e.name);
-    var openers = last ? ["Smooth final day.", "Final day went well."] : ["Event went well.", "Smooth day.", "Everything ran smoothly."];
-    var h = 0; for (var i = 0; i < e.name.length; i++) h = (h * 31 + e.name.charCodeAt(i)) >>> 0;
-    var out = [openers[h % openers.length]];
-    if (list) out.push(list + " went out on time" + (has(/continuous|all day|beverage/) ? ", and the beverages stayed stocked." : "."));
-    else if (has(/continuous|all day|beverage/)) out.push("The room was set on time and the break stayed stocked.");
-    else out.push("The room was set and ready on arrival.");
-    if (has(/bar/)) out.push("The bar ran smoothly.");
-    out.push((e.contact || "The group") + " was happy with the room and the service.");
-    out.push("No issues.");
-    return out.join(" ");
+    var plural = meals.length > 1 || /both/.test(list), bev = has(/continuous|all day|beverage/);
+    var who = e.contact || "the group", room = (e.rows[0] && e.rows[0].room) || "The room";
+    var food;
+    if (list) {
+      food = pick(SAY.food, i, 1, [list, plural]);
+      if (bev) { var b = pick(SAY.bev, i, 2); food = i % 2 ? food.slice(0, -1) + ", and " + b + "." : food + " " + CAP(b) + "."; }
+    } else food = pick(SAY.set, i, 1, [room, bev]);
+    var open = pick(/final day/i.test(e.name) ? SAY.last : SAY.open, i, 0), bar = has(/bar/) ? pick(SAY.bar, i, 3) : "";
+    var said = pick(SAY.happy, i, 4, [who]), happy = CAP(said), ok = pick(SAY.ok, i, 5);
+    // sentence order changes from event to event too
+    var shapes = [[open, food, bar, happy, ok], [food, bar, happy, ok], [open, ok, food, bar, happy],
+      [food, bar, ok.slice(0, -1) + ", and " + said], [happy, food, bar, ok, open]];
+    var shape = shapes[(i + DAY) % shapes.length];
+    if (/final day/i.test(e.name) && shape.indexOf(open) < 0) shape = [open].concat(shape);   // a final day always says so
+    return shape.filter(Boolean).join(" ");
   }
   function locked() { return !!saved.finalizedAt; }
   function render() {
@@ -147,7 +217,7 @@
     if (locked()) { $("cr-lock").textContent = "Finalized " + stamp(new Date(saved.finalizedAt)) + ". Report is locked."; $("cr-fin-n").textContent = "Already finalized"; }
   }
   function save() {
-    saved.edits = events.map(function (e) { return {name: e.name, note: e.note, counts: e.rows.map(function (r) { return {k: rowKey(r), v: r.count}; })}; });
+    saved.edits = events.map(function (e) { return {name: e.name, note: e.note == e.auto ? null : e.note, counts: e.rows.map(function (r) { return {k: rowKey(r), v: r.count}; })}; });
     try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
   }
   $("cr-events").addEventListener("input", function (ev) {
