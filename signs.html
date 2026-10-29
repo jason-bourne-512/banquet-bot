@@ -186,17 +186,21 @@
     else if (mode == "none") r[lk] = "";
     else if (r[lk] == "Meeting" || r[lk] == "Breakout") r[lk] = "";
   }
+  // set-up, rehearsal and hold rows are for the crew, so the sign takes the room's real function when it has one
+  var CREW = /^(set ?up|rehearsal|no agenda hold|holding room)\b/i;
   function roomLabel(card, room) {
-    var rows = [].slice.call(card.querySelectorAll(".svc-row")), lab = "Meeting";
+    var rows = [].slice.call(card.querySelectorAll(".svc-row")), lab = null;
+    var pick = function (s) { return s.length > 1 && s[s.length - 1].length <= 18 ? s[s.length - 1] : s[0]; };
     for (var i = 0; i < rows.length; i++) {
       var pill = txt(rows[i].querySelector(".room-pill")), tag = rows[i].querySelector(".svc-top .tag");
       if (!tag || pill != room || tag.className.trim() != "tag") continue;
       var segs = txt(tag).split(DASH).filter(function (s) { return !/^No F&B$/i.test(s); });
       if (!segs.length) continue;
-      lab = segs.length > 1 && segs[segs.length - 1].length <= 18 ? segs[segs.length - 1] : segs[0];
-      break;
+      var keep = segs.filter(function (s) { return !CREW.test(s); });
+      if (keep.length) return pick(keep);
+      if (lab == null) lab = pick(segs);
     }
-    return lab;
+    return lab == null ? "Meeting" : lab;
   }
   function signName(group) {
     var parts = group.split(DASH).map(function (s) { return s.trim(); }).filter(function (s) { return s && !/^(final day|last day|first day|day \d+)$/i.test(s); });
