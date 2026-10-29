@@ -353,7 +353,7 @@
 
   fetch("rundown.html", {cache: "no-cache"}).then(function (r) { return r.text(); }).then(function (t) {
     var doc = new DOMParser().parseFromString(t, "text/html");
-    [].forEach.call(doc.querySelectorAll(".day-section[data-date]"), function (s) { SECTIONS[s.dataset.date] = s; });
+    [].forEach.call(doc.querySelectorAll(".day-section[data-date]"), function (s) { if (s.querySelector(".event-card")) SECTIONS[s.dataset.date] = s; });
     var days = Object.keys(SECTIONS).sort(), want = new URLSearchParams(location.search).get("date") || addDays(todayISO(), 1);
     if (!SECTIONS[want]) want = days.filter(function (d) { return d > todayISO(); })[0] || days[days.length - 1];
     $("sg-date").value = want; $("sg-date").min = days[0]; $("sg-date").max = days[days.length - 1];
