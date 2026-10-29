@@ -616,7 +616,7 @@ const DAYS = [
  ]},
  { iso:"2026-11-01", target:"Monday 11/2", crew:"", shift:"", rooms:[
    {t:"set", room:"Camellia B", for:"Altasciences · BD Leadership Summit", diag:"CamelliaBfromAltasciencesBDLeadership_1020.pdf", items:["U-Shape","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
-   {t:"set", room:"Camellia A", for:"Texas Association of School Boards (TASB) · Legal Retreat", items:["U-Shape 2 per 6","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Camellia A", for:"Texas Association of School Boards (TASB) · Legal Retreat", diag:"CamelliaAfromTASBLegal.pdf", items:["U-Shape 2 per 6","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"set", room:"Primrose D", for:"Legrand · General Session Set Up", diag:"PRIMROSEDfromLegrandCSRSummit_1027.pdf", items:["Rounds of 8 (9 rounds, set 72)","(1) 6' table + 2 chairs inside the doors","(2) 6' tables + 4 chairs outside the doors","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
  ]},
  { iso:"2026-11-02", target:"Tuesday 11/3", crew:"", shift:"", rooms:[
@@ -666,8 +666,9 @@ const DAYS = [
    {t:"clr", room:"Barton", for:"FirstService Residential finished", end:"8:00 PM", next:"Fri 11/6 → Texas Mutual Insurance"},
  ]},
  { iso:"2026-11-05", target:"Friday 11/6", crew:"", shift:"", rooms:[
-   {t:"set", room:"Barton", for:"Texas Mutual Insurance · Employers Liability Conference", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup on file — check the event order"]},
-   {t:"set", room:"Bonnell", for:"Texas Mutual Insurance · Employers Liability Conference", items:["Rounds of 10","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Barton", for:"Texas Mutual Insurance · Meal Room (moved from Bonnell)", diag:"CorinnePDRsfromTexasMutualInsuranceCompany_1028.pdf", items:["(6) rounds of 8 + (2) credenzas","Vacuum","Tray jack + clean tray"], flags:["Event order says rounds of 10; diagram shows (6) rounds of 8"]},
+   {t:"set", room:"Bonnell", for:"Texas Mutual Insurance · Buffet", diag:"CorinnePDRsfromTexasMutualInsuranceCompany_1028.pdf", items:["Buffet only, no tables","PDR Foyer: buffet line + credenza","Vacuum"]},
+   {t:"set", room:"Plumeria", for:"Texas Mutual Insurance · Employers Liability Conference (moved from Barton)", end:"11:59 PM", diag:"PLUMERIAfromTexasMutualInsuranceCompany.pdf", items:["Flip from Lenovo (Plumeria A + B holding till 11:59 PM)","Open the airwall","Schoolroom for 54","Screen + projector · podium","All-day beverage station","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"set", room:"Camellia", for:"Casey Family Programs · CFP Hotline Leaders Convening", items:["U-Shape","U-Shape for 21","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"set", room:"Primrose AB", for:"Lenovo · Holding (Primrose AB)", items:["Rounds of 8","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
    {t:"set", room:"Buttercup", for:"Lenovo · Office (Buttercup)", items:["Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
@@ -680,8 +681,6 @@ const DAYS = [
    {t:"ref", room:"Lantana B", for:"Lenovo · Holding (Lantana B)", end:"11:59 PM"},
    {t:"clr", room:"Primrose B", for:"Lenovo finished", end:"11:45 AM", next:"Sat 11/7 → FCM"},
    {t:"clr", room:"Primrose A", for:"Lenovo finished", end:"11:59 PM", next:"Sat 11/7 → FCM"},
-   {t:"clr", room:"Plumeria A", for:"Lenovo finished", end:"11:59 PM", next:"No event on file through 11/19"},
-   {t:"clr", room:"Plumeria B", for:"Lenovo finished", end:"11:59 PM", next:"Mon 11/9 → MAREK"},
    {t:"clr", room:"Bluebell", for:"Lenovo finished", end:"11:59 PM", next:"No event on file through 11/19"},
  ]},
  { iso:"2026-11-06", target:"Saturday 11/7", crew:"", shift:"", rooms:[
@@ -698,6 +697,7 @@ const DAYS = [
    {t:"clr", room:"Buttercup", for:"Lenovo finished", end:"5:00 PM", next:"Sun 11/8 → Dell"},
    {t:"clr", room:"Barton", for:"Texas Mutual Insurance finished", end:"5:00 PM", next:"Tue 11/10 → Dell"},
    {t:"clr", room:"Bonnell", for:"Texas Mutual Insurance finished", end:"5:00 PM", next:"No event on file through 11/19"},
+   {t:"clr", room:"Plumeria", for:"Texas Mutual Insurance finished", end:"5:00 PM", next:"Mon 11/9 → MAREK (Plumeria B)"},
    {t:"clr", room:"Verbena B", for:"FCM finished", end:"6:00 PM", next:"No event on file through 11/19"},
  ]},
  { iso:"2026-11-07", target:"Sunday 11/8", crew:"", shift:"", rooms:[
