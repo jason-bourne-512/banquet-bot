@@ -111,8 +111,7 @@
 .roster thead .current-day{border-top:2px solid #91d9ff;padding-top:4px}
 .roster .no-shift{color:#617f94}
 .roster .hl{color:#ffd0a6}
-.roster .assignment{display:inline;font-size:11px;line-height:inherit;margin:0 0 0 5px;white-space:nowrap;color:#d3ae91}
-.roster .assignment:before{content:'/ ';color:#87a9c1}
+.roster .assignment{display:block;font-size:11px;line-height:1.25;margin:2px 0 0;white-space:nowrap;color:#d3ae91}
 /* Position colors, matched to the live schedule's role bands */
 .roster .rd{--position-color:#87b8e8}
 .roster .rc{--position-color:#ffc085}
@@ -261,7 +260,7 @@
           <tr class="ra"><td class="nm">Alex</td><td class="off">PTO</td><td class="off">PTO</td><td class="off">PTO</td><td>ON</td><td>ON</td><td>ON</td><td>ON</td></tr>
           <tr class="ra"><td class="nm">Grant</td><td></td><td></td><td>ON @ 9A</td><td></td><td></td><td></td><td></td></tr>
           <tr class="ra"><td class="nm">Justin</td><td class="off">REQ OFF</td><td>10A–630P</td><td>7A–530P</td><td>7A–530P</td><td>10A–830P</td><td>1P–830P</td><td>12P–930P</td></tr>
-          <tr class="ra"><td class="nm">Brandon</td><td class="off">OFF</td><td>10A–630P</td><td>7A–12P/A1 Legrand 12P–5P</td><td>A1 Legrand 8A–530P</td><td>A1 Legrand 7A–530P</td><td>7A–330P</td><td>7A–330P</td></tr>
+          <tr class="ra"><td class="nm">Brandon</td><td class="off">OFF</td><td>10A–630P</td><td>7A–12P/A1 Legrand 12P–5P</td><td>8A–530P/A1 Legrand</td><td>7A–530P/A1 Legrand</td><td>7A–330P</td><td>7A–330P</td></tr>
           <tr class="ra"><td class="nm">Alexander</td><td></td><td></td><td></td><td></td><td>7A–330P</td><td></td><td></td></tr>
           <tr class="ra"><td class="nm">Sarah</td><td></td><td></td><td></td><td>3P–11P</td><td></td><td></td><td></td></tr>
         </tbody>
@@ -419,7 +418,7 @@ const PWS=new Date(2026,9,24), PWE=new Date(2026,9,30);
         if(!text) td.textContent='—';
         return;
       }
-      // "330P–8P/HSMN" → shift, then the extra assignment on the same line.
+      // "330P–8P/HSMN" → shift, then the extra assignment on its own line underneath.
       const parts=text.split('/');
       if(parts.length>1){
         td.textContent=parts[0];
