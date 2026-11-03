@@ -24,6 +24,17 @@ for (const d of Object.keys(DATA.days)) for (const e of rooms(d)) for (const l o
 }
 console.log('PASS: live map script parses, no rundown fetch, Bobcat Continuous Break, Galderma fits, no prices.');
 
+// Every event on every date's map must have its contact name in that date's Contacts legend.
+// The account is the text before " · "; "A → B" is two accounts sharing a room. "Ayn Rand" matches the contact "Ayn Rand Centre".
+const sameAccount = (a, b) => a === b || a.startsWith(b + ' ') || b.startsWith(a + ' ');
+const noContact = [];
+for (const d of Object.keys(DATA.days)) for (const e of rooms(d)) for (const account of e.g.split(' · ')[0].split(' → ')) {
+  const listed = (DATA.days[d].contacts || []).some(c => sameAccount(account, c[0]) && String(c[1] || '').trim());
+  if (!listed) noContact.push(`${d} ${e.g}`);
+}
+assert(!noContact.length, `no contact name on the live map:\n${noContact.join('\n')}`);
+console.log('PASS: every event on every date shows a contact name.');
+
 // Off-the-map boxes (lower left) must sit fully inside the map on every date, bottom border included.
 // Renders the real page in headless Chrome with the clock set before every date, at a desktop and a phone width.
 const { execFileSync } = require('node:child_process');
