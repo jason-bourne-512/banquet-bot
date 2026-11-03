@@ -432,6 +432,8 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .week-label{display:flex;align-items:center;gap:12px;margin:18px 2px 10px;font:600 12px 'Courier New',monospace;letter-spacing:1.4px;color:#c6eaff;text-transform:uppercase}
 #bb-app .week-label:first-child{margin-top:6px}
 #bb-app .week-label:after{content:'';height:1px;flex:1;background:linear-gradient(90deg,#80cfff70,transparent)}
+/* Overview: the first day of each new hotel week gets a heavy divider (extra ids so it also beats the desktop skin) */
+#bb-app #rdScreen>.week-label.week-start{margin-top:40px!important;padding:11px 12px!important;border-top:4px solid #8bd1ff!important;border-radius:0 0 8px 8px!important;color:#fff!important;background:linear-gradient(180deg,#8bd1ff3d,#8bd1ff0d)!important;box-shadow:0 -7px 16px -7px #8bd1ff99}
 #bb-app .week-choice .day-line{display:block;margin-top:3px;color:#cfe3f2}
 #bb-app .week-choice .ds-head{color:#f0f8ff;font-weight:700}
 #bb-app .week-choice{display:block;width:100%;padding:14px 12px;margin-bottom:9px;text-align:left;border:1px solid #466782;border-radius:4px 13px 4px 4px;background:linear-gradient(135deg,#233e53,#142631);color:#dcefff;font:12px/1.5 Manrope,Arial,sans-serif}
@@ -451,12 +453,16 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .original-room:after{content:'';height:1px;flex:1;min-width:20px;background:linear-gradient(90deg,#9bcfff38,transparent)}
 #bb-app .original-row{display:grid;grid-template-columns:122px minmax(0,1fr);gap:7px;padding:4px 0 4px 7px;font-size:12px;line-height:1.5;color:#ecf5ff}
 #bb-app .original-time{color:#b4e3ff;font-weight:600;font-variant-numeric:tabular-nums;text-shadow:0 1px 2px #00000080}
-#bb-app .original-count{display:inline-block;margin-left:5px;font-size:11px;font-weight:400;color:#c5d1e8}
-#bb-app .original-total{margin:2px 0 0;font:700 13px/1.4 'Courier New',monospace;letter-spacing:.4px;color:#e6f4ff;text-shadow:0 0 10px #8bd1ff30}
-/* Guarantee / expected counts in amber so they stand out (Rundown + Overview) */
-#bb-app .count,#bb-app .original-count{padding:1px 7px;border-radius:10px;font-weight:700!important;color:#ffd9a6!important;background:#ffc0851f;border:1px solid #ffc08540}
-#bb-app .original-total{display:inline-block;padding:2px 9px;border-radius:10px;color:#ffd9a6!important;background:#ffc0851f;border:1px solid #ffc08547;text-shadow:none!important}
+/* Overview: expected / guaranteed counts stay quiet */
+#bb-app .original-count{display:block;margin:0;font-size:10px;font-weight:400;line-height:1.35;color:#8aa4b8}
+#bb-app .original-total{margin:2px 0 0;font:400 11px/1.4 'Courier New',monospace;letter-spacing:.2px;color:#8aa4b8}
+/* Guarantee / expected counts in amber so they stand out (Rundown) */
+#bb-app .count{padding:1px 7px;border-radius:10px;font-weight:700!important;color:#ffd9a6!important;background:#ffc0851f;border:1px solid #ffc08540}
 #bb-app .original-label{padding:0 5px;border-left:1px solid #a7cced24;border-radius:3px;overflow-wrap:anywhere;color:#f0f5fc;background:linear-gradient(90deg,#a8cfff0d,transparent);text-shadow:0 1px 2px #00000070}
+/* Overview: breaks, lunches and beverages each carry their own color */
+#bb-app .original-label.k-break{color:#ffc085;font-weight:700;border-left:3px solid #ffc085;background:linear-gradient(90deg,#ffc08526,transparent)}
+#bb-app .original-label.k-lunch{color:#7fe0a0;font-weight:700;border-left:3px solid #7fe0a0;background:linear-gradient(90deg,#7fe0a026,transparent)}
+#bb-app .original-label.k-bev{color:#c1baff;font-weight:700;border-left:3px solid #c1baff;background:linear-gradient(90deg,#c1baff26,transparent)}
 #bb-app .original-diag{order:3;padding:2px 7px;font:600 10px Manrope,Arial,sans-serif;letter-spacing:.3px;text-transform:none;color:#d1daff;border:1px solid #a9bcff4a;border-radius:5px;background:#697fb51f}
 
 /* Diagram buttons (rundown setup, diagrams tab) */
@@ -13415,6 +13421,16 @@ body{font-family:Manrope,Arial,sans-serif}
     if (parts.length) return parts.join(' + ');
     return tagName.split('—')[0].trim();
   }
+  // Overview row color: lunch, beverage or break. Anything else (no F&B, breakfast, dinner, reception) stays plain.
+  function ov2ServiceKind(tagName, tagClass, menuHtml, label){
+    if (!tagClass || !menuHtml.trim() || menuHtml.indexOf('No F&amp;B') !== -1) return '';
+    if (/lunch/i.test(tagName+' '+label) || (tagClass === 'tag-lnch' && !/dinner/i.test(tagName))) return 'lunch';
+    if (tagClass === 'tag-brk' && /break(?!fast)/i.test(label)) return 'break';
+    if (tagClass === 'tag-bar' || /beverage/i.test(tagName+' '+label) || /\b(beer|wine|brands|cash|hosted)\b.*\bbar\b/i.test(label)) return 'bev';
+    if (tagClass !== 'tag-brk') return '';
+    if (label.split(' + ').every(p=>OV2_BEV_PATTERNS.some(([code])=>code === p))) return 'bev';
+    return /break(?!fast)/i.test(tagName) ? 'break' : '';
+  }
   function ov2ParseTime(raw){
     raw = raw.replace(/<br\s*\/?>/gi,' ').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
     const m = /(\d{1,2}):(\d{2})\s*(AM|PM)?\s*[–-]\s*(\d{1,2}):(\d{2})\s*(AM|PM)/.exec(raw);
@@ -13475,7 +13491,8 @@ body{font-family:Manrope,Arial,sans-serif}
           const gtdText = gtdEl ? gtdEl.textContent.trim() : '';
           const {startStr, endStr, smin, emin} = ov2ParseTime(timeEl.innerHTML);
           const label = ov2LabelFromMenu(tagName, tagClass, menuHtml);
-          rows.push({startStr, endStr, smin, emin, label, room, gtd, gtdText});
+          const kind = ov2ServiceKind(tagName, tagClass, menuHtml, label);
+          rows.push({startStr, endStr, smin, emin, label, room, gtd, gtdText, kind});
         });
         return {group, contact, mgr, rows};
       }).filter(c => c.rows.length);
@@ -13856,9 +13873,11 @@ body{font-family:Manrope,Arial,sans-serif}
       if(!diagIndex) diagIndex=buildDiagramIndex();
       const list=overviewDays.filter(x=>x.date>=TODAY);
       if(!list.length) return empty('No upcoming events listed.');
-      let target=null;
+      let target=null, shownWeek=null;
       list.forEach(function(day){
-        const h=node('div','week-label',dayHeading(day.date)+(day.date===TODAY?' · TODAY':''));
+        const ws=weekOf(day.date), newWeek=shownWeek!==null&&ws!==shownWeek;
+        shownWeek=ws;
+        const h=node('div','week-label'+(newWeek?' week-start':''),dayHeading(day.date)+(day.date===TODAY?' · TODAY':''));
         h.id='ov-'+day.date;
         screen.append(h);
         if(!target&&day.date>=d) target=h;
@@ -13899,7 +13918,7 @@ body{font-family:Manrope,Arial,sans-serif}
             const line=node('div','original-row');
             const t=node('span','original-time',row.startStr+'–'+row.endStr);
             if(row.gtdText&&!sharedCount) t.append(node('span','original-count',row.gtdText));
-            line.append(t, node('span','original-label',row.label));
+            line.append(t, node('span','original-label'+(row.kind?' k-'+row.kind:''),row.label));
             card.append(line);
           });
         });
