@@ -89,6 +89,9 @@
   html,body{background:#fff!important}
   html body.sg-body,html.bbd body.sg-body{padding:0!important;margin:0!important}
   .bbd-side,.bbd-top,.bbd-enter,.bb-header,.sg-ui,.bb-pet,#bb-gate{display:none!important}
+  /* personal themes (Hector's name badge + lion wallpaper, anyone's pets/marks) never print: only the sheets do */
+  body.sg-body>*:not(.sg),.bb-me-badge,.bb-lion-wall,.bb-mark,.bb-tint,.bb-aurora,.bb-stars,.bb-sakura{display:none!important}
+  html::before,html::after,body::before,body::after{content:none!important;display:none!important}
   body[data-print=dir] #pv-door,body[data-print=door] #pv-dir{display:none!important}
   .sg{max-width:none;padding:0}
   .pv{display:block}
@@ -134,7 +137,7 @@
       </div>
       <div id="sg-events"></div>
       <div id="sg-skip" class="sg-note"></div>
-      <div class="sg-note">Rules: left of the map is a LEFT arrow (Lantana, Plumeria, Primrose A and B). Right is a RIGHT arrow (Primrose C and D, Camellia, Verbena). Bluebell gets its own directional with a right arrow. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 2, Primrose C and D get 1 each. Counts marked guess are not confirmed and can be edited. Set a count to 0 to skip a door sign.</div>
+      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell gets its own directional with a right arrow. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 2, Primrose C and D get 1 each. Counts marked guess are not confirmed and can be edited. Set a count to 0 to skip a door sign.</div>
     </div>
   </div>
   <div id="sg-pv" hidden>
@@ -204,7 +207,8 @@
   }
   function signName(group) {
     var parts = group.split(DASH).map(function (s) { return s.trim(); }).filter(function (s) { return s && !/^(final day|last day|first day|day \d+)$/i.test(s); });
-    var n = parts.join(" ").replace(/^Reliant Life Sciences/, "Reliant");
+    // the arrow lines already name the rooms, so drop a "(Camellia A)"-style room tag from the title
+    var n = parts.join(" ").replace(/\s*\((Lantana|Plumeria|Primrose|Camellia|Verbena|Bluebell|Buttercup|Foyer|Barton|Bonnell|Pool)\b[^)]*\)/gi, "").replace(/^Reliant Life Sciences/, "Reliant");
     return n;
   }
 
@@ -245,19 +249,24 @@
   }
   function build() {
     var left = [], right = [], blue = [];
+    // same group name on one side (e.g. three Legrand breakout cards) shares one title
+    var add = function (side, title, lines) {
+      if (!lines.length) return;
+      var g = side.filter(function (x) { return x.title == title; })[0];
+      if (g) lines.forEach(function (l) { if (g.lines.indexOf(l) < 0) g.lines.push(l); }); else side.push({title: title, lines: lines.slice()});
+    };
     events.forEach(function (e) {
       if (!e.dirOn) return;
       var multi = e.rooms.length > 1, ln = function (r) { return r.room + (r.label && (multi || r.label != "Meeting") ? "-" + r.label : ""); };
       var L = e.rooms.filter(function (r) { return r.name != "Bluebell" && /L/.test(r.dir); }).map(ln);
       var R = e.rooms.filter(function (r) { return r.name != "Bluebell" && /R/.test(r.dir); }).map(ln);
       var B = e.rooms.filter(function (r) { return r.name == "Bluebell"; }).map(ln);
-      if (L.length) left.push({title: e.name, lines: L});
-      if (R.length) right.push({title: e.name, lines: R});
-      if (B.length) blue.push({title: e.name, lines: B});
+      add(left, e.name, L); add(right, e.name, R); add(blue, e.name, B);
     });
-    var dir = [], per = 2;
-    for (var i = 0; i < left.length; i += per) dir.push(dirSheet(left.slice(i, i + per), "L"));
-    for (i = 0; i < right.length; i += per) dir.push(dirSheet(right.slice(i, i + per), "R"));
+    // one sign for every left room, one for every right room; only Bluebell gets its own
+    var dir = [];
+    if (left.length) dir.push(dirSheet(left, "L"));
+    if (right.length) dir.push(dirSheet(right, "R"));
     blue.forEach(function (b) { dir.push(dirSheet([b], "R")); });
     var door = [];
     events.forEach(function (e) {
