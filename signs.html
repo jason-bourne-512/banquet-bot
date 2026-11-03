@@ -226,7 +226,8 @@
       var noteTxt = [].map.call(card.querySelectorAll(".foot-val"), txt).join(" ");
       if (!rooms.length) return;
       rooms.sort(function (a, b) { return a.room < b.room ? -1 : a.room > b.room ? 1 : 0; });
-      events.push({group: group, name: signName(group), rooms: rooms, dirOn: true, noBeo: /no event order/i.test(noteTxt)});
+      // sign title = the event order's header POST AS (data-post on the card); the Rundown group name is the fallback
+      events.push({group: group, name: card.dataset.post || signName(group), rooms: rooms, dirOn: true, noBeo: /no event order/i.test(noteTxt)});
     });
   }
 
