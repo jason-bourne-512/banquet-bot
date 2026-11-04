@@ -264,6 +264,8 @@ DATA.week = WEEKS[SELW];
 const ROSTER = ["Francisco","Dylan","Tomas","Carlos","Gema","Odaly","Hilnery","Raibely","Adrian","Ozzy"];
 // Any event with a bar gets a bartender shift filled from these three (Jason 2026-10-22).
 const BARTENDERS = ["Dylan", "Carlos", "Leo"];
+// Captains can be put on any shift by hand (never by Construct schedule); their hours land on their own Banquet Captain row (Jason 2026-11-04).
+const CAPTAINS = ["Jason"];
 const DAYS = Object.keys(DATA.week);
 // Week switcher: everything (answers, draft, final grid) is kept per week, so switching just reloads with the other week.
 (() => { const f = d => { const x = new Date(d + "T12:00"); return (x.getMonth() + 1) + "/" + x.getDate(); };
@@ -288,7 +290,7 @@ const SAMPLE = {
 const WEEK = "sched-r2-" + Object.keys(DATA.week)[0];   // r2: fresh start for the Dylan + Francisco test (2026-10-20)
 let AV = {}, SENT = {}, DIRTY = {};
 // No more sample days (Jason 2026-10-20): until a server sends, they're Off every day and asked for 0 shifts.
-ROSTER.concat(BARTENDERS).forEach(n => { if (!AV[n]) AV[n] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; });
+ROSTER.concat(BARTENDERS, CAPTAINS).forEach(n => { if (!AV[n]) AV[n] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; });
 const save = () => { DIRTY[me] = true; };
 // A day's availability: "all" | "am" | "pm" | "off" | "t:HH:MM-HH:MM" (the server typed their own hours)
 const hhmm = m => String(Math.floor(m / 60) % 24).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
@@ -410,7 +412,7 @@ const saveBuild = () => { try { localStorage.setItem(BKEY, JSON.stringify({ASSIG
 const loadBuild = () => { try { const b = JSON.parse(localStorage.getItem(BKEY) || "null"); if (!b) return false;
   ({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA, XEV, VAC} = Object.assign({ASSIGN: {}, TIMES: {}, CUSTOM: {}, FINAL: {}, EXTRA: [], XEV: {}, VAC: {}}, b)); MANUAL = !!b.MANUAL;
   EXTRA.forEach(n => { if (!AV[n]) AV[n] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; }); return true; } catch (e) { return false; } };
-const PEOPLE = () => ROSTER.concat(BARTENDERS.filter(n => !ROSTER.includes(n)), EXTRA.filter(n => !ROSTER.includes(n) && !BARTENDERS.includes(n)));
+const PEOPLE = () => ROSTER.concat(BARTENDERS.filter(n => !ROSTER.includes(n)), CAPTAINS, EXTRA.filter(n => !ROSTER.includes(n) && !BARTENDERS.includes(n) && !CAPTAINS.includes(n)));
 const shiftOf = (d, k) => DATA.week[d] && plan(d).find(x => x.k === k);
 const timesOf = (d, k, n) => { const t = TIMES[d + "|" + k + "|" + n], sh = shiftOf(d, k); return t || (sh ? {s: sh.s, e: sh.e} : {s: 0, e: 0}); };
 // "530AM-2PM" style used on the posted schedule
@@ -460,8 +462,9 @@ function renderBuild() {
     const w = DATA.week[d], p = plan(d);
     let body = p.length ? p.map(s => {
       const got = ASSIGN[d + "|" + s.k] || [], st = got.length === s.need ? "ok" : got.length < s.need ? "short" : "over", vac = VAC[d + "|" + s.k] || [];
-      const avail = s.bar ? BARTENDERS.filter(n => !got.includes(n)) : PEOPLE().filter(n => (s.custom ? AV[n].days[i] !== "off" : free(n, i, s.k, s)) && !got.includes(n));
-      const others = PEOPLE().filter(n => !avail.includes(n) && !got.includes(n));
+      const avail = s.bar ? BARTENDERS.filter(n => !got.includes(n)) : PEOPLE().filter(n => !CAPTAINS.includes(n) && (s.custom ? AV[n].days[i] !== "off" : free(n, i, s.k, s)) && !got.includes(n));
+      const caps = CAPTAINS.filter(n => !got.includes(n));
+      const others = PEOPLE().filter(n => !avail.includes(n) && !got.includes(n) && !CAPTAINS.includes(n));
       return `<div class="shiftb">
         <div class="sh"><span>${s.custom ? `<input class="shlabel" data-shl="${d}|${s.k}" value="${s.label.replace(/"/g, "&quot;")}"> <input type="time" step="900" class="shtime" data-sht="${d}|${s.k}|s" value="${hhmm(s.s)}"> – <input type="time" step="900" class="shtime" data-sht="${d}|${s.k}|e" value="${hhmm(s.e % 1440)}"> <button class="xs" data-delshift="${d}|${s.k}" title="Remove this shift">✕ Remove</button>` : `<b>${s.label}</b> <span class="sub">${s.time}</span>`}</span>
           <span>${vac.length ? `<span class="pill short">${vac.length} vacant</span> ` : ""}<span class="pill ${st}">${got.length}/${s.need}${st === "short" ? " · need " + (s.need - got.length) : st === "over" ? " · +" + (got.length - s.need) : " ✓"}</span></span></div>
@@ -474,6 +477,7 @@ ${vac.map(v => `<span class="slot vac${FILL && FILL.id === v.id ? " filling" : "
         <div class="tedit" id="te-${d}-${s.k}"></div>
         <div class="pick chips" id="pick-${d}-${s.k}">
           <div class="grp">Available</div>${avail.length ? avail.map(n => `<span class="chip" data-put="${d}|${s.k}|${n}">${n}${winLabel(n, i)}<small>${shiftsOf(n)}/${AV[n].want}</small></span>`).join("") : '<span class="sub">Nobody else marked available</span>'}
+          ${caps.length ? `<div class="grp">Captain</div>${caps.map(n => `<span class="chip" data-put="${d}|${s.k}|${n}">${n}</span>`).join("")}` : ""}
           ${others.length ? `<div class="grp">Not marked available (add anyway)</div>${others.map(n => `<span class="chip na" data-put="${d}|${s.k}|${n}">${n}<small>${shiftsOf(n)}/${AV[n].want}</small></span>`).join("")}` : ""}
           <div class="grp">Someone else</div><input class="nm" id="nm-${d}-${s.k}" placeholder="Type a name" maxlength="24"><button class="add" data-newname="${d}|${s.k}">Add</button>
 </div>
@@ -578,8 +582,8 @@ function finalRows() {
       return;
     }
     out.push({band: b});
-    const names = b.servers ? PEOPLE().filter(n => !BARTENDERS.includes(n) || ROSTER.includes(n)).filter(n => SENT[n] || DAYS.some(d => serverCell(n, d)) || EXTRA.includes(n)) : b.bar ? BARTENDERS : b.rows;
-    names.forEach(n => out.push({id: bi + ":" + n, name: n, auto: b.servers ? d => serverCell(n, d) : b.bar ? d => barCell(n, d) : () => ""}));
+    const names = b.servers ? PEOPLE().filter(n => !CAPTAINS.includes(n)).filter(n => !BARTENDERS.includes(n) || ROSTER.includes(n)).filter(n => SENT[n] || DAYS.some(d => serverCell(n, d)) || EXTRA.includes(n)) : b.bar ? BARTENDERS : b.rows;
+    names.forEach(n => out.push({id: bi + ":" + n, name: n, auto: b.servers ? d => serverCell(n, d) : b.bar ? d => barCell(n, d) : CAPTAINS.includes(n) ? d => [serverCell(n, d), barCell(n, d)].filter(Boolean).join(" / ") : () => ""}));
     if (b.servers) out.push({id: bi + ":_blank", name: "", auto: () => ""});
   });
   return out;
