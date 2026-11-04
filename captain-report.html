@@ -126,14 +126,19 @@
     return out.join(" · ");
   }
 
+  var FNB = /breakfast|brunch|lunch|dinner|break|reception|bar\b|beverage|snack|coffee|hors|dessert|meal/i;
   // ── read today's cards from the Rundown (the BEO transcription the other pages use) ──
   function readEvents(sec) {
     base = []; USED = {};
     [].forEach.call(sec.querySelectorAll(".event-card"), function (card) {
       var rows = [].map.call(card.querySelectorAll(".svc-row"), function (r) {
-        return {time: txt(r.querySelector(".svc-time")), svc: txt(r.querySelector(".svc-top .tag")), room: txt(r.querySelector(".room-pill")),
+        var tag = r.querySelector(".svc-top .tag"), svc = txt(tag);
+        return {time: txt(r.querySelector(".svc-time")), svc: svc, room: txt(r.querySelector(".room-pill")),
+          fb: !!tag && !/No F&B/i.test(svc) && (/\btag-/.test(tag.className) || FNB.test(svc)),
           gtd: +((txt(r.querySelector(".gtd-pill")).match(/\d+/) || [0])[0])};
       });
+      // set-up, office and meeting bookings with no food or beverage don't get a report (Jason 2026-11-03)
+      var fb = rows.filter(function (r) { return r.fb; }); if (!fb.length) return; rows = fb;
       var foot = {};
       [].forEach.call(card.querySelectorAll(".card-foot .foot-row"), function (f) { foot[txt(f.querySelector(".foot-key")).toUpperCase()] = txt(f.querySelector(".foot-val")); });
       var rooms = []; rows.forEach(function (r) { if (r.room && rooms.indexOf(r.room) < 0) rooms.push(r.room); });
