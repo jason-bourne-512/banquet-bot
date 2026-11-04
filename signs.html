@@ -137,7 +137,7 @@
       </div>
       <div id="sg-events"></div>
       <div id="sg-skip" class="sg-note"></div>
-      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell gets its own directional with a right arrow. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 2, Primrose C and D get 1 each. Counts marked guess are not confirmed and can be edited. Set a count to 0 to skip a door sign.</div>
+      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell gets its own directional with a right arrow. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 2, Primrose C and D get 1 each, Bluebell gets none. Counts marked guess are not confirmed and can be edited. Set a count to 0 to skip a door sign.</div>
     </div>
   </div>
   <div id="sg-pv" hidden>
@@ -175,7 +175,7 @@
       out.dir = !letters || (L && R) ? "LR" : L ? "L" : "R";
     }
     if (name == "Primrose") { var l = letters || "ABCD"; out.doors = l.split("").reduce(function (a, c) { return a + PRIM[c]; }, 0); out.guess = /B/.test(l); }
-    else if (name == "Bluebell") { out.doors = 1; out.guess = true; }
+    else if (name == "Bluebell") out.doors = 0; // directional only, never a door sign (Jason)
     else out.doors = letters ? letters.length : 2;
     return out;
   }
