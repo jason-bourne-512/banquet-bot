@@ -70,6 +70,14 @@ textarea{width:100%;background:var(--card2);border:1px solid var(--line2);border
 .slot .tm{width:auto!important;height:auto!important;border:0;background:#8bd1ff1f!important;color:var(--blue)!important;border-radius:12px!important;padding:3px 9px!important;margin:0 2px;font:700 12px Manrope!important;line-height:1.2!important;white-space:nowrap;cursor:pointer}
 .slot i{padding-left:6px;border-left:1px solid #ffffff22;white-space:nowrap}
 .slot .tm.ed{color:var(--amber)}
+/* Vacant: an open spot on a shift, with its hours, that still needs a server (Jason 2026-11-04). Red on the final schedule until filled. */
+.slot.vac{background:#ff6b7a1f;border:1px dashed #ff8b97;color:#ffb3ba}
+.slot.vac .tm{background:#ff6b7a26!important;color:#ffb3ba!important}
+.slot.vac .fillv{width:auto;height:auto;border-radius:12px;padding:3px 9px;background:#ff8b97;color:#1a0b0e;font:800 11px Manrope}
+.slot.vac.filling{outline:2px solid #ff8b97}
+.add.vacb{border-color:#ff8b9788;color:#ffb3ba}
+.fin td.vac{background:#ffc7ce;color:#9c0006;font-weight:800}
+.fin td.vacn{color:#ff8b97}
 .tedit{display:none;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}.tedit.on{display:flex}
 .tedit input[type=time]{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:8px;padding:4px 6px;font:600 12.5px Manrope;color-scheme:dark}
 .pick .grp{width:100%;font-size:11px;color:var(--mute);margin:4px 0 2px}
@@ -395,10 +403,12 @@ let CUSTOM = {};      // date -> [{k, label, s, e, need}] shifts added by hand
 let FINAL = {};       // "row|date" -> text typed into the final schedule grid
 let EXTRA = [];       // people added by name who aren't on the server roster
 let XEV = {};         // date -> [{id, name, tag, room, s, e, n}] events added by hand (they count toward the rubric)
+let VAC = {};         // "date|shift" -> [{id, s, e}] vacant spots still to be filled, with their hours
+let FILL = null;      // {key, id}: the vacant spot being filled from the pick list
 const BKEY = "bb-sched-build-" + WEEK;
-const saveBuild = () => { try { localStorage.setItem(BKEY, JSON.stringify({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA, XEV, MANUAL})); } catch (e) {} };
+const saveBuild = () => { try { localStorage.setItem(BKEY, JSON.stringify({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA, XEV, VAC, MANUAL})); } catch (e) {} };
 const loadBuild = () => { try { const b = JSON.parse(localStorage.getItem(BKEY) || "null"); if (!b) return false;
-  ({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA, XEV} = Object.assign({ASSIGN: {}, TIMES: {}, CUSTOM: {}, FINAL: {}, EXTRA: [], XEV: {}}, b)); MANUAL = !!b.MANUAL;
+  ({ASSIGN, TIMES, CUSTOM, FINAL, EXTRA, XEV, VAC} = Object.assign({ASSIGN: {}, TIMES: {}, CUSTOM: {}, FINAL: {}, EXTRA: [], XEV: {}, VAC: {}}, b)); MANUAL = !!b.MANUAL;
   EXTRA.forEach(n => { if (!AV[n]) AV[n] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; }); return true; } catch (e) { return false; } };
 const PEOPLE = () => ROSTER.concat(BARTENDERS.filter(n => !ROSTER.includes(n)), EXTRA.filter(n => !ROSTER.includes(n) && !BARTENDERS.includes(n)));
 const shiftOf = (d, k) => DATA.week[d] && plan(d).find(x => x.k === k);
@@ -449,17 +459,18 @@ function renderBuild() {
   $("#days").innerHTML = DAYS.map((d, i) => {
     const w = DATA.week[d], p = plan(d);
     let body = p.length ? p.map(s => {
-      const got = ASSIGN[d + "|" + s.k] || [], st = got.length === s.need ? "ok" : got.length < s.need ? "short" : "over";
+      const got = ASSIGN[d + "|" + s.k] || [], st = got.length === s.need ? "ok" : got.length < s.need ? "short" : "over", vac = VAC[d + "|" + s.k] || [];
       const avail = s.bar ? BARTENDERS.filter(n => !got.includes(n)) : PEOPLE().filter(n => (s.custom ? AV[n].days[i] !== "off" : free(n, i, s.k, s)) && !got.includes(n));
       const others = PEOPLE().filter(n => !avail.includes(n) && !got.includes(n));
       return `<div class="shiftb">
         <div class="sh"><span>${s.custom ? `<input class="shlabel" data-shl="${d}|${s.k}" value="${s.label.replace(/"/g, "&quot;")}"> <input type="time" step="900" class="shtime" data-sht="${d}|${s.k}|s" value="${hhmm(s.s)}"> – <input type="time" step="900" class="shtime" data-sht="${d}|${s.k}|e" value="${hhmm(s.e % 1440)}"> <button class="xs" data-delshift="${d}|${s.k}" title="Remove this shift">✕ Remove</button>` : `<b>${s.label}</b> <span class="sub">${s.time}</span>`}</span>
-          <span class="pill ${st}">${got.length}/${s.need}${st === "short" ? " · need " + (s.need - got.length) : st === "over" ? " · +" + (got.length - s.need) : " ✓"}</span></div>
+          <span>${vac.length ? `<span class="pill short">${vac.length} vacant</span> ` : ""}<span class="pill ${st}">${got.length}/${s.need}${st === "short" ? " · need " + (s.need - got.length) : st === "over" ? " · +" + (got.length - s.need) : " ✓"}</span></span></div>
         <div class="meals">${s.meals.map(m => `${m.tag} ${m.n} · ${m.room}`).join("  ·  ")}</div>
         <div class="why">${s.why}</div>
         <div class="chips" style="margin-top:8px">${got.map(n => { const t = timesOf(d, s.k, n), ed = !!TIMES[d + "|" + s.k + "|" + n];
             return `<span class="slot">${n}${SENT[n] ? " ✓" : ""} <button class="tm${ed ? " ed" : ""}" data-tm="${d}|${s.k}|${n}" title="Change ${n}'s hours">${fmt(t.s)}–${fmt(t.e)}</button><i>${shiftsOf(n)}/${AV[n].want}</i><button data-rm="${d}|${s.k}|${n}">×</button></span>`; }).join("")}
-          <button class="add" data-add="${d}|${s.k}">+ add</button></div>
+${vac.map(v => `<span class="slot vac${FILL && FILL.id === v.id ? " filling" : ""}">VACANT <button class="tm" data-vtm="${d}|${s.k}|${v.id}" title="Change the hours">${fmt(v.s)}–${fmt(v.e)}</button><button class="fillv" data-fillv="${d}|${s.k}|${v.id}" title="Pick who fills it">Fill</button><button data-vrm="${d}|${s.k}|${v.id}" title="Remove the vacant spot">×</button></span>`).join("")}
+          <button class="add" data-add="${d}|${s.k}">+ add</button><button class="add vacb" data-vac="${d}|${s.k}" title="An open spot to fill later">+ Vacant</button></div>
         <div class="tedit" id="te-${d}-${s.k}"></div>
         <div class="pick chips" id="pick-${d}-${s.k}">
           <div class="grp">Available</div>${avail.length ? avail.map(n => `<span class="chip" data-put="${d}|${s.k}|${n}">${n}${winLabel(n, i)}<small>${shiftsOf(n)}/${AV[n].want}</small></span>`).join("") : '<span class="sub">Nobody else marked available</span>'}
@@ -482,6 +493,27 @@ function renderBuild() {
         <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" data-f="bar"> Bar</label>
         <button class="add" data-saveev="${d}">Add event</button></div>${showA ? `<div class="actual empty" style="padding-top:0"><b>Hector actually posted:</b> ${act}</div>` : ""}</div>`;
   }).join("");
+  // Vacant spots: add (opens its hours), change hours, remove, fill from the pick list
+  const vacOf = (d, k, id) => (VAC[d + "|" + k] || []).find(v => v.id === id);
+  const vacHours = (d, k, id) => { const v = vacOf(d, k, id), box = document.getElementById("te-" + d + "-" + k); if (!v || !box) return;
+    box.innerHTML = `<b style="font-size:12.5px;color:#ffb3ba">Vacant</b> <input type="time" step="900" id="ts" value="${hhmm(v.s)}"> to <input type="time" step="900" id="tt" value="${hhmm(v.e)}"> <button class="add" id="tok">Save</button>`;
+    box.classList.add("on");
+    box.querySelector("#tok").onclick = () => { let s1 = unhhmm(box.querySelector("#ts").value), e1 = unhhmm(box.querySelector("#tt").value); if (e1 <= s1) e1 += 1440;
+      v.s = s1; v.e = e1; changed(); renderBuild(); }; };
+  $("#days").querySelectorAll("[data-vac]").forEach(b => b.onclick = () => { const [d, k] = b.dataset.vac.split("|"), sh = shiftOf(d, k); if (!sh) return;
+    const id = "v" + Date.now().toString(36); (VAC[d + "|" + k] = VAC[d + "|" + k] || []).push({id, s: sh.s, e: sh.e}); changed(); renderBuild(); vacHours(d, k, id);
+    toast("Vacant spot added: set its hours, it shows in red on the final schedule"); });
+  $("#days").querySelectorAll("[data-vtm]").forEach(b => b.onclick = () => { const [d, k, id] = b.dataset.vtm.split("|"); vacHours(d, k, id); });
+  $("#days").querySelectorAll("[data-vrm]").forEach(b => b.onclick = () => { const [d, k, id] = b.dataset.vrm.split("|");
+    VAC[d + "|" + k] = (VAC[d + "|" + k] || []).filter(v => v.id !== id); if (FILL && FILL.id === id) FILL = null; changed(); renderBuild(); });
+  $("#days").querySelectorAll("[data-fillv]").forEach(b => b.onclick = () => { const [d, k, id] = b.dataset.fillv.split("|");
+    FILL = FILL && FILL.id === id ? null : {key: d + "|" + k, id}; renderBuild();
+    if (FILL) { const pk = document.getElementById("pick-" + d + "-" + k); pk.classList.add("on"); pk.scrollIntoView({behavior: "smooth", block: "center"}); toast("Pick who fills the vacant spot"); } });
+  // someone picked while a vacant spot is being filled takes that spot's hours, and the spot goes away
+  const takeVacant = (d, k, n) => { if (!FILL || FILL.key !== d + "|" + k) return false; const v = vacOf(d, k, FILL.id), sh = shiftOf(d, k); FILL = null; if (!v) return false;
+    VAC[d + "|" + k] = VAC[d + "|" + k].filter(x => x !== v);
+    if (!sh || v.s !== sh.s || v.e !== sh.e) TIMES[d + "|" + k + "|" + n] = {s: v.s, e: v.e}; else delete TIMES[d + "|" + k + "|" + n];
+    toast(n + " fills the vacant spot"); return true; };
   $("#days").querySelectorAll("[data-rm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.rm.split("|"); ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k].filter(x => x !== n); delete TIMES[d + "|" + k + "|" + n]; changed(); renderBuild(); });
   $("#days").querySelectorAll("[data-tm]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.tm.split("|"), t = timesOf(d, k, n), box = document.getElementById("te-" + d + "-" + k);
     box.innerHTML = `<b style="font-size:12.5px">${n}</b> <input type="time" step="900" id="ts" value="${hhmm(t.s)}"> to <input type="time" step="900" id="tt" value="${hhmm(t.e)}"> <button class="add" id="tok">Save</button> <button class="add" id="tdef">Reset to shift</button>`;
@@ -493,7 +525,7 @@ function renderBuild() {
     const n = inp.value.trim().replace(/[|<>"]/g, "").split(/\s+/)[0]; if (!n) return;
     const nm = n.charAt(0).toUpperCase() + n.slice(1);
     if (!PEOPLE().includes(nm)) { EXTRA.push(nm); AV[nm] = {days: ["off","off","off","off","off","off","off"], want: 0, note: ""}; }
-    (ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k] || []).includes(nm) || ASSIGN[d + "|" + k].push(nm); changed(); renderBuild(); });
+    (ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k] || []).includes(nm) || ASSIGN[d + "|" + k].push(nm); takeVacant(d, k, nm); changed(); renderBuild(); });
   $("#days").querySelectorAll("[data-sht]").forEach(inp => inp.onchange = () => { const [d, k, w] = inp.dataset.sht.split("|"), c = (CUSTOM[d] || []).find(x => x.k === k);
     if (!c || !inp.value) return; c[w] = unhhmm(inp.value); if (c.e <= c.s) c.e += 1440; changed(); renderBuild(); });
   $("#days").querySelectorAll("[data-addev]").forEach(b => b.onclick = () => document.getElementById("ef-" + b.dataset.addev).classList.toggle("on"));
@@ -515,7 +547,7 @@ function renderBuild() {
   $("#days").querySelectorAll("[data-add]").forEach(b => b.onclick = () => { const [d, k] = b.dataset.add.split("|"); document.getElementById("pick-" + d + "-" + k).classList.toggle("on"); });
   $("#days").querySelectorAll("[data-put]").forEach(b => b.onclick = () => { const [d, k, n] = b.dataset.put.split("|"); (ASSIGN[d + "|" + k] = ASSIGN[d + "|" + k] || []).push(n);
     const w = win(AV[n].days[DAYS.indexOf(d)]), sh = shiftOf(d, k);
-    if (w && sh) { const t = {s: Math.max(w.s, sh.s), e: Math.min(w.e, sh.e)}; if (t.e > t.s && (t.s !== sh.s || t.e !== sh.e)) TIMES[d + "|" + k + "|" + n] = t; }
+    if (!takeVacant(d, k, n) && w && sh) { const t = {s: Math.max(w.s, sh.s), e: Math.min(w.e, sh.e)}; if (t.e > t.s && (t.s !== sh.s || t.e !== sh.e)) TIMES[d + "|" + k + "|" + n] = t; }
     changed(); renderBuild(); });
   const mx = Math.max(...PEOPLE().map(hoursOf), 8);
   $("#load").innerHTML = PEOPLE().map(n => { const s = shiftsOf(n), w = AV[n].want, h = hoursOf(n);
@@ -529,13 +561,22 @@ const BANDS = [
   {label: "Banquet Captain", fill: "FF9BC2E6", rows: ["Jason"]},
   {label: "SERVER", fill: "FFB4C6E7", servers: true},
   {label: "Bartenders", fill: "FFB4C6E7", bar: true},
+  {label: "VACANT · NEEDS TO BE FILLED", fill: "FFFFC7CE", vac: true},
   {label: "HOUSEMEN", fill: "FFF8CBAD", rows: ["Jamshid", "Tomas"]}];
 const cellFor = bar => (n, d) => plan(d).filter(s => !!s.bar === bar && (ASSIGN[d + "|" + s.k] || []).includes(n))
   .map(s => { const t = timesOf(d, s.k, n); return xt(t.s) + "-" + xt(t.e) + (s.custom && !/extra shift/i.test(s.label) ? "/" + s.label.toUpperCase() : ""); }).join(" / ");
 const serverCell = cellFor(false), barCell = cellFor(true);
+// Vacant spots of a day, in shift order, as posted-schedule text ("5PM-11PM", "/BAR" for a bar shift)
+const vacsOn = d => plan(d).flatMap(s => (VAC[d + "|" + s.k] || []).map(v => xt(v.s) + "-" + xt(v.e) + (s.bar ? "/BAR" : s.custom && !/extra shift/i.test(s.label) ? "/" + s.label.toUpperCase() : "")));
 function finalRows() {
   const out = [];
   BANDS.forEach((b, bi) => {
+    if (b.vac) {
+      const n = Math.max(0, ...DAYS.map(d => vacsOn(d).length)); if (!n) return;
+      out.push({band: b});
+      for (let i = 0; i < n; i++) out.push({id: "vac:" + i, name: "VACANT", vac: true, auto: d => vacsOn(d)[i] || ""});
+      return;
+    }
     out.push({band: b});
     const names = b.servers ? PEOPLE().filter(n => !BARTENDERS.includes(n) || ROSTER.includes(n)).filter(n => SENT[n] || DAYS.some(d => serverCell(n, d)) || EXTRA.includes(n)) : b.bar ? BARTENDERS : b.rows;
     names.forEach(n => out.push({id: bi + ":" + n, name: n, auto: b.servers ? d => serverCell(n, d) : b.bar ? d => barCell(n, d) : () => ""}));
@@ -549,7 +590,7 @@ function renderFinal() {
   const head = `<tr><th></th>${DAYS.map(d => { const x = new Date(d + "T12:00"); return `<th>${DOWS[x.getDay()]}<small>${x.getDate()}-${mon[x.getMonth()]}</small></th>`; }).join("")}</tr>`;
   const rows = finalRows().map(r => r.band
     ? `<tr class="band"><td colspan="${DAYS.length + 1}" style="background:#${r.band.fill.slice(2)}">${r.band.label}</td></tr>`
-    : `<tr><td class="nm">${r.name}</td>${DAYS.map(d => `<td contenteditable="true" data-fc="${r.id}|${d}" class="${(r.id + "|" + d) in FINAL ? "edited" : ""}">${cellText(r, d)}</td>`).join("")}</tr>`).join("");
+    : `<tr><td class="nm${r.vac ? " vacn" : ""}">${r.name}</td>${DAYS.map(d => `<td contenteditable="true" data-fc="${r.id}|${d}" class="${(r.id + "|" + d) in FINAL ? "edited" : ""}${r.vac && cellText(r, d) ? " vac" : ""}">${cellText(r, d)}</td>`).join("")}</tr>`).join("");
   const t = $("#fin"); t.innerHTML = head + rows;
   t.querySelectorAll("[data-fc]").forEach(td => td.onblur = () => { const k = td.dataset.fc, v = td.textContent.trim(), [id, d] = k.split("|");
     const r = finalRows().find(x => x.id === id); if (!r) return;
@@ -574,7 +615,8 @@ $("#mkxls").onclick = async () => {
         const c = row.getCell(1); c.fill = {type: "pattern", pattern: "solid", fgColor: {argb: r.band.fill}}; c.font = {bold: true, name: "Times New Roman", size: 12}; c.border = box; return;
       }
       const row = ws.addRow([r.name].concat(DAYS.map(d => cellText(r, d))));
-      row.eachCell({includeEmpty: true}, (c, i) => { c.border = box; c.font = {name: "Calibri", size: 11}; c.alignment = {horizontal: i === 1 ? "left" : "center", vertical: "middle"}; });
+      row.eachCell({includeEmpty: true}, (c, i) => { c.border = box; c.font = {name: "Calibri", size: 11}; c.alignment = {horizontal: i === 1 ? "left" : "center", vertical: "middle"};
+        if (r.vac && (i === 1 || c.value)) { c.font = {name: "Calibri", size: 11, bold: true, color: {argb: "FF9C0006"}}; if (i > 1) c.fill = {type: "pattern", pattern: "solid", fgColor: {argb: "FFFFC7CE"}}; } });
     });
     const buf = await wb.xlsx.writeBuffer(), a = document.createElement("a");
     const f = d => { const x = new Date(d + "T12:00"); return (x.getMonth() + 1) + "-" + x.getDate(); };
