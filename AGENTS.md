@@ -17,7 +17,7 @@ Banquet Bot supports banquet execution at the Westin Austin at The Domain, downs
 - `scripts/extract-rundown.js` derives `data/rundown.json` from the cards, using `parseTime.js` and `classify.js`. Never hand-edit derived JSON.
 - `scripts/extract-staff-schedule.js` extracts Jason's shift starts only, not the full roster. `extract-page-text.js` derives reference text.
 - `room-map.html` fetches `data/rundown.json` and lists rooms with no extracted bookings for the whole day. Missing bookings do not establish confirmed availability. Compound-room mappings are explicit; foyer overlap is not fully modeled.
-- `~/banquet-bot-telegram` consumes the generated data for deterministic reminders and AI questions. Its Daily Brief tool can publish `today.html` back to this site on request. That page is not automatically refreshed every morning.
+- `~/banquet-bot-telegram` consumes the generated data for deterministic reminders and AI questions. Its Daily Brief tool can publish `today.html` back to this site on request. That page is not automatically refreshed every morning. Since 2026-11-03 `today.html` is only a redirect to the Rundown (the Today page was folded into it); do not publish a Daily Brief over it.
 - The site uses static HTML/CSS/JavaScript and GitHub Pages, with no frontend build step. Node dependencies support extraction.
 
 ## Publishing and Git hooks: explicit approval required

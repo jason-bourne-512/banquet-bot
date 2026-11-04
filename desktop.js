@@ -5,7 +5,7 @@
 (function () {
   var DESK = "bb-desk", WHO = "bb-hsm-who", MINI = "bb-desk-mini", REF = "bb-desk-ref", SIDE = 236, RAIL = 64;
   var PAGES = [
-    ["index.html", "Home", "⌂"], ["today.html", "Today", "☀"], ["live-map.html", "Live Map", "⌖"], ["rundown.html#rundown", "Rundown", "▤"],
+    ["index.html", "Home", "⌂"], ["live-map.html", "Live Map", "⌖"], ["rundown.html#rundown", "Rundown", "▤"],
     ["rundown.html#overview", "Overview", "▦"], ["housemen.html", "Housemen", "⚒"], ["rooms.html", "Rooms", "▢"], ["menu.html", "Menu", "◈"],
     ["info.html", "Info", "ℹ"], ["training.html", "Training", "✎"], ["handbook.html", "Handbook", "❏"],
     ["playbook.html", "Captain Playbook", "☰"], ["plated.html", "Plated Service", "◎"], ["bar.html", "Bar Reference", "🍸"]

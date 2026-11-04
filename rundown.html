@@ -467,6 +467,25 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app #rdScreen .original-client{color:#ff9ed2!important;text-shadow:0 1px 2px #00000080!important}
 #bb-app #rdScreen>.week-label[id^="ov-"]{font-size:20px}
 html.bbd #bb-app #rdScreen>.week-label[id^="ov-"]{font-size:38px!important}
+/* Today: a service whose end time has passed grays out on its own (phone and desktop); on desktop a lead clicks a service
+   to black it out as done (2026-11-03, replaces the Today page). Marks are kept per computer. */
+#bb-app .service.is-past{opacity:.45}
+#bb-app .service.is-past .time{text-decoration:line-through;text-decoration-thickness:1px;color:#8696a3}
+html.bbd #bb-app .service[data-k]{cursor:pointer;border-radius:6px;transition:background .15s}
+html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
+#bb-app .service.is-done{opacity:1;padding-left:10px;padding-right:10px;background:#030507!important;color:#4b5864;position:relative}
+#bb-app .service.is-done *{color:#4b5864!important;border-color:#1a222a!important}
+#bb-app .service.is-done .time{text-decoration:line-through}
+#bb-app .service.is-done::after{content:"DONE";position:absolute;right:8px;top:8px;font:700 10px Manrope,Arial,sans-serif;letter-spacing:.14em;color:#6f7f8c;border:1px solid #2a3540;border-radius:4px;padding:2px 6px}
+#bb-app .rd-strip{display:none}
+html.bbd #bb-app .rd-strip{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;padding:10px 12px;border:1px solid #9ebbd42e;border-radius:10px;background:#0b151ecc}
+#bb-app .rd-strip b{width:100%;font:700 10px Manrope,Arial,sans-serif;letter-spacing:.16em;color:#8bd1ff;text-transform:uppercase;margin-bottom:2px}
+#bb-app .rd-strip button{border:1px solid #9ebbd440;background:#16232e;color:#e3f1fb;border-radius:16px;font:12px Manrope,Arial,sans-serif;padding:4px 10px;cursor:pointer}
+#bb-app .rd-strip button i{font-style:normal;font-weight:700;color:#b9e5ff;margin-right:5px}
+#bb-app .rd-strip button.is-past{opacity:.45;text-decoration:line-through}
+#bb-app .rd-strip button.is-done{background:#030507;color:#4b5864;border-color:#1a222a}
+#bb-app .rd-strip button.is-done i{color:#4b5864}
+#bb-app .service.rd-flash{box-shadow:0 0 0 2px #8bd1ff}
 #bb-app .original-diag{order:3;padding:2px 7px;font:600 10px Manrope,Arial,sans-serif;letter-spacing:.3px;text-transform:none;color:#d1daff;border:1px solid #a9bcff4a;border-radius:5px;background:#697fb51f}
 
 /* Diagram buttons (rundown setup, diagrams tab) */
@@ -13808,6 +13827,8 @@ html.bbd #bb-app #rdScreen>.week-label[id^="ov-"]{font-size:38px!important}
         return (startOf(a.ev)-startOf(b.ev))||(a.i-b.i);
       }).map(x=>x.ev);
       if(!events.length) return empty(d===TODAY?'No events listed today.':'No events listed for this date.');
+      const strip=[], stripBox=node('div','rd-strip');
+      if(d===TODAY) screen.append(stripBox);
       let prevBase=null;
       events.forEach(function(ev){
         if(ev.base!==prevBase){
@@ -13850,6 +13871,11 @@ html.bbd #bb-app #rdScreen>.week-label[id^="ov-"]{font-size:38px!important}
             content.append(more);
           }
           row.append(time,content);
+          if(d===TODAY&&item.time.start!=null){
+            row.dataset.k=[ev.base,item.room||'',item.tag||'',item.time.start].join('|');
+            row.dataset.end=item.time.end;
+            if(!noFnb(item)) strip.push({k:row.dataset.k,start:item.time.start,end:item.time.end,label:item.tag||'',who:ev.base});
+          }
           body.append(row);
         });
         if(ev.note&&ev.firstRoom) body.append(htmlNode('div','flag',clean(ev.note)));
@@ -13890,7 +13916,51 @@ html.bbd #bb-app #rdScreen>.week-label[id^="ov-"]{font-size:38px!important}
         box.append(body);
         screen.append(box);
       });
+      if(d===TODAY) fillStrip(stripBox,strip);
     }
+
+    // ── today: past services gray out by the clock; on desktop a click blacks a service out as done ──
+    const DONE_KEY='bb-rd-done-'+TODAY;
+    let done={}; try{ done=JSON.parse(localStorage.getItem(DONE_KEY)||'{}')||{}; }catch(e){}
+    const nowMin=()=>{ const p=new Intl.DateTimeFormat('en-US',{timeZone:TZ,hour:'numeric',minute:'numeric',hourCycle:'h23'}).formatToParts(new Date());
+      const v=t=>+(p.find(x=>x.type===t)||{}).value||0; return v('hour')*60+v('minute'); };
+    function fillStrip(box,list){
+      if(!list.length){ box.remove(); return; }
+      // a group with the same service in several rooms shows once in the strip
+      const seen={};
+      box.append(node('b','','Today, in order'));
+      list.sort((a,b)=>a.start-b.start).forEach(function(x){
+        const id=x.start+'|'+x.who+'|'+x.label; if(seen[id]){ seen[id].keys.push(x.k); return; }
+        const b=node('button'); b.type='button'; b.dataset.k=x.k; b.dataset.end=x.end; b.keys=[x.k]; seen[id]=b;
+        b.append(node('i','',clock(x.start)), document.createTextNode(x.label.replace(/\s+—.*$/,'')+' · '+x.who));
+        b.onclick=function(){ const r=screen.querySelector('.service[data-k="'+CSS.escape(x.k)+'"]'); if(!r) return;
+          r.scrollIntoView({block:'center',behavior:'smooth'}); r.classList.add('rd-flash'); setTimeout(()=>r.classList.remove('rd-flash'),1400); };
+        box.append(b);
+      });
+      paintMarks();
+    }
+    function paintMarks(){
+      if(selected!==TODAY||tab!=='rundown') return;
+      const n=nowMin();
+      screen.querySelectorAll('.service[data-k]').forEach(function(r){
+        r.classList.toggle('is-done',!!done[r.dataset.k]);
+        r.classList.toggle('is-past',!done[r.dataset.k]&&+r.dataset.end<=n);
+      });
+      screen.querySelectorAll('.rd-strip button').forEach(function(b){
+        const isDone=b.keys.every(k=>done[k]);
+        b.classList.toggle('is-done',isDone);
+        b.classList.toggle('is-past',!isDone&&+b.dataset.end<=n);
+      });
+    }
+    screen.addEventListener('click',function(e){
+      if(!document.documentElement.classList.contains('bbd')) return;   // marking done is desktop only
+      const r=e.target.closest('.service[data-k]');
+      if(!r||e.target.closest('summary,a,button,.menu-detail')) return;
+      if(done[r.dataset.k]) delete done[r.dataset.k]; else done[r.dataset.k]=1;
+      try{ localStorage.setItem(DONE_KEY,JSON.stringify(done)); }catch(err){}
+      paintMarks();
+    });
+    setInterval(paintMarks,60000);
 
     // Overview lists every upcoming event, day by day (like the original), and snaps to d.
     const dayHeading=d=>dObj(d).toLocaleDateString('en-US',{timeZone:'UTC',weekday:'short',month:'short',day:'numeric'}).replace(',','').toUpperCase();
@@ -13957,6 +14027,7 @@ html.bbd #bb-app #rdScreen>.week-label[id^="ov-"]{font-size:38px!important}
       screen.replaceChildren();
       ({rundown:renderRundown,overview:renderOverview})[tab](d);
       headings();
+      paintMarks();
     }
 
     // Every upcoming day with events (like the original rundown list), grouped by hotel week.
