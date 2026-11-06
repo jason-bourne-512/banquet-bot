@@ -68,8 +68,19 @@
   document.head.appendChild(navCss); hsmNav();
   window.bbHsmNav = hsmNav;
   window.bbGate = {lock: lock, unlock: unlock};
-  if (!who()) lock();
-  window.addEventListener("storage", function (e) { if (e.key == KEY || e.key == null) { if (who()) unlock(); else lock(); hsmNav(); } });
+  // BEO Issues gate (Jason 2026-11-06): Diana & Lisa must open the BEO Issues page before anything else, once per day.
+  var BEO_GATE = ["diana", "lisa"];
+  function beoGate() {
+    var w = who(); if (!w || !w.name) return;                        // not signed in: the PIN gate handles it
+    if (BEO_GATE.indexOf(String(w.name).toLowerCase()) < 0) return;  // only Diana & Lisa are forced to it
+    if (/(^|\/)issues\.html$/i.test(location.pathname)) return;       // already on the page
+    var d = new Date(), key = "bb-beo-ack-" + d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(), acked;
+    try { acked = localStorage.getItem(key); } catch (e) { return; } // storage blocked: don't trap them on a loop
+    if (!acked) location.replace("issues.html");
+  }
+  window.bbBeoGate = beoGate;
+  if (!who()) lock(); else beoGate();
+  window.addEventListener("storage", function (e) { if (e.key == KEY || e.key == null) { if (who()) { unlock(); beoGate(); } else lock(); hsmNav(); } });
 })();
 // Personal looks for Banquet Bot. Open any page once with ?me=<name> and this phone keeps that look
 // (?me=off clears it). The Housemen page also switches it on when that person signs in.

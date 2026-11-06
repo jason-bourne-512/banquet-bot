@@ -73,7 +73,7 @@
   var w = null; try { w = JSON.parse(localStorage.getItem("bb-hsm-who")); } catch (e) {}
   var me = w && w.name, app = document.getElementById("app");
   if (["Jason", "Hector", "Diana", "Lisa"].indexOf(me) < 0) { app.innerHTML = '<div class="deny">This page is for Jason, Hector, Diana and Lisa.</div>'; document.querySelector(".bar").hidden = true; return; }
-  var all = me == "Jason" || me == "Hector", state   // Hector sees the whole list, read-only, like Jason = {res: {}, notes: {}}, open = {};   // open: ids with the note box showing
+  var all = me == "Jason" || me == "Hector", state = {res: {}, notes: {}}, open = {};   // Hector sees the whole list, read-only, like Jason; open = ids with the note box showing
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]; }); };
   var when = function (ms) { var d = new Date(ms); return d.toLocaleDateString("en-US", {timeZone: "America/Chicago", month: "short", day: "numeric"}) + ", " +
     d.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: "numeric", minute: "2-digit"}); };
@@ -129,6 +129,20 @@
   window.beoRemote = function (data) { state = {res: data.res || {}, notes: data.notes || {}}; warn(""); render(); };
   window.beoWarn = warn;
   render();
+
+  // Opening this page is the daily gate release: theme.js forces Diana & Lisa here first, this marks it seen for today.
+  try { var dt = new Date(); localStorage.setItem("bb-beo-ack-" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate(), "1"); } catch (e) {}
+
+  // Desktop-view nudge for Diana (bear) & Lisa (monkey) when they're on a phone (Jason 2026-11-06): open in a browser for the full lead view.
+  if (!all && innerWidth < 900) {
+    var tip = me == "Lisa"
+      ? { a: "🐒", c: "#ffd27a", line: "Open Banquet Bot in a browser on a computer and you get the full <b>Desktop view</b> — the big board, floor maps, way more room to work." }
+      : { a: "🐻", c: "#8bd1ff", line: "Pull Banquet Bot up in a browser on a computer and you unlock the full <b>Desktop view</b> — the big board, floor maps, all of it." };
+    var card = document.createElement("div");
+    card.style.cssText = "display:flex;gap:11px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:3px solid " + tip.c + ";border-radius:10px;padding:11px 13px;margin-bottom:16px;font-size:13px;line-height:1.5;";
+    card.innerHTML = '<span style="font-size:24px;line-height:1">' + tip.a + '</span><span><b style="color:' + tip.c + '">' + me + ", one more thing —</b><br>" + tip.line + "</span>";
+    app.parentNode.insertBefore(card, app);
+  }
 })();
 </script>
 <script type="module">
