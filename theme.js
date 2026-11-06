@@ -840,6 +840,12 @@
     };
     next(4000 + Math.random() * 4000);
   }
+  // Alex gym day (Jason 2026-11-06): the shirtless flexing portrait (img/me/alex-buff.svg) for Fri 11/6 only, back to the dress shirt after midnight.
+  try {
+    if (new Date().toLocaleDateString("en-CA", {timeZone: "America/Chicago"}) == "2026-11-06") {
+      THEMES.alex.img = "img/me/alex-buff.svg?v=1"; THEMES.alex.hero.src = "img/me/alex-buff.svg?v=1";
+    }
+  } catch (e) {}
   function apply(key) {
     var old = document.getElementById("bb-me-theme"); if (old) old.remove();
     var oldB = document.querySelector(".bb-me-badge"); if (oldB) oldB.remove();
