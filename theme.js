@@ -335,6 +335,7 @@
       walker: "img/me/lisa-monkey-walk.svg",   // every page: a monkey strolls back and forth along the bottom; tap it and it vanishes
       monkeyMoments: true,   // every page: a random monkey moment every ~12–25s (see monkeyLoop)
       pointNew: "img/me/lisa-monkey-walk.svg",   // desktop: points at the new BEO Issues tab until she opens it (see pointToIssues)
+      pointDesk: "img/me/lisa-monkey-walk.svg",   // wide screen, desktop view off: points at the 🖥 Desktop button until she turns it on (see pointToDesktop)
       css: BADGE + ".bb-me-badge{color:#ffd1e4;background:linear-gradient(135deg,#5a1f3a,#2a0f1d);border:1px solid #ff9ec788}" +
         "@keyframes bbVineIn{from{transform:translateY(-110%)}to{transform:none}}" +
         // Swing (2026-10-27): big Tarzan swings, then a full loop-the-loop over the top of the vine.
@@ -776,13 +777,7 @@
     };
     next(4000 + Math.random() * 3000);
   }
-  // Diana + Lisa (Jason 2026-11-06): on desktop their buddy pops up beside the side panel and points left at the new BEO Issues tab,
-  // once per page a few seconds in, until they open the tab (then it stops for good). Tap the buddy or the bubble to open it.
-  function pointToIssues(src) {
-    var SEEN = "bb-seen-issues";
-    if (/(^|\/)issues\.html$/.test(location.pathname)) { try { localStorage.setItem(SEEN, "1"); } catch (e) {} return; }
-    try { if (localStorage.getItem(SEEN) == "1") return; } catch (e) {}
-    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  function pointCss() {
     if (!document.getElementById("bb-point-css")) {
       var st = document.createElement("style"); st.id = "bb-point-css";
       st.textContent = ".bb-point{position:fixed;z-index:10001;display:flex;align-items:center;gap:6px;cursor:pointer;animation:bbPointIn .6s cubic-bezier(.3,1.4,.5,1) both}" +
@@ -790,6 +785,8 @@
         ".bb-point .hand{font:34px/1 system-ui,sans-serif;animation:bbJab .7s ease-in-out infinite;filter:drop-shadow(0 3px 6px #0009)}" +
         ".bb-point img{display:block;width:124px;height:auto;border:0;margin:0;padding:0;background:none;filter:drop-shadow(0 5px 10px #000a)}" +
         ".bb-point img.flip{transform:scaleX(-1)}" +
+          ".bb-point .hand.dn{align-self:flex-end;animation-name:bbJabD}@keyframes bbJabD{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}" +
+          ".bb-point .say.up{left:auto;right:40px}" +
         ".bb-point .say{position:absolute;left:44px;bottom:100%;margin-bottom:4px;white-space:nowrap;background:#fff;color:#14202b;font:800 14px/1.25 Manrope,system-ui,sans-serif;" +
         "padding:8px 12px;border-radius:14px;border:2px solid var(--pc);box-shadow:0 6px 16px #0008}" +
         ".bb-point .say b{color:var(--pc)}" +
@@ -800,6 +797,40 @@
         "@keyframes bbPointGlow{50%{box-shadow:0 0 0 2px var(--pc),0 0 4px var(--pc)}}";
       document.head.appendChild(st);
     }
+  }
+  // Lisa (Jason 2026-11-06): her monkey pops up beside the 🖥 Desktop button and points at it, once per page a few seconds in,
+  // until she turns desktop view on (then it stops for good). Tap the monkey or the bubble to switch.
+  function pointToDesktop(src) {
+    var SEEN = "bb-seen-desk";
+    try { if (localStorage.getItem(SEEN) == "1") return; } catch (e) {}
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var tries = 0, wait = setInterval(function () {
+      if (document.querySelector(".bbd-nav")) { clearInterval(wait); try { localStorage.setItem(SEEN, "1"); } catch (e) {} return; }   // desktop view is on
+      var b = document.querySelector(".bbd-enter");
+      if (!b && ++tries < 40) return; clearInterval(wait); if (!b) return;   // phone or narrow screen: no Desktop button
+      pointCss();
+      setTimeout(function () {
+        if (document.hidden || document.querySelector(".bb-point") || !b.isConnected) return;
+        var r = b.getBoundingClientRect();
+        var d = document.createElement("div"); d.className = "bb-point"; d.style.setProperty("--pc", "#ff7eb3");
+        d.innerHTML = '<img alt="" src="' + src + '"><span class="hand dn">👇</span><span class="say up">Lisa, you can now use <b>desktop view!</b></span>';
+        document.body.appendChild(d);
+        // sits just above the button (the walker strolls along the bottom), the hand pointing down at it
+        d.style.left = Math.max(8, r.right - d.offsetWidth) + "px"; d.style.top = Math.max(8, r.top - d.offsetHeight - 2) + "px";
+        b.style.setProperty("box-shadow", "0 0 0 2px #ff7eb3,0 0 18px #ff7eb3", "important");
+        d.onclick = function () { b.click(); };
+        setTimeout(function () { d.classList.add("out"); b.style.removeProperty("box-shadow"); setTimeout(function () { d.remove(); }, 500); }, 7000);
+      }, 2500);
+    }, 250);
+  }
+  // Diana + Lisa (Jason 2026-11-06): on desktop their buddy pops up beside the side panel and points left at the new BEO Issues tab,
+  // once per page a few seconds in, until they open the tab (then it stops for good). Tap the buddy or the bubble to open it.
+  function pointToIssues(src) {
+    var SEEN = "bb-seen-issues";
+    if (/(^|\/)issues\.html$/.test(location.pathname)) { try { localStorage.setItem(SEEN, "1"); } catch (e) {} return; }
+    try { if (localStorage.getItem(SEEN) == "1") return; } catch (e) {}
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    pointCss();
     var color = /lisa/.test(src) ? "#ff7eb3" : "#cbb4ff", tries = 0;
     var wait = setInterval(function () {
       var a = document.querySelector('.bbd-nav a[href="issues.html"]');
@@ -1044,6 +1075,7 @@
       if (t.bear && t.bear.test(location.pathname)) bearLoop();
       if (t.monkeyMoments) monkeyLoop();
       if (t.pointNew) pointToIssues(t.pointNew);
+      if (t.pointDesk) pointToDesktop(t.pointDesk);
       if (t.lion) lionLooks();
       if (t.stars) {   // 8 stars on an arc, like the flag
         var st8 = document.createElement("div"); st8.className = "bb-stars";
