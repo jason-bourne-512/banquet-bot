@@ -334,6 +334,7 @@
       monkeyPages: /(^|\/)(index\.html|rundown\.html)?$/,   // her most-used pages (usage stats 2026-10-18): Home + Rundown
       walker: "img/me/lisa-monkey-walk.svg",   // every page: a monkey strolls back and forth along the bottom; tap it and it vanishes
       monkeyMoments: true,   // every page: a random monkey moment every ~12–25s (see monkeyLoop)
+      pointNew: "img/me/lisa-monkey-walk.svg",   // desktop: points at the new BEO Issues tab until she opens it (see pointToIssues)
       css: BADGE + ".bb-me-badge{color:#ffd1e4;background:linear-gradient(135deg,#5a1f3a,#2a0f1d);border:1px solid #ff9ec788}" +
         "@keyframes bbVineIn{from{transform:translateY(-110%)}to{transform:none}}" +
         // Swing (2026-10-27): big Tarzan swings, then a full loop-the-loop over the top of the vine.
@@ -429,13 +430,10 @@
     diana: {
       label: "DIANA · H-TOWN · SPACE CITY",
       img: "img/me/diana-houston.svg",
-      mark: {src: "img/me/diana-houston.svg", opacity: .08},
-      tint: {color: "#9b82d9", opacity: .42},
       bear: /live-map\.html$/,   // Live Map: a Houston bear in a red jersey drops by now and then (see bearLoop)
-      // Lavender (Jason 2026-10-18): soft lavender accents on a dusky violet night.
-      css: palette("#cbb4ff", "rgba(203,180,255,.15)", "#110d1c", "#1c1630", "#271f42", "rgba(203,180,255,.16)", "rgba(203,180,255,.40)") +
-        "body::before{background:radial-gradient(ellipse at 100% 0,#7d63c466,transparent 52%),radial-gradient(ellipse at 0 100%,#cbb4ff1f,transparent 55%),#110d1c!important}" +
-        "h1,h2{color:#efe6ff}" + BADGE +
+      pointNew: "img/me/diana-bear-wave.svg",   // desktop: points at the new BEO Issues tab until she opens it (see pointToIssues)
+      // Standard site background (Jason 2026-11-06): the Space City skyline watermark, violet tint and lavender palette are gone; badge + bear stay.
+      css: BADGE +
         ".bb-me-badge{color:#efe6ff;background:linear-gradient(135deg,#4a3880,#1f1838);border:1px solid #cbb4ff88}" +
         // Bear moments sit above the hue tint (9998) so the jersey stays red.
         ".bb-bear{position:fixed;z-index:9999;pointer-events:none;width:clamp(92px,10vw,140px)}" +
@@ -778,6 +776,47 @@
     };
     next(4000 + Math.random() * 3000);
   }
+  // Diana + Lisa (Jason 2026-11-06): on desktop their buddy pops up beside the side panel and points left at the new BEO Issues tab,
+  // once per page a few seconds in, until they open the tab (then it stops for good). Tap the buddy or the bubble to open it.
+  function pointToIssues(src) {
+    var SEEN = "bb-seen-issues";
+    if (/(^|\/)issues\.html$/.test(location.pathname)) { try { localStorage.setItem(SEEN, "1"); } catch (e) {} return; }
+    try { if (localStorage.getItem(SEEN) == "1") return; } catch (e) {}
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!document.getElementById("bb-point-css")) {
+      var st = document.createElement("style"); st.id = "bb-point-css";
+      st.textContent = ".bb-point{position:fixed;z-index:10001;display:flex;align-items:center;gap:6px;cursor:pointer;animation:bbPointIn .6s cubic-bezier(.3,1.4,.5,1) both}" +
+        ".bb-point.out{animation:bbPointOut .45s ease-in forwards}" +
+        ".bb-point .hand{font:34px/1 system-ui,sans-serif;animation:bbJab .7s ease-in-out infinite;filter:drop-shadow(0 3px 6px #0009)}" +
+        ".bb-point img{display:block;width:124px;height:auto;border:0;margin:0;padding:0;background:none;filter:drop-shadow(0 5px 10px #000a)}" +
+        ".bb-point img.flip{transform:scaleX(-1)}" +
+        ".bb-point .say{position:absolute;left:44px;bottom:100%;margin-bottom:4px;white-space:nowrap;background:#fff;color:#14202b;font:800 14px/1.25 Manrope,system-ui,sans-serif;" +
+        "padding:8px 12px;border-radius:14px;border:2px solid var(--pc);box-shadow:0 6px 16px #0008}" +
+        ".bb-point .say b{color:var(--pc)}" +
+        "@keyframes bbPointIn{from{opacity:0;transform:translateX(60px) scale(.6)}to{opacity:1;transform:none}}" +
+        "@keyframes bbPointOut{to{opacity:0;transform:translateX(40px) scale(.7)}}" +
+        "@keyframes bbJab{0%,100%{transform:translateX(0)}50%{transform:translateX(-12px)}}" +
+        ".bbd-nav a.bb-point-hit{box-shadow:0 0 0 2px var(--pc),0 0 18px var(--pc)!important;animation:bbPointGlow 1s ease-in-out infinite}" +
+        "@keyframes bbPointGlow{50%{box-shadow:0 0 0 2px var(--pc),0 0 4px var(--pc)}}";
+      document.head.appendChild(st);
+    }
+    var color = /lisa/.test(src) ? "#ff7eb3" : "#cbb4ff", tries = 0;
+    var wait = setInterval(function () {
+      var a = document.querySelector('.bbd-nav a[href="issues.html"]');
+      if (!a && ++tries < 40) return; clearInterval(wait); if (!a) return;   // phone view has no side panel: nothing to point at
+      setTimeout(function () {
+        if (document.hidden || document.querySelector(".bb-point")) return;
+        var r = a.getBoundingClientRect(); if (!r.width) return;
+        var d = document.createElement("div"); d.className = "bb-point"; d.style.setProperty("--pc", color);
+        d.innerHTML = '<span class="hand">👈</span><img alt="" src="' + src + '"' + (/lisa/.test(src) ? ' class="flip"' : "") + '><span class="say">Check out the new tab: <b>BEO Issues!</b></span>';
+        document.body.appendChild(d);
+        d.style.left = (r.right + 8) + "px"; d.style.top = Math.max(8, r.top + r.height / 2 - d.offsetHeight / 2) + "px";
+        a.style.setProperty("--pc", color); a.classList.add("bb-point-hit");
+        d.onclick = function () { location.href = "issues.html"; };
+        setTimeout(function () { d.classList.add("out"); a.classList.remove("bb-point-hit"); setTimeout(function () { d.remove(); }, 500); }, 7000);
+      }, 2500);
+    }, 250);
+  }
   // Diana's Live Map: one bear moment every ~35–70s (the first a few seconds after the page opens), never the same twice in a row.
   function bearLoop() {
     var add = function (cls, src) {
@@ -1004,6 +1043,7 @@
       if (t.dbz) dbzLoop();
       if (t.bear && t.bear.test(location.pathname)) bearLoop();
       if (t.monkeyMoments) monkeyLoop();
+      if (t.pointNew) pointToIssues(t.pointNew);
       if (t.lion) lionLooks();
       if (t.stars) {   // 8 stars on an arc, like the flag
         var st8 = document.createElement("div"); st8.className = "bb-stars";

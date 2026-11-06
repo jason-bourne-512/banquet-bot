@@ -381,14 +381,17 @@
     var title = (PAGES.filter(function (p) { return p[0] == cur; })[0] || [cur, document.title.split("—")[0].trim()])[1];
     var side = document.createElement("aside"), mini = get(MINI) == "1";
     // Captain Playbook + Bar Reference are captain-side notes; Hector's panel leaves them out (Jason 2026-10-21).
-    var refPages = PAGES.slice(6).filter(function (p) { return w.name == "Jason" || (p[0] != "playbook.html" && p[0] != "bar.html"); });   // Playbook + Bar: Jason only
+    // Rooms lives under Reference (Jason 2026-11-06): Operations is PAGES 0-4, Reference is 5 on.
+    var refPages = PAGES.slice(5).filter(function (p) { return w.name == "Jason" || (p[0] != "playbook.html" && p[0] != "bar.html"); });   // Playbook + Bar: Jason only
     // Reference folds under its triangle. Hector's always starts closed (Jason 2026-10-21); others remember it. A reference page opens it.
-    var refOpen = (w.name != "Hector" && get(REF) == "1") || PAGES.slice(6).some(function (p) { return p[0] == cur; });
+    var refOpen = (w.name != "Hector" && get(REF) == "1") || PAGES.slice(5).some(function (p) { return p[0] == cur; });
     side.className = "bbd-side";
     root.classList.toggle("bbd-mini", mini);
     side.innerHTML = '<button class="bbd-fold" data-bbd="fold" title="Collapse / expand the side panel">' + (mini ? "›" : "‹") + "</button>" +
       '<a class="bbd-brand" href="index.html"><span class="bbd-mark">B</span><span><b>BANQUET BOT</b><span class="sub">COMMAND CENTER</span></span></a>' +
-      '<nav class="bbd-nav"><div class="lbl">Operations</div>' + navLinks(PAGES.slice(0, 6), cur) +
+      '<nav class="bbd-nav"><div class="lbl">Operations</div>' + navLinks(PAGES.slice(0, 5), cur) +
+      // BEO Issues: Jason (everything), Diana and Lisa (their own issues) only (Jason 2026-11-06)
+      (["Jason", "Diana", "Lisa"].indexOf(w.name) > -1 ? '<a href="issues.html" class="' + (cur == "issues.html" ? "on" : "") + '"><i>⚑</i>BEO Issues</a>' : "") +
       (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' +
         '<a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' +
         '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' +   // Print Signs: Jason and Hector only
@@ -448,7 +451,7 @@
       if (b.dataset.bbd == "phone") set(DESK, "0");
       if (b.dataset.bbd == "out") { set(DESK, "0"); set(WHO, null); window.bbTheme && window.bbTheme.off && window.bbTheme.off(); }
       // Pages the phone home page doesn't link to (for leads) go back to Home in phone view (Jason 2026-10-25).
-      if (b.dataset.bbd == "phone" && ["today.html", "scheduler.html", "signs.html", "captain-report.html"].indexOf(here()) > -1) { location.href = "index.html"; return; }
+      if (b.dataset.bbd == "phone" && ["today.html", "scheduler.html", "signs.html", "captain-report.html", "issues.html"].indexOf(here()) > -1) { location.href = "index.html"; return; }
       location.reload();
     });
 

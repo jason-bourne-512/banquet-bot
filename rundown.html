@@ -409,6 +409,7 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .room[open]>summary .expand{transform:rotate(45deg)}
 #bb-app .room-body{padding:0 11px 6px}
 #bb-app .service{display:block;padding:8px 0;border-top:1px solid #9ebbd41e}
+#bb-app .service.is-meal{margin:0 -8px;padding:8px;border-radius:6px;background:linear-gradient(90deg,#ffc46b1c,#ffc46b08 70%,transparent);box-shadow:inset 3px 0 0 #ffc46b99}
 #bb-app .time{font-size:15px;font-weight:600;line-height:1.35;white-space:nowrap;margin-bottom:3px;color:#b9e5ff;font-variant-numeric:tabular-nums}
 #bb-app .time small{display:inline;font:inherit;color:inherit;margin:0 0 0 3px}
 /* Everything under a time (tag, count, menu, details) sits slightly indented */
@@ -478,13 +479,37 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
 #bb-app .service.is-done .time{text-decoration:line-through}
 #bb-app .service.is-done::after{content:"DONE";position:absolute;right:8px;top:8px;font:700 10px Manrope,Arial,sans-serif;letter-spacing:.14em;color:#6f7f8c;border:1px solid #2a3540;border-radius:4px;padding:2px 6px}
 #bb-app .rd-strip{display:none}
-html.bbd #bb-app .rd-strip{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;padding:10px 12px;border:1px solid #9ebbd42e;border-radius:10px;background:#0b151ecc}
-#bb-app .rd-strip b{width:100%;font:700 10px Manrope,Arial,sans-serif;letter-spacing:.16em;color:#8bd1ff;text-transform:uppercase;margin-bottom:2px}
-#bb-app .rd-strip button{border:1px solid #9ebbd440;background:#16232e;color:#e3f1fb;border-radius:16px;font:12px Manrope,Arial,sans-serif;padding:4px 10px;cursor:pointer}
-#bb-app .rd-strip button i{font-style:normal;font-weight:700;color:#b9e5ff;margin-right:5px}
-#bb-app .rd-strip button.is-past{opacity:.45;text-decoration:line-through}
-#bb-app .rd-strip button.is-done{background:#030507;color:#4b5864;border-color:#1a222a}
-#bb-app .rd-strip button.is-done i{color:#4b5864}
+/* Today, in order (desktop, redesigned 2026-11-06): full-width band above the event columns, one-line cards,
+   Now (green) and Next (amber), earlier services fold away */
+html.bbd #bb-app .rd-strip{display:block;column-span:all;margin:0 0 18px;padding:10px 12px 12px;border:1px solid #9ebbd42e;border-radius:12px;
+  background:linear-gradient(180deg,#112130f2,#0b151ef2);box-shadow:0 8px 24px #0005}
+#bb-app .rd-strip-h{display:flex;align-items:center;gap:14px;margin:0 2px 8px}
+#bb-app .rd-strip-h b{font:800 10.5px Manrope,Arial,sans-serif;letter-spacing:.18em;color:#8bd1ff;text-transform:uppercase}
+#bb-app .rd-strip-sum{font:600 11px Manrope,Arial,sans-serif;color:#8fa3b3}
+#bb-app .rd-strip-sum em{font-style:normal;color:#a8f2c7}
+#bb-app .rd-strip-more{margin-left:auto;background:#16232e;border:1px solid #9ebbd433;border-radius:12px;color:#8bd1ff;font:700 10.5px Manrope,Arial,sans-serif;cursor:pointer;padding:3px 10px}
+#bb-app .rd-strip-more:hover{border-color:#8bd1ff88}
+#bb-app .rd-strip-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:5px}
+#bb-app .rd-svc{position:relative;overflow:hidden;display:flex;align-items:center;gap:9px;min-width:0;height:32px;text-align:left;
+  border:1px solid #9ebbd42a;border-left:3px solid hsl(var(--g) 65% 62%);background:#152230;color:#e3f1fb;border-radius:7px;padding:0 10px 0 9px;cursor:pointer;font:12px Manrope,Arial,sans-serif}
+#bb-app .rd-svc:hover{border-color:#8bd1ff88;border-left-color:hsl(var(--g) 65% 62%);background:#1a2a3a}
+#bb-app .rd-svc .t{flex:0 0 auto;min-width:74px;white-space:nowrap;font-variant-numeric:tabular-nums}
+#bb-app .rd-svc .t i{font-style:normal;font-weight:800;font-size:12px;color:#b9e5ff}
+#bb-app .rd-svc .t small{font-size:10.5px;color:#6f8394;margin-left:2px}
+#bb-app .rd-svc .m{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#bb-app .rd-svc .m b{font-weight:700;font-size:12.5px}
+#bb-app .rd-svc .m small{font-size:11px;color:#8fa3b3;margin-left:6px}
+#bb-app .rd-svc .st{flex:0 0 auto;font:800 9.5px Manrope,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+#bb-app .rd-svc .st:empty{display:none}
+#bb-app .rd-svc.is-now{background:linear-gradient(90deg,#173a28,#14261f);border-color:#a8f2c755;border-left-color:#a8f2c7}
+#bb-app .rd-svc.is-now .st{color:#a8f2c7}
+#bb-app .rd-svc.is-next{background:linear-gradient(90deg,#3a2e14,#1c1d1d);border-color:#ffc46b55;border-left-color:#ffc46b}
+#bb-app .rd-svc.is-next .st{color:#ffc46b}
+#bb-app .rd-svc.is-past{opacity:.45}
+#bb-app .rd-svc.is-past .m b{text-decoration:line-through}
+#bb-app .rd-svc.is-done{background:#030507;color:#4b5864;border-color:#1a222a}
+#bb-app .rd-svc.is-done .t i,#bb-app .rd-svc.is-done .m small,#bb-app .rd-svc.is-done .st{color:#4b5864}
+#bb-app .rd-strip:not(.show-past) .rd-svc.is-past,#bb-app .rd-strip:not(.show-past) .rd-svc.is-done{display:none}
 #bb-app .service.rd-flash{box-shadow:0 0 0 2px #8bd1ff}
 #bb-app .original-diag{order:3;padding:2px 7px;font:600 10px Manrope,Arial,sans-serif;letter-spacing:.3px;text-transform:none;color:#d1daff;border:1px solid #a9bcff4a;border-radius:5px;background:#697fb51f}
 
@@ -14858,6 +14883,8 @@ html.bbd #bb-app .rd-strip{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;p
         const shown=ev.items.some(it=>!noFnb(it))?ev.items.filter(it=>!noFnb(it)):ev.items;
         shown.forEach(function(item){
           const row=node('div','service');
+          // lunches and breaks get a slight highlight (Jason 2026-11-06); all-day continuous breaks and breakfasts don't
+          if(/\blunch\b|\bbreak\b/i.test(item.tag||'')&&!/continuous/i.test(item.tag||'')) row.classList.add('is-meal');
           const time=node('div','time');
           if(item.time.start!=null){ time.textContent=clock(item.time.start); time.append(node('small','','– '+clock(item.time.end))); }
           else time.textContent=item.time.raw;
@@ -14876,7 +14903,7 @@ html.bbd #bb-app .rd-strip{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;p
           if(d===TODAY&&item.time.start!=null){
             row.dataset.k=[ev.base,item.room||'',item.tag||'',item.time.start].join('|');
             row.dataset.end=item.time.end;
-            if(!noFnb(item)) strip.push({k:row.dataset.k,start:item.time.start,end:item.time.end,label:item.tag||'',who:ev.base});
+            if(!noFnb(item)) strip.push({k:row.dataset.k,start:item.time.start,end:item.time.end,label:item.tag||'',who:ev.base,room:item.room||''});
           }
           body.append(row);
         });
@@ -14928,16 +14955,25 @@ html.bbd #bb-app .rd-strip{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;p
       const v=t=>+(p.find(x=>x.type===t)||{}).value||0; return v('hour')*60+v('minute'); };
     function fillStrip(box,list){
       if(!list.length){ box.remove(); return; }
-      // a group with the same service in several rooms shows once in the strip
-      const seen={};
-      box.append(node('b','','Today, in order'));
+      // a group with the same service in several rooms shows once, with its rooms joined
+      const seen={}, hue=s=>{ let h=0; for(const c of s) h=(h*31+c.charCodeAt(0))%360; return h; };
+      const head=node('div','rd-strip-h'), more=node('button','rd-strip-more'), wrap=node('div','rd-strip-list');
+      head.append(node('b','','Today, in order'), node('span','rd-strip-sum'), more);
+      more.type='button'; more.onclick=function(){ box.classList.toggle('show-past'); paintMarks(); };
+      box.append(head, wrap);
       list.sort((a,b)=>a.start-b.start).forEach(function(x){
-        const id=x.start+'|'+x.who+'|'+x.label; if(seen[id]){ seen[id].keys.push(x.k); return; }
-        const b=node('button'); b.type='button'; b.dataset.k=x.k; b.dataset.end=x.end; b.keys=[x.k]; seen[id]=b;
-        b.append(node('i','',clock(x.start)), document.createTextNode(x.label.replace(/\s+—.*$/,'')+' · '+x.who));
+        const id=x.start+'|'+x.who+'|'+x.label;
+        if(seen[id]){ const s=seen[id]; s.keys.push(x.k); if(x.room&&s.rooms.indexOf(x.room)<0){ s.rooms.push(x.room); s.sub.textContent=x.who+' · '+s.rooms.join(' / '); } return; }
+        const b=node('button','rd-svc'); b.type='button'; b.dataset.k=x.k; b.dataset.start=x.start; b.dataset.end=x.end; b.keys=[x.k]; b.rooms=x.room?[x.room]:[]; seen[id]=b;
+        b.style.setProperty('--g',hue(x.who));
+        const tm=node('span','t'), m=node('span','m');
+        tm.append(node('i','',clock(x.start)), node('small','','–'+clock(x.end)));
+        b.sub=node('small','',x.who+(x.room?' · '+x.room:''));
+        m.append(node('b','',x.label.replace(/\s+—.*$/,'')||'Service'), b.sub);
+        b.append(tm, m, node('span','st'));
         b.onclick=function(){ const r=screen.querySelector('.service[data-k="'+CSS.escape(x.k)+'"]'); if(!r) return;
           r.scrollIntoView({block:'center',behavior:'smooth'}); r.classList.add('rd-flash'); setTimeout(()=>r.classList.remove('rd-flash'),1400); };
-        box.append(b);
+        wrap.append(b);
       });
       paintMarks();
     }
@@ -14948,11 +14984,22 @@ html.bbd #bb-app .rd-strip{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;p
         r.classList.toggle('is-done',!!done[r.dataset.k]);
         r.classList.toggle('is-past',!done[r.dataset.k]&&+r.dataset.end<=n);
       });
-      screen.querySelectorAll('.rd-strip button').forEach(function(b){
-        const isDone=b.keys.every(k=>done[k]);
-        b.classList.toggle('is-done',isDone);
-        b.classList.toggle('is-past',!isDone&&+b.dataset.end<=n);
-      });
+      const svcs=Array.from(screen.querySelectorAll('.rd-strip .rd-svc'));
+      if(svcs.length){
+        const isDone=b=>b.keys.every(k=>done[k]);
+        const next=svcs.filter(b=>!isDone(b)&&+b.dataset.start>n).reduce((lo,b)=>Math.min(lo,+b.dataset.start),Infinity);
+        let gone=0, live=0, togo=0;
+        svcs.forEach(function(b){
+          const s=+b.dataset.start, e=+b.dataset.end, dn=isDone(b), past=!dn&&e<=n, now=!dn&&!past&&s<=n, nx=!dn&&s===next;
+          b.classList.toggle('is-done',dn); b.classList.toggle('is-past',past); b.classList.toggle('is-now',now); b.classList.toggle('is-next',nx);
+          b.querySelector('.st').textContent=dn?'Done':now?'Now':nx?'Next':'';
+            if(dn||past) gone++; else if(now) live++; else togo++;
+        });
+        const box=screen.querySelector('.rd-strip'), shown=box.classList.contains('show-past');
+        box.querySelector('.rd-strip-sum').innerHTML=[gone+' done',live?'<em>'+live+' now</em>':'',togo+' to go'].filter(Boolean).join(' · ');
+        const more=box.querySelector('.rd-strip-more'); more.hidden=!gone;
+        more.textContent=shown?'Hide '+gone+' earlier':'Show '+gone+' earlier';
+      }
     }
     screen.addEventListener('click',function(e){
       if(!document.documentElement.classList.contains('bbd')) return;   // marking done is desktop only

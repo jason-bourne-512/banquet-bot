@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BEO Issues · Banquet Bot</title>
+<style>
+  :root { --bg:#0b1218; --card:#121c25; --line:#22313d; --text:#e6eef4; --muted:#8fa3b3; --sky:#8bd1ff; --red:#ff8a80; --amber:#ffc46b; }
+  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 -apple-system, "Segoe UI", Inter, sans-serif; }
+  main { max-width:1100px; margin:0 auto; padding:24px 22px 60px; }
+  h1 { font-size:22px; letter-spacing:.06em; margin:0 0 4px; } h1 span { color:var(--sky); }
+  .sub { color:var(--muted); font-size:12.5px; margin-bottom:14px; }
+  .bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:18px; font-size:12px; color:var(--muted); }
+  .bar button { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:7px 14px; font:600 12.5px/1 inherit; cursor:pointer; }
+  .bar .key i { display:inline-block; width:10px; height:10px; border-radius:2px; background:#ff8a8033; border:1px solid #ff8a8099; margin-right:5px; vertical-align:-1px; }
+  h2 { font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:26px 0 10px; }
+  table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  th, td { padding:9px 12px; border-bottom:1px solid var(--line); text-align:left; font-size:13px; vertical-align:top; }
+  th { color:var(--muted); font-size:11px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; }
+  td.day { background:#0f1820; color:var(--sky); font-weight:800; font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
+  td.rm { font-weight:700; white-space:nowrap; } td.gp { color:var(--muted); } td.who { font-weight:700; color:var(--amber); }
+  tr.hi td:not(.day) { background:#ff8a8014; } tr.hi td:first-child { box-shadow:inset 3px 0 0 var(--red); }
+  b { color:#fff; }
+  .deny { color:var(--muted); padding:30px 0; }
+  body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background:radial-gradient(ellipse at 100% 0,#2a4f6a59,transparent 46%),radial-gradient(ellipse at 0 100%,#5a4f9a24,transparent 52%); }
+  body > * { position:relative; z-index:1; }
+  html.bbd main { max-width:none; }
+  @media (max-width:700px) { td.gp, th:nth-child(2) { display:none; } td.rm { white-space:normal; } }
+  @media print {
+    body, body::before { background:#fff !important; color:#111; } main { padding:0; max-width:none; } .bar { display:none; }
+    table { background:#fff; border-color:#bbb; } th, td { border:1px solid #bbb; color:#111; padding:3px 5px; font-size:9.5pt; }
+    td.day { background:#eee; color:#111; } td.gp, .sub, h2 { color:#444; } td.who { color:#111; } b { color:#111; }
+    tr.hi td:not(.day) { background:#fff4f2; } tr { page-break-inside:avoid; }
+    .bb-me-badge, .bbd-side, .bbd-top { display:none !important; }
+  }
+  .acts { display:flex; gap:6px; margin-top:7px; flex-wrap:wrap; }
+  .acts button, .notebox button { background:#0f1820; color:var(--text); border:1px solid var(--line); border-radius:7px; padding:5px 10px; font:700 11.5px/1 inherit; cursor:pointer; }
+  .acts button.ok { color:#a8f2c7; border-color:#a8f2c766; } .acts button.ok:hover { background:#a8f2c71a; }
+  .acts button:hover { border-color:var(--sky); }
+  .notes { margin-top:7px; display:grid; gap:4px; }
+  .note { font-size:12.5px; background:#0f1820; border-left:3px solid var(--sky); border-radius:4px; padding:5px 8px; white-space:pre-wrap; }
+  .note small { display:block; color:var(--muted); font-size:10.5px; letter-spacing:.04em; margin-bottom:2px; }
+  .notebox { margin-top:7px; display:grid; gap:6px; }
+  .notebox textarea { width:100%; box-sizing:border-box; min-height:60px; background:#0b1218; color:var(--text); border:1px solid var(--line); border-radius:7px; padding:7px 9px; font:13px/1.4 inherit; resize:vertical; }
+  .notebox div { display:flex; gap:6px; } .notebox button.save { color:#0b1218; background:var(--sky); border-color:var(--sky); }
+  tr.done td { opacity:.75; } .resby { color:#a8f2c7; font-size:11.5px; font-weight:700; margin-top:5px; }
+  details.resolved { margin-top:26px; } details.resolved summary { cursor:pointer; color:var(--muted); font:700 13px/1 inherit; letter-spacing:.08em; text-transform:uppercase; }
+  details.resolved table { margin-top:10px; }
+  .empty { color:var(--muted); padding:16px 12px; background:var(--card); border:1px solid var(--line); border-radius:10px; }
+  .warn { color:var(--amber); font-size:12px; margin-bottom:10px; }
+  @media print { .acts, .notebox, details.resolved { display:none !important; } .note { background:#fff; color:#111; } }
+</style>
+<script src="theme.js?v=1028a"></script>
+</head>
+<body>
+<main>
+  <h1>BEO &amp; DIAGRAM <span>ISSUES</span></h1>
+  <div class="sub">Westin Austin at The Domain · Fri Nov 6 – Sat Nov 21, 2026 · from Banquet Bot (11/3 packet, Diana and Lisa emails, Diana's diagrams for the week of 11/8 sent 11/5) · re-checked against Banquet Bot after the 11/5 diagram updates, Nov 5, 3:30 PM · plus Diana's revised C2C (MAREK) event orders sent 4:42 PM</div>
+  <div class="bar"><button type="button" onclick="print()">Print</button><span class="key"><i></i>Shaded rows touch food counts, seat counts, service times or where a meal lands. Check those first.</span></div>
+  <div class="warn" id="warn" hidden></div>
+  <div id="app"></div>
+</main>
+<script>
+// BEO Issues (Jason 2026-11-06): Jason sees every issue; Diana and Lisa see only the ones asked of them.
+// Resolved + notes are shared in one Firestore doc (housemen/beo-issues; housemen_test on localhost), so all three see the same state.
+(function () {
+  var ISSUES = [ { "id": "11-6-primrose-d-lenovo-am-break", "day": "Fri 11/6", "room": "Primrose D", "group": "Lenovo · AM break", "text": "Diana's 11/3 recap says <b>10:15</b>; the 11/3 packet prints <b>10:20</b>.", "who": "Diana", "hi": true }, { "id": "11-6-primrose-b-lenovo-luggage", "day": "Fri 11/6", "room": "Primrose B", "group": "Lenovo · luggage", "text": "Recap moves it to luggage storage in Primrose B; packet still prints <b>Primrose AB, rounds of 8</b>.", "who": "Diana", "hi": false }, { "id": "11-6-plumeria-texas-mutual-am-break", "day": "Fri 11/6", "room": "Plumeria?", "group": "Texas Mutual · AM break", "text": "Revised order (breakfast moved Barton → Plumeria) gives the 10:30 Brain Boost break <b>no room</b>. Shown in Plumeria with breakfast.", "who": "Diana", "hi": true }, { "id": "11-6-pre-function-fcm-registration-fri-sat", "day": "Fri 11/6", "room": "Pre-Function", "group": "FCM · registration (Fri + Sat)", "text": "Diagram shows <b>one 6' table + 3 chairs</b>; event order says <b>2 tables</b>.", "who": "Lisa", "hi": false }, { "id": "11-9-primrose-ab-dell-global-alliances", "day": "Mon 11/9", "room": "Primrose AB", "group": "Dell Global Alliances", "text": "Set-up prints <b>until 2:00 PM</b>, but the meeting and beverages start at <b>1:00 PM</b>.", "who": "Lisa", "hi": false }, { "id": "11-10-barton-dell-oem-lunch", "day": "Tue 11/10", "room": "Barton", "group": "Dell OEM · lunch", "text": "Diana's diagram (re-sent 11/5) still shows <b>(4) rounds of 8</b> + buffet; event order says <b>rounds of 10</b> (GTD 25).", "who": "Diana", "hi": true }, { "id": "11-10-verbena-dell-oem-session", "day": "Tue 11/10", "room": "Verbena", "group": "Dell OEM · session", "text": "New 11/5 diagram says <b>set 30</b>; event order <b>set 26</b>. F&amp;B and demo tables outside the room.", "who": "Diana", "hi": false }, { "id": "11-10-off-site-dell-global-alliances", "day": "Tue 11/10", "room": "Off-site", "group": "Dell Global Alliances", "text": "Off-site EBC event order 290673 is on the Rundown but <b>missing from the 11/3 packet</b>. Still on?", "who": "Lisa", "hi": false }, { "id": "11-10-plumeria-marek-breakfast", "day": "Tue 11/10", "room": "Plumeria", "group": "MAREK · breakfast", "text": "Breakfast end still prints <b>9:00 PM</b> on Diana's 4:42 PM revision (shown 9:00 AM).", "who": "Diana", "hi": false }, { "id": "11-10-plumeria-marek-set", "day": "Tue 11/10", "room": "Plumeria", "group": "MAREK · set", "text": "Diagram seats <b>28</b> (U-shape, airwall open); event order GTD 24, EXP 26. Extra seats, just confirm. Revision: lunch buffet GTD 14 + (10) take-away lunches = 24; AM break adds a smoked salmon display; PM break is cookies, coffee and tea.", "who": "Diana", "hi": false }, { "id": "11-11-plumeria-b-marek-final-day", "day": "Wed 11/11", "room": "Plumeria B", "group": "MAREK · final day", "text": "Diagram seats <b>12</b>; revised order still <b>GTD 14</b> (EXP 16). New 11 AM box lunch is for <b>13</b> (7 chicken wrap, 6 turkey). Add 2 chairs? Is 13 lunches right for 14?", "who": "Diana", "hi": true }, { "id": "11-12-primrose-c-texas-psych-brunch", "day": "Thu 11/12", "room": "Primrose C", "group": "Texas Psych · brunch", "text": "Prints <b>(1) frittata</b> with <b>GTD 40</b> (Primrose AB prints 40 for GTD 40).", "who": "Diana", "hi": true }, { "id": "11-12-plumeria-texas-psych-breakout", "day": "Thu 11/12", "room": "Plumeria", "group": "Texas Psych · breakout", "text": "Diagram is a <b>U-shape for 24</b> (BOD meeting) but the breakout prints <b>EXP 60</b>.", "who": "Diana", "hi": false }, { "id": "11-12-primrose-d-foyer-texas-psych-exhibitors-welcome", "day": "Thu 11/12", "room": "Primrose D + foyer", "group": "Texas Psych · exhibitors + welcome", "text": "Diagram adds <b>(5) highboys in the foyer</b> on top of the <b>(9)</b> on the event order. Add 5?", "who": "Diana", "hi": false }, { "id": "11-13-primrose-d-texas-psych-take-away-lunch", "day": "Fri 11/13", "room": "Primrose D", "group": "Texas Psych · take-away lunch", "text": "Counts add to <b>217</b> (83 turkey + 84 ham + 50 wrap); lunch prints <b>EXP 214</b>.", "who": "Diana", "hi": true }, { "id": "11-13-primrose-abc-texas-psych-general-session", "day": "Fri 11/13", "room": "Primrose ABC", "group": "Texas Psych · general session", "text": "Diagram says classroom <b>set 280</b>; event order says <b>set 288</b> (3 per table).", "who": "Diana", "hi": true }, { "id": "11-13-primrose-a-b-texas-psych-breakouts", "day": "Fri 11/13", "room": "Primrose A + B", "group": "Texas Psych · breakouts", "text": "Friday breakout diagram splits <b>Primrose A and B</b> into breakouts (B set 60) after the 9:35 airwall close. <b>No event order</b> for those breakouts.", "who": "Diana", "hi": false }, { "id": "11-13-verbena-texas-psych-breakout", "day": "Fri 11/13", "room": "Verbena", "group": "Texas Psych · breakout", "text": "Diagram schoolroom <b>set 30</b>; event order GTD 30 but <b>EXP 40</b>.", "who": "Diana", "hi": false }, { "id": "11-14-lantana-tmf-board-final-day", "day": "Sat 11/14", "room": "Lantana", "group": "TMF Board · final day", "text": "Diagram is a <b>U-shape for 24</b>; event order says <b>hollow square</b>, GTD 21.", "who": "Diana", "hi": true }, { "id": "11-14-primrose-ab-c-d-texas-psych-saturday", "day": "Sat 11/14", "room": "Primrose AB, C, D", "group": "Texas Psych · Saturday", "text": "Diana sent Saturday ballroom diagrams (AB crescent rounds set 96, C set 160, D exhibits + double-sided buffet + coffee) but the packet has <b>only registration</b> for Saturday. Need Saturday event orders.", "who": "Diana", "hi": true }, { "id": "11-20-plumeria-san-jose-barracuda", "day": "Fri 11/20 – Sat 11/21", "room": "Plumeria", "group": "San Jose Barracuda", "text": "Meals print <b>(34)</b>; group prints <b>35</b> (both days).", "who": "Lisa", "hi": false }, { "id": "11-20-plumeria-san-jose-barracuda-sat", "day": "Fri 11/20 – Sat 11/21", "room": "Plumeria", "group": "San Jose Barracuda · Sat", "text": "Lunch prints <b>12:00–2:00 PM</b> but the room ends at <b>1:00 PM</b>.", "who": "Lisa", "hi": false } ];
+  var MISSING = [ { "id": "dg-1112-zilker-hart", "day": "Thu 11/12", "room": "Zilker", "group": "Hart InterCivic", "text": "No diagram on file (conference for 10).", "who": "Lisa", "hi": false }, { "id": "dg-buttercup-dell", "day": "Sun 11/8 – Fri 11/13", "room": "Buttercup", "group": "Dell · office", "text": "No diagram on file.", "who": "Lisa", "hi": false }, { "id": "dg-bluebell-tpa", "day": "Sun 11/8 – Fri 11/13", "room": "Bluebell", "group": "Texas Psych · office", "text": "No diagram on file.", "who": "Diana", "hi": false }, { "id": "dg-1116-on", "day": "Mon 11/16 on", "room": "Several", "group": "Ferguson, Motiva, Natera, San Jose Barracuda", "text": "No diagrams on file yet.", "who": "Lisa", "hi": false } ];
+
+  var w = null; try { w = JSON.parse(localStorage.getItem("bb-hsm-who")); } catch (e) {}
+  var me = w && w.name, app = document.getElementById("app");
+  if (["Jason", "Diana", "Lisa"].indexOf(me) < 0) { app.innerHTML = '<div class="deny">This page is for Jason, Diana and Lisa.</div>'; document.querySelector(".bar").hidden = true; return; }
+  var all = me == "Jason", state = {res: {}, notes: {}}, open = {};   // open: ids with the note box showing
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]; }); };
+  var when = function (ms) { var d = new Date(ms); return d.toLocaleDateString("en-US", {timeZone: "America/Chicago", month: "short", day: "numeric"}) + ", " +
+    d.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: "numeric", minute: "2-digit"}); };
+  var mine = function (list) { return list.filter(function (x) { return all || x.who == me; }); };
+  function notesHtml(id) {
+    var n = state.notes[id] || {};
+    return Object.keys(n).sort().map(function (k) { return '<div class="note"><small>' + esc(n[k].by) + " · " + when(n[k].at) + "</small>" + esc(n[k].text) + "</div>"; }).join("");
+  }
+  function row(x, done) {
+    var r = state.res[x.id], cols = all ? 4 : 3;
+    var body = x.text + '<div class="notes">' + notesHtml(x.id) + "</div>" +
+      (done ? '<div class="resby">✓ Resolved by ' + esc(r.by) + " · " + when(r.at) + "</div>" : "") +
+      (all ? "" :   // Jason only reads: their notes and who resolved what, no buttons (Jason 2026-11-06)
+      open[x.id] ? '<div class="notebox"><textarea data-id="' + x.id + '" placeholder="What did you find out?"></textarea><div><button type="button" class="save" data-save="' + x.id + '">Save note</button><button type="button" data-cancel="' + x.id + '">Cancel</button></div></div>' :
+        '<div class="acts"><button type="button" data-note="' + x.id + '">+ Add note</button>' +
+        (done ? '<button type="button" data-reopen="' + x.id + '">Reopen</button>' : '<button type="button" class="ok" data-res="' + x.id + '">✓ Resolved</button>') + "</div>");
+    return '<tr class="' + (x.hi && !done ? "hi" : "") + (done ? " done" : "") + '"><td class="rm">' + x.room + '</td><td class="gp">' + x.group + "</td><td>" + body + "</td>" +
+      (all ? '<td class="who">' + x.who + "</td>" : "") + "</tr>";
+  }
+  function table(list, done) {
+    var h = "<table><tr><th>Room</th><th>Group</th><th>Issue</th>" + (all ? "<th>Ask</th>" : "") + "</tr>", day = null;
+    list.forEach(function (x) { if (x.day != day) { day = x.day; h += '<tr><td colspan="' + (all ? 4 : 3) + '" class="day">' + x.day + "</td></tr>"; } h += row(x, done); });
+    return h + "</table>";
+  }
+  function render() {
+    var keep = {}; app.querySelectorAll("textarea[data-id]").forEach(function (t) { keep[t.dataset.id] = t.value; });
+    var iss = mine(ISSUES), mis = mine(MISSING), isOpen = function (x) { return !state.res[x.id]; };
+    var oi = iss.filter(isOpen), om = mis.filter(isOpen), done = iss.concat(mis).filter(function (x) { return !isOpen(x); });
+    var h = "<h2>1 · Event order and diagram conflicts" + (all ? " (ask the event manager)" : " for you") + "</h2>" +
+      (oi.length ? table(oi) : '<div class="empty">Nothing open. Thank you!</div>') +
+      "<h2>2 · Diagrams still not on file</h2>" + (om.length ? table(om) : '<div class="empty">Nothing open.</div>');
+    if (done.length) h += '<details class="resolved"' + (resOpen ? " open" : "") + "><summary>Resolved (" + done.length + ")</summary>" + table(done, true) + "</details>";
+    app.innerHTML = h;
+    Object.keys(keep).forEach(function (id) { var t = app.querySelector('textarea[data-id="' + id + '"]'); if (t) t.value = keep[id]; });
+  }
+  var resOpen = false;
+  app.addEventListener("toggle", function (e) { if (e.target.matches("details.resolved")) resOpen = e.target.open; }, true);
+  app.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return; var d = b.dataset;
+    if (!window.beoSave) { warn("Not connected yet. Try again in a moment."); return; }
+    if (d.res) { window.beoSave({res: {[d.res]: {by: me, at: Date.now()}}}); }
+    else if (d.reopen) { window.beoReopen(d.reopen); }
+    else if (d.note) { open[d.note] = 1; render(); var t = app.querySelector('textarea[data-id="' + d.note + '"]'); if (t) t.focus(); }
+    else if (d.cancel) { delete open[d.cancel]; render(); }
+    else if (d.save) { var t = app.querySelector('textarea[data-id="' + d.save + '"]'), v = t && t.value.trim(); if (!v) return;
+      var k = Date.now() + "-" + me; window.beoSave({notes: {[d.save]: {[k]: {by: me, at: Date.now(), text: v.slice(0, 2000)}}}}); delete open[d.save]; render(); }
+  });
+  function warn(s) { var el = document.getElementById("warn"); el.textContent = s; el.hidden = !s; }
+  window.beoRemote = function (data) { state = {res: data.res || {}, notes: data.notes || {}}; warn(""); render(); };
+  window.beoWarn = warn;
+  render();
+})();
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, setDoc, updateDoc, deleteField, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+if (window.beoRemote) {
+  const LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname), COL = LOCAL ? "housemen_test" : "housemen";
+  const db = getFirestore(initializeApp({
+    apiKey:"AIzaSyCr9z1e8neChgnRsEeSHX7fM_5h_jhTcxQ", authDomain:"the-wire-587e6.firebaseapp.com", projectId:"the-wire-587e6",
+    storageBucket:"the-wire-587e6.firebasestorage.app", messagingSenderId:"18587866711", appId:"1:18587866711:web:96ca4822f8a73512"
+  }));
+  const ref = doc(db, COL, "beo-issues");
+  const fail = err => { console.error("[beo-issues]", err); window.beoWarn("Couldn't save. Check the connection and try again."); };
+  window.beoSave = patch => setDoc(ref, Object.assign(patch, {updated: Date.now()}), {merge: true}).catch(fail);
+  window.beoReopen = id => updateDoc(ref, {["res." + id]: deleteField(), updated: Date.now()}).catch(fail);
+  onSnapshot(ref, snap => window.beoRemote(snap.exists() ? snap.data() : {}), err => { console.error("[beo-issues] live sync", err); window.beoWarn("Live sync is off: resolved and notes may be out of date."); });
+}
+</script>
+</body>
+</html>
