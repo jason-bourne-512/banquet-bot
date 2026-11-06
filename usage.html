@@ -67,7 +67,8 @@
       if (r.date >= d7) p.w7 += r.n; if (r.date >= d30) { p.w30 += r.n; p.pages[r.page] = (p.pages[r.page] || 0) + r.n; }
       if (r.date > p.last) p.last = r.date; p.day[r.date] = (p.day[r.date] || 0) + r.n;
     });
-    var names = Object.keys(people).sort(function (a, b) { return people[b].w30 - people[a].w30; });
+    // most recently seen first (Jason 2026-11-06); same day, more views first
+    var names = Object.keys(people).sort(function (a, b) { var A = people[a], B = people[b]; return A.last != B.last ? (A.last < B.last ? 1 : -1) : B.w30 - A.w30; });
     var tot7 = names.reduce(function (s, n) { return s + people[n].w7; }, 0), act7 = names.filter(function (n) { return people[n].w7; }).length;
     var byPage = {}; rows.filter(function (r) { return r.date >= d30; }).forEach(function (r) { byPage[r.page] = (byPage[r.page] || 0) + r.n; });
     var short = function (d) { return new Date(d + "T12:00:00").toLocaleDateString("en-US", {weekday: "short", month: "short", day: "numeric"}); };
