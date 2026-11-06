@@ -424,6 +424,8 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .flag{font-size:10px;color:#e8c6a9;border-left:2px solid var(--copper);background:#d8a4750b;padding:7px 9px;margin:0 0 8px}
 #bb-app .room-more{border-top:1px solid #ffffff0f;font-size:10px;color:#aac6d9}
 #bb-app .room-more>summary{min-height:30px;align-content:center;cursor:pointer}
+#bb-app .room-more>.flag{margin:4px 0 8px}
+#bb-app .room-more-flag{color:#ffc46b;font-weight:800}
 #bb-app .setup{display:grid;grid-template-columns:62px minmax(0,1fr);gap:8px;font-size:11px;line-height:1.5;color:#b9cfdf;padding:7px 0 0}
 #bb-app .setup:last-child{padding-bottom:8px}
 #bb-app .setup-key{padding-top:1px;font-size:9px;font-weight:600;letter-spacing:1px;color:#7fa3bd}
@@ -14907,7 +14909,6 @@ html.bbd #bb-app .rd-strip{display:block;column-span:all;margin:0 0 18px;padding
           }
           body.append(row);
         });
-        if(ev.note&&ev.firstRoom) body.append(htmlNode('div','flag',clean(ev.note)));
         // Setup: everything from the card footer/badges that isn't shown above.
         const setup=[];
         const line=(key,html,text)=>{
@@ -14937,9 +14938,14 @@ html.bbd #bb-app .rd-strip{display:block;column-span:all;margin:0 0 18px;padding
           hsmExtraFor(d,rooms).forEach(x=>p.val.append(uploadedButton(d,x)));
           if(p.val.childNodes.length) setup.push(p);
         }
-        if(setup.length&&ev.firstRoom){
-          const more=node('details','room-more');
-          more.append(node('summary','','Event order details'), ...setup);
+        // The event order note (revisions, special arrangements, ⚑ flags) sits inside Event order details, first (Jason 2026-11-06);
+        // the summary shows ⚑ when the note has a flag so it isn't missed while folded.
+        if((setup.length||ev.note)&&ev.firstRoom){
+          const more=node('details','room-more'), sum=node('summary','','Event order details');
+          if(ev.note&&ev.note.indexOf('⚑')>-1) sum.append(node('span','room-more-flag',' ⚑'));
+          more.append(sum);
+          if(ev.note) more.append(htmlNode('div','flag',clean(ev.note)));
+          more.append(...setup);
           body.append(more);
         }
         box.append(body);
