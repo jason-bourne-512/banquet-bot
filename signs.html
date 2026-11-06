@@ -77,6 +77,11 @@
 .sheet.dir .gt+.gr{margin-top:calc(11pt*var(--k))}
 .sheet.dir .arrow{position:absolute;left:126pt;top:610pt;width:360pt;height:100pt}
 .sheet.dir .arrow.l{transform:scaleX(-1)}
+.sheet.dir.up .fit{left:46pt;right:250pt;top:152pt;bottom:120pt;justify-content:flex-start}
+.sheet.dir.up .stack{align-items:flex-start;text-align:left}
+.sheet.dir.up .gt{width:auto;max-width:320pt}
+.sheet.dir.up .gr{width:auto;max-width:320pt}
+.sheet.dir.up .arrow.u{left:auto;right:74pt;top:180pt;width:150pt;height:470pt}
 .sheet.door .logo{position:absolute;left:58pt;top:48pt;height:40pt}
 .sheet.door .fit{top:120pt;bottom:97pt}
 .sheet.door .dt{max-width:700pt;font-size:calc(60pt*var(--k));line-height:1.08}
@@ -124,7 +129,7 @@
         <div class="row">
           <label>Group name<input type="text" id="nw-name" placeholder="e.g. Momentum Skilled Services"></label>
           <label>Room<select id="nw-room"></select></label>
-          <label>Arrow<select id="nw-dir"><option value="L">Left</option><option value="R">Right</option></select></label>
+          <label>Arrow<select id="nw-dir"><option value="L">Left</option><option value="R">Right</option><option value="U">Up (right side)</option></select></label>
           <label>Arrow label<select id="nw-lab"><option>Meeting</option><option>Breakout</option><option value="custom">Custom</option><option value="none">None</option></select></label>
           <label id="nw-labt-w" hidden>Custom label<input type="text" id="nw-labt" placeholder="e.g. Demo Room" style="min-width:140px"></label>
           <label>Door label<select id="nw-dlab"><option value="same">Same as arrow label</option><option>Meeting</option><option>Breakout</option><option value="custom">Custom</option><option value="none">None</option></select></label>
@@ -161,21 +166,25 @@
   var DIRS = {}, SECTIONS = {}, events = [], skipped = [];
 
   // ── room rules (Jason) ──
-  var ROOM_RE = /^(Lantana|Plumeria|Primrose|Camellia|Verbena|Bluebell)(?:\s+([A-D](?:\s*[+&\/]?\s*[A-D])*))?\s*$/i;
+  var ROOM_RE = /^(Barton Foyer|Lantana|Plumeria|Primrose|Camellia|Verbena|Bluebell|Barton|Bonnell|Zilker)(?:\s+([A-D](?:\s*[+&\/]?\s*[A-D])*))?\s*$/i;
   var PRIM = {A: 2, B: 1, C: 1, D: 1};
   function parseRoom(r) {
     var m = ROOM_RE.exec(r.trim()); if (!m) return null;
     var name = m[1].charAt(0).toUpperCase() + m[1].slice(1).toLowerCase();
+    if (/^barton foyer$/i.test(m[1])) name = "Barton Foyer";
     var letters = (m[2] || "").toUpperCase().replace(/[^A-D]/g, "");
     var out = {room: name + (letters ? " " + letters : ""), name: name, letters: letters, guess: false};
     if (name == "Lantana" || name == "Plumeria") out.dir = "L";
     else if (name == "Camellia" || name == "Verbena" || name == "Bluebell") out.dir = "R";
+    else if (name == "Barton" || name == "Bonnell" || name == "Zilker" || name == "Barton Foyer") out.dir = "R"; // standalone rooms, pick the arrow (incl. Up) on the sign
     else { // Primrose: A and B left, C and D right
       var L = letters.replace(/[CD]/g, ""), R = letters.replace(/[AB]/g, "");
       out.dir = !letters || (L && R) ? "LR" : L ? "L" : "R";
     }
     if (name == "Primrose") { var l = letters || "ABCD"; out.doors = l.split("").reduce(function (a, c) { return a + PRIM[c]; }, 0); out.guess = /B/.test(l); }
-    else if (name == "Bluebell") out.doors = 0; // directional only, never a door sign (Jason)
+    else if (name == "Bluebell" || name == "Barton Foyer") out.doors = 0; // directional only, never a door sign
+    else if (name == "Barton") out.doors = 2;
+    else if (name == "Bonnell" || name == "Zilker") out.doors = 1;
     else out.doors = letters ? letters.length : 2;
     return out;
   }
@@ -233,12 +242,13 @@
 
   // ── sheets ──
   var ARROW = '<svg class="arrow ARR" viewBox="0 0 360 100"><polygon fill="#fff" points="0,25 265,25 265,0 360,50 265,100 265,75 0,75"/></svg>';
+  var ARROW_UP = '<svg class="arrow u" viewBox="0 0 100 360"><polygon fill="#fff" points="25,360 25,95 0,95 50,0 100,95 75,95 75,360"/></svg>';
   var WAVE = '<svg viewBox="0 0 612 104" preserveAspectRatio="none"><path fill="#fff" d="M0,0 L612,0 L612,78 C477,88 379,66 275,74 C184,82 92,102 0,94 Z"/></svg>';
   function dirSheet(groups, dir) {
     var h = "";
     groups.forEach(function (g) { h += '<div class="g"><div class="gt">' + esc(g.title) + "</div>" + g.lines.map(function (l) { return '<div class="gr">' + esc(l) + "</div>"; }).join("") + "</div>"; });
-    return '<section class="sheet dir"><div class="hdr">' + WAVE + '<img src="assets/westin-logo-grey.png" alt="Westin"></div><div class="ln"></div>' +
-      '<div class="fit"><div class="stack">' + h + "</div></div>" + ARROW.replace("ARR", dir == "L" ? "l" : "r") + '<div class="yel"></div></section>';
+    return '<section class="sheet dir' + (dir == "U" ? " up" : "") + '"><div class="hdr">' + WAVE + '<img src="assets/westin-logo-grey.png" alt="Westin"></div><div class="ln"></div>' +
+      '<div class="fit"><div class="stack">' + h + "</div></div>" + (dir == "U" ? ARROW_UP : ARROW.replace("ARR", dir == "L" ? "l" : "r")) + '<div class="yel"></div></section>';
   }
   function doorSheet(title, sub, room) {
     return '<section class="sheet door"><img class="logo" src="assets/westin-logo-white.png" alt="Westin"><div class="fit"><div class="stack"><div class="dt">' + esc(title) + '</div><div class="rule"></div>' +
@@ -249,7 +259,7 @@
     for (var i = 0; i < 40 && st.getBoundingClientRect().height > f.getBoundingClientRect().height + 0.5 && k > 0.3; i++) { k *= 0.96; s.style.setProperty("--k", k.toFixed(3)); }
   }
   function build() {
-    var left = [], right = [], blue = [];
+    var left = [], right = [], blue = [], up = [];
     // same group name on one side (e.g. three Legrand breakout cards) shares one title
     var add = function (side, title, lines) {
       if (!lines.length) return;
@@ -262,13 +272,15 @@
       var L = e.rooms.filter(function (r) { return r.name != "Bluebell" && /L/.test(r.dir); }).map(ln);
       var R = e.rooms.filter(function (r) { return r.name != "Bluebell" && /R/.test(r.dir); }).map(ln);
       var B = e.rooms.filter(function (r) { return r.name == "Bluebell"; }).map(ln);
-      add(left, e.name, L); add(right, e.name, R); add(blue, e.name, B);
+      var U = e.rooms.filter(function (r) { return r.name != "Bluebell" && r.dir == "U"; }).map(ln);
+      add(left, e.name, L); add(right, e.name, R); add(blue, e.name, B); add(up, e.name, U);
     });
     // one sign for every left room, one for every right room; only Bluebell gets its own
     var dir = [];
     if (left.length) dir.push(dirSheet(left, "L"));
     if (right.length) dir.push(dirSheet(right, "R"));
     blue.forEach(function (b) { dir.push(dirSheet([b], "R")); });
+    up.forEach(function (u) { dir.push(dirSheet([u], "U")); });
     var door = [];
     events.forEach(function (e) {
       e.rooms.forEach(function (r) {
@@ -297,7 +309,7 @@
         '<label><input type="checkbox" data-dir="' + ei + '"' + (e.dirOn ? " checked" : "") + '> Directional</label>' +
         (e.noBeo ? '<span class="sg-tag red">NO EVENT ORDER YET</span>' : "") + (e.custom ? '<i class="sg-tag">NEW</i><button type="button" class="sg-x" data-rm="' + ei + '">Remove</button>' : "") + "</div><div class=\"sg-rooms\">";
       e.rooms.forEach(function (r, ri) {
-        var arrow = r.dir == "L" ? "\u2190" : r.dir == "R" ? "\u2192" : "\u2190\u2192";
+        var arrow = r.dir == "L" ? "\u2190" : r.dir == "R" ? "\u2192" : r.dir == "U" ? "\u2191" : "\u2190\u2192";
         h += '<div class="sg-room"><span class="arr">' + arrow + "</span><b>" + esc(r.room) + '</b>' + labelUI(r, ei, ri, false) + labelUI(r, ei, ri, true) +
           '<input type="number" min="0" max="9" value="' + r.doors + '" data-ei="' + ei + '" data-ri="' + ri + '" aria-label="Door signs"> door' +
           (r.guess ? ' <i class="sg-tag">GUESS</i>' : "") + (r.dir == "LR" ? ' <i class="sg-tag red">CHECK SIDE</i>' : "") + "</div>";
@@ -342,7 +354,8 @@
 
   // New sign from scratch: room list, arrow and door count come from the same rules (parseRoom), all editable.
   var NEW_ROOMS = ["Lantana", "Lantana A", "Lantana B", "Plumeria", "Plumeria A", "Plumeria B", "Primrose A", "Primrose B", "Primrose AB", "Primrose C", "Primrose D", "Primrose CD",
-    "Camellia", "Camellia A", "Camellia B", "Verbena", "Verbena A", "Verbena B", "Bluebell"];
+    "Camellia", "Camellia A", "Camellia B", "Verbena", "Verbena A", "Verbena B", "Bluebell",
+    "Barton", "Barton Foyer", "Bonnell", "Zilker"];
   $("nw-room").innerHTML = NEW_ROOMS.map(function (r) { return "<option>" + r + "</option>"; }).join("");
   function nwFill() { var p = parseRoom($("nw-room").value); if (!p) return; $("nw-dir").value = p.dir == "L" ? "L" : "R"; $("nw-doors").value = p.doors; }
   $("nw-room").onchange = nwFill; nwFill();

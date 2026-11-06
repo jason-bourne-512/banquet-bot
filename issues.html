@@ -69,8 +69,8 @@
 
   var w = null; try { w = JSON.parse(localStorage.getItem("bb-hsm-who")); } catch (e) {}
   var me = w && w.name, app = document.getElementById("app");
-  if (["Jason", "Diana", "Lisa"].indexOf(me) < 0) { app.innerHTML = '<div class="deny">This page is for Jason, Diana and Lisa.</div>'; document.querySelector(".bar").hidden = true; return; }
-  var all = me == "Jason", state = {res: {}, notes: {}}, open = {};   // open: ids with the note box showing
+  if (["Jason", "Hector", "Diana", "Lisa"].indexOf(me) < 0) { app.innerHTML = '<div class="deny">This page is for Jason, Hector, Diana and Lisa.</div>'; document.querySelector(".bar").hidden = true; return; }
+  var all = me == "Jason" || me == "Hector", state   // Hector sees the whole list, read-only, like Jason = {res: {}, notes: {}}, open = {};   // open: ids with the note box showing
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]; }); };
   var when = function (ms) { var d = new Date(ms); return d.toLocaleDateString("en-US", {timeZone: "America/Chicago", month: "short", day: "numeric"}) + ", " +
     d.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: "numeric", minute: "2-digit"}); };

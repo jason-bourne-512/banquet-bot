@@ -391,7 +391,7 @@
       '<a class="bbd-brand" href="index.html"><span class="bbd-mark">B</span><span><b>BANQUET BOT</b><span class="sub">COMMAND CENTER</span></span></a>' +
       '<nav class="bbd-nav"><div class="lbl">Operations</div>' + navLinks(PAGES.slice(0, 5), cur) +
       // BEO Issues: Jason (everything), Diana and Lisa (their own issues) only (Jason 2026-11-06)
-      (["Jason", "Diana", "Lisa"].indexOf(w.name) > -1 ? '<a href="issues.html" class="' + (cur == "issues.html" ? "on" : "") + '"><i>⚑</i>BEO Issues</a>' : "") +
+      (["Jason", "Hector", "Diana", "Lisa"].indexOf(w.name) > -1 ? '<a href="issues.html" class="' + (cur == "issues.html" ? "on" : "") + '"><i>⚑</i>BEO Issues</a>' : "") +
       (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' +
         '<a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' +
         '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' +   // Print Signs: Jason and Hector only
