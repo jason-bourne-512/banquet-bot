@@ -411,7 +411,19 @@
         "100%{transform:scale(.15) rotate(-20deg);opacity:0;filter:blur(6px)}}" +
         ".bb-poof{animation:bbPoof .45s ease-in forwards!important;pointer-events:none!important}" +
         ".bb-poof img{animation:none!important}" +
-        "@media (prefers-reduced-motion:reduce){.bb-z,.bb-jug,.bb-hola,.bb-chute,.bb-bubble,.bb-hang,.bb-rocket,.bb-rope,.bb-tight,.bb-conga,.bb-wave,.bb-peek{display:none!important}}"
+        // Piñata (2026-11-05): a Fiesta piñata drops in on a string, a monkey leaps up and whacks it, confetti everywhere.
+        ".bb-pin{--w:clamp(120px,12vw,160px);position:fixed!important;top:0;bottom:0;z-index:9996;width:var(--w);pointer-events:none}" +
+        "@keyframes bbPinDrop{from{transform:translateY(-100%)}to{transform:none}}" +
+        ".bb-pin .pn{position:absolute;left:12%;top:0;width:76%;transform-origin:50% 0;animation:bbPinDrop .7s cubic-bezier(.3,1.4,.5,1) both,bbSway 1.6s ease-in-out .7s infinite}" +
+        ".bb-pin .str{width:2px;height:20vh;margin:0 auto;background:#fff;box-shadow:0 0 3px #0008}" +
+        ".bb-pin .pn svg{display:block;filter:drop-shadow(0 6px 10px #0009)}" +
+        "@keyframes bbBurst{to{transform:scale(1.7);opacity:0}}" +
+        ".bb-pin .pn.burst svg{animation:bbBurst .3s ease-out forwards}.bb-pin .pn.burst .str{opacity:0}" +
+        "@keyframes bbWhack{0%{transform:translateY(105%)}30%,42%{transform:translateY(calc(-80vh + var(--w) * 1.5)) rotate(-12deg)}100%{transform:translateY(105%) rotate(0)}}" +
+        ".bb-pin .mk{position:absolute;left:0;bottom:0;width:100%;pointer-events:auto;cursor:pointer;transform:translateY(105%);animation:bbWhack 2.2s cubic-bezier(.3,.9,.5,1) 1s forwards}" +
+        "@keyframes bbConf{0%{transform:translate(0,0) rotate(0);opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(var(--r));opacity:0}}" +
+        ".bb-conf{position:fixed!important;z-index:9997;width:9px;height:13px;border-radius:2px;pointer-events:none;animation:bbConf 1.7s cubic-bezier(.2,.7,.4,1) forwards}" +
+        "@media (prefers-reduced-motion:reduce){.bb-z,.bb-jug,.bb-hola,.bb-chute,.bb-bubble,.bb-hang,.bb-rocket,.bb-rope,.bb-tight,.bb-conga,.bb-wave,.bb-peek,.bb-pin,.bb-conf{display:none!important}}"
     },
     // Diana (Senior Events Manager): H-Town · Space City — Houston skyline with a launch (img/me, original art).
     diana: {
@@ -466,7 +478,16 @@
         "@keyframes bbSay{0%,14%{opacity:0;transform:translateX(-50%) scale(.5)}22%,80%{opacity:1;transform:translateX(-50%) scale(1)}90%,100%{opacity:0;transform:translateX(-50%) scale(.9)}}" +
         ".bb-say{position:absolute;left:50%;bottom:102%;white-space:nowrap;background:#fff;color:#ce1141;font:900 15px/1 system-ui,sans-serif;" +
         "padding:8px 12px;border-radius:14px;border:2px solid #ce1141;box-shadow:0 4px 12px #0007;animation:bbSay 5.2s ease-in-out forwards}" +
-        "@media (prefers-reduced-motion:reduce){.bb-bear,.bb-slam,.bb-ball.shot{display:none!important}}"
+        // 7. Spacewalk (2026-11-05): drifts across in a space helmet, tumbling slowly in zero gravity, past twinkling stars.
+        "@keyframes bbDrift{0%{transform:translate(-30vw,10vh)}100%{transform:translate(130vw,-32vh)}}" +
+        "@keyframes bbTumble{to{transform:rotate(400deg)}}" +
+        ".bb-bear.space{left:0;top:45vh;animation:bbDrift 11s linear forwards}" +
+        ".bb-bear.space .bb-flip{animation:bbTumble 11s linear forwards}" +
+        ".bb-helmet{position:absolute;left:13%;top:-1%;width:74%;aspect-ratio:1;border-radius:50%;border:3px solid #e8f4ff;" +
+        "background:radial-gradient(circle at 30% 26%,#ffffffb8 0 7%,#bfe3ff22 11% 68%,#9fd0ff4d);box-shadow:0 0 14px #9fd0ffaa}" +
+        "@keyframes bbTwinkle{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1.2) rotate(45deg)}}" +
+        ".bb-star{position:fixed;z-index:9999;pointer-events:none;color:#fff7c2;font:20px/1 system-ui,sans-serif;text-shadow:0 0 8px #ffe680;animation:bbTwinkle 1.8s ease-in-out 3 forwards}" +
+        "@media (prefers-reduced-motion:reduce){.bb-bear,.bb-slam,.bb-ball.shot,.bb-star{display:none!important}}"
     }
   };
   // Dylan: one random DBZ moment every ~40–80s (the first one shortly after the page opens).
@@ -713,6 +734,27 @@
         temp(rope, 7100);
         var d = add("bb-tight", [monkeyImg()]); d.style.bottom = (100 - y).toFixed(1) + "vh";
         d.addEventListener("click", function () { rope.remove(); }); return [d, 7100]; },
+      // a Fiesta piñata drops in, a monkey leaps up and whacks it, and it bursts into confetti
+      pinata: function () {
+        var PIN = '<svg viewBox="0 0 100 100" width="100%"><g stroke="#7a1240" stroke-width="2.5" stroke-linejoin="round">' +
+          '<path d="M50 4 L60 36 L96 38 L66 58 L78 94 L50 72 L22 94 L34 58 L4 38 L40 36Z" fill="#ff5fa2"/><circle cx="50" cy="52" r="17" fill="#ffd93b"/></g>' +
+          '<path d="M37 46 H63 M35 52 H65 M37 58 H63" stroke="#2ec4b6" stroke-width="3"/>' +
+          '<g stroke="#7a1240" stroke-width="1.5"><circle cx="96" cy="38" r="5" fill="#2ec4b6"/><circle cx="4" cy="38" r="5" fill="#ff9f1c"/>' +
+          '<circle cx="78" cy="94" r="5" fill="#9b5de5"/><circle cx="22" cy="94" r="5" fill="#2ec4b6"/></g></svg>';
+        var pn = document.createElement("div"); pn.className = "pn"; pn.innerHTML = '<div class="str"></div>' + PIN;
+        var mk = document.createElement("div"); mk.className = "mk"; mk.appendChild(monkeyImg());
+        var d = add("bb-pin", [pn, mk]); d.style.left = "min(" + X(6 + Math.random() * 66) + ", calc(100vw - 170px))";
+        setTimeout(function () { if (!d.isConnected) return; var r = pn.querySelector("svg").getBoundingClientRect();
+          pn.classList.add("burst"); var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+          var cols = ["#ff5fa2", "#ffd93b", "#2ec4b6", "#9b5de5", "#ff9f1c", "#fff"];
+          for (var i = 0; i < 22; i++) { var c = document.createElement("div"); c.className = "bb-conf";
+            c.style.left = cx + "px"; c.style.top = cy + "px"; c.style.background = cols[i % cols.length];
+            c.style.setProperty("--dx", (Math.random() * 300 - 150).toFixed(0) + "px"); c.style.setProperty("--dy", (Math.random() * 320 - 70).toFixed(0) + "px");
+            c.style.setProperty("--r", (Math.random() * 900 - 450).toFixed(0) + "deg"); temp(c, 1800); }
+          var t = document.createElement("div"); t.className = "bb-hola"; t.textContent = Math.random() < 0.5 ? "¡Viva Fiesta!" : "¡Dulces para Lisa!";
+          t.style.left = Math.max(70, Math.min(innerWidth - 70, cx)) + "px"; t.style.top = (cy - 50) + "px"; temp(t, 2500);
+        }, 1700);
+        return [d, 3300]; },
       // the big one: a conga line of five to eight monkeys hops across the bottom
       conga: function () { if (document.querySelector(".bb-conga")) return null;
         var kids = []; for (var i = 0, n = 5 + Math.floor(Math.random() * 4); i < n; i++) { var im = monkeyImg(); im.style.animationDelay = (-0.1 * i) + "s"; kids.push(im); }
@@ -720,7 +762,7 @@
     };
     // bigger walker (inline !important set when it was built, so override it here)
     var w0 = walker(); if (w0) w0.style.setProperty("width", "clamp(120px,12vw,165px)", "important");
-    var names = Object.keys(acts).concat("conga", "showoff", "peek", "ess"), last = null;   // conga, show-off, peek and the team lines come up twice as often
+    var names = Object.keys(acts).concat("conga", "showoff", "peek", "ess", "pinata"), last = null;   // conga, show-off, peek, the team lines and the piñata come up twice as often
     var run = function (name) { var r = acts[name](); if (r && r[0]) setTimeout(function () { r[0].remove(); }, r[1] + 200); return !!r; };
     window.bbMonkey = run;   // preview a moment on demand: bbMonkey("banana")
     var next = function (ms) {
@@ -768,6 +810,14 @@
         var side = Math.random() < 0.5 ? "left" : "right", spot = (3 + Math.random() * 14).toFixed(1) + "vw";
         if (side == "left" && document.documentElement.classList.contains("bbd")) spot = "calc(var(--bbd-side) + " + spot + ")";
         d.style[side] = spot; return [d, 6000]; },
+      space: function () { var d = add("space", "img/me/diana-bear.svg"), extra = [];
+        var h = document.createElement("i"); h.className = "bb-helmet"; d.firstChild.appendChild(h);
+        var t = document.createElement("div"); t.className = "bb-say"; t.textContent = Math.random() < 0.5 ? "Houston, we have an event!" : "One small step for banquets!";
+        d.appendChild(t);
+        for (var i = 0; i < 7; i++) { var s = document.createElement("div"); s.className = "bb-star"; s.textContent = "✦";
+          s.style.left = (5 + Math.random() * 90).toFixed(1) + "vw"; s.style.top = (8 + Math.random() * 60).toFixed(1) + "vh";
+          s.style.animationDelay = (Math.random() * 4).toFixed(2) + "s"; document.body.appendChild(s); extra.push(s); }
+        return [d, 11000, extra]; },
       rocket: function () { var d = add("rocket", "img/me/diana-bear.svg");
         d.querySelector("img").className = "bb-rider";
         var rk = document.createElement("img"); rk.src = "img/me/diana-rocket.svg"; rk.alt = ""; d.firstChild.appendChild(rk);
