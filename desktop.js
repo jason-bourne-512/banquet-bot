@@ -1,4 +1,4 @@
-// Banquet Bot desktop mode — leads only (captain / director / senior events manager). Loaded on every page by theme.js.
+// Banquet Bot desktop mode — leads only (captain / director / senior events manager / events manager). Loaded on every page by theme.js.
 // Off by default; a lead turns it on with the 🖥 button (wide screens only) and this computer remembers it.
 // Sign-in uses the same Housemen PIN and the same "bb-hsm-who" slot, so one sign-in covers the whole site.
 // PINs are never stored here: the hashes are read from housemen.html (single source of truth).
@@ -10,8 +10,8 @@
     ["info.html", "Info", "ℹ"], ["training.html", "Training", "✎"], ["handbook.html", "Handbook", "❏"],
     ["playbook.html", "Captain Playbook", "☰"], ["plated.html", "Plated Service", "◎"], ["bar.html", "Bar Reference", "🍸"]
   ];
-  var ACCENT = {captain: "#f2c879", director: "#5fe3c0", sem: "#cbb4ff"};
-  var ROLE_TITLE = {captain: "Captain", director: "Director of Event Operations", sem: "Senior Events Manager"};
+  var ACCENT = {captain: "#f2c879", director: "#5fe3c0", sem: "#cbb4ff", em: "#ff9ec7"};
+  var ROLE_TITLE = {captain: "Captain", director: "Director of Event Operations", sem: "Senior Events Manager", em: "Events Manager"};
   // Card types that reflow into a multi-column grid when two or more sit side by side in the same parent.
   var CARDS = ".event-card,.menu-item,.room-card,.tr-card,.hb-card,#bb-app .room,#bb-app .original-event,#bb-app .week-choice,.crow,.menu-list>*,#main>.room";
 
