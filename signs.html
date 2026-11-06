@@ -30,6 +30,7 @@
 .sg-rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:6px 14px;margin-top:9px}
 .sg-room{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:12px;color:#d6e8f6}
 .sg-room b{font-weight:700;min-width:84px}
+.sg-room input.rm-name{width:124px;background:#0b151e;border:1px solid #527b995e;border-radius:6px;color:#edf5ff;font:700 12px Manrope,Arial,sans-serif;padding:5px 7px}
 .sg-room .arr{color:#8bd1ff;font-size:17px;width:22px;text-align:center}
 .sg-room input[type=number]{width:46px;background:#0b151e;border:1px solid #527b995e;border-radius:6px;color:#edf5ff;font:13px Manrope,Arial,sans-serif;padding:5px}
 .sg select,.sg-new input[type=text],.sg-new input[type=number]{background:#0b151e;border:1px solid #527b995e;border-radius:6px;color:#edf5ff;font:12px Manrope,Arial,sans-serif;padding:5px 6px;color-scheme:dark}
@@ -142,7 +143,7 @@
       </div>
       <div id="sg-events"></div>
       <div id="sg-skip" class="sg-note"></div>
-      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell gets its own directional with a right arrow. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 2, Primrose C and D get 1 each, Bluebell gets none. Counts marked guess are not confirmed and can be edited. Set a count to 0 to skip a door sign.</div>
+      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell gets its own directional with a right arrow. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 1, Primrose B gets 2, Primrose C and D get 1 each, Bluebell gets none. Room name, arrow, label and count are all editable. Set a count to 0 to skip a door sign.</div>
     </div>
   </div>
   <div id="sg-pv" hidden>
@@ -167,7 +168,7 @@
 
   // ── room rules (Jason) ──
   var ROOM_RE = /^(Barton Foyer|Lantana|Plumeria|Primrose|Camellia|Verbena|Bluebell|Barton|Bonnell|Zilker)(?:\s+([A-D](?:\s*[+&\/]?\s*[A-D])*))?\s*$/i;
-  var PRIM = {A: 2, B: 1, C: 1, D: 1};
+  var PRIM = {A: 1, B: 2, C: 1, D: 1};   // Primrose A = 1 door sign, B always 2 (Jason 2026-11-06)
   function parseRoom(r) {
     var m = ROOM_RE.exec(r.trim()); if (!m) return null;
     var name = m[1].charAt(0).toUpperCase() + m[1].slice(1).toLowerCase();
@@ -181,7 +182,7 @@
       var L = letters.replace(/[CD]/g, ""), R = letters.replace(/[AB]/g, "");
       out.dir = !letters || (L && R) ? "LR" : L ? "L" : "R";
     }
-    if (name == "Primrose") { var l = letters || "ABCD"; out.doors = l.split("").reduce(function (a, c) { return a + PRIM[c]; }, 0); out.guess = /B/.test(l); }
+    if (name == "Primrose") { var l = letters || "ABCD"; out.doors = l.split("").reduce(function (a, c) { return a + PRIM[c]; }, 0); }
     else if (name == "Bluebell" || name == "Barton Foyer") out.doors = 0; // directional only, never a door sign
     else if (name == "Barton") out.doors = 2;
     else if (name == "Bonnell" || name == "Zilker") out.doors = 1;
@@ -313,7 +314,7 @@
         if (r.dir == "LR") opts.push(["LR", "\u2190\u2192 Both"]);
         var arrSel = '<select class="arr-sel" data-ds="' + ei + '" data-ri="' + ri + '" aria-label="Arrow direction">' +
           opts.map(function (o) { return '<option value="' + o[0] + '"' + (r.dir == o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select>";
-        h += '<div class="sg-room">' + arrSel + "<b>" + esc(r.room) + '</b>' + labelUI(r, ei, ri, false) + labelUI(r, ei, ri, true) +
+        h += '<div class="sg-room">' + arrSel + '<input class="rm-name" type="text" data-rn="' + ei + '" data-ri="' + ri + '" value="' + esc(r.room) + '" aria-label="Room name">' + labelUI(r, ei, ri, false) + labelUI(r, ei, ri, true) +
           '<input type="number" min="0" max="9" value="' + r.doors + '" data-ei="' + ei + '" data-ri="' + ri + '" aria-label="Door signs"> door' +
           (r.guess ? ' <i class="sg-tag">GUESS</i>' : "") + (r.dir == "LR" ? ' <i class="sg-tag red">CHECK SIDE</i>' : "") + "</div>";
       });
@@ -324,6 +325,7 @@
   }
   $("sg-events").addEventListener("input", function (ev) {
     var t = ev.target; if (t.dataset.lm != null) return;   // label selects are handled on "change"
+    if (t.dataset.rn != null) { events[+t.dataset.rn].rooms[+t.dataset.ri].room = t.value; build(); return; }   // edit the printed room name
     if (t.dataset.lt != null) events[+t.dataset.lt].rooms[+t.dataset.ri][t.dataset.w == "1" ? "dlabel" : "label"] = t.value.trim();
     else if (t.dataset.ri != null) events[+t.dataset.ei].rooms[+t.dataset.ri].doors = Math.max(0, parseInt(t.value || "0", 10) || 0);
     else if (t.dataset.ei != null && t.type == "text") events[+t.dataset.ei].name = t.value;
