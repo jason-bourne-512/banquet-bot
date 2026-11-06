@@ -65,7 +65,8 @@
 .destination.livemap{min-height:64px;--accent:#ffc46b;--glow:#ffc46b18;background:radial-gradient(ellipse at 100% 0,#9b7a4f38,transparent 75%),linear-gradient(135deg,#43392a,#28221a);border-color:#8a7350;border-top-color:#ffc46b99}
 .destination.livemap:after{animation-delay:-9s}
 .destination.sched{min-height:64px;--accent:#cbb4ff;--glow:#cbb4ff18;background:radial-gradient(ellipse at 100% 0,#7d63c438,transparent 75%),linear-gradient(135deg,#2f2843,#1c1828);border-color:#6f5d9a;border-top-color:#cbb4ff99}
-.destination.sched[hidden]{display:none}.destination.sched em{font:700 9px Manrope,sans-serif;letter-spacing:.12em;color:#f2c879;border:1px solid #f2c87966;border-radius:10px;padding:2px 6px;margin-left:6px;vertical-align:middle;font-style:normal}.destination.livemap small{color:#e2d3bb}
+.destination.sched[hidden]{display:none}
+.destination.issues{min-height:64px;--accent:#ff8a80;--glow:#ff8a8018;background:radial-gradient(ellipse at 100% 0,#c4443a38,transparent 75%),linear-gradient(135deg,#3a1c1f,#1f1416);border-color:#8a3f45;border-top-color:#ff8a8099}.destination.issues[hidden]{display:none}.destination.sched em{font:700 9px Manrope,sans-serif;letter-spacing:.12em;color:#f2c879;border:1px solid #f2c87966;border-radius:10px;padding:2px 6px;margin-left:6px;vertical-align:middle;font-style:normal}.destination.livemap small{color:#e2d3bb}
 .destination.overview small{color:#c6d5ef}
 
 /* ── MENU SEARCH ── */
@@ -192,6 +193,7 @@
     <a class="destination overview" href="rundown.html#overview"><span class="arrow" aria-hidden="true">↗</span><strong>OVERVIEW</strong><small>Quick summary</small></a>
     <a class="destination housemen" href="housemen.html"><span class="arrow" aria-hidden="true">↗</span><strong>HOUSEMEN</strong><small>Tonight’s set &amp; clear list</small></a>
     <a class="destination livemap" href="live-map.html"><span class="arrow" aria-hidden="true">↗</span><strong>LIVE MAP</strong><small>Floor plan by day</small></a>
+    <a class="destination issues" href="issues.html" id="issuesBtn" hidden><span class="arrow" aria-hidden="true">↗</span><strong>BEO ISSUES</strong><small>Questions for you</small></a>
     <a class="destination sched" href="scheduler.html" id="schedBtn" hidden><span class="arrow" aria-hidden="true">↗</span><strong>SCHEDULER <em id="schedTag">BETA</em></strong><small>Availability &amp; the week</small></a>
   </div>
   <script>
@@ -204,6 +206,9 @@
   // and the event managers, who don't schedule (Jason, 2026-10-24).
   (function () { var w = null; try { w = JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); } catch (e) {}
     if (!(w && (["Jason", "Hector"].indexOf(w.name) > -1 || w.role == "em" || w.role == "sem"))) { document.getElementById("schedBtn").hidden = false; document.getElementById("schedTag").remove(); } })();
+  // BEO Issues: Diana and Lisa get a Home button for it on the phone too (Jason 2026-11-06); Jason opens it from the desktop side panel.
+  (function () { var w = null; try { w = JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); } catch (e) {}
+    if (w && ["Diana", "Lisa"].indexOf(w.name) > -1) document.getElementById("issuesBtn").hidden = false; })();
   </script>
 
   <section class="menu-search">

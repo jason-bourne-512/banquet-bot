@@ -491,10 +491,12 @@ html.bbd #bb-app .rd-strip{display:block;column-span:all;margin:0 0 18px;padding
 #bb-app .rd-strip-sum em{font-style:normal;color:#a8f2c7}
 #bb-app .rd-strip-more{margin-left:auto;background:#16232e;border:1px solid #9ebbd433;border-radius:12px;color:#8bd1ff;font:700 10.5px Manrope,Arial,sans-serif;cursor:pointer;padding:3px 10px}
 #bb-app .rd-strip-more:hover{border-color:#8bd1ff88}
-#bb-app .rd-strip-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:5px}
+#bb-app .rd-strip-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:5px}
 #bb-app .rd-svc{position:relative;overflow:hidden;display:flex;align-items:center;gap:9px;min-width:0;height:32px;text-align:left;
   border:1px solid #9ebbd42a;border-left:3px solid hsl(var(--g) 65% 62%);background:#152230;color:#e3f1fb;border-radius:7px;padding:0 10px 0 9px;cursor:pointer;font:12px Manrope,Arial,sans-serif}
 #bb-app .rd-svc:hover{border-color:#8bd1ff88;border-left-color:hsl(var(--g) 65% 62%);background:#1a2a3a}
+#bb-app .rd-svc .rm{flex:0 0 auto;width:96px;font:800 10.5px Manrope,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:hsl(var(--g) 65% 72%);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#bb-app .rd-svc.is-done .rm{color:#4b5864}
 #bb-app .rd-svc .t{flex:0 0 auto;min-width:74px;white-space:nowrap;font-variant-numeric:tabular-nums}
 #bb-app .rd-svc .t i{font-style:normal;font-weight:800;font-size:12px;color:#b9e5ff}
 #bb-app .rd-svc .t small{font-size:10.5px;color:#6f8394;margin-left:2px}
@@ -14969,14 +14971,15 @@ html.bbd #bb-app .rd-strip{display:block;column-span:all;margin:0 0 18px;padding
       box.append(head, wrap);
       list.sort((a,b)=>a.start-b.start).forEach(function(x){
         const id=x.start+'|'+x.who+'|'+x.label;
-        if(seen[id]){ const s=seen[id]; s.keys.push(x.k); if(x.room&&s.rooms.indexOf(x.room)<0){ s.rooms.push(x.room); s.sub.textContent=x.who+' · '+s.rooms.join(' / '); } return; }
+        if(seen[id]){ const s=seen[id]; s.keys.push(x.k); if(x.room&&s.rooms.indexOf(x.room)<0){ s.rooms.push(x.room); s.rm.textContent=s.rooms.join(' / '); } return; }
         const b=node('button','rd-svc'); b.type='button'; b.dataset.k=x.k; b.dataset.start=x.start; b.dataset.end=x.end; b.keys=[x.k]; b.rooms=x.room?[x.room]:[]; seen[id]=b;
         b.style.setProperty('--g',hue(x.who));
         const tm=node('span','t'), m=node('span','m');
+        b.rm=node('span','rm',x.room||'—');   // room first (Jason 2026-11-06)
         tm.append(node('i','',clock(x.start)), node('small','','–'+clock(x.end)));
-        b.sub=node('small','',x.who+(x.room?' · '+x.room:''));
+        b.sub=node('small','',x.who);
         m.append(node('b','',x.label.replace(/\s+—.*$/,'')||'Service'), b.sub);
-        b.append(tm, m, node('span','st'));
+        b.append(b.rm, tm, m, node('span','st'));
         b.onclick=function(){ const r=screen.querySelector('.service[data-k="'+CSS.escape(x.k)+'"]'); if(!r) return;
           r.scrollIntoView({block:'center',behavior:'smooth'}); r.classList.add('rd-flash'); setTimeout(()=>r.classList.remove('rd-flash'),1400); };
         wrap.append(b);

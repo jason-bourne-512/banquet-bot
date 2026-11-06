@@ -330,12 +330,9 @@
       label: "LISA · PURO SAN ANTONIO",
       img: "img/me/lisa-san-antonio.svg",
       mark: {src: "img/me/lisa-san-antonio.svg", opacity: .08},
-      monkey: "img/me/lisa-monkey.svg",   // a big monkey swinging on a vine, random side each visit
-      monkeyPages: /(^|\/)(index\.html|rundown\.html)?$/,   // her most-used pages (usage stats 2026-10-18): Home + Rundown
-      walker: "img/me/lisa-monkey-walk.svg",   // every page: a monkey strolls back and forth along the bottom; tap it and it vanishes
-      monkeyMoments: true,   // every page: a random monkey moment every ~12–25s (see monkeyLoop)
-      pointNew: "img/me/lisa-monkey-walk.svg",   // desktop: points at the new BEO Issues tab until she opens it (see pointToIssues)
-      pointDesk: "img/me/lisa-monkey-walk.svg",   // wide screen, desktop view off: points at the 🖥 Desktop button until she turns it on (see pointToDesktop)
+      // Only one monkey now (Jason 2026-11-06): the one pointing at the new BEO Issues tab, gone for good once she opens it.
+      // The vine monkey, walker, monkey moments and Desktop-button pointer are off; their art and styles stay in case they come back.
+      pointNew: "img/me/lisa-monkey-walk.svg",   // desktop side panel or phone Home button: points at BEO Issues until she opens it (see pointToIssues)
       css: BADGE + ".bb-me-badge{color:#ffd1e4;background:linear-gradient(135deg,#5a1f3a,#2a0f1d);border:1px solid #ff9ec788}" +
         "@keyframes bbVineIn{from{transform:translateY(-110%)}to{transform:none}}" +
         // Swing (2026-10-27): big Tarzan swings, then a full loop-the-loop over the top of the vine.
@@ -787,6 +784,9 @@
         ".bb-point img.flip{transform:scaleX(-1)}" +
           ".bb-point .hand.dn{align-self:flex-end;animation-name:bbJabD}@keyframes bbJabD{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}" +
           ".bb-point .say.up{left:auto;right:40px}" +
+        ".bb-point.ph{position:absolute}.bb-point.ph img{width:96px}" +
+        ".bb-point .hand.up{align-self:flex-start;animation-name:bbJabU}@keyframes bbJabU{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}" +
+        ".bb-point .say.dn{bottom:auto;top:100%;left:0;margin:4px 0 0;white-space:normal;width:max-content;max-width:230px}" +
         ".bb-point .say{position:absolute;left:44px;bottom:100%;margin-bottom:4px;white-space:nowrap;background:#fff;color:#14202b;font:800 14px/1.25 Manrope,system-ui,sans-serif;" +
         "padding:8px 12px;border-radius:14px;border:2px solid var(--pc);box-shadow:0 6px 16px #0008}" +
         ".bb-point .say b{color:var(--pc)}" +
@@ -833,8 +833,10 @@
     pointCss();
     var color = /lisa/.test(src) ? "#ff7eb3" : "#cbb4ff", tries = 0;
     var wait = setInterval(function () {
-      var a = document.querySelector('.bbd-nav a[href="issues.html"]');
-      if (!a && ++tries < 40) return; clearInterval(wait); if (!a) return;   // phone view has no side panel: nothing to point at
+      // desktop: the side panel link; phone view: the BEO Issues button on Home (Diana and Lisa only)
+      var a = document.querySelector('.bbd-nav a[href="issues.html"]'), btn = document.querySelector("#issuesBtn:not([hidden])");
+      if (!a && !btn && ++tries < 40) return; clearInterval(wait); if (!a && !btn) return;
+      if (!a) return pointAtButton(btn);
       setTimeout(function () {
         if (document.hidden || document.querySelector(".bb-point")) return;
         var r = a.getBoundingClientRect(); if (!r.width) return;
@@ -847,6 +849,21 @@
         setTimeout(function () { d.classList.add("out"); a.classList.remove("bb-point-hit"); setTimeout(function () { d.remove(); }, 500); }, 7000);
       }, 2500);
     }, 250);
+    // phone view: the buddy stands just under the Home button, points up at it, and the bubble sits below
+    function pointAtButton(b) {
+      setTimeout(function () {
+        if (document.hidden || document.querySelector(".bb-point")) return;
+        var r = b.getBoundingClientRect(); if (!r.width) return;
+        var d = document.createElement("div"); d.className = "bb-point ph"; d.style.setProperty("--pc", color);
+        d.innerHTML = '<span class="hand up">👆</span><img alt="" src="' + src + '"' + (/lisa/.test(src) ? ' class="flip"' : "") + '><span class="say dn">Check out the new tab: <b>BEO Issues!</b></span>';
+        document.body.appendChild(d);
+        d.style.left = Math.min(document.documentElement.clientWidth - d.offsetWidth - 8, Math.max(8, r.left + r.width / 2 - 20)) + "px";
+        d.style.top = (r.bottom + scrollY + 2) + "px";
+        b.style.setProperty("box-shadow", "0 0 0 2px " + color + ",0 0 18px " + color, "important");
+        d.onclick = function () { location.href = "issues.html"; };
+        setTimeout(function () { d.classList.add("out"); b.style.removeProperty("box-shadow"); setTimeout(function () { d.remove(); }, 500); }, 7000);
+      }, 2500);
+    }
   }
   // Diana's Live Map: one bear moment every ~35–70s (the first a few seconds after the page opens), never the same twice in a row.
   function bearLoop() {
