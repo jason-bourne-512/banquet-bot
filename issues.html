@@ -130,8 +130,8 @@
   window.beoWarn = warn;
   render();
 
-  // Opening this page is the daily gate release: theme.js forces Diana & Lisa here first, this marks it seen for today.
-  try { var dt = new Date(); localStorage.setItem("bb-beo-ack-" + dt.getFullYear() + "-" + (dt.getMonth() + 1) + "-" + dt.getDate(), "1"); } catch (e) {}
+  // Opening this page is the one-time gate release: theme.js forces Diana & Lisa here once, this marks it seen for good.
+  try { localStorage.setItem("bb-beo-ack", "1"); } catch (e) {}
 
   // Desktop-view nudge for Diana (bear) & Lisa (monkey) when they're on a phone (Jason 2026-11-06): open in a browser for the full lead view.
   if (!all && innerWidth < 900) {

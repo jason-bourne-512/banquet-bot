@@ -74,8 +74,8 @@
     var w = who(); if (!w || !w.name) return;                        // not signed in: the PIN gate handles it
     if (BEO_GATE.indexOf(String(w.name).toLowerCase()) < 0) return;  // only Diana & Lisa are forced to it
     if (/(^|\/)issues\.html$/i.test(location.pathname)) return;       // already on the page
-    var d = new Date(), key = "bb-beo-ack-" + d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(), acked;
-    try { acked = localStorage.getItem(key); } catch (e) { return; } // storage blocked: don't trap them on a loop
+    var acked;                                                        // once they open it once, they are never forced again
+    try { acked = localStorage.getItem("bb-beo-ack"); } catch (e) { return; } // storage blocked: don't trap them on a loop
     if (!acked) location.replace("issues.html");
   }
   window.bbBeoGate = beoGate;
