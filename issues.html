@@ -133,14 +133,18 @@
   // Opening this page is the one-time gate release: theme.js forces Diana & Lisa here once, this marks it seen for good.
   try { localStorage.setItem("bb-beo-ack", "1"); } catch (e) {}
 
-  // Desktop-view nudge for Diana (bear) & Lisa (monkey) when they're on a phone (Jason 2026-11-06): open in a browser for the full lead view.
-  if (!all && innerWidth < 900) {
-    var tip = me == "Lisa"
-      ? { a: "🐒", c: "#ffd27a", line: "Open Banquet Bot in a browser on a computer and you get the full <b>Desktop view</b> — the big board, floor maps, way more room to work." }
-      : { a: "🐻", c: "#8bd1ff", line: "Pull Banquet Bot up in a browser on a computer and you unlock the full <b>Desktop view</b> — the big board, floor maps, all of it." };
+  // Diana (bear) & Lisa (monkey) get a little praise from their animal every time they open it, plus a phone-only
+  // nudge to open Banquet Bot in a browser for the full Desktop view (Jason 2026-11-06).
+  if (!all) {
+    var animal = me == "Lisa" ? "🐒" : "🐻", c = me == "Lisa" ? "#ffd27a" : "#8bd1ff";
+    var praises = ["Good job, " + me + "!", "Proud of you!", "Nice work!", "You're on top of it!", "Thank you for staying on these!"];
+    var praise = praises[Math.floor(Math.random() * praises.length)];
+    var deskLine = me == "Lisa"
+      ? "Open Banquet Bot in a browser on a computer for the full <b>Desktop view</b> — the big board, floor maps, way more room to work."
+      : "Pull Banquet Bot up in a browser on a computer for the full <b>Desktop view</b> — the big board, floor maps, all of it.";
     var card = document.createElement("div");
-    card.style.cssText = "display:flex;gap:11px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:3px solid " + tip.c + ";border-radius:10px;padding:11px 13px;margin-bottom:16px;font-size:13px;line-height:1.5;";
-    card.innerHTML = '<span style="font-size:24px;line-height:1">' + tip.a + '</span><span><b style="color:' + tip.c + '">' + me + ", one more thing —</b><br>" + tip.line + "</span>";
+    card.style.cssText = "display:flex;gap:11px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-left:3px solid " + c + ";border-radius:10px;padding:11px 13px;margin-bottom:16px;font-size:13px;line-height:1.5;";
+    card.innerHTML = '<span style="font-size:24px;line-height:1">' + animal + '</span><span><b style="color:' + c + '">' + praise + "</b>" + (innerWidth < 900 ? "<br>" + deskLine : "") + "</span>";
     app.parentNode.insertBefore(card, app);
   }
 })();
