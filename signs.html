@@ -82,6 +82,7 @@
 .sheet.dir.up .gt{width:auto;max-width:320pt}
 .sheet.dir.up .gr{width:auto;max-width:320pt}
 .sheet.dir.up .arrow.u{left:auto;right:74pt;top:180pt;width:150pt;height:470pt}
+.sg-room select.arr-sel{max-width:92px;min-width:82px;color:#8bd1ff;font-weight:700}
 .sheet.door .logo{position:absolute;left:58pt;top:48pt;height:40pt}
 .sheet.door .fit{top:120pt;bottom:97pt}
 .sheet.door .dt{max-width:700pt;font-size:calc(60pt*var(--k));line-height:1.08}
@@ -309,8 +310,11 @@
         '<label><input type="checkbox" data-dir="' + ei + '"' + (e.dirOn ? " checked" : "") + '> Directional</label>' +
         (e.noBeo ? '<span class="sg-tag red">NO EVENT ORDER YET</span>' : "") + (e.custom ? '<i class="sg-tag">NEW</i><button type="button" class="sg-x" data-rm="' + ei + '">Remove</button>' : "") + "</div><div class=\"sg-rooms\">";
       e.rooms.forEach(function (r, ri) {
-        var arrow = r.dir == "L" ? "\u2190" : r.dir == "R" ? "\u2192" : r.dir == "U" ? "\u2191" : "\u2190\u2192";
-        h += '<div class="sg-room"><span class="arr">' + arrow + "</span><b>" + esc(r.room) + '</b>' + labelUI(r, ei, ri, false) + labelUI(r, ei, ri, true) +
+        var opts = [["L", "\u2190 Left"], ["R", "\u2192 Right"], ["U", "\u2191 Up"]];
+        if (r.dir == "LR") opts.push(["LR", "\u2190\u2192 Both"]);
+        var arrSel = '<select class="arr-sel" data-ds="' + ei + '" data-ri="' + ri + '" aria-label="Arrow direction">' +
+          opts.map(function (o) { return '<option value="' + o[0] + '"' + (r.dir == o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select>";
+        h += '<div class="sg-room">' + arrSel + "<b>" + esc(r.room) + '</b>' + labelUI(r, ei, ri, false) + labelUI(r, ei, ri, true) +
           '<input type="number" min="0" max="9" value="' + r.doors + '" data-ei="' + ei + '" data-ri="' + ri + '" aria-label="Door signs"> door' +
           (r.guess ? ' <i class="sg-tag">GUESS</i>' : "") + (r.dir == "LR" ? ' <i class="sg-tag red">CHECK SIDE</i>' : "") + "</div>";
       });
@@ -334,6 +338,7 @@
   $("sg-events").addEventListener("change", function (ev) {
     var t = ev.target;
     if (t.dataset.lm != null) { setMode(events[+t.dataset.lm].rooms[+t.dataset.ri], t.value, t.dataset.w == "1"); renderList(); build(); return; }
+    if (t.dataset.ds != null) { events[+t.dataset.ds].rooms[+t.dataset.ri].dir = t.value; renderList(); build(); return; }
     if (t.dataset.dir == null) return;
     events[+t.dataset.dir].dirOn = t.checked; renderList(); build();
   });
