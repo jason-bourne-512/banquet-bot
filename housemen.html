@@ -188,7 +188,6 @@ li.pinned .pinmark{font-size:11px}
 .gone{margin-top:6px;padding:8px 12px;border:1px dashed var(--line2);border-radius:11px;font-size:12px;color:var(--t3);display:flex;align-items:center;gap:8px}
 .gone button{margin-left:auto}
 .deskbtn{margin-left:6px}
-#editlock.editon{background:var(--acc,#5fe3c0);border-color:var(--acc,#5fe3c0);color:#06201a}
 .dgcur{display:grid;gap:8px;max-height:46vh;overflow:auto}
 .dgcur img{display:block;width:100%;max-height:40vh;object-fit:contain;background:#fff;border-radius:8px}
 .dgcur .lbl{font-size:11px;color:var(--t3);font-weight:700}
@@ -284,7 +283,7 @@ body.dir .printbtn{border-color:color-mix(in srgb,var(--acc) 40%,transparent);co
 <body>
 <div class="wrap">
   <div class="top">
-    <div class="brand"><a class="brand" href="index.html"><span class="mark">B</span>HOUSEMEN</a><span class="capbadge">★ CAPTAIN</span><span class="dirbadge">★ DIRECTOR</span><span class="sync" id="sync" title="Live sync"></span><button class="who" id="who">Sign in</button><button class="who deskbtn" id="desk" style="display:none">🖥 Desktop</button><button class="who deskbtn" id="editlock" style="display:none">🔒 View only</button></div>
+    <div class="brand"><a class="brand" href="index.html"><span class="mark">B</span>HOUSEMEN</a><span class="capbadge">★ CAPTAIN</span><span class="dirbadge">★ DIRECTOR</span><span class="sync" id="sync" title="Live sync"></span><button class="who" id="who">Sign in</button><button class="who deskbtn" id="desk" style="display:none">🖥 Desktop</button></div>
     <div class="seg"><button id="vHsm" class="on">Houseman</button><button id="vCap">Captain</button></div>
     <div class="days" id="days"></div>
   </div>
@@ -853,11 +852,7 @@ const LEAD = role => role == "captain" || role == "director";
 // desktop-only (Jason 2026-10-13: too problematic on phones). Desktop = a screen at least 1000px wide.
 const WIDE = () => window.matchMedia("(min-width: 1000px)").matches;
 // Leads are view-only until they click "Enable editing" (Jason 2026-11-06: never change the list by accident).
-// Jason (captain) starts view-only and taps the lock button to enable editing; not persisted.
-// The EDIT gate below is captain-only, so the director (Hector) always edits regardless of editOn.
-let editOn = false;
-// View-only lock is Jason's alone: only the captain is gated by editOn; the director (and any other lead) always edits.
-const EDIT = () => !!(WHO && LEAD(WHO.role) && WIDE() && (WHO.role != "captain" || editOn));
+const EDIT = () => !!(WHO && LEAD(WHO.role) && WIDE());
 const TITLE = {hsm:"Houseman", svr:"Server", captain:"Captain", director:"Director of Event Operations", sem:"Senior Events Manager", em:"Events Manager"};
 // Event managers see the Status tab (read-only — no editing, no Mark resolved) and their own accent.
 const VIEWER = role => LEAD(role) || role == "sem" || role == "em";
@@ -1225,10 +1220,6 @@ function render() {
   const board = lead && desk && view == "cap" && WIDE();
   const db_ = document.getElementById("desk");
   db_.style.display = lead && view == "cap" && WIDE() ? "" : "none"; db_.textContent = desk ? "📱 Phone view" : "🖥 Desktop";
-  const eb_ = document.getElementById("editlock");
-  eb_.style.display = WHO && WHO.role == "captain" && view == "cap" && WIDE() ? "" : "none";
-  eb_.textContent = editOn ? "✏️ Editing on — lock" : "🔒 View only — enable editing";
-  eb_.classList.toggle("editon", editOn);
   document.body.classList.toggle("desk", board);
   if (board) { renderDays(); document.getElementById("main").innerHTML = renderBoard(); document.getElementById("vHsm").classList.remove("on"); document.getElementById("vCap").classList.add("on"); return; }
   document.getElementById("vHsm").classList.toggle("on", view=="hsm");
@@ -1247,7 +1238,6 @@ let toastT;
 function toast(msg, bad) { const t = document.getElementById("toast"); t.textContent = msg; t.className = "toast on" + (bad ? " bad" : ""); clearTimeout(toastT); toastT = setTimeout(()=>t.className = "toast", 2200); }
 const parseId = id => { const [iso, i] = id.split("|"); return {iso, r: roomsOfDay(iso)[+i], i:+i}; };
 document.getElementById("desk").onclick = () => { desk = !desk; try { localStorage.setItem("bb-hsm-desk", desk ? "1" : "0"); } catch(e) {} render(); };
-document.getElementById("editlock").onclick = () => { editOn = !editOn; toast(editOn ? "Editing enabled — changes are live" : "View only — editing locked"); render(); };
 
 // ── actions
 document.addEventListener("click", async e => {
