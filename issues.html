@@ -77,7 +77,11 @@
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]; }); };
   var when = function (ms) { var d = new Date(ms); return d.toLocaleDateString("en-US", {timeZone: "America/Chicago", month: "short", day: "numeric"}) + ", " +
     d.toLocaleTimeString("en-US", {timeZone: "America/Chicago", hour: "numeric", minute: "2-digit"}); };
-  var mine = function (list) { return list.filter(function (x) { return all || x.who == me; }); };
+  // Hotel "today" (America/Chicago) at midnight; an issue drops once its last day is past.
+  var TODAY = (function () { var o = {}; new Intl.DateTimeFormat("en-CA", {timeZone: "America/Chicago", year: "numeric", month: "2-digit", day: "2-digit"}).formatToParts(new Date()).forEach(function (p) { o[p.type] = p.value; }); return new Date(+o.year, +o.month - 1, +o.day); })();
+  var lastDay = function (s) { var m = String(s).match(/(\d{1,2})\/(\d{1,2})/g); if (!m) return null; var y = TODAY.getFullYear(), best = null; m.forEach(function (t) { var p = t.split("/"), d = new Date(y, +p[0] - 1, +p[1]); if (d.getTime() < TODAY.getTime() - 183 * 864e5) d = new Date(y + 1, +p[0] - 1, +p[1]); if (!best || d > best) best = d; }); return best; };
+  var current = function (x) { if (/\bon$/i.test(String(x.day).trim())) return true; var d = lastDay(x.day); return !d || d >= TODAY; };   // keep open-ended "… on" items; drop anything whose last day is before today
+  var mine = function (list) { return list.filter(function (x) { return (all || x.who == me) && current(x); }); };
   function notesHtml(id) {
     var n = state.notes[id] || {};
     return Object.keys(n).sort().map(function (k) { return '<div class="note"><small>' + esc(n[k].by) + " · " + when(n[k].at) + "</small>" + esc(n[k].text) + "</div>"; }).join("");
