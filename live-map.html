@@ -47,6 +47,7 @@
   .title .sw { font-size:1.05cqw; font-weight:700; color:var(--grp); }
   .rm { position:absolute; padding:.8cqw .7cqw .45cqw; border-radius:4px; overflow:hidden; }
   .rm.on { background:rgba(31,138,85,.13); outline:2px solid rgba(31,138,85,.45); outline-offset:-2px; }
+  .rm.on.noline { outline:none; }   /* Camellia/Verbena: no outline, the thick top wall made it impossible to line up cleanly (Jason 2026-11-06) */
   .rm.on > div { position:relative; opacity:.8; }
   /* --k shrinks one room box's text when it would run past the box (see fitRooms) */
   .nm { font-size:calc(.85cqw * var(--k, 1)); letter-spacing:.1em; text-transform:uppercase; color:var(--pmuted); font-weight:700; overflow-wrap:anywhere; }
@@ -146,7 +147,7 @@
     h += '<div class="title"><h2>' + label(d, true) + (day.title ? " · " + esc(day.title) : "") + "</h2>" + (day.sub ? '<div class="sw">' + esc(day.sub) + "</div>" : "") + "</div>";
     Object.keys(BOX).forEach(function (r) {
       var e = day.ev[r]; if (!e) return;
-      h += '<div class="rm on" data-room="' + esc(r) + '" style="' + pct(BOX[r]) + (/^Primrose (A|B|AB)$/.test(r) ? ";padding-left:1.4cqw" : "") + '">' + body(e) + "</div>";
+      h += '<div class="rm on' + (/^(Camellia|Verbena)/.test(r) ? " noline" : "") + '" data-room="' + esc(r) + '" style="' + pct(BOX[r]) + (/^Primrose (A|B|AB)$/.test(r) ? ";padding-left:1.4cqw" : "") + '">' + body(e) + "</div>";
     });
     if (day.off.length) h += '<div class="offmap"><h3>Off the map</h3><div id="off">' + day.off.map(function (e) { return '<div class="card' + (e.bg ? ' plan">' + obg(e.bg) : '">') + '<div class="nm">' + esc(e.room) + "</div>" + body(e) + "</div>"; }).join("") + "</div></div>";
     if (day.contacts.length) h += '<div class="legend"><h3>Contacts</h3>' + day.contacts.map(function (c) { return '<span class="gc"><b>' + esc(c[0]) + "</b> <span>" + esc(c[1]) + "</span></span>"; }).join("") + "</div>";
