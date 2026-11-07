@@ -853,9 +853,11 @@ const LEAD = role => role == "captain" || role == "director";
 // desktop-only (Jason 2026-10-13: too problematic on phones). Desktop = a screen at least 1000px wide.
 const WIDE = () => window.matchMedia("(min-width: 1000px)").matches;
 // Leads are view-only until they click "Enable editing" (Jason 2026-11-06: never change the list by accident).
-// editOn is never persisted, so every load starts as a viewer.
+// Jason (captain) starts view-only and taps the lock button to enable editing; not persisted.
+// The EDIT gate below is captain-only, so the director (Hector) always edits regardless of editOn.
 let editOn = false;
-const EDIT = () => !!(WHO && LEAD(WHO.role) && WIDE() && editOn);
+// View-only lock is Jason's alone: only the captain is gated by editOn; the director (and any other lead) always edits.
+const EDIT = () => !!(WHO && LEAD(WHO.role) && WIDE() && (WHO.role != "captain" || editOn));
 const TITLE = {hsm:"Houseman", svr:"Server", captain:"Captain", director:"Director of Event Operations", sem:"Senior Events Manager", em:"Events Manager"};
 // Event managers see the Status tab (read-only — no editing, no Mark resolved) and their own accent.
 const VIEWER = role => LEAD(role) || role == "sem" || role == "em";
@@ -1224,7 +1226,7 @@ function render() {
   const db_ = document.getElementById("desk");
   db_.style.display = lead && view == "cap" && WIDE() ? "" : "none"; db_.textContent = desk ? "📱 Phone view" : "🖥 Desktop";
   const eb_ = document.getElementById("editlock");
-  eb_.style.display = lead && view == "cap" && WIDE() ? "" : "none";
+  eb_.style.display = WHO && WHO.role == "captain" && view == "cap" && WIDE() ? "" : "none";
   eb_.textContent = editOn ? "✏️ Editing on — lock" : "🔒 View only — enable editing";
   eb_.classList.toggle("editon", editOn);
   document.body.classList.toggle("desk", board);
