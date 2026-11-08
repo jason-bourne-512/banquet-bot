@@ -375,6 +375,8 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .date-nav button,#bb-app .week-nav button{border:1px solid #557c98;border-radius:7px;background:#203a4c;color:#d8edff;padding:10px 13px;min-height:44px;font:12px Manrope,Arial,sans-serif}
 #bb-app .week-nav button:disabled{opacity:.3;cursor:default}
 #bb-app .date-nav span{font-size:12px;color:#c4def1}
+#bb-app #rdStep{margin-left:auto;display:flex;gap:8px}
+#bb-app .date-nav button:disabled{opacity:.32;cursor:default}
 #bb-app .tabs{display:flex;gap:4px;margin:0 15px 12px;padding:4px;border:1px solid #334c60;border-radius:11px;background:#0d151d;box-shadow:inset 0 2px 7px #00000055}
 #bb-app .tabs button{-webkit-appearance:none;appearance:none;flex:1 1 0;min-width:0;height:38px;margin:0;padding:0 6px;border:1px solid #2c4458;border-radius:8px;background:linear-gradient(135deg,#172735,#121e28);color:#a9c3d6;font:500 12px/1 Manrope,Arial,sans-serif;letter-spacing:.2px;box-shadow:inset 0 1px #ffffff08;transition:background .2s,color .2s,border-color .2s}
 #bb-app .tabs button:focus{outline:none}#bb-app .tabs button:focus-visible{outline:1px solid #8bd1ff;outline-offset:1px}
@@ -563,6 +565,7 @@ html.bbd #bb-app .rd-strip{display:block;column-span:all;margin:0 0 18px;padding
   <div class="date-nav">
     <button type="button" id="rdBack">‹ Week</button>
     <span id="rdCaption"></span>
+    <span class="day-step" id="rdStep"><button type="button" id="rdPrev" aria-label="Previous day">‹ Prev day</button><button type="button" id="rdNext" aria-label="Next day">Next day ›</button></span>
   </div>
   <div class="tabs" role="group" aria-label="Choose view">
     <button type="button" data-screen="rundown" aria-pressed="true">Rundown</button>
@@ -14904,7 +14907,8 @@ html.bbd #bb-app .rd-strip{display:block;column-span:all;margin:0 0 18px;padding
     const app=document.getElementById('bb-app'), screen=document.getElementById('rdScreen');
     const hero=document.getElementById('rdHero'), eyebrow=document.getElementById('rdEyebrow'),
           title=document.getElementById('rdTitle'), dateLine=document.getElementById('rdDate'),
-          back=document.getElementById('rdBack'), caption=document.getElementById('rdCaption');
+          back=document.getElementById('rdBack'), caption=document.getElementById('rdCaption'),
+          rdPrev=document.getElementById('rdPrev'), rdNext=document.getElementById('rdNext'), rdStep=document.getElementById('rdStep');
     const tabs=Array.from(app.querySelectorAll('.tabs [data-screen]'));
     const TITLES={rundown:'THE RUNDOWN.',overview:'THE OVERVIEW.'};
     let tab=location.hash==='#overview'?'overview':'rundown', mode='day', selected=TODAY;
@@ -14920,6 +14924,10 @@ html.bbd #bb-app .rd-strip{display:block;column-span:all;margin:0 0 18px;padding
       tabs.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.screen===tab)));
       app.classList.toggle('on-rundown',tab==='rundown');
       app.classList.toggle('on-overview',allDays);
+      // Prev/next day arrows: only inside a single rundown day, disabled at the ends of the event-day list.
+      const dayStep=!isWeek&&!allDays;
+      rdStep.hidden=!dayStep;
+      if(dayStep){ const ds=navDates(); rdPrev.disabled=!ds.some(d=>d<selected); rdNext.disabled=!ds.some(d=>d>selected); }
     }
     function empty(text){ screen.append(node('p','date-empty',text)); }
 
@@ -15218,6 +15226,15 @@ html.bbd #bb-app .rd-strip{display:block;column-span:all;margin:0 0 18px;padding
       else if(tab==='overview'){ selected=TODAY; headings(); window.scrollTo(0,0); }
       else renderWeek(selected);
     });
+    // Step to the previous/next upcoming day that has events, without going back to the week list.
+    function navDates(){ return Object.keys(days).filter(d=>d>=TODAY&&days[d].events.length).sort(); }
+    function stepDay(dir){
+      const ds=navDates();
+      const target = dir>0 ? ds.find(d=>d>selected) : ds.filter(d=>d<selected).pop();
+      if(target){ renderDay(target); window.scrollTo(0,0); }
+    }
+    rdPrev.addEventListener('click',()=>stepDay(-1));
+    rdNext.addEventListener('click',()=>stepDay(1));
     tabs.forEach(b=>b.addEventListener('click',function(){
       tab=b.dataset.screen;
       renderDay(selected);
