@@ -119,25 +119,12 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 .policy-bar { margin:0 16px 8px; background:var(--amber-dim); border:1px solid rgba(255,192,133,0.2); border-radius:10px; padding:10px 13px; font-family:'DM Mono',monospace; font-size:9px; color:var(--amber); line-height:1.6; }
 @media (min-width: 900px) {
-  .header, .page-hero, .search-wrap, .policy-bar, .sec, .menu-list { max-width: 1120px; margin-left: auto; margin-right: auto; }
-  /* Desktop: tile the category cards across the width instead of one narrow column. */
-  .menu-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 10px; align-items: start; }
-  .sec { padding-top: 20px; }
+  .header, .page-hero, .sec, .menu-list { max-width: 460px; margin-left: auto; margin-right: auto; }
   .menu-cat:hover { transform: translateY(-2px); }
 }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/bb-reference.css">
-<style>
-/* Loaded after bb-reference.css so it wins. */
-@media (min-width: 900px) {
-  .bb-ref .page-wrap { max-width: 1180px !important; }
-  /* An opened category spans the full width and flows its menus into columns, so it doesn't leave a tall narrow strip with empty space beside it. */
-  .menu-cat.open { grid-column: 1 / -1; }
-  .menu-cat.open .cat-body { column-width: 320px; column-gap: 26px; }
-  .menu-cat.open .menu-sub, .menu-cat.open .menu-item, .menu-cat.open .menu-note { break-inside: avoid; }
-}
-</style>
 <script src="theme.js?v=1028a"></script>
 </head>
 <body class="bb-ref">
