@@ -129,8 +129,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/bb-reference.css">
 <style>
-/* Loaded after bb-reference.css so it wins: widen the desktop column so the menu tiles into columns instead of one narrow strip. */
-@media (min-width: 900px) { .bb-ref .page-wrap { max-width: 1180px !important; } }
+/* Loaded after bb-reference.css so it wins. */
+@media (min-width: 900px) {
+  .bb-ref .page-wrap { max-width: 1180px !important; }
+  /* An opened category spans the full width and flows its menus into columns, so it doesn't leave a tall narrow strip with empty space beside it. */
+  .menu-cat.open { grid-column: 1 / -1; }
+  .menu-cat.open .cat-body { column-width: 320px; column-gap: 26px; }
+  .menu-cat.open .menu-sub, .menu-cat.open .menu-item, .menu-cat.open .menu-note { break-inside: avoid; }
+}
 </style>
 <script src="theme.js?v=1028a"></script>
 </head>
