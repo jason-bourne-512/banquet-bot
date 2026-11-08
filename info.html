@@ -154,6 +154,22 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/bb-reference.css">
+<style>
+/* Loaded after bb-reference.css so it wins: fill the empty space on the Corinne (Dining) card on desktop. */
+@media (min-width: 900px) {
+  .bb-ref .page-wrap { max-width: 1060px !important; }
+  #tab-dining { max-width: 1060px !important; margin-left: auto; margin-right: auto; }
+  /* Hours and Contact sit side by side so the top of the card fills the width too */
+  #tab-dining .dine-cols { display: flex; flex-wrap: wrap; gap: 4px 48px; }
+  #tab-dining .dine-col { flex: 1 1 340px; min-width: 0; }
+  /* Tile the Corinne menus; an opened menu spans the full width and flows into columns */
+  #tab-dining .menu-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 8px; align-items: start; }
+  #tab-dining .menu-groups .menu-group { margin-top: 0; }
+  #tab-dining .menu-group.open { grid-column: 1 / -1; }
+  #tab-dining .menu-group.open .menu-group-body { column-width: 290px; column-gap: 26px; }
+  #tab-dining .menu-group.open .menu-item, #tab-dining .menu-group.open .menu-sub-label { break-inside: avoid; }
+}
+</style>
 <script src="theme.js?v=1028a"></script>
 </head>
 <body class="bb-ref">
@@ -204,6 +220,8 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
       <div class="alert">
         <div class="alert-text">⚠ Bar stays open 2 hrs past dinner close on Fri &amp; Sat — last call midnight.</div>
       </div>
+      <div class="dine-cols">
+      <div class="dine-col">
       <div class="section-label" style="margin-top:0">Hours</div>
       <div class="hours-row">
         <span class="hours-day">Breakfast</span>
@@ -229,7 +247,9 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
         <span class="hours-day">Happy Hour</span>
         <span class="hours-time accent">Thu–Sun 3:00 PM – 5:00 PM</span>
       </div>
-      <div class="section-label">Contact</div>
+      </div>
+      <div class="dine-col">
+      <div class="section-label" style="margin-top:0">Contact</div>
       <div class="row">
         <span class="row-key">Phone</span>
         <span class="row-val blue">512-687-9313</span>
@@ -243,8 +263,11 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
         <span class="row-val">Casual</span>
       </div>
 
+      </div>
+      </div>
       <div class="section-label">Menu</div>
 
+      <div class="menu-groups">
       <div class="menu-group" style="--mg-color:var(--blue)" onclick="toggleMenuGroup(this)">
         <div class="menu-group-head">
           <div>
@@ -483,6 +506,7 @@ body{background:var(--bg);color:var(--text-1);font-family:'Courier New',monospac
           <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Sanford, Pinot Noir, Sta. Rita Hills, CA</span><span class="menu-item-price">$95</span></div></div>
           <div class="menu-item"><div class="menu-item-top"><span class="menu-item-name">Caymus, Cabernet, Napa, CA</span></div></div>
         </div>
+      </div>
       </div>
     </div>
   </div>
