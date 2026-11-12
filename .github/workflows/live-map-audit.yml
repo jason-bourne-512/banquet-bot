@@ -1,0 +1,29 @@
+name: Live Map audit
+
+# Runs the pre-flight checker on every push/PR that touches the Live Map.
+# Fails the check (red X on the commit) if any blocking error is found:
+#   invisible room (no box), broken ghost/bg image, bad service code, phone/last-name leak.
+# "No diagram overlay" and "past day" are advisories only — they never fail the build.
+
+on:
+  push:
+    paths:
+      - 'live-map.html'
+      - 'livemap/**'
+      - 'scripts/audit-live-map.js'
+      - '.github/workflows/live-map-audit.yml'
+  pull_request:
+    paths:
+      - 'live-map.html'
+      - 'livemap/**'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run Live Map audit
+        run: node scripts/audit-live-map.js
