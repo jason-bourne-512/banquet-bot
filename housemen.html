@@ -321,6 +321,7 @@ body.dir .printbtn{border-color:color-mix(in srgb,var(--acc) 40%,transparent);co
   <p style="margin:0 0 8px;color:var(--t2);font-weight:700">Houseman's name for the top of the list</p>
   <div class="chips" id="prChips"></div>
   <input id="prName" class="prname" maxlength="40" placeholder="Or type a name (leave blank for a write-in line)">
+  <label id="prTasksRow" style="display:none;align-items:center;gap:8px;margin:12px 0 0;font-weight:700;color:var(--t2);cursor:pointer"><input type="checkbox" id="prTasks" checked style="width:18px;height:18px;flex:none"> Include additional tasks <span id="prTasksN" style="color:var(--t3);font-weight:600"></span></label>
   <div class="acts"><button class="btn btn-undo" id="prCancel">Cancel</button><button class="btn btn-done" id="prGo">🖨 Print</button></div>
 </div></div>
 <div class="sheet-bg" id="nrBg"><div class="sheet nr">
@@ -1594,6 +1595,9 @@ function openPrintSheet(iso) {
   document.getElementById("prDay").textContent = `${longDay(iso)} ${md(iso)} · setting for ${d ? d.target : ""}`;
   document.getElementById("prChips").innerHTML = names.map(n => `<button data-prname="${esc(n)}" class="${crew.indexOf(n) >= 0 ? "on" : ""}">${esc(n)}</button>`).join("");
   document.getElementById("prName").value = crew.length == 1 ? crew[0] : "";
+  const nTasks = (TASKS[iso] || []).length, row = document.getElementById("prTasksRow");
+  row.style.display = nTasks ? "flex" : "none";
+  if (nTasks) { document.getElementById("prTasks").checked = true; document.getElementById("prTasksN").textContent = `(${nTasks})`; }
   document.getElementById("prBg").classList.add("on");
 }
 document.getElementById("prChips").addEventListener("click", e => {
@@ -1606,11 +1610,15 @@ document.getElementById("prCancel").onclick = () => document.getElementById("prB
 document.getElementById("prBg").onclick = e => { if (e.target.id == "prBg") document.getElementById("prBg").classList.remove("on"); };
 document.getElementById("prGo").onclick = () => {
   const name = document.getElementById("prName").value.trim().slice(0, 40);
+  const inclTasks = document.getElementById("prTasks").checked;
   document.getElementById("prBg").classList.remove("on");
-  printDay(prFor, name);
+  printDay(prFor, name, inclTasks);
 };
-function printDay(iso, who) {
+function printDay(iso, who, inclTasks) {
   const d = dayOf(iso); if (!d) return;
+  const tasks = TASKS[iso] || [];
+  const tasksBlock = (inclTasks && tasks.length)
+    ? `<div class="tasks-print"><h2>Additional tasks</h2><ul>${tasks.map(x=>`<li>☐ ${esc(x.text)}</li>`).join("")}</ul></div>` : "";
   const abs = f => isUp(f) ? previewOf(f) : new URL(previewOf(f), location.href).href;
   const diags = [], rooms = roomsOn(iso);
   rooms.forEach(({r, o}, i) => diagsOf(r, o).forEach((f,j,a) => diags.push({r, i, f, label: a.length>1 ? `Diagram ${j+1} of ${a.length}` : "Diagram"})));
@@ -1639,6 +1647,7 @@ function printDay(iso, who) {
     .tyb.ty-set{background:#000;color:#fff} .tyb.ty-ref{background:#fff;color:#000} .tyb.ty-clr{background:#fff;color:#000;border-style:dashed}
     ul{margin:0;padding:0;list-style:none} li{margin:1px 0}
     .nx{margin-top:5px;font-style:italic} .fl{margin-top:4px;color:#8a1c1c}
+    .tasks-print{border:2px solid #000;border-radius:6px;padding:8px 12px;margin:0 0 14px} .tasks-print h2{font:700 12pt Calibri,Arial;margin:0 0 5px} .tasks-print li{margin:2px 0}
     .sign{margin-top:18px;font-size:10pt;color:#333} .sign span{display:inline-block;border-bottom:1px solid #555;min-width:2.2in;margin-right:24px}
     .dpage{page-break-before:always;break-before:page;text-align:center} .dpage h2{font:700 13pt Calibri,Arial;margin:0 0 8px;text-align:left}
     .dpage img{max-width:100%;max-height:9in;border:1px solid #ccc}
@@ -1650,6 +1659,7 @@ function printDay(iso, who) {
     <div class="hsm">Houseman: ${who ? `<b>${esc(who)}</b>` : `<span class="blank"></span>`}</div>
     <h1>Housemen Checklist — ${longDay(iso)} ${md(iso)}</h1>
     <p class="meta">Setting for <b>${esc(d.target)}</b>${d.crew?` · ${esc(d.crew)} · ${esc(d.shift)}`:""} · ${rooms.length} rooms in setup order</p>
+    ${tasksBlock}
     <table><thead><tr><th>#</th><th>Room</th><th>Setup</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="sign"><span>&nbsp;</span><span>&nbsp;</span><br>Completed by &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checked by</div>
     <div class="foot">Printed from Banquet Bot · ${new Date().toLocaleString("en-US",{timeZone:TZ})}</div>
