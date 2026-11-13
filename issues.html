@@ -141,7 +141,9 @@
   // nudge to open Banquet Bot in a browser for the full Desktop view (Jason 2026-11-06).
   if (!all) {
     var animal = me == "Lisa" ? "🐒" : "🐻", c = me == "Lisa" ? "#ffd27a" : "#8bd1ff";
-    var praises = ["Good job, " + me + "!", "Proud of you!", "Nice work!", "You're on top of it!", "Thank you for staying on these!"];
+    var praises = me == "Lisa"
+      ? ["Hey, are you listening to me?", "Check BEO issues!", "You want a banana?"]
+      : ["Thank you for all that you do.", "Do you have a BFF at work?"];
     var praise = praises[Math.floor(Math.random() * praises.length)];
     var deskLine = me == "Lisa"
       ? "Open Banquet Bot in a browser on a computer for the full <b>Desktop view</b> — the big board, floor maps, way more room to work."
