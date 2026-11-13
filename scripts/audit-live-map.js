@@ -39,6 +39,10 @@ function overlap(a, b) {
   const h = Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
   return w * h;
 }
+// Fixed boardrooms: a permanent table-and-chairs set, never reconfigured, so they
+// will NEVER have a setup diagram (Jason 2026-11-12). Not a gap — suppress W1 for them.
+const NO_DIAGRAM = new Set(['Buttercup', 'Bluebell']);
+
 // candidate diagram files for a room (advisory): previews whose name contains the room's base word
 const previews = fs.existsSync(path.join(ROOT, 'diagrams/previews'))
   ? fs.readdirSync(path.join(ROOT, 'diagrams/previews')) : [];
@@ -76,7 +80,7 @@ for (const day of Object.keys(DATA.days).sort()) {
     for (const row of d.ev[room].s || []) if (!LEGEND.has(row[2])) E('E3', day, `room "${room}" service "${row[1]}" has unknown type "${row[2]}"`);
     // diagram coverage: is this room's box covered by any wired ghost?
     const covered = ghosts.some(g => overlap(b, g.box) >= 0.55 * area(b));
-    if (!covered) {
+    if (!covered && !NO_DIAGRAM.has(room)) {
       const c = candidates(room, d.ev[room].g);
       const note = c.list.length
         ? `wire one of: ${c.list.join(', ')}`
