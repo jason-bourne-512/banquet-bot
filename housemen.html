@@ -85,6 +85,11 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
 .items li.ck .box::after{content:'';width:6px;height:11px;border:solid #0e2418;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
 .items li.ck span{color:var(--t3);text-decoration:line-through}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}
+.tasks{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 14px}
+.tasks-h{font:700 10px Manrope;letter-spacing:1.6px;color:#89b4cf;text-transform:uppercase;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+.tasks-h .tcount{font:700 11px Manrope;letter-spacing:0;color:var(--t3)}
+.tasks .tby{font-style:normal;color:var(--t4);font-size:12px}
+.tempty{color:var(--t4);font-size:12.5px;margin-top:6px}
 .tag{font-size:10.5px;font-weight:700;padding:4px 8px;border-radius:6px;background:#ffffff0a;color:var(--t2);text-decoration:none;border:1px solid var(--line)}
 .tag.diag{color:var(--accent);border-color:#8bd1ff40}
 .tag.flag{color:var(--amber);background:var(--amber-d);border-color:#ffc08533}
@@ -887,11 +892,14 @@ const setSync = c => { document.getElementById("sync").className = "sync " + c; 
 // Pinned items (Hector 2026-10-28): lines a lead keeps under a room every night it's on the list, so they aren't retyped daily.
 const STANDING = {};       // room name -> [{id, text, by, ts}]
 const MOCK_STAND = "bb-hsm-mock-standing";
+const TASKS = {};          // iso -> [{id, text, by, done}] — day-level "Additional tasks" a lead adds, not tied to a room
+const MOCK_TASKS = "bb-hsm-mock-tasks";
 
 if (MOCK) {
   try { Object.assign(STATE, JSON.parse(localStorage.getItem("bb-hsm-mock") || "{}")); } catch(e) {}
   try { Object.assign(ORDER, JSON.parse(localStorage.getItem("bb-hsm-mock-order") || "{}")); } catch(e) {}
   try { Object.assign(STANDING, JSON.parse(localStorage.getItem(MOCK_STAND) || "{}")); } catch(e) {}
+  try { Object.assign(TASKS, JSON.parse(localStorage.getItem(MOCK_TASKS) || "{}")); } catch(e) {}
   setSync("ok");
 } else {
   const app = initializeApp({
@@ -901,7 +909,7 @@ if (MOCK) {
   db = getFirestore(app);
   for (const d of VISIBLE) {
     onSnapshot(doc(db, COL, d.iso),
-      snap => { STATE[d.iso] = (snap.exists() && snap.data().rooms) || {}; ORDER[d.iso] = (snap.exists() && snap.data().order) || null; setSync("ok"); render(); },
+      snap => { STATE[d.iso] = (snap.exists() && snap.data().rooms) || {}; ORDER[d.iso] = (snap.exists() && snap.data().order) || null; TASKS[d.iso] = (snap.exists() && snap.data().tasks) || []; setSync("ok"); render(); },
       err => { console.error("[housemen]", err); setSync("bad"); toast("Can't reach the live list — showing what's saved", true); });
   }
   onSnapshot(doc(db, COL, "standing"),
@@ -936,6 +944,15 @@ async function saveOrder(iso, ids) {
   if (MOCK) { try { localStorage.setItem("bb-hsm-mock-order", JSON.stringify(ORDER)); } catch(e) {} return; }
   try { await setDoc(doc(db, COL, iso), {order: ids, updated: Date.now()}, {merge: true}); }
   catch (e) { console.error("[housemen] order save failed", e); ORDER[iso] = before; render(); setSync("bad"); toast("Didn't save the new order — try again", true); }
+}
+
+// Additional tasks for one night (leads add; anyone signed in checks them off). Day doc top-level "tasks".
+async function saveTasks(iso, tasks) {
+  const before = TASKS[iso] ? TASKS[iso].slice() : [];
+  TASKS[iso] = tasks; render();
+  if (MOCK) { try { localStorage.setItem(MOCK_TASKS, JSON.stringify(TASKS)); } catch(e) {} return; }
+  try { await setDoc(doc(db, COL, iso), {tasks, updated: Date.now()}, {merge: true}); }
+  catch (e) { console.error("[housemen] tasks save failed", e); TASKS[iso] = before; render(); setSync("bad"); toast("Didn't save the task — try again", true); }
 }
 
 // Uploaded diagrams live as their own docs in the same collection ("diag-<id>": a JPEG data URL under ~900 KB),
@@ -1118,6 +1135,14 @@ function renderHsm(d) {
   let h = `<div class="hero"><div class="eyebrow">Tonight · setting for ${esc(d.target)}</div><h1>${longDay(d.iso)} ${md(d.iso)}</h1>
     <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}${rooms.length} rooms in setup order</div>
     <div class="progress"><div class="bar"><i style="width:${b?a/b*100:0}%"></i></div><div class="pct">${a}/${b}</div></div></div>`;
+  const tasks = TASKS[d.iso] || [];
+  if (tasks.length || lead) {
+    const td = tasks.filter(x => x.done).length;
+    h += `<div class="tasks"><div class="tasks-h">Additional tasks${tasks.length ? ` <span class="tcount">${td}/${tasks.length}</span>` : ""}</div>
+      <ul class="items">${tasks.map(x => `<li data-task="${esc(x.id)}" class="${x.done ? "ck" : ""}"><span class="box"></span><span>${esc(x.text)}${x.done ? `<em class="tby"> · ${esc(x.done.by)} ${esc(x.done.at)}</em>` : ""}</span>${lead ? `<button class="idel" data-tdel="${esc(x.id)}" aria-label="Remove task" title="Remove task">✕</button>` : ""}</li>`).join("")}</ul>
+      ${lead ? `<div class="iadd"><input id="taskadd-${d.iso}" maxlength="140" placeholder="+ Add a task for the whole crew tonight"><button data-taskadd="${d.iso}">Add</button></div>` : ""}
+      ${!tasks.length ? `<div class="tempty">Anything not tied to one room — lobby, back hall, linen, coat check.</div>` : ""}</div>`;
+  }
   h += `<div class="sortlist" data-sortlist="${d.iso}">`;
   rooms.forEach(({r, i, o, from}, k) => {
     const id = o + "|" + i, R = roomState(o, r), open = openId == id, flags = r.flags || [], ds = diagsOf(r, o);
@@ -1243,7 +1268,7 @@ document.getElementById("desk").onclick = () => { desk = !desk; try { localStora
 // ── actions
 document.addEventListener("click", async e => {
   if (e.target.closest("[data-grip]") || Date.now() - sortEnded < 350) { e.preventDefault(); return; }
-  const t = e.target.closest("[data-del],[data-pin],[data-unpin],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back],[data-cancel],[data-uncancel],[data-edit],[data-edsave],[data-edcancel],[data-type],[data-newroom]");
+  const t = e.target.closest("[data-del],[data-pin],[data-unpin],[data-addbtn],[data-restore],[data-day],[data-open],[data-item],[data-done],[data-undo],[data-prob],[data-resolve],[data-diag],[data-print],[data-dgm],[data-move],[data-back],[data-cancel],[data-uncancel],[data-edit],[data-edsave],[data-edcancel],[data-type],[data-newroom],[data-task],[data-tdel],[data-taskadd]");
   if (!t) return;
   if (t.dataset.print) { openPrintSheet(t.dataset.print); return; }
   if (t.dataset.newroom) { if (!EDIT()) { toast(WHO && LEAD(WHO.role) ? "Editing is on desktop only" : "Only the captain or director can add rooms", true); return; } openNewRoom(t.dataset.newroom); return; }
@@ -1260,6 +1285,18 @@ document.addEventListener("click", async e => {
   if (t.dataset.day) { dayISO = t.dataset.day; openId = null; render(); return; }
   if (t.dataset.open) { openId = openId == t.dataset.open ? null : t.dataset.open; render(); return; }
   if (t.dataset.prob) { if (await needWho("Sign in to report a problem.")) openSheet(t.dataset.prob); return; }
+  if (t.dataset.taskadd || t.dataset.tdel) {
+    if (!EDIT()) { toast(WHO && LEAD(WHO.role) ? "Editing is on desktop only" : "Only the captain or director can change this", true); return; }
+    if (t.dataset.tdel) { await saveTasks(dayISO, (TASKS[dayISO] || []).filter(x => x.id != t.dataset.tdel)); toast("Task removed"); return; }
+    const box = document.getElementById("taskadd-" + t.dataset.taskadd), text = (box && box.value || "").trim().slice(0, 140);
+    if (!text) { toast("Type the task first", true); return; }
+    box.value = ""; await saveTasks(dayISO, (TASKS[dayISO] || []).concat({id: Date.now().toString(36), text, by: WHO.name})); toast("Task added"); return;
+  }
+  if (t.dataset.task) {
+    const who = await needWho("Sign in to check things off."); if (!who) return;
+    const tid = t.dataset.task, tasks = (TASKS[dayISO] || []).map(x => x.id == tid ? {...x, done: x.done ? null : {by: who.name, at: nowLabel()}} : x);
+    await saveTasks(dayISO, tasks); return;
+  }
   const id = t.dataset.item || t.dataset.done || t.dataset.undo || t.dataset.resolve;
   const who = await needWho("Sign in to check things off."); if (!who) return;
   const {iso, r, i} = parseId(id), rsl = rk(r), cur = rs(iso, r);
@@ -1545,7 +1582,8 @@ document.addEventListener("keydown", e => {
     else if (e.key == "Escape") { EDITING = null; render(); }
     return;
   }
-  if (e.key == "Enter" && e.target.id && e.target.id.startsWith("add-")) { const b = document.querySelector(`[data-addbtn="${e.target.id.slice(4)}"]`); b && b.click(); } });
+  if (e.key == "Enter" && e.target.id && e.target.id.startsWith("add-")) { const b = document.querySelector(`[data-addbtn="${e.target.id.slice(4)}"]`); b && b.click(); }
+  if (e.key == "Enter" && e.target.id && e.target.id.startsWith("taskadd-")) { const b = document.querySelector(`[data-taskadd="${e.target.id.slice(8)}"]`); b && b.click(); } });
 // ── print: Word-style checklist (room | setup) + one diagram per page. Save as PDF from the print dialog.
 // Print sheet: whose list is this? The name goes big at the top of the printout.
 let prFor = null;
