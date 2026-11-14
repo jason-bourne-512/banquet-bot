@@ -256,7 +256,7 @@
         var title = textNodes(root).filter(function (n) { return clean(n.nodeValue) == hint; })[0];
         if (title) {
           var e = title.parentElement;
-          scope = (cfg && cfg.sub && e.closest(cfg.sub)) || (cfg && e.closest(cfg.card)) || e.closest("[class*=card],[class*=block],section,details") || e.parentElement;
+          scope = (cfg && cfg.sub && e.closest(cfg.sub)) || (cfg && e.closest(cfg.card)) || e.closest("[class*=card],[class*=block],.menu-sub,section,details") || e.parentElement;
         }
       }
       var node = null;
@@ -268,6 +268,7 @@
       // open every collapsed card or <details> around the match
       for (var e = node.parentElement; e; e = e.parentElement) {
         if (e.tagName == "DETAILS") e.open = true;
+        if (e.classList && e.classList.contains("menu-cat")) e.classList.add("open"); // menu.html accordions
         if (cfg && e.matches(cfg.card) && !e.classList.contains("open")) {
           if (typeof window.toggleCard == "function") window.toggleCard(e); else e.classList.add("open");
         }
