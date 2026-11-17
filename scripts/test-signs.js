@@ -10,7 +10,7 @@ const script = html.match(/<script>\s*([\s\S]*?)<\/script>/)[1];
 new Function(script); // syntax check
 const src = script.match(/  var ROOM_RE = [\s\S]*?\n  function parseRoom\(r\) \{[\s\S]*?\n  \}\n/)[0];
 const parseRoom = new Function(src + ';return parseRoom;')();
-for (const room of ['Bluebell', 'bluebell', 'Bluebell A', 'Bluebell AB', 'Bluebell A+B']) {
+for (const room of ['Bluebell', 'bluebell', 'Bluebell A', 'Bluebell AB', 'Bluebell A+B', 'Buttercup', 'buttercup']) {
   const r = parseRoom(room);
   assert.equal(r.doors, 0, `${room}: should get no door sign`);
   assert.equal(r.dir, 'R', `${room}: arrow should point right`);
@@ -25,7 +25,8 @@ const card = (group, room) => `<div class="event-card"><div class="card-group">$
 const day = (date, cards) => `<div class="day-section" data-date="${date}">${cards.join('')}</div>`;
 const rundown = day('2026-01-05', [card('Blue Group', 'Bluebell')]) +
   day('2026-01-06', [card('Blue Section', 'Bluebell A')]) +
-  day('2026-01-07', [card('Blue Group', 'Bluebell'), card('Cam Group', 'Camellia')]);
+  day('2026-01-07', [card('Blue Group', 'Bluebell'), card('Cam Group', 'Camellia')]) +
+  day('2026-01-08', [card('Butter Group', 'Buttercup'), card('Blue Group', 'Bluebell')]);
 const stub = `<script>localStorage.setItem('bb-hsm-who', JSON.stringify({name: 'Jason'}));
 window.fetch = function () { return Promise.resolve({text: function () { return Promise.resolve(${JSON.stringify(rundown).replace(/</g, '\\u003c')}); }}); };</script>`;
 const page = html
@@ -43,5 +44,6 @@ const render = date => {
 assert.deepEqual(render('2026-01-05'), {doors: 0, blueDoors: 0, dirs: 1, right: 1, left: 0}, 'Bluebell: one right-arrow directional, no door sign');
 assert.deepEqual(render('2026-01-06'), {doors: 0, blueDoors: 0, dirs: 1, right: 1, left: 0}, 'Bluebell A: one right-arrow directional, no door sign');
 assert.deepEqual(render('2026-01-07'), {doors: 2, blueDoors: 0, dirs: 2, right: 2, left: 0}, 'Bluebell beside Camellia: Camellia keeps its 2 door signs, Bluebell keeps its own directional');
+assert.deepEqual(render('2026-01-08'), {doors: 0, blueDoors: 0, dirs: 2, right: 2, left: 0}, 'Buttercup + Bluebell: each its own right-arrow directional, no door signs');
 fs.rmSync(tmpDir, { recursive: true });
 console.log('PASS: rendered page prints no Bluebell door sign and one right-arrow Bluebell directional; Camellia door signs unchanged.');

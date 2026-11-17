@@ -143,7 +143,7 @@
       </div>
       <div id="sg-events"></div>
       <div id="sg-skip" class="sg-note"></div>
-      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell gets its own directional with a right arrow. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 1, Primrose B gets 2, Primrose C and D get 1 each, Bluebell gets none. Room name, arrow, label and count are all editable. Set a count to 0 to skip a door sign.</div>
+      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell and Buttercup each get their own directional with a right arrow. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 1, Primrose B gets 2, Primrose C and D get 1 each, Bluebell and Buttercup get none. Room name, arrow, label and count are all editable. Set a count to 0 to skip a door sign.</div>
     </div>
   </div>
   <div id="sg-pv" hidden>
@@ -167,8 +167,9 @@
   var DIRS = {}, SECTIONS = {}, events = [], skipped = [];
 
   // ── room rules (Jason) ──
-  var ROOM_RE = /^(Barton Foyer|Lantana|Plumeria|Primrose|Camellia|Verbena|Bluebell|Barton|Bonnell|Zilker)(?:\s+([A-D](?:\s*[+&\/]?\s*[A-D])*))?\s*$/i;
-  var PRIM = {A: 1, B: 2, C: 1, D: 1};   // Primrose A = 1 door sign, B always 2 (Jason 2026-11-06)
+  var ROOM_RE = /^(Barton Foyer|Lantana|Plumeria|Primrose|Camellia|Verbena|Bluebell|Buttercup|Barton|Bonnell|Zilker)(?:\s+([A-D](?:\s*[+&\/]?\s*[A-D])*))?\s*$/i;
+  var PRIM = {A: 1, B: 2, C: 1, D: 1};
+  var OWN = {Bluebell: 1, Buttercup: 1};   // boardrooms: own directional, never a door sign   // Primrose A = 1 door sign, B always 2 (Jason 2026-11-06)
   function parseRoom(r) {
     var m = ROOM_RE.exec(r.trim()); if (!m) return null;
     var name = m[1].charAt(0).toUpperCase() + m[1].slice(1).toLowerCase();
@@ -176,14 +177,14 @@
     var letters = (m[2] || "").toUpperCase().replace(/[^A-D]/g, "");
     var out = {room: name + (letters ? " " + letters : ""), name: name, letters: letters, guess: false};
     if (name == "Lantana" || name == "Plumeria") out.dir = "L";
-    else if (name == "Camellia" || name == "Verbena" || name == "Bluebell") out.dir = "R";
+    else if (name == "Camellia" || name == "Verbena" || name == "Bluebell" || name == "Buttercup") out.dir = "R";
     else if (name == "Barton" || name == "Bonnell" || name == "Zilker" || name == "Barton Foyer") out.dir = "R"; // standalone rooms, pick the arrow (incl. Up) on the sign
     else { // Primrose: A and B left, C and D right
       var L = letters.replace(/[CD]/g, ""), R = letters.replace(/[AB]/g, "");
       out.dir = !letters || (L && R) ? "LR" : L ? "L" : "R";
     }
     if (name == "Primrose") { var l = letters || "ABCD"; out.doors = l.split("").reduce(function (a, c) { return a + PRIM[c]; }, 0); }
-    else if (name == "Bluebell" || name == "Barton Foyer") out.doors = 0; // directional only, never a door sign
+    else if (name == "Bluebell" || name == "Buttercup" || name == "Barton Foyer") out.doors = 0; // directional only, never a door sign
     else if (name == "Barton") out.doors = 2;
     else if (name == "Bonnell" || name == "Zilker") out.doors = 1;
     else out.doors = letters ? letters.length : 2;
@@ -270,13 +271,13 @@
     events.forEach(function (e) {
       if (!e.dirOn) return;
       var multi = e.rooms.length > 1, ln = function (r) { return r.room + (r.label && (multi || r.label != "Meeting") ? "-" + r.label : ""); };
-      var L = e.rooms.filter(function (r) { return r.name != "Bluebell" && /L/.test(r.dir); }).map(ln);
-      var R = e.rooms.filter(function (r) { return r.name != "Bluebell" && /R/.test(r.dir); }).map(ln);
-      var B = e.rooms.filter(function (r) { return r.name == "Bluebell"; }).map(ln);
-      var U = e.rooms.filter(function (r) { return r.name != "Bluebell" && r.dir == "U"; }).map(ln);
+      var L = e.rooms.filter(function (r) { return !OWN[r.name] && /L/.test(r.dir); }).map(ln);
+      var R = e.rooms.filter(function (r) { return !OWN[r.name] && /R/.test(r.dir); }).map(ln);
+      var B = e.rooms.filter(function (r) { return OWN[r.name]; }).map(ln);
+      var U = e.rooms.filter(function (r) { return !OWN[r.name] && r.dir == "U"; }).map(ln);
       add(left, e.name, L); add(right, e.name, R); add(blue, e.name, B); add(up, e.name, U);
     });
-    // one sign for every left room, one for every right room; only Bluebell gets its own
+    // one sign for every left room, one for every right room; only Bluebell and Buttercup get their own
     var dir = [];
     if (left.length) dir.push(dirSheet(left, "L"));
     if (right.length) dir.push(dirSheet(right, "R"));
@@ -320,7 +321,7 @@
       });
       h += "</div></div>";
     });
-    $("sg-events").innerHTML = h || '<p class="sg-note">No Primrose, Lantana, Plumeria, Camellia, Verbena or Bluebell events on this date.</p>';
+    $("sg-events").innerHTML = h || '<p class="sg-note">No Primrose, Lantana, Plumeria, Camellia, Verbena, Bluebell or Buttercup events on this date.</p>';
     $("sg-skip").textContent = skipped.length ? "No sign rule for: " + skipped.join(", ") : "";
   }
   $("sg-events").addEventListener("input", function (ev) {
@@ -360,7 +361,7 @@
 
   // New sign from scratch: room list, arrow and door count come from the same rules (parseRoom), all editable.
   var NEW_ROOMS = ["Lantana", "Lantana A", "Lantana B", "Plumeria", "Plumeria A", "Plumeria B", "Primrose A", "Primrose B", "Primrose AB", "Primrose C", "Primrose D", "Primrose CD",
-    "Camellia", "Camellia A", "Camellia B", "Verbena", "Verbena A", "Verbena B", "Bluebell",
+    "Camellia", "Camellia A", "Camellia B", "Verbena", "Verbena A", "Verbena B", "Bluebell", "Buttercup",
     "Barton", "Barton Foyer", "Bonnell", "Zilker"];
   $("nw-room").innerHTML = NEW_ROOMS.map(function (r) { return "<option>" + r + "</option>"; }).join("");
   function nwFill() { var p = parseRoom($("nw-room").value); if (!p) return; $("nw-dir").value = p.dir == "L" ? "L" : "R"; $("nw-doors").value = p.doors; }
