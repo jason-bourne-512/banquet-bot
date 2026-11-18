@@ -142,7 +142,8 @@
       label: "ALEX · AV",
       img: "img/me/alex.svg?v=6",
       // Home only: a big avatar card under the header; now and then it flips to the beer-and-hangover version for a few seconds.
-      hero: {src: "img/me/alex.svg?v=6", alt: "img/me/alex-drunk.svg?v=2", caption: "ALEX · AV MANAGER"},
+      // Pants-drop (Jason 2026-11-17): pink shirt + polka-dot tie, slacks fall and show red polka-dot boxers. Picked 2 of 3 swaps; the hangover look the rest.
+      hero: {src: "img/me/alex.svg?v=6", alt: "img/me/alex-pants.svg?v=1", alts: ["img/me/alex-pants.svg?v=1", "img/me/alex-pants.svg?v=1", "img/me/alex-drunk.svg?v=2"], caption: "ALEX · AV MANAGER"},
       css: BADGE + ".bb-me-badge{color:#dcecff;background:linear-gradient(135deg,#1f4f8f,#0f2442);border:1px solid #8bd1ff88}" +
         ".bb-hero{display:flex;flex-direction:column;align-items:center;margin:10px auto 18px;padding:14px 14px 12px;max-width:320px;" +
         "border-radius:20px;background:radial-gradient(ellipse at 50% 30%,#3d7fd055,transparent 70%),#0f1c2899;border:1px solid #8bd1ff44;box-shadow:0 8px 26px #0008}" +
@@ -343,9 +344,25 @@
       mark: {src: "img/me/lisa-san-antonio.svg", opacity: .08},
       // Only one monkey now (Jason 2026-11-06): the one pointing at the new BEO Issues tab, gone for good once she opens it.
       // The vine monkey, walker, monkey moments and Desktop-button pointer are off; their art and styles stay in case they come back.
+      // Back 2026-11-17 (Jason): a monkey swings on a vine across the top of every page and drops one big banana; tap the banana and it puffs away,
+      // then another drops ~6s later (see swingerLoop).
+      swinger: "img/me/lisa-monkey.svg",
       pointNew: "img/me/lisa-monkey-walk.svg",   // desktop side panel or phone Home button: points at BEO Issues until she opens it (see pointToIssues)
       css: BADGE + ".bb-me-badge{color:#ffd1e4;background:linear-gradient(135deg,#5a1f3a,#2a0f1d);border:1px solid #ff9ec788}" +
         "@keyframes bbVineIn{from{transform:translateY(-110%)}to{transform:none}}" +
+        // swinger (2026-11-17): vine across the top, monkey swings end to end, one big banana
+        ".bb-vine{position:fixed;top:0;left:0;right:0;height:6px;z-index:9995;pointer-events:none;background:repeating-linear-gradient(90deg,#3e7d2c 0 18px,#2f6121 18px 30px)}" +
+        ".bb-swinger{position:fixed;top:-8px;left:-15vw;width:clamp(110px,12vw,160px);z-index:9996;pointer-events:none;animation:bbAcross 7s ease-in-out infinite}" +
+        ".bb-swinger img{display:block;width:100%;height:auto;border:0;border-radius:0;background:none;margin:0;padding:0;box-shadow:none;transform-origin:50% 0;" +
+        "filter:drop-shadow(0 6px 12px #000a);animation:bbTarzan .6s ease-in-out infinite alternate}" +
+        "@keyframes bbAcross{0%{left:-15vw}45%,50%{left:88vw}95%,100%{left:-15vw}}" +
+        "@keyframes bbTarzan{from{transform:rotate(-28deg)}to{transform:rotate(28deg)}}" +
+        ".bb-bigban{position:fixed;width:clamp(110px,14vw,170px);z-index:9997;cursor:pointer;animation:bbBanFall 1.4s cubic-bezier(.5,0,.9,.6) forwards}" +
+        ".bb-bigban>div{filter:drop-shadow(0 6px 10px #000a);animation:bbBanSpin 1.4s linear forwards}" +
+        ".bb-bigban.land{animation:bbBanThud .35s ease-out}.bb-bigban.land>div{animation:none;transform:rotate(20deg)}" +
+        "@keyframes bbBanFall{to{top:calc(100vh - clamp(110px,14vw,170px) - 10px - env(safe-area-inset-bottom,0px))}}" +
+        "@keyframes bbBanSpin{to{transform:rotate(380deg)}}@keyframes bbBanThud{0%{transform:scaleY(.8)}100%{transform:none}}" +
+        "@media (prefers-reduced-motion:reduce){.bb-vine,.bb-swinger,.bb-bigban{display:none!important}}" +
         // Swing (2026-10-27): big Tarzan swings, then a full loop-the-loop over the top of the vine.
         "@keyframes bbSwing{0%{transform:rotate(-22deg)}15%{transform:rotate(22deg)}30%{transform:rotate(-22deg)}45%{transform:rotate(22deg)}" +
         "60%{transform:rotate(-30deg)}80%{transform:rotate(330deg)}100%{transform:rotate(338deg)}}" +
@@ -658,6 +675,25 @@
     for (var k in put) st.setProperty(k, put[k], "important");
     el.classList.add("bb-poof"); setTimeout(function () { el.remove(); }, 480);
   }
+  // Lisa: the swinging monkey drops one big banana at a time; tap it and it puffs away, and the next one falls ~6s later.
+  function swingerLoop(src) {
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var BANANA = '<svg viewBox="0 0 60 60" width="100%"><path d="M8 14 Q12 48 50 50 Q30 40 22 12 Z" fill="#ffd93b" stroke="#c99a00" stroke-width="2.5" stroke-linejoin="round"/>' +
+      '<path d="M8 14 L4 8" stroke="#6b4a1a" stroke-width="5" stroke-linecap="round"/><path d="M14 20 Q20 40 40 46" stroke="#fff3a0" stroke-width="3" fill="none" stroke-linecap="round"/></svg>';
+    var vine = document.createElement("div"); vine.className = "bb-vine"; document.body.appendChild(vine);
+    var sw = document.createElement("div"); sw.className = "bb-swinger";
+    var im = document.createElement("img"); im.src = src; im.alt = ""; sw.appendChild(im); document.body.appendChild(sw);
+    var drop = function () {
+      if (document.querySelector(".bb-bigban")) return;
+      var r = sw.getBoundingClientRect(), b = document.createElement("div"); b.className = "bb-bigban"; b.title = "Tap me";
+      b.style.left = Math.max(0, Math.min(window.innerWidth - 120, r.left + r.width * 0.3)) + "px"; b.style.top = (r.top + r.height * 0.5) + "px";
+      b.innerHTML = "<div>" + BANANA + "</div>"; document.body.appendChild(b);
+      setTimeout(function () { b.classList.add("land"); }, 1400);
+      b.addEventListener("click", function () { bbPoof(b); setTimeout(drop, 6000); });
+    };
+    window.bbBanana = drop;   // preview: bbBanana()
+    setTimeout(drop, 1500);
+  }
   // Lisa: one random monkey moment every ~12–25s (the first shortly after the page opens), never the same twice in a row.
   function monkeyLoop() {
     var BANANA = '<svg viewBox="0 0 60 60" width="100%"><path d="M8 14 Q12 48 50 50 Q30 40 22 12 Z" fill="#ffd93b" stroke="#c99a00" stroke-width="2.5" stroke-linejoin="round"/>' +
@@ -916,12 +952,17 @@
           s.style.left = (5 + Math.random() * 90).toFixed(1) + "vw"; s.style.top = (8 + Math.random() * 60).toFixed(1) + "vh";
           s.style.animationDelay = (Math.random() * 4).toFixed(2) + "s"; document.body.appendChild(s); extra.push(s); }
         return [d, 11000, extra]; },
+      // dance (Jason 2026-11-17): arms up, hips swaying, music notes
+      dance: function () { var d = add("spin", "img/me/diana-bear-dance.svg?v=1");
+        var side = Math.random() < 0.5 ? "left" : "right", spot = (3 + Math.random() * 14).toFixed(1) + "vw";
+        if (side == "left" && document.documentElement.classList.contains("bbd")) spot = "calc(var(--bbd-side) + " + spot + ")";
+        d.style[side] = spot; return [d, 6000]; },
       rocket: function () { var d = add("rocket", "img/me/diana-bear.svg");
         d.querySelector("img").className = "bb-rider";
         var rk = document.createElement("img"); rk.src = "img/me/diana-rocket.svg"; rk.alt = ""; d.firstChild.appendChild(rk);
         return [d, 7000]; }
     };
-    var names = Object.keys(acts).concat("talk"), last = null;   // the talking peek comes up twice as often
+    var names = Object.keys(acts).concat("talk", "dance"), last = null;   // the talking peek and the dance come up twice as often
     var run = function (name) {
       if (document.querySelector(".bb-bear")) return;
       var r = acts[name](); setTimeout(function () { r[0].remove(); (r[2] || []).forEach(function (x) { x.remove(); }); }, r[1] + 200);
@@ -1044,12 +1085,12 @@
         var hc = document.createElement("b"); hc.textContent = t.hero.caption; hr.appendChild(hc);
         if (heroAt.tagName == "MAIN") heroAt.prepend(hr); else heroAt.after(hr);
         if (t.hero.alt) {   // random swaps: every ~15–35s, a 40% chance to show the alt look for 6–10s
-          new Image().src = t.hero.alt;
+          var alts = t.hero.alts || [t.hero.alt]; alts.forEach(function (a) { new Image().src = a; });
           var swap = function (src) { hi.classList.remove("bb-swap"); void hi.offsetWidth; hi.src = src; hi.classList.add("bb-swap"); };
           var heroNext = function (ms) {
             window.bbHeroTimer = setTimeout(function () {
               if (!document.hidden && hi.isConnected && Math.random() < 0.4) {
-                swap(t.hero.alt);
+                swap(alts[Math.floor(Math.random() * alts.length)]);
                 window.bbHeroTimer = setTimeout(function () { swap(t.hero.src); heroNext(15000 + Math.random() * 20000); }, 6000 + Math.random() * 4000);
               } else heroNext(15000 + Math.random() * 20000);
             }, ms);
@@ -1102,6 +1143,7 @@
       if (t.dbz) dbzLoop();
       if (t.bear && t.bear.test(location.pathname)) bearLoop();
       if (t.monkeyMoments) monkeyLoop();
+      if (t.swinger) swingerLoop(t.swinger);
       if (t.pointNew) pointToIssues(t.pointNew);
       if (t.pointDesk) pointToDesktop(t.pointDesk);
       if (t.lion) lionLooks();
