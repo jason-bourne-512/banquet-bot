@@ -301,15 +301,19 @@
       var multi = e.rooms.length > 1, ln = function (r) { return r.room + (r.label && (multi || r.label != "Meeting") ? "-" + r.label : ""); };
       var L = e.rooms.filter(function (r) { return !OWN[r.name] && /L/.test(r.dir); }).map(ln);
       var R = e.rooms.filter(function (r) { return !OWN[r.name] && /R/.test(r.dir); }).map(ln);
-      var B = e.rooms.filter(function (r) { return OWN[r.name]; }).map(ln);
       var U = e.rooms.filter(function (r) { return !OWN[r.name] && r.dir == "U"; }).map(ln);
-      add(left, e.name, L); add(right, e.name, R); add(blue, e.name, B); add(up, e.name, U);
+      add(left, e.name, L); add(right, e.name, R); add(up, e.name, U);
+      // Bluebell / Buttercup: own sign, pointing whichever way its arrow is set (right unless changed)
+      ["L", "R", "U"].forEach(function (d) {
+        var B = e.rooms.filter(function (r) { return OWN[r.name] && (r.dir == "LR" ? "R" : r.dir) == d; }).map(ln);
+        if (B.length) blue.push({title: e.name, lines: B, d: d});
+      });
     });
     // one sign for every left room, one for every right room; only Bluebell and Buttercup get their own
     var dir = [];
     if (left.length) dir.push(dirSheet(left, "L"));
     if (right.length) dir.push(dirSheet(right, "R"));
-    blue.forEach(function (b) { dir.push(dirSheet([b], "R")); });
+    blue.forEach(function (b) { dir.push(dirSheet([b], b.d)); });
     up.forEach(function (u) { dir.push(dirSheet([u], "U")); });
     var door = [];
     events.forEach(function (e) {
