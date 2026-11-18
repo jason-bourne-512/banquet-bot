@@ -53,6 +53,9 @@
 .sg-add input{width:150px;background:#0b151e;border:1px solid #527b995e;border-radius:6px;color:#edf5ff;font:12px Manrope,Arial,sans-serif;padding:5px 7px}
 .sg-add button{background:transparent;border:1px solid #8bd1ff88;color:#8bd1ff;border-radius:7px;font:600 11px Manrope,Arial,sans-serif;padding:5px 10px;cursor:pointer}
 .sg-rx{background:transparent;border:1px solid #ff8f8f66;color:#ff8f8f;border-radius:6px;font:12px Manrope,Arial,sans-serif;padding:2px 7px;cursor:pointer}
+.sg-dx{background:transparent;border:1px solid #ff8f8f66;color:#ff8f8f;border-radius:6px;font:11px Manrope,Arial,sans-serif;padding:3px 8px;cursor:pointer}
+.sg-dx.on{border-color:#8bd1ff88;color:#8bd1ff}
+.sg-nod{font-size:11px;color:#8aa4b8;font-style:italic}
 .sg-x{margin-left:auto;background:transparent;border:1px solid #ff8f8f88;color:#ff8f8f;border-radius:7px;font:11px Manrope,Arial,sans-serif;padding:4px 9px;cursor:pointer}
 .sg-tag{font-size:9px;letter-spacing:.1em;color:#f2c879;border:1px solid #f2c87966;border-radius:9px;padding:1px 6px;font-style:normal}
 .sg-tag.red{color:#ff8f8f;border-color:#ff8f8f88}
@@ -154,7 +157,7 @@
       </div>
       <div id="sg-events"></div>
       <div id="sg-skip" class="sg-note"></div>
-      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell and Buttercup each get their own directional, right arrow unless you change it. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 1, Primrose B gets 2, Primrose C and D get 1 each, Bluebell and Buttercup get none. Room name, arrow, label and count are all editable. Set a count to 0 to skip a door sign. A group with more than one room: use + Add room on its card (pick a room or type your own), and each room becomes another line under the name on the directional. The × next to a room takes it off the signs.</div>
+      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell and Buttercup each get their own directional, right arrow unless you change it. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 1, Primrose B gets 2, Primrose C and D get 1 each, Bluebell and Buttercup get none. Room name, arrow, label and count are all editable. Directional only? Use × door sign on a room, or untick Door signs for the whole group. A group with more than one room: use + Add room on its card (pick a room or type your own), and each room becomes another line under the name on the directional. The × next to a room takes it off the signs.</div>
     </div>
   </div>
   <div id="sg-pv" hidden>
@@ -320,6 +323,7 @@
     events.forEach(function (e) {
       e.rooms.forEach(function (r) {
         var sub = r.dlabel && r.dlabel != "Meeting" ? r.dlabel : "";
+        if (e.doorOn === false || r.noDoor) return;   // directional only: door sign turned off for the group or this room
         for (var n = 0; n < r.doors; n++) door.push(doorSheet(e.name, sub, r.room));
       });
     });
@@ -342,6 +346,7 @@
     events.forEach(function (e, ei) {
       h += '<div class="sg-card' + (e.dirOn ? "" : " off") + '"><div class="sg-head"><input type="text" data-ei="' + ei + '" value="' + esc(e.name) + '" aria-label="Sign name">' +
         '<label><input type="checkbox" data-dir="' + ei + '"' + (e.dirOn ? " checked" : "") + '> Directional</label>' +
+        '<label><input type="checkbox" data-door="' + ei + '"' + (e.doorOn !== false ? " checked" : "") + '> Door signs</label>' +
         (e.noBeo ? '<span class="sg-tag red">NO EVENT ORDER YET</span>' : "") + (e.custom ? '<i class="sg-tag">NEW</i><button type="button" class="sg-x" data-rm="' + ei + '">Remove</button>' : "") + "</div><div class=\"sg-rooms\">";
       e.rooms.forEach(function (r, ri) {
         var opts = [["L", "\u2190 Left"], ["R", "\u2192 Right"], ["U", "\u2191 Up"]];
@@ -349,7 +354,8 @@
         var arrSel = '<select class="arr-sel" data-ds="' + ei + '" data-ri="' + ri + '" aria-label="Arrow direction">' +
           opts.map(function (o) { return '<option value="' + o[0] + '"' + (r.dir == o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select>";
         h += '<div class="sg-room">' + arrSel + '<input class="rm-name" type="text" data-rn="' + ei + '" data-ri="' + ri + '" value="' + esc(r.room) + '" aria-label="Room name">' + labelUI(r, ei, ri, false) + labelUI(r, ei, ri, true) +
-          '<input type="number" min="0" max="9" value="' + r.doors + '" data-ei="' + ei + '" data-ri="' + ri + '" aria-label="Door signs"> door' +
+          (r.noDoor || e.doorOn === false ? '<span class="sg-nod">no door sign</span>' : '<input type="number" min="0" max="9" value="' + r.doors + '" data-ei="' + ei + '" data-ri="' + ri + '" aria-label="Door signs"> door') +
+          (e.doorOn === false ? "" : ' <button type="button" class="sg-dx' + (r.noDoor ? " on" : "") + '" data-dx="' + ei + '" data-ri="' + ri + '">' + (r.noDoor ? "+ door sign" : "\u00d7 door sign") + "</button>") +
           (r.guess ? ' <i class="sg-tag">GUESS</i>' : "") + (r.dir == "LR" ? ' <i class="sg-tag red">CHECK SIDE</i>' : "") +
           (' <button type="button" class="sg-rx" data-rr="' + ei + '" data-ri="' + ri + '" aria-label="Remove room">\u00d7</button>') + "</div>";
       });
@@ -379,6 +385,7 @@
       if (!ar) return;
       ar.label = "Meeting"; ar.added = true; initMode(ar); ae.rooms.push(ar); renderList(); build(); return;
     }
+    if (t.dataset.dx != null) { var dr = events[+t.dataset.dx].rooms[+t.dataset.ri]; dr.noDoor = !dr.noDoor; renderList(); build(); return; }
     if (t.dataset.rr != null) {
       var re = events[+t.dataset.rr], gone = re.rooms.splice(+t.dataset.ri, 1)[0];
       if (gone.key && !gone.added) (re.gone = re.gone || {})[gone.key] = 1;   // Refresh keeps a Rundown room removed
@@ -392,6 +399,7 @@
     var t = ev.target;
     if (t.dataset.lm != null) { setMode(events[+t.dataset.lm].rooms[+t.dataset.ri], t.value, t.dataset.w == "1"); renderList(); build(); return; }
     if (t.dataset.ds != null) { events[+t.dataset.ds].rooms[+t.dataset.ri].dir = t.value; renderList(); build(); return; }
+    if (t.dataset.door != null) { events[+t.dataset.door].doorOn = t.checked; renderList(); build(); return; }
     if (t.dataset.dir == null) return;
     events[+t.dataset.dir].dirOn = t.checked; renderList(); build();
   });
@@ -437,20 +445,20 @@
   var addDays = function (iso, n) { var d = new Date(iso + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 
   // Refresh: re-read the Rundown, then put back every edit made on this date (names, arrows, labels, door counts, added rooms) and redraw the sheets
-  var KEEP = ["room", "dir", "label", "dlabel", "mode", "dmode", "doors", "guess"];
+  var KEEP = ["room", "dir", "label", "dlabel", "mode", "dmode", "doors", "guess", "noDoor"];
   function snapshot() {
     var snap = {};
     events.forEach(function (e) {
       if (e.custom) return;
       var rooms = {}; e.rooms.forEach(function (r) { if (r.key) rooms[r.key] = r; });
-      snap[e.group] = {name: e.name, dirOn: e.dirOn, rooms: rooms, added: e.rooms.filter(function (r) { return r.added; }), gone: e.gone || {}};
+      snap[e.group] = {name: e.name, dirOn: e.dirOn, doorOn: e.doorOn, rooms: rooms, added: e.rooms.filter(function (r) { return r.added; }), gone: e.gone || {}};
     });
     return snap;
   }
   function restore(snap) {
     events.forEach(function (e) {
       var o = snap[e.group]; if (!o) return;
-      e.name = o.name; e.dirOn = o.dirOn; e.gone = o.gone;
+      e.name = o.name; e.dirOn = o.dirOn; e.doorOn = o.doorOn; e.gone = o.gone;
       e.rooms = e.rooms.filter(function (r) { return !o.gone[r.key]; });
       e.rooms.forEach(function (r) { var old = o.rooms[r.key]; if (old) KEEP.forEach(function (k) { r[k] = old[k]; }); });
       e.rooms = e.rooms.concat(o.added);
