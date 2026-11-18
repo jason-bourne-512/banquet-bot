@@ -134,6 +134,7 @@
         <div class="sg-size" id="sg-size-title" role="group" aria-label="Title size">Title <span data-for="title"></span></div>
         <div class="sg-size" id="sg-size-sub" role="group" aria-label="Subtext size">Subtext <span data-for="sub"></span></div>
         <button class="sg-btn" id="sg-newbtn" type="button">New sign<small>Create one from scratch</small></button>
+        <button class="sg-btn" id="sg-refresh" type="button">Refresh<small id="sg-refresh-n">Latest Rundown, keeps your edits</small></button>
       </div>
       <div class="sg-card sg-new" id="sg-new">
         <div class="row">
@@ -241,7 +242,7 @@
       [].forEach.call(card.querySelectorAll(".svc-row .room-pill"), function (p) {
         var raw = txt(p); if (seen[raw]) return; seen[raw] = 1;
         var pr = parseRoom(raw);
-        if (pr) { pr.label = roomLabel(card, raw); initMode(pr); rooms.push(pr); } else if (raw) skipped.push(group + " (" + raw + ")");
+        if (pr) { pr.key = raw; pr.label = roomLabel(card, raw); initMode(pr); rooms.push(pr); } else if (raw) skipped.push(group + " (" + raw + ")");
       });
       var noteTxt = [].map.call(card.querySelectorAll(".foot-val"), txt).join(" ");
       if (!rooms.length) return;
@@ -421,15 +422,51 @@
   var todayISO = function () { return new Date().toLocaleDateString("en-CA", {timeZone: "America/Chicago"}); };
   var addDays = function (iso, n) { var d = new Date(iso + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 
-  fetch("rundown.html", {cache: "no-cache"}).then(function (r) { return r.text(); }).then(function (t) {
-    var doc = new DOMParser().parseFromString(t, "text/html");
-    [].forEach.call(doc.querySelectorAll(".day-section[data-date]"), function (s) { if (s.querySelector(".event-card")) SECTIONS[s.dataset.date] = s; });
-    var days = Object.keys(SECTIONS).sort(), want = new URLSearchParams(location.search).get("date") || addDays(todayISO(), 1);
+  // Refresh: re-read the Rundown, then put back every edit made on this date (names, arrows, labels, door counts, added rooms) and redraw the sheets
+  var KEEP = ["room", "dir", "label", "dlabel", "mode", "dmode", "doors", "guess"];
+  function snapshot() {
+    var snap = {};
+    events.forEach(function (e) {
+      if (e.custom) return;
+      var rooms = {}; e.rooms.forEach(function (r) { if (r.key) rooms[r.key] = r; });
+      snap[e.group] = {name: e.name, dirOn: e.dirOn, rooms: rooms, added: e.rooms.filter(function (r) { return r.added; })};
+    });
+    return snap;
+  }
+  function restore(snap) {
+    events.forEach(function (e) {
+      var o = snap[e.group]; if (!o) return;
+      e.name = o.name; e.dirOn = o.dirOn;
+      e.rooms.forEach(function (r) { var old = o.rooms[r.key]; if (old) KEEP.forEach(function (k) { r[k] = old[k]; }); });
+      e.rooms = e.rooms.concat(o.added);
+    });
+  }
+  function load(keep) {
+    var snap = keep ? snapshot() : null, iso = curISO;
+    return fetch("rundown.html?r=" + Date.now(), {cache: "no-store"}).then(function (r) { return r.text(); }).then(function (t) {
+      var doc = new DOMParser().parseFromString(t, "text/html");
+      SECTIONS = {};
+      [].forEach.call(doc.querySelectorAll(".day-section[data-date]"), function (s) { if (s.querySelector(".event-card")) SECTIONS[s.dataset.date] = s; });
+      var days = Object.keys(SECTIONS).sort();
+      if (days.length) { $("sg-date").min = days[0]; $("sg-date").max = days[days.length - 1]; }
+      if (keep) { curISO = iso; readEvents(iso); restore(snap); events = events.concat(customs[iso] || []); renderList(); build(); return; }
+      start(days);
+    });
+  }
+  $("sg-refresh").onclick = function () {
+    var b = this; b.disabled = true; $("sg-refresh-n").textContent = "Refreshing\u2026";
+    load(true).then(function () {
+      $("sg-refresh-n").textContent = "Updated " + new Date().toLocaleTimeString("en-US", {hour: "numeric", minute: "2-digit"});
+    }).catch(function (err) { console.error("[signs]", err); $("sg-refresh-n").textContent = "Could not reach the Rundown"; }).then(function () { b.disabled = false; });
+  };
+  function start(days) {
+    var want = new URLSearchParams(location.search).get("date") || addDays(todayISO(), 1);
     if (!SECTIONS[want]) want = days.filter(function (d) { return d > todayISO(); })[0] || days[days.length - 1];
-    $("sg-date").value = want; $("sg-date").min = days[0]; $("sg-date").max = days[days.length - 1];
+    $("sg-date").value = want;
     $("sg-date").onchange = function () { show($("sg-date").value); };
     show(want);
-  }).catch(function (err) { console.error("[signs]", err); $("sg-events").innerHTML = '<p class="sg-note">Could not load the Rundown.</p>'; });
+  }
+  load(false).catch(function (err) { console.error("[signs]", err); $("sg-events").innerHTML = '<p class="sg-note">Could not load the Rundown.</p>'; });
 })();
 </script>
 </body>
