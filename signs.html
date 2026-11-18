@@ -48,6 +48,10 @@
 .sg-new input[type=text]{min-width:240px}
 .sg-new input[type=number]{width:60px}
 .sg-new .chk{flex-direction:row;align-items:center;gap:6px;letter-spacing:0;text-transform:none;font-size:11px;color:#b1c8d9}
+.sg-add{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin-top:9px;font-size:11px;color:#9eb8cb}
+.sg-add select{background:#0b151e;border:1px solid #527b995e;border-radius:6px;color:#edf5ff;font:12px Manrope,Arial,sans-serif;padding:5px 6px}
+.sg-add button{background:transparent;border:1px solid #8bd1ff88;color:#8bd1ff;border-radius:7px;font:600 11px Manrope,Arial,sans-serif;padding:5px 10px;cursor:pointer}
+.sg-rx{background:transparent;border:1px solid #ff8f8f66;color:#ff8f8f;border-radius:6px;font:12px Manrope,Arial,sans-serif;padding:2px 7px;cursor:pointer}
 .sg-x{margin-left:auto;background:transparent;border:1px solid #ff8f8f88;color:#ff8f8f;border-radius:7px;font:11px Manrope,Arial,sans-serif;padding:4px 9px;cursor:pointer}
 .sg-tag{font-size:9px;letter-spacing:.1em;color:#f2c879;border:1px solid #f2c87966;border-radius:9px;padding:1px 6px;font-style:normal}
 .sg-tag.red{color:#ff8f8f;border-color:#ff8f8f88}
@@ -148,7 +152,7 @@
       </div>
       <div id="sg-events"></div>
       <div id="sg-skip" class="sg-note"></div>
-      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell and Buttercup each get their own directional with a right arrow. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 1, Primrose B gets 2, Primrose C and D get 1 each, Bluebell and Buttercup get none. Room name, arrow, label and count are all editable. Set a count to 0 to skip a door sign.</div>
+      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell and Buttercup each get their own directional with a right arrow. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 1, Primrose B gets 2, Primrose C and D get 1 each, Bluebell and Buttercup get none. Room name, arrow, label and count are all editable. Set a count to 0 to skip a door sign. A group with more than one room: use + Add room on its card, and each room becomes another line under the name on the directional.</div>
     </div>
   </div>
   <div id="sg-pv" hidden>
@@ -340,9 +344,12 @@
           opts.map(function (o) { return '<option value="' + o[0] + '"' + (r.dir == o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select>";
         h += '<div class="sg-room">' + arrSel + '<input class="rm-name" type="text" data-rn="' + ei + '" data-ri="' + ri + '" value="' + esc(r.room) + '" aria-label="Room name">' + labelUI(r, ei, ri, false) + labelUI(r, ei, ri, true) +
           '<input type="number" min="0" max="9" value="' + r.doors + '" data-ei="' + ei + '" data-ri="' + ri + '" aria-label="Door signs"> door' +
-          (r.guess ? ' <i class="sg-tag">GUESS</i>' : "") + (r.dir == "LR" ? ' <i class="sg-tag red">CHECK SIDE</i>' : "") + "</div>";
+          (r.guess ? ' <i class="sg-tag">GUESS</i>' : "") + (r.dir == "LR" ? ' <i class="sg-tag red">CHECK SIDE</i>' : "") +
+          (r.added || (e.custom && e.rooms.length > 1) ? ' <button type="button" class="sg-rx" data-rr="' + ei + '" data-ri="' + ri + '" aria-label="Remove room">\u00d7</button>' : "") + "</div>";
       });
-      h += "</div></div>";
+      // a group can point to more than one room: each extra room is one more line under the name on its directional
+      h += '</div><div class="sg-add"><select data-ar="' + ei + '" aria-label="Room to add">' + NEW_ROOMS.map(function (n) { return "<option>" + n + "</option>"; }).join("") + "</select>" +
+        '<button type="button" data-arb="' + ei + '">+ Add room</button></div></div>';
     });
     $("sg-events").innerHTML = h || '<p class="sg-note">No Primrose, Lantana, Plumeria, Camellia, Verbena, Bluebell or Buttercup events on this date.</p>';
     $("sg-skip").textContent = skipped.length ? "No sign rule for: " + skipped.join(", ") : "";
@@ -356,7 +363,13 @@
     build();
   });
   $("sg-events").addEventListener("click", function (ev) {
-    var t = ev.target; if (t.dataset.rm == null) return;
+    var t = ev.target;
+    if (t.dataset.arb != null) {
+      var ae = events[+t.dataset.arb], ar = parseRoom(t.previousElementSibling.value); if (!ar) return;
+      ar.label = "Meeting"; ar.added = true; initMode(ar); ae.rooms.push(ar); renderList(); build(); return;
+    }
+    if (t.dataset.rr != null) { events[+t.dataset.rr].rooms.splice(+t.dataset.ri, 1); renderList(); build(); return; }
+    if (t.dataset.rm == null) return;
     var e = events[+t.dataset.rm], list = customs[curISO] || [], i = list.indexOf(e);
     if (i > -1) { list.splice(i, 1); events.splice(+t.dataset.rm, 1); renderList(); build(); }
   });
