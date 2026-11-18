@@ -56,6 +56,11 @@
 .sg-dx{background:transparent;border:1px solid #ff8f8f66;color:#ff8f8f;border-radius:6px;font:11px Manrope,Arial,sans-serif;padding:3px 8px;cursor:pointer}
 .sg-dx.on{border-color:#8bd1ff88;color:#8bd1ff}
 .sg-nod{font-size:11px;color:#8aa4b8;font-style:italic}
+#sg-combine:not(:empty){background:#0f1c26;border:1px solid #51728b;border-radius:3px 13px 3px 3px;padding:10px 13px;margin:0 0 9px}
+.sg-cmb-h{font:500 15px 'Barlow Condensed',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#cce9fb;margin-bottom:6px}
+.sg-cmb{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:12px;color:#d6e8f6;padding:3px 0}
+.sg-cmb .arr{color:#8bd1ff;font-weight:700;min-width:64px}
+.sg-cmb select{background:#0b151e;border:1px solid #527b995e;border-radius:6px;color:#edf5ff;font:12px Manrope,Arial,sans-serif;padding:5px 6px;max-width:100%}
 .sg-x{margin-left:auto;background:transparent;border:1px solid #ff8f8f88;color:#ff8f8f;border-radius:7px;font:11px Manrope,Arial,sans-serif;padding:4px 9px;cursor:pointer}
 .sg-tag{font-size:9px;letter-spacing:.1em;color:#f2c879;border:1px solid #f2c87966;border-radius:9px;padding:1px 6px;font-style:normal}
 .sg-tag.red{color:#ff8f8f;border-color:#ff8f8f88}
@@ -156,8 +161,9 @@
         <div class="sg-note" id="nw-msg"></div>
       </div>
       <div id="sg-events"></div>
+      <div id="sg-combine"></div>
       <div id="sg-skip" class="sg-note"></div>
-      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell and Buttercup each get their own directional, right arrow unless you change it. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 1, Primrose B gets 2, Primrose C and D get 1 each, Bluebell and Buttercup get none. Room name, arrow, label and count are all editable. Directional only? Use × door sign on a room, or untick Door signs for the whole group. Door sign only? Use × arrow on a room, or untick Directional. A group with more than one room: use + Add room on its card (pick a room or type your own), and each room becomes another line under the name on the directional. The × next to a room takes it off the signs.</div>
+      <div class="sg-note">Rules: every left room goes on one LEFT-arrow sign (Lantana, Plumeria, Primrose A and B). Every right room goes on one RIGHT-arrow sign (Primrose C and D, Camellia, Verbena). Bluebell and Buttercup each get their own directional, right arrow unless you change it. Door signs: a full room gets 2, a single section gets 1, Primrose A gets 1, Primrose B gets 2, Primrose C and D get 1 each, Bluebell and Buttercup get none. Room name, arrow, label and count are all editable. Directional only? Use × door sign on a room, or untick Door signs for the whole group. Door sign only? Use × arrow on a room, or untick Directional. Two directionals with the same arrow can print as one page: use Combine directionals. A group with more than one room: use + Add room on its card (pick a room or type your own), and each room becomes another line under the name on the directional. The × next to a room takes it off the signs.</div>
     </div>
   </div>
   <div id="sg-pv" hidden>
@@ -314,12 +320,24 @@
         if (B.length) blue.push({title: e.name, lines: B, d: d});
       });
     });
-    // one sign for every left room, one for every right room; only Bluebell and Buttercup get their own
-    var dir = [];
-    if (left.length) dir.push(dirSheet(left, "L"));
-    if (right.length) dir.push(dirSheet(right, "R"));
-    blue.forEach(function (b) { dir.push(dirSheet([b], b.d)); });
-    up.forEach(function (u) { dir.push(dirSheet([u], "U")); });
+    // one sign for every left room, one for every right room; only Bluebell and Buttercup (and Up arrows) get their own
+    var pages = [];
+    if (left.length) pages.push({key: "L", d: "L", groups: left});
+    if (right.length) pages.push({key: "R", d: "R", groups: right});
+    blue.forEach(function (b) { pages.push({key: "B|" + b.title + "|" + b.d, d: b.d, groups: [b]}); });
+    up.forEach(function (u) { pages.push({key: "U|" + u.title, d: "U", groups: [u]}); });
+    // Combine: a page set to "combine with" another page with the same arrow prints on that page, one arrow, every group name
+    var mg = merges[curISO] || {}, byKey = {};
+    pages.forEach(function (p) {
+      byKey[p.key] = p; p.groups = p.groups.map(function (g) { return {title: g.title, lines: g.lines.slice()}; });
+      var t = p.groups.map(function (g) { return g.title; });   // label from this page's own groups, before any combining
+      p.label = t.length > 2 ? t[0] + " + " + (t.length - 1) + " more" : t.join(" + ");
+    });
+    var dest = function (p) { var seen = {}, t = p; while (mg[t.key] && byKey[mg[t.key]] && byKey[mg[t.key]].d == p.d && !seen[t.key]) { seen[t.key] = 1; t = byKey[mg[t.key]]; } return seen[t.key] ? p : t; };
+    var dir = [], own = pages.filter(function (p) { return dest(p) === p; });
+    pages.forEach(function (p) { var t = dest(p); if (t !== p) p.groups.forEach(function (g) { add(t.groups, g.title, g.lines); }); });
+    own.forEach(function (p) { dir.push(dirSheet(p.groups, p.d)); });
+    combineUI(pages);
     var door = [];
     events.forEach(function (e) {
       e.rooms.forEach(function (r) {
@@ -334,6 +352,25 @@
     $("sg-pr-n").textContent = door.length + (door.length == 1 ? " page, landscape" : " pages, landscape");
     $("sg-pd").disabled = !dir.length; $("sg-pr").disabled = !door.length;
   }
+
+  // ── combine directionals: only offered when two pages share an arrow ──
+  function combineUI(pages) {
+    var ARR = {L: "\u2190 Left", R: "\u2192 Right", U: "\u2191 Up"}, mg = merges[curISO] || {}, h = "";
+    var names = function (p) { return p.label; };
+    pages.forEach(function (p) {
+      var mates = pages.filter(function (q) { return q !== p && q.d == p.d; });
+      if (!mates.length) return;
+      h += '<div class="sg-cmb"><span class="arr">' + ARR[p.d] + '</span><b>' + esc(names(p)) + '</b><select data-mg="' + esc(p.key) + '" aria-label="Combine this directional">' +
+        '<option value="">Own page</option>' + mates.map(function (q) { return '<option value="' + esc(q.key) + '"' + (mg[p.key] == q.key ? " selected" : "") + ">Combine with " + esc(names(q)) + "</option>"; }).join("") + "</select></div>";
+    });
+    $("sg-combine").innerHTML = h ? '<div class="sg-cmb-h">Combine directionals</div>' + h : "";
+  }
+  $("sg-combine").addEventListener("change", function (ev) {
+    var t = ev.target; if (t.dataset.mg == null) return;
+    var mg = merges[curISO] = merges[curISO] || {};
+    if (t.value) mg[t.dataset.mg] = t.value; else delete mg[t.dataset.mg];
+    build();
+  });
 
   // ── list UI ──
   function labelUI(r, ei, ri, door) {
@@ -418,7 +455,7 @@
   $("sg-pd").onclick = function () { printSet("dir"); };
   $("sg-pr").onclick = function () { printSet("door"); };
 
-  var customs = {}, curISO = "";
+  var customs = {}, merges = {}, curISO = "";
   function show(iso) { curISO = iso; readEvents(iso); events = events.concat(customs[iso] || []); renderList(); build(); }
 
   // New sign from scratch: room list, arrow and door count come from the same rules (parseRoom), all editable.
