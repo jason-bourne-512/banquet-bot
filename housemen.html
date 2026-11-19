@@ -64,13 +64,32 @@ h1{font:600 34px/1 'Barlow Condensed';text-transform:uppercase;letter-spacing:.5
 .room.set{--c:var(--set);--cd:var(--set-d)} .room.ref{--c:var(--ref);--cd:var(--ref-d)} .room.clr{--c:var(--clr);--cd:var(--clr-d)}
 .room.isdone{--c:var(--done);opacity:.62}
 .room.isprob{--c:var(--red)}
-.rhead{display:flex;align-items:center;gap:10px;padding:11px 12px;width:100%;border:0;background:transparent;text-align:left}
+.rhead{display:flex;align-items:center;gap:10px;padding:9px 12px;width:100%;border:0;background:transparent;text-align:left}
 .num{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--cd);color:var(--c);font:700 17px 'Barlow Condensed';border:1px solid var(--c)}
 .room.isdone .num{background:var(--done);color:#0e2418;border-color:var(--done)}
 .rmain{flex:1;min-width:0}
 .type{font:800 8.5px Manrope;letter-spacing:1.2px;text-transform:uppercase;color:var(--c);background:var(--cd);padding:2px 6px;border-radius:4px}
-.rname{font:600 21px/1.05 'Barlow Condensed';text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
+.rname{font:600 20px/1.05 'Barlow Condensed';text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
 .rfor{font-size:11.5px;color:var(--t3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rline{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.rline .rname{margin-top:0}
+.rhead .rfor{display:block}
+.leadtools{margin-top:12px;padding:10px;border:1px dashed var(--line2);border-radius:10px}
+.leadtools .tsw{margin-top:0}
+.lt-h{font:700 9px Manrope;letter-spacing:1.4px;color:var(--t4);text-transform:uppercase;margin-bottom:6px}
+.rfor .ends{color:var(--t2);font-weight:700}
+.rfor .fl{color:var(--amber);font-weight:700}
+.chev{flex:none;color:var(--t4);font-size:12px;padding-left:4px}
+.type.nx{color:#0e1a24;background:var(--accent)}
+.room.next{box-shadow:0 0 0 1px var(--accent) inset}
+.tcs{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.tc{font:800 10px Manrope;letter-spacing:.8px;text-transform:uppercase;padding:3px 8px;border-radius:20px}
+.tc.set{color:var(--set);background:var(--set-d)} .tc.ref{color:var(--ref);background:var(--ref-d)} .tc.clr{color:var(--clr);background:var(--clr-d)}
+.nottonight{display:flex;flex-wrap:wrap;gap:6px}
+.nt{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px dashed var(--line2);border-radius:20px;font-size:12px;color:var(--t3)}
+.nt.cx s{color:var(--red);font-weight:700}
+.nt .mini{padding:2px 7px}
+.ops.icons button{padding:4px 9px;font-size:13px}
 .rend{flex:none;text-align:right;font-size:10px;color:var(--t3);font-weight:700}
 .rend b{display:block;font:600 15px 'Barlow Condensed';color:var(--t2);letter-spacing:.3px}
 .status{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;margin-top:4px;padding:2px 8px;border-radius:20px}
@@ -219,7 +238,7 @@ body.desk .seg{max-width:420px}
 .bcard .num{width:24px;height:24px;font-size:14px}
 .bcard .rname{font-size:17px}
 .bcard .thumb{display:block;width:100%;margin-top:8px;padding:0;border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:#fff}
-.bcard .thumb img{display:block;width:100%;height:120px;object-fit:contain}
+.bcard .thumb img{display:block;width:100%;height:72px;object-fit:contain}
 
 /* lead editing: reword a line, switch Set / Refresh / Clear */
 .iedbtn{margin-left:auto;flex:none;border:0;background:transparent;color:var(--t4);font-size:13px;padding:2px 6px;border-radius:6px}
@@ -1222,6 +1241,9 @@ function roomState(iso, r) {
   if (n) return {cls:"", pill:`<span class="status st-prog">${n} of ${list.length} items</span>`, s, n, list};
   return {cls:"", pill:`<span class="status st-none">Not started</span>`, s, n, list};
 }
+// "Emerson · Retirement Dinner (Primrose C)" under Primrose C → drop the room repeated in brackets.
+const forOf = r => { const f = String(r.for || ""), m = f.match(/\s*\(([^)]*)\)\s*$/); return m && m[1].toLowerCase().replace(/[^a-z0-9]/g, "") == String(r.room).toLowerCase().replace(/[^a-z0-9]/g, "") ? f.slice(0, m.index) : f; };
+const typeCounts = rooms => { const c = {set:0, ref:0, clr:0}; rooms.forEach(x => c[tOf(x.o, x.r)]++); return ["set","ref","clr"].filter(t => c[t]).map(t => `<span class="tc ${t}">${c[t]} ${TYPE[t].toLowerCase()}</span>`).join(""); };
 const dayProgress = d => { const l = roomsOn(d.iso), done = l.filter(x=>rs(x.o,x.r).done).length; return [done, l.length]; };
 
 // ── render
@@ -1241,7 +1263,7 @@ const cxRow = (x, lead) => `<div class="gone cx"><s>${esc(x.r.room)}</s>&nbsp;·
 function renderHsm(d) {
   const [a,b] = dayProgress(d), lead = EDIT(), rooms = roomsOn(d.iso);
   let h = `<div class="hero"><div class="eyebrow">Tonight · setting for ${esc(d.target)}</div><h1>${longDay(d.iso)} ${md(d.iso)}</h1>
-    <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}${rooms.length} rooms in setup order</div>
+    <div class="sub">${d.crew?`<b>${esc(d.crew)}</b> · ${esc(d.shift)} · `:""}${rooms.length} rooms, top to bottom</div><div class="tcs">${typeCounts(rooms)}</div>
     <div class="progress"><div class="bar"><i style="width:${b?a/b*100:0}%"></i></div><div class="pct">${a}/${b}</div></div></div>`;
   const tasks = TASKS[d.iso] || [];
   if (tasks.length || lead) {
@@ -1252,34 +1274,40 @@ function renderHsm(d) {
       ${!tasks.length ? `<div class="tempty">Anything not tied to one room — lobby, back hall, linen, coat check.</div>` : ""}</div>`;
   }
   h += `<div class="sortlist" data-sortlist="${d.iso}">`;
+  const nextId = (rooms.find(x => !rs(x.o, x.r).done) || {});
   rooms.forEach(({r, i, o, from}, k) => {
     const id = o + "|" + i, R = roomState(o, r), open = openId == id, flags = r.flags || [], ds = diagsOf(r, o);
-    const T = tOf(o, r);
-    h += `<div class="room ${T} ${R.cls} ${open?"open":""}" data-sort="${id}">
+    const T = tOf(o, r), isNext = nextId.o == o && nextId.i == i;
+    h += `<div class="room ${T} ${R.cls} ${open?"open":""} ${isNext?"next":""}" data-sort="${id}">
       <button class="rhead" data-open="${id}">${lead?`<span class="grip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="num">${R.s.done?"✓":k+1}</span>
-        <span class="rmain"><span class="type">${TYPE[T]}</span>${from?` <span class="type" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ from ${dayLbl(from)}</span>`:""}<div class="rname">${esc(r.room)}</div><div class="rfor">${esc(r.for)}</div>${R.pill}</span>
-        ${r.end?`<span class="rend">ENDS<b>${esc(r.end)}</b></span>`:""}</button>
-      <div class="rbody"><ul class="items"${lead?` data-isort="${id}"`:""}>${R.list.map(x=> lead && EDITING == id+"|"+x.key
+        <span class="rmain"><span class="rline"><span class="rname">${esc(r.room)}</span><span class="type">${TYPE[T]}</span>${isNext?`<span class="type nx">Next</span>`:""}${from?`<span class="type" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ ${dayLbl(from)}</span>`:""}</span>
+          <span class="rfor">${r.end?`<b class="ends">Ends ${esc(r.end)}</b> · `:""}${esc(forOf(r))}${flags.length?` · <span class="fl">⚑ ${flags.length}</span>`:""}${ds.length?` · 🖼`:""}</span>${R.s.done||R.n||R.s.prob?R.pill:""}</span>
+        <span class="chev" aria-hidden="true">${open?"▴":"▾"}</span></button>
+      <div class="rbody">
+        ${(flags.length||r.next)?`<div class="tags">${r.next?`<span class="tag next">Next: ${esc(r.next)}</span>`:""}${flags.map(f=>`<span class="tag flag">⚑ ${esc(f)}</span>`).join("")}</div>`:""}
+        ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)} ${esc(R.s.prob.at)}</div>`:""}
+        ${open&&ds.length?`<div class="diags">${ds.map((f,j,a)=>`<button class="diag-prev" data-diag="${esc(f)}" data-room="${esc(r.room)}"><img src="${previewOf(f)}" alt="${esc(r.room)} diagram"><span>${a.length>1?`Diagram ${j+1} of ${a.length}`:"Diagram"}<em style="font-style:normal">Tap to enlarge ↗</em></span></button>`).join("")}</div>`:""}
+        <ul class="items"${lead?` data-isort="${id}"`:""}>${R.list.map(x=> lead && EDITING == id+"|"+x.key
             ? `<li class="iedit"><input id="ed-${esc(id+"|"+x.key)}" maxlength="140" value="${esc(x.text)}"><button data-edsave="${id}" data-k="${x.key}">Save</button><button class="idel" data-edcancel="1" aria-label="Cancel edit">✕</button></li>`
             : `<li data-item="${id}" data-k="${x.key}"${lead?` data-sort="${esc(x.key)}"`:""} class="${R.s.items&&R.s.items[x.key]?"ck":""}${x.added?" added":""}${x.edited?" edited":""}${x.pinned?" pinned":""}">${lead?`<span class="grip igrip" data-grip aria-label="Drag to reorder">⠿</span>`:""}<span class="box"></span><span>${x.pinned?`<span class="pinmark" title="Kept every night">📌</span> `:""}${esc(x.text)}</span>${lead?(x.pinned
               ? `<button class="ipin on" data-unpin="${id}" data-k="${x.key}" aria-label="Stop keeping this every night" title="Unpin: stop adding this to ${esc(r.room)} every night">📌</button><button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove for tonight only" title="Remove for tonight only">✕</button>`
               : `${x.added?`<button class="ipin" data-pin="${id}" data-k="${x.key}" aria-label="Keep every night" title="Pin: add this to ${esc(r.room)} every night">📌</button>`:""}<button class="iedbtn" data-edit="${id}" data-k="${x.key}" aria-label="Edit line">✎</button><button class="idel" data-del="${id}" data-k="${x.key}" aria-label="Remove item">✕</button>`):""}</li>`).join("")}</ul>
         ${lead?`<div class="iadd"><input id="add-${id}" maxlength="120" placeholder="+ Add an item for tonight (📌 it to keep it every night)"><button data-addbtn="${id}">Add</button></div>
           ${(R.s.removed||[]).length?`<button class="irestore" data-restore="${id}">↺ Restore ${R.s.removed.length} removed item${R.s.removed.length>1?"s":""}</button>`:""}`:""}
-        ${(flags.length||r.next)?`<div class="tags">${r.next?`<span class="tag next">Next: ${esc(r.next)}</span>`:""}${flags.map(f=>`<span class="tag flag">⚑ ${esc(f)}</span>`).join("")}</div>`:""}
-        ${lead?`<div class="tsw" role="group" aria-label="Room type">${["set","ref","clr"].map(v=>`<button data-type="${id}" data-v="${v}" class="${T==v?"on":""}">${TYPE[v]}</button>`).join("")}${T!=r.t?`<span>posted as ${TYPE[r.t]}</span>`:""}</div>`:""}
-        ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move to another night</button><button class="xbtn" data-cancel="${id}">✕ Cancel room</button></div>`:""}
-        ${open&&ds.length?`<div class="diags">${ds.map((f,j,a)=>`<button class="diag-prev" data-diag="${esc(f)}" data-room="${esc(r.room)}"><img src="${previewOf(f)}" alt="${esc(r.room)} diagram"><span>${a.length>1?`Diagram ${j+1} of ${a.length}`:"Diagram"}<em style="font-style:normal">Tap to enlarge ↗</em></span></button>`).join("")}</div>`:""}
-        ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)} ${esc(R.s.prob.at)}</div>`:""}
         ${R.s.done?`<div class="doneline">✓ Marked done by ${esc(R.s.done.by)} at ${esc(R.s.done.at)}</div>
           <div class="acts" style="grid-template-columns:1fr"><button class="btn btn-undo" data-undo="${id}">Undo</button></div>`
         :`<div class="acts"><button class="btn btn-done" data-done="${id}">Mark ${esc(r.room)} done</button><button class="btn btn-prob" data-prob="${id}">⚠ Issue</button></div>`}
-      </div></div>`;
+
+        ${lead?`<div class="leadtools"><div class="lt-h">Captain tools</div>`:""}
+        ${lead?`<div class="tsw" role="group" aria-label="Room type">${["set","ref","clr"].map(v=>`<button data-type="${id}" data-v="${v}" class="${T==v?"on":""}">${TYPE[v]}</button>`).join("")}${T!=r.t?`<span>posted as ${TYPE[r.t]}</span>`:""}</div>`:""}
+        ${lead?`<div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move to another night</button><button class="xbtn" data-cancel="${id}">✕ Cancel room</button></div>`:""}
+        ${lead?`</div>`:""}      </div></div>`;
   });
   h += `</div>`;
-  const cxs = cancelledOn(d.iso);
-  if (cxs.length) h += `<div class="sec">Cancelled — don't build</div>` + cxs.map(x => cxRow(x, lead)).join("");
-  h += movedOut(d.iso).map(x => `<div class="gone">→ ${esc(x.r.room)} (${esc(x.r.for)}) moved to ${dayLbl(x.to)}${lead?`<button class="mini" data-back="${x.o}|${x.i}">↩ Bring back</button>`:""}</div>`).join("");
+  const cxs = cancelledOn(d.iso), outs = movedOut(d.iso);
+  if (cxs.length || outs.length) h += `<div class="sec">Not tonight — don't build</div><div class="nottonight">`
+    + cxs.map(x => `<span class="nt cx"><s>${esc(x.r.room)}</s> cancelled${lead?`<button class="mini" data-uncancel="${x.o}|${x.i}" title="Restore">↺</button>`:""}</span>`).join("")
+    + outs.map(x => `<span class="nt">${esc(x.r.room)} → ${dayLbl(x.to)}${lead?`<button class="mini" data-back="${x.o}|${x.i}" title="Bring back">↩</button>`:""}</span>`).join("") + `</div>`;
   return h;
 }
 function renderCap(d) {
@@ -1320,15 +1348,15 @@ function renderBoard() {
     <div class="sub">Drag a room up or down to change the build order, or onto another night to move it · 🖼 to replace or hide a diagram · ⚠ cards need you</div></div><div class="board">`;
   for (const d of VISIBLE) {
     const list = roomsOn(d.iso), [a,b] = dayProgress(d);
-    h += `<section class="col ${d.iso==todayISO()?"today":""}" data-drop="${d.iso}"><header><b>${dayLbl(d.iso)}</b><span>for ${esc(d.target)}</span><span class="cnt">${a}/${b}</span><button class="mini" data-newroom="${d.iso}" title="Create a room">＋</button><button class="mini" data-print="${d.iso}" title="Print">🖨</button></header>`;
+    h += `<section class="col ${d.iso==todayISO()?"today":""}" data-drop="${d.iso}"><header><b>${dayLbl(d.iso)}</b><span class="cnt">${a}/${b}</span><button class="mini" data-newroom="${d.iso}" title="Create a room">＋</button><button class="mini" data-print="${d.iso}" title="Print">🖨</button></header>`;
     h += list.map((x,k) => {
       const id = x.o+"|"+x.i, R = roomState(x.o, x.r), ds = diagsOf(x.r, x.o);
       return `<div class="bcard ${tOf(x.o,x.r)} ${R.cls}" draggable="true" data-drag="${id}"><div class="bh"><span class="num">${R.s.done?"✓":k+1}</span>
-        <div style="min-width:0"><span class="type">${TYPE[tOf(x.o,x.r)]}</span>${x.r.end?` <span class="type" style="color:var(--t3);background:#ffffff0a">ends ${esc(x.r.end)}</span>`:""}<div class="rname">${esc(x.r.room)}</div><div class="rfor">${esc(x.r.for)}</div></div></div>
-        ${R.pill}${x.from?` <span class="status" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ from ${dayLbl(x.from)}</span>`:""}
+        <div style="min-width:0"><span class="type">${TYPE[tOf(x.o,x.r)]}</span>${x.r.end?` <span class="type" style="color:var(--t3);background:#ffffff0a">ends ${esc(x.r.end)}</span>`:""}<div class="rname">${esc(x.r.room)}</div><div class="rfor">${esc(forOf(x.r))}</div></div></div>
+        ${R.s.done||R.n||R.s.prob?R.pill:""}${x.from?` <span class="status" style="color:#c1baff;background:rgba(193,186,255,.12)">⇄ from ${dayLbl(x.from)}</span>`:""}
         ${R.s.prob&&!R.s.done?`<div class="probline">⚠ ${esc(R.s.prob.what)}${R.s.prob.note?` — ${esc(R.s.prob.note)}`:""} · ${esc(R.s.prob.by)}<div><button class="resolve" data-resolve="${id}">Mark resolved</button></div></div>`:""}
         ${ds.length?`<button class="thumb" data-diag="${esc(ds[0])}" data-room="${esc(x.r.room)}"><img src="${previewOf(ds[0])}" alt="${esc(x.r.room)} diagram"></button>`:""}
-        <div class="ops"><button data-dgm="${id}">🖼 Diagram</button><button data-move="${id}">⇄ Move</button><button class="xbtn" data-cancel="${id}" title="Cancel room">✕</button></div></div>`;
+        <div class="ops icons"><button data-dgm="${id}" title="Replace or hide the diagram">🖼</button><button data-move="${id}" title="Move to another night">⇄</button><button class="xbtn" data-cancel="${id}" title="Cancel room">✕</button></div></div>`;
     }).join("") || `<div class="empty">No rooms</div>`;
     h += `<button class="addroom" data-newroom="${d.iso}">＋ Create a room</button>`;
     h += cancelledOn(d.iso).map(x => `<div class="gone cx"><s>${esc(x.r.room)}</s> cancelled<button class="mini" data-uncancel="${x.o}|${x.i}">↺</button></div>`).join("");
