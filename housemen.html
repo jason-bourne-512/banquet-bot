@@ -826,13 +826,85 @@ const DAYS = [
    {t:"clr", room:"Camellia B", for:"Natera Pop-Up finished", end:"5:00 PM", next:"No event on file through 11/21"},
  ]},
  { iso:"2026-11-19", target:"Friday 11/20", crew:"", shift:"", rooms:[
-   {t:"set", room:"Plumeria", for:"San Jose Barracuda · Meal Room (Plumeria)", items:["4 rounds of 9","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
-   {t:"clr", room:"Bonnell", for:"Motiva finished (moved from Zilker 11/19)", end:"5:00 PM", next:"No event on file through 11/21"},
-   {t:"clr", room:"Camellia A", for:"Natera finished", end:"5:00 PM", next:"No event on file through 11/21"},
-   {t:"clr", room:"Lobby", for:"San Jose Barracuda finished", end:"6:00 PM", next:"No event on file through 11/21"},
+   {t:"set", room:"Plumeria", for:"San Jose Barracuda · Meal Room (Plumeria)", items:["4 rounds of 9","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Natera holds Plumeria 8–5 in crescent rounds; San Jose needs this set + (2) 6' tables, 4 chairs by 6 PM tonight for treatment"]},
+   {t:"clr", room:"Bonnell", for:"Motiva finished (moved from Zilker 11/19)", end:"5:00 PM", next:"No event on file through 12/9"},
+   {t:"clr", room:"Camellia A", for:"Natera finished", end:"5:00 PM", next:"Tue 11/24 → Tucson Roadrunners (all of Camellia, 5 rounds of 8)"},
+   {t:"clr", room:"Lobby", for:"San Jose Barracuda finished", end:"6:00 PM", next:"No event on file through 12/9"},
+   {t:"set", room:"Primrose A", for:"Natera LDP Training 3 · Hold (Primrose A)", items:["Schoolroom","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Pre-Function", for:"Emerson · Retirement Dinner (Primrose C)", items:["(6) highboys, client linen, hotel votives","(7) easels on the wood wall","Highboys go in the back of Primrose C by 4 PM for the florist, move to Pre-Function at 5"]},
+   {t:"set", room:"Primrose C", for:"Emerson · Retirement Dinner (Primrose C)", end:"4:00 PM", items:["Flip from Ledcor (U-shape + 4 rounds of 10)","9 rounds: 8 tables of 8 + 1 of 9","8x12 stage w/ steps","Acrylic podium (AV), cocktail table on stage","Bar set inside","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Ledcor leaves at 4 PM — Emerson wants the room fully set by 4 PM Friday for a client dry run","Event order says (9) rounds of 9; card keeps 8 of 8 + 1 of 9 — confirm with Diana"]},
+   {t:"set", room:"Camellia B", for:"Emerson · Workroom / Storage (Camellia B)", end:"5:00 PM", items:["Flip from Natera hold (crescent rounds)","(3) tables along the wall","(1) large trash can"]},
+   {t:"clr", room:"Primrose D", for:"Natera LDP Training 3 finished — hold rounds", end:"5:00 PM", next:"Thu 12/3 → TSAE luncheon set, whole ballroom in rounds", items:["Leave the tables up — TSAE sets the whole Primrose Ballroom in rounds Thu 12/3","Pull linens, trash & leftover materials","Vacuum"]},
+   {t:"clr", room:"Primrose B", for:"Natera LDP Training 3 finished — hold crescent rounds", end:"5:00 PM", next:"Wed 12/2 → TTA in Primrose AB, crescent rounds", items:["Leave the tables up — TTA uses crescent rounds in Primrose AB Wed 12/2","Pull linens, trash & leftover materials","Vacuum"]},
+   {t:"clr", room:"Lantana", for:"Natera LDP Training 3 hold finished", end:"5:00 PM", next:"Tue 12/1 → Surge Energy in Lantana A (U-shape)"},
+   {t:"clr", room:"Verbena", for:"Magic Leap finished", end:"5:00 PM", next:"Sat 12/5 → Muto casino (special set)"},
  ]},
  { iso:"2026-11-20", target:"Saturday 11/21", crew:"", shift:"", rooms:[
    {t:"ref", room:"Plumeria", for:"San Jose Barracuda · Meal Room (Plumeria)", end:"2:00 PM"},
+   {t:"ref", room:"Camellia B", for:"Emerson · Storage (Camellia B)", end:"11:00 PM", items:["Leave the group's linens, chargers, florals in place — pickup Sat 6 AM–12 PM","Vacuum"]},
+   {t:"clr", room:"Barton", for:"Atlas dinner (Thu night) finished — cleared Friday", next:"Thu 12/3 → TSAE board reception", flags:["Left from Thursday: Atlas dinner ran to 8 PM, after the houseman's shift","Atlas is a Corinne dinner — check with Corinne before striking"]},
+   {t:"clr", room:"Primrose A", for:"Natera hold finished", end:"5:00 PM", next:"Wed 12/2 → TTA in Primrose AB (crescent rounds)"},
+   {t:"clr", room:"Pre-Function", for:"Emerson reception finished", end:"6:45 PM", next:"Thu 12/3 → TSAE registration + vendor tables"},
+   {t:"clr", room:"Primrose C", for:"Emerson dinner finished — hold rounds", end:"11:00 PM", next:"Thu 12/3 → TSAE luncheon set, whole ballroom in rounds", items:["Leave the rounds up — TSAE sets the whole Primrose Ballroom in rounds Thu 12/3","Strike the stage, podium and bar","Group's linens, chargers, centerpieces go to Camellia B","Pull hotel linens, trash & leftover materials","Vacuum"], flags:["Event order books dinner until 11 PM"]},
+ ]},
+ { iso:"2026-11-21", target:"Sunday 11/22", crew:"", shift:"", rooms:[
+   {t:"clr", room:"Camellia B", for:"Emerson storage picked up", end:"12:00 PM", next:"Tue 11/24 → Tucson Roadrunners (all of Camellia)"},
+   {t:"clr", room:"Plumeria", for:"San Jose Barracuda finished", end:"2:00 PM", next:"Thu 12/3 → TSAE board meeting (hollow square)"},
+ ]},
+ { iso:"2026-11-23", target:"Tuesday 11/24", crew:"", shift:"", rooms:[
+   {t:"set", room:"Camellia", for:"Tucson Roadrunners · Team Meeting (Camellia)", items:["5 rounds of 8","Buffet set in the room","Bucket of ice in room with water station","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+ ]},
+ { iso:"2026-11-24", target:"Wednesday 11/25", crew:"", shift:"", rooms:[
+   {t:"ref", room:"Camellia", for:"Tucson Roadrunners · Team Meeting (Camellia)", end:"1:00 PM"},
+ ]},
+ { iso:"2026-11-25", target:"Thursday 11/26", crew:"", shift:"", rooms:[
+   {t:"clr", room:"Camellia", for:"Tucson Roadrunners finished", end:"1:00 PM", next:"Wed 12/2 → Wal-Mart (classroom for 36)"},
+ ]},
+ { iso:"2026-11-30", target:"Tuesday 12/1", crew:"", shift:"", rooms:[
+   {t:"set", room:"Lantana A", for:"Surge Energy · America Meeting (Lantana A)", items:["U-Shape, 2 per table","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+ ]},
+ { iso:"2026-12-01", target:"Wednesday 12/2", crew:"", shift:"", rooms:[
+   {t:"set", room:"Primrose AB", for:"TTA · Pre-Legislative Meeting (Primrose AB)", items:["Crescent rounds: 9 rounds to seat 50 (four rounds of 5 and five rounds of 6)","Podium","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Primrose B crescent rounds were held from Natera 11/19 — check them, add Primrose A"]},
+   {t:"set", room:"Camellia", for:"Wal-Mart · R7 Meeting (Camellia)", items:["(1) Classroom set for 36","Pads, pens and water set in the back of the room","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"ref", room:"Lantana A", for:"Surge Energy · America Meeting (Lantana A)", end:"5:00 PM"},
+ ]},
+ { iso:"2026-12-02", target:"Thursday 12/3", crew:"", shift:"", rooms:[
+   {t:"set", room:"Primrose Ballroom", for:"TSAE · Set Up, Board Meeting + Board Reception", end:"5:00 PM", diag:"PRIMROSEBALLROOMfromTSAE.pdf", items:["Flip from TTA (Primrose AB, crescent rounds)","(38) rounds of 8, black linen","8x24 stage","Hotel holiday centerpieces","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Rounds held in Primrose B, C, D since 11/19–11/21 — add to them","Diagram shows (44) rounds of 7; event order says (38) rounds of 8 — confirm with Diana"]},
+   {t:"set", room:"Pre-Function", for:"TSAE · Set Up (activation station)", diag:"PREFUNCTIONfromTSAE.pdf", items:["(2) 6x30 registration tables + (4) 6x30 vendor tables with cloths","Highboys TBD"], flags:["Diagram shows (12) exhibit tables; event order says 4 vendor tables — confirm with Diana"]},
+   {t:"set", room:"Camellia", for:"TSAE · Office", end:"12:00 PM", diag:"CamelliafromTSAE.pdf", items:["Flip from Wal-Mart (classroom)","Conference","(1) large trash can","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Barton", for:"TSAE · Board Reception", diag:"BartonfromTSAE.pdf", items:["(4) rounds of 6 + bar (diagram)","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No setup line on the event order — diagram only"]},
+   {t:"set", room:"Plumeria", for:"TSAE · Board Meeting", items:["Hollow square","(5) chairs around the perimeter","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Board meeting diagram is Verbena hollow square 24; event order says Plumeria for 20 — confirm with Diana","(4) 6x30 activation tables go in at 6 PM Thursday (day flip)"]},
+   {t:"ref", room:"Lantana A", for:"Surge Energy · America Meeting (Lantana A)", end:"5:00 PM", flags:["TSAE puts (4) 6x30 activation tables in Lantana at 6 PM Thursday, after Surge leaves at noon (day flip)"]},
+ ]},
+ { iso:"2026-12-03", target:"Friday 12/4", crew:"", shift:"", rooms:[
+   {t:"ref", room:"Primrose Ballroom", for:"TSAE · Luncheon (Primrose Ballroom)", end:"5:00 PM", diag:"PRIMROSEBALLROOMfromTSAE.pdf", items:["Pre-set silverware, water glasses and napkins by 11 AM","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Friday's event order setup line says rounds of 10 — confirm against Thursday's 38 rounds of 8"]},
+   {t:"ref", room:"Pre-Function", for:"TSAE · Activations + Registration (Primrose Foyer)", end:"11:00 AM", diag:"PREFUNCTIONfromTSAE.pdf", items:["Existing set from Thursday — sponsors set activations from 8 AM","Vacuum"]},
+   {t:"ref", room:"Lantana", for:"TSAE · Activations", end:"10:00 PM", items:["Existing set from Thursday","Vacuum"]},
+   {t:"ref", room:"Plumeria", for:"TSAE · Activations", end:"10:00 PM", items:["Existing set from Thursday","Vacuum"]},
+   {t:"ref", room:"Camellia", for:"TSAE · Office", end:"5:00 PM"},
+   {t:"clr", room:"Barton", for:"TSAE board reception finished", end:"9:00 PM", next:"No event on file through 12/9"},
+ ]},
+ { iso:"2026-12-04", target:"Saturday 12/5", crew:"", shift:"", rooms:[
+   {t:"set", room:"Primrose D", for:"Muto Technology · Holiday Party (Primrose D)", end:"3:30 PM", diag:"PRIMROSEDfromMutotechHolidayParty.pdf", items:["Flip from TSAE luncheon — keep 8 rounds, reset for 10","8 rounds of 10","8x18 stage with podium (diagram matches)","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"set", room:"Verbena", for:"Muto Technology · Casino (Verbena)", items:["Special set for the casino","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+   {t:"clr", room:"Primrose ABC", for:"TSAE luncheon finished", end:"3:30 PM", next:"Primrose AB/C: no event on file through 12/9"},
+   {t:"clr", room:"Pre-Function", for:"TSAE finished", end:"2:00 PM", next:"No event on file through 12/9"},
+   {t:"clr", room:"Lantana", for:"TSAE activations finished", end:"2:00 PM", next:"No event on file through 12/9"},
+   {t:"clr", room:"Plumeria", for:"TSAE activations finished", end:"2:00 PM", next:"No event on file through 12/9"},
+   {t:"clr", room:"Camellia", for:"TSAE office finished", end:"3:00 PM", next:"Tue 12/8 → TrueCommerce in Camellia A (conference)"},
+ ]},
+ { iso:"2026-12-05", target:"Sunday 12/6", crew:"", shift:"", rooms:[
+   {t:"clr", room:"Primrose D", for:"Muto Technology finished", end:"9:00 PM", next:"No event on file through 12/9"},
+   {t:"clr", room:"Verbena", for:"Muto casino finished", end:"9:00 PM", next:"No event on file through 12/9"},
+ ]},
+ { iso:"2026-12-07", target:"Tuesday 12/8", crew:"", shift:"", rooms:[
+   {t:"set", room:"Camellia A", for:"TrueCommerce · Meeting (Camellia A)", items:["Conference","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"]},
+ ]},
+ { iso:"2026-12-08", target:"Wednesday 12/9", crew:"", shift:"", rooms:[
+   {t:"ref", room:"Camellia A", for:"TrueCommerce · Meeting (Camellia A)", end:"5:30 PM"},
+ ]},
+ { iso:"2026-12-09", target:"Thursday 12/10", crew:"", shift:"", rooms:[
+   {t:"clr", room:"Camellia A", for:"TrueCommerce finished", end:"4:00 PM", next:"No event on file through 12/9"},
  ]},
 ];
 
