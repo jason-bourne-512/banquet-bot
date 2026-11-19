@@ -959,6 +959,39 @@ const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").repl
 const isoMinus1 = iso => { const t = dObj(iso); t.setUTCDate(t.getUTCDate() - 1); return t.toISOString().slice(0, 10); };
 const YESTERDAY = isoMinus1(todayISO());
 const VISIBLE = DAYS.filter(d => d.iso >= YESTERDAY);
+// Diagrams are shared with the Rundown: a Set/Refresh room with no diagram of its own picks up the Rundown's
+// diagram(s) for that room on the day it's being set for (night iso + 1), else the same group's diagram for that
+// room from up to a week before (a refresh of an existing set). Matched on the room name in the diagram's label
+// ("Primrose C — …") or file name ("PRIMROSECfrom….pdf"); Camellia never matches Camellia A.
+const roomKey = s => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+(async () => {
+  try {
+    const html = await (await fetch("rundown.html", {cache: "no-cache"})).text();
+    const page = new DOMParser().parseFromString(html, "text/html"), byDate = {};
+    page.querySelectorAll(".day-section[data-date]").forEach(sec => sec.querySelectorAll(".diag-link").forEach(b => {
+      const m = (b.getAttribute("onclick") || "").match(/openDiagram\('diagrams\/([^']+)'\s*,\s*'([^']*)'/);
+      if (!m) return;
+      const L = byDate[sec.dataset.date] ||= [];
+      const g = b.closest(".event-card") ? b.closest(".event-card").querySelector(".card-group") : b.closest(".diag-group") && b.closest(".diag-group").querySelector(".diag-group-name");
+      if (!L.some(x => x.file == m[1])) L.push({file: m[1], fileRoom: roomKey(m[1].split(/from/i)[0]), labelRoom: roomKey(m[2].split(/[:—·(]/)[0]),
+        group: roomKey(g ? (g.getAttribute("data-en") || g.textContent).split(" — ")[0] : "")});
+    }));
+    let hit = false;
+    const dayAt = (iso, n) => { const t = dObj(iso); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };
+    for (const d of VISIBLE) {
+      for (const r of d.rooms) {
+        if (r.t == "clr" || (r.diag && [].concat(r.diag).length)) continue;
+        const k = roomKey(String(r.room).replace(/\s*\(.*\)$/, "")), grp = roomKey(String(r.for).split(" · ")[0]);
+        const sameGroup = x => x.group && grp && (x.group.startsWith(grp) || grp.startsWith(x.group));
+        let files = [];
+        for (let n = 1; n >= -6 && !files.length; n--)
+          files = (byDate[dayAt(d.iso, n)] || []).filter(x => (x.fileRoom == k || x.labelRoom == k) && (n == 1 || sameGroup(x))).map(x => x.file);
+        if (files.length) { r.diag = files.length == 1 ? files[0] : files; hit = true; }
+      }
+    }
+    if (hit) render();
+  } catch (e) { console.error("[housemen] rundown diagrams", e); }
+})();
 const STATE = {};
 let SORTING = false, renderPending = false, sortEnded = 0;   // drag-to-reorder in progress → hold renders until drop
 const ORDER = {};          // iso -> ["origIso|index", ...] — a lead's drag-and-drop build order for that night          // iso -> { slug -> {items, done, prob} }
