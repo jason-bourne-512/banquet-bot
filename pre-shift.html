@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+<meta name="theme-color" content="#101820">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="icon" href="favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Pre-shift Scripts - Banquet Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Barlow+Condensed:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+:root {
+  --bg:#09090c; --bg-card:#111316; --bg-active:#181c26;
+  --border:rgba(255,255,255,0.06); --border-h:rgba(255,255,255,0.13);
+  --text-1:#edeae2; --text-2:#7e7b74; --text-3:#44423f; --text-4:#2e2c2a;
+  --accent:#c9a84c; --accent-dim:rgba(139,209,255,0.10);
+  --green:#2dbd80; --green-dim:rgba(120,214,202,0.10);
+  --blue:#4f8ef0; --blue-dim:rgba(139,209,255,0.10);
+  --red:#e05555; --red-dim:rgba(255,143,143,0.10);
+  --purple:#a06ee8; --amber:#e2b089;
+  --header-bg:rgba(16,24,32,0.94);
+  --divider:rgba(255,255,255,0.04); --stripe:rgba(255,255,255,0.014);
+}
+[data-theme="light"] {
+  --bg:#f0ece3; --bg-card:#faf7f2; --bg-active:#e8e2d6;
+  --border:rgba(0,0,0,0.07); --border-h:rgba(0,0,0,0.15);
+  --text-1:#18160f; --text-2:#6b6760; --text-3:#9e9a92; --text-4:#c0bbb2;
+  --accent:#9a7422; --accent-dim:rgba(154,116,34,0.09);
+  --green:#1a8f5e; --green-dim:rgba(26,143,94,0.09);
+  --blue:#2558c4; --blue-dim:rgba(37,88,196,0.09);
+  --red:#c03030; --red-dim:rgba(180,50,50,0.08);
+  --purple:#7c45c0; --amber:#9a7422;
+  --header-bg:rgba(240,236,227,0.94);
+  --divider:rgba(0,0,0,0.05); --stripe:rgba(0,0,0,0.010);
+}
+html { background:var(--bg); min-height:100%; overflow-x:hidden; }
+body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif; min-height:100vh; min-height:100dvh; width:100%; overflow-x:hidden; }
+.page-wrap { max-width:520px; min-height:100vh; min-height:100dvh; margin:0 auto; background:var(--bg); }
+@media (orientation:landscape){ .page-wrap { max-width:100%; } }
+
+.page-hero { padding:20px 16px 16px; border-bottom:1px solid var(--divider); position:relative; overflow:hidden; }
+.page-hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-55deg,var(--stripe) 0px,var(--stripe) 1px,transparent 1px,transparent 18px); pointer-events:none; }
+.page-eyebrow { font-family:'DM Mono',monospace; font-size:9px; color:var(--accent); letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+.page-title { font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:1px; color:var(--text-1); line-height:0.95; margin-bottom:6px; }
+.page-meta { font-family:'DM Mono',monospace; font-size:9px; color:var(--text-3); }
+.page-meta a { color:var(--blue); text-decoration:none; }
+
+.sec { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-4); padding:16px 16px 8px; display:flex; align-items:center; gap:10px; }
+.sec::after { content:''; flex:1; height:1px; background:var(--divider); }
+
+.list { padding:0 16px 48px; display:flex; flex-direction:column; gap:10px; }
+.status { font-size:13px; color:var(--text-2); padding:24px 16px; text-align:center; }
+.status.err { color:var(--red); }
+
+.ps-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; overflow:hidden; border-left:3px solid var(--accent); }
+.ps-card.open { border-color:var(--border-h); }
+.ps-head { padding:13px 14px 12px; cursor:pointer; display:flex; gap:10px; align-items:flex-start; }
+.ps-head:active { background:var(--bg-active); }
+.ps-main { flex:1; min-width:0; }
+.ps-group { font-size:14px; font-weight:600; color:var(--text-1); line-height:1.3; margin-bottom:4px; }
+.ps-meta { font-family:'DM Mono',monospace; font-size:10px; color:var(--text-3); line-height:1.5; }
+.ps-meta b { color:var(--text-2); font-weight:500; }
+.ps-pills { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
+.pill { font-family:'DM Mono',monospace; font-size:9px; padding:3px 7px; border-radius:999px; background:var(--accent-dim); color:var(--accent); border:1px solid rgba(139,209,255,0.18); }
+.pill.ask { background:var(--red-dim); color:var(--red); border-color:rgba(255,143,143,0.25); }
+.pill.mgr { background:var(--purple-dim,rgba(160,110,232,0.10)); color:var(--purple); }
+.ps-chevron { font-size:11px; color:var(--text-4); transition:transform .2s; margin-top:4px; }
+.ps-card.open .ps-chevron { transform:rotate(90deg); }
+
+.ps-body { display:none; padding:0 14px 14px; border-top:1px solid var(--divider); }
+.ps-card.open .ps-body { display:block; padding-top:12px; }
+
+.ps-sub { font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1.2px; color:var(--accent); margin:12px 0 8px; padding-bottom:5px; border-bottom:1px solid var(--divider); }
+.ps-sub:first-child { margin-top:0; }
+
+.ps-row { display:grid; grid-template-columns:110px 1fr; gap:8px; padding:7px 0; border-bottom:1px solid var(--divider); align-items:start; }
+.ps-row:last-child { border-bottom:0; }
+.ps-lab { font-family:'DM Mono',monospace; font-size:9px; color:var(--text-3); text-transform:uppercase; letter-spacing:0.6px; padding-top:2px; }
+.ps-val { font-size:12.5px; color:var(--text-1); line-height:1.5; }
+.ps-val.ask { color:var(--red); font-family:'DM Mono',monospace; font-size:11px; }
+.ps-val.house { color:var(--text-2); font-style:italic; font-size:12px; }
+
+.q-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.q-item { background:var(--red-dim); border:1px solid rgba(255,143,143,0.2); border-radius:8px; padding:10px 12px; }
+.q-who { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--red); margin-bottom:3px; }
+.q-text { font-size:12.5px; color:var(--text-1); line-height:1.45; }
+
+.note-box { background:var(--blue-dim); border:1px solid rgba(139,209,255,0.2); border-radius:8px; padding:10px 12px; margin-bottom:4px; font-size:11px; color:var(--blue); line-height:1.5; }
+
+@media (min-width: 900px) {
+  .header, .page-hero, .sec, .list, .status { max-width: 520px; margin-left: auto; margin-right: auto; }
+}
+</style>
+<link rel="stylesheet" href="assets/bb-reference.css">
+<script src="theme.js?v=1113a"></script>
+<script src="scripts/pre-shift-lib.js"></script>
+</head>
+<body class="bb-ref">
+<div class="page-wrap">
+
+<header class="ref-header">
+  <a class="bb-brand" href="index.html"><span class="bb-mark">bb</span>BANQUET BOT</a>
+  <div style="display:flex;gap:8px;align-items:center">
+    <a class="bb-btn" href="plated.html">Plated guide</a>
+    <a class="bb-btn" href="index.html">‹ Home</a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="page-eyebrow">Banquet Captain · AUSDW</div>
+  <div class="page-title">Pre-shift Scripts</div>
+  <div class="page-meta">Upcoming plated meals from the Rundown · <a href="plated.html">training guide</a></div>
+</div>
+
+<div class="sec" id="ps-sec">Loading</div>
+<div class="status" id="ps-status">Reading the Rundown…</div>
+<div class="list" id="ps-list" hidden></div>
+
+</div>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); };
+  var TODAY = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
+
+  function fmtDate(iso) {
+    if (!iso) return "";
+    var d = new Date(iso + "T12:00:00Z");
+    return d.toLocaleDateString("en-US", { timeZone: "UTC", weekday: "short", month: "short", day: "numeric" });
+  }
+
+  function countPill(c) {
+    if (!c) return "";
+    if (c.gtd && c.set) return "GTD " + c.gtd + " · SET " + c.set;
+    if (c.gtd) return "GTD " + c.gtd;
+    if (c.set) return "SET " + c.set;
+    if (c.exp) return "EXP " + c.exp;
+    return c.raw || "";
+  }
+
+  function render(meals) {
+    var list = $("ps-list"), st = $("ps-status"), sec = $("ps-sec");
+    if (!meals.length) {
+      st.hidden = false; list.hidden = true;
+      st.className = "status";
+      st.textContent = "No upcoming plated meals on the Rundown from " + fmtDate(TODAY) + " onward.";
+      sec.textContent = "None upcoming";
+      return;
+    }
+    st.hidden = true; list.hidden = false;
+    sec.textContent = meals.length + " plated · from " + fmtDate(TODAY);
+    list.innerHTML = meals.map(function (m, i) {
+      var asks = m.questions.length;
+      var rows = m.lines.map(function (l) {
+        var cls = l.known ? (l.house ? "ps-val house" : "ps-val") : "ps-val ask";
+        return '<div class="ps-row"><div class="ps-lab">' + esc(l.label) + '</div><div class="' + cls + '">' + esc(l.text) + '</div></div>';
+      }).join("");
+      var qs = m.questions.length
+        ? '<div class="ps-sub">Questions to ask</div><ul class="q-list">' +
+          m.questions.map(function (q) {
+            return '<li class="q-item"><div class="q-who">' + esc(q.who) + '</div><div class="q-text">' + esc(q.q) + '</div></li>';
+          }).join("") + "</ul>"
+        : '<div class="ps-sub">Questions to ask</div><div class="note-box">Nothing flagged. Walk the known lines at stand-up.</div>';
+      return '<div class="ps-card" id="ps-' + i + '">' +
+        '<div class="ps-head" onclick="this.parentElement.classList.toggle(\'open\')">' +
+          '<div class="ps-main">' +
+            '<div class="ps-group">' + esc(m.group) + '</div>' +
+            '<div class="ps-meta"><b>' + esc(fmtDate(m.date)) + '</b> · ' + esc(m.time) + '<br>' +
+              esc(m.room) + (m.contact ? ' · Contact ' + esc(m.contact) : '') + '</div>' +
+            '<div class="ps-pills">' +
+              (m.tag ? '<span class="pill">' + esc(m.tag) + '</span>' : '') +
+              (countPill(m.counts) ? '<span class="pill">' + esc(countPill(m.counts)) + '</span>' : '') +
+              (m.mgr ? '<span class="pill mgr">MGR ' + esc(m.mgr) + '</span>' : '') +
+              (asks ? '<span class="pill ask">' + asks + ' to ask</span>' : '<span class="pill">Ready</span>') +
+            '</div>' +
+          '</div><span class="ps-chevron">▶</span>' +
+        '</div>' +
+        '<div class="ps-body">' +
+          '<div class="note-box">Walk servers through every line. [ask] means it is not on the EO - confirm before doors.</div>' +
+          '<div class="ps-sub">Pre-shift script</div>' + rows + qs +
+        '</div></div>';
+    }).join("");
+  }
+
+  function domHelpers(doc) {
+    return {
+      todayISO: TODAY,
+      sections: [].slice.call(doc.querySelectorAll(".day-section")),
+      txt: function (n) { return n ? PreShift.clean(n.textContent.replace(/\s+/g, " ")) : ""; },
+      qs: function (el, sel) { return el ? el.querySelector(sel) : null; },
+      qsa: function (el, sel) { return el ? [].slice.call(el.querySelectorAll(sel)) : []; },
+      attr: function (el, name) { return el && el.getAttribute ? (el.getAttribute(name) || "") : ""; }
+    };
+  }
+
+  fetch("rundown.html", { cache: "no-cache" }).then(function (r) {
+    if (!r.ok) throw new Error("Rundown HTTP " + r.status);
+    return r.text();
+  }).then(function (t) {
+    var doc = new DOMParser().parseFromString(t, "text/html");
+    var meals = PreShift.collectPlated(domHelpers(doc));
+    render(meals);
+  }).catch(function (err) {
+    console.error("[pre-shift]", err);
+    $("ps-status").className = "status err";
+    $("ps-status").textContent = "Could not load the Rundown. Serve Banquet Bot over http (not file://).";
+    $("ps-sec").textContent = "Error";
+  });
+})();
+</script>
+</body>
+</html>
