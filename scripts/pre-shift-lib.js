@@ -555,6 +555,7 @@
   }
 
   var CORKBOARD_SCRIPT = "Before we go over the script, pin all the sheets on the corkboard so they are easy to see: the event order, the section diagram, the timeline, and the server packet.";
+  var ALLERGY_CAPTAIN_DROP = "If there are any severe allergies, Jason drops off those plates himself.";
 
   function corkboardPacketStep() {
     return {
@@ -582,9 +583,9 @@
       speak(lines, "Cocktail reception is in Pre-Function from 6:00 to 6:45. Tray-pass hors d'oeuvres: beef tenderloin en croute, crab cake, antipasto skewer, and fig and goat cheese flatbread, 73 of each, plus 50 jackfruit cakes that are vegan and gluten free. The card calls for 1 passer per 25 guests. The event order lists 2 passers. [ask]", false);
       speak(lines, "Chime at 6:45 and open the doors. One hosted-bar plan puts a bar and one bartender inside Primrose C until 11:00. The diagram shows a bar in the hallway by Verbena A and also a bar along the Primrose C side wall. [ask] " + who + " which bar plan is live.", false);
       speak(lines, "Place cards: colored dot is the entree, star is a special meal. Tables are numbered. " + contact + " hands the captain a by-table meal list.");
-      speak(lines, "Entree counts: 43 filets cooked medium, 21 sea bass, 5 chicken, 4 tofu. That is 73. One gluten-free guest is on filet and wants it medium rare, not medium. One guest is allergic to mushrooms and clams and is on chicken. Do not send that guest the tofu. It has mushroom risotto.");
+      speak(lines, "Entree counts: 43 filets cooked medium, 21 sea bass, 5 chicken, 4 tofu. That is 73. One gluten-free guest is on filet and wants it medium rare, not medium. One guest is allergic to mushrooms and clams and is on chicken. Do not send that guest the tofu. It has mushroom risotto. " + ALLERGY_CAPTAIN_DROP);
       speak(lines, "Salad is pre-set. Rolls and butter go with dinner. Check with " + contact + " before you fire the entrees. [ask] who calls each course. " + serviceCueScriptLine(f.blob).text, false);
-      speak(lines, "We pour the client's wine and coffee all night, including during speeches. There is no house wine. White wine should already be chilled from the morning delivery.");
+      speak(lines, "We pour the client's wine and coffee all night, including during speeches. There is no house wine. " + wineChillFromEO(f.blob).script);
       speak(lines, "Do not clear dessert plates. Dessert is Chocolate Decadence, which is already gluten free. Coffee and hot tea stay through speeches. [ask] when decaf goes out if it is not with the regular coffee.", false);
       speak(lines, "The event order books dinner from 7:00 to 11:00. The rundown card still says 7:00 to 9:00. [ask] which window is live.", false);
       speak(lines, "After service, client linen, florals, and chargers go back to Camellia B. That storage is held Saturday morning. Pickup time is still to be confirmed. [ask]", false);
@@ -598,8 +599,8 @@
       speak(lines, "From 8:00 to 11:00 we pre-set silverware, water glasses, and napkins. Sponsors set activations and help decorate from 8:00. Activations and registration open at 11:00 in the foyer, Lantana, and Plumeria.");
       speak(lines, "Ballroom doors open at 12:00. At 12:20 the musician pauses, there is a short announcement, and lunch service begins. At 12:30 there is a welcome from Visit Austin, during service. At 12:40 guests keep eating with music. At 12:55 the musician pauses for sponsor recognition, awards, and a TSAE recap. The program ends at 2:00 and the band plays as guests leave. Teardown is 2:00 to 3:30.");
       speak(lines, "The meal is chef's choice plated lunch. The event order does not list courses, entrees, dessert, bread, or coffee. [ask] " + who + " for the actual menu, how many courses, and what is pre-set versus walked.", false);
-      speak(lines, "[ask] how entree choices are marked, and whether there are allergies or dietary plates by table.", false);
-      speak(lines, "No bar or wine is listed on the lunch event order. [ask] if this is water and tea only, and when coffee or decaf goes out.", false);
+      speak(lines, "[ask] how entree choices are marked, and whether there are allergies or dietary plates by table. " + ALLERGY_CAPTAIN_DROP, false);
+      speak(lines, "No bar or wine is listed on the lunch event order. [ask] if this is water and tea only, and when coffee or decaf goes out. " + wineChillFromEO(f.blob).script, false);
       speak(lines, "[ask] who calls service at 12:20, and who calls any later course around the 12:30 welcome and the 12:55 awards. " + serviceCueScriptLine(f.blob).text + " [ask] kitchen fire times, and whether dessert is pre-set or held until after 12:55.", false);
       speak(lines, "House standard is serve left, clear right, unless " + who + " says otherwise. [ask] if there is a head table or stage tables first.", false);
       speak(lines, "[ask] any vendor, sponsor, or staff meals, and where they eat.", false);
@@ -627,10 +628,11 @@
     else speak(lines, "What is pre-set (salad, bread, butter, water, dessert): [ask].", false);
     if (f.entreeText) speak(lines, f.entreeText + (/\b\[ask\]/.test("") ? "" : "."));
     else speak(lines, "Entree and how choices are marked: [ask].", false);
-    if (f.diet) speak(lines, "Dietary: " + f.diet + ".");
-    else speak(lines, "Allergies or dietary plates by table: [ask].", false);
-    if (f.wine) speak(lines, f.wine + ".");
-    else speak(lines, "Wine pour or bar only: [ask].", false);
+    if (f.diet) speak(lines, "Dietary: " + f.diet + " " + ALLERGY_CAPTAIN_DROP);
+    else speak(lines, "Allergies or dietary plates by table: [ask]. " + ALLERGY_CAPTAIN_DROP, false);
+    var chillLine = wineChillFromEO(f.blob).script;
+    if (f.wine) speak(lines, f.wine + " " + chillLine, /\[ask\]/.test(chillLine) ? false : undefined);
+    else speak(lines, "Wine pour or bar only: [ask]. " + chillLine, false);
     if (f.prog) speak(lines, "Program: " + f.prog + ".");
     if (f.fire) speak(lines, f.fire + ".");
     else speak(lines, "Kitchen fire times: [ask].", false);
@@ -668,6 +670,38 @@
     return { text: t, placement: place, known: !!place };
   }
 
+  function wineChillFromEO(blob) {
+    var s = clean(blob);
+    if (/chill the white/i.test(s) || /chill(?:ing)? (?:the )?(?:white )?wine/i.test(s) || /wine needs? (?:to be )?chill/i.test(s)) {
+      var white = /chill the white/i.test(s) || /white wine/i.test(s);
+      return {
+        status: "yes",
+        duty: white ? "Chill the white wine" : "Chill the wine",
+        script: (white ? "White wine needs to be chilled. " : "Wine needs to be chilled. ") + "Assign chilling it to a server as side work."
+      };
+    }
+    var noWine = /no bar or wine|no wine is listed|wine is not listed/i.test(s) && !/client wine|corkage|wine is client/i.test(s);
+    if (noWine) {
+      return {
+        status: "ask",
+        duty: "",
+        script: "[ask] whether any wine needs to be chilled. If it does, assign chilling it to a server as side work."
+      };
+    }
+    if (/\bwine\b/i.test(s)) {
+      return {
+        status: "ask",
+        duty: "Chill the wine [ask]",
+        script: "[ask] whether the wine needs to be chilled. If it does, assign chilling it to a server as side work."
+      };
+    }
+    return {
+      status: "ask",
+      duty: "",
+      script: "[ask] whether any wine needs to be chilled. If it does, assign chilling it to a server as side work."
+    };
+  }
+
   var OPENING_DUTIES = [
     "Coffee trays (4)",
     "Bread baskets",
@@ -693,20 +727,16 @@
   var GUESTS_PER_TEAM = 45;
   var TEAM_GUEST_FLAG = 60;
 
-  function splitDuties(teamCount) {
+  function splitDuties(teamCount, extraOpening) {
     var n = Math.max(1, teamCount || 2);
+    var extra = (extraOpening || []).filter(Boolean);
     if (n === 2) {
+      var yellowOpen = ["Coffee trays (4)", "Bread baskets", "Brew tea/coffee", "Fold napkins", "Coffee cart and table", "Fill regular and decaf urns", "Cups, cream, sugar, lemons"];
+      var greenOpen = ["Breakdown stations", "Hotbox stations", "Dressings", "Butters", "Waters"];
+      extra.forEach(function (d) { yellowOpen.push(d); });
       return [
-        {
-          color: "Yellow",
-          opening: ["Coffee trays (4)", "Bread baskets", "Brew tea/coffee", "Fold napkins", "Coffee cart and table", "Fill regular and decaf urns", "Cups, cream, sugar, lemons"],
-          closing: ["Sweep/mop", "Beverage station", "Strike coffee cart"]
-        },
-        {
-          color: "Green",
-          opening: ["Breakdown stations", "Hotbox stations", "Dressings", "Butters", "Waters"],
-          closing: ["Trash", "Plates to dish"]
-        }
+        { color: "Yellow", opening: yellowOpen, closing: ["Sweep/mop", "Beverage station", "Strike coffee cart"] },
+        { color: "Green", opening: greenOpen, closing: ["Trash", "Plates to dish"] }
       ];
     }
     var teams = [];
@@ -714,13 +744,13 @@
     for (i = 0; i < n; i++) {
       teams.push({ color: TEAM_COLORS[i] || ("Team " + (i + 1)), opening: [], closing: [] });
     }
-    OPENING_DUTIES.forEach(function (d, idx) { teams[idx % n].opening.push(d); });
+    OPENING_DUTIES.concat(extra).forEach(function (d, idx) { teams[idx % n].opening.push(d); });
     CLOSING_DUTIES.forEach(function (d, idx) { teams[idx % n].closing.push(d); });
     return teams;
   }
 
-  function defaultTeams(teamCount) {
-    return splitDuties(teamCount).map(function (t) {
+  function defaultTeams(teamCount, extraOpening) {
+    return splitDuties(teamCount, extraOpening).map(function (t) {
       return { color: t.color, names: ["", ""], opening: t.opening.slice(), closing: t.closing.slice() };
     });
   }
@@ -967,6 +997,7 @@
     if (dietBits.length) {
       specials.push({ table: "", text: dietBits.join("; ") });
     }
+    specials.push({ table: "", text: ALLERGY_CAPTAIN_DROP });
 
     steps.push({ time: "", label: "WAIT FOR CUE TO DROP ENTREES", items: [], owners: [] });
 
@@ -1062,7 +1093,9 @@
     var svcText = (meal.services || []).map(function (sv) {
       return [sv.tag, sv.time, sv.menu, sv.room].join(" ");
     }).join(" · ");
-    var duties = defaultTeams(defaultTeamCount(meal.counts));
+    var chillBlob = [foot.NOTE, meal.menu, meal.extras, svcText, foot.ROOM, foot.FOOD].join(" · ");
+    var chill = wineChillFromEO(chillBlob);
+    var duties = defaultTeams(defaultTeamCount(meal.counts), chill.duty ? [chill.duty] : []);
     var built = buildPacketSteps(meal);
     var tableSource = [meal.diagrams, foot.ROOM, foot.NOTE, (meal.packetNotes || "")].concat(
       (meal.diagramLinks || []).map(function (l) { return l.caption || ""; })
@@ -1129,6 +1162,9 @@
       out.specials = saved.specials.map(function (s) {
         return { table: String(s.table || ""), text: String(s.text || "") };
       });
+      if (!out.specials.some(function (s) { return /Jason drops off those plates/i.test(s.text || ""); })) {
+        out.specials = out.specials.concat([{ table: "", text: ALLERGY_CAPTAIN_DROP }]);
+      }
     }
     if (saved.assignments && typeof saved.assignments === "object") {
       out.assignments = saved.assignments;
@@ -1224,8 +1260,10 @@
     extractFlags: extractFlags,
     buildPreShift: buildPreShift,
     CORKBOARD_SCRIPT: CORKBOARD_SCRIPT,
+    ALLERGY_CAPTAIN_DROP: ALLERGY_CAPTAIN_DROP,
     corkboardPacketStep: corkboardPacketStep,
     serviceCueFromEO: serviceCueFromEO,
+    wineChillFromEO: wineChillFromEO,
     CUE_QUESTION: CUE_QUESTION,
     collectPlated: collectPlated,
     OPENING_DUTIES: OPENING_DUTIES,

@@ -50,6 +50,9 @@ assert.ok(priced.analysis && priced.analysis.length, "generic meal gets analysis
 const pricedText = allText(priced);
 assert(!/\$\d/.test(pricedText), "prices must not appear in script");
 assert(!/[\u2014\u2013]/.test(pricedText), "em/en dashes must not appear");
+assert.ok(priced.script.some(function (l) { return l.text.indexOf(PreShift.ALLERGY_CAPTAIN_DROP) >= 0; }), "generic script includes allergy drop rule");
+assert.ok((priced.packet.specials || []).some(function (s) { return s.text === PreShift.ALLERGY_CAPTAIN_DROP; }));
+assert.ok(priced.script.some(function (l) { return /\[ask\].*wine needs to be chilled/i.test(l.text); }), "generic wine line asks if chilling is needed");
 assert.equal(priced.script[0].text, PreShift.CORKBOARD_SCRIPT, "generic script starts by pinning the corkboard");
 assert.ok(priced.script.some(function (l) { return /later slots/i.test(l.text); }), "generic script keeps later slots");
 assert.equal(priced.packet.steps[0].label, "PIN THE CORKBOARD");
@@ -197,6 +200,12 @@ if (fs.existsSync(rundownPath)) {
   assert.equal(ts.script[0].text, PreShift.CORKBOARD_SCRIPT);
   assert.equal(em.packet.steps[0].label, "PIN THE CORKBOARD");
   assert.equal(ts.packet.steps[0].label, "PIN THE CORKBOARD");
+  assert.ok(em.script.some(function (l) { return l.text.indexOf(PreShift.ALLERGY_CAPTAIN_DROP) >= 0; }));
+  assert.ok(ts.script.some(function (l) { return l.text.indexOf(PreShift.ALLERGY_CAPTAIN_DROP) >= 0; }));
+  assert.ok((em.packet.specials || []).some(function (s) { return s.text === PreShift.ALLERGY_CAPTAIN_DROP; }));
+  const emOpen = em.packet.teams.reduce(function (a, tm) { return a.concat(tm.opening || []); }, []);
+  assert.ok(emOpen.indexOf("Chill the white wine") >= 0, "live Emerson opening duties include chill the white wine");
+  assert.ok(ts.script.some(function (l) { return /\[ask\].*wine needs to be chilled/i.test(l.text); }));
   const emCue = em.questions.find(function (q) { return /strictly on the timeline/i.test(q.q); });
   const tsCue = ts.questions.find(function (q) { return /strictly on the timeline/i.test(q.q); });
   assert.ok(emCue && emCue.who === "Lynn", "live Emerson cue question goes to Lynn");
@@ -254,6 +263,18 @@ meals.forEach(function (m) {
   assert.ok(coffee.owners && coffee.owners.length && coffee.owners.every(function (o) { return !o; }), "who runs coffee stays blank");
   assert.ok(m.script.some(function (l) { return /Mobile coffee/i.test(l.text); }));
   assert.ok(m.script.some(function (l) { return /where the cart goes/i.test(l.text); }));
+  assert.ok(m.script.some(function (l) { return l.text.indexOf(PreShift.ALLERGY_CAPTAIN_DROP) >= 0; }), m.group + " script should say Jason drops severe allergy plates");
+  assert.ok(!/Bourne/.test(allText(m)), "first names only");
+  assert.ok((m.packet.specials || []).some(function (s) { return s.text === PreShift.ALLERGY_CAPTAIN_DROP; }), m.group + " packet should include the allergy drop rule");
+  const openings = (m.packet.teams || []).reduce(function (arr, tm) { return arr.concat(tm.opening || []); }, []);
+  if (/Emerson/i.test(m.group)) {
+    assert.ok(openings.indexOf("Chill the white wine") >= 0, "Emerson opening duties include chilling the white wine");
+    assert.ok(m.script.some(function (l) { return /White wine needs to be chilled/i.test(l.text) && /side work/i.test(l.text) && !/\[ask\].*chill/i.test(l.text); }));
+  }
+  if (/TSAE/i.test(m.group)) {
+    assert.ok(openings.every(function (d) { return !/^Chill the /i.test(d); }), "TSAE has no wine on the EO, so no chill duty yet");
+    assert.ok(m.script.some(function (l) { return /\[ask\].*wine needs to be chilled/i.test(l.text); }));
+  }
   assert(!/[\u2014\u2013]/.test(JSON.stringify(p)), "no dashes in packet for " + m.group);
 });
 
@@ -416,5 +437,27 @@ const staleSteps = PreShift.mergePacket(sparse.packet, {
 assert.equal(staleSteps.steps[0].label, "PIN THE CORKBOARD", "saved packets without the corkboard step still get it first");
 assert.equal(staleSteps.steps[1].label, "SET INSIDE ROOM");
 assert(!/[\u2014\u2013]/.test(PreShift.CORKBOARD_SCRIPT));
+
+
+assert.equal(PreShift.wineChillFromEO("Wine is delivered in the morning, chill the white right away.").status, "yes");
+assert.equal(PreShift.wineChillFromEO("Wine is delivered in the morning, chill the white right away.").duty, "Chill the white wine");
+assert.equal(PreShift.wineChillFromEO("No bar or wine is listed on the lunch event order.").status, "ask");
+assert.equal(PreShift.wineChillFromEO("No bar or wine is listed on the lunch event order.").duty, "");
+assert.equal(PreShift.wineChillFromEO("Client wine, hotel pours. Corkage applies.").duty, "Chill the wine [ask]");
+
+const wineAsk = PreShift.buildPreShift({
+  group: "Wine Lunch",
+  tag: "Plated Lunch",
+  menu: "Plated Lunch",
+  foot: { NOTE: "Client wine, hotel pours." },
+  counts: { gtd: "40" }
+});
+assert.ok(wineAsk.script.some(function (l) { return /\[ask\].*wine needs to be chilled/i.test(l.text); }));
+assert.ok(wineAsk.packet.teams.some(function (tm) { return (tm.opening || []).indexOf("Chill the wine [ask]") >= 0; }));
+
+const staleAllergy = PreShift.mergePacket(sparse.packet, { specials: [{ table: "3", text: "Nut allergy" }] });
+assert.ok(staleAllergy.specials.some(function (s) { return s.text === PreShift.ALLERGY_CAPTAIN_DROP; }), "saved packets still get the allergy drop rule");
+assert(!/[\u2014\u2013]/.test(PreShift.ALLERGY_CAPTAIN_DROP));
+assert.ok(!/Bourne/.test(PreShift.ALLERGY_CAPTAIN_DROP));
 
 console.log("PASS: analysis, spoken scripts, later slots, questions for the manager, no prices or dashes. Meals:", meals.map(function (m) { return m.group; }).join(" | "));
