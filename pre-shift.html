@@ -112,7 +112,15 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .pkt-teams tr.red td:first-child { box-shadow: inset 3px 0 0 #e05555; }
 .pkt-teams tr.orange td:first-child { box-shadow: inset 3px 0 0 #e2b089; }
 .pkt-teams tr.purple td:first-child { box-shadow: inset 3px 0 0 #a06ee8; }
+.pkt-teams tr.pink td:first-child { box-shadow: inset 3px 0 0 #e87aa4; }
+.pkt-teams tr.teal td:first-child { box-shadow: inset 3px 0 0 #2aa8a1; }
+.pkt-teams tr.brown td:first-child { box-shadow: inset 3px 0 0 #a5744b; }
+.pkt-teams tr.gray td:first-child { box-shadow: inset 3px 0 0 #8a9099; }
+.pkt-teams tr.gold td:first-child { box-shadow: inset 3px 0 0 #c9a227; }
+.pkt-teams tr.white td:first-child { box-shadow: inset 3px 0 0 #d6d6d6; }
 .pkt-color { font-weight:600; margin-bottom:6px; }
+.pkt-load { font-size:11px; color:var(--text-2); margin-top:4px; }
+.pkt-load.over { color:#e05555; font-weight:600; }
 .pkt-input, .pkt-area, .pkt-select { width:100%; background:var(--bg-card); color:var(--text-1); border:1px solid var(--border); border-radius:6px; padding:5px 7px; font: inherit; font-size:12px; }
 .pkt-area { min-height:70px; resize:vertical; line-height:1.4; }
 .pkt-name { margin-bottom:5px; }
@@ -264,6 +272,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   function loadPacketStore() { try { return JSON.parse(localStorage.getItem(PACKET_STORE) || "{}") || {}; } catch (e) { return {}; } }
   function savePacketStore(all) { try { localStorage.setItem(PACKET_STORE, JSON.stringify(all)); } catch (e) {} }
 
+  var SWATCH = {Yellow:"#e4c33a",Green:"#3fa86a",Blue:"#4f8ef0",Red:"#e05555",Orange:"#e2b089",Purple:"#a06ee8",Pink:"#e87aa4",Teal:"#2aa8a1",Brown:"#a5744b",Gray:"#8a9099",Gold:"#c9a227",White:"#d6d6d6"};
   function teamClass(color) { return String(color || "").toLowerCase().replace(/\s+/g, ""); }
 
   function renderPacket(m, i) {
@@ -272,12 +281,16 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
     var all = loadPacketStore();
     var p = PreShift.mergePacket(base, all[base.key]);
     m.packetLive = p;
+    var loads = PreShift.teamLoads(p.teams, p.assignments, p.seatsPerTable);
     var teams = (p.teams || []).map(function (t, ti) {
       var names = (t.names && t.names.length ? t.names : ["", ""]).map(function (n, ni) {
         return '<input class="pkt-input pkt-name" data-pkt="' + i + '" data-k="name" data-t="' + ti + '" data-n="' + ni + '" placeholder="Name" value="' + esc(n) + '">';
       }).join("");
+      var load = loads[ti] || { guests: 0, over: false };
+      var loadText = !p.seatsPerTable ? "Guest count needs seats per table" : (load.guests + " guests" + (load.over ? " (over 60)" : ""));
       return '<tr class="' + esc(teamClass(t.color)) + '">' +
-        '<td><div class="pkt-color">' + esc(t.color) + ' Team</div>' + names + '</td>' +
+        '<td><div class="pkt-color">' + esc(t.color) + ' Team</div>' + names +
+        '<div class="pkt-load' + (load.over ? ' over' : '') + '" data-k="load" data-t="' + ti + '">' + esc(loadText) + '</div></td>' +
         '<td><label>Opening</label><textarea class="pkt-area" data-pkt="' + i + '" data-k="opening" data-t="' + ti + '">' + esc((t.opening || []).join("\n")) + '</textarea></td>' +
         '<td><label>Closing</label><textarea class="pkt-area" data-pkt="' + i + '" data-k="closing" data-t="' + ti + '">' + esc((t.closing || []).join("\n")) + '</textarea></td>' +
         '</tr>';
@@ -313,7 +326,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
       assigns += '<label class="pkt-assign-item"><span>Table ' + ti + '</span><select class="pkt-select" data-pkt="' + i + '" data-k="assign" data-table="' + ti + '">' + opts + '</select></label>';
     }
     var legend = colors.map(function (c) {
-      return '<span><i class="pkt-swatch" style="background:' + ({Yellow:"#e4c33a",Green:"#3fa86a",Blue:"#4f8ef0",Red:"#e05555",Orange:"#e2b089",Purple:"#a06ee8"}[c] || "#888") + '"></i>' + esc(c) + '</span>';
+      return '<span><i class="pkt-swatch" style="background:' + (SWATCH[c] || "#888") + '"></i>' + esc(c) + '</span>';
     }).join("");
     var diag = p.diagram || { missing: true, images: [] };
     var diagBlock = '<div class="pkt-diagram-ph" data-diag-ph="' + i + '">Diagram not in Banquet Bot yet.</div>' +
@@ -324,7 +337,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
       '<div class="pkt-bar">' +
         '<button type="button" class="bb-btn pkt-btn" data-act="print" data-pkt="' + i + '">Print packet</button>' +
         '<button type="button" class="bb-btn pkt-btn" data-act="add-team" data-pkt="' + i + '">Add team</button>' +
-        (p.teams && p.teams.length > 2 ? '<button type="button" class="bb-btn pkt-btn" data-act="remove-team" data-pkt="' + i + '">Remove team</button>' : '') +
+        (p.teams && p.teams.length > 1 ? '<button type="button" class="bb-btn pkt-btn" data-act="remove-team" data-pkt="' + i + '">Remove team</button>' : '') +
       '</div>' +
       '<div class="pkt-sheet">' +
         '<div class="pkt-title">Server Packet</div>' +
@@ -337,7 +350,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
           '<div class="pkt-assign-label">Room diagram and section assignments</div>' +
           '<div class="pkt-legend">' + legend + '</div>' +
           diagBlock +
-          '<div class="pkt-loc"><label>Tables on the diagram</label><input class="pkt-input" data-pkt="' + i + '" data-k="tableCount" value="' + esc(String(n || "")) + '" placeholder="How many tables"></div>' +
+          '<div class="pkt-step-row">' +
+            '<div class="pkt-loc"><label>Tables on the diagram</label><input class="pkt-input" data-pkt="' + i + '" data-k="tableCount" value="' + esc(String(n || "")) + '" placeholder="How many tables"></div>' +
+            '<div class="pkt-loc"><label>Seats per table</label><input class="pkt-input" data-pkt="' + i + '" data-k="seatsPerTable" value="' + esc(p.seatsPerTable ? String(p.seatsPerTable) : "") + '" placeholder="From the event order"></div>' +
+          '</div>' +
           '<div class="pkt-assign">' + assigns + '</div>' +
         '</div>' +
       '</div></div>';
@@ -379,6 +395,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
     });
     var tc = root.querySelector('[data-k="tableCount"]');
     if (tc && /^\d+$/.test(tc.value)) p.tableCount = +tc.value;
+    var seatsEl = root.querySelector('[data-k="seatsPerTable"]');
+    if (seatsEl && /^\d+$/.test(seatsEl.value)) p.seatsPerTable = +seatsEl.value;
     p.assignments = p.assignments || {};
     root.querySelectorAll('[data-k="assign"]').forEach(function (el) {
       p.assignments[el.getAttribute("data-table")] = el.value;
@@ -392,11 +410,13 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
     var all = loadPacketStore();
     all[p.key] = {
       teams: p.teams,
+      teamCount: (p.teams || []).length,
       location: p.location,
       steps: p.steps,
       specials: p.specials,
       assignments: p.assignments,
-      tableCount: p.tableCount
+      tableCount: p.tableCount,
+      seatsPerTable: p.seatsPerTable
     };
     savePacketStore(all);
     return p;
@@ -437,14 +457,31 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
     else fail();
   }
 
+  function refreshLoads(i, meals) {
+    var p = meals[i].packetLive || meals[i].packet;
+    if (!p) return;
+    var loads = PreShift.teamLoads(p.teams, p.assignments, p.seatsPerTable);
+    loads.forEach(function (load, ti) {
+      var el = document.querySelector('#pkt-' + i + ' [data-k="load"][data-t="' + ti + '"]');
+      if (!el) return;
+      el.textContent = !p.seatsPerTable ? "Guest count needs seats per table" : (load.guests + " guests" + (load.over ? " (over 60)" : ""));
+      if (load.over) el.classList.add("over");
+      else el.classList.remove("over");
+    });
+  }
+
   function bindOnePacket(i, meals) {
     var root = document.getElementById("pkt-" + i);
     if (!root) return;
     root.querySelectorAll("input, textarea, select").forEach(function (el) {
       el.addEventListener("change", function () {
         var before = meals[i].packetLive && meals[i].packetLive.tableCount;
+        var beforeSeats = meals[i].packetLive && meals[i].packetLive.seatsPerTable;
         persistPacket(i, meals);
-        if (el.getAttribute("data-k") === "tableCount" && meals[i].packetLive.tableCount !== before) redrawPacket(i, meals);
+        var k = el.getAttribute("data-k");
+        if (k === "tableCount" && meals[i].packetLive.tableCount !== before) { redrawPacket(i, meals); return; }
+        if (k === "seatsPerTable" && meals[i].packetLive.seatsPerTable !== beforeSeats) { redrawPacket(i, meals); return; }
+        if (k === "assign" || k === "seatsPerTable") refreshLoads(i, meals);
       });
       el.addEventListener("blur", function () { persistPacket(i, meals); });
     });
@@ -471,13 +508,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
           var all = loadPacketStore();
           all[p.key] = all[p.key] || {};
           all[p.key].teams = p.teams;
+          all[p.key].teamCount = p.teams.length;
           savePacketStore(all);
           redrawPacket(i, meals);
           return;
         }
         if (act === "remove-team") {
           var p2 = meals[i].packetLive;
-          if ((p2.teams || []).length <= 2) return;
+          if ((p2.teams || []).length <= 1) return;
           var names2 = (p2.teams || []).map(function (t) { return t.names; });
           var next2 = PreShift.defaultTeams(p2.teams.length - 1);
           next2.forEach(function (t, ti) { if (names2[ti]) t.names = names2[ti]; });
@@ -485,6 +523,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
           var all2 = loadPacketStore();
           all2[p2.key] = all2[p2.key] || {};
           all2[p2.key].teams = p2.teams;
+          all2[p2.key].teamCount = p2.teams.length;
           savePacketStore(all2);
           redrawPacket(i, meals);
         }

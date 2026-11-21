@@ -651,7 +651,9 @@
     "Trash",
     "Plates to dish"
   ];
-  var TEAM_COLORS = ["Yellow", "Green", "Blue", "Red", "Orange", "Purple"];
+  var TEAM_COLORS = ["Yellow", "Green", "Blue", "Red", "Orange", "Purple", "Pink", "Teal", "Brown", "Gray", "Gold", "White"];
+  var GUESTS_PER_TEAM = 45;
+  var TEAM_GUEST_FLAG = 60;
 
   function splitDuties(teamCount) {
     var n = Math.max(1, teamCount || 2);
@@ -682,6 +684,50 @@
   function defaultTeams(teamCount) {
     return splitDuties(teamCount).map(function (t) {
       return { color: t.color, names: ["", ""], opening: t.opening.slice(), closing: t.closing.slice() };
+    });
+  }
+
+  function headcount(counts) {
+    counts = counts || {};
+    if (counts.gtd) return parseInt(counts.gtd, 10) || 0;
+    if (counts.set) return parseInt(counts.set, 10) || 0;
+    if (counts.exp) return parseInt(counts.exp, 10) || 0;
+    return 0;
+  }
+
+  function defaultTeamCount(counts) {
+    var n = headcount(counts);
+    if (!n) return 2;
+    return Math.max(1, Math.ceil(n / GUESTS_PER_TEAM));
+  }
+
+  function parseSeatsPerTable(text) {
+    var s = String(text || "").replace(/diagram[^·]{0,160}/gi, " ");
+    var eo = s.match(/event order[^·]{0,160}?rounds?\s+of\s+(\d+)/i)
+      || s.match(/\bEO\b(?!\s+setup)[^·]{0,120}?rounds?\s+of\s+(\d+)/i);
+    if (eo) return parseInt(eo[1], 10);
+    var m = s.match(/\(?\d+\)?\s+rounds?\s+of\s+(\d+)/i);
+    if (m) return parseInt(m[1], 10);
+    m = s.match(/tables?\s+of\s+(\d+)/i);
+    if (m) return parseInt(m[1], 10);
+    return 0;
+  }
+
+  function teamLoads(teams, assignments, seatsPerTable) {
+    var seats = parseInt(seatsPerTable, 10) || 0;
+    return (teams || []).map(function (t) {
+      var tables = 0;
+      Object.keys(assignments || {}).forEach(function (k) {
+        if (assignments[k] === t.color) tables += 1;
+      });
+      var guests = seats ? tables * seats : 0;
+      return { color: t.color, tables: tables, guests: guests, over: seats > 0 && guests > TEAM_GUEST_FLAG };
+    });
+  }
+
+  function hasNamedServers(teams) {
+    return (teams || []).some(function (t) {
+      return (t.names || []).some(function (n) { return String(n || "").trim(); });
     });
   }
 
@@ -787,6 +833,26 @@
     return links;
   }
 
+  function breakdownHotboxLocation(services, blob) {
+    var location = "";
+    (services || []).forEach(function (sv) {
+      var tag = sv.tag || "";
+      var menu = sv.menu || "";
+      if (!/breakdown|hotbox/i.test(tag) && !/breakdown|hotbox/i.test(menu)) return;
+      if (/storage|workroom/i.test(tag) && !/breakdown|hotbox/i.test(tag)) return;
+      if (sv.room) location = clean(sv.room);
+      var named = (tag + " " + menu).match(/(?:breakdown|hotbox)\s*(?:and|&)?\s*(?:hotbox|breakdown)?\s*[-:]\s*([^·]+)/i);
+      if (named) location = clean(named[1]);
+    });
+    if (!location) {
+      var loc = String(blob || "").match(/breakdown\s*(?:and|&)?\s*hotbox\s*[-:]\s*([^·]+)/i)
+        || String(blob || "").match(/hotbox\s*(?:and|&)?\s*breakdown\s*[-:]\s*([^·]+)/i)
+        || String(blob || "").match(/(?:breakdown|hotbox)\s+(?:in|at)\s+([^·,]+)/i);
+      if (loc) location = clean(loc[1]);
+    }
+    return location;
+  }
+
   function buildPacketSteps(meal) {
     meal = meal || {};
     var foot = meal.foot || {};
@@ -797,16 +863,7 @@
     var linkText = (meal.diagramLinks || []).map(function (l) { return (l.caption || "") + " " + (l.path || ""); }).join(" · ");
     var blob = [meal.menu, foot.NOTE, foot.FOOD, foot.ROOM, meal.extras, meal.diagrams, meal.tag, meal.time, svcText, linkText].join(" · ");
     var steps = [];
-    var location = "";
-    services.forEach(function (sv) {
-      if (/storage|workroom|hotbox|breakdown/i.test(sv.tag || "") || /storage|hotbox/i.test(sv.menu || "")) {
-        if (sv.room) location = clean(sv.room);
-      }
-    });
-    if (!location) {
-      var loc = blob.match(/breakdown\s*(?:and|&)?\s*hotbox\s*[-:]\s*([^·]+)/i);
-      if (loc) location = clean(loc[1]);
-    }
+    var location = breakdownHotboxLocation(services, blob);
 
     var setTime = "";
     var setItems = [];
@@ -891,12 +948,19 @@
   function buildServerPacket(meal) {
     meal = meal || {};
     var room = clean(meal.room || "");
-    var duties = defaultTeams(2);
+    var foot = meal.foot || {};
+    var svcText = (meal.services || []).map(function (sv) {
+      return [sv.tag, sv.time, sv.menu, sv.room].join(" ");
+    }).join(" · ");
+    var duties = defaultTeams(defaultTeamCount(meal.counts));
     var built = buildPacketSteps(meal);
-    var tableSource = [meal.diagrams, (meal.foot || {}).ROOM, (meal.foot || {}).NOTE, (meal.packetNotes || "")].concat(
+    var tableSource = [meal.diagrams, foot.ROOM, foot.NOTE, (meal.packetNotes || "")].concat(
       (meal.diagramLinks || []).map(function (l) { return l.caption || ""; })
     ).join(" · ");
     var tables = parseTableCount(tableSource, meal.counts);
+    var seatSource = [foot.NOTE, meal.menu, meal.extras, svcText, foot.ROOM, foot.FOOD].join(" · ");
+    var diagramSeats = [meal.diagrams].concat((meal.diagramLinks || []).map(function (l) { return l.caption || ""; })).join(" · ");
+    var seats = parseSeatsPerTable(seatSource) || parseSeatsPerTable(diagramSeats);
     var assignments = {};
     var i;
     for (i = 1; i <= tables; i++) assignments[String(i)] = "";
@@ -910,6 +974,7 @@
       steps: built.steps,
       specials: built.specials,
       tableCount: tables,
+      seatsPerTable: seats,
       assignments: assignments,
       diagram: pickDiagram(room, meal.diagramLinks || [])
     };
@@ -920,12 +985,15 @@
     var out = buildServerPacket({ group: base.group, date: base.date, room: base.room });
     // start from freshly built base, then overlay saved editable fields
     out = JSON.parse(JSON.stringify(base));
-    if (Array.isArray(saved.teams) && saved.teams.length) {
+    var keepTeams = Array.isArray(saved.teams) && saved.teams.length && (saved.teamCount || hasNamedServers(saved.teams));
+    if (keepTeams) {
       out.teams = saved.teams.map(function (t, i) {
         var def = base.teams[i] || { color: t.color || TEAM_COLORS[i] || ("Team " + (i + 1)), names: ["", ""], opening: [], closing: [] };
+        var names = Array.isArray(t.names) ? t.names.map(function (n) { return String(n || ""); }) : def.names.slice();
+        while (names.length < 2) names.push("");
         return {
           color: t.color || def.color,
-          names: Array.isArray(t.names) ? t.names.map(function (n) { return String(n || ""); }) : def.names.slice(),
+          names: names.slice(0, Math.max(2, names.length)),
           opening: Array.isArray(t.opening) ? t.opening.slice() : def.opening.slice(),
           closing: Array.isArray(t.closing) ? t.closing.slice() : def.closing.slice()
         };
@@ -952,6 +1020,8 @@
       out.assignments = saved.assignments;
     }
     if (saved.tableCount && +saved.tableCount > 0) out.tableCount = +saved.tableCount;
+    if (saved.seatsPerTable != null && +saved.seatsPerTable > 0) out.seatsPerTable = +saved.seatsPerTable;
+    if (saved.teamCount && +saved.teamCount > 0) out.teamCount = +saved.teamCount;
     return out;
   }
 
@@ -1043,8 +1113,13 @@
     CLOSING_DUTIES: CLOSING_DUTIES,
     splitDuties: splitDuties,
     defaultTeams: defaultTeams,
+    headcount: headcount,
+    defaultTeamCount: defaultTeamCount,
+    parseSeatsPerTable: parseSeatsPerTable,
+    teamLoads: teamLoads,
     packetKey: packetKey,
     parseTableCount: parseTableCount,
+    breakdownHotboxLocation: breakdownHotboxLocation,
     diagramImageCandidates: diagramImageCandidates,
     pickDiagram: pickDiagram,
     buildServerPacket: buildServerPacket,

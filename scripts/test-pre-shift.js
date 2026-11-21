@@ -173,6 +173,12 @@ if (fs.existsSync(rundownPath)) {
   assert.ok(em.packet.steps.some(function (s) { return s.label === "MOBILE COFFEE"; }));
   assert.ok(ts.packet.steps.some(function (s) { return s.label === "MOBILE COFFEE"; }));
   assert(!/[\u2014\u2013]/.test(JSON.stringify(em.packet) + JSON.stringify(ts.packet)), "no dashes in live packets");
+  assert.equal(em.packet.teams.length, 2, "live Emerson 73 guests -> 2 teams");
+  assert.equal(ts.packet.teams.length, 7, "live TSAE 300 guests -> 7 teams");
+  assert.equal(em.packet.location, "", "live Emerson storage must not prefill breakdown/hotbox");
+  assert.equal(ts.packet.location, "");
+  assert.equal(em.packet.seatsPerTable, 9, "live Emerson seats from EO rounds of 9");
+  assert.equal(ts.packet.seatsPerTable, 8, "live TSAE seats from EO rounds of 8");
 }
 
 // Syntax-check the page script if present
@@ -201,7 +207,7 @@ assert.ok(PreShift.OPENING_DUTIES.indexOf("Fold napkins") >= 0);
 meals.forEach(function (m) {
   const p = m.packet;
   assert.ok(p, m.group + " missing server packet");
-  assert.ok(p.teams.every(function (t) { return t.names.every(function (n) { return !n; }); }), m.group + " must not hardcode staff names");
+  assert.ok(p.teams.every(function (t) { return t.names.length === 2 && t.names.every(function (n) { return !n; }); }), m.group + " must have two empty name blanks");
   assert.ok(!/Maricruz|Carlos|Tomas|Francisco/.test(JSON.stringify(p)));
   const coffee = p.steps.find(function (s) { return s.label === "MOBILE COFFEE"; });
   assert.ok(coffee, m.group + " missing mobile coffee step");
@@ -215,20 +221,71 @@ meals.forEach(function (m) {
   assert(!/[\u2014\u2013]/.test(JSON.stringify(p)), "no dashes in packet for " + m.group);
 });
 
-assert.equal(rich.packet.location, "Camellia B");
+assert.equal(rich.packet.location, "", "storage room must not prefill breakdown/hotbox");
+assert.ok(!/Camellia A/i.test(rich.packet.location || ""), "do not hardcode Camellia A");
 assert.ok(rich.packet.steps.some(function (s) { return s.label === "PASS APPS" && /6:00/.test(s.time); }));
 assert.ok(rich.packet.steps.some(function (s) { return /GUESTS ENTER/i.test(s.label) && /6:45/.test(s.time); }));
 assert.ok(rich.packet.diagram && !rich.packet.diagram.missing);
 assert.ok(rich.packet.diagram.images.some(function (img) { return /g_PrimroseCfromEmerson/.test(img); }));
 assert.equal(rich.packet.tableCount, 9);
+assert.equal(rich.packet.teams.length, 2, "Emerson GTD 73 -> 2 teams");
+assert.equal(rich.packet.seatsPerTable, 9, "Emerson seats from event order rounds of 9, not diagram rounds of 8");
+assert.ok(rich.packet.teams.every(function (t) { return t.names.length === 2; }));
 
 assert.ok(sparse.packet.diagram && !sparse.packet.diagram.missing);
 assert.match(sparse.packet.diagram.path, /PRIMROSEBALLROOMfromTSAE/);
 assert.ok(!/PREFUNCTION/i.test(sparse.packet.diagram.path));
 assert.equal(sparse.packet.tableCount, 38);
+assert.equal(sparse.packet.teams.length, 7, "TSAE EXP 300 -> 7 teams");
+assert.equal(sparse.packet.location, "");
+assert.equal(sparse.packet.seatsPerTable, 8, "TSAE seats from event order rounds of 8, not setup line 10 or diagram 7");
+assert.ok(sparse.packet.teams.every(function (t) { return t.names.length === 2; }));
+const open7 = sparse.packet.teams.reduce(function (n, t) { return n + t.opening.length; }, 0);
+const close7 = sparse.packet.teams.reduce(function (n, t) { return n + t.closing.length; }, 0);
+assert.equal(open7, PreShift.OPENING_DUTIES.length);
+assert.equal(close7, PreShift.CLOSING_DUTIES.length);
+
+assert.equal(PreShift.defaultTeamCount({ gtd: "73" }), 2);
+assert.equal(PreShift.defaultTeamCount({ gtd: null, set: "73" }), 2);
+assert.equal(PreShift.defaultTeamCount({ gtd: null, set: null, exp: "300" }), 7);
+assert.equal(PreShift.defaultTeamCount({}), 2);
+assert.equal(PreShift.headcount({ gtd: "73", set: "80", exp: "100" }), 73);
+
+const loadsOk = PreShift.teamLoads(rich.packet.teams, { "1": "Yellow", "2": "Yellow", "3": "Yellow", "4": "Yellow", "5": "Yellow" }, 9);
+assert.equal(loadsOk[0].guests, 45);
+assert.equal(loadsOk[0].over, false);
+const loadsOver = PreShift.teamLoads(rich.packet.teams, { "1": "Yellow", "2": "Yellow", "3": "Yellow", "4": "Yellow", "5": "Yellow", "6": "Yellow", "7": "Yellow" }, 9);
+assert.equal(loadsOver[0].guests, 63);
+assert.equal(loadsOver[0].over, true);
+
+const namedHotbox = PreShift.buildServerPacket({
+  group: "Sample",
+  tag: "Plated Lunch",
+  counts: { gtd: "90" },
+  services: [{ tag: "Workroom / Storage", room: "Camellia B", menu: "Storage from noon" }],
+  foot: { NOTE: "BREAKDOWN & HOTBOX - Primrose B" }
+});
+assert.equal(namedHotbox.location, "Primrose B", "fill breakdown/hotbox only when the EO names it");
+assert.equal(namedHotbox.teams.length, 2, "GTD 90 -> 2 teams");
+const storageOnly = PreShift.buildServerPacket({
+  group: "Sample 2",
+  tag: "Plated Lunch",
+  counts: { gtd: "73" },
+  services: [{ tag: "Workroom / Storage", room: "Camellia B", menu: "Camellia B storage from noon" }],
+  foot: { NOTE: "After service, client linen goes back to Camellia B storage." }
+});
+assert.equal(storageOnly.location, "", "storage line alone must leave breakdown/hotbox blank");
+assert.ok(!/Camellia A/i.test(JSON.stringify(namedHotbox.location) + JSON.stringify(storageOnly.location)));
+
+const stale = PreShift.mergePacket(sparse.packet, { teams: PreShift.defaultTeams(2) });
+assert.equal(stale.teams.length, 7, "empty stale 2-team save must not override headcount default");
+const kept = PreShift.mergePacket(sparse.packet, { teamCount: 3, teams: PreShift.defaultTeams(3).map(function (t, i) { if (i === 0) t.names = ["Alex", ""]; return t; }) });
+assert.equal(kept.teams.length, 3);
+assert.equal(kept.teams[0].names[0], "Alex");
 
 const bare = PreShift.buildPreShift({ group: "Future Lunch", tag: "Plated Lunch", menu: "Plated Lunch", foot: {}, counts: { gtd: "20" } });
 assert.ok(bare.packet.diagram.missing, "no diagram should be a placeholder, not an invented layout");
 assert.ok(bare.script.some(function (l) { return /Mobile coffee/i.test(l.text); }));
+assert.equal(bare.packet.teams.length, 1, "GTD 20 -> 1 team");
 
 console.log("PASS: analysis, spoken scripts, later slots, questions for the manager, no prices or dashes. Meals:", meals.map(function (m) { return m.group; }).join(" | "));
