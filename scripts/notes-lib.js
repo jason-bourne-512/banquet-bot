@@ -11,6 +11,7 @@
   var SAMPLE_BANNER = "Sample notes for demo. Nothing is saved yet.";
   var PAGE_SUB = "Side notes and FYIs. Anything critical still goes on the BEO or to your manager.";
   var INTRO_KEY = "bb-notes-intro-seen";
+  var TESTER_KEY = "bb-notes-tester";
   var INTRO_COPY = "New: Notes. Pick a date to see each event's notes, grouped by person. Side notes and FYIs only. Anything critical still goes on the BEO or to your manager. Sample notes for now, saving comes soon.";
 
   // Pinned general notes: not tied to a date or event. Shown on every date. First names only.
@@ -255,6 +256,60 @@
     return null;
   }
 
+  function isNotesPath(pathname) {
+    if (pathname == null) {
+      try {
+        if (typeof location !== "undefined") pathname = location.pathname || "";
+      } catch (e) {
+        pathname = "";
+      }
+    }
+    return /(^|\/)notes\.html$/i.test(String(pathname || ""));
+  }
+
+  function notesQueryValue(search) {
+    if (search == null) {
+      try {
+        if (typeof location !== "undefined") search = location.search || "";
+      } catch (e) {
+        search = "";
+      }
+    }
+    try {
+      return new URLSearchParams(String(search || "")).get("notes");
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function isNotesTester(storage) {
+    try {
+      var s = storageOf(storage);
+      return !!(s && s.getItem(TESTER_KEY) === "1");
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function setNotesTester(on, storage) {
+    try {
+      var s = storageOf(storage);
+      if (!s) return;
+      if (on) s.setItem(TESTER_KEY, "1");
+      else s.removeItem(TESTER_KEY);
+    } catch (e) {}
+  }
+
+  // Opt in with ?notes=on on any page, or by opening notes.html. ?notes=off clears it.
+  function applyNotesTester(opts) {
+    opts = opts || {};
+    var q = notesQueryValue(opts.search);
+    if (q === "on") setNotesTester(true, opts.storage);
+    else if (q === "off") setNotesTester(false, opts.storage);
+    else if (opts.onNotesPage || isNotesPath(opts.pathname)) setNotesTester(true, opts.storage);
+    return isNotesTester(opts.storage);
+  }
+
   function introSeen(storage) {
     try {
       var s = storageOf(storage);
@@ -272,7 +327,7 @@
   }
 
   function shouldShowIntro(storage) {
-    return !introSeen(storage);
+    return isNotesTester(storage) && !introSeen(storage);
   }
 
   function injectIntroStyle(doc) {
@@ -302,7 +357,7 @@
     var doc = opts.document || (typeof document !== "undefined" ? document : null);
     var win = opts.window || (typeof window !== "undefined" ? window : null);
     var storage = opts.storage;
-    if (!doc || !win || introSeen(storage)) return null;
+    if (!doc || !win || !shouldShowIntro(storage)) return null;
 
     var sideLink = doc.querySelector('.bbd-side a[href="notes.html"]');
     var homeLink = doc.querySelector("a.destination.notes");
@@ -395,6 +450,7 @@
     SAMPLE_PINNED: SAMPLE_PINNED,
     PAGE_SUB: PAGE_SUB,
     INTRO_KEY: INTRO_KEY,
+    TESTER_KEY: TESTER_KEY,
     INTRO_COPY: INTRO_COPY,
     clean: clean,
     firstName: firstName,
@@ -413,6 +469,10 @@
     pinnedNotes: pinnedNotes,
     pinnedAuthors: pinnedAuthors,
     eventsWithNotes: eventsWithNotes,
+    isNotesPath: isNotesPath,
+    isNotesTester: isNotesTester,
+    setNotesTester: setNotesTester,
+    applyNotesTester: applyNotesTester,
     introSeen: introSeen,
     markIntroSeen: markIntroSeen,
     shouldShowIntro: shouldShowIntro,

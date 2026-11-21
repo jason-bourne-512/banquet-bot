@@ -66,7 +66,7 @@
 .destination.livemap:after{animation-delay:-9s}
 .destination.sched{min-height:64px;--accent:#cbb4ff;--glow:#cbb4ff18;background:radial-gradient(ellipse at 100% 0,#7d63c438,transparent 75%),linear-gradient(135deg,#2f2843,#1c1828);border-color:#6f5d9a;border-top-color:#cbb4ff99}
 .destination.sched[hidden]{display:none}
-.destination.issues{min-height:64px;--accent:#ff8a80;--glow:#ff8a8018;background:radial-gradient(ellipse at 100% 0,#c4443a38,transparent 75%),linear-gradient(135deg,#3a1c1f,#1f1416);border-color:#8a3f45;border-top-color:#ff8a8099}.destination.issues[hidden]{display:none}.destination.notes{min-height:64px;--accent:#8bd1ff;--glow:#8bd1ff18;background:radial-gradient(ellipse at 100% 0,#3d6f8f38,transparent 75%),linear-gradient(135deg,#1c3344,#141e28);border-color:#4d738c;border-top-color:#8bd1ff99}.destination.sched em{font:700 9px Manrope,sans-serif;letter-spacing:.12em;color:#f2c879;border:1px solid #f2c87966;border-radius:10px;padding:2px 6px;margin-left:6px;vertical-align:middle;font-style:normal}.destination.livemap small{color:#e2d3bb}
+.destination.issues{min-height:64px;--accent:#ff8a80;--glow:#ff8a8018;background:radial-gradient(ellipse at 100% 0,#c4443a38,transparent 75%),linear-gradient(135deg,#3a1c1f,#1f1416);border-color:#8a3f45;border-top-color:#ff8a8099}.destination.issues[hidden]{display:none}.destination.notes[hidden]{display:none}.destination.notes{min-height:64px;--accent:#8bd1ff;--glow:#8bd1ff18;background:radial-gradient(ellipse at 100% 0,#3d6f8f38,transparent 75%),linear-gradient(135deg,#1c3344,#141e28);border-color:#4d738c;border-top-color:#8bd1ff99}.destination.sched em{font:700 9px Manrope,sans-serif;letter-spacing:.12em;color:#f2c879;border:1px solid #f2c87966;border-radius:10px;padding:2px 6px;margin-left:6px;vertical-align:middle;font-style:normal}.destination.livemap small{color:#e2d3bb}
 .destination.overview small{color:#c6d5ef}
 
 /* ── MENU SEARCH ── */
@@ -162,7 +162,7 @@
   .bb-brand{font-size:10px;letter-spacing:1px}
 }
 </style>
-<script src="theme.js?v=1113a"></script>
+<script src="theme.js?v=1121c"></script>
 </head>
 <body>
 <div class="home" id="home">
@@ -194,7 +194,7 @@
     <a class="destination overview" href="rundown.html#overview"><span class="arrow" aria-hidden="true">↗</span><strong>OVERVIEW</strong><small>Quick summary</small></a>
     <a class="destination housemen" href="housemen.html"><span class="arrow" aria-hidden="true">↗</span><strong>HOUSEMEN</strong><small>Tonight’s set &amp; clear list</small></a>
     <a class="destination livemap" href="live-map.html"><span class="arrow" aria-hidden="true">↗</span><strong>LIVE MAP</strong><small>Floor plan by day</small></a>
-    <a class="destination notes" href="notes.html"><span class="arrow" aria-hidden="true">↗</span><strong>NOTES</strong><small>Event notes by day</small></a>
+    <a class="destination notes" href="notes.html" id="notesBtn" hidden><span class="arrow" aria-hidden="true">↗</span><strong>NOTES</strong><small>Event notes by day</small></a>
     <a class="destination issues" href="issues.html" id="issuesBtn" hidden><span class="arrow" aria-hidden="true">↗</span><strong>BEO ISSUES</strong><small>Questions for you</small></a>
     <a class="destination sched" href="scheduler.html" id="schedBtn" hidden><span class="arrow" aria-hidden="true">↗</span><strong>SCHEDULER <em id="schedTag">BETA</em></strong><small>Availability &amp; the week</small></a>
   </div>
@@ -211,6 +211,15 @@
   // BEO Issues: Diana and Lisa get a Home button for it on the phone too (Jason 2026-11-06); Jason opens it from the desktop side panel.
   (function () { var w = null; try { w = JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); } catch (e) {}
     if (w && ["Diana", "Lisa"].indexOf(w.name) > -1) document.getElementById("issuesBtn").hidden = false; })();
+  // Notes: hidden until this device opts in with ?notes=on or by opening notes.html (Jason 2026-11-21).
+  (function () {
+    try {
+      var q = new URLSearchParams(location.search).get("notes");
+      if (q === "on") localStorage.setItem("bb-notes-tester", "1");
+      else if (q === "off") localStorage.removeItem("bb-notes-tester");
+      if (localStorage.getItem("bb-notes-tester") === "1") document.getElementById("notesBtn").hidden = false;
+    } catch (e) {}
+  })();
   </script>
 
   <section class="menu-search">

@@ -157,6 +157,16 @@
   function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
   function who() { try { return JSON.parse(get(WHO)); } catch (e) { return null; } }
+  var NOTES_TESTER = "bb-notes-tester";
+  function notesTester() { return get(NOTES_TESTER) === "1"; }
+  function applyNotesTesterFlag() {
+    try {
+      var q = new URLSearchParams(location.search).get("notes");
+      var onNotes = /(^|\/)notes\.html$/i.test(location.pathname || "");
+      if (q === "on" || (onNotes && q !== "off")) set(NOTES_TESTER, "1");
+      else if (q === "off") set(NOTES_TESTER, null);
+    } catch (e) {}
+  }
   function isLead(w) { return !!(w && ROLE_TITLE[w.role]); }
   function here() {
     var p = location.pathname.split("/").pop() || "index.html";
@@ -384,11 +394,12 @@
       return;
     }
     var s = document.createElement("script");
-    s.src = "scripts/notes-lib.js?v=1121p";
+    s.src = "scripts/notes-lib.js?v=1121q";
     s.onload = run;
     document.head.appendChild(s);
   }
   function showNotesIntro() {
+    if (!notesTester()) return;
     withNotesLib(function () { window.Notes.showNotesIntro(); });
   }
 
@@ -411,7 +422,7 @@
       '<nav class="bbd-nav"><div class="lbl">Operations</div>' + navLinks(PAGES.slice(0, 5), cur) +
       // BEO Issues: Jason (everything), Diana and Lisa (their own issues) only (Jason 2026-11-06)
       (["Jason", "Hector", "Diana", "Lisa"].indexOf(w.name) > -1 ? '<a href="issues.html" class="' + (cur == "issues.html" ? "on" : "") + '"><i>⚑</i>BEO Issues</a>' : "") +
-      '<a href="notes.html" class="' + (cur == "notes.html" ? "on" : "") + '"><i>✍</i>Notes</a>' +
+      (notesTester() ? '<a href="notes.html" class="' + (cur == "notes.html" ? "on" : "") + '"><i>✍</i>Notes</a>' : "") +
       (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' +
         '<a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' +
         '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' +   // Print Signs: Jason and Hector only
@@ -509,6 +520,7 @@
     var sk = document.createElement("style"); sk.id = "bbd-skin"; sk.textContent = PHONE_SKINS[cur]; document.head.appendChild(sk);
   }
   function start() {
+    applyNotesTesterFlag();
     var w = who();
     if (get(DESK) == "1" && isLead(w) && wide()) build(w);
     else { phoneSkin(); entry(); showNotesIntro(); }

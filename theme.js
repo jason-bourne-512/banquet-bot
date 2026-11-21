@@ -1,3 +1,14 @@
+// Notes tester gate (Jason 2026-11-21): the Home button, side-panel link, and intro stay hidden
+// unless this device opted in with ?notes=on, or by opening notes.html. ?notes=off clears it.
+(function () {
+  var KEY = "bb-notes-tester";
+  try {
+    var q = new URLSearchParams(location.search).get("notes");
+    var onNotes = /(^|\/)notes\.html$/i.test(location.pathname || "");
+    if (q === "on" || (onNotes && q !== "off")) localStorage.setItem(KEY, "1");
+    else if (q === "off") localStorage.removeItem(KEY);
+  } catch (e) {}
+})();
 // PIN lock: every page stays covered until someone signs in with their Housemen PIN (one sign-in covers the
 // whole site and this phone remembers it). PIN fingerprints come from housemen.html; PINs are never stored here.
 // This is a door, not a vault: the files themselves are still public on GitHub until the pages are encrypted.
@@ -1223,6 +1234,6 @@
   } catch (e) {}
 })();
 // Desktop mode for leads (desktop.js) — loaded here so every page that has the personal looks gets it too.
-(function () { var s = document.createElement("script"); s.src = "desktop.js?v=1121b"; s.defer = true; document.head.appendChild(s); })();
+(function () { var s = document.createElement("script"); s.src = "desktop.js?v=1121c"; s.defer = true; document.head.appendChild(s); })();
 // Site search (events, menus, docs) + ?find= landing highlight — on every page.
 (function () { var s = document.createElement("script"); s.src = "search.js?v=1113a"; s.defer = true; document.head.appendChild(s); })();
