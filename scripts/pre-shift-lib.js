@@ -554,6 +554,17 @@
     };
   }
 
+  var CORKBOARD_SCRIPT = "Before we go over the script, pin all the sheets on the corkboard so they are easy to see: the event order, the section diagram, the timeline, and the server packet.";
+
+  function corkboardPacketStep() {
+    return {
+      time: "Before pre-shift",
+      label: "PIN THE CORKBOARD",
+      items: ["Event order", "Section diagram", "Timeline", "Server packet"],
+      owners: []
+    };
+  }
+
   function speak(parts, text, known) {
     parts.push({ text: text, known: known !== false });
   }
@@ -562,6 +573,7 @@
     var lines = [];
     var who = f.mgr || "the manager";
     var contact = f.contact || "the contact";
+    speak(lines, CORKBOARD_SCRIPT);
     if (f.kind === "emerson") {
       speak(lines, "This is the Emerson retirement dinner in Primrose C. Guarantee is 73. " + who + " is the manager." + (f.contact ? " " + f.contact + " is the on-site contact." : ""));
       speak(lines, "The table set is not settled. The event order says 9 rounds of 9. The card says 8 tables of 8 plus 1 of 9. " + who + "'s November 18 diagram is 9 rounds of 8, which is 72 seats, one short of the guarantee. The event order wins until " + who + " confirms. [ask]", false);
@@ -888,7 +900,7 @@
     }).join(" · ");
     var linkText = (meal.diagramLinks || []).map(function (l) { return (l.caption || "") + " " + (l.path || ""); }).join(" · ");
     var blob = [meal.menu, foot.NOTE, foot.FOOD, foot.ROOM, meal.extras, meal.diagrams, meal.tag, meal.time, svcText, linkText].join(" · ");
-    var steps = [];
+    var steps = [corkboardPacketStep()];
     var location = breakdownHotboxLocation(services, blob);
 
     var setTime = "";
@@ -1109,6 +1121,9 @@
           owners: Array.isArray(s.owners) ? s.owners.map(String) : (def.owners || []).slice()
         };
       });
+      if (!out.steps.some(function (s) { return /PIN THE CORKBOARD/i.test(s.label); })) {
+        out.steps = [corkboardPacketStep()].concat(out.steps);
+      }
     }
     if (Array.isArray(saved.specials)) {
       out.specials = saved.specials.map(function (s) {
@@ -1208,6 +1223,8 @@
     publicText: publicText,
     extractFlags: extractFlags,
     buildPreShift: buildPreShift,
+    CORKBOARD_SCRIPT: CORKBOARD_SCRIPT,
+    corkboardPacketStep: corkboardPacketStep,
     serviceCueFromEO: serviceCueFromEO,
     CUE_QUESTION: CUE_QUESTION,
     collectPlated: collectPlated,

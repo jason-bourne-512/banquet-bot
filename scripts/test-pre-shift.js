@@ -50,7 +50,9 @@ assert.ok(priced.analysis && priced.analysis.length, "generic meal gets analysis
 const pricedText = allText(priced);
 assert(!/\$\d/.test(pricedText), "prices must not appear in script");
 assert(!/[\u2014\u2013]/.test(pricedText), "em/en dashes must not appear");
+assert.equal(priced.script[0].text, PreShift.CORKBOARD_SCRIPT, "generic script starts by pinning the corkboard");
 assert.ok(priced.script.some(function (l) { return /later slots/i.test(l.text); }), "generic script keeps later slots");
+assert.equal(priced.packet.steps[0].label, "PIN THE CORKBOARD");
 assert.ok(!priced.questions.some(function (q) { return /section/i.test(q.q); }), "do not ask section assignments now");
 const pricedCue = priced.questions.find(function (q) { return /strictly on the timeline/i.test(q.q); });
 assert.ok(pricedCue, "generic plated meal still asks the contact about timeline vs cue");
@@ -88,6 +90,14 @@ meals.forEach(function (m) {
   assert.ok(m.analysis && m.analysis.length, m.group + " needs analysis");
   assert.ok(m.script && m.script.length, m.group + " needs a spoken script");
   assert.ok(m.script.some(function (l) { return /later slots/i.test(l.text); }), m.group + " script should mark later slots");
+  assert.equal(m.script[0].text, PreShift.CORKBOARD_SCRIPT, m.group + " script should start by pinning the corkboard");
+  assert.match(m.script[0].text, /event order/);
+  assert.match(m.script[0].text, /section diagram/);
+  assert.match(m.script[0].text, /timeline/);
+  assert.match(m.script[0].text, /server packet/);
+  assert.equal(m.packet.steps[0].label, "PIN THE CORKBOARD");
+  assert.equal(m.packet.steps[0].time, "Before pre-shift");
+  assert.deepEqual(m.packet.steps[0].items, ["Event order", "Section diagram", "Timeline", "Server packet"]);
   const sec = m.lines.find(function (l) { return l.label === "Server sections"; });
   assert.ok(sec && sec.later, m.group + " server sections should be a later slot");
   assert.ok(/later/i.test(sec.text), m.group + " server sections text should say later");
@@ -183,6 +193,10 @@ if (fs.existsSync(rundownPath)) {
   assert.ok(ts, "live rundown should include TSAE from Dec 4");
   assert.ok(em.script.length && em.analysis.length && em.questions.length, "live Emerson is complete");
   assert.ok(ts.script.length && ts.analysis.length && ts.questions.length, "live TSAE is complete");
+  assert.equal(em.script[0].text, PreShift.CORKBOARD_SCRIPT);
+  assert.equal(ts.script[0].text, PreShift.CORKBOARD_SCRIPT);
+  assert.equal(em.packet.steps[0].label, "PIN THE CORKBOARD");
+  assert.equal(ts.packet.steps[0].label, "PIN THE CORKBOARD");
   const emCue = em.questions.find(function (q) { return /strictly on the timeline/i.test(q.q); });
   const tsCue = ts.questions.find(function (q) { return /strictly on the timeline/i.test(q.q); });
   assert.ok(emCue && emCue.who === "Lynn", "live Emerson cue question goes to Lynn");
@@ -394,5 +408,13 @@ const alreadyTime = PreShift.buildPreShift({
 assert.ok(alreadyTime.script.some(function (l) { return /Service cue:.*strictly on the timeline/i.test(l.text); }));
 assert.ok(!alreadyTime.script.some(function (l) { return /\[ask\].*waiting for a cue/i.test(l.text); }), "do not [ask] when the event order already says strictly on the timeline");
 assert.ok(!alreadyTime.questions.some(function (q) { return /waiting for a cue/i.test(q.q); }));
+
+
+const staleSteps = PreShift.mergePacket(sparse.packet, {
+  steps: [{ time: "8:00 AM", label: "SET INSIDE ROOM", items: ["Silverware"], owners: [] }]
+});
+assert.equal(staleSteps.steps[0].label, "PIN THE CORKBOARD", "saved packets without the corkboard step still get it first");
+assert.equal(staleSteps.steps[1].label, "SET INSIDE ROOM");
+assert(!/[\u2014\u2013]/.test(PreShift.CORKBOARD_SCRIPT));
 
 console.log("PASS: analysis, spoken scripts, later slots, questions for the manager, no prices or dashes. Meals:", meals.map(function (m) { return m.group; }).join(" | "));
