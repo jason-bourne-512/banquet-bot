@@ -89,6 +89,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 .note-box { background:var(--blue-dim); border:1px solid rgba(139,209,255,0.2); border-radius:8px; padding:10px 12px; margin-bottom:4px; font-size:11px; color:var(--blue); line-height:1.5; }
 
+
+.ps-val.flag { color:var(--amber); }
+.ps-val.later { color:var(--text-2); font-style:italic; font-size:12px; }
+.ps-script { list-style:decimal; padding:0 0 4px 22px; display:flex; flex-direction:column; gap:8px; }
+.ps-script li { font-size:13px; color:var(--text-1); line-height:1.5; padding-left:2px; }
+.ps-script .ask { color:var(--red); font-family:'DM Mono',monospace; font-size:11px; }
+.note-box.later { background:transparent; border-color:var(--divider); color:var(--text-2); font-style:italic; margin-top:8px; }
+
 @media (min-width: 900px) {
   .header, .page-hero, .sec, .list, .status { max-width: 520px; margin-left: auto; margin-right: auto; }
 }
@@ -111,7 +119,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <div class="page-hero">
   <div class="page-eyebrow">Banquet Captain · AUSDW</div>
   <div class="page-title">Pre-shift Scripts</div>
-  <div class="page-meta">Upcoming plated meals from the Rundown · <a href="plated.html">training guide</a></div>
+  <div class="page-meta">Analysis, a start-to-finish server script, and questions for the manager · <a href="plated.html">training guide</a></div>
 </div>
 
 <div class="sec" id="ps-sec">Loading</div>
@@ -140,6 +148,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
     return c.raw || "";
   }
 
+  function markAsks(s) {
+    return esc(s).replace(/\[ask\]/g, '<span class="ask">[ask]</span>');
+  }
+
   function render(meals) {
     var list = $("ps-list"), st = $("ps-status"), sec = $("ps-sec");
     if (!meals.length) {
@@ -153,16 +165,24 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
     sec.textContent = meals.length + " plated · from " + fmtDate(TODAY);
     list.innerHTML = meals.map(function (m, i) {
       var asks = m.questions.length;
-      var rows = m.lines.map(function (l) {
-        var cls = l.known ? (l.house ? "ps-val house" : "ps-val") : "ps-val ask";
-        return '<div class="ps-row"><div class="ps-lab">' + esc(l.label) + '</div><div class="' + cls + '">' + esc(l.text) + '</div></div>';
+      var anal = (m.analysis && m.analysis.length ? m.analysis : m.lines).map(function (l) {
+        var cls = "ps-val";
+        if (l.kind === "flag") cls += " flag";
+        else if (l.kind === "later" || l.later) cls += " later";
+        else if (l.kind === "ask" || l.known === false) cls += " ask";
+        else if (l.house) cls += " house";
+        return '<div class="ps-row"><div class="ps-lab">' + esc(l.label) + '</div><div class="' + cls + '">' + markAsks(l.text) + '</div></div>';
       }).join("");
+      var spoken = (m.script || []).map(function (l) {
+        return '<li>' + markAsks(l.text) + '</li>';
+      }).join("");
+      var qTitle = m.mgr ? "Questions for " + m.mgr : "Questions to ask";
       var qs = m.questions.length
-        ? '<div class="ps-sub">Questions to ask</div><ul class="q-list">' +
+        ? '<div class="ps-sub">' + esc(qTitle) + '</div><ul class="q-list">' +
           m.questions.map(function (q) {
             return '<li class="q-item"><div class="q-who">' + esc(q.who) + '</div><div class="q-text">' + esc(q.q) + '</div></li>';
           }).join("") + "</ul>"
-        : '<div class="ps-sub">Questions to ask</div><div class="note-box">Nothing flagged. Walk the known lines at stand-up.</div>';
+        : '<div class="ps-sub">' + esc(qTitle) + '</div><div class="note-box">Nothing flagged. Walk the known lines at stand-up.</div>';
       return '<div class="ps-card" id="ps-' + i + '">' +
         '<div class="ps-head" onclick="this.parentElement.classList.toggle(\'open\')">' +
           '<div class="ps-main">' +
@@ -178,8 +198,13 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
           '</div><span class="ps-chevron">▶</span>' +
         '</div>' +
         '<div class="ps-body">' +
-          '<div class="note-box">Walk servers through every line. [ask] means it is not on the EO - confirm before doors.</div>' +
-          '<div class="ps-sub">Pre-shift script</div>' + rows + qs +
+          '<div class="ps-sub">Analysis</div>' +
+          anal +
+          '<div class="ps-sub">Server script</div>' +
+          '<div class="note-box">Read this start to finish at pre-shift. [ask] means confirm with the manager before doors.</div>' +
+          '<ol class="ps-script">' + spoken + '</ol>' +
+          '<div class="note-box later">Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.</div>' +
+          qs +
         '</div></div>';
     }).join("");
   }

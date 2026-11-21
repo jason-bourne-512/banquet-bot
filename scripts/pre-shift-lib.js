@@ -1,5 +1,5 @@
-// Shared plated pre-shift script builder. Used by pre-shift.html (browser) and test-pre-shift.js (Node).
-// No DOM dependency: pass plain meal objects in, get script lines + questions out.
+// Shared plated pre-shift builder. Used by pre-shift.html (browser) and test-pre-shift.js (Node).
+// No DOM dependency: pass plain meal objects in, get analysis, spoken script, and questions out.
 
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
@@ -21,7 +21,7 @@
   }
 
   function firstName(s) {
-    s = clean(s).replace(/^MGR:\s*/i, "").replace(/^IC:\s*/i, "");
+    s = clean(s).replace(/^MGR:\s*/i, "").replace(/^IC:\s*/i, "").replace(/^CONTACT:\s*/i, "");
     if (!s) return "";
     return s.split(/[\s,·/(]/)[0];
   }
@@ -31,7 +31,6 @@
     menu = String(menu || "");
     if (/\bplated\b/i.test(tag)) return true;
     if (!/\bplated\b/i.test(menu)) return false;
-    // buffet / break / reception rows often say "plated breakfasts are served with..." as boilerplate
     if (/\bbuffet\b|\bcoffee\s*break\b|\bbreak\b(?!\s*out)|\breception\b|\bno\s*f\s*&\s*b\b/i.test(tag) && !/\bplated\b/i.test(tag)) {
       return false;
     }
@@ -52,68 +51,145 @@
 
   function has(blob, re) { return re.test(blob || ""); }
 
-  function pickAsk(topic) {
-    // Hector: floor calls / fire / sections / expo / gear
-    // Diana: allergies / set / timing / program
-    // Lisa: wine / bar / vendor-staff meals
-    if (/wine|bar\b|beverage|pour|corkage/i.test(topic)) return "Lisa";
-    if (/allerg|diet|set count|guarantee|doors|program|speech|seating|apps|timing|confirm/i.test(topic)) return "Diana";
-    return "Hector";
+  function publicText(s) {
+    s = stripPrices(s);
+    s = s.replace(/VIP[^.·]*cannot fail[^.·]*/ig, "");
+    s = s.replace(/client says it\s*["\u201c]?cannot fail["\u201d]?[^.·]*/ig, "");
+    s = s.replace(/\s*·\s*·+/g, " · ").replace(/^\s*·\s*|\s*·\s*$/g, "");
+    return clean(s);
   }
 
-  // Build one script from a plated meal object.
-  // meal: { group, date, room, time, mgr, contact, tag, menu, counts, foot:{NOTE,FOOD,ROOM,...}, extras:string }
+  function extractFlags(text) {
+    var s = publicText(text);
+    if (!s) return [];
+    var out = [];
+    String(text || "").split(/[\u2691\u26A0]/).slice(1).forEach(function (part) {
+      var line = publicText(part.replace(/^UPDATED[^:]{0,40}:\s*/i, "").split(/\s*\/\s*(?=\u2691|event orders?)/i)[0]);
+      line = line.replace(/\s*event orders?\s+[\d\s,/]+.*$/i, "").replace(/\s*\(\d{1,2}\/\d{1,2} email[^)]*\)/ig, "");
+      line = clean(line);
+      if (line && !/missed in packet/i.test(line) && out.indexOf(line) < 0) out.push(line);
+    });
+    return out;
+  }
+
+  function startMinutes(s) {
+    s = String(s || "");
+    var m = s.match(/(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?/i);
+    if (!m) return 9999;
+    var h = +m[1], min = +(m[2] || 0);
+    var mer = m[3] || (s.match(/\b(AM|PM)\b/i) || [])[1];
+    if (mer) {
+      mer = mer.toUpperCase();
+      if (mer === "PM" && h < 12) h += 12;
+      if (mer === "AM" && h === 12) h = 0;
+    }
+    return h * 60 + min;
+  }
+
+  function countLine(counts) {
+    counts = counts || {};
+    if (counts.gtd && counts.set) return "Guarantee " + counts.gtd + ", set " + counts.set;
+    if (counts.gtd) return "Guarantee " + counts.gtd;
+    if (counts.set) return "Set " + counts.set;
+    if (counts.exp) return "Expected " + counts.exp + " (no guarantee on the card)";
+    return "";
+  }
+
+  function addQ(questions, asked, who, q) {
+    if (!q) return;
+    var k = (who || "") + "|" + q;
+    if (asked[k]) return;
+    asked[k] = 1;
+    questions.push({ who: who, q: q });
+  }
+
+  function briefingFor(meal) {
+    var g = meal.group || "";
+    var d = meal.date || "";
+    if (/Emerson/i.test(g) && (!d || d === "2026-11-20")) return "emerson";
+    if (/TSAE/i.test(g) && (!d || d === "2026-12-04")) return "tsae";
+    return "";
+  }
+
   function buildPreShift(meal) {
     meal = meal || {};
     var foot = meal.foot || {};
-    var menu = stripPrices(meal.menu || "");
-    var note = stripPrices(foot.NOTE || "");
-    var food = stripPrices(foot.FOOD || "");
-    var room = stripPrices(foot.ROOM || meal.room || "");
-    var extras = stripPrices(meal.extras || "");
-    var blob = [menu, note, food, room, extras, meal.tag || "", meal.time || ""].join(" · ");
+    var menu = publicText(meal.menu || "");
+    var note = publicText(foot.NOTE || "");
+    var food = publicText(foot.FOOD || "");
+    var roomFoot = publicText(foot.ROOM || meal.room || "");
+    var extras = publicText(meal.extras || "");
+    var diagrams = publicText(meal.diagrams || foot.DIAGRAM || "");
+    var services = meal.services || [];
+    var flags = extractFlags(foot.NOTE || "");
+    (meal.services || []).forEach(function (sv) {
+      extractFlags(sv.menu || "").forEach(function (fl) {
+        if (flags.indexOf(fl) < 0) flags.push(fl);
+      });
+    });
+    extractFlags(meal.flagText || "").forEach(function (fl) {
+      if (flags.indexOf(fl) < 0) flags.push(fl);
+    });
+    flags = flags.filter(function (fl) {
+      if (/missed in packet/i.test(fl)) return false;
+      if (/^counts from\b/i.test(fl) && /\bEO\b|event order/i.test(fl)) return false;
+      if (/^UPDATED\b/i.test(fl)) return false;
+      return fl.length < 280;
+    });
+    var blob = [menu, note, food, roomFoot, extras, diagrams, meal.tag || "", meal.time || ""].join(" · ");
     var counts = meal.counts || parseCounts(meal.countPill || "");
+    if (!counts.set && (meal.services || []).length) {
+      (meal.services || []).forEach(function (sv) {
+        if (counts.set) return;
+        if (/set up/i.test(sv.tag || "") || /storage/i.test(sv.tag || "")) {
+          var sc = parseCounts(sv.pill || "");
+          if (sc.set) counts.set = sc.set;
+        }
+      });
+    }
     var mgr = firstName(meal.mgr) || "Hector";
+    var kind = briefingFor(meal);
+    var contact = firstName(meal.contact || foot.CONTACT || "");
     var lines = [];
+    var analysis = [];
     var questions = [];
     var asked = {};
 
+    function fact(label, text, kind) {
+      analysis.push({ label: label, text: text, kind: kind || "fact" });
+    }
     function say(label, text, askHint) {
       if (text) {
         lines.push({ label: label, text: text, known: true });
       } else {
         lines.push({ label: label, text: "[ask]", known: false });
-        if (askHint && !asked[askHint]) {
-          asked[askHint] = 1;
-          questions.push({ who: pickAsk(askHint), q: askHint });
-        }
+        if (askHint) addQ(questions, asked, mgr, askHint);
       }
     }
+    function later(label, text) {
+      var t = text || "Later: fill in day-of";
+      lines.push({ label: label, text: t, known: true, later: true });
+      analysis.push({ label: label, text: t, kind: "later" });
+    }
 
-    // 1. Guarantee / set
-    var countLine = "";
-    if (counts.gtd && counts.set) countLine = "Guarantee " + counts.gtd + ", set " + counts.set;
-    else if (counts.gtd) countLine = "Guarantee " + counts.gtd + (counts.set ? "" : "");
-    else if (counts.set) countLine = "Set " + counts.set;
-    else if (counts.exp) countLine = "Expected " + counts.exp + " (no guarantee on the card)";
-    if (countLine && !counts.set && counts.gtd) {
-      say("Counts", countLine);
-      questions.push({ who: "Diana", q: "What is the set count for " + (meal.group || "this plated meal") + "?" });
-    } else if (countLine) {
-      say("Counts", countLine);
+    // Counts
+    var countsText = countLine(counts);
+    if (countsText && !counts.set && counts.gtd) {
+      say("Counts", countsText);
+      addQ(questions, asked, mgr, "What is the set count for " + (meal.group || "this plated meal") + "?");
+    } else if (countsText) {
+      say("Counts", countsText);
     } else {
       say("Counts", "", "What are the guarantee and set counts?");
     }
+    if (countsText) fact("Counts", countsText);
 
-    // 2. Entree / plate + marking
+    // Entree / marking
     var entreeText = "";
     var choice = has(blob, /\bentr[eé]e?\s*\(choice\)|\bchoice\b.*\bentr|\bmarked on place|place cards?|colored dot|star\s*=/i);
-    var multi = (menu.match(/\bentr[eé]e?s?\b/gi) || []).length >= 1 && has(menu, /\(\d+\)/);
-    var single = has(menu, /\bsecond course:|\bentree:|\bentr[eé]e:/i) && !has(menu, /\bchoice\b/i);
     if (has(menu, /chef'?s choice plated/i)) {
       entreeText = "Chef's choice plated - menu not itemized on the EO";
     } else if (menu) {
-      // pull a short entree summary from menu without inventing
       var mChoice = menu.match(/Entr[eé]e\s*\(choice\):\s*([^.]+)/i);
       var mEntrees = menu.match(/Entr[eé]es?:\s*([^.]+?)(?:\s*·\s*Dessert|\s*·\s*Rolls|$)/i);
       var mSingle = menu.match(/(?:Second course|Entr[eé]e):\s*([^.]+?)(?:\s*·\s*Dessert|\s*·\s*Rolls|$)/i);
@@ -130,12 +206,13 @@
     else if (!entreeText && mark) entreeText = mark;
     if (entreeText && choice && !mark) {
       say("Entree", entreeText);
-      questions.push({ who: "Diana", q: "How are entree choices marked (place cards, dots, list)?" });
+      addQ(questions, asked, mgr, "How are entree choices marked (place cards, dots, list)?");
     } else {
       say("Entree", entreeText || "", "Is this a choice or a single plate, and how are choices marked?");
     }
+    if (entreeText) fact("Menu and marking", entreeText);
 
-    // 3. Allergies / dietary by table
+    // Dietary
     var diet = "";
     if (food && /allerg|dietary|gluten|vegan|vegetarian|nut|shellfish|mushroom|clam/i.test(food)) diet = food;
     else {
@@ -153,26 +230,38 @@
     }
     if (diet && !/by\s*table|table\s*\d/i.test(diet + note)) {
       say("Allergies / dietary", diet);
-      questions.push({ who: "Diana", q: "Any allergies or dietary plates by table, with subs?" });
+      addQ(questions, asked, mgr, "Any allergies or dietary plates by table, with subs?");
     } else {
       say("Allergies / dietary", diet || "", "Any allergies or dietary plates by table, with subs?");
     }
+    if (diet) fact("Dietary", diet);
+    else fact("Dietary", "[ask]", "ask");
 
-    // 4. Vendor / staff meals
+    // Vendor / staff
     var staff = "";
     if (has(blob, /vendor\s*meal|staff\s*meal|crew\s*meal|employee\s*meal/i)) {
       var sm = blob.match(/[^·]*(?:vendor|staff|crew|employee)\s*meals?[^·]*/i);
       if (sm) staff = clean(sm[0]);
     }
     say("Vendor / staff meals", staff || "", "Any vendor or staff meals?");
+    fact("Vendor / staff meals", staff || "[ask]", staff ? "fact" : "ask");
 
-    // 5. Doors / apps / seating
+    // Timeline from services + doors/apps
     var timing = [];
+    var timelineBits = [];
+    services.slice().sort(function (a, b) { return startMinutes(a.time) - startMinutes(b.time); }).forEach(function (sv) {
+      var tag = clean(sv.tag || "");
+      var time = clean(sv.time || "");
+      var bit = clean((time ? time + " " : "") + tag + (sv.room ? " in " + clean(sv.room) : ""));
+      var detail = publicText(sv.menu || "");
+      if (detail && detail.length < 180) bit = bit + " - " + detail;
+      if (bit) timelineBits.push(bit);
+    });
     if (meal.doors) timing.push("Doors " + meal.doors);
     else {
-      var d = blob.match(/doors?\s*(?:open(?:s|ed)?|at)?\s*(\d{1,2}(?::\d{2})?\s*(?:AM|PM)?)/i)
+      var dmatch = blob.match(/doors?\s*(?:open(?:s|ed)?|at)?\s*(\d{1,2}(?::\d{2})?\s*(?:AM|PM)?)/i)
         || blob.match(/(\d{1,2}(?::\d{2})?\s*(?:AM|PM)?)\s*doors?\s*open/i);
-      if (d) timing.push("Doors " + clean(d[1] || d[0]));
+      if (dmatch) timing.push("Doors " + clean(dmatch[1] || dmatch[0]));
     }
     if (meal.apps) timing.push("Apps " + meal.apps);
     else if (has(blob, /passed|hors\s*d|tray-passed|cocktail reception/i) && meal.appsTime) {
@@ -186,16 +275,19 @@
     }
     if (meal.seating) timing.push("Seating " + meal.seating);
     say("Doors / apps / seating", timing.length ? timing.join(", ") : "", "Confirm doors, apps, and seating / service start times.");
+    if (timelineBits.length) fact("Timeline", timelineBits.join("; "));
+    else if (timing.length) fact("Timeline", timing.join(", "));
 
-    // 6. Program / speeches
+    // Program
     var prog = "";
     if (has(blob, /speech|program|welcome|award|sponsor recognition|musician|announcement/i)) {
       var bits = blob.match(/[^·]*(?:speech|program|welcome from|sponsor recognition|awards|musician|announcement|between courses)[^·]*/gi);
-      if (bits) prog = bits.map(clean).filter(Boolean).slice(0, 3).join("; ");
+      if (bits) prog = bits.map(clean).filter(Boolean).slice(0, 4).join("; ");
     }
     say("Program / speeches", prog || "", "Any program or speeches between courses?");
+    if (prog) fact("Program", prog);
 
-    // 7. Who calls each course
+    // Who calls
     var calls = "";
     if (has(blob, /who calls|call(?:s|ing)?\s+(?:salad|entree|dessert|course)|captain calls|manager calls/i)) {
       var cm = blob.match(/[^·]*(?:calls?|calling)\s+(?:the\s+)?(?:salad|entree|dessert|course)[^·]*/i);
@@ -203,22 +295,26 @@
     }
     say("Who calls courses", calls || "", "Who calls salad and entree?");
 
-    // 8. Kitchen fire times
+    // Fire
     var fire = "";
     if (has(blob, /fir(?:e|ing)\s+(?:entr|salad|dessert|times?)|kitchen\s+fire|check with .+ before fir/i)) {
       var fm = blob.match(/[^·]*(?:fir(?:e|ing)|kitchen fire)[^·]*/i);
       if (fm) fire = clean(fm[0]);
     }
-    say("Kitchen fire times", fire || "", "What are the kitchen fire times for each course?");
+    say("Kitchen fire times", fire || "", fire ? "" : "What are the kitchen fire times for each course?");
+    if (fire && /check with/i.test(fire) && !/clock|:\d{2}/.test(fire)) {
+      addQ(questions, asked, mgr, "Any clock fire times, or do we only check with " + (contact || "the contact") + " before firing?");
+    }
+    if (fire) fact("Fire times", fire);
 
-    // 9. Pre-sets
+    // Pre-sets
     var preset = [];
     if (has(blob, /pre-?set:\s*[^·]+/i)) {
       var ps = blob.match(/pre-?set:\s*([^·]+)/i);
       if (ps) preset.push(clean(ps[1]));
     }
     if (has(blob, /pre-?set salads?\s*\+?\s*waters?|salads?\s*\+\s*waters?/i)) preset.push("Pre-set salad and water");
-    if (has(blob, /artisan rolls?|rolls?\s*&\s*butter|bread/i)) preset.push("Rolls and butter");
+    if (has(blob, /artisan rolls?|rolls?\s*&\s*butter|rolls and butter|bread/i)) preset.push("Rolls and butter");
     if (has(blob, /pre-?set silverware|water glasses|napkins by/i)) {
       var pr = blob.match(/[^·]*pre-?set silverware[^·]*/i);
       if (pr) preset.push(clean(pr[0]));
@@ -232,25 +328,30 @@
       if (ds) preset.push("Dessert: " + clean(ds[1]) + (has(blob, /do not clear dessert/i) ? " (do not clear dessert plates)" : ""));
     }
     say("Pre-sets", preset.length ? preset.join("; ") : "", "What is pre-set (salad, bread, butter, water, dessert)?");
+    if (preset.length) fact("Pre-sets", preset.join("; "));
 
-    // 10. Wine pour vs bar
+    // Wine / bar
     var wine = "";
     if (has(blob, /wine is client-provided|client wine|servers pour .+ wine|corkage|no house wine|wine pour|hosted bar|cash bar/i)) {
-      var wm = blob.match(/[^·]*(?:wine is client-provided|client wine|servers pour[^·]*wine|corkage|no house wine|wine pour|hosted\s+\w*\s*bar|cash bar)[^·]*/i);
-      if (wm) wine = clean(wm[0]);
+      var wm = blob.match(/[^·]*(?:wine is client-provided|client wine|servers pour[^·]*wine|corkage|no house wine|wine pour|hosted\s+\w*\s*bar|cash bar)[^·]*/gi);
+      if (wm) wine = wm.map(clean).filter(Boolean).slice(0, 3).join("; ");
       else if (has(blob, /hosted bar|cash bar/i)) wine = has(blob, /hosted/i) ? "Hosted bar on the card" : "Cash bar on the card";
     }
-    say("Wine / bar", wine || "", "Wine pour or bar only?");
-
-    // 11. Server sections
-    var sections = "";
-    if (has(blob, /section|tables numbered|by-table/i)) {
-      if (has(blob, /tables numbered/i)) sections = "Tables numbered";
-      if (has(blob, /by-table meal list/i)) sections = (sections ? sections + "; " : "") + "By-table meal list from the contact";
+    if (has(blob, /chill the white|wine is delivered/i)) {
+      var wd = blob.match(/[^·]*(?:wine is delivered|chill the white)[^·]*/i);
+      if (wd) wine = (wine ? wine + "; " : "") + clean(wd[0]);
     }
-    say("Server sections", sections || "", "How are server sections assigned?");
+    say("Wine / bar", wine || "", "Wine pour or bar only?");
+    if (wine) fact("Wine / bar", wine);
 
-    // 12. Head table first
+    // Later slots: sections and named duties. Do not ask these now.
+    var sections = "";
+    if (has(blob, /tables numbered/i)) sections = "Tables are numbered. ";
+    sections += "Later: fill in day-of";
+    later("Server sections", sections);
+    later("Named staffing / duties", "Later: opening and closing duties and server assignments can be added later.");
+
+    // Head table
     var head = "";
     if (has(blob, /head\s*table|vip table|serve (?:the )?head/i)) {
       var hm = blob.match(/[^·]*head\s*table[^·]*/i);
@@ -258,15 +359,18 @@
     }
     say("Head table", head || "", "Head table first?");
 
-    // 13. Serve / clear direction (house standard reminder if unknown)
+    // Serve / clear
     var dir = "";
     if (has(blob, /serve left|clear right|serve from the left/i)) dir = "Serve left, clear right";
-    if (dir) say("Serve / clear", dir);
-    else {
+    if (dir) {
+      say("Serve / clear", dir);
+      fact("Serve / clear", dir);
+    } else {
       lines.push({ label: "Serve / clear", text: "House standard: serve left, clear right (confirm if EO says otherwise)", known: true, house: true });
+      fact("Serve / clear", "House standard: serve left, clear right (confirm if EO says otherwise)");
     }
 
-    // 14. Expo line order
+    // Expo
     var expo = "";
     if (has(blob, /expo|line order|pass order/i)) {
       var em = blob.match(/[^·]*(?:expo|line order|pass order)[^·]*/i);
@@ -274,15 +378,16 @@
     }
     say("Expo line order", expo || "", "What is the expo line order?");
 
-    // 15. Covers / trays / jacks
+    // Gear
     var gear = "";
     if (has(blob, /\bcovers?\b|\btrays?\b|\bjacks?\b|chargers?/i)) {
       var gm = blob.match(/[^·]*(?:\bcovers?\b|\btrays?\b|\bjacks?\b|chargers?)[^·]*/i);
       if (gm) gear = clean(gm[0]);
     }
     say("Covers / trays / jacks", gear || "", "Covers, trays, and jacks needed?");
+    if (gear) fact("Covers / trays / jacks", gear);
 
-    // 16. Coffee / decaf timing
+    // Coffee
     var coffee = "";
     if (has(blob, /coffee\/(?:hot )?tea|coffee\s*\+|coffee all night|decaf|tea service/i)) {
       var cm2 = blob.match(/[^·]*(?:coffee\/(?:hot )?tea|coffee\s*\+|coffee all night|decaf|tea service)[^·]*/i);
@@ -290,14 +395,99 @@
       else if (has(menu, /coffee/i)) coffee = "Coffee / hot tea on the menu";
     }
     say("Coffee / decaf", coffee || "", "When does coffee / decaf go out?");
+    if (coffee) fact("Coffee / decaf", coffee);
 
-    // Deduplicate questions by text
-    var seenQ = {};
-    questions = questions.filter(function (q) {
-      var k = q.who + "|" + q.q;
-      if (seenQ[k]) return false;
-      seenQ[k] = 1;
-      return true;
+    // Set / diagram, AV, storage
+    var setBits = [];
+    if (roomFoot) setBits.push(roomFoot);
+    if (diagrams) setBits.push("Diagram: " + diagrams);
+    if (setBits.length) fact("Set / diagram", setBits.join(" · "));
+    var av = "";
+    if (has(blob, /\bAV\b|podium|screen|stage/i)) {
+      var avm = blob.match(/[^·]*(?:8x\d{2} stage|\bAV\b[^·]*|acrylic podium|cocktail table on stage|\d+\s*screens?)[^·]*/gi);
+      if (avm) av = avm.map(clean).filter(Boolean).slice(0, 4).join("; ");
+    }
+    if (av) fact("AV", av);
+    var storage = "";
+    services.forEach(function (sv) {
+      if (/storage|workroom/i.test(sv.tag || "") || /storage|workroom|Camellia B/i.test(sv.menu || "")) {
+        storage = clean((sv.time ? sv.time + " " : "") + (sv.tag || "Storage") + (sv.room ? " in " + sv.room : "") + (sv.menu ? " - " + publicText(sv.menu) : ""));
+      }
+    });
+    if (!storage && has(blob, /Camellia B|storage from noon|pickup time/i)) {
+      var stm = blob.match(/[^·]*(?:Camellia B|storage from noon|pickup time)[^·]*/i);
+      if (stm) storage = clean(stm[0]);
+    }
+    if (storage) fact("Storage", storage);
+
+    // Conflicts: flags on the card, BEO wins until the manager confirms
+    flags.forEach(function (fl) {
+      var clipped = fl.replace(/,?\s*confirm(?: the \w+ set)? with \w+\.?/i, "").replace(/[. ]+$/, "").trim();
+      fact("Conflict", clipped + ". The event order wins until " + mgr + " confirms.", "flag");
+      if (/rounds|bar plan|bartender|diagram|window|7 to 11|7 to 9|set is|mismatch/i.test(fl)) {
+        if (clipped && clipped.length < 220) addQ(questions, asked, mgr, clipped + "?");
+      }
+    });
+
+    // Event-specific BEO notes that already appear as timing, menu, or conflicts on the public Rundown,
+    // plus a few operational gaps that belong on a captain script (no prices, no payment data).
+    if (kind === "emerson") {
+      fact("BEO notes", "Nov 17 event order: dinner 7:00 to 11:00 PM, (9) rounds of 9, filet 43 medium, sea bass 21, chicken 5, tofu 4. One gluten-free filet requested medium rare. One mushroom and clam allergy on chicken. Client wine, hotel pours. Chime at 6:45. Check with Lynn before firing. Do not clear dessert plates.");
+      addQ(questions, asked, mgr, "Chicken sides are not listed on the Nov 17 event order (an earlier packet had smashed rosemary fingerlings and chicken demi). What sides go with the chicken?");
+      addQ(questions, asked, mgr, "The card calls for 1 passer per 25 guests (3 for 73) and the event order lists 2 passers. How many passers tonight?");
+      addQ(questions, asked, mgr, "Should the bar be ready if guests arrive around 5:30, before the 6:00 cocktail start?");
+      if (storage) addQ(questions, asked, mgr, "When is Saturday pickup from Camellia B?");
+    }
+    if (kind === "tsae") {
+      fact("BEO notes", "Lunch event order 12:00 to 2:00 PM: (300) chef's choice plated lunch. Pre-set silverware, water glasses, and napkins by 11:00. Doors 12:00, service 12:20 after a short announcement. Welcome from Visit Austin at 12:30, awards at 12:55, program ends at 2:00. No courses, dietaries, or beverage are listed on the lunch event order.");
+      addQ(questions, asked, mgr, "What is the actual chef's-choice menu: courses, pre-sets versus walked, bread and butter, dessert, coffee or iced tea?");
+      addQ(questions, asked, mgr, "Is 300 the guarantee or only expected, and what should we set?");
+      addQ(questions, asked, mgr, "Any bar or wine, or is this water and tea only?");
+      addQ(questions, asked, mgr, "Who calls service at 12:20, and who calls any later course around the 12:30 welcome and 12:55 awards?");
+      addQ(questions, asked, mgr, "Kitchen fire times, and is dessert pre-set or served after 12:55?");
+    }
+
+    if (kind === "tsae") {
+      questions = questions.filter(function (q) {
+        if (/Who calls salad and entree/i.test(q.q)) return false;
+        if (/What are the kitchen fire times for each course/i.test(q.q)) return false;
+        if (/Wine pour or bar only/i.test(q.q)) return false;
+        if (/When does coffee \/ decaf go out/i.test(q.q)) return false;
+        if (/Covers, trays, and jacks needed/i.test(q.q)) return false;
+        if (/What is the expo line order/i.test(q.q)) return false;
+        return true;
+      });
+    }
+
+    var script = buildSpokenScript({
+      kind: kind,
+      group: clean(meal.group || ""),
+      room: clean(meal.room || ""),
+      time: clean(meal.time || ""),
+      mgr: mgr,
+      contact: contact,
+      counts: counts,
+      countsText: countsText,
+      menu: menu,
+      entreeText: entreeText,
+      diet: diet,
+      staff: staff,
+      timing: timing,
+      timelineBits: timelineBits,
+      prog: prog,
+      calls: calls,
+      fire: fire,
+      preset: preset,
+      wine: wine,
+      head: head,
+      coffee: coffee,
+      setBits: setBits,
+      av: av,
+      storage: storage,
+      flags: flags,
+      blob: blob,
+      doors: meal.doors,
+      appsTime: meal.appsTime
     });
 
     return {
@@ -306,16 +496,96 @@
       room: clean(meal.room || ""),
       time: clean(meal.time || ""),
       mgr: mgr,
-      contact: firstName(meal.contact || foot.CONTACT || ""),
+      contact: contact,
       tag: clean(meal.tag || ""),
       counts: counts,
       lines: lines,
+      analysis: analysis,
+      script: script,
       questions: questions
     };
   }
 
-  // Collect plated meals from a document-like root using helpers.
-  // helpers: { sections: Element[], txt(el), qs(el,sel), qsa(el,sel), attr(el,name), todayISO }
+  function speak(parts, text, known) {
+    parts.push({ text: text, known: known !== false });
+  }
+
+  function buildSpokenScript(f) {
+    var lines = [];
+    var who = f.mgr || "the manager";
+    var contact = f.contact || "the contact";
+    if (f.kind === "emerson") {
+      speak(lines, "This is the Emerson retirement dinner in Primrose C. Guarantee is 73. " + who + " is the manager." + (f.contact ? " " + f.contact + " is the on-site contact." : ""));
+      speak(lines, "The table set is not settled. The event order says 9 rounds of 9. The card says 8 tables of 8 plus 1 of 9. " + who + "'s November 18 diagram is 9 rounds of 8, which is 72 seats, one short of the guarantee. The event order wins until " + who + " confirms. [ask]", false);
+      speak(lines, "Be ready for the 4:00 client rehearsal. Tables should have client linen, chargers, and silverware by then. Highboys start in the back of Primrose for the florist at 4:00, then move to Pre-Function at 5:00.");
+      speak(lines, "We come back around 5:00 to pre-set the roasted pear and pecan salads and waters. Pre-Function should be ready by 5:00. Guests may arrive around 5:30, but the cocktail start on the event order is 6:00. [ask] if the bar should be ready early.", false);
+      speak(lines, "Cocktail reception is in Pre-Function from 6:00 to 6:45. Tray-pass hors d'oeuvres: beef tenderloin en croute, crab cake, antipasto skewer, and fig and goat cheese flatbread, 73 of each, plus 50 jackfruit cakes that are vegan and gluten free. The card calls for 1 passer per 25 guests. The event order lists 2 passers. [ask]", false);
+      speak(lines, "Chime at 6:45 and open the doors. One hosted-bar plan puts a bar and one bartender inside Primrose C until 11:00. The diagram shows a bar in the hallway by Verbena A and also a bar along the Primrose C side wall. [ask] " + who + " which bar plan is live.", false);
+      speak(lines, "Place cards: colored dot is the entree, star is a special meal. Tables are numbered. " + contact + " hands the captain a by-table meal list.");
+      speak(lines, "Entree counts: 43 filets cooked medium, 21 sea bass, 5 chicken, 4 tofu. That is 73. One gluten-free guest is on filet and wants it medium rare, not medium. One guest is allergic to mushrooms and clams and is on chicken. Do not send that guest the tofu. It has mushroom risotto.");
+      speak(lines, "Salad is pre-set. Rolls and butter go with dinner. Check with " + contact + " before you fire the entrees. [ask] who calls each course.", false);
+      speak(lines, "We pour the client's wine and coffee all night, including during speeches. There is no house wine. White wine should already be chilled from the morning delivery.");
+      speak(lines, "Do not clear dessert plates. Dessert is Chocolate Decadence, which is already gluten free. Coffee and hot tea stay through speeches. [ask] when decaf goes out if it is not with the regular coffee.", false);
+      speak(lines, "The event order books dinner from 7:00 to 11:00. The rundown card still says 7:00 to 9:00. [ask] which window is live.", false);
+      speak(lines, "After service, client linen, florals, and chargers go back to Camellia B. That storage is held Saturday morning. Pickup time is still to be confirmed. [ask]", false);
+      speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
+      return lines;
+    }
+    if (f.kind === "tsae") {
+      speak(lines, "This is the TSAE luncheon in the Primrose Ballroom. Expected count is 300. There is no guarantee on the card yet. " + who + " is the manager." + (f.contact ? " " + f.contact + " is the contact." : ""));
+      speak(lines, "The set is not settled. Thursday's event order is 38 rounds of 8 with black linen. The Friday lunch line says rounds of 10. " + who + "'s November 18 diagram shows 44 rounds of 7 and 2 screens. The event order wins until " + who + " confirms. [ask]", false);
+      speak(lines, "From 8:00 to 11:00 we pre-set silverware, water glasses, and napkins. Sponsors set activations and help decorate from 8:00. Activations and registration open at 11:00 in the foyer, Lantana, and Plumeria.");
+      speak(lines, "Ballroom doors open at 12:00. At 12:20 the musician pauses, there is a short announcement, and lunch service begins. At 12:30 there is a welcome from Visit Austin, during service. At 12:40 guests keep eating with music. At 12:55 the musician pauses for sponsor recognition, awards, and a TSAE recap. The program ends at 2:00 and the band plays as guests leave. Teardown is 2:00 to 3:30.");
+      speak(lines, "The meal is chef's choice plated lunch. The event order does not list courses, entrees, dessert, bread, or coffee. [ask] " + who + " for the actual menu, how many courses, and what is pre-set versus walked.", false);
+      speak(lines, "[ask] how entree choices are marked, and whether there are allergies or dietary plates by table.", false);
+      speak(lines, "No bar or wine is listed on the lunch event order. [ask] if this is water and tea only, and when coffee or decaf goes out.", false);
+      speak(lines, "[ask] who calls service at 12:20, and who calls any later course around the 12:30 welcome and the 12:55 awards. [ask] kitchen fire times, and whether dessert is pre-set or held until after 12:55.", false);
+      speak(lines, "House standard is serve left, clear right, unless " + who + " says otherwise. [ask] if there is a head table or stage tables first.", false);
+      speak(lines, "[ask] any vendor, sponsor, or staff meals, and where they eat.", false);
+      speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
+      return lines;
+    }
+
+    // Generic future plated meal, built only from the Rundown card.
+    var open = "This is " + (f.group || "the plated meal") + (f.room ? " in " + f.room : "") + ".";
+    if (f.countsText) open += " " + f.countsText + ".";
+    open += " " + who + " is the manager.";
+    if (f.contact) open += " " + f.contact + " is the contact.";
+    speak(lines, open);
+    if (f.flags && f.flags.length) {
+      f.flags.forEach(function (fl) {
+        speak(lines, fl + " The event order wins until " + who + " confirms. [ask]", false);
+      });
+    } else if (f.setBits && f.setBits.length) {
+      speak(lines, "Room set: " + f.setBits.join(". ") + ".");
+    }
+    if (f.timing && f.timing.length) speak(lines, f.timing.join(". ") + ".");
+    else speak(lines, "Doors, apps, and seating times: [ask].", false);
+    if (f.preset && f.preset.length) speak(lines, "Pre-sets: " + f.preset.join("; ") + ".");
+    else speak(lines, "What is pre-set (salad, bread, butter, water, dessert): [ask].", false);
+    if (f.entreeText) speak(lines, f.entreeText + (/\b\[ask\]/.test("") ? "" : "."));
+    else speak(lines, "Entree and how choices are marked: [ask].", false);
+    if (f.diet) speak(lines, "Dietary: " + f.diet + ".");
+    else speak(lines, "Allergies or dietary plates by table: [ask].", false);
+    if (f.wine) speak(lines, f.wine + ".");
+    else speak(lines, "Wine pour or bar only: [ask].", false);
+    if (f.prog) speak(lines, "Program: " + f.prog + ".");
+    if (f.fire) speak(lines, f.fire + ".");
+    else speak(lines, "Kitchen fire times: [ask].", false);
+    if (f.calls) speak(lines, f.calls + ".");
+    else speak(lines, "Who calls each course: [ask].", false);
+    if (f.coffee) speak(lines, f.coffee + ".");
+    else speak(lines, "Coffee and decaf timing: [ask].", false);
+    if (f.head) speak(lines, f.head + ".");
+    else speak(lines, "Head table first: [ask].", false);
+    speak(lines, "House standard is serve left, clear right, unless the event order says otherwise.");
+    if (f.staff) speak(lines, f.staff + ".");
+    else speak(lines, "Vendor or staff meals: [ask].", false);
+    if (f.storage) speak(lines, "Storage: " + f.storage + ".");
+    speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
+    return lines;
+  }
+
   function collectPlated(helpers) {
     var today = helpers.todayISO;
     var out = [];
@@ -327,18 +597,23 @@
         var mgr = helpers.txt(helpers.qs(card, ".badge-mgr"));
         var foot = {};
         helpers.qsa(card, ".card-foot .foot-row").forEach(function (f) {
-          var k = helpers.txt(helpers.qs(f, ".foot-key")).toUpperCase();
+          var k = helpers.txt(helpers.qs(f, ".foot-key") || helpers.qs(f, ".foot-lab")).toUpperCase();
           var v = helpers.txt(helpers.qs(f, ".foot-val"));
-          if (!k) return;
+          if (!k || k === "BILLING") return;
           foot[k] = foot[k] ? foot[k] + " · " + v : v;
         });
         var appsTime = "";
         var doors = "";
         var extras = [];
+        var services = [];
+        var diagrams = foot.DIAGRAM || "";
         helpers.qsa(card, ".svc-row").forEach(function (r) {
           var tag = helpers.txt(helpers.qs(r, ".svc-top .tag"));
           var menu = helpers.txt(helpers.qs(r, ".svc-menu"));
           var time = helpers.txt(helpers.qs(r, ".svc-time")).replace(/\s+/g, " ");
+          var room = helpers.txt(helpers.qs(r, ".room-pill"));
+          var pill = helpers.txt(helpers.qs(r, ".gtd-pill"));
+          services.push({ tag: tag, time: time, room: room, pill: pill, menu: menu });
           if (/reception|passed|hors/i.test(tag) || /tray-passed|hors\s*d/i.test(menu)) {
             if (!appsTime) appsTime = time;
             extras.push(tag + ": " + menu);
@@ -355,7 +630,6 @@
           var tag = helpers.txt(helpers.qs(r, ".svc-top .tag"));
           var menuEl = helpers.qs(r, ".svc-menu");
           var menu = helpers.txt(menuEl);
-          // prefer data-en plain if present (still fine as textContent)
           if (!isPlated(tag, menu)) return;
           var room = helpers.txt(helpers.qs(r, ".room-pill"));
           var pill = helpers.txt(helpers.qs(r, ".gtd-pill"));
@@ -373,6 +647,8 @@
             countPill: pill,
             foot: foot,
             extras: extras.join(" · "),
+            services: services,
+            diagrams: diagrams,
             appsTime: appsTime,
             doors: doors
           }));
@@ -388,6 +664,8 @@
     firstName: firstName,
     isPlated: isPlated,
     parseCounts: parseCounts,
+    publicText: publicText,
+    extractFlags: extractFlags,
     buildPreShift: buildPreShift,
     collectPlated: collectPlated
   };
