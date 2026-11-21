@@ -8,7 +8,7 @@
     ["index.html", "Home", "⌂"], ["live-map.html", "Live Map", "⌖"], ["rundown.html#rundown", "Rundown", "▤"],
     ["rundown.html#overview", "Overview", "▦"], ["housemen.html", "Housemen", "⚒"], ["rooms.html", "Rooms", "▢"], ["menu.html", "Menu", "◈"],
     ["info.html", "Info", "ℹ"], ["training.html", "Training", "✎"], ["handbook.html", "Handbook", "❏"],
-    ["playbook.html", "Captain Playbook", "☰"], ["plated.html", "Plated Service", "◎"], ["bar.html", "Bar Reference", "🍸"]
+    ["playbook.html", "Captain Playbook", "☰"], ["plated.html", "Plated Service", "◎"], ["pre-shift.html", "Pre-shift Scripts", "✓"], ["bar.html", "Bar Reference", "🍸"]
   ];
   var ACCENT = {captain: "#f2c879", director: "#5fe3c0", sem: "#cbb4ff", em: "#ff9ec7"};
   var ROLE_TITLE = {captain: "Captain", director: "Director of Event Operations", sem: "Senior Events Manager", em: "Events Manager"};
