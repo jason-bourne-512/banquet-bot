@@ -169,6 +169,10 @@ if (fs.existsSync(rundownPath)) {
   assert.ok(ts.script.length && ts.analysis.length && ts.questions.length, "live TSAE is complete");
   assert(!/\$\d/.test(allText(em) + allText(ts)), "no prices from live rundown");
   assert(!/cannot fail/i.test(allText(em)), "VIP pressure stays off the public script");
+  assert.ok(em.packet && !em.packet.diagram.missing && ts.packet && !ts.packet.diagram.missing);
+  assert.ok(em.packet.steps.some(function (s) { return s.label === "MOBILE COFFEE"; }));
+  assert.ok(ts.packet.steps.some(function (s) { return s.label === "MOBILE COFFEE"; }));
+  assert(!/[\u2014\u2013]/.test(JSON.stringify(em.packet) + JSON.stringify(ts.packet)), "no dashes in live packets");
 }
 
 // Syntax-check the page script if present
@@ -208,6 +212,7 @@ meals.forEach(function (m) {
   assert.ok(coffee.owners && coffee.owners.length && coffee.owners.every(function (o) { return !o; }), "who runs coffee stays blank");
   assert.ok(m.script.some(function (l) { return /Mobile coffee/i.test(l.text); }));
   assert.ok(m.script.some(function (l) { return /where the cart goes/i.test(l.text); }));
+  assert(!/[\u2014\u2013]/.test(JSON.stringify(p)), "no dashes in packet for " + m.group);
 });
 
 assert.equal(rich.packet.location, "Camellia B");

@@ -772,7 +772,7 @@
     return {
       missing: false,
       path: hit.path || "",
-      caption: hit.caption || "",
+      caption: clean(hit.caption || ""),
       images: diagramImageCandidates(hit.path)
     };
   }
@@ -782,7 +782,7 @@
     helpers.qsa(card, "button.diag-link, [onclick*='openDiagram']").forEach(function (btn) {
       var oc = helpers.attr(btn, "onclick") || "";
       var m = oc.match(/openDiagram\('([^']+)'(?:\s*,\s*'([^']*)')?/);
-      if (m) links.push({ path: m[1], caption: m[2] || helpers.txt(btn) });
+      if (m) links.push({ path: m[1], caption: clean(m[2] || helpers.txt(btn)) });
     });
     return links;
   }
