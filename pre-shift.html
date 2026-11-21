@@ -130,8 +130,26 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .pkt-step { border:1px solid var(--divider); border-radius:8px; padding:8px; }
 .pkt-step-row { display:grid; grid-template-columns: 90px 1fr; gap:8px; margin-bottom:6px; }
 .pkt-diagram { margin-top: 12px; }
-.pkt-diagram-img { width:100%; height:auto; border-radius:8px; border:1px solid var(--border); background:#0b0d10; display:none; }
+.pkt-diagram-img { width:100%; height:auto; border-radius:8px; border:1px solid var(--border); background:#0b0d10; display:none; pointer-events:none; }
 .pkt-diagram-ph { padding:18px 12px; border:1px dashed var(--border-h); border-radius:8px; color:var(--text-2); font-size:13px; text-align:center; }
+.pkt-diag-stage { position:relative; margin-top:8px; }
+.pkt-diag-stage.has-diagram .pkt-diagram-ph { display:none; }
+.pkt-sec-bar { display:none; flex-wrap:wrap; gap:6px; align-items:center; margin: 8px 0 6px; }
+.pkt-diag-stage.has-diagram .pkt-sec-bar { display:flex; }
+.pkt-sec-hint { display:none; font-size:11px; color:var(--text-2); margin: 0 0 8px; }
+.pkt-diag-stage.has-diagram .pkt-sec-hint { display:block; }
+.pkt-ink { border:1px solid var(--border); background:var(--bg-card); color:var(--text-1); border-radius:6px; padding:5px 8px; font-size:12px; cursor:pointer; }
+.pkt-ink.is-on { outline:2px solid #fff; }
+.pkt-sec-layer { position:absolute; inset:0; display:none; z-index:2; touch-action:none; }
+.pkt-diag-stage.has-diagram .pkt-sec-layer { display:block; }
+.pkt-diag-stage.has-diagram.is-inking .pkt-sec-layer { cursor:crosshair; }
+.pkt-sec-box { position:absolute; box-sizing:border-box; border:2px solid; border-radius:2px; }
+.pkt-sec-box.selected { outline:2px dashed #111; outline-offset:1px; }
+.pkt-sec-label { position:absolute; top:2px; left:2px; font-size:11px; font-weight:700; line-height:1.2; padding:1px 4px; background:rgba(255,255,255,0.82); color:#111; border-radius:2px; pointer-events:none; }
+.pkt-sec-draft { position:absolute; box-sizing:border-box; border:2px dashed; pointer-events:none; display:none; }
+@media print {
+  .pkt-sec-box, .pkt-sec-label { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+}
 .pkt-assign { display:grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:6px; margin-top:8px; }
 .pkt-assign-item { display:flex; align-items:center; gap:6px; font-size:12px; }
 .pkt-assign-item span { min-width: 52px; color:var(--text-2); }
@@ -141,7 +159,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 
 @media print {
   body.print-pkt .ref-header, body.print-pkt .page-hero, body.print-pkt .sec, body.print-pkt .status,
-  body.print-pkt .ps-head, body.print-pkt .pkt-bar, body.print-pkt .note-box { display:none !important; }
+  body.print-pkt .ps-head, body.print-pkt .pkt-bar, body.print-pkt .note-box,
+  body.print-pkt .pkt-sec-bar, body.print-pkt .pkt-sec-hint { display:none !important; }
   body.print-pkt .ps-card { display:none !important; border:0; background:transparent; }
   body.print-pkt .ps-card.print-me { display:block !important; }
   body.print-pkt .ps-card.print-me .ps-body { display:block !important; border:0; padding:0; }
@@ -149,7 +168,11 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   body.print-pkt .page-wrap, body.print-pkt .list { max-width:none; padding:0; }
   body.print-pkt .pkt-sheet { background:#fff; color:#111; border:0; }
   body.print-pkt .pkt-input, body.print-pkt .pkt-area, body.print-pkt .pkt-select { border:0; background:transparent; color:#111; padding:0; }
-  body.print-pkt .pkt-diagram-img { display:block !important; filter: invert(1) hue-rotate(180deg); background:#fff; }
+  body.print-pkt .pkt-diag-stage.has-diagram .pkt-diagram-ph { display:none !important; }
+  body.print-pkt .pkt-diagram-img { filter: invert(1) hue-rotate(180deg); background:#fff; }
+  body.print-pkt .pkt-diagram-img.is-shown { display:block !important; }
+  body.print-pkt .pkt-sec-layer { display:block !important; }
+  body.print-pkt .pkt-sec-box.selected { outline:0; }
   body.print-pkt { background:#fff !important; color:#111; }
 }
 
@@ -329,9 +352,20 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
       return '<span><i class="pkt-swatch" style="background:' + (SWATCH[c] || "#888") + '"></i>' + esc(c) + '</span>';
     }).join("");
     var diag = p.diagram || { missing: true, images: [] };
-    var diagBlock = '<div class="pkt-diagram-ph" data-diag-ph="' + i + '">Diagram not in Banquet Bot yet.</div>' +
+    var inks = (p.teams || []).map(function (tm) {
+      return '<button type="button" class="pkt-ink" data-act="ink" data-pkt="' + i + '" data-ink="' + esc(tm.color) + '"><i class="pkt-swatch" style="background:' + (SWATCH[tm.color] || "#888") + '"></i>' + esc(tm.color) + '</button>';
+    }).join("");
+    var diagBlock = '<div class="pkt-diag-stage" data-diag-stage="' + i + '">' +
+      '<div class="pkt-sec-bar">' +
+        '<span class="pkt-assign-label" style="margin:0">Section color</span>' + inks +
+        '<button type="button" class="bb-btn pkt-btn" data-act="delete-section" data-pkt="' + i + '" disabled>Delete section</button>' +
+      '</div>' +
+      '<p class="pkt-sec-hint">Pick a team color, then drag a box on the diagram to mark that section. Tap a box to select it, then delete. You can draw more than one box per team.</p>' +
+      '<div class="pkt-diagram-ph" data-diag-ph="' + i + '">Diagram not in Banquet Bot yet.</div>' +
       '<img class="pkt-diagram-img" alt="' + esc(p.room || "Room diagram") + '" data-diag-img="' + i + '">' +
-      (diag.path ? '<object class="pkt-diagram-img" data-diag-pdf="' + i + '" data="" type="application/pdf" style="display:none;min-height:280px;width:100%"></object>' : "");
+      (diag.path ? '<object class="pkt-diagram-img" data-diag-pdf="' + i + '" data="" type="application/pdf" style="display:none;min-height:280px;width:100%"></object>' : "") +
+      '<div class="pkt-sec-layer" data-sec-layer="' + i + '"></div>' +
+    '</div>';
     return '<div class="pkt-wrap" id="pkt-' + i + '">' +
       '<div class="ps-sub">Server Packet</div>' +
       '<div class="pkt-bar">' +
@@ -416,7 +450,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
       specials: p.specials,
       assignments: p.assignments,
       tableCount: p.tableCount,
-      seatsPerTable: p.seatsPerTable
+      seatsPerTable: p.seatsPerTable,
+      sections: PreShift.normalizeSections(p.sections || [])
     };
     savePacketStore(all);
     return p;
@@ -429,27 +464,75 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
     bindOnePacket(i, meals);
   }
 
+  var inkState = {};
+
+  function hexRgba(hex, a) {
+    var h = String(hex || "#888").replace("#", "");
+    if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    var n = parseInt(h, 16);
+    if (!isFinite(n)) n = 0x888888;
+    return "rgba(" + (n >> 16) + ", " + ((n >> 8) & 255) + ", " + (n & 255) + ", " + a + ")";
+  }
+
+  function sectionStyle(box) {
+    var color = SWATCH[box.team] || "#888";
+    return "left:" + box.x + "%;top:" + box.y + "%;width:" + box.w + "%;height:" + box.h + "%;background:" + hexRgba(color, 0.35) + ";border-color:" + color + ";";
+  }
+
+  function paintSections(i, meals) {
+    var layer = document.querySelector('[data-sec-layer="' + i + '"]');
+    if (!layer) return;
+    var p = meals[i].packetLive || meals[i].packet;
+    var selected = inkState[i] && inkState[i].selected;
+    var boxes = PreShift.normalizeSections((p && p.sections) || []);
+    if (p) p.sections = boxes;
+    var html = boxes.map(function (box) {
+      return '<div class="pkt-sec-box' + (box.id === selected ? " selected" : "") + '" data-sec-id="' + esc(box.id) + '" style="' + sectionStyle(box) + '"><span class="pkt-sec-label">' + esc(box.team) + '</span></div>';
+    }).join("") + '<div class="pkt-sec-draft" data-sec-draft="' + i + '"></div>';
+    layer.innerHTML = html;
+    var del = document.querySelector('#pkt-' + i + ' [data-act="delete-section"]');
+    if (del) del.disabled = !selected;
+    var stage = document.querySelector('[data-diag-stage="' + i + '"]');
+    if (stage) stage.classList.toggle("is-inking", !!(inkState[i] && inkState[i].team));
+    (p && p.teams || []).forEach(function (tm) {
+      var btn = document.querySelector('#pkt-' + i + ' [data-act="ink"][data-ink="' + tm.color + '"]');
+      if (btn) btn.classList.toggle("is-on", !!(inkState[i] && inkState[i].team === tm.color));
+    });
+  }
+
+  function markDiagramShown(i, kind) {
+    var stage = document.querySelector('[data-diag-stage="' + i + '"]');
+    var img = document.querySelector('[data-diag-img="' + i + '"]');
+    var ph = document.querySelector('[data-diag-ph="' + i + '"]');
+    var pdf = document.querySelector('[data-diag-pdf="' + i + '"]');
+    if (img) { img.classList.toggle("is-shown", kind === "img"); img.style.display = kind === "img" ? "block" : "none"; }
+    if (pdf) { pdf.classList.toggle("is-shown", kind === "pdf"); pdf.style.display = kind === "pdf" ? "block" : "none"; }
+    if (ph) ph.style.display = kind ? "none" : "block";
+    if (stage) stage.classList.toggle("has-diagram", !!kind);
+  }
+
   function loadDiagram(i, meals) {
     var p = meals[i].packetLive || meals[i].packet;
     var diag = (p && p.diagram) || { missing: true, images: [] };
     var img = document.querySelector('[data-diag-img="' + i + '"]');
-    var ph = document.querySelector('[data-diag-ph="' + i + '"]');
     var pdf = document.querySelector('[data-diag-pdf="' + i + '"]');
     var cands = diag.images || [];
     var idx = 0;
     function fail() {
-      if (img) img.style.display = "none";
       if (diag.path && pdf) {
-        if (ph) ph.style.display = "none";
-        pdf.style.display = "block";
+        markDiagramShown(i, "pdf");
         pdf.setAttribute("data", diag.path);
+        paintSections(i, meals);
         return;
       }
-      if (ph) { ph.style.display = "block"; ph.textContent = "Diagram not in Banquet Bot yet."; }
+      markDiagramShown(i, "");
+      var ph = document.querySelector('[data-diag-ph="' + i + '"]');
+      if (ph) ph.textContent = "Diagram not in Banquet Bot yet.";
+      paintSections(i, meals);
     }
     function tryNext() {
       if (!img || idx >= cands.length) { fail(); return; }
-      img.onload = function () { if (ph) ph.style.display = "none"; img.style.display = "block"; };
+      img.onload = function () { markDiagramShown(i, "img"); paintSections(i, meals); };
       img.onerror = function () { idx += 1; tryNext(); };
       img.src = cands[idx];
     }
@@ -513,6 +596,24 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
           redrawPacket(i, meals);
           return;
         }
+        if (act === "ink") {
+          var pInk = meals[i].packetLive || meals[i].packet;
+          inkState[i] = inkState[i] || {};
+          var color = btn.getAttribute("data-ink");
+          inkState[i].team = inkState[i].team === color ? "" : color;
+          paintSections(i, meals);
+          return;
+        }
+        if (act === "delete-section") {
+          var pDel = meals[i].packetLive || meals[i].packet;
+          var sel = inkState[i] && inkState[i].selected;
+          if (!pDel || !sel) return;
+          pDel.sections = (pDel.sections || []).filter(function (box) { return box.id !== sel; });
+          inkState[i].selected = "";
+          persistPacket(i, meals);
+          paintSections(i, meals);
+          return;
+        }
         if (act === "remove-team") {
           var p2 = meals[i].packetLive;
           if ((p2.teams || []).length <= 1) return;
@@ -530,6 +631,73 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
       });
     });
     loadDiagram(i, meals);
+    bindSectionDraw(i, meals);
+    paintSections(i, meals);
+  }
+
+  function bindSectionDraw(i, meals) {
+    var layer = document.querySelector('[data-sec-layer="' + i + '"]');
+    if (!layer || layer.getAttribute("data-bound") === "1") return;
+    layer.setAttribute("data-bound", "1");
+    var drag = null;
+    function rectOf() { return layer.getBoundingClientRect(); }
+    function draftBox(ev) {
+      var draft = layer.querySelector('[data-sec-draft="' + i + '"]');
+      if (!draft || !drag) return;
+      var r = rectOf();
+      var box = PreShift.sectionBoxFromDrag(drag.x, drag.y, ev.clientX, ev.clientY, r, drag.team);
+      if (!box) { draft.style.display = "none"; return; }
+      var color = SWATCH[drag.team] || "#888";
+      draft.style.cssText = sectionStyle(box) + "display:block;background:" + hexRgba(color, 0.2) + ";border-style:dashed;border-color:" + color + ";";
+    }
+    layer.addEventListener("pointerdown", function (ev) {
+      if (ev.button && ev.button !== 0) return;
+      var r = rectOf();
+      if (!r.width || !r.height) return;
+      var x = ((ev.clientX - r.left) / r.width) * 100;
+      var y = ((ev.clientY - r.top) / r.height) * 100;
+      var p = meals[i].packetLive || meals[i].packet;
+      var hit = PreShift.hitSection(p.sections || [], x, y);
+      if (hit) {
+        ev.preventDefault();
+        inkState[i] = inkState[i] || {};
+        inkState[i].selected = hit.id;
+        paintSections(i, meals);
+        return;
+      }
+      inkState[i] = inkState[i] || {};
+      inkState[i].selected = "";
+      paintSections(i, meals);
+      var team = inkState[i].team;
+      if (!team) return;
+      ev.preventDefault();
+      try { layer.setPointerCapture(ev.pointerId); } catch (e) {}
+      drag = { team: team, x: ev.clientX, y: ev.clientY, id: ev.pointerId };
+    });
+    layer.addEventListener("pointermove", function (ev) {
+      if (!drag || ev.pointerId !== drag.id) return;
+      ev.preventDefault();
+      draftBox(ev);
+    });
+    function finish(ev) {
+      if (!drag || ev.pointerId !== drag.id) return;
+      ev.preventDefault();
+      var team = drag.team;
+      var startX = drag.x;
+      var startY = drag.y;
+      drag = null;
+      var draft = layer.querySelector('[data-sec-draft="' + i + '"]');
+      if (draft) draft.style.display = "none";
+      var box = PreShift.sectionBoxFromDrag(startX, startY, ev.clientX, ev.clientY, rectOf(), team);
+      if (!box) return;
+      var p = meals[i].packetLive || meals[i].packet;
+      p.sections = (p.sections || []).concat([box]);
+      inkState[i].selected = box.id;
+      persistPacket(i, meals);
+      paintSections(i, meals);
+    }
+    layer.addEventListener("pointerup", finish);
+    layer.addEventListener("pointercancel", finish);
   }
 
   function bindPackets(meals) {

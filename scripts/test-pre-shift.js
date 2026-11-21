@@ -288,4 +288,57 @@ assert.ok(bare.packet.diagram.missing, "no diagram should be a placeholder, not 
 assert.ok(bare.script.some(function (l) { return /Mobile coffee/i.test(l.text); }));
 assert.equal(bare.packet.teams.length, 1, "GTD 20 -> 1 team");
 
+
+// Section boxes: percent coordinates and packet persistence
+assert.deepEqual(rich.packet.sections, []);
+assert.deepEqual(sparse.packet.sections, []);
+
+const flipped = PreShift.normalizeSectionBox({ team: "Yellow", x: 40, y: 40, w: -20, h: -10 });
+assert.equal(flipped.team, "Yellow");
+assert.equal(flipped.x, 20);
+assert.equal(flipped.y, 30);
+assert.equal(flipped.w, 20);
+assert.equal(flipped.h, 10);
+
+const clamped = PreShift.normalizeSectionBox({ team: "Green", x: -5, y: 90, w: 20, h: 30 });
+assert.equal(clamped.x, 0);
+assert.equal(clamped.y, 90);
+assert.equal(clamped.w, 15);
+assert.equal(clamped.h, 10);
+
+assert.equal(PreShift.normalizeSectionBox({ team: "Blue", x: 10, y: 10, w: 0.2, h: 10 }), null);
+assert.equal(PreShift.normalizeSectionBox({ x: 10, y: 10, w: 20, h: 20 }), null);
+
+const dragged = PreShift.sectionBoxFromDrag(150, 80, 50, 180, { left: 50, top: 30, width: 200, height: 300 }, "Red", "s-drag");
+assert.equal(dragged.id, "s-drag");
+assert.equal(dragged.team, "Red");
+assert.equal(dragged.x, 0);
+assert.equal(dragged.y, 16.67);
+assert.equal(dragged.w, 50);
+assert.equal(dragged.h, 33.33);
+
+const scale = PreShift.sectionBoxFromDrag(0, 0, 50, 25, { left: 0, top: 0, width: 100, height: 50 }, "Yellow", "s-scale");
+assert.deepEqual([scale.x, scale.y, scale.w, scale.h], [0, 0, 50, 50]);
+const scale2 = PreShift.sectionBoxFromDrag(0, 0, 100, 50, { left: 0, top: 0, width: 200, height: 100 }, "Yellow", "s-scale2");
+assert.deepEqual([scale2.x, scale2.y, scale2.w, scale2.h], [0, 0, 50, 50]);
+
+const persisted = PreShift.mergePacket(sparse.packet, {
+  sections: [
+    { id: "a", team: "Yellow", x: 5, y: 10, w: 20, h: 15, icon: "station", kind: "freehand" },
+    { id: "b", team: "Yellow", x: 40, y: 40, w: 10, h: 10 },
+    { id: "c", team: "Pink", x: 60, y: 20, w: 25, h: 30, station: "coffee" },
+    { team: "", x: 1, y: 1, w: 10, h: 10 }
+  ]
+});
+assert.equal(persisted.sections.length, 3, "keep one or more valid boxes, including two for Yellow");
+assert.equal(persisted.sections[0].id, "a");
+assert.equal(persisted.sections[0].team, "Yellow");
+assert.ok(!("icon" in persisted.sections[0]) && !("kind" in persisted.sections[0]) && !("station" in persisted.sections[2]));
+assert.equal(persisted.sections.filter(function (b) { return b.team === "Yellow"; }).length, 2);
+const hit = PreShift.hitSection(persisted.sections, 45, 45);
+assert.equal(hit && hit.id, "b");
+assert.equal(PreShift.hitSection(persisted.sections, 0, 0), null);
+assert.ok(!/\$\d/.test(JSON.stringify(persisted.sections)));
+assert(!/[\u2014\u2013]/.test(JSON.stringify(persisted.sections)));
+
 console.log("PASS: analysis, spoken scripts, later slots, questions for the manager, no prices or dashes. Meals:", meals.map(function (m) { return m.group; }).join(" | "));

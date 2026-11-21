@@ -945,6 +945,78 @@
     return { location: location, steps: steps, specials: specials };
   }
 
+  var MIN_SECTION_PCT = 0.5;
+
+  function roundPct(n) {
+    return Math.round(Number(n) * 100) / 100;
+  }
+
+  function newSectionId() {
+    return "s" + Date.now().toString(36) + Math.floor(Math.random() * 1e5).toString(36);
+  }
+
+  function normalizeSectionBox(box, id) {
+    if (!box || !box.team) return null;
+    var team = String(box.team || "").trim();
+    if (!team) return null;
+    var x = Number(box.x);
+    var y = Number(box.y);
+    var w = Number(box.w);
+    var h = Number(box.h);
+    if (![x, y, w, h].every(function (n) { return isFinite(n); })) return null;
+    if (w < 0) { x += w; w = -w; }
+    if (h < 0) { y += h; h = -h; }
+    if (x < 0) { w += x; x = 0; }
+    if (y < 0) { h += y; y = 0; }
+    if (x + w > 100) w = 100 - x;
+    if (y + h > 100) h = 100 - y;
+    if (x >= 100 || y >= 100 || w < MIN_SECTION_PCT || h < MIN_SECTION_PCT) return null;
+    return {
+      id: String(box.id || id || newSectionId()),
+      team: team,
+      x: roundPct(x),
+      y: roundPct(y),
+      w: roundPct(w),
+      h: roundPct(h)
+    };
+  }
+
+  function sectionBoxFromDrag(x1, y1, x2, y2, rect, team, id) {
+    rect = rect || {};
+    var width = Number(rect.width);
+    var height = Number(rect.height);
+    if (!width || !height) return null;
+    var left = Number(rect.left) || 0;
+    var top = Number(rect.top) || 0;
+    return normalizeSectionBox({
+      team: team,
+      id: id,
+      x: ((Number(x1) - left) / width) * 100,
+      y: ((Number(y1) - top) / height) * 100,
+      w: ((Number(x2) - Number(x1)) / width) * 100,
+      h: ((Number(y2) - Number(y1)) / height) * 100
+    }, id);
+  }
+
+  function normalizeSections(list) {
+    if (!Array.isArray(list)) return [];
+    var out = [];
+    list.forEach(function (box, i) {
+      var n = normalizeSectionBox(box, box && box.id ? box.id : "s" + (i + 1));
+      if (n) out.push(n);
+    });
+    return out;
+  }
+
+  function hitSection(list, x, y) {
+    var i, box, hit = null;
+    for (i = 0; i < (list || []).length; i++) {
+      box = list[i];
+      if (x >= box.x && x <= box.x + box.w && y >= box.y && y <= box.y + box.h) hit = box;
+    }
+    return hit;
+  }
+
   function buildServerPacket(meal) {
     meal = meal || {};
     var room = clean(meal.room || "");
@@ -976,6 +1048,7 @@
       tableCount: tables,
       seatsPerTable: seats,
       assignments: assignments,
+      sections: [],
       diagram: pickDiagram(room, meal.diagramLinks || [])
     };
   }
@@ -1022,6 +1095,7 @@
     if (saved.tableCount && +saved.tableCount > 0) out.tableCount = +saved.tableCount;
     if (saved.seatsPerTable != null && +saved.seatsPerTable > 0) out.seatsPerTable = +saved.seatsPerTable;
     if (saved.teamCount && +saved.teamCount > 0) out.teamCount = +saved.teamCount;
+    if (Array.isArray(saved.sections)) out.sections = normalizeSections(saved.sections);
     return out;
   }
 
@@ -1123,6 +1197,10 @@
     diagramImageCandidates: diagramImageCandidates,
     pickDiagram: pickDiagram,
     buildServerPacket: buildServerPacket,
-    mergePacket: mergePacket
+    mergePacket: mergePacket,
+    normalizeSectionBox: normalizeSectionBox,
+    sectionBoxFromDrag: sectionBoxFromDrag,
+    normalizeSections: normalizeSections,
+    hitSection: hitSection
   };
 });
