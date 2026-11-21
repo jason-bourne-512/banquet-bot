@@ -179,4 +179,51 @@ if (fs.existsSync(pagePath)) {
   if (m) new Function(m[1]);
 }
 
+
+// Server packet, duty split, mobile coffee
+const split2 = PreShift.splitDuties(2);
+assert.deepEqual(split2[0].opening, [
+  "Coffee trays (4)", "Bread baskets", "Brew tea/coffee", "Fold napkins",
+  "Coffee cart and table", "Fill regular and decaf urns", "Cups, cream, sugar, lemons"
+]);
+assert.deepEqual(split2[0].closing, ["Sweep/mop", "Beverage station", "Strike coffee cart"]);
+assert.deepEqual(split2[1].opening, ["Breakdown stations", "Hotbox stations", "Dressings", "Butters", "Waters"]);
+assert.deepEqual(split2[1].closing, ["Trash", "Plates to dish"]);
+const split3 = PreShift.splitDuties(3);
+assert.equal(split3.length, 3);
+assert.equal(split3.map(function (t) { return t.opening.length; }).reduce(function (a, b) { return a + b; }, 0), PreShift.OPENING_DUTIES.length);
+assert.ok(PreShift.OPENING_DUTIES.indexOf("Fold napkins") >= 0);
+
+meals.forEach(function (m) {
+  const p = m.packet;
+  assert.ok(p, m.group + " missing server packet");
+  assert.ok(p.teams.every(function (t) { return t.names.every(function (n) { return !n; }); }), m.group + " must not hardcode staff names");
+  assert.ok(!/Maricruz|Carlos|Tomas|Francisco/.test(JSON.stringify(p)));
+  const coffee = p.steps.find(function (s) { return s.label === "MOBILE COFFEE"; });
+  assert.ok(coffee, m.group + " missing mobile coffee step");
+  assert.equal(coffee.time, "By dessert");
+  assert.ok(coffee.items.some(function (it) { return /regular and decaf/i.test(it); }));
+  assert.ok(coffee.items.some(function (it) { return /cups, cream, sugar/i.test(it); }));
+  assert.ok(coffee.items.some(function (it) { return /not from the back/i.test(it); }));
+  assert.ok(coffee.owners && coffee.owners.length && coffee.owners.every(function (o) { return !o; }), "who runs coffee stays blank");
+  assert.ok(m.script.some(function (l) { return /Mobile coffee/i.test(l.text); }));
+  assert.ok(m.script.some(function (l) { return /where the cart goes/i.test(l.text); }));
+});
+
+assert.equal(rich.packet.location, "Camellia B");
+assert.ok(rich.packet.steps.some(function (s) { return s.label === "PASS APPS" && /6:00/.test(s.time); }));
+assert.ok(rich.packet.steps.some(function (s) { return /GUESTS ENTER/i.test(s.label) && /6:45/.test(s.time); }));
+assert.ok(rich.packet.diagram && !rich.packet.diagram.missing);
+assert.ok(rich.packet.diagram.images.some(function (img) { return /g_PrimroseCfromEmerson/.test(img); }));
+assert.equal(rich.packet.tableCount, 9);
+
+assert.ok(sparse.packet.diagram && !sparse.packet.diagram.missing);
+assert.match(sparse.packet.diagram.path, /PRIMROSEBALLROOMfromTSAE/);
+assert.ok(!/PREFUNCTION/i.test(sparse.packet.diagram.path));
+assert.equal(sparse.packet.tableCount, 38);
+
+const bare = PreShift.buildPreShift({ group: "Future Lunch", tag: "Plated Lunch", menu: "Plated Lunch", foot: {}, counts: { gtd: "20" } });
+assert.ok(bare.packet.diagram.missing, "no diagram should be a placeholder, not an invented layout");
+assert.ok(bare.script.some(function (l) { return /Mobile coffee/i.test(l.text); }));
+
 console.log("PASS: analysis, spoken scripts, later slots, questions for the manager, no prices or dashes. Meals:", meals.map(function (m) { return m.group; }).join(" | "));

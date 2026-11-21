@@ -396,6 +396,12 @@
     }
     say("Coffee / decaf", coffee || "", "When does coffee / decaf go out?");
     if (coffee) fact("Coffee / decaf", coffee);
+    var cartPlace = coffeeCartPlacement(blob);
+    if (cartPlace) fact("Mobile coffee", "Cart rolls in by dessert. Placement: " + cartPlace + ". Urns filled regular and decaf. Cups, cream, sugar, and lemons on the cart.");
+    else {
+      fact("Mobile coffee", "Urns go on a cart and a table in or near the room, not from the back. Rolls in by dessert. Regular and decaf, with cups, cream, sugar, and lemons. [ask] where the cart goes.", "ask");
+      addQ(questions, asked, mgr, "Where does the mobile coffee cart go? The event order does not say.");
+    }
 
     // Set / diagram, AV, storage
     var setBits = [];
@@ -502,7 +508,24 @@
       lines: lines,
       analysis: analysis,
       script: script,
-      questions: questions
+      questions: questions,
+      packet: buildServerPacket({
+        group: meal.group,
+        date: meal.date,
+        room: meal.room,
+        time: meal.time,
+        menu: meal.menu,
+        tag: meal.tag,
+        foot: foot,
+        extras: meal.extras,
+        services: meal.services || [],
+        diagrams: meal.diagrams,
+        diagramLinks: meal.diagramLinks || [],
+        counts: counts,
+        doors: meal.doors,
+        appsTime: meal.appsTime,
+        contact: contact
+      })
     };
   }
 
@@ -528,6 +551,7 @@
       speak(lines, "Do not clear dessert plates. Dessert is Chocolate Decadence, which is already gluten free. Coffee and hot tea stay through speeches. [ask] when decaf goes out if it is not with the regular coffee.", false);
       speak(lines, "The event order books dinner from 7:00 to 11:00. The rundown card still says 7:00 to 9:00. [ask] which window is live.", false);
       speak(lines, "After service, client linen, florals, and chargers go back to Camellia B. That storage is held Saturday morning. Pickup time is still to be confirmed. [ask]", false);
+      speak(lines, coffeeCartScriptLine(f.blob).text, false);
       speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
       return lines;
     }
@@ -542,6 +566,7 @@
       speak(lines, "[ask] who calls service at 12:20, and who calls any later course around the 12:30 welcome and the 12:55 awards. [ask] kitchen fire times, and whether dessert is pre-set or held until after 12:55.", false);
       speak(lines, "House standard is serve left, clear right, unless " + who + " says otherwise. [ask] if there is a head table or stage tables first.", false);
       speak(lines, "[ask] any vendor, sponsor, or staff meals, and where they eat.", false);
+      speak(lines, coffeeCartScriptLine(f.blob).text, false);
       speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
       return lines;
     }
@@ -582,8 +607,352 @@
     if (f.staff) speak(lines, f.staff + ".");
     else speak(lines, "Vendor or staff meals: [ask].", false);
     if (f.storage) speak(lines, "Storage: " + f.storage + ".");
+    speak(lines, coffeeCartScriptLine(f.blob || (f.coffee || "")).text, false);
     speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
     return lines;
+  }
+
+
+
+  function coffeeCartPlacement(blob) {
+    var s = String(blob || "");
+    var m = s.match(/[^·]*(?:coffee cart|mobile coffee|coffee station)[^·]*/i);
+    if (m && /\b(in|near|at|by|outside|foyer|pre-function|hallway|room)\b/i.test(m[0])) return clean(m[0]);
+    return "";
+  }
+
+  function coffeeCartScriptLine(blob) {
+    var place = coffeeCartPlacement(blob);
+    var t = "Mobile coffee: urns go on a cart and a table in or near the room, not from the back. Fill regular and decaf, and stock cups, cream, sugar, and lemons on the cart. It rolls in by dessert.";
+    if (place) t += " Cart placement: " + place + ".";
+    else t += " [ask] where the cart goes; the event order does not say.";
+    t += " [ask] who runs it.";
+    return { text: t, placement: place, known: !!place };
+  }
+
+  var OPENING_DUTIES = [
+    "Coffee trays (4)",
+    "Bread baskets",
+    "Brew tea/coffee",
+    "Fold napkins",
+    "Coffee cart and table",
+    "Fill regular and decaf urns",
+    "Cups, cream, sugar, lemons",
+    "Breakdown stations",
+    "Hotbox stations",
+    "Dressings",
+    "Butters",
+    "Waters"
+  ];
+  var CLOSING_DUTIES = [
+    "Sweep/mop",
+    "Beverage station",
+    "Strike coffee cart",
+    "Trash",
+    "Plates to dish"
+  ];
+  var TEAM_COLORS = ["Yellow", "Green", "Blue", "Red", "Orange", "Purple"];
+
+  function splitDuties(teamCount) {
+    var n = Math.max(1, teamCount || 2);
+    if (n === 2) {
+      return [
+        {
+          color: "Yellow",
+          opening: ["Coffee trays (4)", "Bread baskets", "Brew tea/coffee", "Fold napkins", "Coffee cart and table", "Fill regular and decaf urns", "Cups, cream, sugar, lemons"],
+          closing: ["Sweep/mop", "Beverage station", "Strike coffee cart"]
+        },
+        {
+          color: "Green",
+          opening: ["Breakdown stations", "Hotbox stations", "Dressings", "Butters", "Waters"],
+          closing: ["Trash", "Plates to dish"]
+        }
+      ];
+    }
+    var teams = [];
+    var i;
+    for (i = 0; i < n; i++) {
+      teams.push({ color: TEAM_COLORS[i] || ("Team " + (i + 1)), opening: [], closing: [] });
+    }
+    OPENING_DUTIES.forEach(function (d, idx) { teams[idx % n].opening.push(d); });
+    CLOSING_DUTIES.forEach(function (d, idx) { teams[idx % n].closing.push(d); });
+    return teams;
+  }
+
+  function defaultTeams(teamCount) {
+    return splitDuties(teamCount).map(function (t) {
+      return { color: t.color, names: ["", ""], opening: t.opening.slice(), closing: t.closing.slice() };
+    });
+  }
+
+  function packetKey(date, group) {
+    return String(date || "") + "|" + clean(group || "");
+  }
+
+  function firstClock(s) {
+    s = clean(s);
+    if (!s) return "";
+    var mer = (s.match(/\b(AM|PM)\b/i) || [])[1] || "";
+    var m = s.match(/~?\s*(\d{1,2})(?::(\d{2}))?/);
+    if (!m) return "";
+    var t = m[1] + ":" + (m[2] || "00");
+    if (!mer) {
+      var all = s.match(/\b(AM|PM)\b/i);
+      if (all) mer = all[1];
+    }
+    return mer ? (t + " " + mer.toUpperCase()) : t;
+  }
+
+  function parseTableCount(text, counts) {
+    var s = String(text || "");
+    var plus = s.match(/(\d+)\s+tables?\s+of\s+\d+\s*(?:\+|plus)\s*1\s+of\s+\d+/i);
+    if (plus) return parseInt(plus[1], 10) + 1;
+    var rounds = s.match(/\(?(\d+)\)?\s+rounds?\b/i);
+    if (rounds) return parseInt(rounds[1], 10);
+    if (counts && counts.set && +counts.set > 3 && +counts.set < 80) return parseInt(counts.set, 10);
+    return 0;
+  }
+
+  var ROOM_KEYS = [
+    "PrimroseBallroom", "PrimroseABC", "PrimroseAB", "PrimroseA", "PrimroseB",
+    "PrimroseC", "PrimroseD", "PreFunction", "Pre-Function", "CamelliaAB",
+    "CamelliaA", "CamelliaB", "Camellia", "Plumeria", "Lantana", "Barton",
+    "Verbena", "Bonnell", "Bluebell", "Buttercup"
+  ];
+
+  function softenDiagramName(base) {
+    var s = String(base || "");
+    ROOM_KEYS.sort(function (a, b) { return b.length - a.length; }).forEach(function (r) {
+      var compact = r.replace(/[-\s]/g, "");
+      s = s.replace(new RegExp("^" + compact + "(?=from)", "i"), r.replace(/[-\s]/g, ""));
+    });
+    return s;
+  }
+
+  function diagramImageCandidates(pdfPath) {
+    if (!pdfPath) return [];
+    var file = String(pdfPath).replace(/^.*\//, "").replace(/\.pdf$/i, "");
+    var variants = [file, file.replace(/_\d{3,4}$/, "")];
+    var more = [];
+    variants.forEach(function (v) {
+      more.push(v, v.replace(/Dinner/g, ""), v.replace(/Luncheon/g, ""), v.replace(/Activation/g, ""));
+    });
+    var out = [];
+    more.forEach(function (raw) {
+      var name = softenDiagramName(raw);
+      ["livemap/g_", "livemap/bg_"].forEach(function (pre) {
+        var p = pre + name + ".png";
+        if (out.indexOf(p) < 0) out.push(p);
+      });
+    });
+    return out;
+  }
+
+  function diagramMatchesRoom(room, path, caption) {
+    var roomN = clean(room).toLowerCase().replace(/\s+/g, " ");
+    if (!roomN) return false;
+    var hay = (clean(path) + " " + clean(caption)).toLowerCase();
+    var compact = roomN.replace(/[\s-]/g, "");
+    var hayC = hay.replace(/[\s-]/g, "");
+    if (hayC.indexOf(compact) < 0) return false;
+    // Don't let Primrose C match Primrose ABC / Ballroom / D
+    if (/^primrose c$/.test(roomN) && /primrose\s*(a|b|ab|abc|d|ballroom)\b/.test(hay) && !/primrose\s*c\b/.test(hay)) return false;
+    if (/^primrose ballroom$/.test(roomN) && /primrose\s*d\b/.test(hay) && !/ballroom/.test(hay)) return false;
+    return true;
+  }
+
+  function pickDiagram(room, links) {
+    links = links || [];
+    var i, hit = null;
+    for (i = 0; i < links.length; i++) {
+      if (diagramMatchesRoom(room, links[i].path, links[i].caption)) { hit = links[i]; break; }
+    }
+    if (!hit && links.length === 1) hit = links[0];
+    if (!hit) return { missing: true, images: [], path: "", caption: "" };
+    return {
+      missing: false,
+      path: hit.path || "",
+      caption: hit.caption || "",
+      images: diagramImageCandidates(hit.path)
+    };
+  }
+
+  function collectDiagramLinks(card, helpers) {
+    var links = [];
+    helpers.qsa(card, "button.diag-link, [onclick*='openDiagram']").forEach(function (btn) {
+      var oc = helpers.attr(btn, "onclick") || "";
+      var m = oc.match(/openDiagram\('([^']+)'(?:\s*,\s*'([^']*)')?/);
+      if (m) links.push({ path: m[1], caption: m[2] || helpers.txt(btn) });
+    });
+    return links;
+  }
+
+  function buildPacketSteps(meal) {
+    meal = meal || {};
+    var foot = meal.foot || {};
+    var services = meal.services || [];
+    var svcText = services.map(function (sv) {
+      return [sv.tag, sv.time, sv.menu, sv.room].join(" ");
+    }).join(" · ");
+    var linkText = (meal.diagramLinks || []).map(function (l) { return (l.caption || "") + " " + (l.path || ""); }).join(" · ");
+    var blob = [meal.menu, foot.NOTE, foot.FOOD, foot.ROOM, meal.extras, meal.diagrams, meal.tag, meal.time, svcText, linkText].join(" · ");
+    var steps = [];
+    var location = "";
+    services.forEach(function (sv) {
+      if (/storage|workroom|hotbox|breakdown/i.test(sv.tag || "") || /storage|hotbox/i.test(sv.menu || "")) {
+        if (sv.room) location = clean(sv.room);
+      }
+    });
+    if (!location) {
+      var loc = blob.match(/breakdown\s*(?:and|&)?\s*hotbox\s*[-:]\s*([^·]+)/i);
+      if (loc) location = clean(loc[1]);
+    }
+
+    var setTime = "";
+    var setItems = [];
+    services.forEach(function (sv) {
+      if (/set up/i.test(sv.tag || "")) {
+        if (!setTime) {
+          var by = (sv.menu || "").match(/set by\s+(\d{1,2}(?::\d{2})?\s*(?:AM|PM)?)/i);
+          setTime = by ? firstClock(by[1]) : firstClock(sv.time || "");
+        }
+        if (/linen|charger|silverware/i.test(sv.menu || "") || /linen|charger|silverware/i.test(blob)) {
+          ["linen", "chargers", "silverware"].forEach(function (w) {
+            if (new RegExp(w, "i").test(sv.menu + blob) && setItems.indexOf(w.charAt(0).toUpperCase() + w.slice(1)) < 0) {
+              setItems.push(w.charAt(0).toUpperCase() + w.slice(1));
+            }
+          });
+        }
+        if (/pre-?set silverware|water glasses and napkins|napkins/i.test(sv.menu || "") || /pre-?set silverware/i.test(blob)) {
+          ["Silverware", "Water glasses", "Napkins"].forEach(function (w) {
+            if (setItems.indexOf(w) < 0) setItems.push(w);
+          });
+        }
+      }
+    });
+    if (setTime || setItems.length) {
+      steps.push({ time: setTime, label: "SET INSIDE ROOM", items: setItems.length ? setItems : [], owners: [] });
+    }
+
+    var swTime = "";
+    var sw = blob.match(/back\s*~?\s*(\d{1,2}(?::\d{2})?\s*(?:AM|PM)?)\s*to pre-set salads?\s*\+?\s*waters?/i)
+      || blob.match(/pre-set salads?\s*\+?\s*waters?[^·]*?(\d{1,2}(?::\d{2})?\s*(?:AM|PM)?)/i);
+    if (sw) swTime = firstClock(sw[1]);
+    if (!swTime && /pre-set salads?\s*\+?\s*waters?|salads?\s+and\s+waters?/i.test(blob)) {
+      // leave time blank if we only know the action
+    }
+    if (sw || /pre-set salads?\s*\+?\s*waters?|salad and water/i.test(blob)) {
+      steps.push({ time: swTime, label: "SET", items: ["Water", "Salad"], owners: [] });
+    }
+
+    if (meal.appsTime || /tray-passed|hors\s*d|cocktail reception|pass apps/i.test(blob)) {
+      steps.push({ time: firstClock(meal.appsTime || ""), label: "PASS APPS", items: [], owners: ["", ""] });
+    }
+
+    steps.push({ time: "", label: "SERVERS AT TABLES", items: [], owners: [] });
+
+    var doorTime = firstClock(meal.doors || "");
+    if (!doorTime) {
+      var dm = blob.match(/doors?\s*(?:open(?:s|ed)?|at)?\s*(\d{1,2}(?::\d{2})?\s*(?:AM|PM)?)/i)
+        || blob.match(/chime at\s*(\d{1,2}(?::\d{2})?\s*(?:AM|PM)?)/i);
+      if (dm) doorTime = firstClock(dm[1]);
+    }
+    var enterItems = [];
+    if (/rolls?|bread baskets|drop bread/i.test(blob)) enterItems.push("Drop bread");
+    steps.push({ time: doorTime, label: "GUESTS ENTER THE ROOM", items: enterItems, owners: [] });
+
+    var specials = [];
+    var food = publicText(foot.FOOD || "");
+    var dietBits = [];
+    if (food && /allerg|dietary|gluten|mushroom|clam/i.test(food)) dietBits.push(food);
+    if (/gluten-free who wants it medium rare|NO mushroom/i.test(meal.menu || "")) {
+      dietBits.push(publicText((meal.menu || "").match(/1\s+gluten-free[^·]+|1\s+NO\s+[^·]+/gi) ? (meal.menu.match(/1\s+gluten-free[^·]+|1\s+NO\s+[^·]+/gi) || []).join("; ") : ""));
+    }
+    dietBits = dietBits.filter(Boolean);
+    if (dietBits.length) {
+      specials.push({ table: "", text: dietBits.join("; ") });
+    }
+
+    steps.push({ time: "", label: "WAIT FOR CUE TO DROP ENTREES", items: [], owners: [] });
+
+    var cart = coffeeCartPlacement(blob);
+    var cartItems = [
+      "Cart and table in or near the room, not from the back",
+      "Urns filled, regular and decaf",
+      "Cups, cream, sugar, and lemons on the cart"
+    ];
+    if (cart) cartItems.push("Placement: " + cart);
+    else cartItems.push("[ask] where the cart goes");
+    steps.push({ time: "By dessert", label: "MOBILE COFFEE", items: cartItems, owners: [""] });
+
+    return { location: location, steps: steps, specials: specials };
+  }
+
+  function buildServerPacket(meal) {
+    meal = meal || {};
+    var room = clean(meal.room || "");
+    var duties = defaultTeams(2);
+    var built = buildPacketSteps(meal);
+    var tableSource = [meal.diagrams, (meal.foot || {}).ROOM, (meal.foot || {}).NOTE, (meal.packetNotes || "")].concat(
+      (meal.diagramLinks || []).map(function (l) { return l.caption || ""; })
+    ).join(" · ");
+    var tables = parseTableCount(tableSource, meal.counts);
+    var assignments = {};
+    var i;
+    for (i = 1; i <= tables; i++) assignments[String(i)] = "";
+    return {
+      key: packetKey(meal.date, meal.group),
+      group: clean(meal.group || ""),
+      date: meal.date || "",
+      room: room,
+      teams: duties,
+      location: built.location,
+      steps: built.steps,
+      specials: built.specials,
+      tableCount: tables,
+      assignments: assignments,
+      diagram: pickDiagram(room, meal.diagramLinks || [])
+    };
+  }
+
+  function mergePacket(base, saved) {
+    if (!saved) return base;
+    var out = buildServerPacket({ group: base.group, date: base.date, room: base.room });
+    // start from freshly built base, then overlay saved editable fields
+    out = JSON.parse(JSON.stringify(base));
+    if (Array.isArray(saved.teams) && saved.teams.length) {
+      out.teams = saved.teams.map(function (t, i) {
+        var def = base.teams[i] || { color: t.color || TEAM_COLORS[i] || ("Team " + (i + 1)), names: ["", ""], opening: [], closing: [] };
+        return {
+          color: t.color || def.color,
+          names: Array.isArray(t.names) ? t.names.map(function (n) { return String(n || ""); }) : def.names.slice(),
+          opening: Array.isArray(t.opening) ? t.opening.slice() : def.opening.slice(),
+          closing: Array.isArray(t.closing) ? t.closing.slice() : def.closing.slice()
+        };
+      });
+    }
+    if (saved.location != null) out.location = String(saved.location);
+    if (Array.isArray(saved.steps)) {
+      out.steps = saved.steps.map(function (s, i) {
+        var def = base.steps[i] || { time: "", label: "", items: [], owners: [] };
+        return {
+          time: s.time != null ? String(s.time) : def.time,
+          label: s.label != null ? String(s.label) : def.label,
+          items: Array.isArray(s.items) ? s.items.map(String) : (def.items || []).slice(),
+          owners: Array.isArray(s.owners) ? s.owners.map(String) : (def.owners || []).slice()
+        };
+      });
+    }
+    if (Array.isArray(saved.specials)) {
+      out.specials = saved.specials.map(function (s) {
+        return { table: String(s.table || ""), text: String(s.text || "") };
+      });
+    }
+    if (saved.assignments && typeof saved.assignments === "object") {
+      out.assignments = saved.assignments;
+    }
+    if (saved.tableCount && +saved.tableCount > 0) out.tableCount = +saved.tableCount;
+    return out;
   }
 
   function collectPlated(helpers) {
@@ -634,6 +1003,7 @@
           var room = helpers.txt(helpers.qs(r, ".room-pill"));
           var pill = helpers.txt(helpers.qs(r, ".gtd-pill"));
           var time = helpers.txt(helpers.qs(r, ".svc-time")).replace(/\s+/g, " ");
+          var diagramLinks = collectDiagramLinks(card, helpers);
           out.push(buildPreShift({
             group: group,
             date: date,
@@ -649,6 +1019,7 @@
             extras: extras.join(" · "),
             services: services,
             diagrams: diagrams,
+            diagramLinks: diagramLinks,
             appsTime: appsTime,
             doors: doors
           }));
@@ -667,6 +1038,16 @@
     publicText: publicText,
     extractFlags: extractFlags,
     buildPreShift: buildPreShift,
-    collectPlated: collectPlated
+    collectPlated: collectPlated,
+    OPENING_DUTIES: OPENING_DUTIES,
+    CLOSING_DUTIES: CLOSING_DUTIES,
+    splitDuties: splitDuties,
+    defaultTeams: defaultTeams,
+    packetKey: packetKey,
+    parseTableCount: parseTableCount,
+    diagramImageCandidates: diagramImageCandidates,
+    pickDiagram: pickDiagram,
+    buildServerPacket: buildServerPacket,
+    mergePacket: mergePacket
   };
 });

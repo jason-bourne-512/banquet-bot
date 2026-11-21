@@ -97,6 +97,54 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .ps-script .ask { color:var(--red); font-family:'DM Mono',monospace; font-size:11px; }
 .note-box.later { background:transparent; border-color:var(--divider); color:var(--text-2); font-style:italic; margin-top:8px; }
 
+
+.pkt-wrap { margin-top: 4px; }
+.pkt-bar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin: 0 0 10px; }
+.pkt-sheet { background:var(--bg-active); border:1px solid var(--border); border-radius:10px; padding:12px; }
+.pkt-title { font-family:'Barlow Condensed',sans-serif; font-size:20px; letter-spacing:0.4px; margin-bottom:2px; }
+.pkt-sub { font-family:'DM Mono',monospace; font-size:10px; color:var(--text-3); margin-bottom:10px; }
+.pkt-teams { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:10px; }
+.pkt-teams th { text-align:left; font-family:'DM Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; color:var(--text-3); padding:6px 8px; border-bottom:1px solid var(--divider); }
+.pkt-teams td { vertical-align:top; padding:8px; border-bottom:1px solid var(--divider); }
+.pkt-teams tr.yellow td:first-child { box-shadow: inset 3px 0 0 #e4c33a; }
+.pkt-teams tr.green td:first-child { box-shadow: inset 3px 0 0 #3fa86a; }
+.pkt-teams tr.blue td:first-child { box-shadow: inset 3px 0 0 #4f8ef0; }
+.pkt-teams tr.red td:first-child { box-shadow: inset 3px 0 0 #e05555; }
+.pkt-teams tr.orange td:first-child { box-shadow: inset 3px 0 0 #e2b089; }
+.pkt-teams tr.purple td:first-child { box-shadow: inset 3px 0 0 #a06ee8; }
+.pkt-color { font-weight:600; margin-bottom:6px; }
+.pkt-input, .pkt-area, .pkt-select { width:100%; background:var(--bg-card); color:var(--text-1); border:1px solid var(--border); border-radius:6px; padding:5px 7px; font: inherit; font-size:12px; }
+.pkt-area { min-height:70px; resize:vertical; line-height:1.4; }
+.pkt-name { margin-bottom:5px; }
+.pkt-loc { margin: 8px 0 12px; }
+.pkt-loc label, .pkt-specials label, .pkt-step label, .pkt-assign-label { display:block; font-family:'DM Mono',monospace; font-size:8px; letter-spacing:1px; text-transform:uppercase; color:var(--text-3); margin-bottom:4px; }
+.pkt-steps { list-style:none; display:flex; flex-direction:column; gap:10px; margin: 0 0 12px; }
+.pkt-step { border:1px solid var(--divider); border-radius:8px; padding:8px; }
+.pkt-step-row { display:grid; grid-template-columns: 90px 1fr; gap:8px; margin-bottom:6px; }
+.pkt-diagram { margin-top: 12px; }
+.pkt-diagram-img { width:100%; height:auto; border-radius:8px; border:1px solid var(--border); background:#0b0d10; display:none; }
+.pkt-diagram-ph { padding:18px 12px; border:1px dashed var(--border-h); border-radius:8px; color:var(--text-2); font-size:13px; text-align:center; }
+.pkt-assign { display:grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:6px; margin-top:8px; }
+.pkt-assign-item { display:flex; align-items:center; gap:6px; font-size:12px; }
+.pkt-assign-item span { min-width: 52px; color:var(--text-2); }
+.pkt-legend { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0; font-size:11px; color:var(--text-2); }
+.pkt-swatch { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:middle; }
+.bb-btn.pkt-btn { cursor:pointer; }
+
+@media print {
+  body.print-pkt .ref-header, body.print-pkt .page-hero, body.print-pkt .sec, body.print-pkt .status,
+  body.print-pkt .ps-head, body.print-pkt .pkt-bar, body.print-pkt .note-box { display:none !important; }
+  body.print-pkt .ps-card { display:none !important; border:0; background:transparent; }
+  body.print-pkt .ps-card.print-me { display:block !important; }
+  body.print-pkt .ps-card.print-me .ps-body { display:block !important; border:0; padding:0; }
+  body.print-pkt .ps-card.print-me .ps-body > :not(.pkt-wrap) { display:none !important; }
+  body.print-pkt .page-wrap, body.print-pkt .list { max-width:none; padding:0; }
+  body.print-pkt .pkt-sheet { background:#fff; color:#111; border:0; }
+  body.print-pkt .pkt-input, body.print-pkt .pkt-area, body.print-pkt .pkt-select { border:0; background:transparent; color:#111; padding:0; }
+  body.print-pkt .pkt-diagram-img { display:block !important; filter: invert(1) hue-rotate(180deg); background:#fff; }
+  body.print-pkt { background:#fff !important; color:#111; }
+}
+
 @media (min-width: 900px) {
   .header, .page-hero, .sec, .list, .status { max-width: 520px; margin-left: auto; margin-right: auto; }
 }
@@ -119,7 +167,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <div class="page-hero">
   <div class="page-eyebrow">Banquet Captain · AUSDW</div>
   <div class="page-title">Pre-shift Scripts</div>
-  <div class="page-meta">Analysis, a start-to-finish server script, and questions for the manager · <a href="plated.html">training guide</a></div>
+  <div class="page-meta">Analysis, server script, questions, and a printable server packet · <a href="plated.html">training guide</a></div>
 </div>
 
 <div class="sec" id="ps-sec">Loading</div>
@@ -205,9 +253,254 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
           '<ol class="ps-script">' + spoken + '</ol>' +
           '<div class="note-box later">Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.</div>' +
           qs +
+          renderPacket(m, i) +
         '</div></div>';
     }).join("");
+    bindPackets(meals);
   }
+
+
+  var PACKET_STORE = "bb-preshift-packet";
+  function loadPacketStore() { try { return JSON.parse(localStorage.getItem(PACKET_STORE) || "{}") || {}; } catch (e) { return {}; } }
+  function savePacketStore(all) { try { localStorage.setItem(PACKET_STORE, JSON.stringify(all)); } catch (e) {} }
+
+  function teamClass(color) { return String(color || "").toLowerCase().replace(/\s+/g, ""); }
+
+  function renderPacket(m, i) {
+    var base = m.packet;
+    if (!base) return "";
+    var all = loadPacketStore();
+    var p = PreShift.mergePacket(base, all[base.key]);
+    m.packetLive = p;
+    var teams = (p.teams || []).map(function (t, ti) {
+      var names = (t.names && t.names.length ? t.names : ["", ""]).map(function (n, ni) {
+        return '<input class="pkt-input pkt-name" data-pkt="' + i + '" data-k="name" data-t="' + ti + '" data-n="' + ni + '" placeholder="Name" value="' + esc(n) + '">';
+      }).join("");
+      return '<tr class="' + esc(teamClass(t.color)) + '">' +
+        '<td><div class="pkt-color">' + esc(t.color) + ' Team</div>' + names + '</td>' +
+        '<td><label>Opening</label><textarea class="pkt-area" data-pkt="' + i + '" data-k="opening" data-t="' + ti + '">' + esc((t.opening || []).join("\n")) + '</textarea></td>' +
+        '<td><label>Closing</label><textarea class="pkt-area" data-pkt="' + i + '" data-k="closing" data-t="' + ti + '">' + esc((t.closing || []).join("\n")) + '</textarea></td>' +
+        '</tr>';
+    }).join("");
+    var steps = (p.steps || []).map(function (s, si) {
+      var owners = (s.owners || []).map(function (o, oi) {
+        return '<input class="pkt-input pkt-name" data-pkt="' + i + '" data-k="owner" data-s="' + si + '" data-n="' + oi + '" placeholder="Who" value="' + esc(o) + '">';
+      }).join("");
+      return '<li class="pkt-step">' +
+        '<div class="pkt-step-row">' +
+          '<div><label>Time</label><input class="pkt-input" data-pkt="' + i + '" data-k="time" data-s="' + si + '" value="' + esc(s.time || "") + '"></div>' +
+          '<div><label>Step</label><input class="pkt-input" data-pkt="' + i + '" data-k="label" data-s="' + si + '" value="' + esc(s.label || "") + '"></div>' +
+        '</div>' +
+        '<label>Details</label><textarea class="pkt-area" data-pkt="' + i + '" data-k="items" data-s="' + si + '">' + esc((s.items || []).join("\n")) + '</textarea>' +
+        (s.owners && s.owners.length ? '<label>Who</label>' + owners : '') +
+        '</li>';
+    }).join("");
+    var specials = (p.specials && p.specials.length ? p.specials : [{ table: "", text: "" }]).map(function (sp, si) {
+      return '<div class="pkt-step-row">' +
+        '<div><label>Table</label><input class="pkt-input" data-pkt="' + i + '" data-k="sptable" data-s="' + si + '" placeholder="Table" value="' + esc(sp.table || "") + '"></div>' +
+        '<div><label>Special plates</label><input class="pkt-input" data-pkt="' + i + '" data-k="sptext" data-s="' + si + '" value="' + esc(sp.text || "") + '"></div>' +
+        '</div>';
+    }).join("");
+    var colors = (p.teams || []).map(function (t) { return t.color; });
+    var assigns = "";
+    var n = p.tableCount || 0;
+    var ti;
+    for (ti = 1; ti <= n; ti++) {
+      var cur = (p.assignments && p.assignments[String(ti)]) || "";
+      var opts = '<option value="">Section</option>' + colors.map(function (c) {
+        return '<option value="' + esc(c) + '"' + (cur === c ? " selected" : "") + '>' + esc(c) + '</option>';
+      }).join("");
+      assigns += '<label class="pkt-assign-item"><span>Table ' + ti + '</span><select class="pkt-select" data-pkt="' + i + '" data-k="assign" data-table="' + ti + '">' + opts + '</select></label>';
+    }
+    var legend = colors.map(function (c) {
+      return '<span><i class="pkt-swatch" style="background:' + ({Yellow:"#e4c33a",Green:"#3fa86a",Blue:"#4f8ef0",Red:"#e05555",Orange:"#e2b089",Purple:"#a06ee8"}[c] || "#888") + '"></i>' + esc(c) + '</span>';
+    }).join("");
+    var diag = p.diagram || { missing: true, images: [] };
+    var diagBlock = '<div class="pkt-diagram-ph" data-diag-ph="' + i + '">Diagram not in Banquet Bot yet.</div>' +
+      '<img class="pkt-diagram-img" alt="' + esc(p.room || "Room diagram") + '" data-diag-img="' + i + '">' +
+      (diag.path ? '<object class="pkt-diagram-img" data-diag-pdf="' + i + '" data="" type="application/pdf" style="display:none;min-height:280px;width:100%"></object>' : "");
+    return '<div class="pkt-wrap" id="pkt-' + i + '">' +
+      '<div class="ps-sub">Server Packet</div>' +
+      '<div class="pkt-bar">' +
+        '<button type="button" class="bb-btn pkt-btn" data-act="print" data-pkt="' + i + '">Print packet</button>' +
+        '<button type="button" class="bb-btn pkt-btn" data-act="add-team" data-pkt="' + i + '">Add team</button>' +
+        (p.teams && p.teams.length > 2 ? '<button type="button" class="bb-btn pkt-btn" data-act="remove-team" data-pkt="' + i + '">Remove team</button>' : '') +
+      '</div>' +
+      '<div class="pkt-sheet">' +
+        '<div class="pkt-title">Server Packet</div>' +
+        '<div class="pkt-sub">' + esc(p.group) + ' · ' + esc(fmtDate(p.date)) + ' · ' + esc(p.room) + '</div>' +
+        '<table class="pkt-teams"><thead><tr><th>Team</th><th>Opening</th><th>Closing</th></tr></thead><tbody>' + teams + '</tbody></table>' +
+        '<div class="pkt-loc"><label>Breakdown and hotbox</label><input class="pkt-input" data-pkt="' + i + '" data-k="location" placeholder="Room" value="' + esc(p.location || "") + '"></div>' +
+        '<ol class="pkt-steps">' + steps + '</ol>' +
+        '<div class="pkt-specials">' + specials + '</div>' +
+        '<div class="pkt-diagram">' +
+          '<div class="pkt-assign-label">Room diagram and section assignments</div>' +
+          '<div class="pkt-legend">' + legend + '</div>' +
+          diagBlock +
+          '<div class="pkt-loc"><label>Tables on the diagram</label><input class="pkt-input" data-pkt="' + i + '" data-k="tableCount" value="' + esc(String(n || "")) + '" placeholder="How many tables"></div>' +
+          '<div class="pkt-assign">' + assigns + '</div>' +
+        '</div>' +
+      '</div></div>';
+  }
+
+  function readPacketFromDom(i, meals) {
+    var base = meals[i].packet;
+    var p = JSON.parse(JSON.stringify(meals[i].packetLive || base));
+    var root = document.getElementById("pkt-" + i);
+    if (!root) return p;
+    p.teams.forEach(function (t, ti) {
+      t.names = [].slice.call(root.querySelectorAll('[data-k="name"][data-t="' + ti + '"]')).map(function (el) { return el.value; });
+      var open = root.querySelector('[data-k="opening"][data-t="' + ti + '"]');
+      var close = root.querySelector('[data-k="closing"][data-t="' + ti + '"]');
+      if (open) t.opening = open.value.split(/\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+      if (close) t.closing = close.value.split(/\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+    });
+    var loc = root.querySelector('[data-k="location"]');
+    if (loc) p.location = loc.value;
+    p.steps.forEach(function (s, si) {
+      var time = root.querySelector('[data-k="time"][data-s="' + si + '"]');
+      var label = root.querySelector('[data-k="label"][data-s="' + si + '"]');
+      var items = root.querySelector('[data-k="items"][data-s="' + si + '"]');
+      if (time) s.time = time.value;
+      if (label) s.label = label.value;
+      if (items) s.items = items.value.split(/\n/).map(function (v) { return v.trim(); }).filter(Boolean);
+      s.owners = [].slice.call(root.querySelectorAll('[data-k="owner"][data-s="' + si + '"]')).map(function (el) { return el.value; });
+    });
+    p.specials = p.specials || [];
+    root.querySelectorAll('[data-k="sptext"]').forEach(function (el) {
+      var si = +el.getAttribute("data-s");
+      p.specials[si] = p.specials[si] || { table: "", text: "" };
+      p.specials[si].text = el.value;
+    });
+    root.querySelectorAll('[data-k="sptable"]').forEach(function (el) {
+      var si = +el.getAttribute("data-s");
+      p.specials[si] = p.specials[si] || { table: "", text: "" };
+      p.specials[si].table = el.value;
+    });
+    var tc = root.querySelector('[data-k="tableCount"]');
+    if (tc && /^\d+$/.test(tc.value)) p.tableCount = +tc.value;
+    p.assignments = p.assignments || {};
+    root.querySelectorAll('[data-k="assign"]').forEach(function (el) {
+      p.assignments[el.getAttribute("data-table")] = el.value;
+    });
+    return p;
+  }
+
+  function persistPacket(i, meals) {
+    var p = readPacketFromDom(i, meals);
+    meals[i].packetLive = p;
+    var all = loadPacketStore();
+    all[p.key] = {
+      teams: p.teams,
+      location: p.location,
+      steps: p.steps,
+      specials: p.specials,
+      assignments: p.assignments,
+      tableCount: p.tableCount
+    };
+    savePacketStore(all);
+    return p;
+  }
+
+  function redrawPacket(i, meals) {
+    var wrap = document.getElementById("pkt-" + i);
+    if (!wrap) return;
+    wrap.outerHTML = renderPacket(meals[i], i);
+    bindOnePacket(i, meals);
+  }
+
+  function loadDiagram(i, meals) {
+    var p = meals[i].packetLive || meals[i].packet;
+    var diag = (p && p.diagram) || { missing: true, images: [] };
+    var img = document.querySelector('[data-diag-img="' + i + '"]');
+    var ph = document.querySelector('[data-diag-ph="' + i + '"]');
+    var pdf = document.querySelector('[data-diag-pdf="' + i + '"]');
+    var cands = diag.images || [];
+    var idx = 0;
+    function fail() {
+      if (img) img.style.display = "none";
+      if (diag.path && pdf) {
+        if (ph) ph.style.display = "none";
+        pdf.style.display = "block";
+        pdf.setAttribute("data", diag.path);
+        return;
+      }
+      if (ph) { ph.style.display = "block"; ph.textContent = "Diagram not in Banquet Bot yet."; }
+    }
+    function tryNext() {
+      if (!img || idx >= cands.length) { fail(); return; }
+      img.onload = function () { if (ph) ph.style.display = "none"; img.style.display = "block"; };
+      img.onerror = function () { idx += 1; tryNext(); };
+      img.src = cands[idx];
+    }
+    if (cands.length) tryNext();
+    else fail();
+  }
+
+  function bindOnePacket(i, meals) {
+    var root = document.getElementById("pkt-" + i);
+    if (!root) return;
+    root.querySelectorAll("input, textarea, select").forEach(function (el) {
+      el.addEventListener("change", function () {
+        var before = meals[i].packetLive && meals[i].packetLive.tableCount;
+        persistPacket(i, meals);
+        if (el.getAttribute("data-k") === "tableCount" && meals[i].packetLive.tableCount !== before) redrawPacket(i, meals);
+      });
+      el.addEventListener("blur", function () { persistPacket(i, meals); });
+    });
+    root.querySelectorAll("[data-act]").forEach(function (btn) {
+      btn.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        var act = btn.getAttribute("data-act");
+        persistPacket(i, meals);
+        if (act === "print") {
+          document.querySelectorAll(".ps-card").forEach(function (c) { c.classList.remove("print-me"); });
+          var card = document.getElementById("ps-" + i);
+          if (card) card.classList.add("print-me", "open");
+          document.body.classList.add("print-pkt");
+          window.print();
+          return;
+        }
+        if (act === "add-team") {
+          var p = meals[i].packetLive;
+          var names = (p.teams || []).map(function (t) { return t.names; });
+          var next = PreShift.defaultTeams((p.teams || []).length + 1);
+          next.forEach(function (t, ti) { if (names[ti]) t.names = names[ti]; });
+          p.teams = next;
+          var all = loadPacketStore();
+          all[p.key] = all[p.key] || {};
+          all[p.key].teams = p.teams;
+          savePacketStore(all);
+          redrawPacket(i, meals);
+          return;
+        }
+        if (act === "remove-team") {
+          var p2 = meals[i].packetLive;
+          if ((p2.teams || []).length <= 2) return;
+          var names2 = (p2.teams || []).map(function (t) { return t.names; });
+          var next2 = PreShift.defaultTeams(p2.teams.length - 1);
+          next2.forEach(function (t, ti) { if (names2[ti]) t.names = names2[ti]; });
+          p2.teams = next2;
+          var all2 = loadPacketStore();
+          all2[p2.key] = all2[p2.key] || {};
+          all2[p2.key].teams = p2.teams;
+          savePacketStore(all2);
+          redrawPacket(i, meals);
+        }
+      });
+    });
+    loadDiagram(i, meals);
+  }
+
+  function bindPackets(meals) {
+    meals.forEach(function (_m, i) { bindOnePacket(i, meals); });
+  }
+
+  window.addEventListener("afterprint", function () {
+    document.body.classList.remove("print-pkt");
+    document.querySelectorAll(".ps-card.print-me").forEach(function (c) { c.classList.remove("print-me"); });
+  });
 
   function domHelpers(doc) {
     return {
