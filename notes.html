@@ -33,37 +33,50 @@
   .nt-group { font:600 16px/1.3 Manrope, sans-serif; color:#fff; }
   .nt-meta { color:var(--muted); font-size:12px; margin-top:3px; }
   .nt-thread { display:flex; flex-direction:column; gap:0; padding:4px 0; }
-  .nt-note { padding:10px 14px; border-top:1px solid #1a2730; }
-  .nt-note:first-child { border-top:0; }
-  .nt-who { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+  .nt-author { padding:10px 14px 8px; border-top:1px solid #1a2730; }
+  .nt-author:first-child { border-top:0; }
+  .nt-who { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
   .nt-av { display:grid; place-items:center; width:26px; height:26px; border-radius:50%; background:#8bd1ff22; color:var(--sky); border:1px solid #8bd1ff66; font:800 11px Manrope, sans-serif; flex:0 0 auto; }
   .nt-name { font:700 13px Manrope, sans-serif; color:#eaf3fa; }
-  .nt-time { margin-left:auto; color:var(--muted); font-size:11.5px; }
-  .nt-text { color:#d6e3ee; font-size:13.5px; line-height:1.45; padding-left:34px; white-space:pre-wrap; }
+  .nt-note { padding:4px 0 8px 34px; }
+  .nt-note:last-child { padding-bottom:2px; }
+  .nt-time { display:block; color:var(--muted); font-size:11.5px; margin-bottom:2px; }
+  .nt-text { color:#d6e3ee; font-size:13.5px; line-height:1.45; white-space:pre-wrap; }
   .nt-empty { color:var(--muted); font-size:13px; padding:12px 14px; }
+  .nt-section { margin-bottom:22px; }
+  .nt-section h2 { font:600 15px/1.2 'Barlow Condensed', sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--sky); margin:0 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line); }
+  .nt-daily { padding-top:6px; border-top:1px solid #8bd1ff33; }
+  .nt-daily h2 { margin-top:12px; }
   @media (max-width:700px) {
     main { padding:16px 14px 48px; }
     h1 { font-size:28px; }
-    .nt-text { padding-left:0; }
+    .nt-note { padding-left:0; }
     .picker input[type=date] { flex:1; min-width:0; }
   }
 </style>
 <script src="theme.js?v=1113a"></script>
-<script src="scripts/notes-lib.js"></script>
+<script src="scripts/notes-lib.js?v=1121p"></script>
 </head>
 <body>
 <main>
   <h1>Event <span>Notes</span></h1>
-  <p class="sub">Westin Austin at The Domain · one thread per group, from the Rundown</p>
+  <p class="sub">Side notes and FYIs. Anything critical still goes on the BEO or to your manager.</p>
   <div class="banner" id="nt-banner"></div>
-  <div class="picker">
-    <button type="button" id="nt-prev" aria-label="Previous day">‹</button>
-    <input id="nt-date" type="date" aria-label="Choose a date">
-    <button type="button" id="nt-next" aria-label="Next day">›</button>
-    <span class="day" id="nt-day"></span>
-  </div>
-  <div id="nt-status" class="status">Loading the Rundown…</div>
-  <div id="nt-list" hidden></div>
+  <section class="nt-section" id="nt-pinned-sec" aria-labelledby="nt-pinned-title">
+    <h2 id="nt-pinned-title">Pinned: General notes</h2>
+    <div id="nt-pinned"></div>
+  </section>
+  <section class="nt-section nt-daily" id="nt-daily-sec" aria-labelledby="nt-daily-title">
+    <h2 id="nt-daily-title">Daily event notes</h2>
+    <div class="picker">
+      <button type="button" id="nt-prev" aria-label="Previous day">‹</button>
+      <input id="nt-date" type="date" aria-label="Choose a date">
+      <button type="button" id="nt-next" aria-label="Next day">›</button>
+      <span class="day" id="nt-day"></span>
+    </div>
+    <div id="nt-status" class="status">Loading the Rundown…</div>
+    <div id="nt-list" hidden></div>
+  </section>
 </main>
 <script>
 (function () {
@@ -71,6 +84,7 @@
   var dayEl = document.getElementById("nt-day");
   var list = document.getElementById("nt-list");
   var status = document.getElementById("nt-status");
+  var pinnedEl = document.getElementById("nt-pinned");
   var rundown = null;
 
   function helpers(doc) {
@@ -96,6 +110,23 @@
   function esc(s) {
     return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
   }
+  function authorBlocksHtml(authors) {
+    if (!authors.length) return '<div class="nt-empty">No notes yet.</div>';
+    return authors.map(function (block) {
+      var head = '<div class="nt-who"><span class="nt-av">' + esc((block.name || "?").slice(0, 1)) + "</span>" +
+        '<span class="nt-name">' + esc(block.name) + "</span></div>";
+      var items = block.notes.map(function (n) {
+        return '<div class="nt-note"><span class="nt-time">' + esc(n.timeLabel) + "</span>" +
+          '<div class="nt-text">' + esc(n.text) + "</div></div>";
+      }).join("");
+      return '<div class="nt-author">' + head + items + "</div>";
+    }).join("");
+  }
+  function renderPinned() {
+    var authors = Notes.pinnedAuthors(Notes.SAMPLE_PINNED);
+    var body = authorBlocksHtml(authors);
+    pinnedEl.innerHTML = '<article class="nt-card"><div class="nt-thread">' + body + "</div></article>";
+  }
   function render() {
     var date = dateEl.value;
     dayEl.textContent = Notes.formatDayLabel(date);
@@ -112,11 +143,8 @@
     list.hidden = false;
     list.innerHTML = events.map(function (ev) {
       var meta = [ev.time, (ev.rooms || []).join(" · ")].filter(Boolean).join(" · ");
-      var body = ev.notes.length ? ev.notes.map(function (n) {
-        return '<div class="nt-note"><div class="nt-who"><span class="nt-av">' + esc((n.name || "?").slice(0, 1)) + "</span>" +
-          '<span class="nt-name">' + esc(n.name) + '</span><span class="nt-time">' + esc(n.timeLabel) + "</span></div>" +
-          '<div class="nt-text">' + esc(n.text) + "</div></div>";
-      }).join("") : '<div class="nt-empty">No notes yet.</div>';
+      var authors = ev.authors || Notes.groupNotesByAuthor(ev.notes);
+      var body = authorBlocksHtml(authors);
       return '<article class="nt-card"><div class="nt-head"><div class="nt-group">' + esc(ev.group) + "</div>" +
         (meta ? '<div class="nt-meta">' + esc(meta) + "</div>" : "") + "</div>" +
         '<div class="nt-thread">' + body + "</div></article>";
@@ -124,6 +152,7 @@
   }
 
   document.getElementById("nt-banner").textContent = Notes.SAMPLE_BANNER;
+  renderPinned();
   dateEl.addEventListener("change", function () { setDate(dateEl.value); });
   document.getElementById("nt-prev").addEventListener("click", function () { setDate(Notes.shiftISODate(dateEl.value, -1)); });
   document.getElementById("nt-next").addEventListener("click", function () { setDate(Notes.shiftISODate(dateEl.value, 1)); });

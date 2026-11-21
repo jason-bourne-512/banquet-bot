@@ -373,6 +373,25 @@
   function navLinks(list, cur) {
     return list.map(function (p) { return '<a href="' + p[0] + '" title="' + p[1] + '" class="' + (p[0] == cur ? "on" : "") + '"><i>' + p[2] + "</i>" + p[1] + "</a>"; }).join("");
   }
+
+  function withNotesLib(cb) {
+    if (window.Notes && typeof window.Notes.showNotesIntro === "function") { cb(); return; }
+    function run() { if (window.Notes && typeof window.Notes.showNotesIntro === "function") cb(); }
+    var existing = document.querySelector('script[src*="scripts/notes-lib.js"]');
+    if (existing) {
+      if (window.Notes) run();
+      else existing.addEventListener("load", run);
+      return;
+    }
+    var s = document.createElement("script");
+    s.src = "scripts/notes-lib.js?v=1121p";
+    s.onload = run;
+    document.head.appendChild(s);
+  }
+  function showNotesIntro() {
+    withNotesLib(function () { window.Notes.showNotesIntro(); });
+  }
+
   function build(w) {
     var root = document.documentElement, acc = ACCENT[w.role] || "#8bd1ff", cur = here();
     root.classList.add("bbd"); root.dataset.bbdRole = w.role;
@@ -459,6 +478,7 @@
     // reflow card lists now and whenever a page re-renders (Rundown, Housemen and Today draw after load)
     gridify();
     var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(gridify, 120); }).observe(document.body, {childList: true, subtree: true});
+    showNotesIntro();
   }
 
   function entry() {
@@ -491,7 +511,7 @@
   function start() {
     var w = who();
     if (get(DESK) == "1" && isLead(w) && wide()) build(w);
-    else { phoneSkin(); entry(); }
+    else { phoneSkin(); entry(); showNotesIntro(); }
   }
   if (document.readyState == "loading") document.addEventListener("DOMContentLoaded", start); else start();
 })();
