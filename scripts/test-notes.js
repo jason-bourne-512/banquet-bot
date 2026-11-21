@@ -156,18 +156,42 @@ assert.equal(Notes.PAGE_SUB, "Side notes and FYIs. Anything critical still goes 
 assert.doesNotMatch(Notes.PAGE_SUB, /\u2014|\u2013/);
 assert.doesNotMatch(Notes.INTRO_COPY, /\u2014|\u2013/);
 
-// intro pop-up: show once per device
+// intro pop-up: hidden until the device opts in, then show once
 assert.equal(Notes.INTRO_KEY, "bb-notes-intro-seen");
+assert.equal(Notes.TESTER_KEY, "bb-notes-tester");
 assert.match(Notes.INTRO_COPY, /Side notes and FYIs only/);
 assert.match(Notes.INTRO_COPY, /Got it|Sample notes for now/, "copy mentions sample / upcoming save");
-const mem = {
-  data: Object.create(null),
-  getItem: function (k) { return Object.prototype.hasOwnProperty.call(this.data, k) ? this.data[k] : null; },
-  setItem: function (k, v) { this.data[k] = String(v); },
-  removeItem: function (k) { delete this.data[k]; }
-};
+function memStore() {
+  return {
+    data: Object.create(null),
+    getItem: function (k) { return Object.prototype.hasOwnProperty.call(this.data, k) ? this.data[k] : null; },
+    setItem: function (k, v) { this.data[k] = String(v); },
+    removeItem: function (k) { delete this.data[k]; }
+  };
+}
+const mem = memStore();
+assert.equal(Notes.isNotesTester(mem), false);
+assert.equal(Notes.applyNotesTester({ search: "", pathname: "/rundown.html", storage: mem }), false);
+assert.equal(Notes.isNotesTester(mem), false, "hidden by default");
+assert.equal(Notes.shouldShowIntro(mem), false, "no intro without opt-in");
+assert.equal(Notes.showNotesIntro({storage: mem, document: {querySelector: function () { return null; }}, window: {}}), null, "no intro without opt-in");
+
+assert.equal(Notes.applyNotesTester({ search: "?notes=on", pathname: "/index.html", storage: mem }), true);
+assert.equal(mem.getItem("bb-notes-tester"), "1");
+assert.equal(Notes.isNotesTester(mem), true);
+assert.equal(Notes.applyNotesTester({ search: "?notes=off", pathname: "/index.html", storage: mem }), false);
+assert.equal(mem.getItem("bb-notes-tester"), null);
+assert.equal(Notes.isNotesTester(mem), false);
+
+assert.equal(Notes.applyNotesTester({ search: "", pathname: "/banquet-bot/notes.html", storage: mem }), true, "opening notes.html opts in");
+assert.equal(mem.getItem("bb-notes-tester"), "1");
+assert.equal(Notes.applyNotesTester({ search: "?date=2026-11-21", pathname: "notes.html", storage: mem }), true);
+assert.equal(Notes.applyNotesTester({ search: "?notes=off", pathname: "notes.html", storage: mem }), false, "?notes=off wins on notes.html");
+assert.equal(Notes.isNotesTester(mem), false);
+assert.equal(Notes.applyNotesTester({ search: "?date=2026-11-21&notes=on", pathname: "/rundown.html", storage: mem }), true);
+
 assert.equal(Notes.introSeen(mem), false);
-assert.equal(Notes.shouldShowIntro(mem), true);
+assert.equal(Notes.shouldShowIntro(mem), true, "intro shows after opt-in, once");
 Notes.markIntroSeen(mem);
 assert.equal(mem.getItem("bb-notes-intro-seen"), "1");
 assert.equal(Notes.introSeen(mem), true);
@@ -192,16 +216,28 @@ assert.doesNotMatch(page, /<textarea/);
 assert.doesNotMatch(page, /Add note|Save note|Delete note|type="password"|name="pin"|payment/i);
 new Function(page.match(/<script>\s*([\s\S]*?)<\/script>/)[1]); // syntax check
 
-// side panel and Home point at the tab
+// side panel and Home point at the tab, but only after opt-in
 const desktop = fs.readFileSync(path.join(__dirname, "..", "desktop.js"), "utf8");
 assert.match(desktop, /href="notes\.html"/);
 assert.match(desktop, />Notes<\/a>/);
 assert.match(desktop, /showNotesIntro/);
 assert.match(desktop, /notes-lib\.js/);
+assert.match(desktop, /bb-notes-tester/);
+assert.match(desktop, /notesTester\(\) \? /);
+assert.match(desktop, /if \(!notesTester\(\)\) return;/);
+assert.match(desktop, /applyNotesTesterFlag/);
 assert.match(Notes.INTRO_COPY, /New: Notes/);
 const home = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
 assert.match(home, /href="notes\.html"/);
 assert.match(home, />NOTES</);
+assert.match(home, /id="notesBtn"/);
+assert.match(home, /destination notes"[^>]*\bhidden\b/);
+assert.match(home, /bb-notes-tester/);
+assert.match(home, /destination\.notes\[hidden\]/);
+assert.match(page, /Notes\.applyNotesTester\(/);
+const theme = fs.readFileSync(path.join(__dirname, "..", "theme.js"), "utf8");
+assert.match(theme, /bb-notes-tester/);
+assert.match(theme, /desktop\.js\?v=1121c/);
 
 // live Rundown: same source as the rest of the app, unique groups for a known day
 const rundownPath = path.join(__dirname, "..", "rundown.html");
@@ -215,4 +251,4 @@ if (fs.existsSync(rundownPath)) {
   }
 }
 
-console.log("PASS: Notes tab lists pinned general notes above daily event notes, groups sample notes by person, stays read-only, and shows the intro once.");
+console.log("PASS: Notes tab lists pinned general notes above daily event notes, groups sample notes by person, stays read-only, hides Notes until opt-in, and shows the intro once.");

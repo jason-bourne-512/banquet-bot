@@ -54,8 +54,8 @@
     .picker input[type=date] { flex:1; min-width:0; }
   }
 </style>
-<script src="theme.js?v=1113a"></script>
-<script src="scripts/notes-lib.js?v=1121p"></script>
+<script src="theme.js?v=1121c"></script>
+<script src="scripts/notes-lib.js?v=1121q"></script>
 </head>
 <body>
 <main>
@@ -80,6 +80,7 @@
 </main>
 <script>
 (function () {
+  Notes.applyNotesTester();
   var dateEl = document.getElementById("nt-date");
   var dayEl = document.getElementById("nt-day");
   var list = document.getElementById("nt-list");
