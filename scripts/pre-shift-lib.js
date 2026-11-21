@@ -103,6 +103,29 @@
     questions.push({ who: who, q: q });
   }
 
+  var CUE_QUESTION = "Before service: are we serving strictly on the timeline, or waiting for a cue, and what cue, from who?";
+
+  function serviceCueFromEO(blob) {
+    var s = clean(blob);
+    if (!s) return { text: "", known: false };
+    var tl = s.match(/[^·]*serv(?:e|ing|ice)\s+strictly on(?: the)? timeline[^·]*/i)
+      || s.match(/[^·]*strictly on(?: the)? timeline[^·]*/i);
+    if (tl) return { text: clean(tl[0]), known: true };
+    var cue = s.match(/[^·]*wait(?:ing)? for (?:a |the )?cue from [A-Za-z][A-Za-z'-]*[^·]*/i)
+      || s.match(/[^·]*wait(?:ing)? for [A-Za-z][A-Za-z'-]*(?:'s)? cue[^·]*/i)
+      || s.match(/[^·]*(?:on|at)\s+[A-Za-z][A-Za-z'-]*(?:'s)? cue[^·]*/i);
+    if (cue) return { text: clean(cue[0]), known: true };
+    return { text: "", known: false };
+  }
+
+  function serviceCueScriptLine(blob) {
+    var found = serviceCueFromEO(blob);
+    if (found.known && found.text) {
+      return { text: "Service cue: " + found.text + ".", known: true };
+    }
+    return { text: "[ask] " + CUE_QUESTION, known: false };
+  }
+
   function briefingFor(meal) {
     var g = meal.group || "";
     var d = meal.date || "";
@@ -294,6 +317,8 @@
       if (cm) calls = clean(cm[0]);
     }
     say("Who calls courses", calls || "", "Who calls salad and entree?");
+    var cue = serviceCueFromEO(blob);
+    if (!cue.known) addQ(questions, asked, contact || "the contact", CUE_QUESTION);
 
     // Fire
     var fire = "";
@@ -546,7 +571,7 @@
       speak(lines, "Chime at 6:45 and open the doors. One hosted-bar plan puts a bar and one bartender inside Primrose C until 11:00. The diagram shows a bar in the hallway by Verbena A and also a bar along the Primrose C side wall. [ask] " + who + " which bar plan is live.", false);
       speak(lines, "Place cards: colored dot is the entree, star is a special meal. Tables are numbered. " + contact + " hands the captain a by-table meal list.");
       speak(lines, "Entree counts: 43 filets cooked medium, 21 sea bass, 5 chicken, 4 tofu. That is 73. One gluten-free guest is on filet and wants it medium rare, not medium. One guest is allergic to mushrooms and clams and is on chicken. Do not send that guest the tofu. It has mushroom risotto.");
-      speak(lines, "Salad is pre-set. Rolls and butter go with dinner. Check with " + contact + " before you fire the entrees. [ask] who calls each course.", false);
+      speak(lines, "Salad is pre-set. Rolls and butter go with dinner. Check with " + contact + " before you fire the entrees. [ask] who calls each course. " + serviceCueScriptLine(f.blob).text, false);
       speak(lines, "We pour the client's wine and coffee all night, including during speeches. There is no house wine. White wine should already be chilled from the morning delivery.");
       speak(lines, "Do not clear dessert plates. Dessert is Chocolate Decadence, which is already gluten free. Coffee and hot tea stay through speeches. [ask] when decaf goes out if it is not with the regular coffee.", false);
       speak(lines, "The event order books dinner from 7:00 to 11:00. The rundown card still says 7:00 to 9:00. [ask] which window is live.", false);
@@ -563,7 +588,7 @@
       speak(lines, "The meal is chef's choice plated lunch. The event order does not list courses, entrees, dessert, bread, or coffee. [ask] " + who + " for the actual menu, how many courses, and what is pre-set versus walked.", false);
       speak(lines, "[ask] how entree choices are marked, and whether there are allergies or dietary plates by table.", false);
       speak(lines, "No bar or wine is listed on the lunch event order. [ask] if this is water and tea only, and when coffee or decaf goes out.", false);
-      speak(lines, "[ask] who calls service at 12:20, and who calls any later course around the 12:30 welcome and the 12:55 awards. [ask] kitchen fire times, and whether dessert is pre-set or held until after 12:55.", false);
+      speak(lines, "[ask] who calls service at 12:20, and who calls any later course around the 12:30 welcome and the 12:55 awards. " + serviceCueScriptLine(f.blob).text + " [ask] kitchen fire times, and whether dessert is pre-set or held until after 12:55.", false);
       speak(lines, "House standard is serve left, clear right, unless " + who + " says otherwise. [ask] if there is a head table or stage tables first.", false);
       speak(lines, "[ask] any vendor, sponsor, or staff meals, and where they eat.", false);
       speak(lines, coffeeCartScriptLine(f.blob).text, false);
@@ -597,8 +622,9 @@
     if (f.prog) speak(lines, "Program: " + f.prog + ".");
     if (f.fire) speak(lines, f.fire + ".");
     else speak(lines, "Kitchen fire times: [ask].", false);
-    if (f.calls) speak(lines, f.calls + ".");
-    else speak(lines, "Who calls each course: [ask].", false);
+    var cueLine = serviceCueScriptLine(f.blob);
+    if (f.calls) speak(lines, f.calls + " " + cueLine.text, cueLine.known);
+    else speak(lines, "Who calls each course: [ask]. " + cueLine.text, false);
     if (f.coffee) speak(lines, f.coffee + ".");
     else speak(lines, "Coffee and decaf timing: [ask].", false);
     if (f.head) speak(lines, f.head + ".");
@@ -1182,6 +1208,8 @@
     publicText: publicText,
     extractFlags: extractFlags,
     buildPreShift: buildPreShift,
+    serviceCueFromEO: serviceCueFromEO,
+    CUE_QUESTION: CUE_QUESTION,
     collectPlated: collectPlated,
     OPENING_DUTIES: OPENING_DUTIES,
     CLOSING_DUTIES: CLOSING_DUTIES,

@@ -52,6 +52,10 @@ assert(!/\$\d/.test(pricedText), "prices must not appear in script");
 assert(!/[\u2014\u2013]/.test(pricedText), "em/en dashes must not appear");
 assert.ok(priced.script.some(function (l) { return /later slots/i.test(l.text); }), "generic script keeps later slots");
 assert.ok(!priced.questions.some(function (q) { return /section/i.test(q.q); }), "do not ask section assignments now");
+const pricedCue = priced.questions.find(function (q) { return /strictly on the timeline/i.test(q.q); });
+assert.ok(pricedCue, "generic plated meal still asks the contact about timeline vs cue");
+assert.equal(pricedCue.who, "the contact");
+assert.ok(priced.script.some(function (l) { return /\[ask\].*strictly on the timeline/i.test(l.text); }));
 
 // Collect from fixture as of Nov 20
 const meals = PreShift.collectPlated(helpers("2026-11-20"));
@@ -90,10 +94,22 @@ meals.forEach(function (m) {
   const duties = m.lines.find(function (l) { return l.label === "Named staffing / duties"; });
   assert.ok(duties && duties.later, m.group + " named staffing should be a later slot");
   m.questions.forEach(function (q) {
-    assert.equal(q.who, "Diana", "questions go to the event manager, got " + q.who + " for " + q.q);
+    const cueQ = /strictly on the timeline/i.test(q.q);
+    if (cueQ) {
+      const expect = /Emerson/i.test(m.group) ? "Lynn" : (/TSAE/i.test(m.group) ? "Steven" : q.who);
+      assert.equal(q.who, expect, "timeline-vs-cue question goes to the event contact, got " + q.who + " for " + m.group);
+    } else {
+      assert.equal(q.who, "Diana", "questions go to the event manager, got " + q.who + " for " + q.q);
+    }
     assert.ok(q.q && q.q.length > 5, "empty question");
     assert.ok(!/how are server sections assigned/i.test(q.q), "no section-assignment question");
+    assert(!/[\u2014\u2013]/.test(q.q), "no dashes in questions");
   });
+  const cueAsk = m.questions.find(function (q) { return /strictly on the timeline/i.test(q.q); });
+  assert.ok(cueAsk, m.group + " should ask the contact about timeline vs cue");
+  assert.match(cueAsk.q, /waiting for a cue/);
+  assert.match(cueAsk.q, /what cue, from who/);
+  assert.ok(m.script.some(function (l) { return /\[ask\].*strictly on the timeline/i.test(l.text) || /strictly on the timeline, or waiting for a cue/i.test(l.text); }), m.group + " spoken script needs the course-calling cue [ask]");
 });
 
 // Rich: known facts filled
@@ -167,6 +183,12 @@ if (fs.existsSync(rundownPath)) {
   assert.ok(ts, "live rundown should include TSAE from Dec 4");
   assert.ok(em.script.length && em.analysis.length && em.questions.length, "live Emerson is complete");
   assert.ok(ts.script.length && ts.analysis.length && ts.questions.length, "live TSAE is complete");
+  const emCue = em.questions.find(function (q) { return /strictly on the timeline/i.test(q.q); });
+  const tsCue = ts.questions.find(function (q) { return /strictly on the timeline/i.test(q.q); });
+  assert.ok(emCue && emCue.who === "Lynn", "live Emerson cue question goes to Lynn");
+  assert.ok(tsCue && tsCue.who === "Steven", "live TSAE cue question goes to Steven");
+  assert.ok(em.script.some(function (l) { return /\[ask\].*strictly on the timeline/i.test(l.text); }));
+  assert.ok(ts.script.some(function (l) { return /\[ask\].*strictly on the timeline/i.test(l.text); }));
   assert(!/\$\d/.test(allText(em) + allText(ts)), "no prices from live rundown");
   assert(!/cannot fail/i.test(allText(em)), "VIP pressure stays off the public script");
   assert.ok(em.packet && !em.packet.diagram.missing && ts.packet && !ts.packet.diagram.missing);
@@ -340,5 +362,37 @@ assert.equal(hit && hit.id, "b");
 assert.equal(PreShift.hitSection(persisted.sections, 0, 0), null);
 assert.ok(!/\$\d/.test(JSON.stringify(persisted.sections)));
 assert(!/[\u2014\u2013]/.test(JSON.stringify(persisted.sections)));
+
+
+// Timeline vs cue: ask the contact unless the event order already says
+assert.equal(PreShift.serviceCueFromEO("Serve strictly on the timeline.").known, true);
+assert.equal(PreShift.serviceCueFromEO("Wait for a cue from Alex before dropping entrees.").known, true);
+assert.equal(PreShift.serviceCueFromEO("Check with Lynn before firing entrees.").known, false);
+assert.equal(PreShift.serviceCueFromEO("Lunch service begins at 12:20 after a short announcement.").known, false);
+
+const alreadyCue = PreShift.buildPreShift({
+  group: "Cue Lunch",
+  tag: "Plated Lunch",
+  menu: "Plated Lunch",
+  contact: "Alex Rivera",
+  foot: { NOTE: "Wait for a cue from Alex before dropping entrees.", CONTACT: "Alex Rivera" },
+  counts: { gtd: "40" }
+});
+assert.ok(alreadyCue.script.some(function (l) { return /wait for a cue from Alex/i.test(l.text); }));
+assert.ok(!alreadyCue.script.some(function (l) { return /\[ask\].*strictly on the timeline/i.test(l.text); }), "do not [ask] when the event order already names the cue and who");
+assert.ok(!alreadyCue.questions.some(function (q) { return /strictly on the timeline/i.test(q.q); }));
+assert.equal(alreadyCue.contact, "Alex");
+
+const alreadyTime = PreShift.buildPreShift({
+  group: "Clock Lunch",
+  tag: "Plated Lunch",
+  menu: "Plated Lunch",
+  contact: "Pat Lee",
+  foot: { NOTE: "Serve strictly on the timeline.", CONTACT: "Pat Lee" },
+  counts: { gtd: "40" }
+});
+assert.ok(alreadyTime.script.some(function (l) { return /Service cue:.*strictly on the timeline/i.test(l.text); }));
+assert.ok(!alreadyTime.script.some(function (l) { return /\[ask\].*waiting for a cue/i.test(l.text); }), "do not [ask] when the event order already says strictly on the timeline");
+assert.ok(!alreadyTime.questions.some(function (q) { return /waiting for a cue/i.test(q.q); }));
 
 console.log("PASS: analysis, spoken scripts, later slots, questions for the manager, no prices or dashes. Meals:", meals.map(function (m) { return m.group; }).join(" | "));
