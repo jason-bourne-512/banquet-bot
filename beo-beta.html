@@ -102,26 +102,40 @@
       var date = sec.getAttribute("data-date");
       [].slice.call(sec.querySelectorAll(".event-card")).forEach(function (card) {
         var gEl = card.querySelector(".card-group");
-        var name = (gEl ? gEl.textContent : "") + " " + (card.getAttribute("data-post") || "");
+        var group = gEl ? gEl.textContent : "", post = card.getAttribute("data-post") || "";
+        var name = group + " " + post;
+        var cardEos = eoNumbers(card.textContent + " " + (card.getAttribute("data-post") || ""));
         var els = [card].concat([].slice.call(card.querySelectorAll("[data-upd]")));
         els.forEach(function (el) {
           var raw = el.getAttribute("data-upd"); if (!raw) return;
           raw.split(";;").forEach(function (u) {
             var p = u.split("|");
             if (p.length < 3) return;
-            (out[date] = out[date] || []).push({name: name, date: p[0].trim(), who: p[1].trim(), what: p.slice(2).join("|").trim()});
+            var what = p.slice(2).join("|").trim();
+            var own = eoNumbers(what);
+            (out[date] = out[date] || []).push({name: name, names: [group, group.split(/\s[\u2014\u2013-]\s/)[0], post], eos: own.length ? own : cardEos, date: p[0].trim(), who: p[1].trim(), what: what});
           });
         });
       });
     });
     return out;
   }
-  function matches(eo, u) {
-    var hay = " " + words(u.name).join(" ") + " ";
-    return [eo.org, eo.postAs].some(function (s) {
-      var t = words(s).filter(function (w) { return !/^(nov|dec|oct)\d{4}$/.test(w); });
-      return t.length && hay.indexOf(" " + t[0] + " ") > -1;
+  function eoNumbers(s) {
+    var out = [], re = /\bEO\s*#?\s*(\d{5,})/gi, m;
+    while ((m = re.exec(String(s || "")))) if (out.indexOf(m[1]) < 0) out.push(m[1]);
+    return out;
+  }
+  function norm(s) { return words(s).filter(function (w) { return !/^(nov|dec|oct)\d{4}$/.test(w); }).join(" "); }
+  // Which BEO an update belongs to: explicit EO number first, then exact organization or POST AS name.
+  // Anything that points at several BEOs, or none, returns null and stays in the red "other updates" block.
+  function assign(eos, u) {
+    var hit = eos.filter(function (eo) { return (u.eos || []).indexOf(String(eo.eo)) > -1; });
+    if (hit.length) return hit.length === 1 ? hit[0] : null;
+    var names = (u.names || []).map(norm).filter(Boolean);
+    hit = eos.filter(function (eo) {
+      return [eo.org, eo.postAs].some(function (s) { var t = norm(s); return t && names.indexOf(t) > -1; });
     });
+    return hit.length === 1 ? hit[0] : null;
   }
   function updLine(u) {
     return '<div class="upd">⚑ ' + esc("Updated " + shortDate(u.date) + " · " + u.who + ": " + u.what) + "</div>";
@@ -129,7 +143,7 @@
   function versionLines(eo) {
     var out = [], v = eo.versions || [];
     for (var i = 1; i < v.length; i++) {
-      out.push('<div class="upd">⚑ ' + esc("Revision " + (i + 1) + " of " + v.length + ": reprinted " + shortDate(v[i].printed) + " (replaces the " + shortDate(v[i - 1].printed) + " print)") + " <small>" + esc(v[i].source) + "</small></div>");
+      out.push('<div class="upd">⚑ ' + esc("Revision " + (i + 1) + " of " + v.length + ": reprinted " + shortDate(v[i].printed) + " (replaces the " + shortDate(v[i - 1].printed) + " print)") + " <small>" + esc(v[i].source) + "</small>" + (v[i].sameDayConflict ? " " + esc("Conflict: another copy printed the same day differs. Check both packets.") : "") + "</div>");
     }
     if (eo.revisedFlag && v.length < 2) out.push('<div class="upd">⚑ ' + esc("Marked REVISED on the event order, printed " + shortDate(eo.printed)) + "</div>");
     return out.join("");
@@ -155,9 +169,10 @@
     }
     status.hidden = true; list.hidden = false;
     var dayUpds = (updates && updates[date]) || [], used = {};
+    var assigned = dayUpds.map(function (u) { return assign(eos, u); });
     var html = eos.map(function (eo) {
       var key = date + "|" + eo.eo;
-      var mine = dayUpds.filter(function (u, i) { if (matches(eo, u)) { used[i] = 1; return true; } return false; });
+      var mine = dayUpds.filter(function (u, i) { if (assigned[i] === eo) { used[i] = 1; return true; } return false; });
       var pg = eo.pages.map(function (p, i) {
         return '<a href="beo-originals/' + esc(p) + '" target="_blank" rel="noopener"><img loading="lazy" src="beo-originals/' + esc(p) + '" alt="' + esc(eo.org + " BEO page " + (i + 1)) + '"></a>';
       }).join("");
@@ -195,6 +210,14 @@
       saveNotes(all); render();
     }
   });
+  // Sign-in, sign-out, or another tab switching people: rerender, and drop any notes on screen right away for non-Jason.
+  function onIdentity() {
+    if (!isJason()) [].slice.call(list.querySelectorAll(".beo-notes")).forEach(function (n) { n.innerHTML = "<h3>Notes</h3>" + notesHtml(""); });
+    render();
+  }
+  window.addEventListener("storage", function (e) { if (!e.key || e.key === "bb-hsm-who") onIdentity(); });
+  window.addEventListener("pageshow", onIdentity);
+  window.addEventListener("focus", onIdentity);
   dateEl.addEventListener("change", function () { setDate(dateEl.value); });
   document.getElementById("b-prev").addEventListener("click", function () { setDate(Notes.shiftISODate(dateEl.value, -1)); });
   document.getElementById("b-next").addEventListener("click", function () { setDate(Notes.shiftISODate(dateEl.value, 1)); });
