@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101820">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="icon" href="favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="robots" content="noindex,nofollow">
+<title>BEO (beta) — Banquet Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b1218; --card:#121c25; --line:#22313d; --text:#e6eef4; --muted:#8fa3b3; --sky:#8bd1ff; --red:#ff6b6b; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.45 Manrope, "Segoe UI", sans-serif; }
+  body::before { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background:radial-gradient(ellipse at 100% 0,#2a4f6a59,transparent 46%),radial-gradient(ellipse at 0 100%,#5a4f9a24,transparent 52%); }
+  body > * { position:relative; z-index:1; }
+  main { max-width:980px; margin:0 auto; padding:24px 18px 64px; }
+  h1 { font:600 32px/1 'Barlow Condensed', sans-serif; letter-spacing:.04em; text-transform:uppercase; margin:0 0 4px; }
+  h1 span { color:var(--sky); }
+  .sub { color:var(--muted); font-size:12.5px; margin-bottom:16px; }
+  .banner { background:#1a2833; border:1px solid #8bd1ff33; border-left:3px solid var(--sky); border-radius:8px; color:#cde8f8; font-size:12.5px; padding:9px 12px; margin-bottom:16px; }
+  .picker { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+  .picker button { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; width:36px; height:36px; font:700 16px/1 inherit; cursor:pointer; }
+  .picker button:hover { border-color:var(--sky); color:var(--sky); }
+  .picker input[type=date] { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:7px 10px; font:600 13px Manrope, sans-serif; color-scheme:dark; }
+  .picker .day { color:var(--sky); font:600 13px Manrope, sans-serif; letter-spacing:.04em; }
+  .status { color:var(--muted); padding:28px 8px; text-align:center; }
+  .status.err { color:#ff8a80; }
+  .beo { background:var(--card); border:1px solid var(--line); border-radius:12px; border-left:3px solid var(--sky); margin-bottom:22px; overflow:hidden; }
+  .beo-head { padding:12px 14px 10px; border-bottom:1px solid var(--line); }
+  .beo-title { font:600 17px/1.3 Manrope, sans-serif; color:#fff; }
+  .beo-meta { color:var(--muted); font-size:12px; margin-top:3px; }
+  .beo-pages { padding:12px 14px; display:flex; flex-direction:column; gap:10px; background:#0e161d; }
+  .beo-pages img { width:100%; height:auto; display:block; background:#fff; border-radius:4px; }
+  .beo-pages a { display:block; }
+  .beo-upd { padding:10px 14px; border-top:1px solid var(--line); }
+  .beo-upd h3, .beo-notes h3 { font:600 13px/1.2 'Barlow Condensed', sans-serif; letter-spacing:.1em; text-transform:uppercase; margin:0 0 6px; }
+  .beo-upd h3 { color:var(--red); }
+  .beo-notes h3 { color:var(--sky); }
+  .upd { color:var(--red); font-weight:600; font-size:13.5px; margin:3px 0; }
+  .upd small { font-weight:500; opacity:.85; }
+  .beo-notes { padding:10px 14px 14px; border-top:1px solid var(--line); }
+  .bn { padding:6px 0; border-top:1px solid #1a2730; }
+  .bn:first-of-type { border-top:0; }
+  .bn-time { color:var(--muted); font-size:11.5px; display:block; }
+  .bn-text { color:#d6e3ee; white-space:pre-wrap; }
+  .bn-del { background:none; border:0; color:var(--muted); cursor:pointer; font-size:11.5px; padding:0; margin-left:8px; }
+  .bn-del:hover { color:var(--red); }
+  .bn-empty { color:var(--muted); font-size:13px; }
+  .bn-form { display:flex; gap:8px; margin-top:8px; align-items:flex-start; }
+  .bn-form textarea { flex:1; min-height:54px; background:#0e161d; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font:13.5px Manrope, sans-serif; resize:vertical; }
+  .bn-form button { background:var(--sky); color:#0c141b; border:0; border-radius:8px; padding:8px 14px; font:700 13px Manrope, sans-serif; cursor:pointer; }
+  .other { margin-top:6px; }
+  @media (max-width:700px) { main { padding:16px 14px 48px; } h1 { font-size:28px; } .picker input[type=date] { flex:1; min-width:0; } }
+</style>
+<script src="theme.js?v=1121c"></script>
+<script src="scripts/notes-lib.js?v=1121q"></script>
+</head>
+<body>
+<main>
+  <h1>BEO <span>Beta</span></h1>
+  <p class="sub">The original BEO pages for the day, as received. Updates in red, notes underneath.</p>
+  <div class="banner">Beta, for testing. Originals load from this Mac only. Notes are saved in this browser on this computer, not shared.</div>
+  <div class="picker">
+    <button type="button" id="b-prev" aria-label="Previous day">‹</button>
+    <input id="b-date" type="date" aria-label="Choose a date">
+    <button type="button" id="b-next" aria-label="Next day">›</button>
+    <span class="day" id="b-day"></span>
+  </div>
+  <div id="b-status" class="status">Loading…</div>
+  <div id="b-list" hidden></div>
+</main>
+<script>
+(function () {
+  // Opening this page turns on the side-panel BEO link on this device (?beo=off turns it back off).
+  try {
+    var qf = new URLSearchParams(location.search).get("beo");
+    if (qf === "off") localStorage.removeItem("bb-beo-beta"); else localStorage.setItem("bb-beo-beta", "1");
+  } catch (e) {}
+  var NOTES_KEY = "bb-beo-notes-v1";
+  var dateEl = document.getElementById("b-date"), dayEl = document.getElementById("b-day");
+  var list = document.getElementById("b-list"), status = document.getElementById("b-status");
+  var index = null, updates = null, rundownOk = false;
+
+  function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+  function who() { try { return JSON.parse(localStorage.getItem("bb-hsm-who")); } catch (e) { return null; } }
+  function isJason() { var w = who(); return !!(w && w.name === "Jason"); }
+  function loadNotes() { try { return JSON.parse(localStorage.getItem(NOTES_KEY)) || {}; } catch (e) { return {}; } }
+  function saveNotes(o) { try { localStorage.setItem(NOTES_KEY, JSON.stringify(o)); } catch (e) {} }
+  function shortDate(iso) {
+    var m = /^(\d{4})-(\d\d)-(\d\d)$/.exec(iso || ""); if (!m) return iso || "";
+    return new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString("en-US", {month: "short", day: "numeric"});
+  }
+  function words(s) { return String(s || "").toLowerCase().replace(/[^a-z0-9 ]+/g, " ").split(/\s+/).filter(Boolean); }
+
+  // Red lines from the Rundown: every data-upd on the day's cards and rows ("YYYY-MM-DD|Who|What").
+  function collectUpdates(doc) {
+    var out = {};
+    [].slice.call(doc.querySelectorAll(".day-section")).forEach(function (sec) {
+      var date = sec.getAttribute("data-date");
+      [].slice.call(sec.querySelectorAll(".event-card")).forEach(function (card) {
+        var gEl = card.querySelector(".card-group");
+        var name = (gEl ? gEl.textContent : "") + " " + (card.getAttribute("data-post") || "");
+        var els = [card].concat([].slice.call(card.querySelectorAll("[data-upd]")));
+        els.forEach(function (el) {
+          var raw = el.getAttribute("data-upd"); if (!raw) return;
+          raw.split(";;").forEach(function (u) {
+            var p = u.split("|");
+            if (p.length < 3) return;
+            (out[date] = out[date] || []).push({name: name, date: p[0].trim(), who: p[1].trim(), what: p.slice(2).join("|").trim()});
+          });
+        });
+      });
+    });
+    return out;
+  }
+  function matches(eo, u) {
+    var hay = " " + words(u.name).join(" ") + " ";
+    return [eo.org, eo.postAs].some(function (s) {
+      var t = words(s).filter(function (w) { return !/^(nov|dec|oct)\d{4}$/.test(w); });
+      return t.length && hay.indexOf(" " + t[0] + " ") > -1;
+    });
+  }
+  function updLine(u) {
+    return '<div class="upd">⚑ ' + esc("Updated " + shortDate(u.date) + " · " + u.who + ": " + u.what) + "</div>";
+  }
+  function versionLines(eo) {
+    var out = [], v = eo.versions || [];
+    for (var i = 1; i < v.length; i++) {
+      out.push('<div class="upd">⚑ ' + esc("Revision " + (i + 1) + " of " + v.length + ": reprinted " + shortDate(v[i].printed) + " (replaces the " + shortDate(v[i - 1].printed) + " print)") + " <small>" + esc(v[i].source) + "</small></div>");
+    }
+    if (eo.revisedFlag && v.length < 2) out.push('<div class="upd">⚑ ' + esc("Marked REVISED on the event order, printed " + shortDate(eo.printed)) + "</div>");
+    return out.join("");
+  }
+  function notesHtml(key) {
+    if (!isJason()) return '<div class="bn-empty">Notes are Jason only in this beta. Sign in with your PIN to use them.</div>';
+    var items = loadNotes()[key] || [];
+    var body = items.length ? items.map(function (n, i) {
+      return '<div class="bn"><span class="bn-time">Jason · ' + esc(Notes.formatPinnedTime(n.at)) +
+        '<button type="button" class="bn-del" data-key="' + esc(key) + '" data-i="' + i + '">delete</button></span><div class="bn-text">' + esc(n.text) + "</div></div>";
+    }).join("") : '<div class="bn-empty">No notes yet.</div>';
+    return body + '<div class="bn-form"><textarea data-key="' + esc(key) + '" placeholder="Add a note under this BEO" aria-label="Add a note"></textarea><button type="button" class="bn-add" data-key="' + esc(key) + '">Add</button></div>';
+  }
+  function render() {
+    var date = dateEl.value;
+    dayEl.textContent = Notes.formatDayLabel(date);
+    if (!index) return;
+    var eos = (index.days || {})[date] || [];
+    if (!eos.length) {
+      list.hidden = true; status.hidden = false; status.className = "status";
+      status.textContent = "No BEO originals on this computer for this day. (Originals come from the packets in Downloads, window " + index.from + " to " + index.to + ".)";
+      return;
+    }
+    status.hidden = true; list.hidden = false;
+    var dayUpds = (updates && updates[date]) || [], used = {};
+    var html = eos.map(function (eo) {
+      var key = date + "|" + eo.eo;
+      var mine = dayUpds.filter(function (u, i) { if (matches(eo, u)) { used[i] = 1; return true; } return false; });
+      var pg = eo.pages.map(function (p, i) {
+        return '<a href="beo-originals/' + esc(p) + '" target="_blank" rel="noopener"><img loading="lazy" src="beo-originals/' + esc(p) + '" alt="' + esc(eo.org + " BEO page " + (i + 1)) + '"></a>';
+      }).join("");
+      var pagesNote = eo.pages.length < eo.expectedPages ? '<div class="upd">⚑ ' + esc("Only " + eo.pages.length + " of " + eo.expectedPages + " pages found in the packets") + "</div>" : "";
+      var all = versionLines(eo) + pagesNote + mine.map(updLine).join("");
+      return '<article class="beo"><div class="beo-head"><div class="beo-title">' + esc(eo.postAs || eo.org) + "</div>" +
+        '<div class="beo-meta">' + esc("EO " + eo.eo + " · " + eo.org + " · printed " + shortDate(eo.printed) + " · " + eo.pages.length + " page" + (eo.pages.length == 1 ? "" : "s")) + "</div></div>" +
+        '<div class="beo-pages">' + pg + "</div>" +
+        (all ? '<div class="beo-upd"><h3>Updates</h3>' + all + "</div>" : "") +
+        '<div class="beo-notes"><h3>Notes</h3>' + notesHtml(key) + "</div></article>";
+    }).join("");
+    var rest = dayUpds.filter(function (u, i) { return !used[i]; });
+    if (rest.length) html += '<div class="beo-upd other"><h3>Other updates this day (not matched to a BEO above)</h3>' + rest.map(function (u) { return updLine(u).replace("⚑ ", "⚑ " + u.name.replace(/\s+/g, " ").trim().slice(0, 60) + ": "); }).join("") + "</div>";
+    if (!rundownOk) html += '<div class="status err">Could not read the Rundown, so email updates are not shown.</div>';
+    list.innerHTML = html;
+  }
+  function setDate(iso, push) {
+    if (!Notes.isISODate(iso)) return;
+    dateEl.value = iso;
+    if (push !== false && location.search !== "?date=" + iso) history.replaceState(null, "", "beo-beta.html?date=" + iso);
+    render();
+  }
+  list.addEventListener("click", function (e) {
+    var t = e.target, key = t.getAttribute && t.getAttribute("data-key");
+    if (!key || !isJason()) return;
+    var all = loadNotes();
+    if (t.classList.contains("bn-add")) {
+      var ta = list.querySelector('textarea[data-key="' + key.replace(/"/g, "") + '"]');
+      var text = Notes.clean(ta ? ta.value : ""); if (!text) return;
+      (all[key] = all[key] || []).push({at: new Date().toISOString(), text: text});
+      saveNotes(all); render();
+    } else if (t.classList.contains("bn-del")) {
+      (all[key] || []).splice(+t.getAttribute("data-i"), 1);
+      if (!(all[key] || []).length) delete all[key];
+      saveNotes(all); render();
+    }
+  });
+  dateEl.addEventListener("change", function () { setDate(dateEl.value); });
+  document.getElementById("b-prev").addEventListener("click", function () { setDate(Notes.shiftISODate(dateEl.value, -1)); });
+  document.getElementById("b-next").addEventListener("click", function () { setDate(Notes.shiftISODate(dateEl.value, 1)); });
+  var q = new URLSearchParams(location.search).get("date");
+  setDate(Notes.isISODate(q) ? q : Notes.todayISO(), false);
+
+  Promise.all([
+    fetch("beo-originals/index.json", {cache: "no-cache"}).then(function (r) { if (!r.ok) throw new Error("none"); return r.json(); }),
+    fetch("rundown.html", {cache: "no-cache"}).then(function (r) { if (!r.ok) throw new Error("rd"); return r.text(); }).then(function (h) {
+      updates = collectUpdates(new DOMParser().parseFromString(h, "text/html")); rundownOk = true;
+    }).catch(function () {})
+  ]).then(function (res) { index = res[0]; render(); }).catch(function () {
+    status.className = "status err";
+    status.textContent = "No BEO originals on this computer. Run: node scripts/build-beo-originals.js, then open this page from node scripts/serve-beo-beta.js (http://127.0.0.1:8765/beo-beta.html).";
+  });
+})();
+</script>
+</body>
+</html>

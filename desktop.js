@@ -159,6 +159,8 @@
   function who() { try { return JSON.parse(get(WHO)); } catch (e) { return null; } }
   var NOTES_TESTER = "bb-notes-tester";
   function notesTester() { return get(NOTES_TESTER) === "1"; }
+  // BEO beta link (Jason only): hidden until this device opens beo-beta.html. ?beo=off there turns it off.
+  function beoBeta() { return get("bb-beo-beta") === "1"; }
   function applyNotesTesterFlag() {
     try {
       var q = new URLSearchParams(location.search).get("notes");
@@ -425,6 +427,7 @@
       (notesTester() ? '<a href="notes.html" class="' + (cur == "notes.html" ? "on" : "") + '"><i>✍</i>Notes</a>' : "") +
       (w.name == "Jason" ? '<div class="lbl">Private</div><a href="usage.html" class="' + (cur == "usage.html" ? "on" : "") + '"><i>◔</i>Usage</a>' +
         '<a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' +
+        (beoBeta() ? '<a href="beo-beta.html" class="' + (cur == "beo-beta.html" ? "on" : "") + '"><i>❐</i>BEO<span class="bbd-beta">BETA</span></a>' : "") +
         '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' +   // Print Signs: Jason and Hector only
         '<a href="captain-report.html" class="' + (cur == "captain-report.html" ? "on" : "") + '"><i>✓</i>Captain Report</a>' :   // Captain Report: Jason only
        w.name == "Hector" ? '<div class="lbl">Tools</div><a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' +

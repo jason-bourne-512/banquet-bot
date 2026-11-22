@@ -30,3 +30,14 @@ repo ever moves).
 
 `npm install` in this directory (cheerio, luxon) — separate from and unrelated
 to the site itself, which has no build step.
+
+## BEO beta tab (local only)
+
+`beo-beta.html` shows the day's original BEO pages with red updates and notes under each. The originals are company documents
+and are never committed: `build-beo-originals.js` reads the BEO packet PDFs in `~/Downloads`, renders the newest print of each
+event order into `beo-originals/` (gitignored), and `serve-beo-beta.js` serves the folder on 127.0.0.1:8765 only.
+
+```bash
+node scripts/build-beo-originals.js      # window: 7 days back to 21 days out (--from / --to / --src to change)
+node scripts/serve-beo-beta.js           # http://127.0.0.1:8765/beo-beta.html
+```
