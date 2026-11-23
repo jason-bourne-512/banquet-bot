@@ -128,12 +128,47 @@
     var local = storageBackend(opts.storage, opts.key);
     var api = opts.fetch ? apiBackend(opts.fetch, opts.base) : null;
     var mode = "local", ready = null;
+    var delKey = (opts.key || LS_KEY) + "-deleted";
+    // Deletes made while the server is unreachable: ids kept here until they are replayed to the server.
+    function readTombs() {
+      var t = {};
+      try { t = JSON.parse(opts.storage.getItem(delKey)) || {}; } catch (e) {}
+      return {notes: Array.isArray(t.notes) ? t.notes.filter(idOk) : [], highlights: Array.isArray(t.highlights) ? t.highlights.filter(idOk) : []};
+    }
+    function writeTombs(t) {
+      try {
+        if (!t.notes.length && !t.highlights.length) opts.storage.removeItem(delKey);
+        else opts.storage.setItem(delKey, JSON.stringify(t));
+      } catch (e) {}
+    }
+    function addTomb(kind, id) {
+      var t = readTombs();
+      if (t[kind].indexOf(id) < 0) t[kind].push(id);
+      writeTombs(t);
+    }
+    function hideTombs(s) {
+      var t = readTombs();
+      return {v: 1, notes: s.notes.filter(function (n) { return t.notes.indexOf(n.id) < 0; }), highlights: s.highlights.filter(function (h) { return t.highlights.indexOf(h.id) < 0; })};
+    }
+    function replayTombs() {
+      var t = readTombs(), jobs = [];
+      t.notes.forEach(function (id) { jobs.push({kind: "notes", id: id, run: api.removeNote(id)}); });
+      t.highlights.forEach(function (id) { jobs.push({kind: "highlights", id: id, run: api.removeHighlight(id)}); });
+      return Promise.all(jobs.map(function (j) {
+        return j.run.then(function () { return true; }, function (e) { return !netFail(e); }).then(function (done) { return {job: j, done: done}; });
+      })).then(function (rs) {
+        var cur = readTombs();
+        rs.forEach(function (r) { if (r.done) cur[r.job.kind] = cur[r.job.kind].filter(function (x) { return x !== r.job.id; }); });
+        writeTombs(cur);
+      });
+    }
     function netFail(e) { return !(e && e.http); }
     function pick() {
       if (!api) return Promise.resolve(local);
       return api.state().then(function () {
         mode = "server";
-        return local.state().then(function (ls) {
+        return replayTombs().then(function () { return local.state(); }).then(function (ls) {
+          ls = hideTombs(ls);
           if (!ls.notes.length && !ls.highlights.length) return api;
           return api.merge(ls).then(function () { try { opts.storage.removeItem(opts.key || LS_KEY); } catch (e) {} return api; }, function () { return api; });
         });
@@ -141,15 +176,17 @@
     }
     function be() { if (!ready) ready = pick(); return ready; }
     function dropToLocal() { mode = "local"; ready = Promise.resolve(local); return local; }
-    function viaOp(name, arg) {
+    function viaOp(name, arg, tombKind) {
+      function viaLocal() { return local[name](arg).then(function (r) { if (tombKind) addTomb(tombKind, arg); return r; }); }
       return be().then(function (b) {
-        return b[name](arg).catch(function (e) { if (b === api && netFail(e)) return dropToLocal()[name](arg); throw e; });
+        if (b !== api) return viaLocal();
+        return b[name](arg).catch(function (e) { if (netFail(e)) { dropToLocal(); return viaLocal(); } throw e; });
       });
     }
     function stateFor(date) {
       return be().then(function (b) {
         return b.state().catch(function (e) { if (b === api && netFail(e)) return dropToLocal().state(); throw e; });
-      }).then(function (s) { return forDate(s, date); });
+      }).then(function (s) { return forDate(hideTombs(s), date); });
     }
     return {
       live: true,
@@ -158,12 +195,12 @@
       listNotes: function (date) { return stateFor(date).then(function (s) { return s.notes; }); },
       listHighlights: function (date) { return stateFor(date).then(function (s) { return s.highlights; }); },
       addNote: function (o) { try { Notes.beoNoteDoc(o); } catch (e) { return Promise.reject(e); } return viaOp("addNote", o); },
-      deleteNote: function (id) { return id ? viaOp("removeNote", id) : Promise.reject(new Error("No note.")); },
+      deleteNote: function (id) { return id ? viaOp("removeNote", id, "notes") : Promise.reject(new Error("No note.")); },
       addHighlight: function (o) {
         try { Notes.highlightDoc(Object.assign({}, o, {slot: Number(o.slot) >= 1 ? o.slot : 1})); } catch (e) { return Promise.reject(e); }
         return viaOp("addHighlight", o);
       },
-      deleteHighlight: function (id) { return id ? viaOp("removeHighlight", id) : Promise.reject(new Error("No highlight.")); }
+      deleteHighlight: function (id) { return id ? viaOp("removeHighlight", id, "highlights") : Promise.reject(new Error("No highlight.")); }
     };
   }
 

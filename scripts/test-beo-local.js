@@ -135,6 +135,30 @@ const json = (r) => JSON.parse(r.text);
   }
   assert.equal((await req(port, "GET", "/%zz")).status, 400);
 
+  // case-insensitive deny list (macOS file system is case-insensitive)
+  fs.writeFileSync(path.join(tmp, "beo-local-state.json"), "PRIVATE-STATE");
+  for (const bad of ["/BEO-LOCAL-STATE.JSON", "/Beo-Local-State.json", "/FIREBASE-CONFIG.JS", "/.GIT/config", "/Node_Modules/x.js", "/DATA/r.json", "/%2eGIT/config"]) {
+    const r = await req(port, "GET", bad);
+    assert.ok(r.status === 403 || r.status === 404, bad + " refused, got " + r.status);
+    assert.doesNotMatch(r.text, /PRIVATE-STATE|secret/);
+  }
+  fs.rmSync(path.join(tmp, "beo-local-state.json"));
+  // symlinks cannot escape the root or reach private files
+  fs.symlinkSync(path.join(path.dirname(tmp), path.basename(tmp) + "-outside.txt"), path.join(tmp, "escape.txt"));
+  fs.symlinkSync(path.join(tmp, "firebase-config.js"), path.join(tmp, "cfg.txt"));
+  fs.symlinkSync(path.join(tmp, ".git"), path.join(tmp, "gitlink"));
+  fs.symlinkSync(path.dirname(tmp), path.join(tmp, "up"));
+  for (const bad of ["/escape.txt", "/cfg.txt", "/gitlink/config", "/up/" + path.basename(tmp) + "-outside.txt"]) {
+    const r = await req(port, "GET", bad);
+    assert.equal(r.status, 403, bad + " refused, got " + r.status);
+    assert.doesNotMatch(r.text, /secret|outside|^k$/);
+  }
+  // Host check covers static files too (DNS rebinding)
+  assert.equal((await req(port, "GET", "/page.html", null, {Host: "evil.example"})).status, 403, "static: wrong Host refused");
+  assert.equal((await req(port, "GET", "/beo-originals/p.png", null, {Host: "evil.example:" + port})).status, 403, "originals: wrong Host refused");
+  assert.equal((await req(port, "GET", "/page.html", null, {Host: "localhost:" + port})).status, 200);
+  assert.equal((await req(port, "GET", "/page.html", null, {Host: "127.0.0.1"})).status, 403, "Host must carry the port");
+
   let r = await req(port, "GET", "/api/beo/state");
   assert.deepEqual(json(r), Store.emptyState(), "empty to start, no file yet");
   assert.equal(fs.existsSync(stateFile), false);
@@ -188,6 +212,43 @@ const json = (r) => JSON.parse(r.text);
   await live.deleteHighlight(hlId);
   assert.equal((await live.listHighlights("2026-11-18")).length, 0);
   assert.equal((await req(port, "DELETE", "/api/beo/notes/" + noteId)).status, 200, "deleting twice is fine");
+
+  // deletes made while the server is down are replayed on reconnect (tombstones)
+  const tsrv = memStorage();
+  const sn = json(await req(port, "POST", "/api/beo/notes", Object.assign({text: "keep until deleted offline"}, ident))).item;
+  const sh = json(await req(port, "POST", "/api/beo/highlights", Object.assign({}, ident, box))).item;
+  const failFetch = () => Promise.reject(new TypeError("fetch failed"));
+  let up = true;
+  const flaky = (url, o) => up ? viaFetch(url, o) : failFetch();
+  const t1 = Store.createStore({fetch: flaky, storage: tsrv});
+  assert.equal(await t1.ready(), "server");
+  up = false;
+  await t1.deleteNote(sn.id); await t1.deleteHighlight(sh.id);
+  assert.equal(t1.mode(), "local", "dropped to local when server went down");
+  assert.ok(tsrv.getItem("bb-beo-local-v1-deleted"), "tombstones recorded");
+  assert.ok(!(await t1.listNotes("2026-11-18")).some((n) => n.id === sn.id), "hidden while down");
+  // reload while the server is still down: still hidden
+  const t2 = Store.createStore({fetch: flaky, storage: tsrv});
+  assert.equal(await t2.ready(), "local");
+  assert.ok(!(await t2.listNotes("2026-11-18")).some((n) => n.id === sn.id));
+  assert.ok(!(await t2.listHighlights("2026-11-18")).some((h) => h.id === sh.id));
+  assert.ok(json(await req(port, "GET", "/api/beo/state")).notes.some((n) => n.id === sn.id), "server still has it until replay");
+  // server back: replay, then gone from the server for good
+  up = true;
+  const t3 = Store.createStore({fetch: flaky, storage: tsrv});
+  assert.equal(await t3.ready(), "server");
+  assert.ok(!(await t3.listNotes("2026-11-18")).some((n) => n.id === sn.id), "note does not come back after reload");
+  assert.ok(!(await t3.listHighlights("2026-11-18")).some((h) => h.id === sh.id), "highlight does not come back after reload");
+  const after = json(await req(port, "GET", "/api/beo/state"));
+  assert.ok(!after.notes.some((n) => n.id === sn.id) && !after.highlights.some((h) => h.id === sh.id), "server copy deleted by replay");
+  assert.equal(tsrv.getItem("bb-beo-local-v1-deleted"), null, "tombstones cleared after replay");
+  // tombstone stays if the server is only half back (replay fails on network error)
+  up = false;
+  const t4 = Store.createStore({fetch: flaky, storage: tsrv});
+  await t4.ready();
+  const extra = await t4.addNote(Object.assign({text: "x"}, ident));
+  await t4.deleteNote(extra.id);
+  assert.ok(JSON.parse(tsrv.getItem("bb-beo-local-v1-deleted")).notes.indexOf(extra.id) > -1, "pending deletion kept while down");
 
   await new Promise((r) => real.close(r));
   fs.rmSync(tmp, {recursive: true, force: true});

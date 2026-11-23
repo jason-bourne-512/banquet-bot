@@ -9,12 +9,14 @@ const Store = require("./beo-local-store.js");
 
 const TYPES = {".html": "text/html; charset=utf-8", ".js": "text/javascript", ".json": "application/json", ".css": "text/css",
   ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".pdf": "application/pdf", ".woff2": "font/woff2"};
-const BLOCKED = /(^|\/)(\.[^/]*|node_modules|data|beo-local-state[^/]*|firebase-config\.js|firestore\.rules(\.local)?)(\/|$)/;
+const BLOCKED = /(^|\/)(\.[^/]*|node_modules|data|beo-local-state[^/]*|firebase-config\.js|firestore\.rules(\.local)?)(\/|$)/i;
 const MAX_BODY = Store.MAX_BYTES + 4096;
 
 function createServer(opts) {
   opts = opts || {};
   const root = path.resolve(opts.root || path.join(__dirname, ".."));
+  let realRoot = root;
+  try { realRoot = fs.realpathSync(root); } catch (e) {}
   const stateFile = opts.stateFile || path.join(root, "beo-local-state.json");
   const port = opts.port || 8765;
 
@@ -35,7 +37,7 @@ function createServer(opts) {
   }
   function hostOk(req) {
     const h = String(req.headers.host || "");
-    return h === "127.0.0.1:" + port || h === "localhost:" + port || h === "127.0.0.1" || h === "localhost";
+    return h.toLowerCase() === "127.0.0.1:" + port || h.toLowerCase() === "localhost:" + port;
   }
   function originOk(req) {
     const o = req.headers.origin;
@@ -78,16 +80,24 @@ function createServer(opts) {
   return http.createServer((req, res) => {
     let p;
     try { p = decodeURIComponent(new URL(req.url, "http://x").pathname); } catch (e) { res.writeHead(400); return res.end("bad request"); }
+    // Host check on every request (static files too) so DNS rebinding cannot read anything.
+    if (!hostOk(req)) { res.writeHead(403); return res.end("no"); }
     if (p.startsWith("/api/")) return api(req, res, p);
     if (req.method !== "GET" && req.method !== "HEAD") { res.writeHead(405); return res.end("no"); }
     if (p.endsWith("/")) p += "index.html";
     if (p.indexOf("\0") > -1) { res.writeHead(400); return res.end("bad request"); }
     const file = path.join(root, p);
-    if (!file.startsWith(root + path.sep) || BLOCKED.test(p)) { res.writeHead(403); return res.end("no"); }
-    fs.readFile(file, (err, buf) => {
-      if (err) { res.writeHead(404); return res.end("not found"); }
-      res.writeHead(200, {"Content-Type": TYPES[path.extname(file)] || "application/octet-stream", "Cache-Control": "no-cache"});
-      res.end(buf);
+    if (!file.startsWith(root + path.sep) || BLOCKED.test(p.toLowerCase())) { res.writeHead(403); return res.end("no"); }
+    // Follow symlinks, then require the real file to be inside the real root and not a private name.
+    fs.realpath(file, (rerr, real) => {
+      if (rerr) { res.writeHead(404); return res.end("not found"); }
+      const rel = path.relative(realRoot, real);
+      if (!rel || rel.startsWith("..") || path.isAbsolute(rel) || BLOCKED.test("/" + rel.split(path.sep).join("/").toLowerCase())) { res.writeHead(403); return res.end("no"); }
+      fs.readFile(real, (err, buf) => {
+        if (err) { res.writeHead(404); return res.end("not found"); }
+        res.writeHead(200, {"Content-Type": TYPES[path.extname(real).toLowerCase()] || "application/octet-stream", "Cache-Control": "no-cache"});
+        res.end(buf);
+      });
     });
   });
 }
