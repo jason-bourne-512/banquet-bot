@@ -205,8 +205,8 @@
     };
   }
 
-  // Old browser-only notes ({"date|eo": [{at, text}]}) as BEO note inputs, matched to the index. The page adds them once.
-  function legacyNotes(storage, index) {
+  // Old browser-only notes ({"date|eo": [{at, text}]}) matched to the index, each as {key, i, input}: key and i say where it sits in the old data.
+  function legacyItems(storage, index) {
     var raw, out = [];
     try { raw = JSON.parse(storage.getItem("bb-beo-notes-v1")); } catch (e) { return out; }
     if (!raw || typeof raw !== "object") return out;
@@ -214,15 +214,33 @@
       var p = key.split("|"), list = ((index && index.days) || {})[p[0]] || [];
       var eo = list.filter(function (e) { return String(e.eo) === p[1]; })[0];
       if (!eo || !Array.isArray(raw[key])) return;
-      raw[key].forEach(function (n) {
+      raw[key].forEach(function (n, i) {
         if (!n || typeof n.text !== "string") return;
-        var o = Notes.beoIdentity(p[0], eo); o.text = n.text; o.createdAt = n.at; out.push(o);
+        var o = Notes.beoIdentity(p[0], eo); o.text = n.text; o.createdAt = n.at; out.push({key: key, i: i, input: o});
       });
     });
     return out;
   }
+  function legacyNotes(storage, index) { return legacyItems(storage, index).map(function (it) { return it.input; }); }
+
+  // Drop the notes that saved ({key, i} from legacyItems) from the old key so a later run never adds them twice. Notes that did not save or
+  // match stay under the old key; the key goes away once nothing is left.
+  function legacySettle(storage, saved) {
+    var raw;
+    try { raw = JSON.parse(storage.getItem("bb-beo-notes-v1")); } catch (e) { return; }
+    if (!raw || typeof raw !== "object") return;
+    var gone = {};
+    saved.forEach(function (it) { (gone[it.key] = gone[it.key] || {})[it.i] = true; });
+    var left = {}, any = false;
+    Object.keys(raw).forEach(function (key) {
+      if (!Array.isArray(raw[key])) return;
+      var keep = raw[key].filter(function (n, i) { return !(gone[key] && gone[key][i]); });
+      if (keep.length) { left[key] = keep; any = true; }
+    });
+    if (any) storage.setItem("bb-beo-notes-v1", JSON.stringify(left)); else storage.removeItem("bb-beo-notes-v1");
+  }
 
   return {LS_KEY: LS_KEY, API: API, MAX_BYTES: MAX_BYTES, MAX_NOTES: MAX_NOTES, emptyState: emptyState, validateState: validateState,
     addNote: addNote, deleteNote: deleteNote, addHighlight: addHighlight, deleteHighlight: deleteHighlight, mergeState: mergeState, forDate: forDate,
-    stateBackend: stateBackend, storageBackend: storageBackend, apiBackend: apiBackend, createStore: createStore, legacyNotes: legacyNotes, idOk: idOk};
+    stateBackend: stateBackend, storageBackend: storageBackend, apiBackend: apiBackend, createStore: createStore, legacyNotes: legacyNotes, legacyItems: legacyItems, legacySettle: legacySettle, idOk: idOk};
 });

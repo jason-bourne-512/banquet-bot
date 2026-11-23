@@ -342,20 +342,18 @@
     });
   });
 
-  // Carry the old browser-only notes (bb-beo-notes-v1) into the store once. The old key is only removed after every note saved.
+  // Carry the old browser-only notes (bb-beo-notes-v1) into the store once. Each note that saves is removed from the old key right away,
+  // so a reload never adds it twice; notes that could not save or match stay behind.
   function migrateLegacy() {
-    var list = BeoLocal.legacyNotes(localStorage, index);
-    var left = null;
-    try { left = localStorage.getItem("bb-beo-notes-v1"); } catch (e) {}
-    if (!left || !index) return Promise.resolve();
-    var ok = true, chain = Promise.resolve();
-    list.forEach(function (o) { chain = chain.then(function () { return store.addNote(o); }).catch(function () { ok = false; }); });
+    if (!index) return Promise.resolve();
+    var items = BeoLocal.legacyItems(localStorage, index), saved = [], chain = Promise.resolve();
+    if (!items.length) return Promise.resolve();
+    items.forEach(function (it) {
+      chain = chain.then(function () { return store.addNote(it.input); }).then(function () { saved.push(it); }, function () {});
+    });
     return chain.then(function () {
-      if (!ok) return;
-      try {
-        var raw = JSON.parse(left), unmatched = Object.keys(raw).some(function (k) { var p = k.split("|"); return (raw[k] || []).length && !findEo(p[0], p[1]); });
-        if (!unmatched) { localStorage.removeItem("bb-beo-notes-v1"); }
-      } catch (e) {}
+      try { BeoLocal.legacySettle(localStorage, saved); } catch (e) {}
+      if (!saved.length) return;
       loadedDate = null; return loadDay();
     });
   }

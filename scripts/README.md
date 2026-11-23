@@ -38,7 +38,7 @@ highlight, tap a highlight to remove it). It is Mac-only:
 
 - The side-panel BEO link (Jason's Private block) shows only when Banquet Bot is opened from `127.0.0.1` or `localhost`. It never appears on the live site, and visiting the page there does not turn it on. Off localhost the page just says it only works on the Mac.
 - The originals are company documents and are never committed: `build-beo-originals.js` reads the BEO packet PDFs in `~/Downloads` and renders the newest print of each event order into `beo-originals/` (gitignored).
-- Notes and highlights save through the local server into `beo-local-state.json` at the repo root (gitignored, written atomically, never served). They survive reloads and are shared by every browser on this Mac. If the server is not running, the page saves them in that browser's localStorage (`bb-beo-local-v1`) and merges them into the file the next time the server is up. Old `bb-beo-notes-v1` notes are copied over once, and the old key is removed only after they all saved.
+- Notes and highlights save through the local server into `beo-local-state.json` at the repo root (gitignored, written atomically, never served). They survive reloads and are shared by every browser on this Mac. If the server is not running, the page saves them in that browser's localStorage (`bb-beo-local-v1`) and merges them into the file the next time the server is up. Old `bb-beo-notes-v1` notes are copied over once, and each one is removed from the old key as soon as it saves, so a reload never adds it twice.
 - No Firebase and no Google sign-in is involved.
 
 ```bash

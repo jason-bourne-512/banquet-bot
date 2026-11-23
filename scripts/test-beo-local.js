@@ -104,6 +104,24 @@ const json = (r) => JSON.parse(r.text);
   assert.equal(mig[0].printed, "2026-11-16");
   assert.equal(old.getItem("bb-beo-notes-v1") !== null, true, "legacy key is never deleted by the helper");
 
+  // Two migration attempts must not duplicate notes, even when an older note is outside the index window.
+  const idx = {days: {"2026-11-18": [eoRec]}};
+  const mst = memStorage(), mstore = Store.createStore({storage: mst});
+  old.setItem("bb-beo-notes-v1", JSON.stringify({"2026-11-18|339574": [{at: "2026-11-17T09:00:00.000Z", text: "old note"}], "2026-11-01|9": [{at: "x", text: "outside window"}]}));
+  async function migrateOnce() {
+    const items = Store.legacyItems(old, idx), saved = [];
+    for (const it of items) { await mstore.addNote(it.input); saved.push(it); }
+    Store.legacySettle(old, saved);
+  }
+  await migrateOnce(); await migrateOnce();
+  assert.equal((await mstore.listNotes("2026-11-18")).length, 1, "migrated note is not duplicated by a second attempt");
+  assert.deepEqual(JSON.parse(old.getItem("bb-beo-notes-v1")), {"2026-11-01|9": [{at: "x", text: "outside window"}]}, "only the unmigrated note stays under the old key");
+  Store.legacySettle(old, []);
+  assert.ok(old.getItem("bb-beo-notes-v1"), "nothing saved, nothing removed");
+  old.setItem("bb-beo-notes-v1", JSON.stringify({"2026-11-18|339574": [{at: "a", text: "only"}]}));
+  Store.legacySettle(old, Store.legacyItems(old, idx));
+  assert.equal(old.getItem("bb-beo-notes-v1"), null, "key removed once every note moved");
+
   // ---- server ----
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "beo-srv-"));
   fs.mkdirSync(path.join(tmp, "beo-originals"));

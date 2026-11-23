@@ -238,7 +238,7 @@ assert.match(home, /destination\.notes\[hidden\]/);
 assert.match(page, /Notes\.applyNotesTester\(/);
 const theme = fs.readFileSync(path.join(__dirname, "..", "theme.js"), "utf8");
 assert.match(theme, /bb-notes-tester/);
-assert.match(theme, /desktop\.js\?v=1121c/);
+assert.match(theme, /desktop\.js\?v=1123a/);
 
 // ---- Firebase config, Auth, App Check ----
 assert.equal(Notes.firebaseConfigReady(null), false);

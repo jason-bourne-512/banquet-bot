@@ -243,7 +243,7 @@ if (WHO.name === "Jason" && window.innerWidth < 1000) {
   throw new Error("desktop only");
 }
 // Leads (Jason, Hector) keep the desktop sidebar on this page. It doesn't load theme.js, so the desktop shell is loaded here.
-if (WHO.name === "Jason" || WHO.name === "Hector") { const ds = document.createElement("script"); ds.src = "desktop.js?v=1121c"; ds.defer = true; document.head.appendChild(ds); }
+if (WHO.name === "Jason" || WHO.name === "Hector") { const ds = document.createElement("script"); ds.src = "desktop.js?v=1123a"; ds.defer = true; document.head.appendChild(ds); }
 const LEADV = WHO.name === "Jason" || WHO.name === "Hector";   // Jason + Hector build the week; servers only send availability
 document.getElementById("stage").textContent = TESTERS[WHO.name];
 if (!TESTERS[WHO.name]) document.getElementById("stage").style.display = "none";
