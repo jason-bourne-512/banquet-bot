@@ -209,12 +209,37 @@
     };
   }
 
-  // Stable id for a migrated note: the same old note always gets the same id, whatever has been removed around it.
+  // Pure-JS SHA-256 (hex) so the id works in the browser and Node without async crypto.
+  var SHA_K = [0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  function sha256Hex(str) {
+    var bytes = unescape(encodeURIComponent(str)), len = bytes.length, w = [], i, j;
+    for (i = 0; i < len; i++) w[i >> 2] |= bytes.charCodeAt(i) << (24 - (i % 4) * 8);
+    w[len >> 2] |= 0x80 << (24 - (len % 4) * 8);
+    var words = (((len + 8) >> 6) + 1) * 16;
+    for (i = 0; i < words; i++) if (!w[i]) w[i] = 0;
+    w[words - 1] = len * 8; w[words - 2] = Math.floor(len / 536870912);
+    var H = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+    function rr(x, n) { return (x >>> n) | (x << (32 - n)); }
+    for (var off = 0; off < words; off += 16) {
+      var m = w.slice(off, off + 16), a = H.slice();
+      for (j = 16; j < 64; j++) {
+        var s0 = rr(m[j - 15], 7) ^ rr(m[j - 15], 18) ^ (m[j - 15] >>> 3), s1 = rr(m[j - 2], 17) ^ rr(m[j - 2], 19) ^ (m[j - 2] >>> 10);
+        m[j] = (m[j - 16] + s0 + m[j - 7] + s1) | 0;
+      }
+      for (j = 0; j < 64; j++) {
+        var t1 = (a[7] + (rr(a[4], 6) ^ rr(a[4], 11) ^ rr(a[4], 25)) + ((a[4] & a[5]) ^ (~a[4] & a[6])) + SHA_K[j] + m[j]) | 0;
+        var t2 = ((rr(a[0], 2) ^ rr(a[0], 13) ^ rr(a[0], 22)) + ((a[0] & a[1]) ^ (a[0] & a[2]) ^ (a[1] & a[2]))) | 0;
+        a = [(t1 + t2) | 0, a[0], a[1], a[2], (a[3] + t1) | 0, a[4], a[5], a[6]];
+      }
+      for (j = 0; j < 8; j++) H[j] = (H[j] + a[j]) | 0;
+    }
+    return H.map(function (x) { return ("00000000" + (x >>> 0).toString(16)).slice(-8); }).join("");
+  }
+  // Stable id for a migrated note: sha256 of the full key, timestamp and exact text (as JSON, so no field bleeds into another). The same old
+  // note always gets the same id and different notes never share one. Identical duplicates get a _2, _3 ... suffix.
   function legacyId(key, n, seen) {
-    var base = key + "|" + n.at + "|" + n.text, h = 5381;
-    for (var k = 0; k < base.length; k++) h = ((h * 33) ^ base.charCodeAt(k)) >>> 0;
-    var c = seen[base] = (seen[base] || 0) + 1;
-    return "lg_" + h.toString(36) + "_" + base.length.toString(36) + (c > 1 ? "_" + c : "");
+    var base = JSON.stringify([key, n.at, n.text]), c = seen[base] = (seen[base] || 0) + 1;
+    return "lg_" + sha256Hex(base) + (c > 1 ? "_" + c : "");
   }
   // Old browser-only notes ({"date|eo": [{at, text}]}) matched to the index, each as {key, i, input}: key and i say where it sits in the old data.
   function legacyItems(storage, index) {

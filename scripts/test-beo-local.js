@@ -145,8 +145,28 @@ const json = (r) => JSON.parse(r.text);
   await migrateStall(false);
   assert.equal((await store2.listNotes("2026-11-18")).length, 2, "same legacy id is not inserted twice");
 
+  // Two notes with the same key and timestamp whose old short hash collided ("B`" and "CA"): each keeps its own id and settling one keeps the other.
+  const old3 = memStorage(), at3 = "2026-11-17T09:00:00.000Z", key3 = "2026-11-18|339574";
+  old3.setItem("bb-beo-notes-v1", JSON.stringify({[key3]: [{at: at3, text: "B`"}, {at: at3, text: "CA"}]}));
+  const items3 = Store.legacyItems(old3, idx);
+  assert.equal(items3.length, 2);
+  assert.notEqual(items3[0].id, items3[1].id, "colliding-hash texts get distinct ids");
+  assert.ok(Store.idOk(items3[0].id) && Store.idOk(items3[1].id), "ids stay valid");
+  Store.legacySettle(old3, [items3[0]]);
+  assert.deepEqual(JSON.parse(old3.getItem("bb-beo-notes-v1"))[key3].map((n) => n.text), ["CA"], "settling the first leaves the second");
+  // Mid-batch stall then reload: the second stalls, a reload still has it and saves both once.
+  const old4 = memStorage(), store4 = Store.createStore({storage: memStorage()});
+  old4.setItem("bb-beo-notes-v1", JSON.stringify({[key3]: [{at: at3, text: "B`"}, {at: at3, text: "CA"}]}));
+  for (const it of Store.legacyItems(old4, idx)) {
+    try { if (it.input.text === "CA") throw new Error("stalled"); await store4.addNote(it.input); Store.legacySettle(old4, [it]); } catch (e) {}
+  }
+  assert.deepEqual(JSON.parse(old4.getItem("bb-beo-notes-v1"))[key3].map((n) => n.text), ["CA"], "stalled note survives the reload");
+  for (const it of Store.legacyItems(old4, idx)) { await store4.addNote(it.input); Store.legacySettle(old4, [it]); }
+  assert.deepEqual((await store4.listNotes("2026-11-18")).map((n) => n.text).sort(), ["B`", "CA"], "both notes saved exactly once");
+  assert.equal(old4.getItem("bb-beo-notes-v1"), null);
+
   // ---- server ----
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "beo-srv-"));
+  const tmp =fs.mkdtempSync(path.join(os.tmpdir(), "beo-srv-"));
   fs.mkdirSync(path.join(tmp, "beo-originals"));
   fs.mkdirSync(path.join(tmp, "node_modules"));
   fs.mkdirSync(path.join(tmp, ".git"));
