@@ -150,12 +150,13 @@
       var t = readTombs();
       return {v: 1, notes: s.notes.filter(function (n) { return t.notes.indexOf(n.id) < 0; }), highlights: s.highlights.filter(function (h) { return t.highlights.indexOf(h.id) < 0; })};
     }
+    // A tombstone clears only on success or 404 (already gone); 5xx, network and other errors keep it for the next try.
     function replayTombs() {
       var t = readTombs(), jobs = [];
       t.notes.forEach(function (id) { jobs.push({kind: "notes", id: id, run: api.removeNote(id)}); });
       t.highlights.forEach(function (id) { jobs.push({kind: "highlights", id: id, run: api.removeHighlight(id)}); });
       return Promise.all(jobs.map(function (j) {
-        return j.run.then(function () { return true; }, function (e) { return !netFail(e); }).then(function (done) { return {job: j, done: done}; });
+        return j.run.then(function () { return true; }, function (e) { return !!(e && e.http === 404); }).then(function (done) { return {job: j, done: done}; });
       })).then(function (rs) {
         var cur = readTombs();
         rs.forEach(function (r) { if (r.done) cur[r.job.kind] = cur[r.job.kind].filter(function (x) { return x !== r.job.id; }); });

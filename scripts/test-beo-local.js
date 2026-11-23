@@ -250,6 +250,26 @@ const json = (r) => JSON.parse(r.text);
   await t4.deleteNote(extra.id);
   assert.ok(JSON.parse(tsrv.getItem("bb-beo-local-v1-deleted")).notes.indexOf(extra.id) > -1, "pending deletion kept while down");
 
+  // replay: a 500 keeps the tombstone (and the item stays hidden), a 404 clears it
+  const tn = json(await req(port, "POST", "/api/beo/notes", Object.assign({text: "replay status"}, ident))).item;
+  const th = json(await req(port, "POST", "/api/beo/highlights", Object.assign({}, ident, box))).item;
+  tsrv.removeItem("bb-beo-local-v1-deleted");
+  tsrv.setItem("bb-beo-local-v1-deleted", JSON.stringify({notes: [tn.id], highlights: [th.id]}));
+  let delStatus = 500;
+  const statusFetch = (url, o) => (o && o.method === "DELETE")
+    ? Promise.resolve({ok: false, status: delStatus, json: () => Promise.resolve({error: "x"})})
+    : viaFetch(url, o);
+  const t5 = Store.createStore({fetch: statusFetch, storage: tsrv});
+  assert.equal(await t5.ready(), "server");
+  const kept = JSON.parse(tsrv.getItem("bb-beo-local-v1-deleted"));
+  assert.ok(kept.notes.indexOf(tn.id) > -1 && kept.highlights.indexOf(th.id) > -1, "500 keeps the tombstones");
+  assert.ok(!(await t5.listNotes("2026-11-18")).some((n) => n.id === tn.id), "note stays hidden after a failed delete");
+  assert.ok(!(await t5.listHighlights("2026-11-18")).some((h) => h.id === th.id), "highlight stays hidden after a failed delete");
+  delStatus = 404;
+  const t6 = Store.createStore({fetch: statusFetch, storage: tsrv});
+  assert.equal(await t6.ready(), "server");
+  assert.equal(tsrv.getItem("bb-beo-local-v1-deleted"), null, "404 clears the tombstones");
+
   await new Promise((r) => real.close(r));
   fs.rmSync(tmp, {recursive: true, force: true});
   fs.rmSync(tmp + "-outside.txt", {force: true});
