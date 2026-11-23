@@ -349,10 +349,9 @@
     var items = BeoLocal.legacyItems(localStorage, index), saved = [], chain = Promise.resolve();
     if (!items.length) return Promise.resolve();
     items.forEach(function (it) {
-      chain = chain.then(function () { return store.addNote(it.input); }).then(function () { saved.push(it); }, function () {});
+      chain = chain.then(function () { return store.addNote(it.input); }).then(function () { saved.push(it); try { BeoLocal.legacySettle(localStorage, [it]); } catch (e) {} }, function () {});
     });
     return chain.then(function () {
-      try { BeoLocal.legacySettle(localStorage, saved); } catch (e) {}
       if (!saved.length) return;
       loadedDate = null; return loadDay();
     });

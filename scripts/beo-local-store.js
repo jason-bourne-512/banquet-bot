@@ -41,7 +41,11 @@
 
   // ---- pure operations: each returns {state, item} and never mutates its input ----
   function addNote(state, o) {
-    var d = Notes.beoNoteDoc(o), note = Notes.beoNoteFromDoc(newId("n_"), d);
+    var d = Notes.beoNoteDoc(o), id = idOk(o.id) ? o.id : newId("n_");
+    // A caller-chosen id (migrated notes) that is already saved is returned as is, so a retry never adds a second copy.
+    var have = state.notes.filter(function (n) { return n.id === id; })[0];
+    if (have) return {state: state, item: have};
+    var note = Notes.beoNoteFromDoc(id, d);
     if (state.notes.length >= MAX_NOTES) throw new Error("Too many notes.");
     return {state: {v: 1, notes: state.notes.concat([note]), highlights: state.highlights}, item: note};
   }
@@ -205,18 +209,27 @@
     };
   }
 
+  // Stable id for a migrated note: the same old note always gets the same id, whatever has been removed around it.
+  function legacyId(key, n, seen) {
+    var base = key + "|" + n.at + "|" + n.text, h = 5381;
+    for (var k = 0; k < base.length; k++) h = ((h * 33) ^ base.charCodeAt(k)) >>> 0;
+    var c = seen[base] = (seen[base] || 0) + 1;
+    return "lg_" + h.toString(36) + "_" + base.length.toString(36) + (c > 1 ? "_" + c : "");
+  }
   // Old browser-only notes ({"date|eo": [{at, text}]}) matched to the index, each as {key, i, input}: key and i say where it sits in the old data.
   function legacyItems(storage, index) {
     var raw, out = [];
     try { raw = JSON.parse(storage.getItem("bb-beo-notes-v1")); } catch (e) { return out; }
     if (!raw || typeof raw !== "object") return out;
+    var seen = {};
     Object.keys(raw).forEach(function (key) {
       var p = key.split("|"), list = ((index && index.days) || {})[p[0]] || [];
       var eo = list.filter(function (e) { return String(e.eo) === p[1]; })[0];
       if (!eo || !Array.isArray(raw[key])) return;
       raw[key].forEach(function (n, i) {
         if (!n || typeof n.text !== "string") return;
-        var o = Notes.beoIdentity(p[0], eo); o.text = n.text; o.createdAt = n.at; out.push({key: key, i: i, input: o});
+        var o = Notes.beoIdentity(p[0], eo); o.text = n.text; o.createdAt = n.at; o.id = legacyId(key, n, seen);
+        out.push({key: key, i: i, id: o.id, input: o});
       });
     });
     return out;
@@ -229,12 +242,13 @@
     var raw;
     try { raw = JSON.parse(storage.getItem("bb-beo-notes-v1")); } catch (e) { return; }
     if (!raw || typeof raw !== "object") return;
-    var gone = {};
-    saved.forEach(function (it) { (gone[it.key] = gone[it.key] || {})[it.i] = true; });
+    var gone = {}, seen = {};
+    saved.forEach(function (it) { gone[it.id] = true; });
     var left = {}, any = false;
     Object.keys(raw).forEach(function (key) {
       if (!Array.isArray(raw[key])) return;
-      var keep = raw[key].filter(function (n, i) { return !(gone[key] && gone[key][i]); });
+      // Matched by stable id, not position, so settling one note at a time is safe.
+      var keep = raw[key].filter(function (n) { return !(n && typeof n.text === "string" && gone[legacyId(key, n, seen)]); });
       if (keep.length) { left[key] = keep; any = true; }
     });
     if (any) storage.setItem("bb-beo-notes-v1", JSON.stringify(left)); else storage.removeItem("bb-beo-notes-v1");

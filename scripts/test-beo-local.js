@@ -122,6 +122,29 @@ const json = (r) => JSON.parse(r.text);
   Store.legacySettle(old, Store.legacyItems(old, idx));
   assert.equal(old.getItem("bb-beo-notes-v1"), null, "key removed once every note moved");
 
+  // First legacy note saves, the second stalls: settling per note means a reload does not add the first again.
+  const st2 = memStorage(), store2 = Store.createStore({storage: st2}), old2 = memStorage();
+  old2.setItem("bb-beo-notes-v1", JSON.stringify({"2026-11-18|339574": [{at: "2026-11-17T09:00:00.000Z", text: "first"}, {at: "2026-11-17T09:05:00.000Z", text: "second"}]}));
+  async function migrateStall(failSecond) {
+    for (const it of Store.legacyItems(old2, idx)) {
+      try {
+        if (failSecond && it.input.text === "second") throw new Error("stalled");
+        await store2.addNote(it.input);
+        Store.legacySettle(old2, [it]);
+      } catch (e) {}
+    }
+  }
+  await migrateStall(true);
+  assert.deepEqual(JSON.parse(old2.getItem("bb-beo-notes-v1"))["2026-11-18|339574"].map((n) => n.text), ["second"], "saved note leaves the old key at once");
+  await migrateStall(false);
+  const got2 = (await store2.listNotes("2026-11-18")).map((n) => n.text).sort();
+  assert.deepEqual(got2, ["first", "second"], "first note appears only once after the retry");
+  assert.equal(old2.getItem("bb-beo-notes-v1"), null);
+  // Even if the settle was lost, the stable id keeps a retry from adding a second copy.
+  old2.setItem("bb-beo-notes-v1", JSON.stringify({"2026-11-18|339574": [{at: "2026-11-17T09:00:00.000Z", text: "first"}]}));
+  await migrateStall(false);
+  assert.equal((await store2.listNotes("2026-11-18")).length, 2, "same legacy id is not inserted twice");
+
   // ---- server ----
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "beo-srv-"));
   fs.mkdirSync(path.join(tmp, "beo-originals"));
