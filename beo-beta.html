@@ -63,18 +63,14 @@
   @media (max-width:700px) { main { padding:16px 14px 48px; } h1 { font-size:28px; } .picker input[type=date] { flex:1; min-width:0; } }
 </style>
 <script src="theme.js?v=1121c"></script>
-<script src="scripts/notes-lib.js?v=1121r"></script>
-<script src="scripts/firebase-config.js?v=1121r"></script>
+<script src="scripts/notes-lib.js?v=1123a"></script>
+<script src="scripts/beo-local-store.js?v=1123a"></script>
 </head>
 <body>
 <main>
   <h1>BEO <span>Beta</span></h1>
   <p class="sub">The original BEO pages for the day, as received. Updates in red, notes underneath.</p>
-  <div class="banner">Beta, for testing. Originals load from this Mac only. Notes and highlights are Jason only and save to Banquet Bot after a Google sign-in.</div>
-  <div class="b-auth" id="b-auth" hidden>
-    <button type="button" id="b-auth-btn">Sign in with Google</button>
-    <span id="b-auth-msg"></span>
-  </div>
+  <div class="banner" id="b-banner">Beta, for testing. The originals, your notes, and your highlights stay on this Mac.</div>
   <div class="picker">
     <button type="button" id="b-prev" aria-label="Previous day">‹</button>
     <input id="b-date" type="date" aria-label="Choose a date">
@@ -87,44 +83,43 @@
 </main>
 <script>
 (function () {
-  // Opening this page turns on the side-panel BEO link on this device (?beo=off turns it back off).
-  try {
-    var qf = new URLSearchParams(location.search).get("beo");
-    if (qf === "off") localStorage.removeItem("bb-beo-beta"); else localStorage.setItem("bb-beo-beta", "1");
-  } catch (e) {}
+  // Mac-only: nothing loads, saves, or turns on a side-panel link unless this is localhost / 127.0.0.1.
+  var isLocal = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+  if (!isLocal) {
+    document.getElementById("b-banner").hidden = true;
+    document.querySelector(".picker").hidden = true;
+    var st0 = document.getElementById("b-status");
+    st0.textContent = "This tab only works on the Mac, at http://127.0.0.1:8765/beo-beta.html (start it with node scripts/serve-beo-beta.js).";
+    return;
+  }
   var dateEl = document.getElementById("b-date"), dayEl = document.getElementById("b-day");
   var list = document.getElementById("b-list"), status = document.getElementById("b-status");
   var index = null, updates = null, rundownOk = false;
 
   function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
-  function who() { try { return JSON.parse(localStorage.getItem("bb-hsm-who")); } catch (e) { return null; } }
-  function isJason() { var w = who(); return !!(w && w.name === "Jason"); }
-  // Notes and highlights live in Firestore (beoNotes, beoHighlights). Nothing is read or written until a Google user is signed in.
-  // The PIN name only decides what the page shows. The rules decide who can read and write.
-  var cfg = window.BB_FIREBASE_CONFIG, cfgReady = Notes.firebaseConfigReady(cfg);
-  var ctx = null, signedIn = false, store = Notes.createBeoStore(null);
-  var fbNotes = [], fbHl = [], loadedDate = null, loadSeq = 0, noAccess = false, suppressClick = false;
-  var authEl = document.getElementById("b-auth"), authBtn = document.getElementById("b-auth-btn"), authMsg = document.getElementById("b-auth-msg");
-  function hlOn() { return isJason() && signedIn && store.live && !noAccess; }
+  // Notes and highlights save through the local server to beo-local-state.json on this Mac.
+  // If the server cannot be reached they save in this browser (localStorage) instead.
+  var store = BeoLocal.createStore({fetch: window.fetch.bind(window), storage: localStorage});
+  var fbNotes = [], fbHl = [], loadedDate = null, loadSeq = 0, suppressClick = false;
+  function hlOn() { return true; }
   function findEo(date, eo) {
     return (((index && index.days) || {})[date] || []).filter(function (e) { return String(e.eo) === String(eo); })[0] || null;
   }
-  function updateAuthBar() {
-    authEl.hidden = !(cfgReady && ctx && isJason());
-    authBtn.textContent = signedIn ? "Sign out" : "Sign in with Google";
-    authMsg.textContent = noAccess ? Notes.NO_ACCESS : (signedIn ? "" : Notes.SIGN_IN_BANNER);
-  }
   function loadDay() {
     var date = dateEl.value, seq = ++loadSeq;
-    if (!hlOn() || !Notes.isISODate(date)) return Promise.resolve();
+    if (!Notes.isISODate(date)) return Promise.resolve();
     return Promise.all([store.listNotes(date), store.listHighlights(date)]).then(function (r) {
-      if (seq !== loadSeq || !isJason()) return;
-      fbNotes = r[0]; fbHl = r[1]; loadedDate = date; render();
-    }).catch(function (err) {
       if (seq !== loadSeq) return;
-      if (Notes.isPermissionError(err)) { noAccess = true; updateAuthBar(); render(); }
-      else showMsg("Could not load notes and highlights.");
+      fbNotes = r[0]; fbHl = r[1]; loadedDate = date; showMode(); render();
+    }).catch(function () {
+      if (seq !== loadSeq) return;
+      showMsg("Could not load notes and highlights.");
     });
+  }
+  function showMode() {
+    var b = document.getElementById("b-banner");
+    b.textContent = "Beta, for testing. The originals, your notes, and your highlights stay on this Mac." +
+      (store.mode() === "local" ? " The local server is not running, so notes are saved in this browser only. Start it with node scripts/serve-beo-beta.js." : "");
   }
   function showMsg(t) {
     var el = document.getElementById("b-msg"); if (!el) return;
@@ -190,10 +185,6 @@
     return out.join("");
   }
   function notesHtml(key, eo) {
-    if (!isJason()) return '<div class="bn-empty">Notes are Jason only in this beta. Sign in with your PIN to use them.</div>';
-    if (!cfgReady) return '<div class="bn-empty">Notes need Firebase set up on this computer.</div>';
-    if (noAccess) return '<div class="bn-empty">' + esc(Notes.NO_ACCESS) + "</div>";
-    if (!hlOn()) return '<div class="bn-empty">Sign in with Google above to see and add notes.</div>';
     var ident = Notes.beoIdentity(key.split("|")[0], eo);
     var items = Notes.beoNotesFor(fbNotes, ident.date, ident.eo);
     var body = items.length ? items.map(function (n) {
@@ -257,7 +248,6 @@
     var t = e.target;
     // A drag or a highlight tap must not open the original in a new tab.
     if (suppressClick || (t.closest && t.closest(".hl"))) { e.preventDefault(); suppressClick = false; return; }
-    if (!isJason() || !hlOn()) return;
     var nid = t.getAttribute && t.getAttribute("data-nid");
     if (nid) {
       fbNotes = fbNotes.filter(function (n) { return n.id !== nid; }); render();
@@ -324,7 +314,7 @@
     if (!drag || e.pointerId !== drag.pid) return;
     var d = drag; endDrag();
     var info = layerHighlights(d.layer);
-    if (!info.ident || !hlOn()) return;
+    if (!info.ident) return;
     if (!d.moved) {
       if (!d.hit) return;               // plain tap on the page: the link opens the original
       holdClick();
@@ -344,63 +334,46 @@
     try { built = Notes.highlightDoc(o); } catch (err) { showMsg(err.message); return; }
     showMsg("");
     fbHl.push(Notes.highlightFromDoc(built.id, built.data)); drawLayer(d.layer);
-    store.addHighlight(o).catch(function () {
-      // Another device may have taken this slot; reload, pick a free one, and retry once.
-      var staleId = built.id;
-      return store.listHighlights(dateEl.value).then(function (list) {
-        fbHl = list;
-        if (!info.ident) { drawLayer(d.layer); showMsg("Could not save the highlight."); return; }
-        var retrySlot = Notes.nextHighlightSlot(Notes.highlightsFor(fbHl, info.ident, info.page));
-        if (!retrySlot) { drawLayer(d.layer); showMsg("This page has the maximum number of highlights (" + Notes.MAX_HIGHLIGHTS + ")."); return; }
-        o.slot = retrySlot;
-        return store.addHighlight(o).then(function (h) { fbHl.push(h); drawLayer(d.layer); });
-      }).catch(function () {
-        fbHl = Notes.removeHighlight(fbHl, staleId); drawLayer(d.layer); showMsg("Could not save the highlight.");
-      });
+    store.addHighlight(o).then(function (h) {
+      // The server may have picked a different free slot; swap the placeholder for the saved box.
+      fbHl = Notes.removeHighlight(fbHl, built.id); fbHl.push(h); drawLayer(d.layer);
+    }).catch(function (err) {
+      fbHl = Notes.removeHighlight(fbHl, built.id); drawLayer(d.layer); showMsg((err && err.message) || "Could not save the highlight.");
     });
   });
 
-  // Sign-in, sign-out, or another tab switching people: rerender, and drop any notes and highlights on screen right away for non-Jason.
-  function onIdentity() {
-    if (!isJason()) { fbNotes = []; fbHl = []; loadedDate = null; }
-    else if (hlOn() && loadedDate !== dateEl.value) loadDay();
-    updateAuthBar();
-    render();
-  }
-  function goLive() {
-    if (!cfgReady) return;
-    Notes.connectFirebase(cfg, function (name) { return import(Notes.FIREBASE_BASE + name + ".js"); }).then(function (c) {
-      ctx = c;
-      authBtn.addEventListener("click", function () {
-        var p = signedIn || noAccess ? Notes.signOutUser(ctx) : Notes.signInWithGoogle(ctx);
-        p.catch(function () { authMsg.textContent = "Sign-in did not finish."; });
-      });
-      Notes.watchAuth(ctx, function (user) {
-        signedIn = !!user; noAccess = false; fbNotes = []; fbHl = []; loadedDate = null;
-        store = user ? Notes.createBeoStore(Notes.createBeoBackend(ctx.fs, ctx.db)) : Notes.createBeoStore(null);
-        updateAuthBar(); render(); loadDay();
-      });
-    }).catch(function () {
-      if (!isJason()) return;
-      authEl.hidden = false; authBtn.hidden = true; authMsg.textContent = "Could not reach Firebase.";
+  // Carry the old browser-only notes (bb-beo-notes-v1) into the store once. The old key is only removed after every note saved.
+  function migrateLegacy() {
+    var list = BeoLocal.legacyNotes(localStorage, index);
+    var left = null;
+    try { left = localStorage.getItem("bb-beo-notes-v1"); } catch (e) {}
+    if (!left || !index) return Promise.resolve();
+    var ok = true, chain = Promise.resolve();
+    list.forEach(function (o) { chain = chain.then(function () { return store.addNote(o); }).catch(function () { ok = false; }); });
+    return chain.then(function () {
+      if (!ok) return;
+      try {
+        var raw = JSON.parse(left), unmatched = Object.keys(raw).some(function (k) { var p = k.split("|"); return (raw[k] || []).length && !findEo(p[0], p[1]); });
+        if (!unmatched) { localStorage.removeItem("bb-beo-notes-v1"); }
+      } catch (e) {}
+      loadedDate = null; return loadDay();
     });
   }
-  window.addEventListener("storage", function (e) { if (!e.key || e.key === "bb-hsm-who") onIdentity(); });
-  window.addEventListener("pageshow", onIdentity);
-  window.addEventListener("focus", onIdentity);
+  // Another browser or tab may have saved something: reload the day's notes and highlights when this one is shown again.
+  window.addEventListener("pageshow", function () { loadDay(); });
+  window.addEventListener("focus", function () { loadDay(); });
   dateEl.addEventListener("change", function () { setDate(dateEl.value); });
   document.getElementById("b-prev").addEventListener("click", function () { setDate(Notes.shiftISODate(dateEl.value, -1)); });
   document.getElementById("b-next").addEventListener("click", function () { setDate(Notes.shiftISODate(dateEl.value, 1)); });
   var q = new URLSearchParams(location.search).get("date");
   setDate(Notes.isISODate(q) ? q : Notes.todayISO(), false);
-  goLive();
 
   Promise.all([
     fetch("beo-originals/index.json", {cache: "no-cache"}).then(function (r) { if (!r.ok) throw new Error("none"); return r.json(); }),
     fetch("rundown.html", {cache: "no-cache"}).then(function (r) { if (!r.ok) throw new Error("rd"); return r.text(); }).then(function (h) {
       updates = collectUpdates(new DOMParser().parseFromString(h, "text/html")); rundownOk = true;
     }).catch(function () {})
-  ]).then(function (res) { index = res[0]; render(); }).catch(function () {
+  ]).then(function (res) { index = res[0]; render(); migrateLegacy(); }).catch(function () {
     status.className = "status err";
     status.textContent = "No BEO originals on this computer. Run: node scripts/build-beo-originals.js, then open this page from node scripts/serve-beo-beta.js (http://127.0.0.1:8765/beo-beta.html).";
   });

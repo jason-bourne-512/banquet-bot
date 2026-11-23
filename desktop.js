@@ -159,8 +159,8 @@
   function who() { try { return JSON.parse(get(WHO)); } catch (e) { return null; } }
   var NOTES_TESTER = "bb-notes-tester";
   function notesTester() { return get(NOTES_TESTER) === "1"; }
-  // BEO beta link (Jason only): hidden until this device opens beo-beta.html. ?beo=off there turns it off.
-  function beoBeta() { return get("bb-beo-beta") === "1"; }
+  // BEO link (Jason only): Mac-only, shown only when Banquet Bot is opened from localhost / 127.0.0.1. Never on the live site.
+  function beoBeta() { return location.hostname === "127.0.0.1" || location.hostname === "localhost"; }
   function applyNotesTesterFlag() {
     try {
       var q = new URLSearchParams(location.search).get("notes");

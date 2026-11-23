@@ -212,16 +212,8 @@ assert.ok(page.indexOf("id=\"nt-pinned\"") < page.indexOf("id=\"nt-date\"") || p
   "date picker sits in the Daily section, below Pinned");
 assert.match(page, /Side notes and FYIs\. Anything critical still goes on the BEO or to your manager\./);
 assert.doesNotMatch(page, /The Wire/i, "Banquet Bot Firebase only");
-assert.match(page, /scripts\/firebase-config\.js/);
-assert.match(page, /Notes\.connectFirebase/);
-assert.match(page, /Notes\.createFirestoreBackend/);
-assert.match(page, /Notes\.watchAuth/);
-assert.match(page, /Notes\.signInWithGoogle/);
-assert.match(page, /Sign in with Google/);
-assert.match(page, /nt-name/);
-assert.match(page, /data-add/);
-assert.match(page, /data-del/);
-assert.match(page, /OPS_REMINDER/);
+assert.doesNotMatch(page, /firebase|firestore/i, "live Notes tab stays as on main: no Firebase, no sign-in");
+assert.doesNotMatch(page, /<textarea/);
 assert.doesNotMatch(page, /type="password"|name="pin"/i);
 new Function(page.match(/<script>\s*([\s\S]*?)<\/script>/)[1]); // syntax check
 
@@ -477,10 +469,9 @@ function fakeModules(log, opts) {
 
 // ---- BEO page wiring ----
 const beoPage = fs.readFileSync(path.join(repoRoot, "beo-beta.html"), "utf8");
-assert.match(beoPage, /scripts\/firebase-config\.js/);
-assert.match(beoPage, /Notes\.connectFirebase/);
-assert.match(beoPage, /Notes\.createBeoBackend/);
-assert.match(beoPage, /Notes\.watchAuth/);
+assert.doesNotMatch(beoPage, /firebase|firestore|Sign in with Google|signIn|watchAuth/i, "BEO tab has no Firebase or Google sign-in");
+assert.match(beoPage, /scripts\/beo-local-store\.js/);
+assert.match(beoPage, /BeoLocal\.createStore/);
 assert.match(beoPage, /pointerdown/);
 assert.match(beoPage, /pointermove/);
 assert.match(beoPage, /pointerup/);
@@ -488,12 +479,12 @@ assert.match(beoPage, /pointercancel/);
 assert.match(beoPage, /Notes\.highlightFromDrag/);
 assert.match(beoPage, /Notes\.hitHighlight|data-hid/);
 assert.match(beoPage, /preventDefault/);
-assert.match(beoPage, /Notes are Jason only/, "non-Jason message stays");
-assert.doesNotMatch(beoPage, /localStorage\.(get|set)Item\(NOTES_KEY|bb-beo-notes-v1/, "notes no longer live in localStorage");
-assert.match(beoPage, /function hlOn\(\) \{ return isJason\(\) && signedIn/, "highlights need Jason and a signed-in user");
+assert.match(beoPage, /bb-beo-notes-v1/, "old browser notes are migrated, not dropped");
+assert.match(beoPage, /noindex/);
+assert.match(beoPage, /127\.0\.0\.1:8765\/beo-beta\.html/, "off-localhost message points at the Mac");
+assert.doesNotMatch(beoPage, /setItem\("bb-beo-beta"/, "visiting the page never turns on the side-panel link");
 assert.match(beoPage, /beo-originals\/index\.json/);
 assert.match(beoPage, /Updated "|Revision " /, "red updates stay");
-assert.match(beoPage, /function onIdentity/);
 new Function(beoPage.match(/<script>\s*([\s\S]*?)<\/script>/)[1]); // syntax check
 const server = fs.readFileSync(path.join(__dirname, "serve-beo-beta.js"), "utf8");
 assert.match(server, /127\.0\.0\.1/, "originals server binds to localhost");

@@ -6,3 +6,4 @@ beo-originals/
 
 scripts/firebase-config.js
 firestore.rules.local
+beo-local-state.json*

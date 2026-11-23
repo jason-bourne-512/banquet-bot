@@ -31,13 +31,21 @@ repo ever moves).
 `npm install` in this directory (cheerio, luxon) — separate from and unrelated
 to the site itself, which has no build step.
 
-## BEO beta tab (local only)
+## BEO tab (this Mac only)
 
-`beo-beta.html` shows the day's original BEO pages with red updates and notes under each. The originals are company documents
-and are never committed: `build-beo-originals.js` reads the BEO packet PDFs in `~/Downloads`, renders the newest print of each
-event order into `beo-originals/` (gitignored), and `serve-beo-beta.js` serves the folder on 127.0.0.1:8765 only.
+`beo-beta.html` shows the day's original BEO pages with red updates, notes under each BEO, and yellow highlights (drag to
+highlight, tap a highlight to remove it). It is Mac-only:
+
+- The side-panel BEO link (Jason's Private block) shows only when Banquet Bot is opened from `127.0.0.1` or `localhost`. It never appears on the live site, and visiting the page there does not turn it on. Off localhost the page just says it only works on the Mac.
+- The originals are company documents and are never committed: `build-beo-originals.js` reads the BEO packet PDFs in `~/Downloads` and renders the newest print of each event order into `beo-originals/` (gitignored).
+- Notes and highlights save through the local server into `beo-local-state.json` at the repo root (gitignored, written atomically, never served). They survive reloads and are shared by every browser on this Mac. If the server is not running, the page saves them in that browser's localStorage (`bb-beo-local-v1`) and merges them into the file the next time the server is up. Old `bb-beo-notes-v1` notes are copied over once, and the old key is removed only after they all saved.
+- No Firebase and no Google sign-in is involved.
 
 ```bash
 node scripts/build-beo-originals.js      # window: 7 days back to 21 days out (--from / --to / --src to change)
-node scripts/serve-beo-beta.js           # http://127.0.0.1:8765/beo-beta.html
+node scripts/serve-beo-beta.js           # http://127.0.0.1:8765/beo-beta.html  (restart it after pulling changes)
+node scripts/test-beo-local.js           # store, server API, and the localhost gate
 ```
+
+Server API (127.0.0.1 only, Host and Origin checked, JSON only): `GET /api/beo/state`, `POST /api/beo/notes`,
+`POST /api/beo/highlights`, `POST /api/beo/import`, `DELETE /api/beo/notes/<id>`, `DELETE /api/beo/highlights/<id>`.
