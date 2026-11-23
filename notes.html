@@ -47,6 +47,18 @@
   .nt-section h2 { font:600 15px/1.2 'Barlow Condensed', sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--sky); margin:0 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line); }
   .nt-daily { padding-top:6px; border-top:1px solid #8bd1ff33; }
   .nt-daily h2 { margin-top:12px; }
+  .nt-who-bar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px; font-size:12.5px; color:var(--muted); }
+  .nt-who-bar input, .nt-add textarea { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; font:500 13px Manrope, sans-serif; }
+  .nt-who-bar input { padding:6px 10px; width:130px; }
+  .nt-auth { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px; font-size:12.5px; color:var(--muted); }
+  .nt-auth button, .nt-add button, .nt-del { background:#1d3344; color:var(--sky); border:1px solid #8bd1ff66; border-radius:8px; font:700 12px Manrope, sans-serif; padding:8px 12px; cursor:pointer; }
+  .nt-reminder { color:var(--amber); font-size:12px; margin:0 0 12px; }
+  .nt-add { display:flex; gap:8px; align-items:flex-end; padding:10px 14px 12px; border-top:1px solid #1a2730; }
+  .nt-add textarea { flex:1; min-height:38px; padding:8px 10px; resize:vertical; }
+  .nt-add button:disabled { opacity:.5; cursor:default; }
+  .nt-del { background:transparent; color:var(--muted); border-color:var(--line); padding:2px 8px; margin-left:8px; font-weight:600; }
+  .nt-del:hover { color:#ff8a80; border-color:#ff8a80; }
+  .nt-err { color:#ff8a80; font-size:12px; padding:0 14px 8px; }
   @media (max-width:700px) {
     main { padding:16px 14px 48px; }
     h1 { font-size:28px; }
@@ -55,13 +67,24 @@
   }
 </style>
 <script src="theme.js?v=1121c"></script>
-<script src="scripts/notes-lib.js?v=1121q"></script>
+<script src="scripts/notes-lib.js?v=1121r"></script>
+<script src="scripts/firebase-config.js?v=1121r"></script>
 </head>
 <body>
 <main>
   <h1>Event <span>Notes</span></h1>
   <p class="sub">Side notes and FYIs. Anything critical still goes on the BEO or to your manager.</p>
   <div class="banner" id="nt-banner"></div>
+  <div class="nt-auth" id="nt-auth" hidden>
+    <button type="button" id="nt-auth-btn">Sign in with Google</button>
+    <span id="nt-auth-msg"></span>
+  </div>
+  <div class="nt-who-bar" id="nt-who-bar" hidden>
+    <label for="nt-name">Posting as</label>
+    <input id="nt-name" type="text" maxlength="24" placeholder="First name" list="nt-names" autocomplete="given-name">
+    <datalist id="nt-names"><option value="Jason"></datalist>
+  </div>
+  <p class="nt-reminder" id="nt-reminder" hidden></p>
   <section class="nt-section" id="nt-pinned-sec" aria-labelledby="nt-pinned-title">
     <h2 id="nt-pinned-title">Pinned: General notes</h2>
     <div id="nt-pinned"></div>
@@ -106,33 +129,73 @@
     dateEl.value = iso;
     dayEl.textContent = Notes.formatDayLabel(iso);
     if (push !== false && location.search !== "?date=" + iso) history.replaceState(null, "", "notes.html?date=" + iso);
-    render();
+    loadAll();
   }
   function esc(s) {
     return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+  }
+  var bannerEl = document.getElementById("nt-banner");
+  var authEl = document.getElementById("nt-auth");
+  var authBtn = document.getElementById("nt-auth-btn");
+  var authMsg = document.getElementById("nt-auth-msg");
+  var whoBar = document.getElementById("nt-who-bar");
+  var reminderEl = document.getElementById("nt-reminder");
+  var nameEl = document.getElementById("nt-name");
+  var deviceId = Notes.getDeviceId();
+  var store = Notes.createNotesStore(null);   // sample mode until a signed-in user exists
+  var ctx = null;                              // Firebase handles once config is ready
+  var signedIn = false;
+  var dayNotes = Notes.SAMPLE_NOTES.slice();
+  var pinnedRaw = Notes.SAMPLE_PINNED.slice();
+  var loadSeq = 0;
+
+  function me() { return {name: Notes.getSavedName(), deviceId: deviceId}; }
+  function noteHtml(n) {
+    var del = store.live && n.id && Notes.canDelete(n, me())
+      ? ' <button type="button" class="nt-del" data-del="' + esc(n.id) + '">Delete</button>' : "";
+    return '<div class="nt-note"><span class="nt-time">' + esc(n.timeLabel) + del + "</span>" +
+      '<div class="nt-text">' + esc(n.text) + "</div></div>";
   }
   function authorBlocksHtml(authors) {
     if (!authors.length) return '<div class="nt-empty">No notes yet.</div>';
     return authors.map(function (block) {
       var head = '<div class="nt-who"><span class="nt-av">' + esc((block.name || "?").slice(0, 1)) + "</span>" +
         '<span class="nt-name">' + esc(block.name) + "</span></div>";
-      var items = block.notes.map(function (n) {
-        return '<div class="nt-note"><span class="nt-time">' + esc(n.timeLabel) + "</span>" +
-          '<div class="nt-text">' + esc(n.text) + "</div></div>";
-      }).join("");
-      return '<div class="nt-author">' + head + items + "</div>";
+      return '<div class="nt-author">' + head + block.notes.map(noteHtml).join("") + "</div>";
     }).join("");
   }
+  function addBoxHtml(key) {
+    if (!store.live) return "";
+    return '<div class="nt-add" data-key="' + esc(key) + '"><textarea rows="2" maxlength="' + Notes.MAX_TEXT +
+      '" placeholder="Add a note" aria-label="Add a note"></textarea><button type="button" data-add="1">Add</button></div>' +
+      '<div class="nt-err" hidden></div>';
+  }
   function renderPinned() {
-    var authors = Notes.pinnedAuthors(Notes.SAMPLE_PINNED);
-    var body = authorBlocksHtml(authors);
-    pinnedEl.innerHTML = '<article class="nt-card"><div class="nt-thread">' + body + "</div></article>";
+    var authors = Notes.pinnedAuthors(pinnedRaw);
+    pinnedEl.innerHTML = '<article class="nt-card"><div class="nt-thread">' + authorBlocksHtml(authors) + "</div>" +
+      addBoxHtml("pinned") + "</article>";
+  }
+  function loadAll() {
+    var seq = ++loadSeq;
+    return Promise.all([store.listNotes({date: dateEl.value}), store.listPinned()]).then(function (r) {
+      if (seq !== loadSeq) return;
+      dayNotes = r[0];
+      pinnedRaw = r[1];
+      renderPinned();
+      render();
+    }).catch(function (err) {
+      if (seq !== loadSeq) return;
+      if (Notes.isPermissionError(err)) { setAuthState(false, Notes.NO_ACCESS, true); return; }
+      status.hidden = false;
+      status.className = "status err";
+      status.textContent = "Could not load notes.";
+    });
   }
   function render() {
     var date = dateEl.value;
     dayEl.textContent = Notes.formatDayLabel(date);
     if (!rundown) return;
-    var events = Notes.eventsWithNotes(Notes.collectEvents(rundown, date), Notes.SAMPLE_NOTES);
+    var events = Notes.eventsWithNotes(Notes.collectEvents(rundown, date), dayNotes);
     if (!events.length) {
       list.hidden = true;
       status.hidden = false;
@@ -148,12 +211,83 @@
       var body = authorBlocksHtml(authors);
       return '<article class="nt-card"><div class="nt-head"><div class="nt-group">' + esc(ev.group) + "</div>" +
         (meta ? '<div class="nt-meta">' + esc(meta) + "</div>" : "") + "</div>" +
-        '<div class="nt-thread">' + body + "</div></article>";
+        '<div class="nt-thread">' + body + "</div>" + addBoxHtml(ev.group) + "</article>";
     }).join("");
   }
 
-  document.getElementById("nt-banner").textContent = Notes.SAMPLE_BANNER;
+  function onClick(e) {
+    var t = e.target;
+    var delId = t.getAttribute && t.getAttribute("data-del");
+    if (delId) {
+      var note = dayNotes.concat(pinnedRaw).filter(function (n) { return n.id === delId; })[0];
+      store.deleteNote(note, me()).then(loadAll).catch(function (err) { window.alert(err.message); });
+      return;
+    }
+    if (!(t.getAttribute && t.getAttribute("data-add"))) return;
+    var box = t.parentNode;
+    var errEl = box.nextSibling;
+    var ta = box.querySelector("textarea");
+    var key = box.getAttribute("data-key");
+    var pinned = key === "pinned";
+    var saved = Notes.saveName(nameEl.value);
+    function fail(msg) { errEl.textContent = msg; errEl.hidden = false; }
+    errEl.hidden = true;
+    if (!saved) return fail("Pick your first name first.");
+    var v = Notes.validateNoteText(ta.value);
+    if (!v.ok) return fail(v.reason);
+    t.disabled = true;
+    store.addNote({
+      date: dateEl.value, group: pinned ? "" : key, pinned: pinned, text: v.text,
+      authorFirstName: saved, createdByDeviceId: deviceId
+    }).then(function () { return loadAll(); }).catch(function (err) {
+      t.disabled = false;
+      fail(err && err.message || "Could not save. Try again.");
+    });
+  }
+
+  // Signed out or no access: sample mode, no Firestore calls, only a plain sign-in control.
+  // Signed in: the live store. The rules still require the owner account, so other accounts get denied there.
+  function setAuthState(on, msg, keepSignOut) {
+    signedIn = on;
+    authEl.hidden = !ctx;
+    authBtn.textContent = on || keepSignOut ? "Sign out" : "Sign in with Google";
+    authMsg.textContent = msg || "";
+    whoBar.hidden = !on;
+    reminderEl.hidden = !on;
+    if (on) {
+      store = Notes.createNotesStore(Notes.createFirestoreBackend(ctx.fs, ctx.db));
+      bannerEl.textContent = Notes.LIVE_BANNER;
+      reminderEl.textContent = Notes.OPS_REMINDER;
+      nameEl.value = Notes.getSavedName();
+    } else {
+      store = Notes.createNotesStore(null);
+      bannerEl.textContent = Notes.SAMPLE_BANNER;
+      dayNotes = Notes.SAMPLE_NOTES.slice();
+      pinnedRaw = Notes.SAMPLE_PINNED.slice();
+      renderPinned();
+      render();
+    }
+  }
+
+  function goLive(cfg) {
+    return Notes.connectFirebase(cfg, function (name) { return import(Notes.FIREBASE_BASE + name + ".js"); }).then(function (c) {
+      ctx = c;
+      authBtn.addEventListener("click", function () {
+        var p = signedIn || authBtn.textContent === "Sign out" ? Notes.signOutUser(ctx) : Notes.signInWithGoogle(ctx);
+        p.catch(function () { authMsg.textContent = "Sign-in did not finish."; });
+      });
+      Notes.watchAuth(ctx, function (user) {
+        loadSeq += 1; // drop any in-flight load so a late response cannot show private notes after sign-out
+        if (user) { setAuthState(true, user.displayName ? "Signed in as " + user.displayName : "Signed in"); loadAll(); }
+        else setAuthState(false, Notes.SIGN_IN_BANNER);
+      });
+    });
+  }
+
+  bannerEl.textContent = Notes.SAMPLE_BANNER;
   renderPinned();
+  document.addEventListener("click", onClick);
+  nameEl.addEventListener("change", function () { nameEl.value = Notes.saveName(nameEl.value) || nameEl.value; render(); renderPinned(); });
   dateEl.addEventListener("change", function () { setDate(dateEl.value); });
   document.getElementById("nt-prev").addEventListener("click", function () { setDate(Notes.shiftISODate(dateEl.value, -1)); });
   document.getElementById("nt-next").addEventListener("click", function () { setDate(Notes.shiftISODate(dateEl.value, 1)); });
@@ -165,6 +299,12 @@
   }).then(function (html) {
     rundown = helpers(new DOMParser().parseFromString(html, "text/html"));
     render();
+  }).then(function () {
+    var cfg = window.BB_FIREBASE_CONFIG;
+    if (!Notes.firebaseConfigReady(cfg)) return;
+    return goLive(cfg).catch(function () {
+      bannerEl.textContent = Notes.SAMPLE_BANNER + " (Could not reach Firebase.)";
+    });
   }).catch(function () {
     status.hidden = false;
     status.className = "status err";

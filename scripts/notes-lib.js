@@ -182,6 +182,8 @@
       return String(a.at || "").localeCompare(String(b.at || ""));
     }).map(function (n) {
       return {
+        id: n.id,
+        deviceId: n.deviceId,
         date: n.date,
         group: n.group,
         name: firstName(n.name),
@@ -222,6 +224,8 @@
       return String(a.at || "").localeCompare(String(b.at || ""));
     }).map(function (n) {
       return {
+        id: n.id,
+        deviceId: n.deviceId,
         name: firstName(n.name),
         at: n.at,
         text: clean(n.text),
@@ -443,7 +447,509 @@
     return bubble;
   }
 
+  // ---- Step 2: Firestore saving, behind Firebase Auth (Banquet Bot Firebase only, not The Wire) ----
+  var NAME_KEY = "bb-notes-name";
+  var DEVICE_KEY = "bb-notes-device";
+  var COLLECTION = "notes";
+  var BEO_NOTES = "beoNotes";
+  var BEO_HIGHLIGHTS = "beoHighlights";
+  var MAX_TEXT = 500;
+  var MAX_NAME = 24;
+  var MAX_HIGHLIGHTS = 50;
+  var MIN_HIGHLIGHT_PCT = 1;
+  var DELETE_WINDOW_MS = 15 * 60 * 1000;
+  var OWNER_NAME = "Jason";
+  var FIREBASE_BASE = "https://www.gstatic.com/firebasejs/10.14.1/";
+  var OPS_REMINDER = "Ops notes only. Do not post guest payment details, card numbers, or PINs.";
+  var LIVE_BANNER = "Live notes. Saved to Banquet Bot. Your first name shows on each note.";
+  var SIGN_IN_BANNER = "Sign in with Google to load and save notes.";
+  var NO_ACCESS = "This Google account does not have access to notes.";
+
+  function configValue(cfg, k) {
+    var v = cfg && cfg[k];
+    return typeof v === "string" && v.length > 0 && !/^(YOUR_|REPLACE|PASTE|TODO)/i.test(v) ? v : "";
+  }
+
+  // Firebase web config is public by design. Ready means the keys the SDK needs are all present.
+  function firebaseConfigReady(cfg) {
+    if (!cfg || typeof cfg !== "object" || cfg.disabled) return false;
+    return ["apiKey", "projectId", "appId"].every(function (k) { return !!configValue(cfg, k); });
+  }
+
+  // App Check is optional until a site key exists. No key means it is skipped.
+  function appCheckSiteKey(cfg) {
+    return firebaseConfigReady(cfg) ? configValue(cfg, "appCheckSiteKey") : "";
+  }
+
+  // Signed in means a real Firebase user. The rules still decide whether that user is the owner.
+  function isSignedIn(user) {
+    return !!(user && typeof user.uid === "string" && user.uid);
+  }
+
+  // Load the SDK pieces only once config is ready. loadModule("firebase-app") returns the module (dynamic import in the page).
+  // Order matters: App Check starts right after initializeApp and before Firestore is used.
+  function connectFirebase(cfg, loadModule) {
+    if (!firebaseConfigReady(cfg)) return Promise.reject(new Error("Firebase is not configured."));
+    var siteKey = appCheckSiteKey(cfg);
+    return Promise.all([loadModule("firebase-app"), loadModule("firebase-firestore"), loadModule("firebase-auth")]).then(function (m) {
+      var app = m[0].initializeApp(cfg);
+      var ready = Promise.resolve(false);
+      if (siteKey) {
+        ready = loadModule("firebase-app-check").then(function (ac) {
+          ac.initializeAppCheck(app, {provider: new ac.ReCaptchaV3Provider(siteKey), isTokenAutoRefreshEnabled: true});
+          return true;
+        }).catch(function () { return false; });
+      }
+      return ready.then(function (appCheck) {
+        return {app: app, db: m[1].getFirestore(app), fs: m[1], auth: m[2].getAuth(app), authApi: m[2], appCheck: appCheck};
+      });
+    });
+  }
+
+  function signInWithGoogle(ctx) {
+    var provider = new ctx.authApi.GoogleAuthProvider();
+    return ctx.authApi.signInWithPopup(ctx.auth, provider).catch(function (err) {
+      var msg = String((err && err.code) || "") + " " + String((err && err.message) || "");
+      if (/popup|cancelled|canceled|internal-error|operation-not-supported|web-storage/i.test(msg)) {
+        return ctx.authApi.signInWithRedirect(ctx.auth, provider);
+      }
+      return Promise.reject(err);
+    });
+  }
+
+  function signOutUser(ctx) {
+    return ctx.authApi.signOut(ctx.auth);
+  }
+
+  // cb(user or null). Returns the unsubscribe function.
+  function watchAuth(ctx, cb) {
+    return ctx.authApi.onAuthStateChanged(ctx.auth, function (user) { cb(isSignedIn(user) ? user : null); });
+  }
+
+  function isPermissionError(err) {
+    return !!(err && (err.code === "permission-denied" || /permission|insufficient/i.test(String(err.message || ""))));
+  }
+
+  // Blocks things that look like card numbers, PINs, CVVs, or passwords. Notes are ops-only.
+  function looksLikePayment(text) {
+    var t = String(text || "");
+    if (/\b(?:\d[ -]?){13,19}\b/.test(t)) return true;
+    return /\b(cvv|cvc|card number|credit card|pin|passcode|password)\b\s*(is|:|#|=)?\s*\S*\d/i.test(t);
+  }
+
+  function validateNoteText(text) {
+    var t = clean(text);
+    if (!t) return {ok: false, reason: "Write a note first."};
+    if (t.length > MAX_TEXT) return {ok: false, reason: "Keep it under " + MAX_TEXT + " characters."};
+    if (looksLikePayment(t)) return {ok: false, reason: OPS_REMINDER};
+    return {ok: true, text: t};
+  }
+
+  function authorFirstName(s) {
+    return firstName(s).slice(0, MAX_NAME);
+  }
+
+  function newDeviceId() {
+    var r = "";
+    for (var i = 0; i < 12; i++) r += Math.floor(Math.random() * 36).toString(36);
+    return "d-" + r;
+  }
+
+  function getDeviceId(storage) {
+    var s = storageOf(storage);
+    try {
+      var id = s && s.getItem(DEVICE_KEY);
+      if (id) return id;
+      id = newDeviceId();
+      if (s) s.setItem(DEVICE_KEY, id);
+      return id;
+    } catch (e) {
+      return newDeviceId();
+    }
+  }
+
+  function getSavedName(storage) {
+    try {
+      var s = storageOf(storage);
+      return s ? authorFirstName(s.getItem(NAME_KEY) || "") : "";
+    } catch (e) {
+      return "";
+    }
+  }
+
+  function saveName(name, storage) {
+    var n = authorFirstName(name);
+    try {
+      var s = storageOf(storage);
+      if (s && n) s.setItem(NAME_KEY, n);
+    } catch (e) {}
+    return n;
+  }
+
+  // Build the Firestore document. Event notes need date + group; pinned notes carry neither.
+  function buildNoteDoc(o) {
+    o = o || {};
+    var v = validateNoteText(o.text);
+    if (!v.ok) throw new Error(v.reason);
+    var name = authorFirstName(o.authorFirstName);
+    if (!name) throw new Error("Pick your first name first.");
+    var pinned = !!o.pinned;
+    var doc = {
+      text: v.text,
+      authorFirstName: name,
+      createdAt: o.createdAt || new Date().toISOString(),
+      createdByDeviceId: String(o.createdByDeviceId || ""),
+      pinned: pinned
+    };
+    if (!pinned) {
+      if (!isISODate(o.date)) throw new Error("Missing date.");
+      var group = clean(o.group);
+      if (!group) throw new Error("Missing event.");
+      doc.date = o.date;
+      doc.group = group;
+      if (o.eventId) doc.eventId = String(o.eventId);
+    }
+    return doc;
+  }
+
+  // Firestore doc -> the shape notesFor/pinnedNotes already use.
+  function fromDoc(id, d) {
+    d = d || {};
+    return {
+      id: id,
+      date: d.date,
+      group: d.group,
+      eventId: d.eventId,
+      name: d.authorFirstName || "",
+      at: d.createdAt || "",
+      text: d.text || "",
+      pinned: !!d.pinned,
+      deviceId: d.createdByDeviceId || ""
+    };
+  }
+
+  // Author deletes own note within 15 minutes (same name and device). Jason can delete any.
+  // This is a UI convenience. The rules allow only the signed-in owner to delete.
+  function canDelete(note, who, now) {
+    if (!note || !who) return false;
+    var name = authorFirstName(who.name);
+    if (!name) return false;
+    if (name === OWNER_NAME) return true;
+    if (authorFirstName(note.name) !== name) return false;
+    if (note.deviceId && who.deviceId && note.deviceId !== who.deviceId) return false;
+    var t = new Date(note.at).getTime();
+    if (isNaN(t)) return false;
+    var age = (now ? new Date(now).getTime() : Date.now()) - t;
+    return age >= 0 && age <= DELETE_WINDOW_MS;
+  }
+
+  // Backend adapter over the Firestore modular SDK functions (passed in so Node tests can fake them).
+  // fsApi: {collection, query, where, getDocs, addDoc, deleteDoc, doc}
+  function createFirestoreBackend(fsApi, db) {
+    function run(field, value) {
+      var q = fsApi.query(fsApi.collection(db, COLLECTION), fsApi.where(field, "==", value));
+      return fsApi.getDocs(q).then(function (snap) {
+        var out = [];
+        snap.forEach(function (d) { out.push(fromDoc(d.id, d.data())); });
+        return out;
+      });
+    }
+    return {
+      byDate: function (date) { return run("date", date); },
+      pinned: function () { return run("pinned", true); },
+      add: function (data) {
+        return fsApi.addDoc(fsApi.collection(db, COLLECTION), data).then(function (ref) { return ref.id; });
+      },
+      remove: function (id) { return fsApi.deleteDoc(fsApi.doc(db, COLLECTION, id)); }
+    };
+  }
+
+  // Store with the API the page uses. backend: {byDate, pinned, add, remove}. Null backend = sample mode.
+  function createNotesStore(backend, opts) {
+    opts = opts || {};
+    var live = !!backend;
+    function sortAt(list) {
+      return list.slice().sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
+    }
+    return {
+      live: live,
+      listNotes: function (args) {
+        var date = args && args.date;
+        if (!live) return Promise.resolve(SAMPLE_NOTES.filter(function (n) { return n.date === date; }));
+        return backend.byDate(date).then(function (l) {
+          return sortAt(l.filter(function (n) { return !n.pinned; }));
+        });
+      },
+      listPinned: function () {
+        if (!live) return Promise.resolve(SAMPLE_PINNED.slice());
+        return backend.pinned().then(sortAt);
+      },
+      addNote: function (o) {
+        if (!live) return Promise.reject(new Error("Saving is not set up yet."));
+        var doc;
+        try { doc = buildNoteDoc(o); } catch (e) { return Promise.reject(e); }
+        return backend.add(doc).then(function (id) { return fromDoc(id, doc); });
+      },
+      deleteNote: function (note, who, now) {
+        if (!live) return Promise.reject(new Error("Saving is not set up yet."));
+        if (!note || !note.id) return Promise.reject(new Error("Note has no id."));
+        if (!canDelete(note, who, now)) return Promise.reject(new Error("You can delete your own note for 15 minutes."));
+        return backend.remove(note.id);
+      }
+    };
+  }
+
+  // ---- BEO notes and highlights ----
+  // A BEO is identified by service date, EO number, and the print it came from (the latest version's printed date).
+  // beo-originals/index.json shape: {eo, printed, pages[], versions[{printed, source}]}.
+  function beoIdentity(date, eo) {
+    eo = eo || {};
+    var v = eo.versions || [];
+    var last = v.length ? v[v.length - 1] : null;
+    return {
+      date: date,
+      eo: String(eo.eo || ""),
+      printed: (last && last.printed) || eo.printed || "",
+      revision: Math.max(1, v.length),
+      source: String((last && last.source) || "").slice(0, 120)
+    };
+  }
+
+  function beoIdentityOk(id) {
+    return !!(id && isISODate(id.date) && /^\d{1,12}$/.test(id.eo) && isISODate(id.printed) && id.revision >= 1 && id.revision <= 99);
+  }
+
+  function beoIdentityFields(id) {
+    if (!beoIdentityOk(id)) throw new Error("Missing BEO date, EO number, or print date.");
+    return {date: id.date, eo: id.eo, printed: id.printed, revision: id.revision, source: String(id.source || "").slice(0, 120)};
+  }
+
+  function beoNoteDoc(o) {
+    o = o || {};
+    var v = validateNoteText(o.text);
+    if (!v.ok) throw new Error(v.reason);
+    var doc = beoIdentityFields(o);
+    doc.text = v.text;
+    doc.createdAt = o.createdAt || new Date().toISOString();
+    return doc;
+  }
+
+  function beoNoteFromDoc(id, d) {
+    d = d || {};
+    return {id: id, date: d.date, eo: d.eo, printed: d.printed, revision: d.revision, source: d.source || "", at: d.createdAt || "", text: d.text || ""};
+  }
+
+  function round2(n) { return Math.round(n * 100) / 100; }
+
+  // Box in 0-100% of the page image. Accepts negative width/height (drag up or left), clamps into the page,
+  // and drops anything smaller than MIN_HIGHLIGHT_PCT. Same math idea as PreShift.sectionBoxFromDrag.
+  function normalizeHighlight(box) {
+    if (!box) return null;
+    var x = Number(box.x), y = Number(box.y), w = Number(box.w), h = Number(box.h);
+    if (![x, y, w, h].every(function (n) { return isFinite(n); })) return null;
+    if (w < 0) { x += w; w = -w; }
+    if (h < 0) { y += h; h = -h; }
+    if (x < 0) { w += x; x = 0; }
+    if (y < 0) { h += y; y = 0; }
+    if (x + w > 100) w = 100 - x;
+    if (y + h > 100) h = 100 - y;
+    // A swipe along one axis is a thin band, not a discarded zero-height line.
+    if (w >= MIN_HIGHLIGHT_PCT && h < MIN_HIGHLIGHT_PCT) {
+      var midY = y + h / 2;
+      h = MIN_HIGHLIGHT_PCT;
+      y = midY - h / 2;
+      if (y < 0) y = 0;
+      if (y + h > 100) y = 100 - h;
+    } else if (h >= MIN_HIGHLIGHT_PCT && w < MIN_HIGHLIGHT_PCT) {
+      var midX = x + w / 2;
+      w = MIN_HIGHLIGHT_PCT;
+      x = midX - w / 2;
+      if (x < 0) x = 0;
+      if (x + w > 100) x = 100 - w;
+    }
+    if (x >= 100 || y >= 100 || w < MIN_HIGHLIGHT_PCT || h < MIN_HIGHLIGHT_PCT) return null;
+    var out = {x: round2(x), y: round2(y), w: round2(w), h: round2(h)};
+    if (box.id != null) out.id = String(box.id);
+    return out;
+  }
+
+  // Client pixels to percent of the image rect (from getBoundingClientRect).
+  function pointPct(px, py, rect) {
+    rect = rect || {};
+    var width = Number(rect.width), height = Number(rect.height);
+    if (!width || !height) return null;
+    return {
+      x: Math.max(0, Math.min(100, ((Number(px) - (Number(rect.left) || 0)) / width) * 100)),
+      y: Math.max(0, Math.min(100, ((Number(py) - (Number(rect.top) || 0)) / height) * 100))
+    };
+  }
+
+  function highlightFromDrag(x1, y1, x2, y2, rect, id) {
+    var a = pointPct(x1, y1, rect), b = pointPct(x2, y2, rect);
+    if (!a || !b) return null;
+    return normalizeHighlight({id: id, x: a.x, y: a.y, w: b.x - a.x, h: b.y - a.y});
+  }
+
+  // Topmost (latest drawn) highlight under the point, or null.
+  function hitHighlight(list, x, y) {
+    var hit = null;
+    (list || []).forEach(function (b) {
+      if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) hit = b;
+    });
+    return hit;
+  }
+
+  function removeHighlight(list, id) {
+    return (list || []).filter(function (b) { return b.id !== id; });
+  }
+
+  // Smallest free slot 1..MAX_HIGHLIGHTS on a page, or 0 when the page is full.
+  function nextHighlightSlot(list) {
+    var used = {};
+    (list || []).forEach(function (b) { if (b.slot) used[b.slot] = 1; });
+    for (var i = 1; i <= MAX_HIGHLIGHTS; i++) if (!used[i]) return i;
+    return 0;
+  }
+
+  // Doc id doubles as the page key plus slot, so the rules can cap highlights per page.
+  function beoPageKey(id, page) {
+    return id.date + "_" + id.eo + "_" + id.printed + "_r" + id.revision + "_p" + (Number(page) + 1);
+  }
+
+  function highlightDocId(id, page, slot) {
+    return beoPageKey(id, page) + "_h" + slot;
+  }
+
+  // o: BEO identity + {page (0-based index), slot, x, y, w, h}. Returns {id, data}.
+  function highlightDoc(o) {
+    o = o || {};
+    var data = beoIdentityFields(o);
+    var page = Number(o.page), slot = Number(o.slot);
+    if (!(page >= 0 && page < 99 && Math.floor(page) === page)) throw new Error("Missing BEO page.");
+    if (!(slot >= 1 && slot <= MAX_HIGHLIGHTS && Math.floor(slot) === slot)) throw new Error("Too many highlights on this page.");
+    var box = normalizeHighlight(o);
+    if (!box) throw new Error("Highlight is too small.");
+    data.page = page;
+    data.slot = slot;
+    data.x = box.x; data.y = box.y; data.w = box.w; data.h = box.h;
+    data.createdAt = o.createdAt || new Date().toISOString();
+    return {id: highlightDocId(o, page, slot), data: data};
+  }
+
+  function highlightFromDoc(id, d) {
+    d = d || {};
+    return {id: id, date: d.date, eo: d.eo, printed: d.printed, revision: d.revision, page: d.page, slot: d.slot, x: d.x, y: d.y, w: d.w, h: d.h};
+  }
+
+  // Highlights that belong to this BEO print and page.
+  function highlightsFor(list, id, page) {
+    return (list || []).filter(function (h) {
+      return h.date === id.date && h.eo === id.eo && h.printed === id.printed && Number(h.revision) === Number(id.revision) && h.page === page;
+    });
+  }
+
+  // Notes for this BEO across every print; each carries its own printed date.
+  function beoNotesFor(list, date, eo) {
+    return (list || []).filter(function (n) { return n.date === date && n.eo === String(eo); })
+      .slice().sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); });
+  }
+
+  // fsApi: {collection, query, where, getDocs, addDoc, setDoc, deleteDoc, doc}
+  function createBeoBackend(fsApi, db) {
+    function byDate(coll, map, date) {
+      var q = fsApi.query(fsApi.collection(db, coll), fsApi.where("date", "==", date));
+      return fsApi.getDocs(q).then(function (snap) {
+        var out = [];
+        snap.forEach(function (d) { out.push(map(d.id, d.data())); });
+        return out;
+      });
+    }
+    return {
+      notesByDate: function (date) { return byDate(BEO_NOTES, beoNoteFromDoc, date); },
+      highlightsByDate: function (date) { return byDate(BEO_HIGHLIGHTS, highlightFromDoc, date); },
+      addNote: function (data) { return fsApi.addDoc(fsApi.collection(db, BEO_NOTES), data).then(function (ref) { return ref.id; }); },
+      removeNote: function (id) { return fsApi.deleteDoc(fsApi.doc(db, BEO_NOTES, id)); },
+      putHighlight: function (id, data) { return fsApi.setDoc(fsApi.doc(db, BEO_HIGHLIGHTS, id), data); },
+      removeHighlight: function (id) { return fsApi.deleteDoc(fsApi.doc(db, BEO_HIGHLIGHTS, id)); }
+    };
+  }
+
+  // Null backend = not signed in: every call rejects and nothing touches Firestore.
+  function createBeoStore(backend) {
+    var live = !!backend;
+    function locked() { return Promise.reject(new Error(SIGN_IN_BANNER)); }
+    return {
+      live: live,
+      listNotes: function (date) { return live ? backend.notesByDate(date) : locked(); },
+      listHighlights: function (date) { return live ? backend.highlightsByDate(date) : locked(); },
+      addNote: function (o) {
+        if (!live) return locked();
+        var data;
+        try { data = beoNoteDoc(o); } catch (e) { return Promise.reject(e); }
+        return backend.addNote(data).then(function (id) { return beoNoteFromDoc(id, data); });
+      },
+      deleteNote: function (id) { return live && id ? backend.removeNote(id) : locked(); },
+      addHighlight: function (o) {
+        if (!live) return locked();
+        var built;
+        try { built = highlightDoc(o); } catch (e) { return Promise.reject(e); }
+        return backend.putHighlight(built.id, built.data).then(function () { return highlightFromDoc(built.id, built.data); });
+      },
+      deleteHighlight: function (id) { return live && id ? backend.removeHighlight(id) : locked(); }
+    };
+  }
+
   return {
+    NAME_KEY: NAME_KEY,
+    DEVICE_KEY: DEVICE_KEY,
+    COLLECTION: COLLECTION,
+    BEO_NOTES: BEO_NOTES,
+    BEO_HIGHLIGHTS: BEO_HIGHLIGHTS,
+    MAX_TEXT: MAX_TEXT,
+    MAX_NAME: MAX_NAME,
+    MAX_HIGHLIGHTS: MAX_HIGHLIGHTS,
+    MIN_HIGHLIGHT_PCT: MIN_HIGHLIGHT_PCT,
+    DELETE_WINDOW_MS: DELETE_WINDOW_MS,
+    FIREBASE_BASE: FIREBASE_BASE,
+    OPS_REMINDER: OPS_REMINDER,
+    LIVE_BANNER: LIVE_BANNER,
+    SIGN_IN_BANNER: SIGN_IN_BANNER,
+    NO_ACCESS: NO_ACCESS,
+    firebaseConfigReady: firebaseConfigReady,
+    appCheckSiteKey: appCheckSiteKey,
+    isSignedIn: isSignedIn,
+    connectFirebase: connectFirebase,
+    signInWithGoogle: signInWithGoogle,
+    signOutUser: signOutUser,
+    watchAuth: watchAuth,
+    isPermissionError: isPermissionError,
+    looksLikePayment: looksLikePayment,
+    validateNoteText: validateNoteText,
+    authorFirstName: authorFirstName,
+    getDeviceId: getDeviceId,
+    getSavedName: getSavedName,
+    saveName: saveName,
+    buildNoteDoc: buildNoteDoc,
+    fromDoc: fromDoc,
+    canDelete: canDelete,
+    createFirestoreBackend: createFirestoreBackend,
+    createNotesStore: createNotesStore,
+    beoIdentity: beoIdentity,
+    beoNoteDoc: beoNoteDoc,
+    beoNoteFromDoc: beoNoteFromDoc,
+    beoNotesFor: beoNotesFor,
+    normalizeHighlight: normalizeHighlight,
+    pointPct: pointPct,
+    highlightFromDrag: highlightFromDrag,
+    hitHighlight: hitHighlight,
+    removeHighlight: removeHighlight,
+    nextHighlightSlot: nextHighlightSlot,
+    beoPageKey: beoPageKey,
+    highlightDoc: highlightDoc,
+    highlightFromDoc: highlightFromDoc,
+    highlightsFor: highlightsFor,
+    createBeoBackend: createBeoBackend,
+    createBeoStore: createBeoStore,
     TZ: TZ,
     SAMPLE_BANNER: SAMPLE_BANNER,
     SAMPLE_NOTES: SAMPLE_NOTES,

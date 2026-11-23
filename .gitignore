@@ -3,3 +3,6 @@ node_modules/
 data/
 reports/
 beo-originals/
+
+scripts/firebase-config.js
+firestore.rules.local

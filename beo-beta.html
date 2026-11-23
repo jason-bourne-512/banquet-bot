@@ -53,16 +53,28 @@
   .bn-form textarea { flex:1; min-height:54px; background:#0e161d; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font:13.5px Manrope, sans-serif; resize:vertical; }
   .bn-form button { background:var(--sky); color:#0c141b; border:0; border-radius:8px; padding:8px 14px; font:700 13px Manrope, sans-serif; cursor:pointer; }
   .other { margin-top:6px; }
+  .beo-pages a { position:relative; }
+  .hl-layer { position:absolute; inset:0; touch-action:pan-y; cursor:crosshair; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
+  .hl, .hl-preview { position:absolute; background:rgba(255,230,0,.4); mix-blend-mode:multiply; border-radius:2px; }
+  .hl { cursor:pointer; }
+  .hl-preview { pointer-events:none; outline:1px dashed #b39b00; }
+  .b-auth { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px; font-size:12.5px; color:var(--muted); }
+  .b-auth button { background:#1d3344; color:var(--sky); border:1px solid #8bd1ff66; border-radius:8px; font:700 12px Manrope, sans-serif; padding:8px 12px; cursor:pointer; }
   @media (max-width:700px) { main { padding:16px 14px 48px; } h1 { font-size:28px; } .picker input[type=date] { flex:1; min-width:0; } }
 </style>
 <script src="theme.js?v=1121c"></script>
-<script src="scripts/notes-lib.js?v=1121q"></script>
+<script src="scripts/notes-lib.js?v=1121r"></script>
+<script src="scripts/firebase-config.js?v=1121r"></script>
 </head>
 <body>
 <main>
   <h1>BEO <span>Beta</span></h1>
   <p class="sub">The original BEO pages for the day, as received. Updates in red, notes underneath.</p>
-  <div class="banner">Beta, for testing. Originals load from this Mac only. Notes are saved in this browser on this computer, not shared.</div>
+  <div class="banner">Beta, for testing. Originals load from this Mac only. Notes and highlights are Jason only and save to Banquet Bot after a Google sign-in.</div>
+  <div class="b-auth" id="b-auth" hidden>
+    <button type="button" id="b-auth-btn">Sign in with Google</button>
+    <span id="b-auth-msg"></span>
+  </div>
   <div class="picker">
     <button type="button" id="b-prev" aria-label="Previous day">‹</button>
     <input id="b-date" type="date" aria-label="Choose a date">
@@ -70,6 +82,7 @@
     <span class="day" id="b-day"></span>
   </div>
   <div id="b-status" class="status">Loading…</div>
+  <div id="b-msg" class="status err" hidden></div>
   <div id="b-list" hidden></div>
 </main>
 <script>
@@ -79,7 +92,6 @@
     var qf = new URLSearchParams(location.search).get("beo");
     if (qf === "off") localStorage.removeItem("bb-beo-beta"); else localStorage.setItem("bb-beo-beta", "1");
   } catch (e) {}
-  var NOTES_KEY = "bb-beo-notes-v1";
   var dateEl = document.getElementById("b-date"), dayEl = document.getElementById("b-day");
   var list = document.getElementById("b-list"), status = document.getElementById("b-status");
   var index = null, updates = null, rundownOk = false;
@@ -87,8 +99,37 @@
   function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
   function who() { try { return JSON.parse(localStorage.getItem("bb-hsm-who")); } catch (e) { return null; } }
   function isJason() { var w = who(); return !!(w && w.name === "Jason"); }
-  function loadNotes() { try { return JSON.parse(localStorage.getItem(NOTES_KEY)) || {}; } catch (e) { return {}; } }
-  function saveNotes(o) { try { localStorage.setItem(NOTES_KEY, JSON.stringify(o)); } catch (e) {} }
+  // Notes and highlights live in Firestore (beoNotes, beoHighlights). Nothing is read or written until a Google user is signed in.
+  // The PIN name only decides what the page shows. The rules decide who can read and write.
+  var cfg = window.BB_FIREBASE_CONFIG, cfgReady = Notes.firebaseConfigReady(cfg);
+  var ctx = null, signedIn = false, store = Notes.createBeoStore(null);
+  var fbNotes = [], fbHl = [], loadedDate = null, loadSeq = 0, noAccess = false, suppressClick = false;
+  var authEl = document.getElementById("b-auth"), authBtn = document.getElementById("b-auth-btn"), authMsg = document.getElementById("b-auth-msg");
+  function hlOn() { return isJason() && signedIn && store.live && !noAccess; }
+  function findEo(date, eo) {
+    return (((index && index.days) || {})[date] || []).filter(function (e) { return String(e.eo) === String(eo); })[0] || null;
+  }
+  function updateAuthBar() {
+    authEl.hidden = !(cfgReady && ctx && isJason());
+    authBtn.textContent = signedIn ? "Sign out" : "Sign in with Google";
+    authMsg.textContent = noAccess ? Notes.NO_ACCESS : (signedIn ? "" : Notes.SIGN_IN_BANNER);
+  }
+  function loadDay() {
+    var date = dateEl.value, seq = ++loadSeq;
+    if (!hlOn() || !Notes.isISODate(date)) return Promise.resolve();
+    return Promise.all([store.listNotes(date), store.listHighlights(date)]).then(function (r) {
+      if (seq !== loadSeq || !isJason()) return;
+      fbNotes = r[0]; fbHl = r[1]; loadedDate = date; render();
+    }).catch(function (err) {
+      if (seq !== loadSeq) return;
+      if (Notes.isPermissionError(err)) { noAccess = true; updateAuthBar(); render(); }
+      else showMsg("Could not load notes and highlights.");
+    });
+  }
+  function showMsg(t) {
+    var el = document.getElementById("b-msg"); if (!el) return;
+    el.textContent = t; el.hidden = !t;
+  }
   function shortDate(iso) {
     var m = /^(\d{4})-(\d\d)-(\d\d)$/.exec(iso || ""); if (!m) return iso || "";
     return new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString("en-US", {month: "short", day: "numeric"});
@@ -148,14 +189,30 @@
     if (eo.revisedFlag && v.length < 2) out.push('<div class="upd">⚑ ' + esc("Marked REVISED on the event order, printed " + shortDate(eo.printed)) + "</div>");
     return out.join("");
   }
-  function notesHtml(key) {
+  function notesHtml(key, eo) {
     if (!isJason()) return '<div class="bn-empty">Notes are Jason only in this beta. Sign in with your PIN to use them.</div>';
-    var items = loadNotes()[key] || [];
-    var body = items.length ? items.map(function (n, i) {
-      return '<div class="bn"><span class="bn-time">Jason · ' + esc(Notes.formatPinnedTime(n.at)) +
-        '<button type="button" class="bn-del" data-key="' + esc(key) + '" data-i="' + i + '">delete</button></span><div class="bn-text">' + esc(n.text) + "</div></div>";
+    if (!cfgReady) return '<div class="bn-empty">Notes need Firebase set up on this computer.</div>';
+    if (noAccess) return '<div class="bn-empty">' + esc(Notes.NO_ACCESS) + "</div>";
+    if (!hlOn()) return '<div class="bn-empty">Sign in with Google above to see and add notes.</div>';
+    var ident = Notes.beoIdentity(key.split("|")[0], eo);
+    var items = Notes.beoNotesFor(fbNotes, ident.date, ident.eo);
+    var body = items.length ? items.map(function (n) {
+      var old = n.printed && n.printed !== ident.printed ? " · " + esc(shortDate(n.printed)) + " print" : "";
+      return '<div class="bn"><span class="bn-time">Jason · ' + esc(Notes.formatPinnedTime(n.at)) + old +
+        '<button type="button" class="bn-del" data-nid="' + esc(n.id) + '">delete</button></span><div class="bn-text">' + esc(n.text) + "</div></div>";
     }).join("") : '<div class="bn-empty">No notes yet.</div>';
-    return body + '<div class="bn-form"><textarea data-key="' + esc(key) + '" placeholder="Add a note under this BEO" aria-label="Add a note"></textarea><button type="button" class="bn-add" data-key="' + esc(key) + '">Add</button></div>';
+    return body + '<div class="bn-form"><textarea data-key="' + esc(key) + '" maxlength="' + Notes.MAX_TEXT + '" placeholder="Add a note under this BEO" aria-label="Add a note"></textarea><button type="button" class="bn-add" data-key="' + esc(key) + '">Add</button></div>';
+  }
+  function hlBoxesHtml(list) {
+    return list.map(function (b) {
+      return '<div class="hl" data-hid="' + esc(b.id) + '" style="left:' + b.x + "%;top:" + b.y + "%;width:" + b.w + "%;height:" + b.h + '%"></div>';
+    }).join("");
+  }
+  // One page image with its yellow-highlight layer. The layer sits inside the link, so a plain tap still opens the original.
+  function pageHtml(date, eo, p, i, ident) {
+    var layer = hlOn() ? '<div class="hl-layer" data-date="' + esc(date) + '" data-eo="' + esc(eo.eo) + '" data-page="' + i + '">' +
+      hlBoxesHtml(Notes.highlightsFor(fbHl, ident, i)) + "</div>" : "";
+    return '<a href="beo-originals/' + esc(p) + '" target="_blank" rel="noopener"><img draggable="false" loading="lazy" src="beo-originals/' + esc(p) + '" alt="' + esc(eo.org + " BEO page " + (i + 1)) + '">' + layer + "</a>";
   }
   function render() {
     var date = dateEl.value;
@@ -173,16 +230,15 @@
     var html = eos.map(function (eo) {
       var key = date + "|" + eo.eo;
       var mine = dayUpds.filter(function (u, i) { if (assigned[i] === eo) { used[i] = 1; return true; } return false; });
-      var pg = eo.pages.map(function (p, i) {
-        return '<a href="beo-originals/' + esc(p) + '" target="_blank" rel="noopener"><img loading="lazy" src="beo-originals/' + esc(p) + '" alt="' + esc(eo.org + " BEO page " + (i + 1)) + '"></a>';
-      }).join("");
+      var ident = Notes.beoIdentity(date, eo);
+      var pg = eo.pages.map(function (p, i) { return pageHtml(date, eo, p, i, ident); }).join("");
       var pagesNote = eo.pages.length < eo.expectedPages ? '<div class="upd">⚑ ' + esc("Only " + eo.pages.length + " of " + eo.expectedPages + " pages found in the packets") + "</div>" : "";
       var all = versionLines(eo) + pagesNote + mine.map(updLine).join("");
       return '<article class="beo"><div class="beo-head"><div class="beo-title">' + esc(eo.postAs || eo.org) + "</div>" +
         '<div class="beo-meta">' + esc("EO " + eo.eo + " · " + eo.org + " · printed " + shortDate(eo.printed) + " · " + eo.pages.length + " page" + (eo.pages.length == 1 ? "" : "s")) + "</div></div>" +
         '<div class="beo-pages">' + pg + "</div>" +
         (all ? '<div class="beo-upd"><h3>Updates</h3>' + all + "</div>" : "") +
-        '<div class="beo-notes"><h3>Notes</h3>' + notesHtml(key) + "</div></article>";
+        '<div class="beo-notes"><h3>Notes</h3>' + notesHtml(key, eo) + "</div></article>";
     }).join("");
     var rest = dayUpds.filter(function (u, i) { return !used[i]; });
     if (rest.length) html += '<div class="beo-upd other"><h3>Other updates this day (not matched to a BEO above)</h3>' + rest.map(function (u) { return updLine(u).replace("⚑ ", "⚑ " + u.name.replace(/\s+/g, " ").trim().slice(0, 60) + ": "); }).join("") + "</div>";
@@ -193,27 +249,141 @@
     if (!Notes.isISODate(iso)) return;
     dateEl.value = iso;
     if (push !== false && location.search !== "?date=" + iso) history.replaceState(null, "", "beo-beta.html?date=" + iso);
+    fbNotes = []; fbHl = []; loadedDate = null; showMsg("");
     render();
+    loadDay();
   }
   list.addEventListener("click", function (e) {
-    var t = e.target, key = t.getAttribute && t.getAttribute("data-key");
-    if (!key || !isJason()) return;
-    var all = loadNotes();
-    if (t.classList.contains("bn-add")) {
-      var ta = list.querySelector('textarea[data-key="' + key.replace(/"/g, "") + '"]');
-      var text = Notes.clean(ta ? ta.value : ""); if (!text) return;
-      (all[key] = all[key] || []).push({at: new Date().toISOString(), text: text});
-      saveNotes(all); render();
-    } else if (t.classList.contains("bn-del")) {
-      (all[key] || []).splice(+t.getAttribute("data-i"), 1);
-      if (!(all[key] || []).length) delete all[key];
-      saveNotes(all); render();
+    var t = e.target;
+    // A drag or a highlight tap must not open the original in a new tab.
+    if (suppressClick || (t.closest && t.closest(".hl"))) { e.preventDefault(); suppressClick = false; return; }
+    if (!isJason() || !hlOn()) return;
+    var nid = t.getAttribute && t.getAttribute("data-nid");
+    if (nid) {
+      fbNotes = fbNotes.filter(function (n) { return n.id !== nid; }); render();
+      store.deleteNote(nid).catch(function () { showMsg("Could not delete the note."); loadedDate = null; loadDay(); });
+      return;
     }
+    var key = t.getAttribute && t.getAttribute("data-key");
+    if (!key || !t.classList.contains("bn-add")) return;
+    var parts = key.split("|"), eo = findEo(parts[0], parts[1]);
+    var ta = list.querySelector('textarea[data-key="' + key.replace(/"/g, "") + '"]');
+    var v = Notes.validateNoteText(ta ? ta.value : "");
+    if (!v.ok) { if (ta && ta.value.trim()) showMsg(v.reason); return; }
+    if (!eo) return;
+    showMsg("");
+    t.disabled = true;
+    var o = Notes.beoIdentity(parts[0], eo); o.text = v.text;
+    store.addNote(o).then(function (n) { fbNotes.push(n); render(); }).catch(function (err) {
+      t.disabled = false; showMsg(err && err.message || "Could not save the note.");
+    });
   });
-  // Sign-in, sign-out, or another tab switching people: rerender, and drop any notes on screen right away for non-Jason.
+
+  // Highlights: drag a box on a page image (mouse, touch, or pen). Tap a box to remove it.
+  // Coordinates are percent of the image, so boxes follow the page when it resizes.
+  var drag = null;
+  function layerOf(el) { return el && el.closest ? el.closest(".hl-layer") : null; }
+  function layerHighlights(layer) {
+    var date = layer.getAttribute("data-date"), eo = findEo(date, layer.getAttribute("data-eo"));
+    var page = +layer.getAttribute("data-page");
+    return {date: date, eo: eo, page: page, ident: eo && Notes.beoIdentity(date, eo)};
+  }
+  function drawLayer(layer) {
+    var info = layerHighlights(layer);
+    if (info.ident) layer.innerHTML = hlBoxesHtml(Notes.highlightsFor(fbHl, info.ident, info.page));
+  }
+  function endDrag() {
+    if (drag && drag.preview && drag.preview.parentNode) drag.preview.parentNode.removeChild(drag.preview);
+    drag = null;
+  }
+  function holdClick() { suppressClick = true; setTimeout(function () { suppressClick = false; }, 120); }
+  list.addEventListener("pointerdown", function (e) {
+    var layer = layerOf(e.target);
+    if (!layer || !hlOn() || (e.pointerType === "mouse" && e.button !== 0)) return;
+    endDrag();
+    drag = {layer: layer, pid: e.pointerId, x: e.clientX, y: e.clientY, rect: layer.getBoundingClientRect(), moved: false, preview: null,
+      hit: e.target.closest(".hl")};
+    try { layer.setPointerCapture(e.pointerId); } catch (err) {}
+    if (e.pointerType === "mouse") e.preventDefault();
+  });
+  list.addEventListener("pointermove", function (e) {
+    if (!drag || e.pointerId !== drag.pid) return;
+    if (!drag.moved) {
+      if (Math.abs(e.clientX - drag.x) + Math.abs(e.clientY - drag.y) < 6) return;
+      drag.moved = true;
+      drag.preview = document.createElement("div"); drag.preview.className = "hl-preview"; drag.layer.appendChild(drag.preview);
+    }
+    var a = Notes.pointPct(drag.x, drag.y, drag.rect), b = Notes.pointPct(e.clientX, e.clientY, drag.rect);
+    if (!a || !b) return;
+    var s = drag.preview.style;
+    s.left = Math.min(a.x, b.x) + "%"; s.top = Math.min(a.y, b.y) + "%";
+    s.width = Math.abs(b.x - a.x) + "%"; s.height = Math.abs(b.y - a.y) + "%";
+  });
+  list.addEventListener("pointercancel", function (e) { if (drag && e.pointerId === drag.pid) endDrag(); });
+  list.addEventListener("pointerup", function (e) {
+    if (!drag || e.pointerId !== drag.pid) return;
+    var d = drag; endDrag();
+    var info = layerHighlights(d.layer);
+    if (!info.ident || !hlOn()) return;
+    if (!d.moved) {
+      if (!d.hit) return;               // plain tap on the page: the link opens the original
+      holdClick();
+      var hid = d.hit.getAttribute("data-hid");
+      fbHl = Notes.removeHighlight(fbHl, hid); drawLayer(d.layer);
+      store.deleteHighlight(hid).catch(function () { showMsg("Could not remove the highlight."); loadedDate = null; loadDay(); });
+      return;
+    }
+    holdClick();
+    var box = Notes.highlightFromDrag(d.x, d.y, e.clientX, e.clientY, d.rect);
+    if (!box) return;
+    var slot = Notes.nextHighlightSlot(Notes.highlightsFor(fbHl, info.ident, info.page));
+    if (!slot) { showMsg("This page has the maximum number of highlights (" + Notes.MAX_HIGHLIGHTS + ")."); return; }
+    var o = Notes.beoIdentity(info.date, info.eo);
+    o.page = info.page; o.slot = slot; o.x = box.x; o.y = box.y; o.w = box.w; o.h = box.h;
+    var built;
+    try { built = Notes.highlightDoc(o); } catch (err) { showMsg(err.message); return; }
+    showMsg("");
+    fbHl.push(Notes.highlightFromDoc(built.id, built.data)); drawLayer(d.layer);
+    store.addHighlight(o).catch(function () {
+      // Another device may have taken this slot; reload, pick a free one, and retry once.
+      var staleId = built.id;
+      return store.listHighlights(dateEl.value).then(function (list) {
+        fbHl = list;
+        if (!info.ident) { drawLayer(d.layer); showMsg("Could not save the highlight."); return; }
+        var retrySlot = Notes.nextHighlightSlot(Notes.highlightsFor(fbHl, info.ident, info.page));
+        if (!retrySlot) { drawLayer(d.layer); showMsg("This page has the maximum number of highlights (" + Notes.MAX_HIGHLIGHTS + ")."); return; }
+        o.slot = retrySlot;
+        return store.addHighlight(o).then(function (h) { fbHl.push(h); drawLayer(d.layer); });
+      }).catch(function () {
+        fbHl = Notes.removeHighlight(fbHl, staleId); drawLayer(d.layer); showMsg("Could not save the highlight.");
+      });
+    });
+  });
+
+  // Sign-in, sign-out, or another tab switching people: rerender, and drop any notes and highlights on screen right away for non-Jason.
   function onIdentity() {
-    if (!isJason()) [].slice.call(list.querySelectorAll(".beo-notes")).forEach(function (n) { n.innerHTML = "<h3>Notes</h3>" + notesHtml(""); });
+    if (!isJason()) { fbNotes = []; fbHl = []; loadedDate = null; }
+    else if (hlOn() && loadedDate !== dateEl.value) loadDay();
+    updateAuthBar();
     render();
+  }
+  function goLive() {
+    if (!cfgReady) return;
+    Notes.connectFirebase(cfg, function (name) { return import(Notes.FIREBASE_BASE + name + ".js"); }).then(function (c) {
+      ctx = c;
+      authBtn.addEventListener("click", function () {
+        var p = signedIn || noAccess ? Notes.signOutUser(ctx) : Notes.signInWithGoogle(ctx);
+        p.catch(function () { authMsg.textContent = "Sign-in did not finish."; });
+      });
+      Notes.watchAuth(ctx, function (user) {
+        signedIn = !!user; noAccess = false; fbNotes = []; fbHl = []; loadedDate = null;
+        store = user ? Notes.createBeoStore(Notes.createBeoBackend(ctx.fs, ctx.db)) : Notes.createBeoStore(null);
+        updateAuthBar(); render(); loadDay();
+      });
+    }).catch(function () {
+      if (!isJason()) return;
+      authEl.hidden = false; authBtn.hidden = true; authMsg.textContent = "Could not reach Firebase.";
+    });
   }
   window.addEventListener("storage", function (e) { if (!e.key || e.key === "bb-hsm-who") onIdentity(); });
   window.addEventListener("pageshow", onIdentity);
@@ -223,6 +393,7 @@
   document.getElementById("b-next").addEventListener("click", function () { setDate(Notes.shiftISODate(dateEl.value, 1)); });
   var q = new URLSearchParams(location.search).get("date");
   setDate(Notes.isISODate(q) ? q : Notes.todayISO(), false);
+  goLive();
 
   Promise.all([
     fetch("beo-originals/index.json", {cache: "no-cache"}).then(function (r) { if (!r.ok) throw new Error("none"); return r.json(); }),
