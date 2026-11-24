@@ -184,6 +184,21 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .pkt-sec-box { position:absolute; box-sizing:border-box; border:2px solid; border-radius:2px; }
 .pkt-sec-box.selected { outline:2px dashed #111; outline-offset:1px; }
 .pkt-sec-x { position:absolute; top:-8px; right:-8px; width:18px; height:18px; border-radius:50%; border:0; background:#111; color:#fff; font-size:12px; line-height:18px; padding:0; cursor:pointer; box-shadow:0 0 0 1px rgba(255,255,255,.4); }
+.duty-chart { margin:8px 0 10px; border:1px solid var(--border); border-radius:8px; padding:6px 10px; }
+.duty-chart summary { cursor:pointer; font:600 11px 'DM Mono',monospace; letter-spacing:.6px; text-transform:uppercase; color:var(--text-2); }
+.dc-count { margin-left:6px; text-transform:none; letter-spacing:0; color:var(--green); }
+.dc-count.miss { color:var(--red); }
+.dc-kind { font:600 9px 'DM Mono',monospace; letter-spacing:1px; text-transform:uppercase; color:var(--accent); margin:8px 0 3px; }
+.dc-list { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:2px 14px; }
+.dc-row { display:flex; align-items:center; gap:6px; font-size:12px; padding:2px 0; border-bottom:1px solid var(--divider); }
+.dc-text { flex:1; min-width:0; }
+.dc-row.miss .dc-text { color:var(--red); font-weight:600; }
+.dc-row.skip .dc-text { color:var(--text-3); text-decoration:line-through; }
+.dc-sel { background:transparent; color:var(--text-2); border:0; font-size:11px; max-width:110px; cursor:pointer; }
+.dc-row.miss .dc-sel { color:var(--red); }
+.dc-x { border:0; background:transparent; color:var(--text-3); cursor:pointer; font-size:13px; padding:0 2px; }
+.dc-x:hover { color:var(--red); }
+.dc-new { margin-top:4px; width:100%; max-width:320px; background:transparent; border:0; border-bottom:1px dashed var(--border-h); color:var(--text-1); font-size:12px; padding:3px 0; }
 .pkt-pin { position:absolute; transform:translate(-50%,-50%); min-width:20px; height:20px; padding:0 4px; border-radius:10px; background:rgba(255,255,255,.92); color:#111; border:1.5px solid #111; font:700 11px/17px Inter,Arial,sans-serif; text-align:center; pointer-events:none; box-shadow:0 1px 3px rgba(0,0,0,.4); }
 .pkt-pin.on { color:#111; }
 .pkt-halo { position:absolute; width:6.2%; aspect-ratio:1; transform:translate(-50%,-50%); border-radius:50%; border:2px solid; pointer-events:none; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -221,6 +236,44 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   body.print-pkt { background:#fff !important; color:#111; }
 }
 
+
+#pkt-print { display:none; }
+@media print {
+  @page { size: letter portrait; margin: 0.4in; }
+  html.print-pkt.print-pkt, html.print-pkt.print-pkt body.print-pkt { color-scheme:light !important; --bg:#fff !important; background:#fff !important; background-color:#fff !important; background-image:none !important; }
+  html.print-pkt.print-pkt body.print-pkt { padding:0 !important; margin:0 !important; color:#111 !important; }
+  body.print-pkt::before { display:none !important; }
+  body.print-pkt > *:not(#pkt-print) { display:none !important; }
+  body.print-pkt #pkt-print { display:block !important; font:9.5px/1.35 Inter, Arial, sans-serif; color:#111 !important; background:#fff; }
+  #pkt-print * { -webkit-print-color-adjust:exact; print-color-adjust:exact; color:inherit; }
+  body.print-pkt #pkt-print .pkt-diagram-img.pp-light { filter:none !important; }
+  .pp-miss { color:#b00 !important; font-weight:600; }
+  .pp-head { border-bottom:2px solid #111; padding-bottom:4px; margin-bottom:6px; }
+  .pp-line { font-size:11px; margin-top:1px; }
+  .pp-title { font:800 15px/1.1 Inter, Arial, sans-serif; letter-spacing:.3px; }
+  .pp-sub { font-size:11px; font-weight:600; }
+  .pp-meta { font-size:9.5px; color:#444 !important; }
+  .pp-h { font:700 8.5px/1 Inter, Arial, sans-serif; text-transform:uppercase; letter-spacing:.8px; color:#555; margin:7px 0 3px; }
+  #pkt-print table { width:100%; border-collapse:collapse; }
+  .pp-teams th { text-align:left; font-size:8px; text-transform:uppercase; letter-spacing:.6px; color:#555; border-bottom:1px solid #999; padding:2px 4px; }
+  .pp-teams td { border-bottom:1px solid #ddd; padding:3px 4px; vertical-align:top; }
+  .pp-teams td:first-child { width:22%; } .pp-teams td:nth-child(2) { width:14%; }
+  .pp-teams i { display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:4px; vertical-align:0; }
+  .pp-names { color:#333; }
+  .pp-dim { color:#555; }
+  .pp-diag { margin:6px 0 2px; break-inside:avoid; }
+  .pp-diag .pkt-diag-canvas { width:80%; margin:0 auto; }
+  .pp-diag .pkt-diagram-img { display:block !important; width:100%; filter:invert(1) hue-rotate(180deg); border:1px solid #bbb; border-radius:0; background:#fff; }
+  .pp-diag object.pkt-diagram-img:not(.is-shown) { display:none !important; }
+  .pp-diag .pkt-sec-layer { display:block !important; }
+  .pp-diag .pkt-sec-x, .pp-diag .pkt-sec-draft { display:none !important; }
+  .pp-diag .pkt-sec-box.selected { outline:0; }
+  .pp-cols { display:grid; grid-template-columns: 1.6fr 1fr; gap:14px; }
+  .pp-steps td { padding:2px 4px; border-bottom:1px solid #eee; vertical-align:top; }
+  .pp-time { white-space:nowrap; width:62px; font-weight:600; }
+  .pp-sp { margin:0; padding-left:14px; }
+  .pp-sp li { margin:1px 0; }
+}
 @media (min-width: 900px) {
   .header, .page-hero, .sec, .list, .status { max-width: 520px; margin-left: auto; margin-right: auto; }
 }
@@ -228,7 +281,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <link rel="stylesheet" href="assets/bb-reference.css">
 <script src="scripts/contact-privacy.js?v=1124a"></script>
 <script src="theme.js?v=1124c"></script>
-<script src="scripts/pre-shift-lib.js?v=1124c"></script>
+<script src="scripts/pre-shift-lib.js?v=1124d"></script>
 </head>
 <body class="bb-ref">
 <div class="page-wrap">
@@ -574,6 +627,7 @@ function fmtDate(iso) {
         '<div class="pkt-title">Server Packet</div>' +
         '<div class="pkt-sub">' + esc(p.group) + ' · ' + esc(fmtDate(p.date)) + ' · ' + esc(p.room) + '</div>' +
         '<table class="pkt-teams"><thead><tr><th>Team</th><th>Opening</th><th>Closing</th></tr></thead><tbody>' + teams + '</tbody></table>' +
+        dutyChart(p, i) +
         '<div class="pkt-loc"><label>Breakdown and hotbox</label><input class="pkt-input" data-pkt="' + i + '" data-k="location" placeholder="Room" value="' + esc(p.location || "") + '"></div>' +
         '<ol class="pkt-steps">' + steps + '</ol>' +
         '<div class="pkt-specials">' + specials + '</div>' +
@@ -649,7 +703,8 @@ function fmtDate(iso) {
       tableCount: p.tableCount,
       seatsPerTable: p.seatsPerTable,
       sections: PreShift.normalizeSections(p.sections || []),
-      tablePins: PreShift.normalizeTablePins(p.tablePins || {})
+      tablePins: PreShift.normalizeTablePins(p.tablePins || {}),
+      skipDuties: p.skipDuties || []
     };
     savePacketStore(all);
     return p;
@@ -774,6 +829,12 @@ function fmtDate(iso) {
         var beforeSeats = meals[i].packetLive && meals[i].packetLive.seatsPerTable;
         persistPacket(i, meals);
         var k = el.getAttribute("data-k");
+        if (k === "opening" || k === "closing") {
+          var dc = document.querySelector('#pkt-' + i + ' .duty-chart'), wasOpen = dc && dc.open;
+          if (dc) { dc.outerHTML = dutyChart(meals[i].packetLive, i); bindDutyChart(i, meals); }
+          dc = document.querySelector('#pkt-' + i + ' .duty-chart'); if (dc && wasOpen) dc.open = true;
+          return;
+        }
         if (k === "teamcolor") { recolorTeam(i, meals, +el.getAttribute("data-t"), el.value); return; }
         if (k === "tableCount" && meals[i].packetLive.tableCount !== before) { redrawPacket(i, meals); return; }
         if (k === "seatsPerTable" && meals[i].packetLive.seatsPerTable !== beforeSeats) { redrawPacket(i, meals); return; }
@@ -792,6 +853,8 @@ function fmtDate(iso) {
           document.querySelectorAll(".ps-card").forEach(function (c) { c.classList.remove("print-me"); });
           var card = document.getElementById("ps-" + i);
           if (card) card.classList.add("print-me", "open");
+          buildPrintSheet(i, meals);
+          document.documentElement.classList.add("print-pkt");
           document.body.classList.add("print-pkt");
           window.print();
           return;
@@ -857,6 +920,7 @@ function fmtDate(iso) {
       });
     });
     loadDiagram(i, meals);
+    bindDutyChart(i, meals);
     bindSectionDraw(i, meals);
     paintSections(i, meals);
   }
@@ -1037,7 +1101,184 @@ function fmtDate(iso) {
     meals.forEach(function (_m, i) { bindOnePacket(i, meals); });
   }
 
+  // ---- Duty chart: master list of every opening/closing duty, who has it, what nobody has ----
+  var DUTY_STORE = "bb-preshift-duties";
+  function masterDuties() {
+    var d = null;
+    try { d = JSON.parse(localStorage.getItem(DUTY_STORE) || "null"); } catch (e) {}
+    return d && d.opening ? d : { opening: PreShift.OPENING_DUTIES.slice(), closing: PreShift.CLOSING_DUTIES.slice() };
+  }
+  function saveMaster(d) { try { localStorage.setItem(DUTY_STORE, JSON.stringify(d)); } catch (e) {} }
+  function dkey(t) { return String(t || "").trim().toLowerCase(); }
+  function dutyRows(p) {
+    var master = masterDuties(), skip = (p.skipDuties || []).map(dkey);
+    return ["opening", "closing"].map(function (kind) {
+      var seen = {}, rows = [];
+      function owner(t) {
+        var hit = (p.teams || []).filter(function (tm) { return (tm[kind] || []).some(function (x) { return dkey(x) === dkey(t); }); })[0];
+        return hit ? hit.color : "";
+      }
+      master[kind].forEach(function (t) { seen[dkey(t)] = 1; rows.push({ text: t, team: owner(t), master: true, skip: skip.indexOf(dkey(t)) >= 0 }); });
+      (p.teams || []).forEach(function (tm) {
+        (tm[kind] || []).forEach(function (t) { if (!seen[dkey(t)] && t.trim()) { seen[dkey(t)] = 1; rows.push({ text: t, team: tm.color, master: false }); } });
+      });
+      return { kind: kind, rows: rows };
+    });
+  }
+  function missingDuties(p) {
+    var out = [];
+    dutyRows(p).forEach(function (g) { g.rows.forEach(function (r) { if (!r.team && !r.skip) out.push(r.text); }); });
+    return out;
+  }
+  function unassignedLine(p) {
+    var miss = missingDuties(p);
+    return miss.length ? '<div class="pp-miss">Not assigned: ' + esc(miss.join(", ")) + '</div>' : '';
+  }
+  function dutyChart(p, i) {
+    var miss = missingDuties(p).length;
+    var teamOpts = (p.teams || []).map(function (t) { return t.color; });
+    return '<details class="duty-chart"' + (miss ? " open" : "") + '><summary>Duty chart <span class="dc-count' + (miss ? " miss" : "") + '">' +
+      (miss ? miss + " not assigned" : "all assigned") + '</span></summary>' +
+      dutyRows(p).map(function (g) {
+        return '<div class="dc-kind">' + (g.kind === "opening" ? "Opening" : "Closing") + '</div><ul class="dc-list">' +
+          g.rows.map(function (r) {
+            var state = r.team ? "" : (r.skip ? " skip" : " miss");
+            return '<li class="dc-row' + state + '"><i class="pkt-swatch" style="background:' + (SWATCH[r.team] || "transparent") + '"></i>' +
+              '<span class="dc-text">' + esc(r.text) + '</span>' +
+              '<select class="dc-sel" data-duty-kind="' + g.kind + '" data-duty="' + esc(r.text) + '" aria-label="Team">' +
+                '<option value="">' + (r.skip ? "Not needed" : "Not assigned") + '</option>' +
+                teamOpts.map(function (c) { return '<option' + (c === r.team ? " selected" : "") + '>' + esc(c) + '</option>'; }).join("") +
+                '<option value="__skip">Not needed tonight</option>' +
+              '</select>' +
+              '<button type="button" class="dc-x" data-duty-del="' + esc(r.text) + '" data-duty-kind="' + g.kind + '" aria-label="Remove duty">×</button></li>';
+          }).join("") + '</ul>' +
+          '<input class="dc-new" data-duty-new="' + g.kind + '" placeholder="+ Add ' + g.kind + ' duty">';
+      }).join("") + '</details>';
+  }
+  function setDutyTeam(i, meals, kind, text, team) {
+    var p = persistPacket(i, meals);
+    p.teams.forEach(function (tm) { tm[kind] = (tm[kind] || []).filter(function (x) { return dkey(x) !== dkey(text); }); });
+    p.skipDuties = (p.skipDuties || []).filter(function (x) { return dkey(x) !== dkey(text); });
+    if (team === "__skip") p.skipDuties.push(text);
+    else if (team) p.teams.filter(function (tm) { return tm.color === team; }).forEach(function (tm) { tm[kind].push(text); });
+    saveDutyState(i, meals, p);
+  }
+  function saveDutyState(i, meals, p) {
+    meals[i].packetLive = p;
+    var all = loadPacketStore();
+    all[p.key] = all[p.key] || {};
+    all[p.key].teams = p.teams;
+    all[p.key].teamCount = p.teams.length;
+    all[p.key].skipDuties = p.skipDuties || [];
+    savePacketStore(all);
+    var open = document.querySelector('#pkt-' + i + ' .duty-chart');
+    var wasOpen = open && open.open;
+    redrawPacket(i, meals);
+    var dc = document.querySelector('#pkt-' + i + ' .duty-chart');
+    if (dc && wasOpen) dc.open = true;
+  }
+  function bindDutyChart(i, meals) {
+    var root = document.getElementById("pkt-" + i);
+    if (!root) return;
+    root.querySelectorAll(".dc-sel").forEach(function (sel) {
+      sel.addEventListener("change", function (ev) {
+        ev.stopPropagation();
+        setDutyTeam(i, meals, sel.getAttribute("data-duty-kind"), sel.getAttribute("data-duty"), sel.value);
+      });
+    });
+    root.querySelectorAll(".dc-x").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var kind = b.getAttribute("data-duty-kind"), text = b.getAttribute("data-duty-del");
+        var m = masterDuties();
+        m[kind] = m[kind].filter(function (x) { return dkey(x) !== dkey(text); });
+        saveMaster(m);
+        setDutyTeam(i, meals, kind, text, "");
+      });
+    });
+    root.querySelectorAll(".dc-new").forEach(function (inp) {
+      inp.addEventListener("keydown", function (ev) {
+        if (ev.key !== "Enter") return;
+        ev.preventDefault();
+        var v = inp.value.trim(), kind = inp.getAttribute("data-duty-new");
+        if (!v) return;
+        var m = masterDuties();
+        if (!m[kind].some(function (x) { return dkey(x) === dkey(v); })) m[kind].push(v);
+        saveMaster(m);
+        saveDutyState(i, meals, persistPacket(i, meals));
+        var again = document.querySelector('#pkt-' + i + ' [data-duty-new="' + kind + '"]');
+        if (again) again.focus();
+      });
+    });
+  }
+
+  // Print: one compact sheet built from the packet data (no inputs, no app chrome)
+  function buildPrintSheet(i, meals) {
+    var p = persistPacket(i, meals), m = meals[i];
+    var old = document.getElementById("pkt-print"); if (old) old.remove();
+    var loads = PreShift.teamLoads(p.teams, p.assignments, p.seatsPerTable);
+    function tablesOf(color) {
+      return Object.keys(p.assignments || {}).filter(function (k) { return p.assignments[k] === color; })
+        .sort(function (a, b) { return a - b; }).join(", ");
+    }
+    function filled(a) { return (a || []).map(function (x) { return String(x || "").trim(); }).filter(Boolean); }
+    var teams = (p.teams || []).map(function (t, ti) {
+      var names = filled(t.names), tb = tablesOf(t.color), g = loads[ti] && loads[ti].guests;
+      return '<tr><td><i style="background:' + (SWATCH[t.color] || "#888") + '"></i><b>' + esc(t.color) + '</b>' +
+        '<div class="pp-names">' + (names.length ? esc(names.join(" / ")) : "______ / ______") + '</div></td>' +
+        '<td>' + (tb ? esc(tb) : "–") + (g ? '<div class="pp-dim">' + g + ' guests</div>' : '') + '</td>' +
+        '<td>' + esc(filled(t.opening).join(", ")) + '</td><td>' + esc(filled(t.closing).join(", ")) + '</td></tr>';
+    }).join("");
+    var steps = (p.steps || []).map(function (st) {
+      var items = filled(st.items).filter(function (x) { return !/\[ask\]/.test(x); }), owners = filled(st.owners);
+      if (!st.label && !items.length) return "";
+      return '<tr><td class="pp-time">' + esc(st.time || "") + '</td><td><b>' + esc(st.label || "") + '</b>' +
+        (items.length ? ' <span class="pp-dim">' + esc(items.join(" · ")) + '</span>' : '') + '</td>' +
+        '<td class="pp-dim">' + esc(owners.join(", ")) + '</td></tr>';
+    }).join("");
+    var specials = (p.specials || []).filter(function (x) { return String(x.text || "").trim(); }).map(function (x) {
+      return '<li>' + (x.table ? '<b>Table ' + esc(x.table) + ':</b> ' : '') + esc(x.text) + '</li>';
+    }).join("");
+    var canvas = document.querySelector('#pkt-' + i + ' .pkt-diag-stage.has-diagram .pkt-diag-canvas');
+    var diag = canvas ? '<div class="pp-diag">' + canvas.outerHTML + '</div>' : '';
+    var root = document.createElement("div");
+    root.id = "pkt-print";
+    root.innerHTML =
+      '<div class="pp-head"><div class="pp-title">Server Packet</div>' +
+        '<div class="pp-line"><b>' + esc(m.group) + '</b>' + contactLabel(m.contact) + (m.mgr ? ' · Manager ' + esc(m.mgr) : '') + ' · ' + esc(fmtDate(m.date)) + '</div>' +
+        '<div class="pp-meta">' + esc(m.time || "") + ' · ' + esc(m.room || "") + (countPill(m.counts) ? ' · ' + esc(countPill(m.counts)) : '') + '</div></div>' +
+      '<div class="pp-h">Assignments</div>' +
+      '<table class="pp-teams"><thead><tr><th>Team</th><th>Tables</th><th>Opening</th><th>Closing</th></tr></thead><tbody>' + teams + '</tbody></table>' +
+      unassignedLine(p) +
+      '<div class="pp-cols"><div><div class="pp-h">Timeline</div><table class="pp-steps">' + steps + '</table></div>' +
+        '<div>' + (specials ? '<div class="pp-h">Reminders</div><ul class="pp-sp">' + specials + '</ul>' : '') +
+        (String(p.location || "").trim() ? '<div class="pp-h">Breakdown and hotbox</div><div>' + esc(p.location) + '</div>' : '') + '</div></div>' +
+      (diag ? '<div class="pp-h">Table sections</div>' + diag : '');
+    document.body.appendChild(root);
+    var src = canvas && canvas.querySelector("img.is-shown");
+    var dst = root.querySelector(".pp-diag img.pkt-diagram-img");
+    if (src && dst && src.naturalWidth) {
+      try {
+        var cv = document.createElement("canvas");
+        cv.width = src.naturalWidth; cv.height = src.naturalHeight;
+        var cx = cv.getContext("2d");
+        cx.drawImage(src, 0, 0);
+        // Dark diagram -> white paper: faint lines come out dark, the black ground goes white
+        var px = cx.getImageData(0, 0, cv.width, cv.height), d = px.data;
+        for (var q = 0; q < d.length; q += 4) {
+          var l = 0.3 * d[q] + 0.59 * d[q + 1] + 0.11 * d[q + 2];
+          var v = 255 - Math.max(0, Math.min(255, (l - 16) * 4));
+          d[q] = d[q + 1] = d[q + 2] = v;
+        }
+        cx.putImageData(px, 0, 0);
+        dst.src = cv.toDataURL("image/png");
+        dst.classList.add("pp-light");
+      } catch (e) {}
+    }
+  }
+
   window.addEventListener("afterprint", function () {
+    var pp = document.getElementById("pkt-print"); if (pp) pp.remove();
+    document.documentElement.classList.remove("print-pkt");
     document.body.classList.remove("print-pkt");
     document.querySelectorAll(".ps-card.print-me").forEach(function (c) { c.classList.remove("print-me"); });
   });

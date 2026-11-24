@@ -713,6 +713,7 @@
     };
   }
 
+  // Master duty chart for a plated meal. Every duty lands on a team; the packet flags any that do not.
   var OPENING_DUTIES = [
     "Coffee trays (4)",
     "Bread baskets",
@@ -725,14 +726,37 @@
     "Hotbox stations",
     "Dressings",
     "Butters",
-    "Waters"
+    "Waters",
+    "Polish silverware",
+    "Polish glassware",
+    "Check table settings against the diagram",
+    "Table numbers and centerpieces",
+    "Head table / stage tables",
+    "Ice bins and water pitchers",
+    "Iced tea and lemons",
+    "Sugar caddies and sweeteners",
+    "Side stations stocked (silverware, napkins, glasses)",
+    "Trays, tray jacks, and covers staged",
+    "Bus tubs and racks at breakdown",
+    "Wine opened and chilled (if wine)",
+    "Dietary plates labeled with table numbers"
   ];
   var CLOSING_DUTIES = [
     "Sweep/mop",
     "Beverage station",
     "Strike coffee cart",
     "Trash",
-    "Plates to dish"
+    "Plates to dish",
+    "Clear and bus tables",
+    "Glass racks to dish",
+    "Silverware to dish",
+    "Linens to bins",
+    "Strike breakdown stations",
+    "Strike hotbox stations",
+    "Trays and tray jacks returned",
+    "Leftover bread, butter, dressings to kitchen",
+    "Client items and centerpieces to storage",
+    "Final walk-through and lost and found"
   ];
   var TEAM_COLORS = ["Yellow", "Green", "Blue", "Red", "Orange", "Purple", "Pink", "Teal", "Brown", "Gray", "Gold", "White"];
   var GUESTS_PER_TEAM = 45;
@@ -745,9 +769,15 @@
       var yellowOpen = ["Coffee trays (4)", "Bread baskets", "Brew tea/coffee", "Fold napkins", "Coffee cart and table", "Fill regular and decaf urns", "Cups, cream, sugar, lemons"];
       var greenOpen = ["Breakdown stations", "Hotbox stations", "Dressings", "Butters", "Waters"];
       extra.forEach(function (d) { yellowOpen.push(d); });
+      var yellowClose = ["Sweep/mop", "Beverage station", "Strike coffee cart"], greenClose = ["Trash", "Plates to dish"];
+      // The rest of the master chart alternates Yellow, Green
+      OPENING_DUTIES.filter(function (d) { return yellowOpen.indexOf(d) < 0 && greenOpen.indexOf(d) < 0; })
+        .forEach(function (d, k) { (k % 2 ? greenOpen : yellowOpen).push(d); });
+      CLOSING_DUTIES.filter(function (d) { return yellowClose.indexOf(d) < 0 && greenClose.indexOf(d) < 0; })
+        .forEach(function (d, k) { (k % 2 ? yellowClose : greenClose).push(d); });
       return [
-        { color: "Yellow", opening: yellowOpen, closing: ["Sweep/mop", "Beverage station", "Strike coffee cart"] },
-        { color: "Green", opening: greenOpen, closing: ["Trash", "Plates to dish"] }
+        { color: "Yellow", opening: yellowOpen, closing: yellowClose },
+        { color: "Green", opening: greenOpen, closing: greenClose }
       ];
     }
     var teams = [];
@@ -1208,6 +1238,7 @@
     if (saved.seatsPerTable != null && +saved.seatsPerTable > 0) out.seatsPerTable = +saved.seatsPerTable;
     if (saved.teamCount && +saved.teamCount > 0) out.teamCount = +saved.teamCount;
     if (Array.isArray(saved.sections)) out.sections = normalizeSections(saved.sections);
+    if (Array.isArray(saved.skipDuties)) out.skipDuties = saved.skipDuties.map(String);
     if (saved.tablePins && typeof saved.tablePins === "object") out.tablePins = normalizeTablePins(saved.tablePins);
     return out;
   }

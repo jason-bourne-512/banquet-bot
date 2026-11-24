@@ -237,13 +237,16 @@ if (fs.existsSync(pagePath)) {
 
 // Server packet, duty split, mobile coffee
 const split2 = PreShift.splitDuties(2);
-assert.deepEqual(split2[0].opening, [
+assert.deepEqual(split2[0].opening.slice(0, 7), [
   "Coffee trays (4)", "Bread baskets", "Brew tea/coffee", "Fold napkins",
   "Coffee cart and table", "Fill regular and decaf urns", "Cups, cream, sugar, lemons"
 ]);
-assert.deepEqual(split2[0].closing, ["Sweep/mop", "Beverage station", "Strike coffee cart"]);
-assert.deepEqual(split2[1].opening, ["Breakdown stations", "Hotbox stations", "Dressings", "Butters", "Waters"]);
-assert.deepEqual(split2[1].closing, ["Trash", "Plates to dish"]);
+assert.deepEqual(split2[0].closing.slice(0, 3), ["Sweep/mop", "Beverage station", "Strike coffee cart"]);
+assert.deepEqual(split2[1].opening.slice(0, 5), ["Breakdown stations", "Hotbox stations", "Dressings", "Butters", "Waters"]);
+assert.deepEqual(split2[1].closing.slice(0, 2), ["Trash", "Plates to dish"]);
+// Two teams still cover the whole master chart
+assert.equal(split2[0].opening.length + split2[1].opening.length, PreShift.OPENING_DUTIES.length);
+assert.equal(split2[0].closing.length + split2[1].closing.length, PreShift.CLOSING_DUTIES.length);
 const split3 = PreShift.splitDuties(3);
 assert.equal(split3.length, 3);
 assert.equal(split3.map(function (t) { return t.opening.length; }).reduce(function (a, b) { return a + b; }, 0), PreShift.OPENING_DUTIES.length);
