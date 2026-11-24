@@ -261,8 +261,7 @@ meals.forEach(function (m) {
   assert.ok(coffee.items.some(function (it) { return /cups, cream, sugar/i.test(it); }));
   assert.ok(coffee.items.some(function (it) { return /not from the back/i.test(it); }));
   assert.ok(coffee.owners && coffee.owners.length && coffee.owners.every(function (o) { return !o; }), "who runs coffee stays blank");
-  assert.ok(m.script.some(function (l) { return /Mobile coffee/i.test(l.text); }));
-  assert.ok(m.script.some(function (l) { return /where the cart goes/i.test(l.text); }));
+  assert.ok(!m.script.some(function (l) { return /Mobile coffee/i.test(l.text); }), "coffee cart is an opening duty, not pre-shift talk");
   assert.ok(m.script.some(function (l) { return l.text.indexOf(PreShift.ALLERGY_CAPTAIN_DROP) >= 0; }), m.group + " script should say Jason drops severe allergy plates");
   assert.ok(!/Bourne/.test(allText(m)), "first names only");
   assert.ok((m.packet.specials || []).some(function (s) { return s.text === PreShift.ALLERGY_CAPTAIN_DROP; }), m.group + " packet should include the allergy drop rule");
@@ -342,7 +341,7 @@ assert.equal(kept.teams[0].names[0], "Alex");
 
 const bare = PreShift.buildPreShift({ group: "Future Lunch", tag: "Plated Lunch", menu: "Plated Lunch", foot: {}, counts: { gtd: "20" } });
 assert.ok(bare.packet.diagram.missing, "no diagram should be a placeholder, not an invented layout");
-assert.ok(bare.script.some(function (l) { return /Mobile coffee/i.test(l.text); }));
+assert.ok(!bare.script.some(function (l) { return /Mobile coffee/i.test(l.text); }));
 assert.equal(bare.packet.teams.length, 1, "GTD 20 -> 1 team");
 
 

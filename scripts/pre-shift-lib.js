@@ -447,12 +447,7 @@
     }
     say("Coffee / decaf", coffee || "", "When does coffee / decaf go out?");
     if (coffee) fact("Coffee / decaf", coffee);
-    var cartPlace = coffeeCartPlacement(blob);
-    if (cartPlace) fact("Mobile coffee", "Cart rolls in by dessert. Placement: " + cartPlace + ". Urns filled regular and decaf. Cups, cream, sugar, and lemons on the cart.");
-    else {
-      fact("Mobile coffee", "Urns go on a cart and a table in or near the room, not from the back. Rolls in by dessert. Regular and decaf, with cups, cream, sugar, and lemons. [ask] where the cart goes.", "ask");
-      addQ(questions, asked, mgr, "Where does the mobile coffee cart go? The event order does not say.");
-    }
+    // Mobile coffee cart is a back-of-house opening duty: it lives in the server packet, not the pre-shift talk
 
     // Set / diagram, AV, storage
     var setBits = [];
@@ -617,7 +612,6 @@
       speak(lines, "Do not clear dessert plates. Dessert is Chocolate Decadence, which is already gluten free. Coffee and hot tea stay through speeches. [ask] when decaf goes out if it is not with the regular coffee.", false);
       speak(lines, "The event order books dinner from 7:00 to 11:00. The rundown card still says 7:00 to 9:00. [ask] which window is live.", false);
       speak(lines, "After service, client linen, florals, and chargers go back to Camellia B. That storage is held Saturday morning. Pickup time is still to be confirmed. [ask]", false);
-      speak(lines, coffeeCartScriptLine(f.blob).text, false);
       speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
       return lines;
     }
@@ -632,7 +626,6 @@
       speak(lines, "[ask] who calls service at 12:20, and who calls any later course around the 12:30 welcome and the 12:55 awards. " + serviceCueScriptLine(f.blob).text + " [ask] kitchen fire times, and whether dessert is pre-set or held until after 12:55.", false);
       speak(lines, "House standard is serve left, clear right, unless " + who + " says otherwise. [ask] if there is a head table or stage tables first.", false);
       speak(lines, "[ask] any vendor, sponsor, or staff meals, and where they eat.", false);
-      speak(lines, coffeeCartScriptLine(f.blob).text, false);
       speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
       return lines;
     }
@@ -675,7 +668,6 @@
     if (f.staff) speak(lines, f.staff + ".");
     else speak(lines, "Vendor or staff meals: [ask].", false);
     if (f.storage) speak(lines, "Storage: " + f.storage + ".");
-    speak(lines, coffeeCartScriptLine(f.blob || (f.coffee || "")).text, false);
     speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
     return lines;
   }
@@ -687,15 +679,6 @@
     var m = s.match(/[^·]*(?:coffee cart|mobile coffee|coffee station)[^·]*/i);
     if (m && /\b(in|near|at|by|outside|foyer|pre-function|hallway|room)\b/i.test(m[0])) return clean(m[0]);
     return "";
-  }
-
-  function coffeeCartScriptLine(blob) {
-    var place = coffeeCartPlacement(blob);
-    var t = "Mobile coffee: urns go on a cart and a table in or near the room, not from the back. Fill regular and decaf, and stock cups, cream, sugar, and lemons on the cart. It rolls in by dessert.";
-    if (place) t += " Cart placement: " + place + ".";
-    else t += " [ask] where the cart goes; the event order does not say.";
-    t += " [ask] who runs it.";
-    return { text: t, placement: place, known: !!place };
   }
 
   function wineChillFromEO(blob) {

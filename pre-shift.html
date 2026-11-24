@@ -82,30 +82,52 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .ps-val.ask { color:var(--red); font-family:'DM Mono',monospace; font-size:11px; }
 .ps-val.house { color:var(--text-2); font-style:italic; font-size:12px; }
 
-.tl-row { display:block; }
-.tl { margin-top:6px; display:flex; flex-direction:column; gap:2px; }
-.tl-time { font-family:'DM Mono',monospace; font-size:11px; color:var(--accent); margin-top:6px; }
-.tl-time:first-child { margin-top:0; }
-.tl-list { margin:0; padding-left:16px; display:flex; flex-direction:column; gap:3px; }
-.tl-list li { font-size:12.5px; color:var(--text-1); line-height:1.4; }
-.tl-list b { font-weight:600; }
-.tl-detail { font-size:12px; color:var(--text-2); }
-.q-box { background:var(--red-dim); border:1px solid rgba(255,143,143,0.2); border-radius:8px; padding:8px 12px; }
-.q-who { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--red); margin:6px 0 2px; }
-.q-who:first-child { margin-top:0; }
-.q-list { margin:0; padding-left:16px; }
-.q-list li { font-size:12.5px; color:var(--text-1); line-height:1.4; padding:1px 0; }
 
+/* Card content: color-coded bullet blocks */
+.ps-sub.s-an { color:var(--accent); } .ps-sub.s-sc { color:var(--blue); } .ps-sub.s-q { color:var(--red); }
+.ps-sub::before { content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:currentColor; margin-right:7px; vertical-align:1px; }
+.an { --k:var(--blue); border-left:2px solid var(--k); background:linear-gradient(90deg, color-mix(in srgb, var(--k) 7%, transparent), transparent 70%); border-radius:0 6px 6px 0; padding:6px 10px 7px; margin:6px 0; }
+.an.k-ask { --k:var(--red); } .an.k-flag { --k:var(--amber); } .an.k-later { --k:var(--text-3); } .an.k-house { --k:var(--green); }
+.an-lab { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:.8px; text-transform:uppercase; color:var(--k); margin-bottom:3px; }
+.bl { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px; }
+.bl > li { position:relative; padding-left:12px; font-size:12.5px; line-height:1.4; color:var(--text-1); }
+.bl > li::before { content:""; position:absolute; left:1px; top:.55em; width:4px; height:4px; border-radius:50%; background:var(--k, var(--text-2)); opacity:.8; }
+.an.k-later .bl > li { color:var(--text-2); font-style:italic; }
+.an.k-flag .bl > li { color:var(--amber); }
+.tl { display:flex; flex-direction:column; gap:2px; }
+.tl-time { font-family:'DM Mono',monospace; font-size:10.5px; color:var(--accent); margin-top:5px; }
+.tl-time:first-child { margin-top:0; }
+.tl b { font-weight:600; }
+.tl-detail { font-size:12px; color:var(--text-2); }
+.sc-note { font-size:11px; color:var(--text-2); margin:0 0 8px; }
+.ps-script { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+.ps-script > li { position:relative; padding:0 0 0 12px; font-size:13px; line-height:1.45; color:var(--text-1); border-left:2px solid color-mix(in srgb, var(--blue) 45%, transparent); }
+.ps-script ul { list-style:none; padding:0; margin:3px 0 0; display:flex; flex-direction:column; gap:2px; }
+.ps-script ul li { position:relative; padding-left:12px; font-size:12.5px; color:var(--text-2); line-height:1.4; }
+.ps-script ul li::before { content:"–"; position:absolute; left:0; color:var(--blue); opacity:.7; }
+.q-box { --k:var(--red); background:var(--red-dim); border-radius:8px; padding:8px 12px; }
+.q-who { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--red); margin:8px 0 3px; }
+.q-who:first-child { margin-top:0; }
+.ask { color:var(--red); font-family:'DM Mono',monospace; font-size:.85em; }
+/* Edit mode: hidden until Edit is on */
+.ed-bar { display:flex; justify-content:flex-end; gap:6px; margin:-4px 0 4px; }
+.ed-toggle, .ed-reset { font:600 10.5px/1 'DM Mono',monospace; letter-spacing:.5px; color:var(--text-2); background:transparent; border:1px solid var(--border-h); border-radius:20px; padding:5px 10px; cursor:pointer; }
+.ps-content.editing .ed-toggle { color:var(--accent); border-color:var(--accent); }
+.ed-reset { border-color:transparent; }
+.ed-x, .ed-add { display:none; }
+.ps-content.editing .ed-x { display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; margin-left:6px; vertical-align:1px; border:0; border-radius:50%; background:transparent; color:var(--text-3); font-size:13px; line-height:1; cursor:pointer; padding:0; }
+.ps-content.editing .ed-x:hover { color:var(--red); background:var(--red-dim); }
+.ps-content.editing .ed-add { display:inline-block; margin:4px 0 0 12px; padding:0; border:0; background:transparent; color:var(--text-3); font:500 11px 'DM Mono',monospace; cursor:pointer; }
+.ps-content.editing .ed-add:hover { color:var(--accent); }
+.ps-content.editing [contenteditable] { outline:0; text-decoration:underline dashed var(--border-h); text-underline-offset:3px; padding-right:1px; }
+.ps-content.editing [contenteditable]:focus { text-decoration-color:var(--accent); }
+.tl .ed-add { align-self:flex-start; }
+.ps-content.editing [contenteditable]:empty::before { content:"type here"; color:var(--text-3); font-style:italic; }
 .note-box { background:var(--blue-dim); border:1px solid rgba(139,209,255,0.2); border-radius:8px; padding:10px 12px; margin-bottom:4px; font-size:11px; color:var(--blue); line-height:1.5; }
 
 
 .ps-val.flag { color:var(--amber); }
 .ps-val.later { color:var(--text-2); font-style:italic; font-size:12px; }
-.ps-script { list-style:disc; padding:0 0 4px 18px; display:flex; flex-direction:column; gap:7px; }
-.ps-script li { font-size:13px; color:var(--text-1); line-height:1.45; padding-left:2px; }
-.ps-script > li::marker { color:var(--accent); }
-.ps-script ul { list-style:circle; padding-left:16px; margin-top:3px; display:flex; flex-direction:column; gap:2px; }
-.ps-script ul li { font-size:12.5px; color:var(--text-2); }
 .ps-script .ask { color:var(--red); font-family:'DM Mono',monospace; font-size:11px; }
 .note-box.later { background:transparent; border-color:var(--divider); color:var(--text-2); font-style:italic; margin-top:8px; }
 
@@ -157,6 +179,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .pkt-diag-stage.has-diagram.is-inking .pkt-sec-layer { cursor:crosshair; }
 .pkt-sec-box { position:absolute; box-sizing:border-box; border:2px solid; border-radius:2px; }
 .pkt-sec-box.selected { outline:2px dashed #111; outline-offset:1px; }
+.pkt-sec-x { position:absolute; top:-8px; right:-8px; width:18px; height:18px; border-radius:50%; border:0; background:#111; color:#fff; font-size:12px; line-height:18px; padding:0; cursor:pointer; box-shadow:0 0 0 1px rgba(255,255,255,.4); }
 .pkt-sec-label { position:absolute; top:2px; left:2px; font-size:11px; font-weight:700; line-height:1.2; padding:1px 4px; background:rgba(255,255,255,0.82); color:#111; border-radius:2px; pointer-events:none; }
 .pkt-sec-draft { position:absolute; box-sizing:border-box; border:2px dashed; pointer-events:none; display:none; }
 @media print {
@@ -185,6 +208,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   body.print-pkt .pkt-diagram-img.is-shown { display:block !important; }
   body.print-pkt .pkt-sec-layer { display:block !important; }
   body.print-pkt .pkt-sec-box.selected { outline:0; }
+  body.print-pkt .pkt-sec-x { display:none !important; }
   body.print-pkt { background:#fff !important; color:#111; }
 }
 
@@ -195,7 +219,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <link rel="stylesheet" href="assets/bb-reference.css">
 <script src="scripts/contact-privacy.js?v=1124a"></script>
 <script src="theme.js?v=1124b"></script>
-<script src="scripts/pre-shift-lib.js?v=1124a"></script>
+<script src="scripts/pre-shift-lib.js?v=1124b"></script>
 </head>
 <body class="bb-ref">
 <div class="page-wrap">
@@ -253,32 +277,164 @@ function fmtDate(iso) {
     return esc(s).replace(/\[ask\]/g, '<span class="ask">[ask]</span>');
   }
 
-  function timeline(items) {
+  // ---- Card content: color-coded bullets, editable per card (saved on this device) ----
+  var EDIT_STORE = "bb-preshift-edits";
+  var editing = {};
+  function loadEdits() { try { return JSON.parse(localStorage.getItem(EDIT_STORE) || "{}") || {}; } catch (e) { return {}; } }
+  function saveEdits(all) { try { localStorage.setItem(EDIT_STORE, JSON.stringify(all)); } catch (e) {} }
+  function mealKey(m) { return m.date + "|" + m.group; }
+
+  function splitBullets(text) {
+    return String(text || "").replace(/\s*OPEN\s*→/g, "").replace(/(?<=[a-z]{3}|\d)(?=[A-Z][a-z]{3})/g, " · ").split(/\s+·\s+|;\s+|(?<=[.?!])\s+(?=[A-Z0-9(])/).map(function (t) { return t.trim(); }).filter(Boolean);
+  }
+  function kindOf(l) {
+    if (l.kind === "flag") return "flag";
+    if (l.kind === "later" || l.later) return "later";
+    if (l.kind === "ask" || l.known === false) return "ask";
+    if (l.house) return "house";
+    return "fact";
+  }
+  function buildEdits(m) {
+    var rows = (m.analysis && m.analysis.length ? m.analysis : m.lines || []).map(function (l) {
+      return { label: l.label, kind: kindOf(l), b: l.items && l.items.length ? [] : splitBullets(l.text),
+        t: (l.items || []).map(function (it) { return { time: it.time, room: it.room, what: it.what, detail: it.detail }; }) };
+    });
+    var script = (m.script || []).map(function (l) {
+      var parts = String(l.text || "").split(/(?<=[.?!])\s+(?=[A-Z0-9])/);
+      return { h: parts.shift() || "", s: parts };
+    });
+    var qs = (m.questions || []).map(function (q) { return { who: q.who || "", q: q.q }; });
+    return { a: rows, s: script, q: qs };
+  }
+  function editsFor(m) {
+    if (!m.ed) {
+      var saved = loadEdits()[mealKey(m)];
+      m.ed = saved && saved.a ? saved : buildEdits(m);
+    }
+    return m.ed;
+  }
+  function persistEdits(m) { var all = loadEdits(); all[mealKey(m)] = m.ed; saveEdits(all); }
+
+  function ed(path, text, cls) {
+    return '<span class="ed' + (cls ? " " + cls : "") + '" data-ed="' + path + '">' + markAsks(text) + '</span>';
+  }
+  function x(path) { return '<button type="button" class="ed-x" data-del="' + path + '" aria-label="Remove">×</button>'; }
+  function add(path, label, extra) { return '<button type="button" class="ed-add" data-add="' + path + '"' + (extra || "") + '>+ ' + label + '</button>'; }
+
+  function timelineHtml(row, R, i) {
     var order = [], by = {};
-    items.forEach(function (it) {
+    row.t.forEach(function (it, K) {
       if (!by[it.time]) { by[it.time] = []; order.push(it.time); }
-      by[it.time].push(it);
+      by[it.time].push(K);
     });
     return '<div class="tl">' + order.map(function (t) {
-      return '<div class="tl-time">' + esc(t || "Time TBD") + '</div><ul class="tl-list">' +
-        by[t].map(function (it) {
-          return '<li><b>' + esc(it.room || "Room TBD") + '</b>' + (it.what ? ' · ' + esc(it.what) : '') +
-            (it.detail ? '<div class="tl-detail">' + esc(it.detail) + '</div>' : '') + '</li>';
+      return '<div class="tl-time"><span class="ed" data-tl="' + R + '" data-time="' + esc(t) + '">' + esc(t || "Time") + '</span></div><ul class="bl">' +
+        by[t].map(function (K) {
+          var it = row.t[K], pth = "a." + R + ".t." + K;
+          return '<li><b>' + ed(pth + ".room", it.room || "Room") + '</b> · ' + ed(pth + ".what", it.what || "") + x(pth) +
+            (it.detail || editing[i] ? '<div class="tl-detail">' + ed(pth + ".detail", it.detail || "", "ph") + '</div>' : '') + '</li>';
         }).join("") + '</ul>';
-    }).join("") + '</div>';
+    }).join("") + add("a." + R + ".t", "time slot") + '</div>';
   }
 
-  function qGroups(questions, mgr) {
-    var order = [], by = {};
-    questions.forEach(function (q) {
-      var w = q.who || "";
-      if (!by[w]) { by[w] = []; w === mgr ? order.unshift(w) : order.push(w); }
-      by[w].push(q.q);
-    });
-    return order.map(function (w) {
-      return (w && w !== mgr ? '<div class="q-who">' + esc(w) + '</div>' : '') +
-        '<ul class="q-list">' + by[w].map(function (q) { return '<li>' + esc(q) + '</li>'; }).join("") + '</ul>';
+  function cardContent(m, i) {
+    var E = editsFor(m);
+    var anal = E.a.map(function (row, R) {
+      var body = row.t && row.t.length ? timelineHtml(row, R)
+        : '<ul class="bl">' + row.b.map(function (t, K) { return '<li>' + ed("a." + R + ".b." + K, t) + x("a." + R + ".b." + K) + '</li>'; }).join("") + '</ul>' + add("a." + R + ".b", "point");
+      return '<div class="an k-' + esc(row.kind) + '"><div class="an-lab">' + ed("a." + R + ".label", row.label) + x("a." + R) + '</div>' + body + '</div>';
+    }).join("") + add("a", "section");
+    var spoken = E.s.map(function (l, N) {
+      return '<li>' + ed("s." + N + ".h", l.h) + x("s." + N) +
+        '<ul>' + l.s.map(function (t, K) { return '<li>' + ed("s." + N + ".s." + K, t) + x("s." + N + ".s." + K) + '</li>'; }).join("") +
+        '</ul>' + add("s." + N + ".s", "detail") + '</li>';
     }).join("");
+    var qTitle = m.mgr ? "Questions for " + m.mgr : "Questions to ask";
+    var order = [], by = {};
+    E.q.forEach(function (q, N) { var w = q.who || ""; if (!by[w]) { by[w] = []; w === m.mgr ? order.unshift(w) : order.push(w); } by[w].push(N); });
+    if (!order.length) order.push(m.mgr || "");
+    var qs = order.map(function (w) {
+      return (w && w !== m.mgr ? '<div class="q-who">' + esc(w) + '</div>' : '') +
+        '<ul class="bl">' + (by[w] || []).map(function (N) { return '<li>' + ed("q." + N + ".q", E.q[N].q) + x("q." + N) + '</li>'; }).join("") + '</ul>' +
+        add("q", "question", ' data-who="' + esc(w) + '"');
+    }).join("");
+    return '<div class="ed-bar"><button type="button" class="ed-toggle" data-act="edit">' + (editing[i] ? "Done" : "Edit") + '</button>' +
+        (editing[i] ? '<button type="button" class="ed-reset" data-act="reset">Reset to Rundown</button>' : '') + '</div>' +
+      '<div class="ps-sub s-an">Analysis</div>' + anal +
+      '<div class="ps-sub s-sc">Server script</div>' +
+      '<p class="sc-note">Read top to bottom at pre-shift. <span class="ask">[ask]</span> = confirm with the manager before doors.</p>' +
+      '<ul class="ps-script">' + spoken + '</ul>' + add("s", "bullet") +
+      '<div class="ps-sub s-q">' + esc(qTitle) + '</div>' +
+      (E.q.length || editing[i] ? '<div class="q-box">' + qs + '</div>' : '<p class="sc-note">Nothing flagged. Walk the known lines at stand-up.</p>');
+  }
+
+  function walk(E, path) {
+    var keys = path.split("."), o = E;
+    for (var k = 0; k < keys.length - 1; k++) o = o[keys[k]];
+    return { obj: o, key: keys[keys.length - 1] };
+  }
+  function redrawContent(i, meals, focusPath) {
+    var box = document.querySelector('[data-content="' + i + '"]');
+    if (!box) return;
+    box.innerHTML = cardContent(meals[i], i);
+    box.classList.toggle("editing", !!editing[i]);
+    box.querySelectorAll("[data-ed],[data-tl]").forEach(function (el) {
+      if (editing[i]) el.setAttribute("contenteditable", "plaintext-only"); else el.removeAttribute("contenteditable");
+    });
+    var head = document.querySelector('#ps-' + i + ' .pill.ask, #ps-' + i + ' .ps-pills .pill:last-child');
+    var n = meals[i].ed.q.length;
+    if (head && /to ask|Ready/.test(head.textContent)) { head.textContent = n ? n + " to ask" : "Ready"; head.classList.toggle("ask", !!n); }
+    if (focusPath) {
+      var f = box.querySelector('[data-ed="' + focusPath + '"]');
+      if (f) { f.focus(); try { document.getSelection().selectAllChildren(f); } catch (e) {} }
+    }
+  }
+  function bindEdits(meals) {
+    meals.forEach(function (m, i) {
+      var box = document.querySelector('[data-content="' + i + '"]');
+      if (!box) return;
+      box.addEventListener("click", function (ev) {
+        var b = ev.target.closest("button");
+        if (!b) return;
+        var E = editsFor(m);
+        if (b.getAttribute("data-act") === "edit") { editing[i] = !editing[i]; redrawContent(i, meals); return; }
+        if (b.getAttribute("data-act") === "reset") {
+          var all = loadEdits(); delete all[mealKey(m)]; saveEdits(all);
+          m.ed = buildEdits(m); redrawContent(i, meals); return;
+        }
+        var del = b.getAttribute("data-del");
+        if (del) { var w = walk(E, del); w.obj.splice(+w.key, 1); persistEdits(m); redrawContent(i, meals); return; }
+        var ad = b.getAttribute("data-add");
+        if (ad) {
+          var arr = ad.split(".").reduce(function (o, k) { return o[k]; }, E), np;
+          if (ad === "a") arr.push({ label: "New section", kind: "fact", b: [""], t: [] }), np = "a." + (arr.length - 1) + ".label";
+          else if (ad === "q") arr.push({ who: b.getAttribute("data-who") || m.mgr || "", q: "" }), np = "q." + (arr.length - 1) + ".q";
+          else if (ad === "s") arr.push({ h: "", s: [] }), np = "s." + (arr.length - 1) + ".h";
+          else if (/\.t$/.test(ad)) arr.push({ time: "", room: "", what: "", detail: "" }), np = ad + "." + (arr.length - 1) + ".room";
+          else arr.push(""), np = ad + "." + (arr.length - 1);
+          persistEdits(m); redrawContent(i, meals, np);
+        }
+      });
+      box.addEventListener("focusout", function (ev) {
+        var el = ev.target, E = editsFor(m), v = el.textContent.trim();
+        if (el.hasAttribute("data-tl")) {
+          var old = el.getAttribute("data-time");
+          E.a[+el.getAttribute("data-tl")].t.forEach(function (it) { if (it.time === old) it.time = v; });
+          el.setAttribute("data-time", v);
+          persistEdits(m); return;
+        }
+        var p = el.getAttribute("data-ed");
+        if (!p || !editing[i]) return;
+        var w = walk(E, p);
+        if (w.obj[w.key] === v) return;
+        w.obj[w.key] = v;
+        persistEdits(m);
+      });
+      box.addEventListener("keydown", function (ev) {
+        if (ev.key === "Enter" && ev.target.isContentEditable) { ev.preventDefault(); ev.target.blur(); }
+      });
+    });
+    bindPackets(meals);
   }
 
   function render(meals) {
@@ -293,26 +449,7 @@ function fmtDate(iso) {
     st.hidden = true; list.hidden = false;
     sec.textContent = meals.length + " plated · from " + fmtDate(TODAY);
     list.innerHTML = meals.map(function (m, i) {
-      var asks = m.questions.length;
-      var anal = (m.analysis && m.analysis.length ? m.analysis : m.lines).map(function (l) {
-        var cls = "ps-val";
-        if (l.kind === "flag") cls += " flag";
-        else if (l.kind === "later" || l.later) cls += " later";
-        else if (l.kind === "ask" || l.known === false) cls += " ask";
-        else if (l.house) cls += " house";
-        if (l.items && l.items.length) return '<div class="ps-row tl-row"><div class="ps-lab">' + esc(l.label) + '</div>' + timeline(l.items) + '</div>';
-        return '<div class="ps-row"><div class="ps-lab">' + esc(l.label) + '</div><div class="' + cls + '">' + markAsks(l.text) + '</div></div>';
-      }).join("");
-      var spoken = (m.script || []).map(function (l) {
-        var parts = String(l.text || "").split(/(?<=[.?!])\s+(?=[A-Z0-9])/);
-        var head = parts.shift();
-        return '<li>' + markAsks(head) + (parts.length
-          ? '<ul>' + parts.map(function (p) { return '<li>' + markAsks(p) + '</li>'; }).join("") + '</ul>' : '') + '</li>';
-      }).join("");
-      var qTitle = m.mgr ? "Questions for " + m.mgr : "Questions to ask";
-      var qs = m.questions.length
-        ? '<div class="ps-sub">' + esc(qTitle) + '</div><div class="q-box">' + qGroups(m.questions, m.mgr) + '</div>'
-        : '<div class="ps-sub">' + esc(qTitle) + '</div><div class="note-box">Nothing flagged. Walk the known lines at stand-up.</div>';
+      var asks = editsFor(m).q.length;
       return '<div class="ps-card" id="ps-' + i + '">' +
         '<div class="ps-head" onclick="this.parentElement.classList.toggle(\'open\')">' +
           '<div class="ps-main">' +
@@ -328,17 +465,11 @@ function fmtDate(iso) {
           '</div><span class="ps-chevron">▶</span>' +
         '</div>' +
         '<div class="ps-body">' +
-          '<div class="ps-sub">Analysis</div>' +
-          anal +
-          '<div class="ps-sub">Server script</div>' +
-          '<div class="note-box">Read this start to finish at pre-shift. [ask] means confirm with the manager before doors.</div>' +
-          '<ul class="ps-script">' + spoken + '</ul>' +
-          '<div class="note-box later">Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.</div>' +
-          qs +
+          '<div class="ps-content" data-content="' + i + '">' + cardContent(m, i) + '</div>' +
           renderPacket(m, i) +
         '</div></div>';
     }).join("");
-    bindPackets(meals);
+    bindEdits(meals);
   }
 
 
@@ -397,7 +528,7 @@ function fmtDate(iso) {
       var opts = '<option value="">Section</option>' + colors.map(function (c) {
         return '<option value="' + esc(c) + '"' + (cur === c ? " selected" : "") + '>' + esc(c) + '</option>';
       }).join("");
-      assigns += '<label class="pkt-assign-item"><span>Table ' + ti + '</span><select class="pkt-select" data-pkt="' + i + '" data-k="assign" data-table="' + ti + '">' + opts + '</select></label>';
+      assigns += '<label class="pkt-assign-item"><span>Table ' + ti + '</span><select class="pkt-select" style="border-left:3px solid ' + (SWATCH[cur] || "transparent") + '" data-pkt="' + i + '" data-k="assign" data-table="' + ti + '">' + opts + '</select></label>';
     }
     var legend = colors.map(function (c) {
       return '<span><i class="pkt-swatch" style="background:' + (SWATCH[c] || "#888") + '"></i>' + esc(c) + '</span>';
@@ -409,9 +540,8 @@ function fmtDate(iso) {
     var diagBlock = '<div class="pkt-diag-stage" data-diag-stage="' + i + '">' +
       '<div class="pkt-sec-bar">' +
         '<span class="pkt-assign-label" style="margin:0">Section color</span>' + inks +
-        '<button type="button" class="bb-btn pkt-btn" data-act="delete-section" data-pkt="' + i + '" disabled>Delete section</button>' +
       '</div>' +
-      '<p class="pkt-sec-hint">Pick a team color, then drag a box on the diagram to mark that section. Tap a box to select it, then delete. You can draw more than one box per team.</p>' +
+      '<p class="pkt-sec-hint">Pick a team color, then tap or drag on the diagram. Tap × to remove a box.</p>' +
       '<div class="pkt-diagram-ph" data-diag-ph="' + i + '">Diagram not in Banquet Bot yet.</div>' +
       '<img class="pkt-diagram-img" alt="' + esc(p.room || "Room diagram") + '" data-diag-img="' + i + '">' +
       (diag.path ? '<object class="pkt-diagram-img" data-diag-pdf="' + i + '" data="" type="application/pdf" style="display:none;min-height:280px;width:100%"></object>' : "") +
@@ -538,11 +668,9 @@ function fmtDate(iso) {
     var boxes = PreShift.normalizeSections((p && p.sections) || []);
     if (p) p.sections = boxes;
     var html = boxes.map(function (box) {
-      return '<div class="pkt-sec-box' + (box.id === selected ? " selected" : "") + '" data-sec-id="' + esc(box.id) + '" style="' + sectionStyle(box) + '"><span class="pkt-sec-label">' + esc(box.team) + '</span></div>';
+      return '<div class="pkt-sec-box' + (box.id === selected ? " selected" : "") + '" data-sec-id="' + esc(box.id) + '" style="' + sectionStyle(box) + '"><span class="pkt-sec-label">' + esc(box.team) + '</span><button type="button" class="pkt-sec-x" data-sec-del="' + esc(box.id) + '" aria-label="Remove">×</button></div>';
     }).join("") + '<div class="pkt-sec-draft" data-sec-draft="' + i + '"></div>';
     layer.innerHTML = html;
-    var del = document.querySelector('#pkt-' + i + ' [data-act="delete-section"]');
-    if (del) del.disabled = !selected;
     var stage = document.querySelector('[data-diag-stage="' + i + '"]');
     if (stage) stage.classList.toggle("is-inking", !!(inkState[i] && inkState[i].team));
     (p && p.teams || []).forEach(function (tm) {
@@ -615,6 +743,7 @@ function fmtDate(iso) {
         var k = el.getAttribute("data-k");
         if (k === "tableCount" && meals[i].packetLive.tableCount !== before) { redrawPacket(i, meals); return; }
         if (k === "seatsPerTable" && meals[i].packetLive.seatsPerTable !== beforeSeats) { redrawPacket(i, meals); return; }
+        if (k === "assign") el.style.borderLeftColor = SWATCH[el.value] || "transparent";
         if (k === "assign" || k === "seatsPerTable") refreshLoads(i, meals);
       });
       el.addEventListener("blur", function () { persistPacket(i, meals); });
@@ -703,6 +832,15 @@ function fmtDate(iso) {
     }
     layer.addEventListener("pointerdown", function (ev) {
       if (ev.button && ev.button !== 0) return;
+      var xb = ev.target.closest && ev.target.closest("[data-sec-del]");
+      if (xb) {
+        ev.preventDefault();
+        var pX = meals[i].packetLive || meals[i].packet;
+        pX.sections = (pX.sections || []).filter(function (b) { return b.id !== xb.getAttribute("data-sec-del"); });
+        persistPacket(i, meals);
+        paintSections(i, meals);
+        return;
+      }
       var r = rectOf();
       if (!r.width || !r.height) return;
       var x = ((ev.clientX - r.left) / r.width) * 100;
@@ -739,7 +877,13 @@ function fmtDate(iso) {
       drag = null;
       var draft = layer.querySelector('[data-sec-draft="' + i + '"]');
       if (draft) draft.style.display = "none";
-      var box = PreShift.sectionBoxFromDrag(startX, startY, ev.clientX, ev.clientY, rectOf(), team);
+      var r = rectOf();
+      var box = PreShift.sectionBoxFromDrag(startX, startY, ev.clientX, ev.clientY, r, team);
+      if (!box && Math.abs(ev.clientX - startX) < 8 && Math.abs(ev.clientY - startY) < 8) {
+        // A tap drops a default-size box centered on the spot
+        var hw = r.width * 0.09, hh = r.height * 0.07;
+        box = PreShift.sectionBoxFromDrag(startX - hw, startY - hh, startX + hw, startY + hh, r, team);
+      }
       if (!box) return;
       var p = meals[i].packetLive || meals[i].packet;
       p.sections = (p.sections || []).concat([box]);
