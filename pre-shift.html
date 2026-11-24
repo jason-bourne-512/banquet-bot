@@ -166,14 +166,15 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .pkt-diagram { margin-top: 12px; }
 .pkt-diagram-img { width:100%; height:auto; border-radius:8px; border:1px solid var(--border); background:#0b0d10; display:none; pointer-events:none; }
 .pkt-diagram-ph { padding:18px 12px; border:1px dashed var(--border-h); border-radius:8px; color:var(--text-2); font-size:13px; text-align:center; }
-.pkt-diag-stage { position:relative; margin-top:8px; }
+.pkt-diag-stage { margin-top:8px; }
+.pkt-diag-canvas { position:relative; line-height:0; }
 .pkt-diag-stage.has-diagram .pkt-diagram-ph { display:none; }
 .pkt-sec-bar { display:none; flex-wrap:wrap; gap:6px; align-items:center; margin: 8px 0 6px; }
 .pkt-diag-stage.has-diagram .pkt-sec-bar { display:flex; }
 .pkt-sec-hint { display:none; font-size:11px; color:var(--text-2); margin: 0 0 8px; }
 .pkt-diag-stage.has-diagram .pkt-sec-hint { display:block; }
 .pkt-ink { border:1px solid var(--border); background:var(--bg-card); color:var(--text-1); border-radius:6px; padding:5px 8px; font-size:12px; cursor:pointer; }
-.pkt-ink.is-on { outline:2px solid #fff; }
+.pkt-ink.is-on { outline:2px solid var(--text-1); outline-offset:1px; background:var(--bg-active); }
 .pkt-sec-layer { position:absolute; inset:0; display:none; z-index:2; touch-action:none; }
 .pkt-diag-stage.has-diagram .pkt-sec-layer { display:block; }
 .pkt-diag-stage.has-diagram.is-inking .pkt-sec-layer { cursor:crosshair; }
@@ -543,9 +544,11 @@ function fmtDate(iso) {
       '</div>' +
       '<p class="pkt-sec-hint">Pick a team color, then tap or drag on the diagram. Tap × to remove a box.</p>' +
       '<div class="pkt-diagram-ph" data-diag-ph="' + i + '">Diagram not in Banquet Bot yet.</div>' +
-      '<img class="pkt-diagram-img" alt="' + esc(p.room || "Room diagram") + '" data-diag-img="' + i + '">' +
-      (diag.path ? '<object class="pkt-diagram-img" data-diag-pdf="' + i + '" data="" type="application/pdf" style="display:none;min-height:280px;width:100%"></object>' : "") +
-      '<div class="pkt-sec-layer" data-sec-layer="' + i + '"></div>' +
+      '<div class="pkt-diag-canvas">' +
+        '<img class="pkt-diagram-img" alt="' + esc(p.room || "Room diagram") + '" data-diag-img="' + i + '">' +
+        (diag.path ? '<object class="pkt-diagram-img" data-diag-pdf="' + i + '" data="" type="application/pdf" style="display:none;min-height:280px;width:100%"></object>' : "") +
+        '<div class="pkt-sec-layer" data-sec-layer="' + i + '"></div>' +
+      '</div>' +
     '</div>';
     return '<div class="pkt-wrap" id="pkt-' + i + '">' +
       '<div class="ps-sub">Server Packet</div>' +
