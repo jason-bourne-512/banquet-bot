@@ -8,7 +8,7 @@
     ["index.html", "Home", "⌂"], ["live-map.html", "Live Map", "⌖"], ["rundown.html#rundown", "Rundown", "▤"],
     ["rundown.html#overview", "Overview", "▦"], ["housemen.html", "Housemen", "⚒"], ["rooms.html", "Rooms", "▢"], ["menu.html", "Menu", "◈"],
     ["info.html", "Info", "ℹ"], ["training.html", "Training", "✎"], ["handbook.html", "Handbook", "❏"],
-    ["playbook.html", "Captain Playbook", "☰"], ["plated.html", "Plated Service", "◎"], ["pre-shift.html", "Pre-shift Scripts", "✓"], ["bar.html", "Bar Reference", "🍸"]
+    ["playbook.html", "Captain Playbook", "☰"], ["plated.html", "Plated Service", "◎"], ["bar.html", "Bar Reference", "🍸"]
   ];
   var ACCENT = {captain: "#f2c879", director: "#5fe3c0", sem: "#cbb4ff", em: "#ff9ec7"};
   var ROLE_TITLE = {captain: "Captain", director: "Director of Event Operations", sem: "Senior Events Manager", em: "Events Manager"};
@@ -414,7 +414,7 @@
     var side = document.createElement("aside"), mini = get(MINI) == "1";
     // Captain Playbook + Bar Reference are captain-side notes; Hector's panel leaves them out (Jason 2026-10-21).
     // Rooms lives under Reference (Jason 2026-11-06): Operations is PAGES 0-4, Reference is 5 on.
-    var refPages = PAGES.slice(5).filter(function (p) { return w.name == "Jason" || (p[0] != "playbook.html" && p[0] != "bar.html" && p[0] != "pre-shift.html"); });   // Playbook, Bar, Pre-shift: Jason only
+    var refPages = PAGES.slice(5).filter(function (p) { return w.name == "Jason" || (p[0] != "playbook.html" && p[0] != "bar.html"); });   // Playbook, Bar: Jason only
     // Reference folds under its triangle. Hector's always starts closed (Jason 2026-10-21); others remember it. A reference page opens it.
     var refOpen = (w.name != "Hector" && get(REF) == "1") || PAGES.slice(5).some(function (p) { return p[0] == cur; });
     side.className = "bbd-side";
@@ -429,7 +429,8 @@
         '<a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' +
         (beoBeta() ? '<a href="beo-beta.html" class="' + (cur == "beo-beta.html" ? "on" : "") + '"><i>❐</i>BEO<span class="bbd-beta">BETA</span></a>' : "") +
         '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' +   // Print Signs: Jason and Hector only
-        '<a href="captain-report.html" class="' + (cur == "captain-report.html" ? "on" : "") + '"><i>✓</i>Captain Report</a>' :   // Captain Report: Jason only
+        '<a href="captain-report.html" class="' + (cur == "captain-report.html" ? "on" : "") + '"><i>✓</i>Captain Report</a>' +   // Captain Report: Jason only
+        '<a href="pre-shift.html" class="' + (cur == "pre-shift.html" ? "on" : "") + '"><i>☰</i>Pre-shift Scripts</a>' :   // Pre-shift Scripts under Captain Report (Jason 11/24)
        w.name == "Hector" ? '<div class="lbl">Tools</div><a href="scheduler.html" class="' + (cur == "scheduler.html" ? "on" : "") + '"><i>▦</i>Scheduler<span class="bbd-beta">BETA</span></a>' +
         '<a href="signs.html" class="' + (cur == "signs.html" ? "on" : "") + '"><i>⎙</i>Print Signs</a>' : "") +
       // Reference starts folded; the triangle opens it (remembered), and it opens itself on a reference page.
