@@ -212,6 +212,9 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); };
   var TODAY = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
+  // Jason only (11/24): everyone else gets a private notice, same as Usage
+  var who = null; try { who = JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); } catch (e) {}
+  if (!who || who.name != "Jason") { $("ps-sec").textContent = ""; $("ps-status").textContent = "This page is private."; return; }
 
     function contactLabel(name){
     if(!name) return '';

@@ -134,7 +134,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <header class="ref-header">
   <a class="bb-brand" href="index.html"><span class="bb-mark">bb</span>BANQUET BOT</a>
   <div style="display:flex;gap:8px;align-items:center">
-    <a class="bb-btn" href="pre-shift.html">Pre-shift scripts</a>
+    <a class="bb-btn" href="pre-shift.html" data-ref="jason" hidden>Pre-shift scripts</a>
     <a class="bb-btn" href="index.html">‹ Home</a>
   </div>
 </header>
@@ -142,7 +142,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <div class="page-hero">
   <div class="page-eyebrow">Banquet Captain · AUSDW</div>
   <div class="page-title">Plated Service</div>
-  <div class="page-meta">Stand-up, prep, set, serve and clear — tap a step to open · <a href="pre-shift.html" style="color:var(--blue);text-decoration:none">Pre-shift scripts</a></div>
+  <div class="page-meta">Stand-up, prep, set, serve and clear — tap a step to open · <a href="pre-shift.html" data-ref="jason" hidden style="color:var(--blue);text-decoration:none">Pre-shift scripts</a></div>
 </div>
 
 <div class="search-wrap">
@@ -303,5 +303,11 @@ function filterRef(q){
 }
 </script>
 </div>
+<script>
+// Pre-shift Scripts links: Jason only (11/24)
+(function () { var w = null; try { w = JSON.parse(localStorage.getItem("bb-hsm-who") || "null"); } catch (e) {}
+  document.querySelectorAll('[data-ref="jason"]').forEach(function (a) { a.hidden = !(w && w.name == "Jason"); });
+})();
+</script>
 </body>
 </html>

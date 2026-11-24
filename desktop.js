@@ -414,7 +414,7 @@
     var side = document.createElement("aside"), mini = get(MINI) == "1";
     // Captain Playbook + Bar Reference are captain-side notes; Hector's panel leaves them out (Jason 2026-10-21).
     // Rooms lives under Reference (Jason 2026-11-06): Operations is PAGES 0-4, Reference is 5 on.
-    var refPages = PAGES.slice(5).filter(function (p) { return w.name == "Jason" || (p[0] != "playbook.html" && p[0] != "bar.html"); });   // Playbook + Bar: Jason only
+    var refPages = PAGES.slice(5).filter(function (p) { return w.name == "Jason" || (p[0] != "playbook.html" && p[0] != "bar.html" && p[0] != "pre-shift.html"); });   // Playbook, Bar, Pre-shift: Jason only
     // Reference folds under its triangle. Hector's always starts closed (Jason 2026-10-21); others remember it. A reference page opens it.
     var refOpen = (w.name != "Hector" && get(REF) == "1") || PAGES.slice(5).some(function (p) { return p[0] == cur; });
     side.className = "bbd-side";
