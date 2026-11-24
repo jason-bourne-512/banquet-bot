@@ -188,7 +188,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .duty-chart summary { cursor:pointer; font:600 11px 'DM Mono',monospace; letter-spacing:.6px; text-transform:uppercase; color:var(--text-2); }
 .dc-count { margin-left:6px; text-transform:none; letter-spacing:0; color:var(--green); }
 .dc-count.miss { color:var(--red); }
-.dc-kind { font:600 9px 'DM Mono',monospace; letter-spacing:1px; text-transform:uppercase; color:var(--accent); margin:8px 0 3px; }
+.dc-group { margin-top:6px; }
+.dc-kind { cursor:pointer; font:600 9px 'DM Mono',monospace; letter-spacing:1px; text-transform:uppercase; color:var(--accent); margin:0 0 3px; }
+.dc-n { color:var(--text-3); letter-spacing:.3px; text-transform:none; margin-left:4px; }
+.dc-n b { color:var(--red); font-weight:600; }
 .dc-list { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:2px 14px; }
 .dc-row { display:flex; align-items:center; gap:6px; font-size:12px; padding:2px 0; border-bottom:1px solid var(--divider); }
 .dc-text { flex:1; min-width:0; }
@@ -281,7 +284,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <link rel="stylesheet" href="assets/bb-reference.css">
 <script src="scripts/contact-privacy.js?v=1124a"></script>
 <script src="theme.js?v=1124c"></script>
-<script src="scripts/pre-shift-lib.js?v=1124d"></script>
+<script src="scripts/pre-shift-lib.js?v=1124e"></script>
 </head>
 <body class="bb-ref">
 <div class="page-wrap">
@@ -1106,7 +1109,15 @@ function fmtDate(iso) {
   function masterDuties() {
     var d = null;
     try { d = JSON.parse(localStorage.getItem(DUTY_STORE) || "null"); } catch (e) {}
-    return d && d.opening ? d : { opening: PreShift.OPENING_DUTIES.slice(), closing: PreShift.CLOSING_DUTIES.slice() };
+    if (!d || !d.opening) return { opening: PreShift.OPENING_DUTIES.slice(), closing: PreShift.CLOSING_DUTIES.slice(), removed: [] };
+    // Duties added to the built-in list later still show up, unless this device removed them
+    var gone = (d.removed || []).map(dkey);
+    [["opening", PreShift.OPENING_DUTIES], ["closing", PreShift.CLOSING_DUTIES]].forEach(function (pair) {
+      pair[1].forEach(function (t) {
+        if (gone.indexOf(dkey(t)) < 0 && !d[pair[0]].some(function (x) { return dkey(x) === dkey(t); })) d[pair[0]].push(t);
+      });
+    });
+    return d;
   }
   function saveMaster(d) { try { localStorage.setItem(DUTY_STORE, JSON.stringify(d)); } catch (e) {} }
   function dkey(t) { return String(t || "").trim().toLowerCase(); }
@@ -1140,7 +1151,9 @@ function fmtDate(iso) {
     return '<details class="duty-chart"' + (miss ? " open" : "") + '><summary>Duty chart <span class="dc-count' + (miss ? " miss" : "") + '">' +
       (miss ? miss + " not assigned" : "all assigned") + '</span></summary>' +
       dutyRows(p).map(function (g) {
-        return '<div class="dc-kind">' + (g.kind === "opening" ? "Opening" : "Closing") + '</div><ul class="dc-list">' +
+        var gMiss = g.rows.filter(function (r) { return !r.team && !r.skip; }).length;
+        return '<details class="dc-group" data-dc-kind="' + g.kind + '"' + (gMiss || dcOpen[i + g.kind] ? " open" : "") + '><summary class="dc-kind">' +
+          (g.kind === "opening" ? "Opening" : "Closing") + ' <span class="dc-n">' + g.rows.length + (gMiss ? ' · <b>' + gMiss + ' not assigned</b>' : '') + '</span></summary><ul class="dc-list">' +
           g.rows.map(function (r) {
             var state = r.team ? "" : (r.skip ? " skip" : " miss");
             return '<li class="dc-row' + state + '"><i class="pkt-swatch" style="background:' + (SWATCH[r.team] || "transparent") + '"></i>' +
@@ -1152,9 +1165,10 @@ function fmtDate(iso) {
               '</select>' +
               '<button type="button" class="dc-x" data-duty-del="' + esc(r.text) + '" data-duty-kind="' + g.kind + '" aria-label="Remove duty">×</button></li>';
           }).join("") + '</ul>' +
-          '<input class="dc-new" data-duty-new="' + g.kind + '" placeholder="+ Add ' + g.kind + ' duty">';
+          '<input class="dc-new" data-duty-new="' + g.kind + '" placeholder="+ Add ' + g.kind + ' duty"></details>';
       }).join("") + '</details>';
   }
+  var dcOpen = {};
   function setDutyTeam(i, meals, kind, text, team) {
     var p = persistPacket(i, meals);
     p.teams.forEach(function (tm) { tm[kind] = (tm[kind] || []).filter(function (x) { return dkey(x) !== dkey(text); }); });
@@ -1180,6 +1194,9 @@ function fmtDate(iso) {
   function bindDutyChart(i, meals) {
     var root = document.getElementById("pkt-" + i);
     if (!root) return;
+    root.querySelectorAll(".dc-group").forEach(function (dg) {
+      dg.addEventListener("toggle", function () { dcOpen[i + dg.getAttribute("data-dc-kind")] = dg.open; });
+    });
     root.querySelectorAll(".dc-sel").forEach(function (sel) {
       sel.addEventListener("change", function (ev) {
         ev.stopPropagation();
@@ -1191,6 +1208,7 @@ function fmtDate(iso) {
         var kind = b.getAttribute("data-duty-kind"), text = b.getAttribute("data-duty-del");
         var m = masterDuties();
         m[kind] = m[kind].filter(function (x) { return dkey(x) !== dkey(text); });
+        m.removed = (m.removed || []).concat([text]);
         saveMaster(m);
         setDutyTeam(i, meals, kind, text, "");
       });
@@ -1203,6 +1221,7 @@ function fmtDate(iso) {
         if (!v) return;
         var m = masterDuties();
         if (!m[kind].some(function (x) { return dkey(x) === dkey(v); })) m[kind].push(v);
+        m.removed = (m.removed || []).filter(function (x) { return dkey(x) !== dkey(v); });
         saveMaster(m);
         saveDutyState(i, meals, persistPacket(i, meals));
         var again = document.querySelector('#pkt-' + i + ' [data-duty-new="' + kind + '"]');

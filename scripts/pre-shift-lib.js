@@ -731,6 +731,8 @@
     "Polish glassware",
     "Check table settings against the diagram",
     "Table numbers and centerpieces",
+    "Votive candles",
+    "Mirrors",
     "Head table / stage tables",
     "Ice bins and water pitchers",
     "Iced tea and lemons",
