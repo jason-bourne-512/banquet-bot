@@ -628,6 +628,7 @@ function fmtDate(iso) {
       '<div class="pkt-bar">' +
         '<button type="button" class="bb-btn pkt-btn" data-act="print" data-pkt="' + i + '">Print packet</button>' +
         '<button type="button" class="bb-btn pkt-btn" data-act="add-team" data-pkt="' + i + '">Add team</button>' +
+        ((p.teams || []).length > 1 ? '<button type="button" class="bb-btn pkt-btn" data-act="del-team" data-pkt="' + i + '" data-t="' + (p.teams.length - 1) + '">Remove team</button>' : '') +
       '</div>' +
       '<div class="pkt-sheet">' +
         '<div class="pkt-title">Server Packet</div>' +
