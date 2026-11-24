@@ -184,6 +184,9 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .pkt-sec-box { position:absolute; box-sizing:border-box; border:2px solid; border-radius:2px; }
 .pkt-sec-box.selected { outline:2px dashed #111; outline-offset:1px; }
 .pkt-sec-x { position:absolute; top:-8px; right:-8px; width:18px; height:18px; border-radius:50%; border:0; background:#111; color:#fff; font-size:12px; line-height:18px; padding:0; cursor:pointer; box-shadow:0 0 0 1px rgba(255,255,255,.4); }
+.pkt-fold { margin:8px 0; }
+.pkt-fold > summary { cursor:pointer; font:600 11px 'DM Mono',monospace; letter-spacing:.6px; text-transform:uppercase; color:var(--text-2); padding:4px 0; }
+.pkt-fold > summary:hover { color:var(--accent); }
 .duty-chart { margin:8px 0 10px; border:1px solid var(--border); border-radius:8px; padding:6px 10px; }
 .duty-chart summary { cursor:pointer; font:600 11px 'DM Mono',monospace; letter-spacing:.6px; text-transform:uppercase; color:var(--text-2); }
 .dc-count { margin-left:6px; text-transform:none; letter-spacing:0; color:var(--green); }
@@ -629,13 +632,13 @@ function fmtDate(iso) {
       '<div class="pkt-sheet">' +
         '<div class="pkt-title">Server Packet</div>' +
         '<div class="pkt-sub">' + esc(p.group) + ' · ' + esc(fmtDate(p.date)) + ' · ' + esc(p.room) + '</div>' +
-        '<table class="pkt-teams"><thead><tr><th>Team</th><th>Opening</th><th>Closing</th></tr></thead><tbody>' + teams + '</tbody></table>' +
+        '<details class="pkt-fold" data-fold="teams"' + (foldOpen(i, "teams") ? " open" : "") + '><summary>Server assignments</summary>' +
+        '<table class="pkt-teams"><thead><tr><th>Team</th><th>Opening</th><th>Closing</th></tr></thead><tbody>' + teams + '</tbody></table></details>' +
         dutyChart(p, i) +
         '<div class="pkt-loc"><label>Breakdown and hotbox</label><input class="pkt-input" data-pkt="' + i + '" data-k="location" placeholder="Room" value="' + esc(p.location || "") + '"></div>' +
         '<ol class="pkt-steps">' + steps + '</ol>' +
         '<div class="pkt-specials">' + specials + '</div>' +
-        '<div class="pkt-diagram">' +
-          '<div class="pkt-assign-label">Room diagram and section assignments</div>' +
+        '<details class="pkt-diagram pkt-fold" data-fold="diagram"' + (foldOpen(i, "diagram") ? " open" : "") + '><summary>Room diagram and sections</summary>' +
           '<div class="pkt-legend">' + legend + '</div>' +
           diagBlock +
           '<div class="pkt-step-row">' +
@@ -643,7 +646,7 @@ function fmtDate(iso) {
             '<div class="pkt-loc"><label>Seats per table</label><input class="pkt-input" data-pkt="' + i + '" data-k="seatsPerTable" value="' + esc(p.seatsPerTable ? String(p.seatsPerTable) : "") + '" placeholder="From the event order"></div>' +
           '</div>' +
           '<div class="pkt-assign">' + assigns + '</div>' +
-        '</div>' +
+        '</details>' +
       '</div></div>';
   }
 
@@ -721,6 +724,9 @@ function fmtDate(iso) {
   }
 
   var inkState = {};
+  // Server assignments / diagram fold state, kept across redraws (open by default)
+  var folds = {};
+  function foldOpen(i, k) { return folds[i + k] !== false; }
 
   function hexRgba(hex, a) {
     var h = String(hex || "#888").replace("#", "");
@@ -925,6 +931,9 @@ function fmtDate(iso) {
       });
     });
     loadDiagram(i, meals);
+    document.querySelectorAll('#pkt-' + i + ' .pkt-fold').forEach(function (d) {
+      d.addEventListener("toggle", function () { folds[i + d.getAttribute("data-fold")] = d.open; });
+    });
     bindDutyChart(i, meals);
     bindSectionDraw(i, meals);
     paintSections(i, meals);
