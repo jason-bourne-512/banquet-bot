@@ -1211,6 +1211,12 @@ function fmtDate(iso) {
     });
   }
 
+  // The printed packet stays on the corkboard: the contact's first name is fine there (Jason 11/24)
+  function printContact(name) {
+    var P = window.BBContactPrivacy, first = P ? P.firstName(name) : String(name || "").split(/\s+/)[0];
+    return first ? ' · Contact ' + esc(first) : '';
+  }
+
   // Print: one compact sheet built from the packet data (no inputs, no app chrome)
   function buildPrintSheet(i, meals) {
     var p = persistPacket(i, meals), m = meals[i];
@@ -1244,7 +1250,7 @@ function fmtDate(iso) {
     root.id = "pkt-print";
     root.innerHTML =
       '<div class="pp-head"><div class="pp-title">Server Packet</div>' +
-        '<div class="pp-line"><b>' + esc(m.group) + '</b>' + contactLabel(m.contact) + (m.mgr ? ' · Manager ' + esc(m.mgr) : '') + ' · ' + esc(fmtDate(m.date)) + '</div>' +
+        '<div class="pp-line"><b>' + esc(m.group) + '</b>' + printContact(m.contact) + (m.mgr ? ' · Manager ' + esc(m.mgr) : '') + ' · ' + esc(fmtDate(m.date)) + '</div>' +
         '<div class="pp-meta">' + esc(m.time || "") + ' · ' + esc(m.room || "") + (countPill(m.counts) ? ' · ' + esc(countPill(m.counts)) : '') + '</div></div>' +
       '<div class="pp-h">Assignments</div>' +
       '<table class="pp-teams"><thead><tr><th>Team</th><th>Tables</th><th>Opening</th><th>Closing</th></tr></thead><tbody>' + teams + '</tbody></table>' +
