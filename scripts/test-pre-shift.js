@@ -109,7 +109,7 @@ meals.forEach(function (m) {
   m.questions.forEach(function (q) {
     const cueQ = /strictly on the timeline/i.test(q.q);
     if (cueQ) {
-      const expect = /Emerson/i.test(m.group) ? "Lynn" : (/TSAE/i.test(m.group) ? "Steven" : q.who);
+      const expect = /Emerson|TSAE/i.test(m.group) ? "the contact" : q.who;
       assert.equal(q.who, expect, "timeline-vs-cue question goes to the event contact, got " + q.who + " for " + m.group);
     } else {
       assert.equal(q.who, "Diana", "questions go to the event manager, got " + q.who + " for " + q.q);
@@ -208,8 +208,8 @@ if (fs.existsSync(rundownPath)) {
   assert.ok(ts.script.some(function (l) { return /\[ask\].*wine needs to be chilled/i.test(l.text); }));
   const emCue = em.questions.find(function (q) { return /strictly on the timeline/i.test(q.q); });
   const tsCue = ts.questions.find(function (q) { return /strictly on the timeline/i.test(q.q); });
-  assert.ok(emCue && emCue.who === "Lynn", "live Emerson cue question goes to Lynn");
-  assert.ok(tsCue && tsCue.who === "Steven", "live TSAE cue question goes to Steven");
+  assert.ok(emCue && emCue.who === "the contact", "live Emerson cue question goes to the contact, not the client name");
+  assert.ok(tsCue && tsCue.who === "the contact", "live TSAE cue question goes to the contact, not the client name");
   assert.ok(em.script.some(function (l) { return /\[ask\].*strictly on the timeline/i.test(l.text); }));
   assert.ok(ts.script.some(function (l) { return /\[ask\].*strictly on the timeline/i.test(l.text); }));
   assert(!/\$\d/.test(allText(em) + allText(ts)), "no prices from live rundown");
@@ -413,7 +413,7 @@ const alreadyCue = PreShift.buildPreShift({
   foot: { NOTE: "Wait for a cue from Alex before dropping entrees.", CONTACT: "Alex Rivera" },
   counts: { gtd: "40" }
 });
-assert.ok(alreadyCue.script.some(function (l) { return /wait for a cue from Alex/i.test(l.text); }));
+assert.ok(alreadyCue.script.some(function (l) { return /wait for a cue from the contact/i.test(l.text); }));
 assert.ok(!alreadyCue.script.some(function (l) { return /\[ask\].*strictly on the timeline/i.test(l.text); }), "do not [ask] when the event order already names the cue and who");
 assert.ok(!alreadyCue.questions.some(function (q) { return /strictly on the timeline/i.test(q.q); }));
 assert.equal(alreadyCue.contact, "Alex");

@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 const assert = require("node:assert/strict");
+const Privacy = require("./contact-privacy.js");
 
 function el() {
   return { textContent: "", style: {}, className: "", appendChild: function () {}, addEventListener: function () {}, replaceChildren: function () {}, dispatchEvent: function () {}, querySelector: function () { return null; } };
@@ -147,4 +148,24 @@ assert.deepEqual(titles("event order 815221"), [mutotech.title], "event order 81
 assert.deepEqual(titles("BEO 8152"), [mutotech.title], "partial prefixed number BEO 8152 finds 815221");
 assert.deepEqual(titles("815184"), [mutotech.title], "bare second event order still matches");
 
+
+const hiddenHtml = '<div class="event-card"><div class="card-group">Hidden Contact Group</div><span class="badge badge-mgr">MGR: Lisa</span><span class="badge badge-ic">IC: Laura</span><div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Laura 512-555-1234 jane@client.com</span></div><div class="foot-row"><span class="foot-key">NOTE</span><span class="foot-val">event order 644111 · Check with Laura</span></div></div>';
+const hiddenEvent = {
+  type: "event",
+  date: "2026-12-01",
+  title: "Hidden Contact Group",
+  meta: "Camellia",
+  time: "9:00 AM",
+  text: Privacy.cardSearchText(hiddenHtml),
+  url: "rundown.html?date=2026-12-01",
+  anchor: "Hidden Contact Group"
+};
+index.push(hiddenEvent);
+assert.deepEqual(titles("644111"), [hiddenEvent.title], "BEO number on a redacted card is still searchable");
+assert.equal(titles("Laura").indexOf(hiddenEvent.title), -1, "client contact name is not searchable");
+assert.equal(titles("512-555-1234").indexOf(hiddenEvent.title), -1, "personal phone is not searchable");
+assert.equal(titles("jane@client.com").indexOf(hiddenEvent.title), -1, "personal email is not searchable");
+assert.ok(titles("Lisa").indexOf(hiddenEvent.title) > -1 || titles("Hidden Contact Group").indexOf(hiddenEvent.title) > -1, "staff name or group name still finds the card");
+
 console.log("PASS: site search finds events by BEO number, with or without a BEO or # prefix, including partial numbers.");
+console.log("PASS: site search hides client contact names, phones, and emails.");

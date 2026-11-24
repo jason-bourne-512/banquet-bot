@@ -7,6 +7,24 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 
+  var Privacy = null;
+  try { if (typeof require === "function") Privacy = require("./contact-privacy.js"); } catch (err) {}
+  if (!Privacy && typeof globalThis !== "undefined") Privacy = globalThis.BBContactPrivacy || null;
+  function spokenContact(name) {
+    if (Privacy && Privacy.spokenContact) return Privacy.spokenContact(name);
+    return firstName(name) || "the contact";
+  }
+  function privatize(text, contact) {
+    if (!Privacy || !text) return text;
+    if (Privacy.applyNames && Privacy.hideNames) return Privacy.applyNames(String(text), Privacy.hideNames(contact, text));
+    return text;
+  }
+  function publicContact(name) {
+    if (!name) return "";
+    if (Privacy && Privacy.shouldHide(name)) return "";
+    return firstName(name);
+  }
+
   function clean(s) {
     return String(s || "")
       .replace(/\s*[\u2014\u2013]\s*/g, function (m) { return /\s/.test(m) ? " - " : "-"; })
@@ -318,7 +336,7 @@
     }
     say("Who calls courses", calls || "", "Who calls salad and entree?");
     var cue = serviceCueFromEO(blob);
-    if (!cue.known) addQ(questions, asked, contact || "the contact", CUE_QUESTION);
+    if (!cue.known) addQ(questions, asked, spokenContact(contact), CUE_QUESTION);
 
     // Fire
     var fire = "";
@@ -328,7 +346,7 @@
     }
     say("Kitchen fire times", fire || "", fire ? "" : "What are the kitchen fire times for each course?");
     if (fire && /check with/i.test(fire) && !/clock|:\d{2}/.test(fire)) {
-      addQ(questions, asked, mgr, "Any clock fire times, or do we only check with " + (contact || "the contact") + " before firing?");
+      addQ(questions, asked, mgr, "Any clock fire times, or do we only check with " + spokenContact(contact) + " before firing?");
     }
     if (fire) fact("Fire times", fire);
 
@@ -521,6 +539,8 @@
       appsTime: meal.appsTime
     });
 
+    analysis.forEach(function (row) { if (row && row.text) row.text = privatize(row.text, contact); });
+    (script || []).forEach(function (row) { if (row && row.text) row.text = privatize(row.text, contact); });
     return {
       group: clean(meal.group || ""),
       date: meal.date || "",
@@ -573,10 +593,10 @@
   function buildSpokenScript(f) {
     var lines = [];
     var who = f.mgr || "the manager";
-    var contact = f.contact || "the contact";
+    var contact = spokenContact(f.contact);
     speak(lines, CORKBOARD_SCRIPT);
     if (f.kind === "emerson") {
-      speak(lines, "This is the Emerson retirement dinner in Primrose C. Guarantee is 73. " + who + " is the manager." + (f.contact ? " " + f.contact + " is the on-site contact." : ""));
+      speak(lines, "This is the Emerson retirement dinner in Primrose C. Guarantee is 73. " + who + " is the manager." + (publicContact(f.contact) ? " " + publicContact(f.contact) + " is the on-site contact." : ""));
       speak(lines, "The table set is not settled. The event order says 9 rounds of 9. The card says 8 tables of 8 plus 1 of 9. " + who + "'s November 18 diagram is 9 rounds of 8, which is 72 seats, one short of the guarantee. The event order wins until " + who + " confirms. [ask]", false);
       speak(lines, "Be ready for the 4:00 client rehearsal. Tables should have client linen, chargers, and silverware by then. Highboys start in the back of Primrose for the florist at 4:00, then move to Pre-Function at 5:00.");
       speak(lines, "We come back around 5:00 to pre-set the roasted pear and pecan salads and waters. Pre-Function should be ready by 5:00. Guests may arrive around 5:30, but the cocktail start on the event order is 6:00. [ask] if the bar should be ready early.", false);
@@ -594,7 +614,7 @@
       return lines;
     }
     if (f.kind === "tsae") {
-      speak(lines, "This is the TSAE luncheon in the Primrose Ballroom. Expected count is 300. There is no guarantee on the card yet. " + who + " is the manager." + (f.contact ? " " + f.contact + " is the contact." : ""));
+      speak(lines, "This is the TSAE luncheon in the Primrose Ballroom. Expected count is 300. There is no guarantee on the card yet. " + who + " is the manager." + (publicContact(f.contact) ? " " + publicContact(f.contact) + " is the contact." : ""));
       speak(lines, "The set is not settled. Thursday's event order is 38 rounds of 8 with black linen. The Friday lunch line says rounds of 10. " + who + "'s November 18 diagram shows 44 rounds of 7 and 2 screens. The event order wins until " + who + " confirms. [ask]", false);
       speak(lines, "From 8:00 to 11:00 we pre-set silverware, water glasses, and napkins. Sponsors set activations and help decorate from 8:00. Activations and registration open at 11:00 in the foyer, Lantana, and Plumeria.");
       speak(lines, "Ballroom doors open at 12:00. At 12:20 the musician pauses, there is a short announcement, and lunch service begins. At 12:30 there is a welcome from Visit Austin, during service. At 12:40 guests keep eating with music. At 12:55 the musician pauses for sponsor recognition, awards, and a TSAE recap. The program ends at 2:00 and the band plays as guests leave. Teardown is 2:00 to 3:30.");
@@ -613,7 +633,7 @@
     var open = "This is " + (f.group || "the plated meal") + (f.room ? " in " + f.room : "") + ".";
     if (f.countsText) open += " " + f.countsText + ".";
     open += " " + who + " is the manager.";
-    if (f.contact) open += " " + f.contact + " is the contact.";
+    if (publicContact(f.contact)) open += " " + publicContact(f.contact) + " is the contact.";
     speak(lines, open);
     if (f.flags && f.flags.length) {
       f.flags.forEach(function (fl) {
