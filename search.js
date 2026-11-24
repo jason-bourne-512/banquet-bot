@@ -20,7 +20,9 @@
   function today() { return new Intl.DateTimeFormat("en-CA", {timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date()); }
   function clean(s) {
     return String(s || "").replace(/\s*\+?\$[\d,.]+(?:\s*\/\s*\w+)?(?:\s+(?:ea|each)\b)?/gi, "")
-      .replace(/\(?\b\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}\b/g, "").replace(/\s+/g, " ").trim();
+      .replace(/\(?\b\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}\b/g, "")
+      .replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, "")
+      .replace(/\s+/g, " ").trim();
   }
   // Element text with a space between pieces, so side-by-side labels don't run together.
   function txt(el) {
@@ -57,8 +59,10 @@
           var rooms = [];
           c.querySelectorAll(".room-pill").forEach(function (r) { var t = clean(r.textContent); if (t && rooms.indexOf(t) < 0) rooms.push(t); });
           var t = c.querySelector(".svc-time");
+          var body = (window.BBContactPrivacy && window.BBContactPrivacy.cardSearchText)
+                    ? window.BBContactPrivacy.cardSearchText(c, txt) : txt(c);
           out.push({type: "event", date: d, title: title, meta: rooms.join(" · "), time: t ? clean(t.textContent) : "",
-                    text: txt(c), url: "rundown.html?date=" + d, anchor: title});
+                    text: body, url: "rundown.html?date=" + d, anchor: title});
         });
       });
       return out;

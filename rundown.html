@@ -514,7 +514,8 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
 @keyframes rundown-edge{0%,15%{transform:translateX(-100%);opacity:0}30%{opacity:.8}75%{opacity:.6}90%,100%{transform:translateX(100%);opacity:0}}
 @keyframes rundown-beacon{0%,100%{opacity:.45;box-shadow:0 0 3px #89cfff33}50%{opacity:1;box-shadow:0 0 13px #89cfff99}}
 </style>
-<script src="theme.js?v=1121c"></script>
+<script src="scripts/contact-privacy.js?v=1124a"></script>
+<script src="theme.js?v=1124b"></script>
 </head>
 <body>
 <div class="page-wrap">
@@ -17932,7 +17933,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
         if(ev.base!==prevBase){
           const group=node('div','group');
           group.append(node('h2','',ev.base));
-          if(ev.contact) group.append(node('span','group-contact',ev.contact));
+          paintContactChip(group,'group-contact',ev.contact);
           const mgrB=(ev.badges||[]).find(b=>/^MGR/i.test(b));
           if(mgrB) group.append(node('span','mgr-chip','MGR · '+mgrB.replace(/^MGR:?\s*/i,'').trim()));
           if(ev.nobeo) group.append(nobeoChip(ev.nobeo));
@@ -17996,7 +17997,18 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
         if(ev.av) setup.push(line('AV',clean(ev.av)));
         if(ev.billing) setup.push(line('BILLING',clean(ev.billing)));
         if(ev.shipping) setup.push(line('SHIPPING',clean(ev.shipping)));
-        if(ev.badges.length) setup.push(line('TEAM','',ev.badges.join(' · ')));
+        if(ev.badges.length){
+          const p=line('TEAM'), P=window.BBContactPrivacy;
+          ev.badges.forEach(function(b,i){
+            if(i) p.val.append(document.createTextNode(' · '));
+            if(/^IC:/i.test(b) && P && P.shouldHide(b)){
+              p.val.append(document.createTextNode('IC: '));
+              if(P.hiddenSpan) p.val.append(P.hiddenSpan());
+              else p.val.append(document.createTextNode('contact hidden'));
+            } else p.val.append(document.createTextNode(b));
+          });
+          setup.push(p);
+        }
         if(ev.diagram||hsmExtraFor(d,rooms).length){
           const p=line('DIAGRAM');
           if(ev.diagram) ev.diagram.querySelectorAll('.diag-link,.diag-warn').forEach(function(b){
@@ -18015,7 +18027,11 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
           const more=node('details','room-more'), sum=node('summary','','Event order details');
           if(ev.note&&ev.note.indexOf('⚑')>-1) sum.append(node('span','room-more-flag',' ⚑'));
           more.append(sum);
-          if(ev.note) more.append(htmlNode('div','flag',clean(ev.note)));
+          if(ev.note){
+            var Pn=window.BBContactPrivacy, note=ev.note;
+            if(Pn && Pn.redactHtml) note=Pn.redactHtml(note, Pn.hideNames(ev.contact, ev.note));
+            more.append(htmlNode('div','flag',clean(note)));
+          }
           more.append(...setup);
           body.append(more);
         }
@@ -18067,12 +18083,27 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
       // Snap: leave the hero in view when the first day is the target (e.g. today on load).
       if(target&&target!==screen.firstChild) requestAnimationFrame(()=>target.scrollIntoView({block:'start'}));
     }
+
+    function paintContactChip(parent, cls, name){
+      if(!name) return;
+      var P=window.BBContactPrivacy, s=node('span',cls);
+      if(P && P.shouldHide(name)){
+        if(P.hiddenSpan) s.append(P.hiddenSpan());
+        else s.textContent='contact hidden';
+        var rest=P.qualifierAfterName?P.qualifierAfterName(name):'';
+        if(rest) s.append(document.createTextNode(' '+rest));
+        parent.append(s);
+        return;
+      }
+      s.textContent=name;
+      parent.append(s);
+    }
     function renderOverviewDay(day){
       const d=day.date;
       day.events.forEach(function(e){
         const card=node('article','original-event');
         const head=node('div','original-client',e.company);
-        if(e.contact) head.append(node('span','original-contact',e.contact));
+        paintContactChip(head,'original-contact',e.contact);
         if(e.mgr) head.append(node('span','mgr-chip','MGR · '+e.mgr));
         if(e.nobeo) head.append(nobeoChip(e.nobeo));
         card.append(head);
