@@ -87,7 +87,8 @@
     .map { width:10.2in !important; border-radius:0; }
   }
 </style>
-<script src="theme.js?v=1121c"></script>
+<script src="scripts/contact-privacy.js?v=1124a"></script>
+<script src="theme.js?v=1124b"></script>
 </head>
 <body>
 <div class="top">
@@ -168,7 +169,15 @@
       h += '<div class="rm on' + (/^(Camellia|Verbena)/.test(r) ? " noline" : "") + '" data-room="' + esc(r) + '" style="' + pct(b) + (/^Primrose (A|B|AB)$/.test(r) ? ";padding-left:1.4cqw" : "") + '">' + body(day.ev[r]) + "</div>";
     });
     if (day.off.length) h += '<div class="offmap"><h3>Off the map</h3><div id="off">' + day.off.map(function (e) { return '<div class="card' + (e.bg ? ' plan">' + obg(e.bg) : '">') + '<div class="nm">' + esc(e.room) + "</div>" + body(e) + "</div>"; }).join("") + "</div></div>";
-    if (day.contacts.length) h += '<div class="legend"><h3>Contacts</h3>' + day.contacts.map(function (c) { return '<span class="gc"><b>' + esc(c[0]) + "</b> <span>" + esc(c[1]) + "</span></span>"; }).join("") + "</div>";
+    if (day.contacts.length) h += '<div class="legend"><h3>Contacts</h3>' + day.contacts.map(function (c) {
+      var P = window.BBContactPrivacy, who = c[1] || "";
+      var person;
+      if (P && P.shouldHide(who)) {
+        var rest = P.qualifierAfterName ? P.qualifierAfterName(who) : "";
+        person = '<span class="bb-contact-hidden" aria-label="contact hidden" data-bb-hidden="1">&nbsp;</span>' + (rest ? " " + esc(rest) : "");
+      } else person = esc(who);
+      return '<span class="gc"><b>' + esc(c[0]) + "</b> <span>" + person + "</span></span>";
+    }).join("") + "</div>";
     map.innerHTML = h;
     if (typeof setZ == "function") setZ(1);
     fitRooms(); fitOff();

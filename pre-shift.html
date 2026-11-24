@@ -181,7 +181,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 }
 </style>
 <link rel="stylesheet" href="assets/bb-reference.css">
-<script src="theme.js?v=1121c"></script>
+<script src="scripts/contact-privacy.js?v=1124a"></script>
+<script src="theme.js?v=1124b"></script>
 <script src="scripts/pre-shift-lib.js"></script>
 </head>
 <body class="bb-ref">
@@ -212,7 +213,13 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); };
   var TODAY = new Date().toLocaleDateString("en-CA", { timeZone: "America/Chicago" });
 
-  function fmtDate(iso) {
+    function contactLabel(name){
+    if(!name) return '';
+    var P=window.BBContactPrivacy;
+    if(P && P.shouldHide(name)) return ' · Contact <span class="bb-contact-hidden" aria-label="contact hidden" data-bb-hidden="1">&nbsp;</span>';
+    return ' · Contact ' + esc(name);
+  }
+function fmtDate(iso) {
     if (!iso) return "";
     var d = new Date(iso + "T12:00:00Z");
     return d.toLocaleDateString("en-US", { timeZone: "UTC", weekday: "short", month: "short", day: "numeric" });
@@ -267,7 +274,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
           '<div class="ps-main">' +
             '<div class="ps-group">' + esc(m.group) + '</div>' +
             '<div class="ps-meta"><b>' + esc(fmtDate(m.date)) + '</b> · ' + esc(m.time) + '<br>' +
-              esc(m.room) + (m.contact ? ' · Contact ' + esc(m.contact) : '') + '</div>' +
+              esc(m.room) + contactLabel(m.contact) + '</div>' +
             '<div class="ps-pills">' +
               (m.tag ? '<span class="pill">' + esc(m.tag) + '</span>' : '') +
               (countPill(m.counts) ? '<span class="pill">' + esc(countPill(m.counts)) + '</span>' : '') +
