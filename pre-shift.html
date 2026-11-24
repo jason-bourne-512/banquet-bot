@@ -152,7 +152,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .pkt-teams tr.gray td:first-child { box-shadow: inset 3px 0 0 #8a9099; }
 .pkt-teams tr.gold td:first-child { box-shadow: inset 3px 0 0 #c9a227; }
 .pkt-teams tr.white td:first-child { box-shadow: inset 3px 0 0 #d6d6d6; }
-.pkt-color { font-weight:600; margin-bottom:6px; }
+.pkt-color { font-weight:600; margin-bottom:6px; display:flex; align-items:center; gap:4px; }
+.pkt-teamcolor { background:transparent; color:inherit; border:0; border-bottom:1px dashed var(--border-h); font:inherit; font-weight:600; padding:0 2px; cursor:pointer; }
+.pkt-team-x { margin-left:auto; width:18px; height:18px; border:0; border-radius:50%; background:transparent; color:var(--text-3); font-size:14px; line-height:1; cursor:pointer; padding:0; }
+.pkt-team-x:hover { color:var(--red); background:var(--red-dim); }
 .pkt-load { font-size:11px; color:var(--text-2); margin-top:4px; }
 .pkt-load.over { color:#e05555; font-weight:600; }
 .pkt-input, .pkt-area, .pkt-select { width:100%; background:var(--bg-card); color:var(--text-1); border:1px solid var(--border); border-radius:6px; padding:5px 7px; font: inherit; font-size:12px; }
@@ -181,6 +184,10 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .pkt-sec-box { position:absolute; box-sizing:border-box; border:2px solid; border-radius:2px; }
 .pkt-sec-box.selected { outline:2px dashed #111; outline-offset:1px; }
 .pkt-sec-x { position:absolute; top:-8px; right:-8px; width:18px; height:18px; border-radius:50%; border:0; background:#111; color:#fff; font-size:12px; line-height:18px; padding:0; cursor:pointer; box-shadow:0 0 0 1px rgba(255,255,255,.4); }
+.pkt-pin { position:absolute; transform:translate(-50%,-50%); min-width:20px; height:20px; padding:0 4px; border-radius:10px; background:rgba(255,255,255,.92); color:#111; border:1.5px solid #111; font:700 11px/17px Inter,Arial,sans-serif; text-align:center; pointer-events:none; box-shadow:0 1px 3px rgba(0,0,0,.4); }
+.pkt-pin.on { color:#111; }
+.pkt-halo { position:absolute; width:6.2%; aspect-ratio:1; transform:translate(-50%,-50%); border-radius:50%; border:2px solid; pointer-events:none; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+@media print { .pkt-pin { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
 .pkt-sec-label { position:absolute; top:2px; left:2px; font-size:11px; font-weight:700; line-height:1.2; padding:1px 4px; background:rgba(255,255,255,0.82); color:#111; border-radius:2px; pointer-events:none; }
 .pkt-sec-draft { position:absolute; box-sizing:border-box; border:2px dashed; pointer-events:none; display:none; }
 @media print {
@@ -209,7 +216,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   body.print-pkt .pkt-diagram-img.is-shown { display:block !important; }
   body.print-pkt .pkt-sec-layer { display:block !important; }
   body.print-pkt .pkt-sec-box.selected { outline:0; }
-  body.print-pkt .pkt-sec-x { display:none !important; }
+  body.print-pkt .pkt-sec-x, body.print-pkt .pkt-team-x { display:none !important; }
+  body.print-pkt .pkt-teamcolor { border:0; appearance:none; -webkit-appearance:none; }
   body.print-pkt { background:#fff !important; color:#111; }
 }
 
@@ -220,7 +228,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <link rel="stylesheet" href="assets/bb-reference.css">
 <script src="scripts/contact-privacy.js?v=1124a"></script>
 <script src="theme.js?v=1124c"></script>
-<script src="scripts/pre-shift-lib.js?v=1124b"></script>
+<script src="scripts/pre-shift-lib.js?v=1124c"></script>
 </head>
 <body class="bb-ref">
 <div class="page-wrap">
@@ -495,7 +503,12 @@ function fmtDate(iso) {
       var load = loads[ti] || { guests: 0, over: false };
       var loadText = !p.seatsPerTable ? "Guest count needs seats per table" : (load.guests + " guests" + (load.over ? " (over 60)" : ""));
       return '<tr class="' + esc(teamClass(t.color)) + '">' +
-        '<td><div class="pkt-color">' + esc(t.color) + ' Team</div>' + names +
+        '<td><div class="pkt-color"><i class="pkt-swatch" style="background:' + (SWATCH[t.color] || "#888") + '"></i>' +
+          '<select class="pkt-teamcolor" data-pkt="' + i + '" data-k="teamcolor" data-t="' + ti + '" aria-label="Team color">' +
+          Object.keys(SWATCH).map(function (c) { return '<option' + (c === t.color ? " selected" : "") + '>' + esc(c) + '</option>'; }).join("") +
+          '</select> Team' +
+          ((p.teams || []).length > 1 ? '<button type="button" class="pkt-team-x" data-act="del-team" data-pkt="' + i + '" data-t="' + ti + '" aria-label="Delete team">×</button>' : '') +
+          '</div>' + names +
         '<div class="pkt-load' + (load.over ? ' over' : '') + '" data-k="load" data-t="' + ti + '">' + esc(loadText) + '</div></td>' +
         '<td><label>Opening</label><textarea class="pkt-area" data-pkt="' + i + '" data-k="opening" data-t="' + ti + '">' + esc((t.opening || []).join("\n")) + '</textarea></td>' +
         '<td><label>Closing</label><textarea class="pkt-area" data-pkt="' + i + '" data-k="closing" data-t="' + ti + '">' + esc((t.closing || []).join("\n")) + '</textarea></td>' +
@@ -540,9 +553,10 @@ function fmtDate(iso) {
     }).join("");
     var diagBlock = '<div class="pkt-diag-stage" data-diag-stage="' + i + '">' +
       '<div class="pkt-sec-bar">' +
-        '<span class="pkt-assign-label" style="margin:0">Section color</span>' + inks +
+        '<button type="button" class="pkt-ink pkt-pinmode" data-act="pin-mode" data-pkt="' + i + '">① Number tables</button>' +
+        '<span class="pkt-assign-label" style="margin:0 0 0 6px">Section color</span>' + inks +
       '</div>' +
-      '<p class="pkt-sec-hint">Pick a team color, then tap or drag on the diagram. Tap × to remove a box.</p>' +
+      '<p class="pkt-sec-hint" data-sec-hint="' + i + '"></p>' +
       '<div class="pkt-diagram-ph" data-diag-ph="' + i + '">Diagram not in Banquet Bot yet.</div>' +
       '<div class="pkt-diag-canvas">' +
         '<img class="pkt-diagram-img" alt="' + esc(p.room || "Room diagram") + '" data-diag-img="' + i + '">' +
@@ -555,7 +569,6 @@ function fmtDate(iso) {
       '<div class="pkt-bar">' +
         '<button type="button" class="bb-btn pkt-btn" data-act="print" data-pkt="' + i + '">Print packet</button>' +
         '<button type="button" class="bb-btn pkt-btn" data-act="add-team" data-pkt="' + i + '">Add team</button>' +
-        (p.teams && p.teams.length > 1 ? '<button type="button" class="bb-btn pkt-btn" data-act="remove-team" data-pkt="' + i + '">Remove team</button>' : '') +
       '</div>' +
       '<div class="pkt-sheet">' +
         '<div class="pkt-title">Server Packet</div>' +
@@ -635,7 +648,8 @@ function fmtDate(iso) {
       assignments: p.assignments,
       tableCount: p.tableCount,
       seatsPerTable: p.seatsPerTable,
-      sections: PreShift.normalizeSections(p.sections || [])
+      sections: PreShift.normalizeSections(p.sections || []),
+      tablePins: PreShift.normalizeTablePins(p.tablePins || {})
     };
     savePacketStore(all);
     return p;
@@ -672,8 +686,24 @@ function fmtDate(iso) {
     if (p) p.sections = boxes;
     var html = boxes.map(function (box) {
       return '<div class="pkt-sec-box' + (box.id === selected ? " selected" : "") + '" data-sec-id="' + esc(box.id) + '" style="' + sectionStyle(box) + '"><span class="pkt-sec-label">' + esc(box.team) + '</span><button type="button" class="pkt-sec-x" data-sec-del="' + esc(box.id) + '" aria-label="Remove">×</button></div>';
+    }).join("");
+    var pins = (p && p.tablePins) || {};
+    html += Object.keys(pins).map(function (k) {
+      var team = p.assignments && p.assignments[k];
+      var col = SWATCH[team];
+      var at = 'left:' + pins[k].x + '%;top:' + pins[k].y + '%;';
+      return (col ? '<span class="pkt-halo" style="' + at + 'background:' + hexRgba(col, 0.45) + ';border-color:' + col + '"></span>' : '') +
+        '<span class="pkt-pin' + (col ? " on" : "") + '" style="' + at + (col ? "background:" + col + ";border-color:" + col : "") + '">' + esc(k) + '</span>';
     }).join("") + '<div class="pkt-sec-draft" data-sec-draft="' + i + '"></div>';
     layer.innerHTML = html;
+    var st = inkState[i] || {}, hint = document.querySelector('[data-sec-hint="' + i + '"]');
+    var pinBtn = document.querySelector('#pkt-' + i + ' [data-act="pin-mode"]');
+    if (pinBtn) pinBtn.classList.toggle("is-on", !!st.pins);
+    if (hint) hint.textContent = st.pins
+      ? "Tap each table in order. Next: Table " + PreShift.nextTableNumber(pins) + ". Tap a number to remove it. Tap Number tables again when done."
+      : st.team
+        ? (Object.keys(pins).length ? "Tap tables to put them in " + st.team + " (tap again to take them out), or drag a box around a group." : "Drag a box over " + st.team + "'s tables. Number the tables first to assign them one by one.")
+        : (Object.keys(pins).length ? "Pick a team color, then tap tables or drag around a group. × removes a box." : "Number tables once (tap each table in order), then pick a color and tap tables to assign them.");
     var stage = document.querySelector('[data-diag-stage="' + i + '"]');
     if (stage) stage.classList.toggle("is-inking", !!(inkState[i] && inkState[i].team));
     (p && p.teams || []).forEach(function (tm) {
@@ -744,9 +774,10 @@ function fmtDate(iso) {
         var beforeSeats = meals[i].packetLive && meals[i].packetLive.seatsPerTable;
         persistPacket(i, meals);
         var k = el.getAttribute("data-k");
+        if (k === "teamcolor") { recolorTeam(i, meals, +el.getAttribute("data-t"), el.value); return; }
         if (k === "tableCount" && meals[i].packetLive.tableCount !== before) { redrawPacket(i, meals); return; }
         if (k === "seatsPerTable" && meals[i].packetLive.seatsPerTable !== beforeSeats) { redrawPacket(i, meals); return; }
-        if (k === "assign") el.style.borderLeftColor = SWATCH[el.value] || "transparent";
+        if (k === "assign") { el.style.borderLeftColor = SWATCH[el.value] || "transparent"; paintSections(i, meals); }
         if (k === "assign" || k === "seatsPerTable") refreshLoads(i, meals);
       });
       el.addEventListener("blur", function () { persistPacket(i, meals); });
@@ -766,17 +797,28 @@ function fmtDate(iso) {
           return;
         }
         if (act === "add-team") {
-          var p = meals[i].packetLive;
-          var names = (p.teams || []).map(function (t) { return t.names; });
-          var next = PreShift.defaultTeams((p.teams || []).length + 1);
-          next.forEach(function (t, ti) { if (names[ti]) t.names = names[ti]; });
-          p.teams = next;
-          var all = loadPacketStore();
-          all[p.key] = all[p.key] || {};
-          all[p.key].teams = p.teams;
-          all[p.key].teamCount = p.teams.length;
-          savePacketStore(all);
-          redrawPacket(i, meals);
+          var p = persistPacket(i, meals);
+          var used = (p.teams || []).map(function (t) { return t.color; });
+          var spec = (p.teams || []).map(function (t) { return { color: t.color, names: t.names }; });
+          spec.push({ color: Object.keys(SWATCH).filter(function (c) { return used.indexOf(c) < 0; })[0] || "Gray", names: ["", ""] });
+          rebuildTeams(i, meals, p, spec);
+          return;
+        }
+        if (act === "del-team") {
+          var pD = persistPacket(i, meals);
+          var ti = +btn.getAttribute("data-t"), gone = (pD.teams[ti] || {}).color;
+          var specD = pD.teams.filter(function (_t, k) { return k !== ti; }).map(function (t) { return { color: t.color, names: t.names }; });
+          Object.keys(pD.assignments || {}).forEach(function (k) { if (pD.assignments[k] === gone) pD.assignments[k] = ""; });
+          pD.sections = (pD.sections || []).filter(function (b) { return b.team !== gone; });
+          if (inkState[i] && inkState[i].team === gone) inkState[i].team = "";
+          rebuildTeams(i, meals, pD, specD);
+          return;
+        }
+        if (act === "pin-mode") {
+          inkState[i] = inkState[i] || {};
+          inkState[i].pins = !inkState[i].pins;
+          if (inkState[i].pins) inkState[i].team = "";
+          paintSections(i, meals);
           return;
         }
         if (act === "ink") {
@@ -784,6 +826,7 @@ function fmtDate(iso) {
           inkState[i] = inkState[i] || {};
           var color = btn.getAttribute("data-ink");
           inkState[i].team = inkState[i].team === color ? "" : color;
+          inkState[i].pins = false;
           paintSections(i, meals);
           return;
         }
@@ -818,6 +861,70 @@ function fmtDate(iso) {
     paintSections(i, meals);
   }
 
+  // Teams keep their own colors and names; duties re-split for the new team count
+  function rebuildTeams(i, meals, p, spec) {
+    var next = PreShift.defaultTeams(spec.length);
+    next.forEach(function (t, ti) { t.color = spec[ti].color; if (spec[ti].names) t.names = spec[ti].names; });
+    p.teams = next;
+    meals[i].packetLive = p;
+    var all = loadPacketStore();
+    all[p.key] = all[p.key] || {};
+    all[p.key].teams = p.teams;
+    all[p.key].teamCount = p.teams.length;
+    all[p.key].assignments = p.assignments;
+    all[p.key].sections = PreShift.normalizeSections(p.sections || []);
+    savePacketStore(all);
+    redrawPacket(i, meals);
+  }
+
+  // New color for a team; a team already on that color swaps to the old one. Tables and boxes follow.
+  function recolorTeam(i, meals, ti, color) {
+    var p = meals[i].packetLive;
+    var old = p.teams[ti].color;
+    if (!color || color === old) return;
+    var swap = p.teams.filter(function (t) { return t.color === color; })[0];
+    function map(c) { return c === old ? color : (swap && c === color ? old : c); }
+    p.teams[ti].color = color;
+    if (swap) swap.color = old;
+    Object.keys(p.assignments || {}).forEach(function (k) { p.assignments[k] = map(p.assignments[k]); });
+    (p.sections || []).forEach(function (b) { b.team = map(b.team); });
+    if (inkState[i] && inkState[i].team) inkState[i].team = map(inkState[i].team);
+    var all = loadPacketStore();
+    all[p.key] = all[p.key] || {};
+    all[p.key].teams = p.teams;
+    all[p.key].teamCount = p.teams.length;
+    all[p.key].assignments = p.assignments;
+    all[p.key].sections = PreShift.normalizeSections(p.sections || []);
+    savePacketStore(all);
+    redrawPacket(i, meals);
+  }
+
+  function hitPin(pins, x, y, r) {
+    var best = "", bestD = 16;
+    Object.keys(pins || {}).forEach(function (k) {
+      var dx = (pins[k].x - x) * r.width / 100, dy = (pins[k].y - y) * r.height / 100;
+      var d = Math.sqrt(dx * dx + dy * dy);
+      if (d < bestD) { bestD = d; best = k; }
+    });
+    return best;
+  }
+
+  // Table -> team: update the dropdown too, since the packet is read back from it
+  function setSelect(i, table, team, p) {
+    p.assignments = p.assignments || {};
+    p.assignments[table] = team;
+    var sel = document.querySelector('#pkt-' + i + ' [data-k="assign"][data-table="' + table + '"]');
+    if (sel) { sel.value = team; sel.style.borderLeftColor = SWATCH[team] || "transparent"; }
+  }
+
+  function setTableTeam(i, meals, table, team) {
+    var p = meals[i].packetLive || meals[i].packet;
+    setSelect(i, table, team, p);
+    persistPacket(i, meals);
+    paintSections(i, meals);
+    refreshLoads(i, meals);
+  }
+
   function bindSectionDraw(i, meals) {
     var layer = document.querySelector('[data-sec-layer="' + i + '"]');
     if (!layer || layer.getAttribute("data-bound") === "1") return;
@@ -849,6 +956,29 @@ function fmtDate(iso) {
       var x = ((ev.clientX - r.left) / r.width) * 100;
       var y = ((ev.clientY - r.top) / r.height) * 100;
       var p = meals[i].packetLive || meals[i].packet;
+      var st = inkState[i] = inkState[i] || {};
+      var pinHit = hitPin(p.tablePins, x, y, r);
+      if (st.pins) {
+        ev.preventDefault();
+        p.tablePins = p.tablePins || {};
+        if (pinHit) delete p.tablePins[pinHit];
+        else {
+          var n = PreShift.nextTableNumber(p.tablePins);
+          p.tablePins[String(n)] = { x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100 };
+          if (n > (p.tableCount || 0)) {
+            var tc = document.querySelector('#pkt-' + i + ' [data-k="tableCount"]');
+            if (tc) { tc.value = String(n); persistPacket(i, meals); redrawPacket(i, meals); return; }
+          }
+        }
+        persistPacket(i, meals);
+        paintSections(i, meals);
+        return;
+      }
+      if (st.team && pinHit) {
+        ev.preventDefault();
+        setTableTeam(i, meals, pinHit, p.assignments && p.assignments[pinHit] === st.team ? "" : st.team);
+        return;
+      }
       var hit = PreShift.hitSection(p.sections || [], x, y);
       if (hit) {
         ev.preventDefault();
@@ -882,6 +1012,9 @@ function fmtDate(iso) {
       if (draft) draft.style.display = "none";
       var r = rectOf();
       var box = PreShift.sectionBoxFromDrag(startX, startY, ev.clientX, ev.clientY, r, team);
+      var pNow = meals[i].packetLive || meals[i].packet;
+      var hasPins = Object.keys(pNow.tablePins || {}).length > 0;
+      if (!box && hasPins) return;
       if (!box && Math.abs(ev.clientX - startX) < 8 && Math.abs(ev.clientY - startY) < 8) {
         // A tap drops a default-size box centered on the spot
         var hw = r.width * 0.09, hh = r.height * 0.07;
@@ -891,8 +1024,10 @@ function fmtDate(iso) {
       var p = meals[i].packetLive || meals[i].packet;
       p.sections = (p.sections || []).concat([box]);
       inkState[i].selected = box.id;
+      PreShift.pinsInBox(p.tablePins, box).forEach(function (k) { setSelect(i, k, team, p); });
       persistPacket(i, meals);
       paintSections(i, meals);
+      refreshLoads(i, meals);
     }
     layer.addEventListener("pointerup", finish);
     layer.addEventListener("pointercancel", finish);

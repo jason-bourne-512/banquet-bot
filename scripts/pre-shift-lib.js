@@ -1088,6 +1088,30 @@
     return out;
   }
 
+  // Numbered table spots on the diagram, {"1": {x, y}} in percent of the image
+  function normalizeTablePins(pins) {
+    var out = {};
+    Object.keys(pins || {}).forEach(function (k) {
+      var n = parseInt(k, 10), pt = pins[k] || {};
+      var x = Number(pt.x), y = Number(pt.y);
+      if (n > 0 && isFinite(x) && isFinite(y) && x >= 0 && x <= 100 && y >= 0 && y <= 100) out[String(n)] = { x: x, y: y };
+    });
+    return out;
+  }
+
+  function nextTableNumber(pins) {
+    var n = 1;
+    while (pins && pins[String(n)]) n++;
+    return n;
+  }
+
+  function pinsInBox(pins, box) {
+    return Object.keys(pins || {}).filter(function (k) {
+      var pt = pins[k];
+      return pt.x >= box.x && pt.x <= box.x + box.w && pt.y >= box.y && pt.y <= box.y + box.h;
+    });
+  }
+
   function hitSection(list, x, y) {
     var i, box, hit = null;
     for (i = 0; i < (list || []).length; i++) {
@@ -1184,6 +1208,7 @@
     if (saved.seatsPerTable != null && +saved.seatsPerTable > 0) out.seatsPerTable = +saved.seatsPerTable;
     if (saved.teamCount && +saved.teamCount > 0) out.teamCount = +saved.teamCount;
     if (Array.isArray(saved.sections)) out.sections = normalizeSections(saved.sections);
+    if (saved.tablePins && typeof saved.tablePins === "object") out.tablePins = normalizeTablePins(saved.tablePins);
     return out;
   }
 
@@ -1295,6 +1320,9 @@
     normalizeSectionBox: normalizeSectionBox,
     sectionBoxFromDrag: sectionBoxFromDrag,
     normalizeSections: normalizeSections,
-    hitSection: hitSection
+    hitSection: hitSection,
+    normalizeTablePins: normalizeTablePins,
+    nextTableNumber: nextTableNumber,
+    pinsInBox: pinsInBox
   };
 });
