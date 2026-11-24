@@ -454,6 +454,7 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .original-event{position:relative;overflow:hidden;padding:16px 12px 17px;margin:12px 0 15px;font-family:'Courier New',monospace;background:radial-gradient(ellipse at 100% 0,#6484ba16,transparent 65%),linear-gradient(135deg,#1b2f41,#101e2b);border:1px solid #648aaa70;border-radius:3px 14px 3px 3px;box-shadow:0 8px 18px #00000045,inset 0 1px #bcdfff18}
 #bb-app .original-event:before{content:'';position:absolute;top:0;left:-35%;width:32%;height:2px;background:linear-gradient(90deg,transparent,#a5e2ff,transparent);box-shadow:0 0 12px #75c6ff88;animation:bb-edge-travel 6s ease-in-out infinite;pointer-events:none}
 #bb-app .original-client{display:flex;align-items:baseline;flex-wrap:wrap;gap:9px;margin-bottom:2px;font-size:15px;font-weight:700;line-height:1.4;color:#f0f8ff;text-shadow:0 1px 2px #00000080,0 0 14px #94cfff28}
+#bb-app .nobeo-chip{padding:3px 8px;font:800 11.5px/1.4 Manrope,Arial,sans-serif;letter-spacing:.6px;color:#ffb3a8;border:1px dashed #ff8a80;border-radius:5px;background:#ff8a8012;white-space:nowrap}
 #bb-app .mgr-chip{padding:3px 8px;font:700 12px/1.4 Manrope,Arial,sans-serif;letter-spacing:.3px;color:#ffd9b0;border:1px solid #ffc0855c;border-radius:5px;background:linear-gradient(135deg,#ffc08524,#ffc08508);white-space:nowrap}
 #bb-app .original-contact{padding:3px 8px;font-size:13px;font-weight:700;letter-spacing:.2px;color:#d1daff;border:1px solid #a9bcff4a;border-radius:5px;background:linear-gradient(135deg,#697fb52e,#34466535);box-shadow:inset 0 1px #d2dcff18;text-shadow:0 0 9px #a8baff20}
 #bb-app .original-room{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:15px 0 5px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c4e5ff}
@@ -13631,11 +13632,11 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
   <div class="day-dot"><span class="day-dot-num">24</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="TUE" data-es="TUE">TUE</div>
-    <div class="day-summary" data-en="Tucson Roadrunners, Camellia" data-es="Tucson Roadrunners, Camellia">Tucson Roadrunners, Camellia</div>
+    <div class="day-summary" data-en="Tucson Roadrunners, Camellia · AUSDW In-House, Zilker" data-es="Tucson Roadrunners, Camellia · AUSDW In-House, Zilker">Tucson Roadrunners, Camellia · AUSDW In-House, Zilker</div>
   </div>
 </button>
 <div class="day-body">
-  <div class="event-card" data-post="Tucson Roadrunners">
+  <div class="event-card" data-post="Tucson Roadrunners" data-upd="2026-11-23|21 Days Out report|Shows the meeting 8 AM to 3 PM and lunch 12:30 to 2:30 PM (event order says 8 AM to 1 PM, lunch 12:30 to 1), confirm with Lisa">
     <div class="card-head" style="border-left:3px solid var(--orange)">
       <div class="card-group" data-en="Tucson Roadrunners — Team Meeting (Camellia)" data-es="Tucson Roadrunners — Team Meeting (Camellia)">Tucson Roadrunners — Team Meeting (Camellia)</div>
       <div class="card-badges">
@@ -13666,6 +13667,25 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
     </div>
   </div>
 
+  <div class="event-card" data-nobeo="Definite">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="AUSDW In-House — SwS Meeting" data-es="AUSDW In-House — SwS Meeting">AUSDW In-House — SwS Meeting</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Zilker</span><span class="gtd-pill">EXP 12</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Zilker / Conference" data-es="Zilker / Conference">Zilker / Conference</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · In-house meeting, event order 362453" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · In-house meeting, event order 362453">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · In-house meeting, event order 362453</span></div>
+    </div>
+  </div>
+
 </div>
 </div>
 <div class="day-section" data-date="2026-11-25">
@@ -13677,7 +13697,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
   </div>
 </button>
 <div class="day-body">
-  <div class="event-card" data-post="Tucson Roadrunners">
+  <div class="event-card" data-post="Tucson Roadrunners" data-upd="2026-11-23|21 Days Out report|Shows breakfast 8 to 10 AM, lunch 12:30 to 2:30 PM and the meeting until 3 PM (event order says 8 AM to 1 PM), confirm with Lisa">
     <div class="card-head" style="border-left:3px solid var(--orange)">
       <div class="card-group" data-en="Tucson Roadrunners — Team Meeting (Camellia)" data-es="Tucson Roadrunners — Team Meeting (Camellia)">Tucson Roadrunners — Team Meeting (Camellia)</div>
       <div class="card-badges">
@@ -13717,8 +13737,79 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
 
 </div>
 </div>
-<div class="day-section" data-date="2026-12-01">
+<div class="day-section" data-date="2026-11-27">
 <button class="day-btn a2" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">27</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="FRI" data-es="FRI">FRI</div>
+    <div class="day-summary" data-en="Ginger Allure MedSpa, Primrose ABC · Corinne PDR, Bonnell" data-es="Ginger Allure MedSpa, Primrose ABC · Corinne PDR, Bonnell">Ginger Allure MedSpa, Primrose ABC · Corinne PDR, Bonnell</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Ginger Allure MedSpa — Holiday Party" data-es="Ginger Allure MedSpa — Holiday Party">Ginger Allure MedSpa — Holiday Party</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Primrose ABC</span><span class="gtd-pill">EXP 50</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Primrose ABC</span><span class="gtd-pill">EXP 50</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Primrose ABC</span><span class="gtd-pill">EXP 50</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">5:00–<br>6:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Primrose ABC</span><span class="gtd-pill">EXP 50</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose ABC / Crescent Rounds" data-es="Primrose ABC / Crescent Rounds">Primrose ABC / Crescent Rounds</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Corinne PDR — Roger Walker Memorial" data-es="Corinne PDR — Roger Walker Memorial">Corinne PDR — Roger Walker Memorial</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">1:30–<br>3:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Bonnell</span><span class="gtd-pill">EXP 20</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bonnell / Conference" data-es="Bonnell / Conference">Bonnell / Conference</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed (diagram: (4) rounds, Diana 11/19)" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed (diagram: (4) rounds, Diana 11/19)">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed (diagram: (4) rounds, Diana 11/19)</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="day-section" data-date="2026-12-01">
+<button class="day-btn a3" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">1</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="TUE" data-es="TUE">TUE</div>
@@ -13775,11 +13866,11 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
 </div>
 </div>
 <div class="day-section" data-date="2026-12-02">
-<button class="day-btn a3" onclick="openDayFull(this)">
+<button class="day-btn a4" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">2</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="WED" data-es="WED">WED</div>
-    <div class="day-summary" data-en="TTA Pre-Legislative Meeting, Primrose AB · Surge Energy, Lantana A · Wal-Mart R7 Meeting, Camellia" data-es="TTA Pre-Legislative Meeting, Primrose AB · Surge Energy, Lantana A · Wal-Mart R7 Meeting, Camellia">TTA Pre-Legislative Meeting, Primrose AB · Surge Energy, Lantana A · Wal-Mart R7 Meeting, Camellia</div>
+    <div class="day-summary" data-en="TTA Pre-Legislative Meeting, Primrose AB · Surge Energy, Lantana A · Wal-Mart R7 Meeting, Camellia · AbbVie OneHUB, Verbena A + Buttercup" data-es="TTA Pre-Legislative Meeting, Primrose AB · Surge Energy, Lantana A · Wal-Mart R7 Meeting, Camellia · AbbVie OneHUB, Verbena A + Buttercup">TTA Pre-Legislative Meeting, Primrose AB · Surge Energy, Lantana A · Wal-Mart R7 Meeting, Camellia · AbbVie OneHUB, Verbena A + Buttercup</div>
   </div>
 </button>
 <div class="day-body">
@@ -13851,7 +13942,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
         <div class="svc-menu" data-en="Bottled Water, Pepsi products, Regular Coffee by the gallon, all on consumption" data-es="Bottled Water, Pepsi products, Regular Coffee by the gallon, all on consumption">Bottled Water, Pepsi products, Regular Coffee by the gallon, all on consumption</div>
       </div>
     </div>
-    <div class="svc-row">
+    <div class="svc-row" data-upd="2026-11-23|21 Days Out report|Shows lunch at 11:45 AM, not noon, confirm with Lisa">
       <div class="svc-time">12:00–<br>1:00 PM</div>
       <div class="svc-content">
         <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Lantana A</span><span class="gtd-pill">EXP 12</span></div>
@@ -13892,18 +13983,45 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
     </div>
   </div>
 
+  <div class="event-card" data-nobeo="Definite" data-post="AbbVie OneHUB">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="AbbVie OneHUB — Meeting" data-es="AbbVie OneHUB — Meeting">AbbVie OneHUB — Meeting</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:30–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Verbena A</span><span class="gtd-pill">GTD 12 · SET 12</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:30–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Breakout 1 — No F&amp;B" data-es="Breakout 1 — No F&amp;B">Breakout 1 — No F&amp;B</span><span class="room-pill">Buttercup</span><span class="gtd-pill">GTD 2 · SET 6</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena A / Conference<br>Buttercup / Conference" data-es="Verbena A / Conference<br>Buttercup / Conference">Verbena A / Conference<br>Buttercup / Conference</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event orders 955705, 955724 are booked but not in a packet yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event orders 955705, 955724 are booked but not in a packet yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event orders 955705, 955724 are booked but not in a packet yet</span></div>
+    </div>
+  </div>
+
 </div>
 </div>
 <div class="day-section" data-date="2026-12-03">
-<button class="day-btn a4" onclick="openDayFull(this)">
+<button class="day-btn a5" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">3</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="THU" data-es="THU">THU</div>
-    <div class="day-summary" data-en="TSAE, Pre-Function/Primrose Ballroom/Camellia/Plumeria/Lantana/Barton · Surge Energy, Lantana A" data-es="TSAE, Pre-Function/Primrose Ballroom/Camellia/Plumeria/Lantana/Barton · Surge Energy, Lantana A">TSAE, Pre-Function/Primrose Ballroom/Camellia/Plumeria/Lantana/Barton · Surge Energy, Lantana A</div>
+    <div class="day-summary" data-en="TSAE, Pre-Function/Primrose Ballroom/Camellia/Plumeria/Lantana/Barton · Surge Energy, Lantana A · Magic Leap, Verbena B · Corinne PDR, Bonnell" data-es="TSAE, Pre-Function/Primrose Ballroom/Camellia/Plumeria/Lantana/Barton · Surge Energy, Lantana A · Magic Leap, Verbena B · Corinne PDR, Bonnell">TSAE, Pre-Function/Primrose Ballroom/Camellia/Plumeria/Lantana/Barton · Surge Energy, Lantana A · Magic Leap, Verbena B · Corinne PDR, Bonnell</div>
   </div>
 </button>
 <div class="day-body">
-  <div class="event-card" data-post="Texas Society of Association Executives">
+  <div class="event-card" data-post="Texas Society of Association Executives" data-upd="2026-11-23|21 Days Out report|Shows the Barton board reception 5:30 to 6:30 PM (card says 6 to 9 PM), confirm with Diana">
     <div class="card-head" style="border-left:3px solid var(--purple)">
       <div class="card-group" data-en="TSAE — Set Up, Board Meeting + Board Reception" data-es="TSAE — Set Up, Board Meeting + Board Reception">TSAE — Set Up, Board Meeting + Board Reception</div>
       <div class="card-badges">
@@ -14043,14 +14161,74 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
     </div>
   </div>
 
+  <div class="event-card" data-nobeo="Definite" data-post="ML Offsite">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Magic Leap — ML Offsite" data-es="Magic Leap — ML Offsite">Magic Leap — ML Offsite</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:30 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Verbena B</span><span class="gtd-pill">EXP 12</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">10:30–<br>11:30 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break — AM Break" data-es="Coffee Break — AM Break">Coffee Break — AM Break</span><span class="room-pill">Verbena B</span><span class="gtd-pill">EXP 12</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Verbena B</span><span class="gtd-pill">EXP 12</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">2:30–<br>3:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break — PM Break" data-es="Coffee Break — PM Break">Coffee Break — PM Break</span><span class="room-pill">Verbena B</span><span class="gtd-pill">EXP 12</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena B / Conference" data-es="Verbena B / Conference">Verbena B / Conference</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Corinne PDR — Lunch" data-es="Corinne PDR — Lunch">Corinne PDR — Lunch</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">11:15 AM–<br>2:15 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Bonnell</span><span class="gtd-pill">EXP 17</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bonnell / Conference" data-es="Bonnell / Conference">Bonnell / Conference</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed</span></div>
+    </div>
+  </div>
+
 </div>
 </div>
 <div class="day-section" data-date="2026-12-04">
-<button class="day-btn a5" onclick="openDayFull(this)">
+<button class="day-btn a1" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">4</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="FRI" data-es="FRI">FRI</div>
-    <div class="day-summary" data-en="TSAE Luncheon, Primrose Ballroom/Primrose Foyer/Camellia/Lantana/Plumeria" data-es="TSAE Luncheon, Primrose Ballroom/Primrose Foyer/Camellia/Lantana/Plumeria">TSAE Luncheon, Primrose Ballroom/Primrose Foyer/Camellia/Lantana/Plumeria</div>
+    <div class="day-summary" data-en="TSAE Luncheon, Primrose Ballroom/Primrose Foyer/Camellia/Lantana/Plumeria · Magic Leap, Verbena B · Corinne PDR, Barton · Corinne PDR, Zilker · Applied Materials, Primrose C" data-es="TSAE Luncheon, Primrose Ballroom/Primrose Foyer/Camellia/Lantana/Plumeria · Magic Leap, Verbena B · Corinne PDR, Barton · Corinne PDR, Zilker · Applied Materials, Primrose C">TSAE Luncheon, Primrose Ballroom/Primrose Foyer/Camellia/Lantana/Plumeria · Magic Leap, Verbena B · Corinne PDR, Barton · Corinne PDR, Zilker · Applied Materials, Primrose C</div>
   </div>
 </button>
 <div class="day-body">
@@ -14141,18 +14319,109 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
     </div>
   </div>
 
+  <div class="event-card" data-nobeo="Definite" data-post="ML Offsite">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Magic Leap — ML Offsite" data-es="Magic Leap — ML Offsite">Magic Leap — ML Offsite</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:30 AM–<br>12:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Verbena B</span><span class="gtd-pill">EXP 12</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:30–<br>10:30 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-brk" data-en="Coffee Break — AM Break" data-es="Coffee Break — AM Break">Coffee Break — AM Break</span><span class="room-pill">Verbena B</span><span class="gtd-pill">EXP 12</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena B / Conference" data-es="Verbena B / Conference">Verbena B / Conference</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Corinne PDR — Geosyntec Consultants Holiday Party" data-es="Corinne PDR — Geosyntec Consultants Holiday Party">Corinne PDR — Geosyntec Consultants Holiday Party</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>9:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 45</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Barton" data-es="Barton">Barton</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Corinne PDR — 51Tooth Dental Haus" data-es="Corinne PDR — 51Tooth Dental Haus">Corinne PDR — 51Tooth Dental Haus</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>9:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Zilker</span><span class="gtd-pill">EXP 14</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Zilker / Conference" data-es="Zilker / Conference">Zilker / Conference</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Applied Materials — Holiday Party" data-es="Applied Materials — Holiday Party">Applied Materials — Holiday Party</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>10:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Cocktail Reception" data-es="Cocktail Reception">Cocktail Reception</span><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 120</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:30–<br>8:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner Buffet" data-es="Dinner Buffet">Dinner Buffet</span><span class="room-pill">Primrose C</span><span class="gtd-pill">EXP 120</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose C / Cocktail rounds (reception), rounds of 10 (dinner)" data-es="Primrose C / Cocktail rounds (reception), rounds of 10 (dinner)">Primrose C / Cocktail rounds (reception), rounds of 10 (dinner)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet</span></div>
+    </div>
+  </div>
+
 </div>
 </div>
 <div class="day-section" data-date="2026-12-05">
-<button class="day-btn a1" onclick="openDayFull(this)">
+<button class="day-btn a2" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">5</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="SAT" data-es="SAT">SAT</div>
-    <div class="day-summary" data-en="Mutotech Holiday Party, Primrose D + Verbena" data-es="Mutotech Holiday Party, Primrose D + Verbena">Mutotech Holiday Party, Primrose D + Verbena</div>
+    <div class="day-summary" data-en="Mutotech Holiday Party, Primrose D + Verbena · 12 Elements Consulting, Primrose ABC · Corinne PDR, Barton" data-es="Mutotech Holiday Party, Primrose D + Verbena · 12 Elements Consulting, Primrose ABC · Corinne PDR, Barton">Mutotech Holiday Party, Primrose D + Verbena · 12 Elements Consulting, Primrose ABC · Corinne PDR, Barton</div>
   </div>
 </button>
 <div class="day-body">
-  <div class="event-card" data-post="Mutotech Holiday Party">
+  <div class="event-card" data-post="Mutotech Holiday Party" data-upd="2026-11-23|21 Days Out report|Shows the Primrose D reception guaranteed at 70 (card says 80; 80 still listed as expected for the food), confirm with Lisa">
     <div class="card-head" style="border-left:3px solid var(--red)">
       <div class="card-group" data-en="Muto Technology — Holiday Party (Primrose D)" data-es="Muto Technology — Holiday Party (Primrose D)">Muto Technology — Holiday Party (Primrose D)</div>
       <div class="card-badges">
@@ -14232,14 +14501,136 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
     </div>
   </div>
 
+  <div class="event-card" data-nobeo="Definite" data-post="12 Elements Consulting Holiday Party">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="12 Elements Consulting — Holiday Party" data-es="12 Elements Consulting — Holiday Party">12 Elements Consulting — Holiday Party</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">11:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose ABC</span><span class="gtd-pill">1</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">5:00–<br>11:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Dance — No F&amp;B" data-es="Dance — No F&amp;B">Dance — No F&amp;B</span><span class="room-pill">Primrose ABC</span><span class="gtd-pill">GTD 254 · SET 254</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">5:00–<br>10:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Cocktail Reception" data-es="Cocktail Reception">Cocktail Reception</span><span class="room-pill">Primrose ABC</span><span class="gtd-pill">GTD 254</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:45–<br>8:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Primrose ABC</span><span class="gtd-pill">GTD 254</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose ABC / Special set" data-es="Primrose ABC / Special set">Primrose ABC / Special set</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 863321 is booked but not in a packet yet; set-up room not printed on the report (assumed Primrose ABC)" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 863321 is booked but not in a packet yet; set-up room not printed on the report (assumed Primrose ABC)">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 863321 is booked but not in a packet yet; set-up room not printed on the report (assumed Primrose ABC)</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Corinne PDR — Wedding Celebration (Leila &amp; Omid)" data-es="Corinne PDR — Wedding Celebration (Leila &amp; Omid)">Corinne PDR — Wedding Celebration (Leila &amp; Omid)</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>11:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 40</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Barton / Rounds of 8" data-es="Barton / Rounds of 8">Barton / Rounds of 8</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed</span></div>
+    </div>
+  </div>
+
 </div>
 </div>
+<div class="day-section" data-date="2026-12-06">
+<button class="day-btn a3" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">6</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="SUN" data-es="SUN">SUN</div>
+    <div class="day-summary" data-en="OsteoCentric, Bluebell" data-es="OsteoCentric, Bluebell">OsteoCentric, Bluebell</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="OsteoCentric — Meeting" data-es="OsteoCentric — Meeting">OsteoCentric — Meeting</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 10</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell (fixed boardroom)" data-es="Bluebell (fixed boardroom)">Bluebell (fixed boardroom)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="day-section" data-date="2026-12-07">
+<button class="day-btn a4" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">7</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="MON" data-es="MON">MON</div>
+    <div class="day-summary" data-en="OsteoCentric, Bluebell" data-es="OsteoCentric, Bluebell">OsteoCentric, Bluebell</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="OsteoCentric — Meeting" data-es="OsteoCentric — Meeting">OsteoCentric — Meeting</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 10</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell (fixed boardroom)" data-es="Bluebell (fixed boardroom)">Bluebell (fixed boardroom)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
 <div class="day-section" data-date="2026-12-08">
-<button class="day-btn a2" onclick="openDayFull(this)">
+<button class="day-btn a5" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">8</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="TUE" data-es="TUE">TUE</div>
-    <div class="day-summary" data-en="TrueCommerce Meeting, Camellia A" data-es="TrueCommerce Meeting, Camellia A">TrueCommerce Meeting, Camellia A</div>
+    <div class="day-summary" data-en="TrueCommerce Meeting, Camellia A · Prosper, Bluebell · OsteoCentric, Bluebell · WWGS, Primrose AB · AIPAC, Primrose C + D" data-es="TrueCommerce Meeting, Camellia A · Prosper, Bluebell · OsteoCentric, Bluebell · WWGS, Primrose AB · AIPAC, Primrose C + D">TrueCommerce Meeting, Camellia A · Prosper, Bluebell · OsteoCentric, Bluebell · WWGS, Primrose AB · AIPAC, Primrose C + D</div>
   </div>
 </button>
 <div class="day-body">
@@ -14294,14 +14685,113 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
     </div>
   </div>
 
+  <div class="event-card" data-nobeo="Tentative (T1)">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Prosper — Annual Planning" data-es="Prosper — Annual Planning">Prosper — Annual Planning</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:30 AM–<br>6:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 6</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 6</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell (fixed boardroom)" data-es="Bluebell (fixed boardroom)">Bluebell (fixed boardroom)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Tentative (T1), not confirmed yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Tentative (T1), not confirmed yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Tentative (T1), not confirmed yet</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="OsteoCentric — Meeting" data-es="OsteoCentric — Meeting">OsteoCentric — Meeting</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 10</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell (fixed boardroom)" data-es="Bluebell (fixed boardroom)">Bluebell (fixed boardroom)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet · Report also has Prosper in Bluebell this day" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet · Report also has Prosper in Bluebell this day">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet · Report also has Prosper in Bluebell this day</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="WWGS PXT People Leader Training">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="WWGS — PXT People Leader Training Reception" data-es="WWGS — PXT People Leader Training Reception">WWGS — PXT People Leader Training Reception</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">5:00–<br>7:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Cocktail Reception" data-es="Cocktail Reception">Cocktail Reception</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">GTD 40 · SET 40</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose AB / Lounge" data-es="Primrose AB / Lounge">Primrose AB / Lounge</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 056637 is booked but not in a packet yet; bar" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 056637 is booked but not in a packet yet; bar">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 056637 is booked but not in a packet yet; bar</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="AIPAC Austin Fall Event">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="AIPAC — Austin Fall Event" data-es="AIPAC — Austin Fall Event">AIPAC — Austin Fall Event</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>9:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Holding Room — No F&amp;B" data-es="Holding Room — No F&amp;B">Holding Room — No F&amp;B</span><span class="room-pill">Primrose C</span><span class="gtd-pill">1</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:30–<br>7:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Cocktail Reception" data-es="Cocktail Reception">Cocktail Reception</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 50</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:00–<br>8:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Primrose D</span><span class="gtd-pill">EXP 50</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose C / holding room<br>Primrose D / cocktail rounds, then crescent rounds" data-es="Primrose C / holding room<br>Primrose D / cocktail rounds, then crescent rounds">Primrose C / holding room<br>Primrose D / cocktail rounds, then crescent rounds</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Diagrams in (Primrose D, Plumeria); the report has the holding room in Primrose C, not Plumeria" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Diagrams in (Primrose D, Plumeria); the report has the holding room in Primrose C, not Plumeria">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Diagrams in (Primrose D, Plumeria); the report has the holding room in Primrose C, not Plumeria</span></div>
+    </div>
+  </div>
+
 </div>
 </div>
 <div class="day-section" data-date="2026-12-09">
-<button class="day-btn a3" onclick="openDayFull(this)">
+<button class="day-btn a1" onclick="openDayFull(this)">
   <div class="day-dot"><span class="day-dot-num">9</span></div>
   <div class="day-text">
     <div class="day-dow" data-en="WED" data-es="WED">WED</div>
-    <div class="day-summary" data-en="TrueCommerce Meeting, Camellia A" data-es="TrueCommerce Meeting, Camellia A">TrueCommerce Meeting, Camellia A</div>
+    <div class="day-summary" data-en="TrueCommerce Meeting, Camellia A · Intel, Bluebell · RHCA, Primrose CD" data-es="TrueCommerce Meeting, Camellia A · Intel, Bluebell · RHCA, Primrose CD">TrueCommerce Meeting, Camellia A · Intel, Bluebell · RHCA, Primrose CD</div>
   </div>
 </button>
 <div class="day-body">
@@ -14356,8 +14846,673 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
     </div>
   </div>
 
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Intel — Staff FTF" data-es="Intel — Staff FTF">Intel — Staff FTF</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 8</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell (fixed boardroom)" data-es="Bluebell (fixed boardroom)">Bluebell (fixed boardroom)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="RHCA — Luna Awards Set-Up" data-es="RHCA — Luna Awards Set-Up">RHCA — Luna Awards Set-Up</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>11:59 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">EXP 10</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose CD / Special set" data-es="Primrose CD / Special set">Primrose CD / Special set</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet</span></div>
+    </div>
+  </div>
+
 </div>
 </div>
+<div class="day-section" data-date="2026-12-10">
+<button class="day-btn a2" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">10</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="THU" data-es="THU">THU</div>
+    <div class="day-summary" data-en="McKinstry, Verbena B · PFD, Bluebell · Torch, Plumeria · e3 Wealth, Camellia · RHCA, Primrose CD · AUSDW In-House, Primrose AB · ISACA, Primrose CD · SGMP Texas Chapter, Verbena" data-es="McKinstry, Verbena B · PFD, Bluebell · Torch, Plumeria · e3 Wealth, Camellia · RHCA, Primrose CD · AUSDW In-House, Primrose AB · ISACA, Primrose CD · SGMP Texas Chapter, Verbena">McKinstry, Verbena B · PFD, Bluebell · Torch, Plumeria · e3 Wealth, Camellia · RHCA, Primrose CD · AUSDW In-House, Primrose AB · ISACA, Primrose CD · SGMP Texas Chapter, Verbena</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="event-card" data-nobeo="Definite" data-post="McKinstry Senior Leadership Planning Retreat">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="McKinstry — Senior Leadership Planning Retreat" data-es="McKinstry — Senior Leadership Planning Retreat">McKinstry — Senior Leadership Planning Retreat</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:00 AM–<br>1:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Verbena B</span><span class="gtd-pill">GTD 16 · SET 16</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:00–<br>8:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Verbena B</span><span class="gtd-pill">GTD 16</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Verbena B</span><span class="gtd-pill">EXP 16</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena B / Conference" data-es="Verbena B / Conference">Verbena B / Conference</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 644708 is booked but not in a packet yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 644708 is booked but not in a packet yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 644708 is booked but not in a packet yet</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="PFD Annual EOS Meeting">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="PFD — Annual EOS Meeting" data-es="PFD — Annual EOS Meeting">PFD — Annual EOS Meeting</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 7</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 7</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 7</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell (fixed boardroom)" data-es="Bluebell (fixed boardroom)">Bluebell (fixed boardroom)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="Torch Leadership Retreat">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Torch — Leadership Retreat" data-es="Torch — Leadership Retreat">Torch — Leadership Retreat</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 30</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria / Crescent Rounds" data-es="Plumeria / Crescent Rounds">Plumeria / Crescent Rounds</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="e3 Wealth All Firm Meeting">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="e3 Wealth — All Firm Meeting" data-es="e3 Wealth — All Firm Meeting">e3 Wealth — All Firm Meeting</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Camellia</span><span class="gtd-pill">GTD 50 · SET 50</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Camellia</span><span class="gtd-pill">EXP 50</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia / Schoolroom" data-es="Camellia / Schoolroom">Camellia / Schoolroom</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="RHCA — Luna Awards Lunch" data-es="RHCA — Luna Awards Lunch">RHCA — Luna Awards Lunch</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">10:00 AM–<br>2:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">EXP 200</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch — Plated" data-es="Lunch — Plated">Lunch — Plated</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">EXP 200</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose CD / Rounds of 10" data-es="Primrose CD / Rounds of 10">Primrose CD / Rounds of 10</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="AUSDW In-House — Q4 Rally" data-es="AUSDW In-House — Q4 Rally">AUSDW In-House — Q4 Rally</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">3:00–<br>4:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Hospitality Room — No F&amp;B" data-es="Hospitality Room — No F&amp;B">Hospitality Room — No F&amp;B</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 60</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose AB / Rounds of 10" data-es="Primrose AB / Rounds of 10">Primrose AB / Rounds of 10</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · In-house hotel event" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · In-house hotel event">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · In-house hotel event</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="ISACA — Event" data-es="ISACA — Event">ISACA — Event</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">4:00–<br>9:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Cocktail Reception" data-es="Cocktail Reception">Cocktail Reception</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">EXP 150</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>7:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Primrose CD</span><span class="gtd-pill">EXP 150</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose CD / Cocktail Rounds" data-es="Primrose CD / Cocktail Rounds">Primrose CD / Cocktail Rounds</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet · Same room as RHCA Luna Awards lunch (10 AM to 2 PM)" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet · Same room as RHCA Luna Awards lunch (10 AM to 2 PM)">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet · Same room as RHCA Luna Awards lunch (10 AM to 2 PM)</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="SGMP Texas Chapter — Holiday Mixer" data-es="SGMP Texas Chapter — Holiday Mixer">SGMP Texas Chapter — Holiday Mixer</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">5:00–<br>7:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Reception" data-es="Reception">Reception</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 40</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena / Lounge" data-es="Verbena / Lounge">Verbena / Lounge</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="day-section" data-date="2026-12-11">
+<button class="day-btn a3" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">11</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="FRI" data-es="FRI">FRI</div>
+    <div class="day-summary" data-en="Ferguson, Primrose AB · PFD, Bluebell · PFM Asset Management, Camellia A · Torch, Plumeria · Grand Rapids Griffins, Verbena · Maestro Integrations, Plumeria · e3 Wealth, Primrose AB · American Constructors, Camellia · anthonyBarnum PR, Room TBD" data-es="Ferguson, Primrose AB · PFD, Bluebell · PFM Asset Management, Camellia A · Torch, Plumeria · Grand Rapids Griffins, Verbena · Maestro Integrations, Plumeria · e3 Wealth, Primrose AB · American Constructors, Camellia · anthonyBarnum PR, Room TBD">Ferguson, Primrose AB · PFD, Bluebell · PFM Asset Management, Camellia A · Torch, Plumeria · Grand Rapids Griffins, Verbena · Maestro Integrations, Plumeria · e3 Wealth, Primrose AB · American Constructors, Camellia · anthonyBarnum PR, Room TBD</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="event-card" data-nobeo="Definite" data-post="Ferguson Mitsubishi Meeting">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Ferguson — Mitsubishi Meeting" data-es="Ferguson — Mitsubishi Meeting">Ferguson — Mitsubishi Meeting</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00 AM–<br>3:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 100</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 100</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 100</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose AB / Schoolroom" data-es="Primrose AB / Schoolroom">Primrose AB / Schoolroom</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Primrose AB flips to e3 Wealth reception at 5 PM" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Primrose AB flips to e3 Wealth reception at 5 PM">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Primrose AB flips to e3 Wealth reception at 5 PM</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="PFD Annual EOS Meeting">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="PFD — Annual EOS Meeting" data-es="PFD — Annual EOS Meeting">PFD — Annual EOS Meeting</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 7</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 7</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>1:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Bluebell</span><span class="gtd-pill">EXP 7</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Bluebell (fixed boardroom)" data-es="Bluebell (fixed boardroom)">Bluebell (fixed boardroom)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="Board of Trustees Meeting, Texas Range Investment Program">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="PFM Asset Management — Texas Range Board of Trustees" data-es="PFM Asset Management — Texas Range Board of Trustees">PFM Asset Management — Texas Range Board of Trustees</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>11:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Camellia A</span><span class="gtd-pill">EXP 14</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">8:00–<br>9:00 AM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-bkf" data-en="Breakfast" data-es="Breakfast">Breakfast</span><span class="room-pill">Camellia A</span><span class="gtd-pill">EXP 14</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia A / U-Shape" data-es="Camellia A / U-Shape">Camellia A / U-Shape</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="Torch Leadership Retreat">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Torch — Leadership Retreat" data-es="Torch — Leadership Retreat">Torch — Leadership Retreat</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>3:30 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 30</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria / Crescent Rounds" data-es="Plumeria / Crescent Rounds">Plumeria / Crescent Rounds</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="Grand Rapids Griffins">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Grand Rapids Griffins — Team Lunch" data-es="Grand Rapids Griffins — Team Lunch">Grand Rapids Griffins — Team Lunch</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>2:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch" data-es="Lunch">Lunch</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 24</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena / Rounds of 10" data-es="Verbena / Rounds of 10">Verbena / Rounds of 10</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="Maestro Integrations Holiday Bash">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Maestro Integrations — Holiday Bash" data-es="Maestro Integrations — Holiday Bash">Maestro Integrations — Holiday Bash</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">5:00–<br>10:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Plumeria</span><span class="gtd-pill">EXP 50</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Plumeria / Rounds of 10" data-es="Plumeria / Rounds of 10">Plumeria / Rounds of 10</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Plumeria flips from Torch (ends 3:30 PM)" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Plumeria flips from Torch (ends 3:30 PM)">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Plumeria flips from Torch (ends 3:30 PM)</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="e3 Wealth Holiday Party">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="e3 Wealth — Holiday Party" data-es="e3 Wealth — Holiday Party">e3 Wealth — Holiday Party</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">5:00–<br>6:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Cocktail Reception" data-es="Cocktail Reception">Cocktail Reception</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 80</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>10:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner — Holiday Dinner" data-es="Dinner — Holiday Dinner">Dinner — Holiday Dinner</span><span class="room-pill">Primrose AB</span><span class="gtd-pill">EXP 80</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose AB / Cocktail rounds, then rounds of 10" data-es="Primrose AB / Cocktail rounds, then rounds of 10">Primrose AB / Cocktail rounds, then rounds of 10</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Primrose AB flips from Ferguson (ends 3 PM)" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Primrose AB flips from Ferguson (ends 3 PM)">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Primrose AB flips from Ferguson (ends 3 PM)</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="American Constructors Christmas">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="American Constructors — Storage" data-es="American Constructors — Storage">American Constructors — Storage</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>9:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Storage — No F&amp;B" data-es="Storage — No F&amp;B">Storage — No F&amp;B</span><span class="room-pill">Camellia</span><span class="gtd-pill">1</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Camellia" data-es="Camellia">Camellia</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="anthonyBarnum PR — Holiday Party" data-es="anthonyBarnum PR — Holiday Party">anthonyBarnum PR — Holiday Party</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:00–<br>10:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Room TBD</span><span class="gtd-pill">EXP 25</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Room not assigned on the report (Special)" data-es="Room not assigned on the report (Special)">Room not assigned on the report (Special)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="day-section" data-date="2026-12-12">
+<button class="day-btn a4" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">12</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="SAT" data-es="SAT">SAT</div>
+    <div class="day-summary" data-en="American Constructors, Primrose Ballroom · anthonyBarnum PR, Room TBD · Grand Rapids Griffins, Verbena · Corinne PDR, Barton · Azazie, Primrose Ballroom" data-es="American Constructors, Primrose Ballroom · anthonyBarnum PR, Room TBD · Grand Rapids Griffins, Verbena · Corinne PDR, Barton · Azazie, Primrose Ballroom">American Constructors, Primrose Ballroom · anthonyBarnum PR, Room TBD · Grand Rapids Griffins, Verbena · Corinne PDR, Barton · Azazie, Primrose Ballroom</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="event-card" data-nobeo="Definite" data-post="American Constructors Christmas">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="American Constructors — Christmas Party" data-es="American Constructors — Christmas Party">American Constructors — Christmas Party</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>11:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Storage — No F&amp;B" data-es="Storage — No F&amp;B">Storage — No F&amp;B</span><span class="room-pill">Camellia</span><span class="gtd-pill">1</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose Ballroom</span><span class="gtd-pill">EXP 250</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>7:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-rec" data-en="Cocktail Reception" data-es="Cocktail Reception">Cocktail Reception</span><span class="room-pill">Primrose Foyer</span><span class="gtd-pill">EXP 250</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>11:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Dance — No F&amp;B" data-es="Dance — No F&amp;B">Dance — No F&amp;B</span><span class="room-pill">Primrose Ballroom</span><span class="gtd-pill">EXP 250</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">7:30–<br>9:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner Buffet" data-es="Dinner Buffet">Dinner Buffet</span><span class="room-pill">Primrose Ballroom</span><span class="gtd-pill">EXP 250</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose Ballroom / Rounds of 10<br>Primrose Foyer / reception<br>Camellia / storage" data-es="Primrose Ballroom / Rounds of 10<br>Primrose Foyer / reception<br>Camellia / storage">Primrose Ballroom / Rounds of 10<br>Primrose Foyer / reception<br>Camellia / storage</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Diagram in: rounds, 24x24 dance floor, DJ, 2 bars, casino tables" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Diagram in: rounds, 24x24 dance floor, DJ, 2 bars, casino tables">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Diagram in: rounds, 24x24 dance floor, DJ, 2 bars, casino tables</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Prospect">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="anthonyBarnum PR — Holiday Party" data-es="anthonyBarnum PR — Holiday Party">anthonyBarnum PR — Holiday Party</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">9:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Room TBD</span><span class="gtd-pill">EXP 25</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Room not assigned on the report (Special)" data-es="Room not assigned on the report (Special)">Room not assigned on the report (Special)</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Prospect, not confirmed yet</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="Grand Rapids Griffins">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Grand Rapids Griffins — Team Lunch" data-es="Grand Rapids Griffins — Team Lunch">Grand Rapids Griffins — Team Lunch</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Lisa" data-es="MGR: Lisa">MGR: Lisa</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">12:00–<br>2:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meal Room — No F&amp;B" data-es="Meal Room — No F&amp;B">Meal Room — No F&amp;B</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 24</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">1:00–<br>3:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-lnch" data-en="Lunch Buffet" data-es="Lunch Buffet">Lunch Buffet</span><span class="room-pill">Verbena</span><span class="gtd-pill">EXP 24</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Verbena / Rounds of 10" data-es="Verbena / Rounds of 10">Verbena / Rounds of 10</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Report shows the meal room 12 to 2 PM but the buffet 1 to 3 PM, confirm the time" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Report shows the meal room 12 to 2 PM but the buffet 1 to 3 PM, confirm the time">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Report shows the meal room 12 to 2 PM but the buffet 1 to 3 PM, confirm the time</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Corinne PDR — HEB Holiday Event" data-es="Corinne PDR — HEB Holiday Event">Corinne PDR — HEB Holiday Event</div>
+      <div class="card-badges">
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00–<br>9:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag tag-din" data-en="Dinner" data-es="Dinner">Dinner</span><span class="room-pill">Barton</span><span class="gtd-pill">EXP 40</span></div>
+        <div class="svc-menu" data-en="No BEO yet, menu to come" data-es="No BEO yet, menu to come">No BEO yet, menu to come</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Barton / Rounds of 10" data-es="Barton / Rounds of 10">Barton / Rounds of 10</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Corinne private dining, Corinne-staffed</span></div>
+    </div>
+  </div>
+
+  <div class="event-card" data-nobeo="Definite" data-post="Azazie Pop Up">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Azazie — Pop Up Set-Up" data-es="Azazie — Pop Up Set-Up">Azazie — Pop Up Set-Up</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">11:00–<br>11:59 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Set Up — No F&amp;B" data-es="Set Up — No F&amp;B">Set Up — No F&amp;B</span><span class="room-pill">Primrose Ballroom</span><span class="gtd-pill">1</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose Ballroom / Special set" data-es="Primrose Ballroom / Special set">Primrose Ballroom / Special set</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 184521 is booked but not in a packet yet; overnight load-in after American Constructors" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 184521 is booked but not in a packet yet; overnight load-in after American Constructors">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 184521 is booked but not in a packet yet; overnight load-in after American Constructors</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="day-section" data-date="2026-12-13">
+<button class="day-btn a5" onclick="openDayFull(this)">
+  <div class="day-dot"><span class="day-dot-num">13</span></div>
+  <div class="day-text">
+    <div class="day-dow" data-en="SUN" data-es="SUN">SUN</div>
+    <div class="day-summary" data-en="Azazie, Primrose Ballroom" data-es="Azazie, Primrose Ballroom">Azazie, Primrose Ballroom</div>
+  </div>
+</button>
+<div class="day-body">
+  <div class="event-card" data-nobeo="Definite" data-post="Azazie Pop Up">
+    <div class="card-head" style="border-left:3px dashed var(--red)">
+      <div class="card-group" data-en="Azazie — Pop Up" data-es="Azazie — Pop Up">Azazie — Pop Up</div>
+      <div class="card-badges">
+        <span class="badge badge-mgr" data-en="MGR: Diana" data-es="MGR: Diana">MGR: Diana</span>
+      </div>
+    </div>
+    <div class="svc-row">
+      <div class="svc-time">6:00 AM–<br>5:00 PM</div>
+      <div class="svc-content">
+        <div class="svc-top"><span class="tag" data-en="Meeting — No F&amp;B" data-es="Meeting — No F&amp;B">Meeting — No F&amp;B</span><span class="room-pill">Primrose Ballroom</span><span class="gtd-pill">EXP 200</span></div>
+        <div class="svc-menu" data-en="No F&amp;B on the 21 Days Out report" data-es="No F&amp;B on the 21 Days Out report">No F&amp;B on the 21 Days Out report</div>
+      </div>
+    </div>
+    <div class="card-foot">
+      <div class="foot-row"><span class="foot-key" data-en="ROOM" data-es="SALA">ROOM</span><span class="foot-val" data-en="Primrose Ballroom / Special set" data-es="Primrose Ballroom / Special set">Primrose Ballroom / Special set</span></div>
+      <div class="foot-row"><span class="foot-key" data-en="NOTE" data-es="NOTA">NOTE</span><span class="foot-val" data-en="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 184581 is booked but not in a packet yet" data-es="No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 184581 is booked but not in a packet yet">No BEO yet · from the 21 Days Out report (printed 11/23) · Definite · Event order 184581 is booked but not in a packet yet</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
 </div><!-- /days-list -->
 
 <div class="diagrams-list" id="diagramsList" style="display:none">
@@ -16042,7 +17197,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
 <div class="day-body">
   <div class="diag-group" onclick="toggleDiagGroup(this)">
     <div class="diag-group-head">
-      <div class="diag-group-name">Roger's Memorial (not on events report yet)</div>
+      <div class="diag-group-name">Roger's Memorial</div>
       <span class="diag-group-chevron">▶</span>
     </div>
     <div class="diag-group-body">
@@ -16088,7 +17243,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
 <div class="day-body">
   <div class="diag-group" onclick="toggleDiagGroup(this)">
     <div class="diag-group-head">
-      <div class="diag-group-name">AIPAC (not on events report yet)</div>
+      <div class="diag-group-name">AIPAC</div>
       <span class="diag-group-chevron">▶</span>
     </div>
     <div class="diag-group-body">
@@ -16110,7 +17265,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
 <div class="day-body">
   <div class="diag-group" onclick="toggleDiagGroup(this)">
     <div class="diag-group-head">
-      <div class="diag-group-name">American Constructors — Christmas (not on events report yet)</div>
+      <div class="diag-group-name">American Constructors — Christmas</div>
       <span class="diag-group-chevron">▶</span>
     </div>
     <div class="diag-group-body">
@@ -16461,14 +17616,15 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
           const kind = ov2ServiceKind(tagName, tagClass, menuHtml, label);
           rows.push({startStr, endStr, smin, emin, label, room, gtd, gtdText, kind});
         });
-        return {group, contact, mgr, rows};
+        return {group, contact, mgr, rows, nobeo: card.dataset.nobeo || ''};
       }).filter(c => c.rows.length);
 
       const merged = new Map();
       const order = [];
       for (const c of parsedCards){
         const base = c.group.split('—')[0].trim();
-        if (!merged.has(base)){ merged.set(base, {contact:null, mgr:'', rows:[]}); order.push(base); }
+        if (!merged.has(base)){ merged.set(base, {contact:null, mgr:'', rows:[], nobeo:c.nobeo}); order.push(base); }
+        if (!c.nobeo) merged.get(base).nobeo = '';
         const e = merged.get(base);
         if (c.contact) e.contact = c.contact;
         if (c.mgr && !e.mgr) e.mgr = c.mgr;
@@ -16489,6 +17645,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
           company: base,
           contact: e.contact || '',
           mgr: e.mgr || '',
+          nobeo: e.nobeo || '',
           range: `${ov2FmtClock(overallStart)}–${ov2FmtClock(overallEnd)}`,
           maxGtd,
           rooms,
@@ -16637,6 +17794,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
       });
       return box;
     }
+    const nobeoChip=s=>node('span','nobeo-chip','NO BEO YET'+(/^definite$/i.test(s)?'':' · '+s.toUpperCase()));
     function readCard(card){
       const g=card.querySelector('.card-group');
       const client=((g&&(g.getAttribute('data-en')||g.textContent))||'Event').trim();
@@ -16646,7 +17804,8 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
         subtitle:cut<0?'':client.slice(cut+1).trim(),
         badges:Array.from(card.querySelectorAll('.card-badges .badge')).map(b=>b.textContent.trim()).filter(Boolean),
         contact:'', note:'', room:'', av:'', food:'', billing:'', shipping:'', diagram:null, items:[],
-        upd:card.dataset.upd||''   // card-level change from Outlook (setup, room, notes): see UPDATE FLAGS in CLAUDE.md
+        upd:card.dataset.upd||'',   // card-level change from Outlook (setup, room, notes): see UPDATE FLAGS in CLAUDE.md
+        nobeo:card.dataset.nobeo||''   // marker from the 21 Days Out report, no event order yet: holds the booking status
       };
       card.querySelectorAll('.card-foot .foot-row').forEach(function(row){
         const key=row.querySelector('.foot-key'), val=row.querySelector('.foot-val');
@@ -16776,6 +17935,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
           if(ev.contact) group.append(node('span','group-contact',ev.contact));
           const mgrB=(ev.badges||[]).find(b=>/^MGR/i.test(b));
           if(mgrB) group.append(node('span','mgr-chip','MGR · '+mgrB.replace(/^MGR:?\s*/i,'').trim()));
+          if(ev.nobeo) group.append(nobeoChip(ev.nobeo));
           screen.append(group);
           prevBase=ev.base;
         }
@@ -16914,6 +18074,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
         const head=node('div','original-client',e.company);
         if(e.contact) head.append(node('span','original-contact',e.contact));
         if(e.mgr) head.append(node('span','mgr-chip','MGR · '+e.mgr));
+        if(e.nobeo) head.append(nobeoChip(e.nobeo));
         card.append(head);
         // Same count on every row → state it once under the client, not on each row.
         const counts=new Set(); e.rooms.forEach(rows=>rows.forEach(r=>counts.add(r.gtdText||'')));
