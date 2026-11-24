@@ -3,11 +3,12 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
+const Privacy = require('./contact-privacy.js');
 const html = fs.readFileSync(path.join(__dirname, '..', 'captain-report.html'), 'utf8');
 const script = html.match(/<script>\s*([\s\S]*?)<\/script>/)[1];
 new Function(script); // syntax check
 const src = script.match(/  var CAP = [\s\S]*?\n  function recap\(e, i\) \{[\s\S]*?\n  \}\n/)[0];
-const night = iso => new Function('ISO', src + ';return recap;')(iso);
+const night = iso => new Function('ISO', 'window', src + ';return recap;')(iso, { BBContactPrivacy: Privacy });
 const row = (svc, room) => ({time: '', svc, room, count: ''});
 // 10/28 as the Rundown has it (services, rooms, contacts)
 const oct28 = [
@@ -27,9 +28,10 @@ for (const [iso, evs] of [['2026-10-28', oct28], ['2026-11-06', busy], ['2026-12
     const note = recap(e, i);
     assert(!/[\u2014\u2013]/.test(note), `${iso} ${e.name}: dash in note`);
     assert(!/\$\d/.test(note), `${iso} ${e.name}: price in note`);
-    assert(note.includes(e.contact), `${iso} ${e.name}: contact missing`);
+    if (Privacy.shouldHide(e.contact)) assert(!e.contact || !note.includes(e.contact), `${iso} ${e.name}: client contact should stay hidden`);
+    else assert(note.includes(e.contact), `${iso} ${e.name}: staff contact missing`);
     if (/final day/i.test(e.name)) assert(/final|last/i.test(note), `${iso} ${e.name}: final day not mentioned`);
     for (const s of note.split(/(?<=\.) (?=[A-Z])/)) { assert(!seen[s], `${iso}: "${s}" repeats on ${e.name}`); seen[s] = 1; }
   });
 }
-console.log('PASS: captain report parses, every event note on a night is worded differently, contact named, no dashes or prices.');
+console.log('PASS: captain report parses, every event note on a night is worded differently, client contacts hidden, no dashes or prices.');
