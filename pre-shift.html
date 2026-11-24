@@ -82,18 +82,30 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 .ps-val.ask { color:var(--red); font-family:'DM Mono',monospace; font-size:11px; }
 .ps-val.house { color:var(--text-2); font-style:italic; font-size:12px; }
 
-.q-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
-.q-item { background:var(--red-dim); border:1px solid rgba(255,143,143,0.2); border-radius:8px; padding:10px 12px; }
-.q-who { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--red); margin-bottom:3px; }
-.q-text { font-size:12.5px; color:var(--text-1); line-height:1.45; }
+.tl-row { display:block; }
+.tl { margin-top:6px; display:flex; flex-direction:column; gap:2px; }
+.tl-time { font-family:'DM Mono',monospace; font-size:11px; color:var(--accent); margin-top:6px; }
+.tl-time:first-child { margin-top:0; }
+.tl-list { margin:0; padding-left:16px; display:flex; flex-direction:column; gap:3px; }
+.tl-list li { font-size:12.5px; color:var(--text-1); line-height:1.4; }
+.tl-list b { font-weight:600; }
+.tl-detail { font-size:12px; color:var(--text-2); }
+.q-box { background:var(--red-dim); border:1px solid rgba(255,143,143,0.2); border-radius:8px; padding:8px 12px; }
+.q-who { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--red); margin:6px 0 2px; }
+.q-who:first-child { margin-top:0; }
+.q-list { margin:0; padding-left:16px; }
+.q-list li { font-size:12.5px; color:var(--text-1); line-height:1.4; padding:1px 0; }
 
 .note-box { background:var(--blue-dim); border:1px solid rgba(139,209,255,0.2); border-radius:8px; padding:10px 12px; margin-bottom:4px; font-size:11px; color:var(--blue); line-height:1.5; }
 
 
 .ps-val.flag { color:var(--amber); }
 .ps-val.later { color:var(--text-2); font-style:italic; font-size:12px; }
-.ps-script { list-style:decimal; padding:0 0 4px 22px; display:flex; flex-direction:column; gap:8px; }
-.ps-script li { font-size:13px; color:var(--text-1); line-height:1.5; padding-left:2px; }
+.ps-script { list-style:disc; padding:0 0 4px 18px; display:flex; flex-direction:column; gap:7px; }
+.ps-script li { font-size:13px; color:var(--text-1); line-height:1.45; padding-left:2px; }
+.ps-script > li::marker { color:var(--accent); }
+.ps-script ul { list-style:circle; padding-left:16px; margin-top:3px; display:flex; flex-direction:column; gap:2px; }
+.ps-script ul li { font-size:12.5px; color:var(--text-2); }
 .ps-script .ask { color:var(--red); font-family:'DM Mono',monospace; font-size:11px; }
 .note-box.later { background:transparent; border-color:var(--divider); color:var(--text-2); font-style:italic; margin-top:8px; }
 
@@ -183,7 +195,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <link rel="stylesheet" href="assets/bb-reference.css">
 <script src="scripts/contact-privacy.js?v=1124a"></script>
 <script src="theme.js?v=1124b"></script>
-<script src="scripts/pre-shift-lib.js"></script>
+<script src="scripts/pre-shift-lib.js?v=1124a"></script>
 </head>
 <body class="bb-ref">
 <div class="page-wrap">
@@ -241,6 +253,34 @@ function fmtDate(iso) {
     return esc(s).replace(/\[ask\]/g, '<span class="ask">[ask]</span>');
   }
 
+  function timeline(items) {
+    var order = [], by = {};
+    items.forEach(function (it) {
+      if (!by[it.time]) { by[it.time] = []; order.push(it.time); }
+      by[it.time].push(it);
+    });
+    return '<div class="tl">' + order.map(function (t) {
+      return '<div class="tl-time">' + esc(t || "Time TBD") + '</div><ul class="tl-list">' +
+        by[t].map(function (it) {
+          return '<li><b>' + esc(it.room || "Room TBD") + '</b>' + (it.what ? ' · ' + esc(it.what) : '') +
+            (it.detail ? '<div class="tl-detail">' + esc(it.detail) + '</div>' : '') + '</li>';
+        }).join("") + '</ul>';
+    }).join("") + '</div>';
+  }
+
+  function qGroups(questions, mgr) {
+    var order = [], by = {};
+    questions.forEach(function (q) {
+      var w = q.who || "";
+      if (!by[w]) { by[w] = []; w === mgr ? order.unshift(w) : order.push(w); }
+      by[w].push(q.q);
+    });
+    return order.map(function (w) {
+      return (w && w !== mgr ? '<div class="q-who">' + esc(w) + '</div>' : '') +
+        '<ul class="q-list">' + by[w].map(function (q) { return '<li>' + esc(q) + '</li>'; }).join("") + '</ul>';
+    }).join("");
+  }
+
   function render(meals) {
     var list = $("ps-list"), st = $("ps-status"), sec = $("ps-sec");
     if (!meals.length) {
@@ -260,17 +300,18 @@ function fmtDate(iso) {
         else if (l.kind === "later" || l.later) cls += " later";
         else if (l.kind === "ask" || l.known === false) cls += " ask";
         else if (l.house) cls += " house";
+        if (l.items && l.items.length) return '<div class="ps-row tl-row"><div class="ps-lab">' + esc(l.label) + '</div>' + timeline(l.items) + '</div>';
         return '<div class="ps-row"><div class="ps-lab">' + esc(l.label) + '</div><div class="' + cls + '">' + markAsks(l.text) + '</div></div>';
       }).join("");
       var spoken = (m.script || []).map(function (l) {
-        return '<li>' + markAsks(l.text) + '</li>';
+        var parts = String(l.text || "").split(/(?<=[.?!])\s+(?=[A-Z0-9])/);
+        var head = parts.shift();
+        return '<li>' + markAsks(head) + (parts.length
+          ? '<ul>' + parts.map(function (p) { return '<li>' + markAsks(p) + '</li>'; }).join("") + '</ul>' : '') + '</li>';
       }).join("");
       var qTitle = m.mgr ? "Questions for " + m.mgr : "Questions to ask";
       var qs = m.questions.length
-        ? '<div class="ps-sub">' + esc(qTitle) + '</div><ul class="q-list">' +
-          m.questions.map(function (q) {
-            return '<li class="q-item"><div class="q-who">' + esc(q.who) + '</div><div class="q-text">' + esc(q.q) + '</div></li>';
-          }).join("") + "</ul>"
+        ? '<div class="ps-sub">' + esc(qTitle) + '</div><div class="q-box">' + qGroups(m.questions, m.mgr) + '</div>'
         : '<div class="ps-sub">' + esc(qTitle) + '</div><div class="note-box">Nothing flagged. Walk the known lines at stand-up.</div>';
       return '<div class="ps-card" id="ps-' + i + '">' +
         '<div class="ps-head" onclick="this.parentElement.classList.toggle(\'open\')">' +
@@ -291,7 +332,7 @@ function fmtDate(iso) {
           anal +
           '<div class="ps-sub">Server script</div>' +
           '<div class="note-box">Read this start to finish at pre-shift. [ask] means confirm with the manager before doors.</div>' +
-          '<ol class="ps-script">' + spoken + '</ol>' +
+          '<ul class="ps-script">' + spoken + '</ul>' +
           '<div class="note-box later">Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.</div>' +
           qs +
           renderPacket(m, i) +

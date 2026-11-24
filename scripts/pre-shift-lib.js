@@ -290,6 +290,7 @@
     // Timeline from services + doors/apps
     var timing = [];
     var timelineBits = [];
+    var timelineItems = [];
     services.slice().sort(function (a, b) { return startMinutes(a.time) - startMinutes(b.time); }).forEach(function (sv) {
       var tag = clean(sv.tag || "");
       var time = clean(sv.time || "");
@@ -297,6 +298,10 @@
       var detail = publicText(sv.menu || "");
       if (detail && detail.length < 180) bit = bit + " - " + detail;
       if (bit) timelineBits.push(bit);
+      // Structured copy for the page: drop "No F&B" / "Special" filler
+      var what = tag.replace(/\s*-\s*No F&B\b/gi, "").replace(/^Special\s*-\s*/i, "").trim();
+      var note = detail && detail.length < 180 && !/^(No F&B|Existing set)\.?$/i.test(detail) ? detail : "";
+      if (bit) timelineItems.push({ time: time, what: what, room: clean(sv.room || ""), detail: note });
     });
     if (meal.doors) timing.push("Doors " + meal.doors);
     else {
@@ -316,7 +321,10 @@
     }
     if (meal.seating) timing.push("Seating " + meal.seating);
     say("Doors / apps / seating", timing.length ? timing.join(", ") : "", "Confirm doors, apps, and seating / service start times.");
-    if (timelineBits.length) fact("Timeline", timelineBits.join("; "));
+    if (timelineBits.length) {
+      fact("Timeline", timelineBits.join("; "));
+      analysis[analysis.length - 1].items = timelineItems;
+    }
     else if (timing.length) fact("Timeline", timing.join(", "));
 
     // Program
