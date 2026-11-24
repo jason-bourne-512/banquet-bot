@@ -94,15 +94,43 @@
     return built;
   }
 
-  function words(q) { return fold(q).split(/\s+/).filter(Boolean); }
+  // "BEO 532563", "BEO #532563", "#532563", "eo 532563", and "event order 532563"
+  // all become the digits, so they match a card that says "event order 532563" or "BEO #532563".
+  // Only 4+ digit numbers are treated this way, so a query like "#4" still finds "Fireman's #4".
+  var BEO_QUERY = /\b(?:event\s+orders?|beos?|eo)\s*#?\s*(\d{4,})/gi;
+  var BEO_LIST = /\b(?:event\s+orders?|beos?|eo)\s*#?\s*(\d{4,}(?:\s*(?:,|\/|&|and)\s*#?\d{4,})*)/gi;
+  function normalizeBeoQuery(q) {
+    return String(q || "").replace(new RegExp(BEO_QUERY.source, "gi"), " $1 ").replace(/#(\d{4,})/g, " $1 ");
+  }
+  function beoNumbers(s) {
+    var out = [], m, re = new RegExp(BEO_LIST.source, "gi");
+    while ((m = re.exec(String(s || "")))) {
+      (m[1].match(/\d{4,}/g) || []).forEach(function (n) { if (out.indexOf(n) < 0) out.push(n); });
+    }
+    return out;
+  }
+  function beoQueryDigits(q) {
+    var out = [], m, re = new RegExp(BEO_QUERY.source + "|#(\\d{4,})", "gi");
+    while ((m = re.exec(String(q || "")))) {
+      var n = m[1] || m[2];
+      if (n && out.indexOf(n) < 0) out.push(n);
+    }
+    return out;
+  }
+  function words(q) { return fold(normalizeBeoQuery(q)).split(/\s+/).filter(Boolean); }
   function hits(index, q) {
     var w = words(q);
     if (!w.length) return [];
+    var beoQ = beoQueryDigits(q);
     // short words (like the "d" in "primrose d") must be whole words; longer ones can match inside a word
     var tests = w.map(function (k) { var e = k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); return k.length < 3 ? new RegExp("(^|[^a-z0-9])" + e + "($|[^a-z0-9])") : null; });
     return index.filter(function (x) {
       var hay = fold(x.title + " " + x.text + " " + (x.page || ""));
-      return w.every(function (k, i) { return tests[i] ? tests[i].test(hay) : hay.indexOf(k) > -1; });
+      var nums = beoQ.length ? beoNumbers(x.title + " " + x.text).join(" ") : "";
+      return w.every(function (k, i) {
+        if (beoQ.indexOf(k) > -1) return nums.indexOf(k) > -1;
+        return tests[i] ? tests[i].test(hay) : hay.indexOf(k) > -1;
+      });
     }).map(function (x) {
       var t = fold(x.title);
       return {x: x, s: w.filter(function (k) { return t.indexOf(k) > -1; }).length};
@@ -283,7 +311,7 @@
     else setTimeout(attempt, 150);
   }
 
-  window.bbSearch = {attach: attach, build: build, docs: DOCS};
+  window.bbSearch = {attach: attach, build: build, docs: DOCS, hits: hits, words: words, normalizeBeoQuery: normalizeBeoQuery};
   window.dispatchEvent(new Event("bb-search-ready"));
   land();
 })();
