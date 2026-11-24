@@ -413,6 +413,8 @@ body{font-family:Manrope,Arial,sans-serif}
 #bb-app .service{display:block;padding:8px 0;border-top:1px solid #9ebbd41e}
 #bb-app .upd-flag{margin:6px 0 2px;color:#ffb3a8;font:700 11.5px/1.35 Manrope,Arial,sans-serif}
 #bb-app .room-body>.upd-flag{margin:0 0 8px;padding:6px 9px;border-left:2px solid #ff8a80;background:#ff8a8012;border-radius:0 6px 6px 0}
+#bb-app .water-flag{margin:0 0 8px;padding:6px 9px;border-left:2px solid #7ec8ff;background:#7ec8ff14;border-radius:0 6px 6px 0;color:#c5e7ff;font:700 11.5px/1.35 Manrope,Arial,sans-serif}
+#bb-app .original-room .water-flag{margin:0;padding:3px 8px;border-radius:5px;font-size:10px;letter-spacing:.4px;text-transform:none;font-weight:700}
 #bb-app .service.is-upd,#bb-app .service.is-meal.is-upd{margin:0 -8px;padding:8px;border-radius:6px;background:linear-gradient(90deg,#ff8a801f,#ff8a8008 70%,transparent);box-shadow:inset 3px 0 0 #ff8a80}
 #bb-app .service.is-meal{margin:0 -8px;padding:8px;border-radius:6px;background:linear-gradient(90deg,#ffc46b1c,#ffc46b08 70%,transparent);box-shadow:inset 3px 0 0 #ffc46b99}
 #bb-app .time{font-size:15px;font-weight:600;line-height:1.35;white-space:nowrap;margin-bottom:3px;color:#b9e5ff;font-variant-numeric:tabular-nums}
@@ -515,6 +517,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
 @keyframes rundown-beacon{0%,100%{opacity:.45;box-shadow:0 0 3px #89cfff33}50%{opacity:1;box-shadow:0 0 13px #89cfff99}}
 </style>
 <script src="scripts/contact-privacy.js?v=1124a"></script>
+<script src="scripts/water-towers.js?v=1124d"></script>
 <script src="theme.js?v=1124c"></script>
 </head>
 <body>
@@ -17980,6 +17983,9 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
           if(item.upd){ row.classList.add('is-upd'); row.append(updFlag(item.upd)); }
           body.append(row);
         });
+        if(window.BBWaterTowers&&window.BBWaterTowers.anyNeedWaterTowers(rooms)){
+          body.append(node('div','water-flag',window.BBWaterTowers.FLAG||'Water towers needed'));
+        }
         if(ev.upd&&ev.firstRoom) body.prepend(updFlag(ev.upd));
         // Setup: everything from the card footer/badges that isn't shown above.
         const setup=[];
@@ -18113,6 +18119,9 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
         if(sharedCount) card.append(node('div','original-total',sharedCount));
         e.rooms.forEach(function(rows,room){
           const r=node('div','original-room',room);
+          if(window.BBWaterTowers&&window.BBWaterTowers.needsWaterTowers(room)){
+            r.append(node('div','water-flag',window.BBWaterTowers.FLAG||'Water towers needed'));
+          }
           ov2DiagramsFor(diagIndex,d,e.company,room,e.rooms.size).forEach(function(dg){
             const o=hsmOverride(d,dg.path);
             if(o&&o.none) return;                       // hidden in Housemen

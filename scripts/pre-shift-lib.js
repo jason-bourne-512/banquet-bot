@@ -10,6 +10,16 @@
   var Privacy = null;
   try { if (typeof require === "function") Privacy = require("./contact-privacy.js"); } catch (err) {}
   if (!Privacy && typeof globalThis !== "undefined") Privacy = globalThis.BBContactPrivacy || null;
+  var Water = null;
+  try { if (typeof require === "function") Water = require("./water-towers.js"); } catch (err) {}
+  if (!Water && typeof globalThis !== "undefined") Water = globalThis.BBWaterTowers || null;
+  function mealNeedsWaterTowers(meal) {
+    if (Water && Water.mealNeedsWaterTowers) return Water.mealNeedsWaterTowers(meal);
+    return false;
+  }
+  function waterFlagText() {
+    return (Water && Water.FLAG) || "Water towers needed";
+  }
   function spokenContact(name) {
     if (Privacy && Privacy.spokenContact) return Privacy.spokenContact(name);
     return firstName(name) || "the contact";
@@ -542,6 +552,10 @@
       appsTime: meal.appsTime
     });
 
+    if (mealNeedsWaterTowers(meal)) {
+      fact("Setup", waterFlagText(), "flag");
+    }
+
     analysis.forEach(function (row) { if (row && row.text) row.text = privatize(row.text, contact); });
     (script || []).forEach(function (row) { if (row && row.text) row.text = privatize(row.text, contact); });
     return {
@@ -1040,6 +1054,9 @@
     if (dietBits.length) {
       specials.push({ table: "", text: dietBits.join("; ") });
     }
+    if (mealNeedsWaterTowers(meal)) {
+      specials.push({ table: "", text: waterFlagText(), key: "water-towers" });
+    }
     specials.push({ table: "", text: ALLERGY_CAPTAIN_DROP });
 
     steps.push({ time: "", label: "WAIT FOR CUE TO DROP ENTREES", items: [], owners: [] });
@@ -1229,6 +1246,13 @@
       out.specials = saved.specials.map(function (s) {
         return { table: String(s.table || ""), text: String(s.text || "") };
       });
+      var waterRe = /^\s*water towers needed\s*$/i;
+      function isWaterSpecial(s) {
+        return (s && s.key === "water-towers") || waterRe.test((s && s.text) || "");
+      }
+      var wantWater = (base.specials || []).some(isWaterSpecial);
+      out.specials = out.specials.filter(function (s) { return !isWaterSpecial(s); });
+      if (wantWater) out.specials.unshift({ table: "", text: waterFlagText(), key: "water-towers" });
       if (!out.specials.some(function (s) { return /Jason drops off those plates/i.test(s.text || ""); })) {
         out.specials = out.specials.concat([{ table: "", text: ALLERGY_CAPTAIN_DROP }]);
       }
