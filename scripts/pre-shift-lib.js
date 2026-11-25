@@ -1561,6 +1561,18 @@
     return out;
   }
 
+  // Server packet folds: saved by packet key and section name, never by list index
+  function foldId(key, section) {
+    return String(key || "") + "|" + section;
+  }
+
+  // A saved choice wins. Otherwise use the fallback, and with none only Server assignments is open
+  function foldOpen(saved, key, section, fallback) {
+    var v = saved ? saved[foldId(key, section)] : undefined;
+    if (typeof v === "boolean") return v;
+    return typeof fallback === "boolean" ? fallback : section === "teams";
+  }
+
   function collectPlated(helpers) {
     var today = helpers.todayISO;
     var out = [];
@@ -1653,6 +1665,8 @@
     wineChillFromEO: wineChillFromEO,
     CUE_QUESTION: CUE_QUESTION,
     collectPlated: collectPlated,
+    foldId: foldId,
+    foldOpen: foldOpen,
     OPENING_DUTIES: OPENING_DUTIES,
     CLOSING_DUTIES: CLOSING_DUTIES,
     RETIRED_DUTIES: RETIRED_DUTIES,

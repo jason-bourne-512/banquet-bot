@@ -280,6 +280,14 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   .pp-sp { margin:0; padding-left:14px; }
   .pp-sp li { margin:1px 0; }
 }
+/* Safety net: closed packet sections still show if the live packet is printed */
+@media print {
+  .pkt-sheet details.pkt-fold:not([open])::details-content, .pkt-sheet .duty-chart:not([open])::details-content, .pkt-sheet .dc-group:not([open])::details-content { content-visibility:visible; display:block; }
+  .pkt-sheet details.pkt-fold:not([open]) > :not(summary), .pkt-sheet .duty-chart:not([open]) > :not(summary), .pkt-sheet .dc-group:not([open]) > :not(summary) { display:block !important; }
+  .pkt-sheet details.pkt-fold:not([open]) > table { display:table !important; }
+  .pkt-sheet details.pkt-fold:not([open]) > .pkt-steps, .pkt-sheet details.pkt-fold:not([open]) > .pkt-legend { display:flex !important; }
+  .pkt-sheet details.pkt-fold:not([open]) > .pkt-step-row, .pkt-sheet details.pkt-fold:not([open]) > .pkt-assign, .pkt-sheet .dc-group:not([open]) > .dc-list { display:grid !important; }
+}
 /* Duty assigner */
 .da { padding:0 16px 4px; }
 .da[hidden] { display:none; }
@@ -333,7 +341,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <script src="scripts/contact-privacy.js?v=1124a"></script>
 <script src="scripts/water-towers.js?v=1124d"></script>
 <script src="theme.js?v=1124c"></script>
-<script src="scripts/pre-shift-lib.js?v=1125a"></script>
+<script src="scripts/pre-shift-lib.js?v=1125b"></script>
 </head>
 <body class="bb-ref">
 <div class="page-wrap">
@@ -682,13 +690,16 @@ function fmtDate(iso) {
       '<div class="pkt-sheet">' +
         '<div class="pkt-title">Server Packet</div>' +
         '<div class="pkt-sub">' + esc(p.group) + ' · ' + esc(fmtDate(p.date)) + ' · ' + esc(p.room) + '</div>' +
-        '<details class="pkt-fold" data-fold="teams"' + (foldOpen(i, "teams") ? " open" : "") + '><summary>Server assignments</summary>' +
+        '<details class="pkt-fold" data-fold="teams"' + (foldOpen(p.key, "teams") ? " open" : "") + '><summary>Server assignments</summary>' +
         '<table class="pkt-teams"><thead><tr><th>Team</th><th>Opening</th><th>Closing</th></tr></thead><tbody>' + teams + '</tbody></table></details>' +
         dutyChart(p, i) +
-        '<div class="pkt-loc"><label>Breakdown and hotbox</label><input class="pkt-input" data-pkt="' + i + '" data-k="location" placeholder="Room" value="' + esc(p.location || "") + '"></div>' +
-        '<ol class="pkt-steps">' + steps + '</ol>' +
-        '<div class="pkt-specials">' + specials + '</div>' +
-        '<details class="pkt-diagram pkt-fold" data-fold="diagram"' + (foldOpen(i, "diagram") ? " open" : "") + '><summary>Room diagram and sections</summary>' +
+        '<details class="pkt-fold" data-fold="location"' + (foldOpen(p.key, "location") ? " open" : "") + '><summary>Breakdown and hotbox</summary>' +
+        '<div class="pkt-loc"><label>Breakdown and hotbox</label><input class="pkt-input" data-pkt="' + i + '" data-k="location" placeholder="Room" value="' + esc(p.location || "") + '"></div></details>' +
+        '<details class="pkt-fold" data-fold="steps"' + (foldOpen(p.key, "steps") ? " open" : "") + '><summary>Timeline</summary>' +
+        '<ol class="pkt-steps">' + steps + '</ol></details>' +
+        '<details class="pkt-fold" data-fold="specials"' + (foldOpen(p.key, "specials") ? " open" : "") + '><summary>Special plates</summary>' +
+        '<div class="pkt-specials">' + specials + '</div></details>' +
+        '<details class="pkt-diagram pkt-fold" data-fold="diagram"' + (foldOpen(p.key, "diagram") ? " open" : "") + '><summary>Room diagram and sections</summary>' +
           '<div class="pkt-legend">' + legend + '</div>' +
           diagBlock +
           '<div class="pkt-step-row">' +
@@ -774,9 +785,16 @@ function fmtDate(iso) {
   }
 
   var inkState = {};
-  // Server assignments / diagram fold state, kept across redraws (open by default)
-  var folds = {};
-  function foldOpen(i, k) { return folds[i + k] !== false; }
+  // Packet section open/closed choices, kept across redraws and saved on this device
+  var FOLD_STORE = "bb-preshift-packet-folds";
+  function loadFolds() { try { return JSON.parse(localStorage.getItem(FOLD_STORE) || "{}") || {}; } catch (e) { return {}; } }
+  var folds = loadFolds();
+  function foldOpen(key, k, fallback) { return PreShift.foldOpen(folds, key, k, fallback); }
+  function saveFold(key, k, open) {
+    var id = PreShift.foldId(key, k), all = loadFolds();
+    folds[id] = all[id] = open;
+    try { localStorage.setItem(FOLD_STORE, JSON.stringify(all)); } catch (e) {}
+  }
 
   function hexRgba(hex, a) {
     var h = String(hex || "#888").replace("#", "");
@@ -982,8 +1000,12 @@ function fmtDate(iso) {
       });
     });
     loadDiagram(i, meals);
-    document.querySelectorAll('#pkt-' + i + ' .pkt-fold').forEach(function (d) {
-      d.addEventListener("toggle", function () { folds[i + d.getAttribute("data-fold")] = d.open; });
+    // Save taps only: the toggle event also fires for sections that are drawn open
+    root.addEventListener("click", function (ev) {
+      var s = ev.target.closest("summary"), d = s && s.parentElement;
+      var k = d && d.getAttribute("data-fold");
+      // The click lands before the section flips, so the new state is the opposite
+      if (k) saveFold((meals[i].packetLive || meals[i].packet).key, k, !d.open);
     });
     bindDutyChart(i, meals);
     bindSectionDraw(i, meals);
@@ -1208,7 +1230,7 @@ function fmtDate(iso) {
   function dutyChart(p, i) {
     var miss = missingDuties(p).length;
     var teamOpts = (p.teams || []).map(function (t) { return t.color; });
-    return '<details class="duty-chart"' + (miss ? " open" : "") + '><summary>Duty chart <span class="dc-count' + (miss ? " miss" : "") + '">' +
+    return '<details class="duty-chart" data-fold="duty"' + (foldOpen(p.key, "duty", miss > 0) ? " open" : "") + '><summary>Duty chart <span class="dc-count' + (miss ? " miss" : "") + '">' +
       (miss ? miss + " not assigned" : "all assigned") + '</span></summary>' +
       dutyRows(p).map(function (g) {
         var gMiss = g.rows.filter(function (r) { return !r.team && !r.skip; }).length;

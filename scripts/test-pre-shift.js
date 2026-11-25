@@ -638,4 +638,36 @@ assert.ok(staleAllergy.specials.some(function (s) { return s.text === PreShift.A
 assert(!/[\u2014\u2013]/.test(PreShift.ALLERGY_CAPTAIN_DROP));
 assert.ok(!/Bourne/.test(PreShift.ALLERGY_CAPTAIN_DROP));
 
+// Server packet folds: markup, defaults, saved choices, and a print sheet that ignores them
+const pageHtml = fs.readFileSync(pagePath, "utf8");
+const renderSrc = pageHtml.slice(pageHtml.indexOf("function renderPacket("), pageHtml.indexOf("function readPacketFromDom("));
+[
+  ["teams", "Server assignments"],
+  ["location", "Breakdown and hotbox"],
+  ["steps", "Timeline"],
+  ["specials", "Special plates"],
+  ["diagram", "Room diagram and sections"]
+].forEach(function (f) {
+  const wrap = new RegExp('<details class="(?:pkt-diagram )?pkt-fold" data-fold="' + f[0] + '"\' \\+ \\(foldOpen\\(p\\.key, "' + f[0] + '"\\) \\? " open" : ""\\) \\+ \'><summary>' + f[1] + "</summary>");
+  assert.match(renderSrc, wrap, f[1] + " needs its own fold");
+  assert.equal(PreShift.foldOpen({}, rich.packet.key, f[0]), f[0] === "teams", f[1] + " default");
+});
+assert.equal(PreShift.foldOpen({}, rich.packet.key, "duty", true), true, "duty chart opens when duties are missing");
+assert.equal(PreShift.foldOpen({}, rich.packet.key, "duty", false), false);
+const savedFolds = {};
+savedFolds[PreShift.foldId(rich.packet.key, "teams")] = false;
+savedFolds[PreShift.foldId(rich.packet.key, "steps")] = true;
+savedFolds[PreShift.foldId(rich.packet.key, "duty")] = false;
+assert.equal(PreShift.foldOpen(savedFolds, rich.packet.key, "teams"), false);
+assert.equal(PreShift.foldOpen(savedFolds, rich.packet.key, "steps"), true);
+assert.equal(PreShift.foldOpen(savedFolds, rich.packet.key, "duty", true), false);
+assert.equal(PreShift.foldOpen(savedFolds, sparse.packet.key, "teams"), true, "a choice stays with its own packet");
+assert.match(pageHtml, /"bb-preshift-packet-folds"/);
+const printSrc = pageHtml.slice(pageHtml.indexOf("function buildPrintSheet("), pageHtml.indexOf('window.addEventListener("afterprint"'));
+["Assignments", "Timeline", "Reminders", "Breakdown and hotbox", "Table sections"].forEach(function (h) {
+  assert.ok(printSrc.indexOf('<div class="pp-h">' + h + "</div>") >= 0, "print sheet keeps " + h);
+});
+assert.match(printSrc, /pp-diag/);
+assert.ok(!/fold/i.test(printSrc), "print sheet ignores fold state");
+
 console.log("PASS: analysis, spoken scripts, later slots, questions for the manager, no prices or dashes. Meals:", meals.map(function (m) { return m.group; }).join(" | "));
