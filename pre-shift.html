@@ -694,7 +694,7 @@ function fmtDate(iso) {
         '<table class="pkt-teams"><thead><tr><th>Team</th><th>Opening</th><th>Closing</th></tr></thead><tbody>' + teams + '</tbody></table></details>' +
         dutyChart(p, i) +
         '<details class="pkt-fold" data-fold="location"' + (foldOpen(p.key, "location") ? " open" : "") + '><summary>Breakdown and hotbox</summary>' +
-        '<div class="pkt-loc"><label>Breakdown and hotbox</label><input class="pkt-input" data-pkt="' + i + '" data-k="location" placeholder="Room" value="' + esc(p.location || "") + '"></div></details>' +
+        '<div class="pkt-loc"><label for="pkt-loc-' + i + '">Room</label><input id="pkt-loc-' + i + '" class="pkt-input" data-pkt="' + i + '" data-k="location" placeholder="Room" value="' + esc(p.location || "") + '"></div></details>' +
         '<details class="pkt-fold" data-fold="steps"' + (foldOpen(p.key, "steps") ? " open" : "") + '><summary>Timeline</summary>' +
         '<ol class="pkt-steps">' + steps + '</ol></details>' +
         '<details class="pkt-fold" data-fold="specials"' + (foldOpen(p.key, "specials") ? " open" : "") + '><summary>Special plates</summary>' +
