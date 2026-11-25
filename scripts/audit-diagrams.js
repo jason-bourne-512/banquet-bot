@@ -78,6 +78,7 @@ for (const d of DAYS) {
   if (d.iso < FROM) continue;
   for (const r of d.rooms) {
     if (r.t === 'clr') continue;
+    if (key(r.room).startsWith('bluebell')) continue; // Bluebell is a set room, no diagram needed
     const own = [].concat(r.diag || []);
     own.forEach(f => { if (!exists('diagrams/' + f)) errors.push(`[E2] night ${d.iso}  ${r.room}: Housemen links diagrams/${f}, file missing`); });
     if (!own.length && !hsmMatch(d.iso, String(r.room).replace(/\s*\(.*\)$/, ''), r.for))

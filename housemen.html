@@ -395,7 +395,7 @@ const DAYS = [
    {t:"set", room:"Lantana A", for:"Cabot · Meal Room", diag:"LANTANAAfromCabotFallCommercialTeamMeeting.pdf", items:["(4) rounds of 8 — set for 32"]},
    {t:"set", room:"Buttercup", for:"AUSDW In-House · Orientation", items:["Conference set for 2"], flags:["Added from events report 10/5"]},
    {t:"set", room:"Bonnell", for:"AUSDW In-House · ASML dinner (6 PM)", items:["Conference set for 17"], flags:["Added from events report 10/5"]},
-   {t:"set", room:"Bluebell", for:"Q2 Software · Office", end:"4:00 PM", items:["Office set","Pads, pens & water in back of room"], flags:["No diagram on file"]},
+   {t:"set", room:"Bluebell", for:"Q2 Software · Office", end:"4:00 PM", items:["Office set","Pads, pens & water in back of room"]},
    {t:"ref", room:"Lantana B", for:"Boehringer-Ingelheim · Day 2 of 4", end:"5:00 PM", diag:"LANTANABfromDistrictPSCFAM3MeetingOct2026.pdf"},
    {t:"ref", room:"Camellia", for:"Q2 Software · Hospitality (existing set)", end:"5:00 PM", diag:"CamelliafromQ2DevDaysDecisionsandPathForward.pdf"},
    {t:"ref", room:"Pre-Function", for:"Q2 Software · Registration stays", end:"5:30 PM", diag:"PREFUNCTIONfromQ2DevDaysDecisionsandPathForward.pdf"},
@@ -905,11 +905,11 @@ const DAYS = [
  { iso:"2026-12-03", target:"Friday 12/4", crew:"", shift:"", rooms:[
    {t:"ref", room:"Primrose Foyer", for:"TSAE · Reception + Activations (Primrose Foyer)", items:["Existing set — butler passed reception 11 AM to 2 PM, group provides napkins","Vacuum"]},
    {t:"ref", room:"Pre-Function", for:"TSAE · Activations + Registration", end:"11:00 AM", diag:"PREFUNCTIONfromTSAE_1118.pdf", items:["Existing set from Thursday — sponsors set activations from 8 AM","Vacuum"]},
-   {t:"ref", room:"Camellia", for:"TSAE · Office", end:"5:00 PM"},
+   {t:"ref", room:"Camellia", for:"TSAE · Office", end:"5:00 PM", diag:"CamelliafromTSAE_1118.pdf"},
    {t:"ref", room:"Primrose Ballroom", for:"TSAE · Luncheon (Primrose Ballroom)", end:"5:00 PM", diag:"PRIMROSEBALLROOMfromTSAE_1118.pdf", items:["Pre-set silverware, water glasses and napkins by 11 AM","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["Friday's event order no longer has a setup line — confirm against Thursday's (42) rounds of 8; the diagram shows (38) rounds of 8","Applied Materials Holiday Party (reception + dinner buffet, EXP 120, no BEO yet) is booked in Primrose C 6–10 PM Friday, after the TSAE teardown ends at 3:30 PM — the day team flips C once the BEO arrives, do not clear it tonight"]},
    {t:"ref", room:"Verbena B", for:"Magic Leap · ML Offsite", end:"5:00 PM", flags:["Breakfast tacos at 8:30 AM (15 bacon, 5 vegetarian)"]},
-   {t:"ref", room:"Lantana", for:"TSAE · Activations", end:"10:00 PM", items:["Existing set from Thursday","Vacuum"]},
-   {t:"ref", room:"Plumeria", for:"TSAE · Activations", end:"10:00 PM", items:["Existing set from Thursday","Vacuum"]},
+   {t:"ref", room:"Lantana", for:"TSAE · Activations", end:"10:00 PM", diag:"LANTANAfromTSAE.pdf", items:["Existing set from Thursday","Vacuum"]},
+   {t:"ref", room:"Plumeria", for:"TSAE · Activations", end:"10:00 PM", diag:"PLUMERIAActivationfromTSAE.pdf", items:["Existing set from Thursday","Vacuum"]},
    {t:"clr", room:"Barton", for:"TSAE finished", end:"6:30 PM", next:"Fri 12/4 → Corinne PDR dinner (Geosyntec, no BEO yet); Sat 12/5 → Corinne PDR wedding dinner", flags:["Corinne PDR has Barton at 6 PM Friday — Corinne sets its own dinner, clear TSAE's reception tonight"]},
  ]},
  { iso:"2026-12-04", target:"Saturday 12/5", crew:"", shift:"", rooms:[
@@ -962,7 +962,7 @@ const DAYS = [
    {t:"clr", room:"Primrose CD", for:"RHCA + ISACA finished", end:"9:00 PM", next:"Sat 12/12 → American Constructors (Primrose Ballroom)"},
  ]},
  { iso:"2026-12-11", target:"Saturday 12/12", crew:"", shift:"", rooms:[
-   {t:"set", room:"Primrose Ballroom", for:"American Constructors · Christmas Party (no BEO yet)", end:"10:00 PM", items:["Flip from e3 Wealth (Primrose AB, rounds of 10) and clear Primrose C and D: one flip for the whole ballroom","Set per the American Constructors event order when it arrives (EXP 250: dance, dinner buffet 7:30 PM)","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No BEO yet. Room is held 9 AM–11 PM Saturday, with set-up from 9 AM","Primrose Foyer: cocktail reception 6–7 PM Saturday (no BEO yet)","Azazie's overnight clean-and-clear starts at 11 PM Saturday after American Constructors, not tonight"]},
+   {t:"set", room:"Primrose Ballroom", for:"American Constructors · Christmas Party (no BEO yet)", end:"10:00 PM", diag:"PRIMROSEBALLROOMfromAmericanConstructorsChristmasDec2026.pdf", items:["Flip from e3 Wealth (Primrose AB, rounds of 10) and clear Primrose C and D: one flip for the whole ballroom","Set per the American Constructors event order when it arrives (EXP 250: dance, dinner buffet 7:30 PM)","Vacuum","Tray jack + clean tray","Pens, pads & candy tray on credenza"], flags:["No BEO yet. Room is held 9 AM–11 PM Saturday, with set-up from 9 AM","Primrose Foyer: cocktail reception 6–7 PM Saturday (no BEO yet)","Azazie's overnight clean-and-clear starts at 11 PM Saturday after American Constructors, not tonight"]},
    {t:"ref", room:"Verbena", for:"Grand Rapids Griffins · Team Lunch (no BEO yet)", end:"2:00 PM"},
    {t:"ref", room:"Camellia", for:"American Constructors · Storage", end:"9:00 PM", flags:["Storage only, no F&B. Leave Camellia empty for them until Saturday 11 PM"]},
    {t:"clr", room:"Bluebell", for:"PFD finished", end:"3:00 PM", next:"No event on file through 12/15"},
