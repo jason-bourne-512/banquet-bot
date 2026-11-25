@@ -661,6 +661,7 @@
 
   var CORKBOARD_SCRIPT = "Before we go over the script, pin all the sheets on the corkboard so they are easy to see: the event order, the section diagram, the timeline, and the server packet.";
   var ALLERGY_CAPTAIN_DROP = "If there are any severe allergies, Jason drops off those plates himself.";
+  var FLOOR_LINE = "All staff on the floor 15 minutes before start.";
 
   function corkboardPacketStep() {
     return {
@@ -680,6 +681,7 @@
     var who = f.mgr || "the manager";
     var contact = spokenContact(f.contact);
     speak(lines, CORKBOARD_SCRIPT);
+    speak(lines, FLOOR_LINE);
     if (f.kind === "emerson") {
       speak(lines, "This is the Emerson retirement dinner in Primrose C. Guarantee is 73. " + who + " is the manager." + (publicContact(f.contact) ? " " + publicContact(f.contact) + " is the on-site contact." : ""));
       speak(lines, "The table set is not settled. The event order says 9 rounds of 9. The card says 8 tables of 8 plus 1 of 9. " + who + "'s November 18 diagram is 9 rounds of 8, which is 72 seats, one short of the guarantee. The event order wins until " + who + " confirms. [ask]", false);
@@ -827,51 +829,68 @@
 
   // Master duty chart for a plated meal. Every duty lands on a team; the packet flags any that do not.
   var OPENING_DUTIES = [
-    "Coffee trays (4)",
-    "Bread baskets",
-    "Brew tea/coffee",
-    "Fold napkins",
+    "Coffee trays, cups, cream, sugar, lemons",
+    "Brew coffee and tea",
     "Coffee cart and table",
-    "Fill regular and decaf urns",
-    "Cups, cream, sugar, lemons",
-    "Breakdown stations",
-    "Hotbox stations",
-    "Dressings",
-    "Butters",
+    "Sugar caddies and sweeteners",
     "Waters",
-    "Polish silverware",
-    "Polish glassware",
+    "Iced tea and lemons",
+    "Wine opened and chilled (if wine)",
+    "Bread baskets",
+    "Butters",
+    "Dressings",
+    "Hotbox stations",
+    "Fold napkins",
     "Check table settings against the diagram",
-    "Table numbers and centerpieces",
     "Votive candles",
     "Mirrors",
-    "Head table / stage tables",
-    "Ice bins and water pitchers",
-    "Iced tea and lemons",
-    "Sugar caddies and sweeteners",
+    "Polish silverware",
+    "Polish glassware",
+    "Breakdown stations",
     "Side stations stocked (silverware, napkins, glasses)",
-    "Trays, tray jacks, and covers staged",
+    "Trays, tray jacks and covers staged",
     "Bus tubs and racks at breakdown",
-    "Wine opened and chilled (if wine)",
-    "Dietary plates labeled with table numbers"
+    "Salt and pepper filled and set"
   ];
   var CLOSING_DUTIES = [
-    "Sweep/mop",
-    "Beverage station",
-    "Strike coffee cart",
-    "Trash",
     "Plates to dish",
-    "Clear and bus tables",
     "Glass racks to dish",
     "Silverware to dish",
     "Linens to bins",
+    "Beverage station",
+    "Strike coffee cart",
     "Strike breakdown stations",
     "Strike hotbox stations",
     "Trays and tray jacks returned",
-    "Leftover bread, butter, dressings to kitchen",
-    "Client items and centerpieces to storage",
-    "Final walk-through and lost and found"
+    "Trash",
+    "Sweep and mop",
+    "Final walk-through and lost and found",
+    "Clean and organize back of house"
   ];
+  // Earlier built-in wording. A device's saved duty chart drops these so only the current lists show.
+  var RETIRED_DUTIES = [
+    "Coffee trays (4)",
+    "Brew tea/coffee",
+    "Fill regular and decaf urns",
+    "Cups, cream, sugar, lemons",
+    "Table numbers and centerpieces",
+    "Head table / stage tables",
+    "Ice bins and water pitchers",
+    "Trays, tray jacks, and covers staged",
+    "Dietary plates labeled with table numbers",
+    "Sweep/mop",
+    "Clear and bus tables",
+    "Leftover bread, butter, dressings to kitchen",
+    "Client items and centerpieces to storage"
+  ];
+  // Old wording that still maps onto a current duty. Keys are compared case-insensitively.
+  var DUTY_RENAMES = {
+    "Coffee trays (4)": "Coffee trays, cups, cream, sugar, lemons",
+    "Cups, cream, sugar, lemons": "Coffee trays, cups, cream, sugar, lemons",
+    "Brew tea/coffee": "Brew coffee and tea",
+    "Trays, tray jacks, and covers staged": "Trays, tray jacks and covers staged",
+    "Sweep/mop": "Sweep and mop"
+  };
   var TEAM_COLORS = ["Yellow", "Green", "Blue", "Red", "Orange", "Purple", "Pink", "Teal", "Brown", "Gray", "Gold", "White"];
   var GUESTS_PER_TEAM = 45;
   var TEAM_GUEST_FLAG = 60;
@@ -880,10 +899,10 @@
     var n = Math.max(1, teamCount || 2);
     var extra = (extraOpening || []).filter(Boolean);
     if (n === 2) {
-      var yellowOpen = ["Coffee trays (4)", "Bread baskets", "Brew tea/coffee", "Fold napkins", "Coffee cart and table", "Fill regular and decaf urns", "Cups, cream, sugar, lemons"];
+      var yellowOpen = ["Coffee trays, cups, cream, sugar, lemons", "Bread baskets", "Brew coffee and tea", "Fold napkins", "Coffee cart and table", "Sugar caddies and sweeteners"];
       var greenOpen = ["Breakdown stations", "Hotbox stations", "Dressings", "Butters", "Waters"];
       extra.forEach(function (d) { yellowOpen.push(d); });
-      var yellowClose = ["Sweep/mop", "Beverage station", "Strike coffee cart"], greenClose = ["Trash", "Plates to dish"];
+      var yellowClose = ["Sweep and mop","Beverage station", "Strike coffee cart"], greenClose = ["Trash", "Plates to dish"];
       // The rest of the master chart alternates Yellow, Green
       OPENING_DUTIES.filter(function (d) { return yellowOpen.indexOf(d) < 0 && greenOpen.indexOf(d) < 0; })
         .forEach(function (d, k) { (k % 2 ? greenOpen : yellowOpen).push(d); });
@@ -908,6 +927,180 @@
     return splitDuties(teamCount, extraOpening).map(function (t) {
       return { color: t.color, names: ["", ""], opening: t.opening.slice(), closing: t.closing.slice() };
     });
+  }
+
+  // ---- Duty assigner: a standalone shift tool. Pure helpers; the page loads and saves the state. ----
+  var DUTY_KINDS = ["opening", "closing"];
+
+  function dutyLists(lists) {
+    return lists || { opening: OPENING_DUTIES, closing: CLOSING_DUTIES };
+  }
+
+  function dutyAssignerReset() {
+    return { teams: [
+      { id: "t1", name: "Team 1", opening: [], closing: [] },
+      { id: "t2", name: "Team 2", opening: [], closing: [] }
+    ] };
+  }
+
+  // Clean a saved state: unknown duties drop out, a duty stays on one team only, master-list order.
+  // A duty nobody holds (including a new one) is unassigned.
+  function dutyAssignerState(saved, lists) {
+    if (!saved || !Array.isArray(saved.teams)) return dutyAssignerReset();
+    var master = dutyLists(lists);
+    var taken = { opening: [], closing: [] };
+    var ids = [];
+    var teams = saved.teams.filter(function (t) { return t && typeof t === "object"; }).map(function (t, i) {
+      var id = String(t.id || "");
+      var n = i + 1;
+      while (!id || ids.indexOf(id) >= 0) id = "t" + (n++);
+      ids.push(id);
+      var team = { id: id, name: String(t.name || "").trim() || "Team " + (i + 1) };
+      DUTY_KINDS.forEach(function (kind) {
+        var held = Array.isArray(t[kind]) ? t[kind] : [];
+        team[kind] = master[kind].filter(function (d) { return held.indexOf(d) >= 0 && taken[kind].indexOf(d) < 0; });
+        taken[kind] = taken[kind].concat(team[kind]);
+      });
+      return team;
+    });
+    return { teams: teams };
+  }
+
+  function dutyUnassigned(state, kind, lists) {
+    return dutyLists(lists)[kind].filter(function (d) {
+      return !state.teams.some(function (t) { return t[kind].indexOf(d) >= 0; });
+    });
+  }
+
+  function dutyUnassign(state, kind, duty, lists) {
+    var next = dutyAssignerState(state, lists);
+    next.teams.forEach(function (t) { t[kind] = t[kind].filter(function (d) { return d !== duty; }); });
+    return next;
+  }
+
+  function dutyAssign(state, kind, duty, teamId, lists) {
+    if (!state.teams.some(function (t) { return t.id === teamId; })) return dutyAssignerState(state, lists);
+    var next = dutyUnassign(state, kind, duty, lists);
+    next.teams.forEach(function (t) { if (t.id === teamId) t[kind].push(duty); });
+    return dutyAssignerState(next, lists);
+  }
+
+  function dutyAddTeam(state, lists) {
+    var next = dutyAssignerState(state, lists);
+    function used(key, value) { return next.teams.some(function (t) { return t[key] === value; }); }
+    var i = 1, n = 1;
+    while (used("id", "t" + i)) i++;
+    while (used("name", "Team " + n)) n++;
+    next.teams.push({ id: "t" + i, name: "Team " + n, opening: [], closing: [] });
+    return next;
+  }
+
+  function dutyRenameTeam(state, teamId, name, lists) {
+    var next = dutyAssignerState(state, lists);
+    var v = String(name || "").trim();
+    if (v) next.teams.forEach(function (t) { if (t.id === teamId) t.name = v; });
+    return next;
+  }
+
+  function dutyRemoveTeam(state, teamId, lists) {
+    var next = dutyAssignerState(state, lists);
+    next.teams = next.teams.filter(function (t) { return t.id !== teamId; });
+    return next;
+  }
+
+  // Plain text for copy and print
+  function dutyAssignerText(state) {
+    var teams = (state && state.teams) || [];
+    var out = ["Duty assignments"];
+    var any = teams.some(function (t) { return t.opening.length || t.closing.length; });
+    if (!any) out.push("", "No duties assigned yet.");
+    teams.forEach(function (t) {
+      out.push("", t.name);
+      DUTY_KINDS.forEach(function (kind) {
+        out.push(kind === "opening" ? "Opening:" : "Closing:");
+        if (!t[kind].length) out.push("- (none)");
+        t[kind].forEach(function (d) { out.push("- " + d); });
+      });
+    });
+    return out.join("\n");
+  }
+
+  function migrateDutyText(text) {
+    var raw = String(text || "").trim();
+    if (!raw) return "";
+    var key = raw.toLowerCase();
+    var from;
+    for (from in DUTY_RENAMES) {
+      if (from.toLowerCase() === key) return DUTY_RENAMES[from];
+    }
+    if (RETIRED_DUTIES.some(function (d) { return d.toLowerCase() === key; })) return "";
+    return raw;
+  }
+
+  function migrateDutyList(list, taken) {
+    var seen = taken || {};
+    var out = [];
+    (list || []).forEach(function (d) {
+      var next = migrateDutyText(d);
+      if (!next) return;
+      var k = next.toLowerCase();
+      if (seen[k]) return;
+      seen[k] = 1;
+      out.push(next);
+    });
+    return out;
+  }
+
+  // Rewrite saved packet team duties: map old wording, drop retired items, keep extras like wine chill.
+  // A renamed duty stays with the first team that held any of its old names.
+  function migratePacketTeams(teams) {
+    var taken = { opening: {}, closing: {} };
+    return (teams || []).map(function (t) {
+      var next = {
+        color: t.color,
+        names: Array.isArray(t.names) ? t.names.slice() : ["", ""],
+        opening: migrateDutyList(t.opening, taken.opening),
+        closing: migrateDutyList(t.closing, taken.closing)
+      };
+      if (t.id) next.id = t.id;
+      return next;
+    });
+  }
+
+  function extraOpeningFromTeams(teams) {
+    var master = {};
+    OPENING_DUTIES.forEach(function (d) { master[d.toLowerCase()] = 1; });
+    var extra = [];
+    (teams || []).forEach(function (t) {
+      migrateDutyList(t.opening || []).forEach(function (d) {
+        if (!master[d.toLowerCase()] && extra.indexOf(d) < 0) extra.push(d);
+      });
+    });
+    return extra;
+  }
+
+  function scriptHasFloorLine(parts) {
+    return (parts || []).some(function (p) {
+      return String(p || "").indexOf(FLOOR_LINE) >= 0 || /All staff on the floor 15 minutes before start/i.test(String(p || ""));
+    });
+  }
+
+  // Saved per-event script edits: add the floor line after the corkboard line if it is missing.
+  function ensureFloorEdits(ed) {
+    var out = JSON.parse(JSON.stringify(ed && typeof ed === "object" ? ed : { a: [], s: [], q: [] }));
+    if (!Array.isArray(out.s)) out.s = [];
+    var has = out.s.some(function (l) {
+      return scriptHasFloorLine([l && l.h].concat((l && l.s) || []));
+    });
+    if (has) return out;
+    var line = { h: FLOOR_LINE, s: [] };
+    var idx = -1;
+    out.s.forEach(function (l, i) {
+      if (idx < 0 && l && (l.h === CORKBOARD_SCRIPT || /pin all the sheets on the corkboard/i.test(l.h || ""))) idx = i;
+    });
+    if (idx >= 0) out.s.splice(idx + 1, 0, line);
+    else out.s.unshift(line);
+    return out;
   }
 
   function headcount(counts) {
@@ -1324,6 +1517,7 @@
           closing: Array.isArray(t.closing) ? t.closing.slice() : def.closing.slice()
         };
       });
+      out.teams = migratePacketTeams(out.teams);
     }
     if (saved.location != null) out.location = String(saved.location);
     if (Array.isArray(saved.steps)) {
@@ -1362,7 +1556,7 @@
     if (saved.seatsPerTable != null && +saved.seatsPerTable > 0) out.seatsPerTable = +saved.seatsPerTable;
     if (saved.teamCount && +saved.teamCount > 0) out.teamCount = +saved.teamCount;
     if (Array.isArray(saved.sections)) out.sections = normalizeSections(saved.sections);
-    if (Array.isArray(saved.skipDuties)) out.skipDuties = saved.skipDuties.map(String);
+    if (Array.isArray(saved.skipDuties)) out.skipDuties = migrateDutyList(saved.skipDuties.map(String));
     if (saved.tablePins && typeof saved.tablePins === "object") out.tablePins = normalizeTablePins(saved.tablePins);
     return out;
   }
@@ -1452,6 +1646,7 @@
     extractFlags: extractFlags,
     buildPreShift: buildPreShift,
     CORKBOARD_SCRIPT: CORKBOARD_SCRIPT,
+    FLOOR_LINE: FLOOR_LINE,
     ALLERGY_CAPTAIN_DROP: ALLERGY_CAPTAIN_DROP,
     corkboardPacketStep: corkboardPacketStep,
     serviceCueFromEO: serviceCueFromEO,
@@ -1460,6 +1655,21 @@
     collectPlated: collectPlated,
     OPENING_DUTIES: OPENING_DUTIES,
     CLOSING_DUTIES: CLOSING_DUTIES,
+    RETIRED_DUTIES: RETIRED_DUTIES,
+    dutyAssignerReset: dutyAssignerReset,
+    dutyAssignerState: dutyAssignerState,
+    dutyUnassigned: dutyUnassigned,
+    dutyAssign: dutyAssign,
+    dutyUnassign: dutyUnassign,
+    dutyAddTeam: dutyAddTeam,
+    dutyRenameTeam: dutyRenameTeam,
+    dutyRemoveTeam: dutyRemoveTeam,
+    dutyAssignerText: dutyAssignerText,
+    migrateDutyText: migrateDutyText,
+    migrateDutyList: migrateDutyList,
+    migratePacketTeams: migratePacketTeams,
+    extraOpeningFromTeams: extraOpeningFromTeams,
+    ensureFloorEdits: ensureFloorEdits,
     splitDuties: splitDuties,
     defaultTeams: defaultTeams,
     headcount: headcount,

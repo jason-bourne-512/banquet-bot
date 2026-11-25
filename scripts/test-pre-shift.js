@@ -246,7 +246,7 @@ if (fs.existsSync(rundownPath)) {
   assert.match(elScript, /not pre-set|no pre-?sets for salads|salads and desserts are (?:not pre-set|walked)/i);
   assert.ok(!/Wine pour or bar only:\s*\[ask\]/i.test(elScript), "12 Elements bar is known");
   assert.match(elScript, /Favorite Brands|chardonnay/i);
-  assert.ok(!/^This is 12 Elements Consulting/i.test(el12.script[1] && el12.script[1].text || ""), "12 Elements opener is not the generic template");
+  assert.ok(!/^This is 12 Elements Consulting/i.test(el12.script[2] && el12.script[2].text || ""), "12 Elements opener is not the generic template");
   assert(!/\$\d/.test(elText), "no prices on 12 Elements");
   assert(!/[\u2014\u2013]/.test(elText), "no dashes on 12 Elements");
 }
@@ -262,11 +262,11 @@ if (fs.existsSync(pagePath)) {
 
 // Server packet, duty split, mobile coffee
 const split2 = PreShift.splitDuties(2);
-assert.deepEqual(split2[0].opening.slice(0, 7), [
-  "Coffee trays (4)", "Bread baskets", "Brew tea/coffee", "Fold napkins",
-  "Coffee cart and table", "Fill regular and decaf urns", "Cups, cream, sugar, lemons"
+assert.deepEqual(split2[0].opening.slice(0, 6), [
+  "Coffee trays, cups, cream, sugar, lemons", "Bread baskets", "Brew coffee and tea", "Fold napkins",
+  "Coffee cart and table", "Sugar caddies and sweeteners"
 ]);
-assert.deepEqual(split2[0].closing.slice(0, 3), ["Sweep/mop", "Beverage station", "Strike coffee cart"]);
+assert.deepEqual(split2[0].closing.slice(0, 3), ["Sweep and mop", "Beverage station", "Strike coffee cart"]);
 assert.deepEqual(split2[1].opening.slice(0, 5), ["Breakdown stations", "Hotbox stations", "Dressings", "Butters", "Waters"]);
 assert.deepEqual(split2[1].closing.slice(0, 2), ["Trash", "Plates to dish"]);
 // Two teams still cover the whole master chart
@@ -275,7 +275,158 @@ assert.equal(split2[0].closing.length + split2[1].closing.length, PreShift.CLOSI
 const split3 = PreShift.splitDuties(3);
 assert.equal(split3.length, 3);
 assert.equal(split3.map(function (t) { return t.opening.length; }).reduce(function (a, b) { return a + b; }, 0), PreShift.OPENING_DUTIES.length);
-assert.ok(PreShift.OPENING_DUTIES.indexOf("Fold napkins") >= 0);
+assert.deepEqual(PreShift.OPENING_DUTIES, [
+  "Coffee trays, cups, cream, sugar, lemons",
+  "Brew coffee and tea",
+  "Coffee cart and table",
+  "Sugar caddies and sweeteners",
+  "Waters",
+  "Iced tea and lemons",
+  "Wine opened and chilled (if wine)",
+  "Bread baskets",
+  "Butters",
+  "Dressings",
+  "Hotbox stations",
+  "Fold napkins",
+  "Check table settings against the diagram",
+  "Votive candles",
+  "Mirrors",
+  "Polish silverware",
+  "Polish glassware",
+  "Breakdown stations",
+  "Side stations stocked (silverware, napkins, glasses)",
+  "Trays, tray jacks and covers staged",
+  "Bus tubs and racks at breakdown",
+  "Salt and pepper filled and set"
+]);
+assert.deepEqual(PreShift.CLOSING_DUTIES, [
+  "Plates to dish",
+  "Glass racks to dish",
+  "Silverware to dish",
+  "Linens to bins",
+  "Beverage station",
+  "Strike coffee cart",
+  "Strike breakdown stations",
+  "Strike hotbox stations",
+  "Trays and tray jacks returned",
+  "Trash",
+  "Sweep and mop",
+  "Final walk-through and lost and found",
+  "Clean and organize back of house"
+]);
+assert.equal(PreShift.OPENING_DUTIES.length, 22);
+assert.equal(PreShift.CLOSING_DUTIES.length, 13);
+// Two and three teams: every duty lands exactly once, including the extra opening duty
+[2, 3].forEach(function (n) {
+  const split = PreShift.splitDuties(n, ["Chill the white wine"]);
+  const all = function (kind) { return split.reduce(function (a, t) { return a.concat(t[kind]); }, []).sort(); };
+  assert.deepEqual(all("opening"), PreShift.OPENING_DUTIES.concat(["Chill the white wine"]).sort());
+  assert.deepEqual(all("closing"), PreShift.CLOSING_DUTIES.slice().sort());
+});
+assert.ok(PreShift.splitDuties(2, ["Chill the white wine"])[0].opening.indexOf("Chill the white wine") >= 0);
+assert.ok(PreShift.RETIRED_DUTIES.every(function (d) { return PreShift.OPENING_DUTIES.concat(PreShift.CLOSING_DUTIES).indexOf(d) < 0; }));
+
+// Floor line: right after the corkboard in every script branch, never a duty
+assert.equal(PreShift.FLOOR_LINE, "All staff on the floor 15 minutes before start.");
+[
+  { group: "Generic Lunch" },
+  { group: "Emerson Dinner", date: "2026-11-20" },
+  { group: "TSAE Lunch", date: "2026-12-04", menu: "Chef's Choice Plated Lunch" },
+  { group: "TSAE Lunch", date: "2026-12-04" },
+  { group: "12 Elements", date: "2026-12-05" }
+].forEach(function (sample) {
+  const built = PreShift.buildPreShift(Object.assign({ tag: "Plated Lunch", menu: "Plated Lunch", foot: {} }, sample));
+  assert.equal(built.script[1].text, PreShift.FLOOR_LINE, sample.group + " script needs the floor line");
+});
+meals.forEach(function (m) { assert.equal(m.script[1].text, PreShift.FLOOR_LINE, m.group + " script needs the floor line"); });
+assert.ok(!/on the floor/i.test(PreShift.OPENING_DUTIES.concat(PreShift.CLOSING_DUTIES).join(" ")));
+
+// Duty assigner helpers
+const daStart = PreShift.dutyAssignerReset();
+assert.deepEqual(daStart.teams.map(function (t) { return t.name; }), ["Team 1", "Team 2"]);
+assert.deepEqual(PreShift.dutyAssignerState(null), daStart);
+assert.deepEqual(PreShift.dutyAssignerState({ teams: "bad" }), daStart);
+assert.deepEqual(PreShift.dutyUnassigned(daStart, "opening"), PreShift.OPENING_DUTIES);
+assert.match(PreShift.dutyAssignerText(daStart), /No duties assigned yet\.[\s\S]*Team 1[\s\S]*Team 2/);
+
+let da = PreShift.dutyAssign(daStart, "opening", "Waters", "t1");
+assert.deepEqual(daStart.teams[0].opening, [], "helpers do not change the state passed in");
+assert.deepEqual(da.teams[0].opening, ["Waters"]);
+assert.ok(PreShift.dutyUnassigned(da, "opening").indexOf("Waters") < 0);
+assert.equal(PreShift.dutyUnassigned(da, "opening").length, 21);
+da = PreShift.dutyAssign(da, "opening", "Waters", "t2");
+assert.deepEqual([da.teams[0].opening, da.teams[1].opening], [[], ["Waters"]], "a duty is on one team only");
+assert.deepEqual(PreShift.dutyAssign(da, "opening", "Waters", "nope"), da);
+da = PreShift.dutyUnassign(da, "opening", "Waters");
+assert.deepEqual(PreShift.dutyUnassigned(da, "opening"), PreShift.OPENING_DUTIES, "returns in list order");
+
+da = PreShift.dutyAssign(da, "closing", "Trash", "t1");
+da = PreShift.dutyAssign(da, "opening", "Butters", "t1");
+da = PreShift.dutyRenameTeam(da, "t1", "  Alex  ");
+assert.equal(da.teams[0].name, "Alex");
+assert.equal(PreShift.dutyRenameTeam(da, "t1", " ").teams[0].name, "Alex");
+const daText = PreShift.dutyAssignerText(da);
+assert.match(daText, /Alex\nOpening:\n- Butters\nClosing:\n- Trash\n\nTeam 2\nOpening:\n- \(none\)/);
+assert(!/[—–]/.test(daText));
+const daAdded = PreShift.dutyAddTeam(da);
+assert.deepEqual(daAdded.teams.map(function (t) { return [t.id, t.name]; }), [["t1", "Alex"], ["t2", "Team 2"], ["t3", "Team 1"]]);
+const daRemoved = PreShift.dutyRemoveTeam(daAdded, "t1");
+assert.ok(PreShift.dutyUnassigned(daRemoved, "opening").indexOf("Butters") >= 0, "removing a team returns its duties");
+assert.ok(PreShift.dutyUnassigned(daRemoved, "closing").indexOf("Trash") >= 0);
+assert.deepEqual(PreShift.dutyAssignerState({ teams: [] }).teams, []);
+assert.deepEqual(PreShift.dutyAssignerState(JSON.parse(JSON.stringify(daAdded))), daAdded, "survives a save and reload");
+assert.deepEqual(PreShift.dutyAssignerReset(), daStart);
+
+const daSaved = { teams: [
+  { id: "t1", name: "Team 1", opening: ["Old duty", "Waters", "Waters"], closing: [] },
+  { id: "t1", name: "Team 2", opening: ["Waters"], closing: ["Trash"] }
+] };
+const daClean = PreShift.dutyAssignerState(daSaved);
+assert.deepEqual(daClean.teams[0].opening, ["Waters"], "unknown saved duties are dropped");
+assert.deepEqual(daClean.teams[1].opening, []);
+assert.notEqual(daClean.teams[0].id, daClean.teams[1].id);
+const daNewer = { opening: ["Brand new duty", "Waters"], closing: ["Trash"] };
+assert.deepEqual(PreShift.dutyUnassigned(PreShift.dutyAssignerState(daSaved, daNewer), "opening", daNewer), ["Brand new duty"]);
+
+// Saved script edits pick up the floor line without wiping custom lines
+const staleEdits = { a: [], s: [
+  { h: PreShift.CORKBOARD_SCRIPT, s: [] },
+  { h: "Existing custom script.", s: [] }
+], q: [] };
+const fixedEdits = PreShift.ensureFloorEdits(staleEdits);
+assert.deepEqual(staleEdits.s.map(function (l) { return l.h; }), [PreShift.CORKBOARD_SCRIPT, "Existing custom script."], "ensureFloorEdits does not change the object passed in");
+assert.deepEqual(fixedEdits.s.map(function (l) { return l.h; }), [PreShift.CORKBOARD_SCRIPT, PreShift.FLOOR_LINE, "Existing custom script."]);
+assert.deepEqual(PreShift.ensureFloorEdits(fixedEdits).s.map(function (l) { return l.h; }), fixedEdits.s.map(function (l) { return l.h; }), "does not insert the floor line twice");
+const noCork = PreShift.ensureFloorEdits({ a: [], s: [{ h: "Just a note.", s: [] }], q: [] });
+assert.equal(noCork.s[0].h, PreShift.FLOOR_LINE);
+
+// Old saved packet duties migrate onto the new wording and keep extras
+assert.equal(PreShift.migrateDutyText("Coffee trays (4)"), "Coffee trays, cups, cream, sugar, lemons");
+assert.equal(PreShift.migrateDutyText("Brew tea/coffee"), "Brew coffee and tea");
+assert.equal(PreShift.migrateDutyText("Sweep/mop"), "Sweep and mop");
+assert.equal(PreShift.migrateDutyText("Clear and bus tables"), "");
+assert.equal(PreShift.migrateDutyText("Chill the white wine"), "Chill the white wine");
+const oldSavedPacket = {
+  teamCount: 2,
+  teams: [
+    { color: "Yellow", names: ["", ""], opening: ["Coffee trays (4)", "Brew tea/coffee", "Chill the white wine"], closing: ["Sweep/mop", "Beverage station"] },
+    { color: "Green", names: ["", ""], opening: ["Cups, cream, sugar, lemons", "Waters", "Dietary plates labeled with table numbers"], closing: ["Clear and bus tables", "Trash"] }
+  ],
+  skipDuties: ["Ice bins and water pitchers", "Salt and pepper filled and set"]
+};
+const freshPacket = PreShift.buildServerPacket({ group: "Review fixture", tag: "Plated Lunch", counts: { gtd: "80" } });
+const migrated = PreShift.mergePacket(freshPacket, oldSavedPacket);
+const migOpen = migrated.teams.map(function (t) { return t.opening; });
+const migClose = migrated.teams.map(function (t) { return t.closing; });
+assert.deepEqual(migOpen[0], ["Coffee trays, cups, cream, sugar, lemons", "Brew coffee and tea", "Chill the white wine"]);
+assert.deepEqual(migOpen[1], ["Waters"], "combined coffee trays stay on the first team, retired dietary drops");
+assert.deepEqual(migClose[0], ["Sweep and mop", "Beverage station"]);
+assert.deepEqual(migClose[1], ["Trash"]);
+assert.ok(migrated.teams.every(function (t) { return t.opening.concat(t.closing).every(function (d) { return PreShift.RETIRED_DUTIES.indexOf(d) < 0; }); }), "no retired wording left on teams");
+assert.ok(migrated.teams.some(function (t) { return t.opening.indexOf("Chill the white wine") >= 0; }));
+assert.deepEqual(migrated.skipDuties, ["Salt and pepper filled and set"], "retired skip drops, current skip stays");
+const rebuilt = PreShift.defaultTeams(3, PreShift.extraOpeningFromTeams(migrated.teams));
+assert.ok(rebuilt.some(function (t) { return t.opening.indexOf("Chill the white wine") >= 0; }), "team-count rebuild keeps extra opening duties");
 
 meals.forEach(function (m) {
   const p = m.packet;

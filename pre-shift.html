@@ -280,15 +280,60 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   .pp-sp { margin:0; padding-left:14px; }
   .pp-sp li { margin:1px 0; }
 }
+/* Duty assigner */
+.da { padding:0 16px 4px; }
+.da[hidden] { display:none; }
+.da .sec { padding-left:0; padding-right:0; }
+.da .bb-btn { display:inline-flex; align-items:center; justify-content:center; border:1px solid #577c97; background:#1c3445; color:#d3edff; border-radius:7px; font:12px Manrope,Arial,sans-serif; min-height:40px; padding:8px 11px; cursor:pointer; }
+.da-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px; }
+.da-hint { font-size:12px; color:var(--text-2); margin-bottom:10px; }
+.da-menus, .da-teams { display:grid; grid-template-columns:1fr; gap:10px; margin-bottom:10px; }
+.da-box { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:10px 12px; min-width:0; }
+.da-team { border-left:3px solid var(--accent); }
+.da-team.over { border-color:var(--accent); border-style:dashed; background:var(--bg-active); }
+.da-lab { font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:1.2px; color:var(--accent); margin:0 0 7px; }
+.da-team .da-lab { color:var(--text-3); margin:9px 0 5px; }
+.da-list { display:flex; flex-wrap:wrap; gap:6px; align-content:flex-start; }
+.da-duty { display:inline-flex; align-items:center; gap:8px; text-align:left; background:var(--bg-active); color:var(--text-1); border:1px solid var(--border-h); border-radius:7px; font:12.5px/1.35 Inter,sans-serif; padding:7px 10px; cursor:pointer; }
+.da-duty[draggable="true"] { cursor:grab; user-select:none; -webkit-user-select:none; }
+.da-duty[draggable="true"]::before { content:"\2807"; color:var(--text-3); }
+.da-duty[aria-expanded="true"] { border-color:var(--accent); }
+.da-duty.dragging { opacity:.45; }
+.da-x { color:var(--text-3); font-size:14px; line-height:1; }
+.da-duty:hover .da-x { color:var(--red); }
+.da-pick { flex-basis:100%; display:flex; flex-wrap:wrap; gap:6px; padding:2px 0 6px; }
+.da-empty { font-size:12px; color:var(--text-2); font-style:italic; }
+.da-head { display:flex; align-items:center; gap:8px; }
+.da-name { flex:1; min-width:0; background:transparent; color:var(--text-1); border:0; border-bottom:1px dashed var(--border-h); font:600 16px Inter,sans-serif; padding:4px 0; }
+.da-name:focus { outline:0; border-bottom-color:var(--accent); }
+.da-remove { width:32px; height:32px; flex:none; border:0; border-radius:50%; background:transparent; color:var(--text-3); font-size:18px; cursor:pointer; }
+.da-remove:hover { color:var(--red); background:var(--red-dim); }
+@media (min-width:600px) {
+  .da-menus, .da-teams { grid-template-columns:1fr 1fr; }
+}
+/* Drag screens: menus scroll on their own so the team boxes stay in reach */
+@media (min-width:600px) and (pointer:fine) {
+  .da-menus .da-list { max-height:260px; overflow-y:auto; }
+}
+
+#da-print { display:none; }
+@media print {
+  html.print-da.print-da, html.print-da.print-da body.print-da { color-scheme:light !important; --bg:#fff !important; background:#fff !important; background-image:none !important; }
+  html.print-da.print-da body.print-da { padding:0 !important; margin:0 !important; color:#111 !important; }
+  body.print-da::before { display:none !important; }
+  body.print-da > *:not(#da-print) { display:none !important; }
+  body.print-da #da-print { display:block !important; padding:0.4in; font:12px/1.5 Inter, Arial, sans-serif; color:#111 !important; white-space:pre-wrap; }
+}
+
 @media (min-width: 900px) {
-  .header, .page-hero, .sec, .list, .status { max-width: 520px; margin-left: auto; margin-right: auto; }
+  .header, .page-hero, .da, .sec, .list, .status { max-width: 520px; margin-left: auto; margin-right: auto; }
 }
 </style>
 <link rel="stylesheet" href="assets/bb-reference.css">
 <script src="scripts/contact-privacy.js?v=1124a"></script>
 <script src="scripts/water-towers.js?v=1124d"></script>
 <script src="theme.js?v=1124c"></script>
-<script src="scripts/pre-shift-lib.js?v=1124g"></script>
+<script src="scripts/pre-shift-lib.js?v=1125a"></script>
 </head>
 <body class="bb-ref">
 <div class="page-wrap">
@@ -306,6 +351,8 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
   <div class="page-title">Pre-shift Scripts</div>
   <div class="page-meta">Analysis, server script, questions, and a printable server packet · <a href="plated.html">training guide</a></div>
 </div>
+
+<section class="da" id="da" aria-label="Duty assigner" hidden></section>
 
 <div class="sec" id="ps-sec">Loading</div>
 <div class="status" id="ps-status">Reading the Rundown…</div>
@@ -379,6 +426,7 @@ function fmtDate(iso) {
     if (!m.ed) {
       var saved = loadEdits()[mealKey(m)];
       m.ed = saved && saved.a ? saved : buildEdits(m);
+      m.ed = PreShift.ensureFloorEdits(m.ed);
     }
     return m.ed;
   }
@@ -861,6 +909,7 @@ function fmtDate(iso) {
         var act = btn.getAttribute("data-act");
         persistPacket(i, meals);
         if (act === "print") {
+          clearDutyPrint();
           document.querySelectorAll(".ps-card").forEach(function (c) { c.classList.remove("print-me"); });
           var card = document.getElementById("ps-" + i);
           if (card) card.classList.add("print-me", "open");
@@ -920,7 +969,7 @@ function fmtDate(iso) {
           var p2 = meals[i].packetLive;
           if ((p2.teams || []).length <= 1) return;
           var names2 = (p2.teams || []).map(function (t) { return t.names; });
-          var next2 = PreShift.defaultTeams(p2.teams.length - 1);
+          var next2 = PreShift.defaultTeams(p2.teams.length - 1, PreShift.extraOpeningFromTeams(p2.teams));
           next2.forEach(function (t, ti) { if (names2[ti]) t.names = names2[ti]; });
           p2.teams = next2;
           var all2 = loadPacketStore();
@@ -943,7 +992,7 @@ function fmtDate(iso) {
 
   // Teams keep their own colors and names; duties re-split for the new team count
   function rebuildTeams(i, meals, p, spec) {
-    var next = PreShift.defaultTeams(spec.length);
+    var next = PreShift.defaultTeams(spec.length, PreShift.extraOpeningFromTeams(p.teams));
     next.forEach(function (t, ti) { t.color = spec[ti].color; if (spec[ti].names) t.names = spec[ti].names; });
     p.teams = next;
     meals[i].packetLive = p;
@@ -1123,6 +1172,8 @@ function fmtDate(iso) {
     var d = null;
     try { d = JSON.parse(localStorage.getItem(DUTY_STORE) || "null"); } catch (e) {}
     if (!d || !d.opening) return { opening: PreShift.OPENING_DUTIES.slice(), closing: PreShift.CLOSING_DUTIES.slice(), removed: [] };
+    var old = PreShift.RETIRED_DUTIES.map(dkey);
+    ["opening", "closing"].forEach(function (k) { d[k] = (d[k] || []).filter(function (x) { return old.indexOf(dkey(x)) < 0; }); });
     // Duties added to the built-in list later still show up, unless this device removed them
     var gone = (d.removed || []).map(dkey);
     [["opening", PreShift.OPENING_DUTIES], ["closing", PreShift.CLOSING_DUTIES]].forEach(function (pair) {
@@ -1333,6 +1384,172 @@ function fmtDate(iso) {
       attr: function (el, name) { return el && el.getAttribute ? (el.getAttribute(name) || "") : ""; }
     };
   }
+
+  // ---- Duty assigner: standalone shift tool, saved on this device ----
+  function initDutyAssigner() {
+    var STORE = "bb-duty-assigner";
+    var root = $("da");
+    var saved = null; try { saved = JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) {}
+    var state = PreShift.dutyAssignerState(saved);
+    var dragMq = window.matchMedia("(pointer: fine) and (min-width: 600px)");
+    var picked = null, dragging = null, copied = "";
+    var KINDS = [["opening", "Opening"], ["closing", "Closing"]];
+
+    function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} }
+    function update(next) { state = next; picked = null; copied = ""; save(); draw(); }
+
+    function menu(kind, label) {
+      var items = PreShift.dutyUnassigned(state, kind).map(function (d) {
+        var open = picked && picked.kind === kind && picked.duty === d;
+        var html = '<button type="button" class="da-duty" data-da="pick" data-kind="' + kind + '" data-duty="' + esc(d) + '"' +
+          (dragMq.matches ? ' draggable="true"' : '') + ' aria-expanded="' + !!open + '">' + esc(d) + '</button>';
+        if (open) {
+          html += '<div class="da-pick">' + (state.teams.length ? state.teams.map(function (t) {
+            return '<button type="button" class="bb-btn" data-da="assign" data-team="' + esc(t.id) + '">' + esc(t.name) + '</button>';
+          }).join("") : '<span class="da-empty">Add a team first.</span>') + '</div>';
+        }
+        return html;
+      }).join("");
+      return '<div class="da-box"><div class="da-lab">' + label + '</div><div class="da-list" data-menu="' + kind + '">' +
+        (items || '<span class="da-empty">All assigned.</span>') + '</div></div>';
+    }
+
+    function teamBox(t) {
+      return '<div class="da-box da-team" data-drop="' + esc(t.id) + '">' +
+        '<div class="da-head"><input class="da-name" data-team="' + esc(t.id) + '" value="' + esc(t.name) + '" aria-label="Team name" maxlength="40">' +
+        '<button type="button" class="da-remove" data-da="remove" data-team="' + esc(t.id) + '" aria-label="Remove team">×</button></div>' +
+        KINDS.map(function (k) {
+          var items = t[k[0]].map(function (d) {
+            return '<button type="button" class="da-duty" data-da="unassign" data-kind="' + k[0] + '" data-duty="' + esc(d) + '" title="Return to the menu">' +
+              esc(d) + '<span class="da-x" aria-hidden="true">×</span></button>';
+          }).join("");
+          return '<div class="da-lab">' + k[1] + '</div><div class="da-list">' +
+            (items || '<span class="da-empty">' + (dragMq.matches ? "Drop duties here." : "None yet.") + '</span>') + '</div>';
+        }).join("") + '</div>';
+    }
+
+    function draw() {
+      // Keep each menu's scroll spot across redraws
+      var scrolls = {};
+      root.querySelectorAll("[data-menu]").forEach(function (el) { scrolls[el.getAttribute("data-menu")] = el.scrollTop; });
+      root.innerHTML = '<div class="sec">Duty assigner</div>' +
+        '<div class="da-bar">' +
+          '<button type="button" class="bb-btn" data-da="add">Add team</button>' +
+          '<button type="button" class="bb-btn" data-da="copy">' + (copied || "Copy") + '</button>' +
+          '<button type="button" class="bb-btn" data-da="print">Print</button>' +
+          '<button type="button" class="bb-btn" data-da="reset">Reset</button>' +
+        '</div>' +
+        '<p class="da-hint">' + (dragMq.matches ? "Drag a duty onto a team, or tap it and pick a team." : "Tap a duty, then tap a team.") + ' Tap an assigned duty to return it.</p>' +
+        '<div class="da-menus">' + menu("opening", "Opening") + menu("closing", "Closing") + '</div>' +
+        '<div class="da-teams">' + (state.teams.map(teamBox).join("") || '<span class="da-empty">No teams. Add a team.</span>') + '</div>';
+      root.querySelectorAll("[data-menu]").forEach(function (el) { el.scrollTop = scrolls[el.getAttribute("data-menu")] || 0; });
+    }
+
+    function copyText(text) {
+      function done(ok) { copied = ok ? "Copied" : "Copy failed"; draw(); }
+      function fallback() {
+        var area = document.createElement("textarea");
+        area.value = text; area.setAttribute("readonly", ""); area.style.position = "fixed"; area.style.opacity = "0";
+        document.body.appendChild(area); area.select();
+        var ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+        area.remove(); done(ok);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+      else fallback();
+    }
+
+    function printSheet() {
+      clearDutyPrint();
+      var old = $("pkt-print"); if (old) old.remove();
+      document.documentElement.classList.remove("print-pkt");
+      document.body.classList.remove("print-pkt");
+      var sheet = document.createElement("div");
+      sheet.id = "da-print";
+      sheet.textContent = PreShift.dutyAssignerText(state);
+      document.body.appendChild(sheet);
+      document.documentElement.classList.add("print-da");
+      document.body.classList.add("print-da");
+      window.print();
+    }
+
+    root.addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-da]");
+      if (!b) return;
+      var act = b.getAttribute("data-da"), kind = b.getAttribute("data-kind"), duty = b.getAttribute("data-duty"), team = b.getAttribute("data-team");
+      if (act === "pick") {
+        picked = picked && picked.kind === kind && picked.duty === duty ? null : { kind: kind, duty: duty };
+        draw();
+      }
+      else if (act === "assign" && picked) update(PreShift.dutyAssign(state, picked.kind, picked.duty, team));
+      else if (act === "unassign") update(PreShift.dutyUnassign(state, kind, duty));
+      else if (act === "add") update(PreShift.dutyAddTeam(state));
+      else if (act === "remove") update(PreShift.dutyRemoveTeam(state, team));
+      else if (act === "reset") update(PreShift.dutyAssignerReset());
+      else if (act === "copy") copyText(PreShift.dutyAssignerText(state));
+      else if (act === "print") printSheet();
+    });
+    // Rename in place, with no redraw, so the tap that ended the edit still lands
+    root.addEventListener("change", function (ev) {
+      var inp = ev.target.closest(".da-name");
+      if (!inp) return;
+      var id = inp.getAttribute("data-team");
+      state = PreShift.dutyRenameTeam(state, id, inp.value);
+      copied = "";
+      save();
+      state.teams.forEach(function (t) { if (t.id === id) inp.value = t.name; });
+      root.querySelectorAll('[data-da="assign"]').forEach(function (b) {
+        if (b.getAttribute("data-team") === id) b.textContent = inp.value;
+      });
+    });
+    root.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter" && ev.target.classList.contains("da-name")) { ev.preventDefault(); ev.target.blur(); }
+    });
+
+    root.addEventListener("dragstart", function (ev) {
+      var b = ev.target.closest && ev.target.closest('[data-da="pick"]');
+      if (!b || !dragMq.matches) return;
+      dragging = { kind: b.getAttribute("data-kind"), duty: b.getAttribute("data-duty") };
+      ev.dataTransfer.setData("text/plain", dragging.duty);
+      ev.dataTransfer.effectAllowed = "move";
+      b.classList.add("dragging");
+    });
+    root.addEventListener("dragend", function (ev) {
+      dragging = null;
+      if (ev.target.classList) ev.target.classList.remove("dragging");
+      root.querySelectorAll(".da-team.over").forEach(function (el) { el.classList.remove("over"); });
+    });
+    function dropBox(ev) { return dragging && ev.target.closest ? ev.target.closest("[data-drop]") : null; }
+    ["dragenter", "dragover"].forEach(function (type) {
+      root.addEventListener(type, function (ev) {
+        var box = dropBox(ev);
+        if (!box) return;
+        ev.preventDefault();
+        box.classList.add("over");
+      });
+    });
+    root.addEventListener("dragleave", function (ev) {
+      var box = dropBox(ev);
+      if (box && !box.contains(ev.relatedTarget)) box.classList.remove("over");
+    });
+    root.addEventListener("drop", function (ev) {
+      var box = dropBox(ev);
+      if (!box) return;
+      ev.preventDefault();
+      var d = dragging; dragging = null;
+      update(PreShift.dutyAssign(state, d.kind, d.duty, box.getAttribute("data-drop")));
+    });
+
+    if (dragMq.addEventListener) dragMq.addEventListener("change", function () { picked = null; draw(); });
+    draw();
+    root.hidden = false;
+  }
+  function clearDutyPrint() {
+    var el = $("da-print"); if (el) el.remove();
+    document.documentElement.classList.remove("print-da");
+    document.body.classList.remove("print-da");
+  }
+  window.addEventListener("afterprint", clearDutyPrint);
+  initDutyAssigner();
 
   fetch("rundown.html", { cache: "no-cache" }).then(function (r) {
     if (!r.ok) throw new Error("Rundown HTTP " + r.status);
