@@ -157,20 +157,36 @@
   function briefingFor(meal) {
     var g = meal.group || "";
     var d = meal.date || "";
+    var menuBlob = (meal.menu || "") + " " + ((meal.foot && (meal.foot.FOOD || meal.foot.NOTE)) || "");
     if (/Emerson/i.test(g) && (!d || d === "2026-11-20")) return "emerson";
-    if (/TSAE/i.test(g) && (!d || d === "2026-12-04")) return "tsae";
+    if (/TSAE/i.test(g) && (!d || d === "2026-12-04")) {
+      if (/chef'?s\s*choice/i.test(menuBlob + " " + (meal.menu || ""))) return "tsae";
+      return "tsae-plated";
+    }
+    if (/12\s*Elements/i.test(g) && (!d || d === "2026-12-05")) return "elements";
     return "";
+  }
+
+  function softenJoins(s) {
+    s = String(s || "");
+    s = s.replace(/OPEN\s*[\u2192\u2794>]+/gi, "");
+    s = s.replace(/\u2691/g, " ");
+    s = s.replace(/([a-z])([A-Z])/g, "$1 $2");
+    s = s.replace(/(\d)([A-Z])/g, "$1 $2");
+    s = s.replace(/([A-Za-z])(?=\d)/g, "$1 ");
+    s = s.replace(/([A-Za-z])event orders/g, "$1 event orders");
+    return s.replace(/[ \t]+/g, " ").trim();
   }
 
   function buildPreShift(meal) {
     meal = meal || {};
     var foot = meal.foot || {};
-    var menu = publicText(meal.menu || "");
-    var note = publicText(foot.NOTE || "");
-    var food = publicText(foot.FOOD || "");
-    var roomFoot = publicText(foot.ROOM || meal.room || "");
-    var extras = publicText(meal.extras || "");
-    var diagrams = publicText(meal.diagrams || foot.DIAGRAM || "");
+    var menu = softenJoins(publicText(meal.menu || ""));
+    var note = softenJoins(publicText(foot.NOTE || ""));
+    var food = softenJoins(publicText(foot.FOOD || ""));
+    var roomFoot = softenJoins(publicText(foot.ROOM || meal.room || ""));
+    var extras = softenJoins(publicText(meal.extras || ""));
+    var diagrams = softenJoins(publicText(meal.diagrams || foot.DIAGRAM || ""));
     var services = meal.services || [];
     var flags = extractFlags(foot.NOTE || "");
     (meal.services || []).forEach(function (sv) {
@@ -192,10 +208,12 @@
     if (!counts.set && (meal.services || []).length) {
       (meal.services || []).forEach(function (sv) {
         if (counts.set) return;
-        if (/set up/i.test(sv.tag || "") || /storage/i.test(sv.tag || "")) {
-          var sc = parseCounts(sv.pill || "");
-          if (sc.set) counts.set = sc.set;
-        }
+        var mealRoom = clean(meal.room || "").toLowerCase();
+        var svRoom = clean(sv.room || "").toLowerCase();
+        if (mealRoom && svRoom && mealRoom !== svRoom) return;
+        if (/office|set up|storage|activation/i.test(sv.tag || "")) return;
+        var sc = parseCounts(sv.pill || "");
+        if (sc.set) counts.set = sc.set;
       });
     }
     var mgr = firstName(meal.mgr) || "Hector";
@@ -241,9 +259,9 @@
     if (has(menu, /chef'?s choice plated/i)) {
       entreeText = "Chef's choice plated - menu not itemized on the EO";
     } else if (menu) {
-      var mChoice = menu.match(/Entr[eé]e\s*\(choice\):\s*([^.]+)/i);
-      var mEntrees = menu.match(/Entr[eé]es?:\s*([^.]+?)(?:\s*·\s*Dessert|\s*·\s*Rolls|$)/i);
-      var mSingle = menu.match(/(?:Second course|Entr[eé]e):\s*([^.]+?)(?:\s*·\s*Dessert|\s*·\s*Rolls|$)/i);
+      var mChoice = menu.match(/Entr[eé]e\s*\(choice\):\s*([\s\S]+?)(?:\s*·\s*Dessert|\s*·\s*Artisan rolls|\s*·\s*Rolls|$)/i);
+      var mEntrees = menu.match(/Entr[eé]es?:\s*([\s\S]+?)(?:\s*·\s*Dessert|\s*·\s*Artisan rolls|\s*·\s*Rolls|$)/i);
+      var mSingle = menu.match(/(?:Second course|Entr[eé]e):\s*([\s\S]+?)(?:\s*·\s*Dessert|\s*·\s*Artisan rolls|\s*·\s*Rolls|$)/i);
       if (mChoice) entreeText = "Entree choice: " + clean(mChoice[1]);
       else if (mEntrees) entreeText = "Entrees: " + clean(mEntrees[1]);
       else if (mSingle) entreeText = "Plate: " + clean(mSingle[1]);
@@ -251,7 +269,10 @@
     }
     var mark = "";
     if (has(blob, /colored dot\s*=\s*entr/i)) mark = "Place cards: colored dot = entree, star = special meal";
-    else if (has(blob, /place cards?/i)) mark = "Place cards mark the choice (see EO notes)";
+    else if (has(blob, /color[ -]?coded\s+entr[eé]e cards?/i)) {
+      var cm = blob.match(/color[ -]?coded\s+entr[eé]e cards?:?[^·]*/i);
+      mark = cm ? clean(cm[0]) : "Color coded entree cards mark the choice";
+    } else if (has(blob, /place cards?/i)) mark = "Place cards mark the choice (see EO notes)";
     else if (has(blob, /by-table meal list|meal list/i)) mark = "Captain gets a by-table meal list";
     if (entreeText && mark) entreeText = entreeText + ". " + mark;
     else if (!entreeText && mark) entreeText = mark;
@@ -265,7 +286,7 @@
 
     // Dietary
     var diet = "";
-    if (food && /allerg|dietary|gluten|vegan|vegetarian|nut|shellfish|mushroom|clam/i.test(food)) diet = food;
+    if (food && /allerg|dietary|gluten|vegan|vegetarian|nut|shellfish|mushroom|clam|no sauces|sauce-free|sauce free/i.test(food)) diet = food;
     else {
       var dietBits = [];
       if (has(menu, /gluten-free|gluten free|\bGF\b/i)) dietBits.push("GF notes on the menu");
@@ -486,10 +507,15 @@
     flags.forEach(function (fl) {
       var clipped = fl.replace(/,?\s*confirm(?: the \w+ set)? with \w+\.?/i, "").replace(/[. ]+$/, "").trim();
       fact("Conflict", clipped + ". The event order wins until " + mgr + " confirms.", "flag");
-      if (/rounds|bar plan|bartender|diagram|window|7 to 11|7 to 9|set is|mismatch/i.test(fl)) {
+      if (/rounds|bar plan|bartender|diagram|window|7 to 11|7 to 9|set is|mismatch|cauliflower|eggplant|entr[eé]e card|no sauces|sauce-free/i.test(fl)) {
         if (clipped && clipped.length < 220) addQ(questions, asked, mgr, clipped + "?");
       }
     });
+
+    if (/cauliflower/i.test(blob) && /eggplant/i.test(blob)) {
+      fact("Conflict", "Entree cards mark the vegetarian plate as cauliflower, but the event order is ratatouille stuffed eggplant. The event order wins until " + mgr + " confirms.", "flag");
+      addQ(questions, asked, mgr, "The green entree card says cauliflower, but the event order is ratatouille stuffed eggplant. Which should we follow?");
+    }
 
     // Event-specific BEO notes that already appear as timing, menu, or conflicts on the public Rundown,
     // plus a few operational gaps that belong on a captain script (no prices, no payment data).
@@ -517,6 +543,48 @@
         if (/When does coffee \/ decaf go out/i.test(q.q)) return false;
         if (/Covers, trays, and jacks needed/i.test(q.q)) return false;
         if (/What is the expo line order/i.test(q.q)) return false;
+        return true;
+      });
+    }
+    if (kind === "tsae-plated") {
+      fact("BEO notes", "Lunch event order 12:00 to 2:00 PM: guarantee 300, plated airline chicken lunch. Pre-set arugula salad and pre-set red velvet cake. Rolls, butter, coffee and hot tea. Pre-set silverware, water glasses, and napkins by 11:00. Doors 12:00, service 12:20 after a short announcement. Welcome from Visit Austin at 12:30, awards at 12:55, program ends at 2:00. Foyer reception 11:00 to 2:00 with butler-passed cranberry rosemary sparklers and cranberry ginger fizz; the group provides drink napkins.");
+      addQ(questions, asked, mgr, "Thursday's AV set is 42 rounds of 8, the lunch event order dropped its old setup line, the diagram shows 38 rounds of 8, and an earlier note had 44 rounds of 7. What should we set for lunch?");
+      addQ(questions, asked, mgr, "Any allergies or dietary plates by table, with subs?");
+      addQ(questions, asked, mgr, "Is the ballroom water and tea only, or is there wine at lunch?");
+      addQ(questions, asked, mgr, "Who calls service at 12:20, and who calls any later pause around the 12:30 welcome and 12:55 awards?");
+      addQ(questions, asked, mgr, "What are the kitchen fire times?");
+      addQ(questions, asked, mgr, "Any vendor, sponsor, or staff meals, and where they eat?");
+      questions = questions.filter(function (q) {
+        if (/Who calls salad and entree/i.test(q.q)) return false;
+        if (/What are the kitchen fire times for each course/i.test(q.q)) return false;
+        if (/Wine pour or bar only/i.test(q.q)) return false;
+        if (/When does coffee \/ decaf go out/i.test(q.q)) return false;
+        if (/Covers, trays, and jacks needed/i.test(q.q)) return false;
+        if (/What is the expo line order/i.test(q.q)) return false;
+        if (/Is this a choice or a single plate/i.test(q.q)) return false;
+        if (/What is pre-set \(salad/i.test(q.q)) return false;
+        if (/chef'?s-?choice|actual chef/i.test(q.q)) return false;
+        if (/Is 300 the guarantee or only expected/i.test(q.q)) return false;
+        if (/What is the set count/i.test(q.q)) return false;
+        if (/Thursday's AV set is \(42\)/i.test(q.q)) return false;
+        if (/^Any vendor or staff meals\?$/i.test(q.q)) return false;
+        return true;
+      });
+    }
+    if (kind === "elements") {
+      fact("BEO notes", "Plated dinner for 254 in Primrose ABC, 6:45 to 8:00. First course walked: traditional house salad. Entrees: 172 grilled center cut filet, 69 herb seared Statler chicken, 13 ratatouille stuffed eggplant. Desserts walked, alternating carrot cake and red velvet. No presets for salads or desserts. Rolls and butter. Favorite Brands bar 5:00 to 10:30 with Vista Point chardonnay and cabernet, three bartenders plus extra hours. Two sauce-free plates: Hazem on chicken, Ibraheem on steak. Green entree card says cauliflower; the event order is eggplant.");
+      addQ(questions, asked, mgr, "The green entree card says cauliflower, but the event order is ratatouille stuffed eggplant. Which should we follow?");
+      addQ(questions, asked, "the contact", "Where do the two sauce-free plates go: Hazem on chicken and Ibraheem on steak?");
+      addQ(questions, asked, mgr, "Who calls salad and entree?");
+      addQ(questions, asked, mgr, "What are the kitchen fire times for each course?");
+      addQ(questions, asked, mgr, "Head table first?");
+      addQ(questions, asked, mgr, "Any vendor or staff meals?");
+      questions = questions.filter(function (q) {
+        if (/Wine pour or bar only/i.test(q.q)) return false;
+        if (/What is pre-set \(salad/i.test(q.q)) return false;
+        if (/Is this a choice or a single plate/i.test(q.q)) return false;
+        if (/What is the set count/i.test(q.q)) return false;
+        if (/Any allergies or dietary plates by table/i.test(q.q)) return false;
         return true;
       });
     }
@@ -640,6 +708,36 @@
       speak(lines, "[ask] who calls service at 12:20, and who calls any later course around the 12:30 welcome and the 12:55 awards. " + serviceCueScriptLine(f.blob).text + " [ask] kitchen fire times, and whether dessert is pre-set or held until after 12:55.", false);
       speak(lines, "House standard is serve left, clear right, unless " + who + " says otherwise. [ask] if there is a head table or stage tables first.", false);
       speak(lines, "[ask] any vendor, sponsor, or staff meals, and where they eat.", false);
+      speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
+      return lines;
+    }
+    if (f.kind === "tsae-plated") {
+      speak(lines, "Friday is the TSAE luncheon in the Primrose Ballroom. Guarantee is 300. " + who + " is the manager." + (publicContact(f.contact) ? " " + publicContact(f.contact) + " is the contact." : ""));
+      speak(lines, "The lunch set is still being confirmed. Thursday's AV set is 42 rounds of 8, the lunch event order dropped its old setup line, and " + who + "'s ballroom diagram shows 38 rounds of 8. An earlier note had 44 rounds of 7. The event order wins until " + who + " confirms. [ask]", false);
+      speak(lines, "From 8:00 to 11:00 we pre-set silverware, water glasses, and napkins. Sponsors set activations and help decorate from 8:00. At 11:00, activations and registration open, and the foyer reception starts with butler-passed cranberry rosemary sparklers and cranberry ginger fizz. The group is bringing napkins for those drinks.");
+      speak(lines, "Ballroom doors open at 12:00. At 12:20 the musician pauses, there is a short announcement, and lunch service begins. At 12:30 there is a welcome from Visit Austin, during service. At 12:40 guests keep eating with music. At 12:55 the musician pauses for sponsor recognition, awards, and a TSAE recap. The program ends at 2:00 and the band plays as guests leave. Teardown is 2:00 to 3:30.");
+      speak(lines, "Lunch is plated chicken for 300. The salad is pre-set: arugula, frisee, radicchio, blackberries, strawberries, candied pecans, and vanilla honey vinaigrette. The entree is herb roasted airline chicken breast with grilled sunburst squash and roasted tomato quinoa pilaf. Dessert is also pre-set: classic red velvet cake with light cream cheese frosting. Artisan rolls and butter go down, with coffee and hot tea service.");
+      speak(lines, "No dietaries are listed on the event order. [ask] whether there are allergies or dietary plates by table. " + ALLERGY_CAPTAIN_DROP, false);
+      speak(lines, "[ask] whether the ballroom is water and tea only, or if any wine needs to be chilled. If it does, assign chilling it to a server as side work.", false);
+      speak(lines, "[ask] who calls service at 12:20, and who calls any later pause around the 12:30 welcome and the 12:55 awards. " + serviceCueScriptLine(f.blob).text + " [ask] kitchen fire times. Dessert is pre-set, so it does not wait until after the awards.", false);
+      speak(lines, "House standard is serve left, clear right, unless " + who + " says otherwise. [ask] if there is a head table or stage tables first.", false);
+      speak(lines, "[ask] any vendor, sponsor, or staff meals, and where they eat.", false);
+      speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
+      return lines;
+    }
+    if (f.kind === "elements") {
+      speak(lines, "Tonight 12 Elements is in Primrose ABC for a holiday party. We are plating dinner for 254. " + who + " is the manager.");
+      speak(lines, "The room is mixed rounds of 10 and 12 to fit 254, no linen, half holiday centerpieces and half floating candles. There is an 8x18 stage with a stair, performer chairs and a podium, a Christmas tree near the stage, and a 21x21 dance floor. Three registration tables, five highboys in the foyer, two bars in the ballroom and one in the foyer.");
+      speak(lines, "The Favorite Brands bar runs 5:00 to 10:30, five and a half hours, with Vista Point chardonnay and cabernet, beer, and three bartenders plus extra bartender hours. [ask] whether the wine needs to be chilled. If it does, assign chilling it to a server as side work.", false);
+      speak(lines, "Dinner is 6:45 to 8:00. Salads and desserts are not pre-set; they get walked. Rolls and butter can go down ahead of service.");
+      speak(lines, "First course is the traditional house salad: romaine, garlic herb croutons, tomato, cucumber, ranch and balsamic. Then the entrees: 172 grilled center cut filet with St. Andre potato and mushroom and cipollini ragout; 69 herb seared Statler chicken with sundried tomato and fontina smashed potato and chicken demi-glace; and 13 ratatouille stuffed eggplant with arrabiata. Guests have color cards, red for steak, blue for chicken, and green marked cauliflower, but the vegetarian plate is actually the eggplant. [ask] " + who + " to confirm what the green card should read. Dessert is walked, alternating half carrot cake and half red velvet.", false);
+      speak(lines, "Two plates come out sauce-free: Hazem on chicken, Ibraheem on steak. [ask] the contact where those two plates go. " + ALLERGY_CAPTAIN_DROP, false);
+      speak(lines, "Kitchen fire times: [ask].", false);
+      speak(lines, "Who calls each course: [ask]. " + serviceCueScriptLine(f.blob).text, false);
+      speak(lines, "Artisan rolls and butter, plus coffee and hot tea service.");
+      speak(lines, "Head table first: [ask].", false);
+      speak(lines, "House standard is serve left, clear right, unless the event order says otherwise.");
+      speak(lines, "Vendor or staff meals: [ask]. There is a candle-light performance with no flame, a photobooth, a 360 camera, and an outside DJ on the right of the stage.", false);
       speak(lines, "Server sections, named staffing, and opening and closing duties are later slots. We will fill those in day-of.");
       return lines;
     }
@@ -1278,6 +1376,7 @@
       helpers.qsa(sec, ".event-card").forEach(function (card) {
         var group = helpers.txt(helpers.qs(card, ".card-group"));
         var mgr = helpers.txt(helpers.qs(card, ".badge-mgr"));
+        var ic = helpers.txt(helpers.qs(card, ".badge-ic"));
         var foot = {};
         helpers.qsa(card, ".card-foot .foot-row").forEach(function (f) {
           var k = helpers.txt(helpers.qs(f, ".foot-key") || helpers.qs(f, ".foot-lab")).toUpperCase();
@@ -1324,7 +1423,7 @@
             room: room || (foot.ROOM || "").split(/[·\n]/)[0],
             time: time,
             mgr: mgr,
-            contact: foot.CONTACT || "",
+            contact: foot.CONTACT || ic || "",
             tag: tag,
             menu: menu,
             counts: parseCounts(pill),

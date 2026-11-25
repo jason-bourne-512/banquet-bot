@@ -13,7 +13,7 @@ function helpers(todayISO) {
   return {
     todayISO: todayISO,
     sections: $(".day-section").toArray(),
-    txt: function (el) { return el ? PreShift.clean($(el).text().replace(/\s+/g, " ")) : ""; },
+    txt: function (el) { return el ? PreShift.clean($(el).clone().find("br").replaceWith(" ").end().text().replace(/\s+/g, " ")) : ""; },
     qs: function (el, sel) { const n = $(el).find(sel).first(); return n.length ? n.get(0) : null; },
     qsa: function (el, sel) { return $(el).find(sel).toArray(); },
     attr: function (el, name) { return $(el).attr(name) || ""; }
@@ -185,7 +185,7 @@ if (fs.existsSync(rundownPath)) {
   const live = PreShift.collectPlated({
     todayISO: "2026-11-20",
     sections: $r(".day-section").toArray(),
-    txt: function (el) { return el ? PreShift.clean($r(el).text().replace(/\s+/g, " ")) : ""; },
+    txt: function (el) { return el ? PreShift.clean($r(el).clone().find("br").replaceWith(" ").end().text().replace(/\s+/g, " ")) : ""; },
     qs: function (el, sel) { const n = $r(el).find(sel).first(); return n.length ? n.get(0) : null; },
     qsa: function (el, sel) { return $r(el).find(sel).toArray(); },
     attr: function (el, name) { return $r(el).attr(name) || ""; }
@@ -224,6 +224,31 @@ if (fs.existsSync(rundownPath)) {
   assert.equal(ts.packet.location, "");
   assert.equal(em.packet.seatsPerTable, 9, "live Emerson seats from EO rounds of 9");
   assert.equal(ts.packet.seatsPerTable, 8, "live TSAE seats from EO rounds of 8");
+  const tsScript = ts.script.map(function (l) { return l.text; }).join(" ");
+  assert.match(tsScript, /guarantee is 300/i);
+  assert.match(tsScript, /airline chicken|herb roasted/i);
+  assert.match(tsScript, /red velvet/i);
+  assert.match(tsScript, /arugula/i);
+  assert.ok(!/chef'?s choice/i.test(tsScript), "live TSAE is no longer chef's choice");
+  assert.ok(!/no guarantee on the card yet/i.test(tsScript));
+  const el12 = live.find(function (m) { return /12 Elements/i.test(m.group); });
+  assert.ok(el12, "live rundown should include 12 Elements from Dec 5");
+  const elScript = el12.script.map(function (l) { return l.text; }).join(" ");
+  const elText = allText(el12);
+  assert.match(elScript, /172/);
+  assert.match(elScript, /69/);
+  assert.match(elScript, /13/);
+  assert.match(elScript, /eggplant/i);
+  assert.match(elScript, /Hazem/);
+  assert.match(elScript, /Ibraheem/);
+  assert.match(elScript, /sauce-free|sauce free|sauces/i);
+  assert.ok(el12.questions.some(function (q) { return /cauliflower|eggplant/i.test(q.q); }), "12 Elements asks about cauliflower vs eggplant");
+  assert.match(elScript, /not pre-set|no pre-?sets for salads|salads and desserts are (?:not pre-set|walked)/i);
+  assert.ok(!/Wine pour or bar only:\s*\[ask\]/i.test(elScript), "12 Elements bar is known");
+  assert.match(elScript, /Favorite Brands|chardonnay/i);
+  assert.ok(!/^This is 12 Elements Consulting/i.test(el12.script[1] && el12.script[1].text || ""), "12 Elements opener is not the generic template");
+  assert(!/\$\d/.test(elText), "no prices on 12 Elements");
+  assert(!/[\u2014\u2013]/.test(elText), "no dashes on 12 Elements");
 }
 
 // Syntax-check the page script if present

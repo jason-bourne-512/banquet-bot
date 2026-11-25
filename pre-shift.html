@@ -288,7 +288,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 <script src="scripts/contact-privacy.js?v=1124a"></script>
 <script src="scripts/water-towers.js?v=1124d"></script>
 <script src="theme.js?v=1124c"></script>
-<script src="scripts/pre-shift-lib.js?v=1124f"></script>
+<script src="scripts/pre-shift-lib.js?v=1124g"></script>
 </head>
 <body class="bb-ref">
 <div class="page-wrap">
@@ -1322,7 +1322,12 @@ function fmtDate(iso) {
     return {
       todayISO: TODAY,
       sections: [].slice.call(doc.querySelectorAll(".day-section")),
-      txt: function (n) { return n ? PreShift.clean(n.textContent.replace(/\s+/g, " ")) : ""; },
+      txt: function (n) {
+        if (!n) return "";
+        var c = n.cloneNode(true);
+        [].slice.call(c.querySelectorAll("br")).forEach(function (br) { br.replaceWith(document.createTextNode(" ")); });
+        return PreShift.clean(c.textContent.replace(/\s+/g, " "));
+      },
       qs: function (el, sel) { return el ? el.querySelector(sel) : null; },
       qsa: function (el, sel) { return el ? [].slice.call(el.querySelectorAll(sel)) : []; },
       attr: function (el, name) { return el && el.getAttribute ? (el.getAttribute(name) || "") : ""; }
