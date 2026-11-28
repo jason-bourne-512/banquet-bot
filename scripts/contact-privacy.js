@@ -1,6 +1,6 @@
-// Hide personal contact information from BEO event data on the live site:
-// client/on-site contact names, plus phone numbers and emails if they appear.
-// Westin staff first names stay visible. Works in the browser and in Node tests.
+// Contact privacy for BEO event data on the live site (Jason 2026-11-27):
+// contact FIRST names show everywhere. Last names, phone numbers and emails never show.
+// Works in the browser and in Node tests.
 (function (root, factory) {
   if (typeof module === "object" && module.exports) module.exports = factory();
   else root.BBContactPrivacy = factory();
@@ -28,25 +28,27 @@
     PHONE_RE.lastIndex = 0;
     return EMAIL_RE.test(t) || PHONE_RE.test(t);
   }
-  function shouldHide(s) {
-    var t = foldName(s);
-    if (!t) return false;
-    if (hasPersonalData(t)) return true;
-    return !isStaff(t);
-  }
   function stripPersonal(s) {
     return String(s || "").replace(EMAIL_RE, " ").replace(PHONE_RE, " ").replace(/\s+/g, " ").trim();
   }
-  function nameRe(contactName) {
-    var first = firstName(contactName);
-    if (!first || first.length < 2 || isStaff(first)) return null;
-    return new RegExp("\\b" + first.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "gi");
+  // "Alex Rivera" -> "Alex"; keeps initials ("Amanda R"), pairs ("Matt / Nate") and notes ("Lynn (on site)").
+  var LAST_RE = /(^|[^A-Za-z'-])([A-Z][A-Za-z'-]*[a-z][A-Za-z'-]*)(?:\s+[A-Z][A-Za-z'-]*[a-z][A-Za-z'-]*)+(?![A-Za-z'-])/g;
+  function dropLastNames(s) { return String(s || "").replace(LAST_RE, "$1$2"); }
+  // What a contact field shows: first names only, no phone or email.
+  function displayName(s) {
+    var t = String(s || "").replace(/\s+/g, " ").trim();
+    var pre = (t.match(/^(IC|MGR|CONTACT):\s*/i) || [""])[0];
+    var rest = dropLastNames(stripPersonal(t.slice(pre.length)));
+    return rest ? pre + rest : "";
   }
-  function redactNameInText(text, contactName) {
-    var re = nameRe(contactName);
-    var out = String(text || "");
-    if (re) out = out.replace(re, "the contact");
-    return stripPersonal(out);
+  // Only a value with nothing left to show (it was all phone/email) is hidden.
+  function shouldHide(s) {
+    var t = foldName(s);
+    if (!t) return false;
+    return !foldName(displayName(t));
+  }
+  function redactNameInText(text) {
+    return stripPersonal(text);
   }
   function stripPersonalLoose(s) {
     return String(s || "").replace(EMAIL_RE, " ").replace(PHONE_RE, " ");
@@ -60,24 +62,10 @@
     });
     return out;
   }
-  function hideNames(primary, text) {
-    var out = [];
-    function add(n) {
-      n = firstName(n);
-      if (!n || isStaff(n) || out.indexOf(n) > -1) return;
-      out.push(n);
-    }
-    add(primary);
-    extraContactNames(text).forEach(add);
-    return out;
-  }
-  function applyNames(text, names) {
-    var out = String(text || "");
-    (names || []).forEach(function (n) {
-      var re = nameRe(n);
-      if (re) out = out.replace(re, "the contact");
-    });
-    return stripPersonalLoose(out);
+  // Kept for callers: first names are no longer hidden, so there is nothing to swap out.
+  function hideNames() { return []; }
+  function applyNames(text) {
+    return stripPersonalLoose(text);
   }
   function redactHtml(html, names) {
     var s = String(html || "");
@@ -89,11 +77,11 @@
     }
     return s.replace(/([^<]+)|(<[^>]+>)/g, function (_, text, tag) { return tag || applyNames(text, names); });
   }
-  function redactTextNodes(root, names) {
+  function redactTextNodes(root, contact) {
     if (!root || typeof document === "undefined") return;
     var it = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     var n;
-    while ((n = it.nextNode())) n.nodeValue = applyNames(n.nodeValue, names);
+    while ((n = it.nextNode())) n.nodeValue = applyNames(dropLastNamesOf(typeof contact === "string" ? contact : "", n.nodeValue));
   }
   function qualifierAfterName(value) {
     var t = foldName(value);
@@ -104,8 +92,7 @@
     return t.slice(at + first.length).replace(/^\s*/, "");
   }
   function spokenContact(name) {
-    if (!foldName(name)) return "the contact";
-    return shouldHide(name) ? "the contact" : firstName(name);
+    return firstName(displayName(name)) || "the contact";
   }
 
   function isContactKey(el) {
@@ -121,6 +108,12 @@
     s.setAttribute("data-bb-hidden", "1");
     s.textContent = "\u00a0";
     return s;
+  }
+  function showFirstName(el) {
+    if (!el) return;
+    var t = el.textContent, d = displayName(t);
+    if (d && d !== t.replace(/\s+/g, " ").trim()) el.textContent = d;
+    ["data-en", "data-es"].forEach(function (a) { var v = el.getAttribute(a); if (v != null) el.setAttribute(a, displayName(v)); });
   }
   function hideValue(el) {
     if (!el || el.getAttribute("data-bb-hidden") === "1" || (el.querySelector && el.querySelector(".bb-contact-hidden"))) return;
@@ -148,9 +141,8 @@
   function redactCard(card) {
     if (!card || !card.querySelector) return;
     var contact = cardContactName(card);
-    var names = hideNames(contact, card.textContent || "");
     Array.prototype.forEach.call(card.querySelectorAll(".badge-ic"), function (el) {
-      if (!shouldHide(el.textContent)) return;
+      if (!shouldHide(el.textContent)) { showFirstName(el); return; }
       el.removeAttribute("data-en");
       el.removeAttribute("data-es");
       el.textContent = "IC: ";
@@ -160,12 +152,12 @@
       var key = row.querySelector(".foot-key");
       var val = row.querySelector(".foot-val");
       if (!key || !val) return;
-      if (isContactKey(key) && shouldHide(val.textContent)) { hideValue(val); return; }
+      if (isContactKey(key)) { if (shouldHide(val.textContent)) hideValue(val); else showFirstName(val); return; }
       var en = val.getAttribute("data-en");
       var es = val.getAttribute("data-es");
-      redactTextNodes(val, names);
-      if (en != null) val.setAttribute("data-en", applyNames(en, names));
-      if (es != null) val.setAttribute("data-es", applyNames(es, names));
+      redactTextNodes(val, contact);
+      if (en != null) val.setAttribute("data-en", applyNames(dropLastNamesOf(contact, en)));
+      if (es != null) val.setAttribute("data-es", applyNames(dropLastNamesOf(contact, es)));
     });
   }
   function redactTree(root) {
@@ -173,7 +165,7 @@
     Array.prototype.forEach.call(root.querySelectorAll(".event-card"), function (card) { redactCard(card); });
     if (root.classList && root.classList.contains("event-card")) redactCard(root);
     Array.prototype.forEach.call(root.querySelectorAll(".group-contact, .original-contact"), function (el) {
-      if (shouldHide(el.textContent)) hideValue(el);
+      if (shouldHide(el.textContent)) hideValue(el); else showFirstName(el);
     });
   }
   function cardSearchText(card, txtFn) {
@@ -199,11 +191,18 @@
       return shouldHide(m.replace(/<[^>]+>/g, " ")) ? "" : m;
     });
     var text = s.replace(/<[^>]+>/g, " ");
-    var names = hideNames(contact, text);
-    text = applyNames(text, names);
-    return stripPersonal(text);
+    return stripPersonal(dropLastNamesOf(contact, text));
   }
 
+  // Drop the contact's last name wherever "First Last" appears in a block of text.
+  function dropLastNamesOf(contact, text) {
+    var out = String(text || "");
+    String(contact || "").split(/\s*[\/,&]\s*|\s+and\s+/).forEach(function (c) {
+      var full = stripPersonal(c).replace(/\s*\(.*$/, "").trim(), first = firstName(full);
+      if (first && full !== first && /^[A-Za-z'-]+\s+[A-Z][A-Za-z'-]{1,}$/.test(full)) out = out.split(full).join(first);
+    });
+    return out;
+  }
   function injectCss() {
     if (typeof document === "undefined" || document.getElementById("bb-contact-privacy-css")) return;
     var css = document.createElement("style");
@@ -238,6 +237,8 @@
     firstName: firstName,
     isStaff: isStaff,
     shouldHide: shouldHide,
+    displayName: displayName,
+    dropLastNames: dropLastNames,
     hasPersonalData: hasPersonalData,
     stripPersonal: stripPersonal,
     redactNameInText: redactNameInText,

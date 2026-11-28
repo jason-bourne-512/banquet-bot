@@ -516,7 +516,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
 @keyframes rundown-edge{0%,15%{transform:translateX(-100%);opacity:0}30%{opacity:.8}75%{opacity:.6}90%,100%{transform:translateX(100%);opacity:0}}
 @keyframes rundown-beacon{0%,100%{opacity:.45;box-shadow:0 0 3px #89cfff33}50%{opacity:1;box-shadow:0 0 13px #89cfff99}}
 </style>
-<script src="scripts/contact-privacy.js?v=1124a"></script>
+<script src="scripts/contact-privacy.js?v=1127a"></script>
 <script src="scripts/water-towers.js?v=1124d"></script>
 <script src="theme.js?v=1124c"></script>
 </head>
@@ -18609,7 +18609,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
               p.val.append(document.createTextNode('IC: '));
               if(P.hiddenSpan) p.val.append(P.hiddenSpan());
               else p.val.append(document.createTextNode('contact hidden'));
-            } else p.val.append(document.createTextNode(b));
+            } else p.val.append(document.createTextNode(/^IC:/i.test(b) && P ? P.displayName(b) : b));
           });
           setup.push(p);
         }
@@ -18699,7 +18699,7 @@ html.bbd #bb-app .service[data-k]:hover{background:#ffffff0a}
         parent.append(s);
         return;
       }
-      s.textContent=name;
+      s.textContent=P?P.displayName(name):name;
       parent.append(s);
     }
     function renderOverviewDay(day){

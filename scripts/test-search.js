@@ -149,7 +149,7 @@ assert.deepEqual(titles("BEO 8152"), [mutotech.title], "partial prefixed number 
 assert.deepEqual(titles("815184"), [mutotech.title], "bare second event order still matches");
 
 
-const hiddenHtml = '<div class="event-card"><div class="card-group">Hidden Contact Group</div><span class="badge badge-mgr">MGR: Lisa</span><span class="badge badge-ic">IC: Laura</span><div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Laura 512-555-1234 jane@client.com</span></div><div class="foot-row"><span class="foot-key">NOTE</span><span class="foot-val">event order 644111 · Check with Laura</span></div></div>';
+const hiddenHtml = '<div class="event-card"><div class="card-group">Hidden Contact Group</div><span class="badge badge-mgr">MGR: Lisa</span><span class="badge badge-ic">IC: Laura</span><div class="foot-row"><span class="foot-key">CONTACT</span><span class="foot-val">Laura Smith 512-555-1234 jane@client.com</span></div><div class="foot-row"><span class="foot-key">NOTE</span><span class="foot-val">event order 644111 · Check with Laura</span></div></div>';
 const hiddenEvent = {
   type: "event",
   date: "2026-12-01",
@@ -162,10 +162,11 @@ const hiddenEvent = {
 };
 index.push(hiddenEvent);
 assert.deepEqual(titles("644111"), [hiddenEvent.title], "BEO number on a redacted card is still searchable");
-assert.equal(titles("Laura").indexOf(hiddenEvent.title), -1, "client contact name is not searchable");
+assert.ok(titles("Laura").indexOf(hiddenEvent.title) > -1, "client contact first name is searchable");
+assert.equal(titles("Smith").indexOf(hiddenEvent.title), -1, "client contact last name is not searchable");
 assert.equal(titles("512-555-1234").indexOf(hiddenEvent.title), -1, "personal phone is not searchable");
 assert.equal(titles("jane@client.com").indexOf(hiddenEvent.title), -1, "personal email is not searchable");
 assert.ok(titles("Lisa").indexOf(hiddenEvent.title) > -1 || titles("Hidden Contact Group").indexOf(hiddenEvent.title) > -1, "staff name or group name still finds the card");
 
 console.log("PASS: site search finds events by BEO number, with or without a BEO or # prefix, including partial numbers.");
-console.log("PASS: site search hides client contact names, phones, and emails.");
+console.log("PASS: site search finds contact first names and hides last names, phones, and emails.");

@@ -338,7 +338,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
 }
 </style>
 <link rel="stylesheet" href="assets/bb-reference.css">
-<script src="scripts/contact-privacy.js?v=1124a"></script>
+<script src="scripts/contact-privacy.js?v=1127a"></script>
 <script src="scripts/water-towers.js?v=1124d"></script>
 <script src="theme.js?v=1124c"></script>
 <script src="scripts/pre-shift-lib.js?v=1125b"></script>
@@ -380,7 +380,7 @@ body { background:var(--bg); color:var(--text-1); font-family:'Inter',sans-serif
     if(!name) return '';
     var P=window.BBContactPrivacy;
     if(P && P.shouldHide(name)) return ' · Contact <span class="bb-contact-hidden" aria-label="contact hidden" data-bb-hidden="1">&nbsp;</span>';
-    return ' · Contact ' + esc(name);
+    return ' · Contact ' + esc(P ? P.displayName(name) : name);
   }
 function fmtDate(iso) {
     if (!iso) return "";

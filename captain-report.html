@@ -52,7 +52,7 @@
 .cr-paper .cr-empty{color:#6b7b86;text-align:center;margin:30px 0 6px;font-size:13px}
 .cr input[disabled],.cr textarea[disabled]{border-color:transparent!important;background:transparent;resize:none;opacity:1;color:inherit}
 </style>
-<script src="scripts/contact-privacy.js?v=1124a"></script>
+<script src="scripts/contact-privacy.js?v=1127a"></script>
 <script src="theme.js?v=1124c"></script>
 </head>
 <body class="cr-body">
@@ -237,7 +237,7 @@
     var list = meals.length > 1 ? meals.slice(0, -1).join(", ") + " and " + meals[meals.length - 1] : meals[0] || "";
     var plural = meals.length > 1 || /both/.test(list), bev = has(/continuous|all day|beverage/);
     var P = (typeof window !== "undefined" && window.BBContactPrivacy) || null;
-    var who = (P && P.shouldHide(e.contact) ? "" : e.contact) || "the group", room = (e.rows[0] && e.rows[0].room) || "The room";
+    var who = (P ? (P.shouldHide(e.contact) ? "" : P.displayName(e.contact)) : e.contact) || "the group", room = (e.rows[0] && e.rows[0].room) || "The room";
     var food;
     if (list) {
       food = pick(SAY.food, i, 1, [list, plural]);
